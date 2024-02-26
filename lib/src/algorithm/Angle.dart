@@ -12,7 +12,7 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
-import "dart:math" as math;
+import "dart:math" as Math;
 
 import "package:jtscore4dart/src/geom/Coordinate.dart";
 import "package:jtscore4dart/src/algorithm/Orientation.dart";
@@ -21,11 +21,11 @@ import "package:jtscore4dart/src/algorithm/Orientation.dart";
 class Angle
 {
   /// The value of 2*Pi
-  static const double PI_TIMES_2 = 2.0 * math.pi;
+  static const double PI_TIMES_2 = 2.0 * Math.pi;
   /// The value of Pi/2
-  static const double PI_OVER_2 = math.pi / 2.0;
+  static const double PI_OVER_2 = Math.pi / 2.0;
   /// The value of Pi/4
-  static const double PI_OVER_4 = math.pi / 4.0;
+  static const double PI_OVER_4 = Math.pi / 4.0;
 
   /// Constant representing counterclockwise orientation
   static const int COUNTERCLOCKWISE = Orientation.COUNTERCLOCKWISE;
@@ -40,7 +40,7 @@ class Angle
   /// @param radians an angle in radians
   /// @return the angle in degrees
   static double toDegrees(double radians) {
-      return (radians * 180) / (math.pi);
+      return (radians * 180) / (Math.pi);
   }
 
   /// Converts from degrees to radians.
@@ -48,7 +48,7 @@ class Angle
   /// @param angleDegrees an angle in degrees
   /// @return the angle in radians
   static double toRadians(double angleDegrees) {
-      return (angleDegrees * math.pi) / 180.0;
+      return (angleDegrees * Math.pi) / 180.0;
   }
 
 
@@ -62,7 +62,7 @@ class Angle
   static double angle(Coordinate p0, Coordinate p1) {
       double dx = p1.x - p0.x;
       double dy = p1.y - p0.y;
-      return math.atan2(dy, dx);
+      return Math.atan2(dy, dx);
   }
 
   /// Returns the angle of the vector from (0,0) to p,
@@ -72,7 +72,7 @@ class Angle
   /// @param p the terminal point of the vector
   /// @return the normalized angle (in radians) that p makes with the positive x-axis.
   static double angleTozero(Coordinate p) {
-      return math.atan2(p.y, p.x);
+      return Math.atan2(p.y, p.x);
   }
 
 
@@ -151,9 +151,9 @@ class Angle
 		double angDel = a2 - a1;
 		
 		// normalize, maintaining orientation
-		if (angDel <= -math.pi)
+		if (angDel <= -Math.pi)
 			return angDel + PI_TIMES_2;
-		if (angDel > math.pi)
+		if (angDel > Math.pi)
 			return angDel - PI_TIMES_2;
 		return angDel;
   }
@@ -200,7 +200,7 @@ class Angle
   /// @return whether a1 must turn CLOCKWISE, COUNTERCLOCKWISE or NONE to
   /// overlap a2.
   static int getTurn(double ang1, double ang2) {
-      double crossproduct = math.sin(ang2 - ang1);
+      double crossproduct = Math.sin(ang2 - ang1);
 
       if (crossproduct > 0) {
           return COUNTERCLOCKWISE;
@@ -218,9 +218,9 @@ class Angle
   /// @return an equivalent angle in the range (-Pi, Pi]
   static double normalize(double angle)
   {
-    while (angle > math.pi)
+    while (angle > Math.pi)
       angle -= PI_TIMES_2;
-    while (angle <= -math.pi)
+    while (angle <= -Math.pi)
       angle += PI_TIMES_2;
     return angle;
   }
@@ -277,7 +277,7 @@ class Angle
       delAngle = ang1 - ang2;
     }
 
-    if (delAngle > math.pi) {
+    if (delAngle > Math.pi) {
       delAngle = PI_TIMES_2 - delAngle;
     }
 
@@ -289,7 +289,7 @@ class Angle
   /// @param ang the input angle (in radians)
   /// @return the result of the trigonometric function
   static double sinSnap(double ang) {
-    double res = math.sin(ang);
+    double res = Math.sin(ang);
     if (res.abs() < 5e-16) return 0.0;
     return res;
   }
@@ -299,7 +299,7 @@ class Angle
   /// @param ang the input angle (in radians)
   /// @return the result of the trigonometric function
   static double cosSnap(double ang) {
-    double res = math.cos(ang);
+    double res = Math.cos(ang);
     if (res.abs() < 5e-16) return 0.0;
     return res;
   }

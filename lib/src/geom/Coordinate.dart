@@ -17,9 +17,10 @@
 // import org.locationtech.jts.util.Assert;
 // import org.locationtech.jts.util.NumberUtil;
 
-
+/// TODO: z 为 null 的情况不知道怎么处理，目前着重考虑2维的情况
 import 'package:jtscore4dart/src/utils.dart';
 import "dart:math" as math;
+
 /// A lightweight class used to store coordinates on the 2-dimensional Cartesian plane.
 /// <p>
 /// It is distinct from {@link Point}, which is a subclass of {@link Geometry}. 

@@ -9,50 +9,41 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package jts.algorithm;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 
-/**
- * Functions for computing area.
- * 
- * @author Martin Davis
- *
- */
+/// Functions for computing area.
+/// 
+/// @author Martin Davis
+///
 public class Area {
 
-  /**
-   * Computes the area for a ring. 
-   * 
-   * @param ring the coordinates forming the ring
-   * @return the area of the ring
-   */
+  /// Computes the area for a ring. 
+  /// 
+  /// @param ring the coordinates forming the ring
+  /// @return the area of the ring
   public static double ofRing(Coordinate[] ring)
   {
     return Math.abs(ofRingSigned(ring));
   }
  
-  /**
-   * Computes the area for a ring. 
-   * 
-   * @param ring the coordinates forming the ring
-   * @return the area of the ring
-   */
+  /// Computes the area for a ring. 
+  /// 
+  /// @param ring the coordinates forming the ring
+  /// @return the area of the ring
   public static double ofRing(CoordinateSequence ring)
   {
     return Math.abs(ofRingSigned(ring));
   }
 
-  /**
-   * Computes the signed area for a ring. The signed area is positive if the
-   * ring is oriented CW, negative if the ring is oriented CCW, and zero if the
-   * ring is degenerate or flat.
-   * 
-   * @param ring
-   *          the coordinates forming the ring
-   * @return the signed area of the ring
-   */
+  /// Computes the signed area for a ring. The signed area is positive if the
+  /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the
+  /// ring is degenerate or flat.
+  /// 
+  /// @param ring
+  ///          the coordinates forming the ring
+  /// @return the signed area of the ring
   public static double ofRingSigned(Coordinate[] ring)
   {
     if (ring.length < 3)
@@ -72,18 +63,16 @@ public class Area {
     return sum / 2.0;
   }
 
-  /**
-   * Computes the signed area for a ring. The signed area is:
-   * <ul>
-   * <li>positive if the ring is oriented CW
-   * <li>negative if the ring is oriented CCW
-   * <li>zero if the ring is degenerate or flat
-   * </ul>
-   * 
-   * @param ring
-   *          the coordinates forming the ring
-   * @return the signed area of the ring
-   */
+  /// Computes the signed area for a ring. The signed area is:
+  /// <ul>
+  /// <li>positive if the ring is oriented CW
+  /// <li>negative if the ring is oriented CCW
+  /// <li>zero if the ring is degenerate or flat
+  /// </ul>
+  /// 
+  /// @param ring
+  ///          the coordinates forming the ring
+  /// @return the signed area of the ring
   public static double ofRingSigned(CoordinateSequence ring)
   {
     int n = ring.size();

@@ -9,35 +9,34 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package jts.algorithm;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.math.MathUtil;
 
-/**
- * Functions to compute distance between basic geometric structures.
- * 
- * @author Martin Davis
- *
- */
-public class Distance {
+import "package:jtscore4dart/src/geom/Coordinate.dart";
+import "dart:math" as math;
 
-  /**
-   * Computes the distance from a line segment AB to a line segment CD
-   * 
-   * Note: NON-ROBUST!
-   * 
-   * @param A
-   *          a point of one line
-   * @param B
-   *          the second point of (must be different to A)
-   * @param C
-   *          one point of the line
-   * @param D
-   *          another point of the line (must be different to A)
-   */
-  public static double segmentToSegment(Coordinate A, Coordinate B,
+
+/// Functions to compute distance between basic geometric structures.
+/// 
+/// @author Martin Davis
+///
+ class Distance {
+
+  /// Computes the distance from a line segment AB to a line segment CD
+  /// 
+  /// Note: NON-ROBUST!
+  /// 
+  /// @param A
+  ///          a point of one line
+  /// @param B
+  ///          the second point of (must be different to A)
+  /// @param C
+  ///          one point of the line
+  /// @param D
+  ///          another point of the line (must be different to A)
+   static double segmentToSegment(Coordinate A, Coordinate B,
       Coordinate C, Coordinate D)
   {
     // check for zero-length segments
@@ -73,8 +72,9 @@ public class Distance {
      *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
      */
   
-    boolean noIntersection = false;
-    if (! Envelope.intersects(A, B, C, D)) {
+    bool noIntersection = false;
+    // if (! Envelope.intersects(A, B, C, D)) {
+    if (false) {
       noIntersection = true;
     }
     else {
@@ -96,30 +96,33 @@ public class Distance {
       }
     }
     if (noIntersection) {
-      return MathUtil.min(
-            Distance.pointToSegment(A, C, D),
-            Distance.pointToSegment(B, C, D),
-            Distance.pointToSegment(C, A, B),
-            Distance.pointToSegment(D, A, B));
+      return math.min(
+        math.min(Distance.pointToSegment(A, C, D), Distance.pointToSegment(B, C, D)), 
+        math.min(Distance.pointToSegment(C, A, B), Distance.pointToSegment(D, A, B)));
+      // return math.min(
+      //       Distance.pointToSegment(A, C, D),
+      //       Distance.pointToSegment(B, C, D),
+      //       Distance.pointToSegment(C, A, B),
+      //       Distance.pointToSegment(D, A, B)
+      //       );
     }
     // segments intersect
     return 0.0; 
   }
 
-  /**
-   * Computes the distance from a point to a sequence of line segments.
-   * 
-   * @param p
-   *          a point
-   * @param line
-   *          a sequence of contiguous line segments defined by their vertices
-   * @return the minimum distance between the point and the line segments
-   */
-  public static double pointToSegmentString(Coordinate p, Coordinate[] line)
+  /// Computes the distance from a point to a sequence of line segments.
+  /// 
+  /// @param p
+  ///          a point
+  /// @param line
+  ///          a sequence of contiguous line segments defined by their vertices
+  /// @return the minimum distance between the point and the line segments
+   static double pointToSegmentString(Coordinate p, List<Coordinate> line)
   {
-    if (line.length == 0)
-      throw new IllegalArgumentException(
+    if (line.length == 0) {
+      throw ArgumentError(
           "Line array must contain at least one vertex");
+    }
     // this handles the case of length = 1
     double minDistance = p.distance(line[0]);
     for (int i = 0; i < line.length - 1; i++) {
@@ -131,20 +134,18 @@ public class Distance {
     return minDistance;
   }
 
-  /**
-   * Computes the distance from a point p to a line segment AB
-   * 
-   * Note: NON-ROBUST!
-   * 
-   * @param p
-   *          the point to compute the distance for
-   * @param A
-   *          one point of the line
-   * @param B
-   *          another point of the line (must be different to A)
-   * @return the distance from p to line segment AB
-   */
-  public static double pointToSegment(Coordinate p, Coordinate A,
+  /// Computes the distance from a point p to a line segment AB
+  /// 
+  /// Note: NON-ROBUST!
+  /// 
+  /// @param p
+  ///          the point to compute the distance for
+  /// @param A
+  ///          one point of the line
+  /// @param B
+  ///          another point of the line (must be different to A)
+  /// @return the distance from p to line segment AB
+   static double pointToSegment(Coordinate p, Coordinate A,
       Coordinate B)
   {
     // if start = end, then just compute distance to one of the endpoints
@@ -186,22 +187,20 @@ public class Distance {
      */
     double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
         / len2;
-    return Math.abs(s) * Math.sqrt(len2);
+    return s.abs() * math.sqrt(len2);
   }
 
-  /**
-   * Computes the perpendicular distance from a point p to the (infinite) line
-   * containing the points AB
-   * 
-   * @param p
-   *          the point to compute the distance for
-   * @param A
-   *          one point of the line
-   * @param B
-   *          another point of the line (must be different to A)
-   * @return the distance from p to line AB
-   */
-  public static double pointToLinePerpendicular(Coordinate p,
+  /// Computes the perpendicular distance from a point p to the (infinite) line
+  /// containing the points AB
+  /// 
+  /// @param p
+  ///          the point to compute the distance for
+  /// @param A
+  ///          one point of the line
+  /// @param B
+  ///          another point of the line (must be different to A)
+  /// @return the distance from p to line AB
+   static double pointToLinePerpendicular(Coordinate p,
       Coordinate A, Coordinate B)
   {
     // use comp.graphics.algorithms Frequently Asked Questions method
@@ -216,10 +215,10 @@ public class Distance {
     double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
         / len2;
   
-    return Math.abs(s) * Math.sqrt(len2);
+    return s.abs() * math.sqrt(len2);
   }
 
-  public static double pointToLinePerpendicularSigned(Coordinate p,
+   static double pointToLinePerpendicularSigned(Coordinate p,
       Coordinate A, Coordinate B)
   {
     // use comp.graphics.algorithms Frequently Asked Questions method
@@ -234,6 +233,6 @@ public class Distance {
     double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
         / len2;
   
-    return s * Math.sqrt(len2);
+    return s * math.sqrt(len2);
   }
 }

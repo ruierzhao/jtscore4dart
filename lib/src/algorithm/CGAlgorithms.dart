@@ -9,13 +9,13 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package jts.algorithm;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.math.MathUtil;
+
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.math.MathUtil;
 
 /**
  * Specifies and implements various fundamental Computational Geometric

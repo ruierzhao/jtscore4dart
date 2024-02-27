@@ -2,7 +2,7 @@ import "dart:math" as Math;
 
 
 // import "package:jtscore4dart/src/algorithm/Angle.dart";
-import "package:jtscore4dart/src/geom/Coordinate.dart";
+import 'package:jtscore4dart/src1/geom/Coordinate.dart';
 
 
 class TestAngle {

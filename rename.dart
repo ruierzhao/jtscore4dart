@@ -3,100 +3,101 @@
 import 'dart:collection';
 import 'dart:io';
 
-// ignore: slash_for_doc_comments
-/**
-class EffectList extends ListBase<Effect> with AnimateManager<EffectList> {
-  final List<Effect> _effects = [];
-
-  @override
-  EffectList addEffect(Effect effect) {
-    _effects.add(effect);
-    return this;
-  }
-
-  // concrete implementations required when extending ListBase:
-  @override
-  set length(int length) {
-    _effects.length = length;
-  }
-
-  @override
-  int get length => _effects.length;
-
-  @override
-  Effect operator [](int index) => _effects[index];
-
-  @override
-  void operator []=(int index, Effect value) {
-    _effects[index] = value;
-  }
-}
- * 
- */
-
 // 单行处理函数
-typedef EditerFileFunc = void Function(String codeSegment);
+typedef EditerFileFunc = String Function(String codeSegment);
 
-class ListEditorFunc extends ListBase<EditerFileFunc>{
+class ListEditorFunc extends ListBase<EditerFileFunc> {
+  final List<EditerFileFunc> _handles = [];
   @override
-  int length;
+  int get length => _handles.length;
 
   @override
   operator [](int index) {
     // TODO: implement []
-    throw UnimplementedError();
+    return _handles[index];
   }
 
   @override
   void operator []=(int index, value) {
     // TODO: implement []=
+    _handles[index] = value;
   }
-  
+
+  @override
+  set length(int length) {
+    _handles.length = length;
+  }
+
+  ListEditorFunc() {
+    _handles.add(_deletePublic);
+  }
+
+  static String _deletePublic(String codeSegment) {
+    print("_deletePublic");
+    return "newCodeSegments";
+  }
 }
 
 class Editor {
   late File f;
+  late Directory fileParentPath;
+  late String _baseName;
   Editor(this.f);
 
   Editor.fromFileName(String filename) {
     f = File(filename);
+    fileParentPath = f.parent;
+    // _baseName = basename(f.path);
   }
 
   String srcExt = "java";
   String targetExt = "dart";
 
   Future<dynamic> init({
-    List<EditerFileFunc>? listHandler,
     bool needRename = true,
-  }){
-      if (needRename){ // 需要重命名
-        // 读取文件内容
-        // 编辑完成之后写入新文件（边编辑边写入）
-        // 删除源文件
-        return f.readAsLines();
-      }else{ // 不需要重命名
-        // 直接修改源文件
-        return f.readAsString();
-      }
+  }) {
+    if (needRename) {
+      // 需要重命名
+      // 读取文件内容
+      // 编辑完成之后写入新文件（边编辑边写入）
+      // 删除源文件
+      return f.readAsLines();
+    } else {
+      // 不需要重命名
+      // 直接修改源文件
+      return f.readAsString();
+    }
   }
 
-  Future<void> edit() {
-    return f.readAsLines().then((fileLines){
-      for (var line in fileLines) {
-        print(">> $line");
-      }
-  // return "";
-  });
+  /// 一行一行读取修改
+  Future<dynamic> editLineByLine({ListEditorFunc? listEditorFunc ,bool needRename=true}) {
+    return f.readAsLines().then((value){
+      return Future(() {
+        if (needRename){
+          createNewFileByExt(targetExt);
+        }
+        for (var editer in listEditorFunc??[]) {
+          String newLine =  editer(value);
+        }
+        return f;
+      });
+    });                                     
   }
   
-
-  void _deletePublic(String codeSegment) {}
+  /// 读取整个文件修改
+  // Future<String> editAll() {
+  //   return f.readAsString();
+  // }
+  void createNewFileByExt(String targetExt) {
+    
+  }
 }
 
 // 修改代码源文件
 void editFile(String filename) {
   Editor editor = Editor.fromFileName(filename);
-  editor.edit();
+  ListEditorFunc listEditorFunc = ListEditorFunc();
+  editor.editLineByLine();
 }
 
 // 读取当前文件夹下的文件及目录

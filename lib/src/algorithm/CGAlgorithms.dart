@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse  License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * The Eclipse  License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -17,76 +17,63 @@
 // import org.locationtech.jts.geom.Location;
 // import org.locationtech.jts.math.MathUtil;
 
-/**
- * Specifies and implements various fundamental Computational Geometric
- * algorithms. The algorithms supplied in this class are robust for
- * double-precision floating point.
- * 
- * @version 1.7
- * @deprecated See {@link Length}, {@link Area}, {@link Distance},
- *             {@link Orientation}, {@link PointLocation}
- */
-public class CGAlgorithms
+import "package:jtscore4dart/src/geom/Coordinate.dart";
+
+
+/// Specifies and implements various fundamental Computational Geometric
+/// algorithms. The algorithms supplied in this class are robust for
+/// double-precision floating point.
+/// 
+/// @version 1.7
+/// @deprecated See {@link Length}, {@link Area}, {@link Distance},
+///             {@link Orientation}, {@link PointLocation}
+ class CGAlgorithms
 {
 
-  /**
-   * A value that indicates an orientation of clockwise, or a right turn.
-   * 
-   * @deprecated Use {@link Orientation#CLOCKWISE} instead.
-   */
-  public static final int CLOCKWISE = -1;
+  /// A value that indicates an orientation of clockwise, or a right turn.
+  /// 
+  /// @deprecated Use {@link Orientation#CLOCKWISE} instead.
+   static final int CLOCKWISE = -1;
 
-  /**
-   * A value that indicates an orientation of clockwise, or a right turn.
-   * 
-   * @deprecated Use {@link Orientation#RIGHT} instead.
-   */
-  public static final int RIGHT = CLOCKWISE;
+  /// A value that indicates an orientation of clockwise, or a right turn.
+  /// 
+  /// @deprecated Use {@link Orientation#RIGHT} instead.
+   static final int RIGHT = CLOCKWISE;
 
-  /**
-   * A value that indicates an orientation of counterclockwise, or a left turn.
-   * 
-   * @deprecated Use {@link Orientation#COUNTERCLOCKWISE} instead.
-   */
-  public static final int COUNTERCLOCKWISE = 1;
+  /// A value that indicates an orientation of counterclockwise, or a left turn.
+  /// 
+  /// @deprecated Use {@link Orientation#COUNTERCLOCKWISE} instead.
+   static final int COUNTERCLOCKWISE = 1;
 
-  /**
-   * A value that indicates an orientation of counterclockwise, or a left turn.
-   * 
-   * @deprecated Use {@link Orientation#LEFT} instead.
-   */
-  public static final int LEFT = COUNTERCLOCKWISE;
+  /// A value that indicates an orientation of counterclockwise, or a left turn.
+  /// 
+  /// @deprecated Use {@link Orientation#LEFT} instead.
+   static final int LEFT = COUNTERCLOCKWISE;
 
-  /**
-   * A value that indicates an orientation of collinear, or no turn (straight).
-   * 
-   * @deprecated Use {@link Orientation#COLLINEAR} instead.
-   */
-  public static final int COLLINEAR = 0;
+  /// A value that indicates an orientation of collinear, or no turn (straight).
+  /// 
+  /// @deprecated Use {@link Orientation#COLLINEAR} instead.
+   static final int COLLINEAR = 0;
 
-  /**
-   * A value that indicates an orientation of collinear, or no turn (straight).
-   * 
-   * @deprecated Use {@link Orientation#STRAIGHT} instead.
-   */
-  public static final int STRAIGHT = COLLINEAR;
+  /// A value that indicates an orientation of collinear, or no turn (straight).
+  /// 
+  /// @deprecated Use {@link Orientation#STRAIGHT} instead.
+   static final int STRAIGHT = COLLINEAR;
 
-  /**
-   * Returns the index of the direction of the point {@code q} relative to
-   * a vector specified by {@code p1-p2}.
-   * 
-   * @param p1 the origin point of the vector
-   * @param p2 the final point of the vector
-   * @param q the point to compute the direction to
-   * 
-   * @return {@code 1} if q is counter-clockwise (left) from p1-p2
-   *        {@code -1} if q is clockwise (right) from p1-p2
-   *         {@code 0} if q is collinear with p1-p2
-   *
-   * @deprecated Use {@link Orientation#index(Coordinate, Coordinate, Coordinate)}
-   *             instead.
-   */
-  public static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
+  /// Returns the index of the direction of the point {@code q} relative to
+  /// a vector specified by {@code p1-p2}.
+  /// 
+  /// @param p1 the origin point of the vector
+  /// @param p2 the final point of the vector
+  /// @param q the point to compute the direction to
+  /// 
+  /// @return {@code 1} if q is counter-clockwise (left) from p1-p2
+  ///        {@code -1} if q is clockwise (right) from p1-p2
+  ///         {@code 0} if q is collinear with p1-p2
+  ///
+  /// @deprecated Use {@link Orientation#index(Coordinate, Coordinate, Coordinate)}
+  ///             instead.
+   static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
   {
     /*
       MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
@@ -118,66 +105,57 @@ public class CGAlgorithms
     
   }
 
-  public CGAlgorithms()
-  {
-  }
 
-  /**
-   * Tests whether a point lies inside or on a ring. The ring may be oriented in
-   * either direction. A point lying exactly on the ring boundary is considered
-   * to be inside the ring.
-   * <p>
-   * This method does <i>not</i> first check the point against the envelope of
-   * the ring.
-   * 
-   * @param p
-   *          point to check for ring inclusion
-   * @param ring
-   *          an array of coordinates representing the ring (which must have
-   *          first point identical to last point)
-   * @return true if p is inside ring
-   * 
-   * @see #locatePointInRing(Coordinate, Coordinate[])  
-   * @deprecated Use {@link PointLocation#isInRing(Coordinate, Coordinate[])}
-   *             instead.
-   */
-  public static boolean isPointInRing(Coordinate p, Coordinate[] ring)
+  /// Tests whether a point lies inside or on a ring. The ring may be oriented in
+  /// either direction. A point lying exactly on the ring boundary is considered
+  /// to be inside the ring.
+  /// <p>
+  /// This method does <i>not</i> first check the point against the envelope of
+  /// the ring.
+  /// 
+  /// @param p
+  ///          point to check for ring inclusion
+  /// @param ring
+  ///          an array of coordinates representing the ring (which must have
+  ///          first point identical to last point)
+  /// @return true if p is inside ring
+  /// 
+  /// @see #locatePointInRing(Coordinate, Coordinate[])  
+  /// @deprecated Use {@link PointLocation#isInRing(Coordinate, Coordinate[])}
+  ///             instead.
+   static bool isPointInRing(Coordinate p, Coordinate[] ring)
   {
     return locatePointInRing(p, ring) != Location.EXTERIOR;
   }
 
-  /**
-   * Determines whether a point lies in the interior, on the boundary, or in the
-   * exterior of a ring. The ring may be oriented in either direction.
-   * <p>
-   * This method does <i>not</i> first check the point against the envelope of
-   * the ring.
-   * 
-   * @param p
-   *          point to check for ring inclusion
-   * @param ring
-   *          an array of coordinates representing the ring (which must have
-   *          first point identical to last point)
-   * @return the {@link Location} of p relative to the ring
-   * @deprecated Use
-   *             {@link PointLocation#locateInRing(Coordinate, Coordinate[])}
-   *             instead.
-   */
-  public static int locatePointInRing(Coordinate p, Coordinate[] ring)
+  /// Determines whether a point lies in the interior, on the boundary, or in the
+  /// exterior of a ring. The ring may be oriented in either direction.
+  /// <p>
+  /// This method does <i>not</i> first check the point against the envelope of
+  /// the ring.
+  /// 
+  /// @param p
+  ///          point to check for ring inclusion
+  /// @param ring
+  ///          an array of coordinates representing the ring (which must have
+  ///          first point identical to last point)
+  /// @return the {@link Location} of p relative to the ring
+  /// @deprecated Use
+  ///             {@link PointLocation#locateInRing(Coordinate, Coordinate[])}
+  ///             instead.
+   static int locatePointInRing(Coordinate p, Coordinate[] ring)
   {
     return RayCrossingCounter.locatePointInRing(p, ring);
   }
 
-  /**
-   * Tests whether a point lies on the line segments defined by a list of
-   * coordinates.
-   * 
-   * @return true if the point is a vertex of the line or lies in the interior
-   *         of a line segment in the linestring
-   * @deprecated Use {@link PointLocation#isOnLine(Coordinate, Coordinate[])}
-   *             instead.
-   */
-  public static boolean isOnLine(Coordinate p, Coordinate[] pt)
+  /// Tests whether a point lies on the line segments defined by a list of
+  /// coordinates.
+  /// 
+  /// @return true if the point is a vertex of the line or lies in the interior
+  ///         of a line segment in the linestring
+  /// @deprecated Use {@link PointLocation#isOnLine(Coordinate, Coordinate[])}
+  ///             instead.
+   static bool isOnLine(Coordinate p, Coordinate[] pt)
   {
     LineIntersector lineIntersector = new RobustLineIntersector();
     for (int i = 1; i < pt.length; i++) {
@@ -191,25 +169,23 @@ public class CGAlgorithms
     return false;
   }
 
-  /**
-   * Computes whether a ring defined by an array of {@link Coordinate}s is
-   * oriented counter-clockwise.
-   * <ul>
-   * <li>The list of points is assumed to have the first and last points equal.
-   * <li>This will handle coordinate lists which contain repeated points.
-   * </ul>
-   * This algorithm is <b>only</b> guaranteed to work with valid rings. If the
-   * ring is invalid (e.g. self-crosses or touches), the computed result may not
-   * be correct.
-   * 
-   * @param ring
-   *          an array of Coordinates forming a ring
-   * @return true if the ring is oriented counter-clockwise.
-   * @throws IllegalArgumentException
-   *           if there are too few points to determine orientation (&lt; 4)
-   * @deprecated Use {@link Orientation#isCCW(Coordinate[])} instead.
-   */
-  public static boolean isCCW(Coordinate[] ring)
+  /// Computes whether a ring defined by an array of {@link Coordinate}s is
+  /// oriented counter-clockwise.
+  /// <ul>
+  /// <li>The list of points is assumed to have the first and last points equal.
+  /// <li>This will handle coordinate lists which contain repeated points.
+  /// </ul>
+  /// This algorithm is <b>only</b> guaranteed to work with valid rings. If the
+  /// ring is invalid (e.g. self-crosses or touches), the computed result may not
+  /// be correct.
+  /// 
+  /// @param ring
+  ///          an array of Coordinates forming a ring
+  /// @return true if the ring is oriented counter-clockwise.
+  /// @throws IllegalArgumentException
+  ///           if there are too few points to determine orientation (&lt; 4)
+  /// @deprecated Use {@link Orientation#isCCW(Coordinate[])} instead.
+   static bool isCCW(Coordinate[] ring)
   {
     // # of points without closing endpoint
     int nPts = ring.length - 1;
@@ -266,7 +242,7 @@ public class CGAlgorithms
       happen if the ring is valid, so don't check for it (Might want to assert
       this)
      */
-    boolean isCCW;
+    bool isCCW;
     if (disc == 0) {
       // poly is CCW if prev x is right of next x
       isCCW = (prev.x > next.x);
@@ -278,43 +254,39 @@ public class CGAlgorithms
     return isCCW;
   }
 
-  /**
-   * Computes the orientation of a point q to the directed line segment p1-p2.
-   * The orientation of a point relative to a directed line segment indicates
-   * which way you turn to get to q after travelling from p1 to p2.
-   * 
-   * @param p1 the first vertex of the line segment
-   * @param p2 the second vertex of the line segment
-   * @param q the point to compute the relative orientation of
-   * @return 1 if q is counter-clockwise from p1-p2,
-   * or -1 if q is clockwise from p1-p2,
-   * or 0 if q is collinear with p1-p2
-   * @deprecated Use {@link Orientation#index(Coordinate, Coordinate, Coordinate)}
-   *             instead.
-   */
-  public static int computeOrientation(Coordinate p1, Coordinate p2,
+  /// Computes the orientation of a point q to the directed line segment p1-p2.
+  /// The orientation of a point relative to a directed line segment indicates
+  /// which way you turn to get to q after travelling from p1 to p2.
+  /// 
+  /// @param p1 the first vertex of the line segment
+  /// @param p2 the second vertex of the line segment
+  /// @param q the point to compute the relative orientation of
+  /// @return 1 if q is counter-clockwise from p1-p2,
+  /// or -1 if q is clockwise from p1-p2,
+  /// or 0 if q is collinear with p1-p2
+  /// @deprecated Use {@link Orientation#index(Coordinate, Coordinate, Coordinate)}
+  ///             instead.
+   static int computeOrientation(Coordinate p1, Coordinate p2,
       Coordinate q)
   {
     return orientationIndex(p1, p2, q);
   }
 
-  /**
-   * Computes the distance from a point p to a line segment AB
-   * 
-   * Note: NON-ROBUST!
-   * 
-   * @param p
-   *          the point to compute the distance for
-   * @param A
-   *          one point of the line
-   * @param B
-   *          another point of the line (must be different to A)
-   * @return the distance from p to line segment AB
-   * @deprecated Use
-   *             {@link Distance#pointToSegment(Coordinate, Coordinate, Coordinate)}
-   *             instead.
-   */
-  public static double distancePointLine(Coordinate p, Coordinate A,
+  /// Computes the distance from a point p to a line segment AB
+  /// 
+  /// Note: NON-ROBUST!
+  /// 
+  /// @param p
+  ///          the point to compute the distance for
+  /// @param A
+  ///          one point of the line
+  /// @param B
+  ///          another point of the line (must be different to A)
+  /// @return the distance from p to line segment AB
+  /// @deprecated Use
+  ///             {@link Distance#pointToSegment(Coordinate, Coordinate, Coordinate)}
+  ///             instead.
+   static double distancePointLine(Coordinate p, Coordinate A,
       Coordinate B)
   {
     // if start = end, then just compute distance to one of the endpoints
@@ -359,22 +331,20 @@ public class CGAlgorithms
     return Math.abs(s) * Math.sqrt(len2);
   }
 
-  /**
-   * Computes the perpendicular distance from a point p to the (infinite) line
-   * containing the points AB
-   * 
-   * @param p
-   *          the point to compute the distance for
-   * @param A
-   *          one point of the line
-   * @param B
-   *          another point of the line (must be different to A)
-   * @return the distance from p to line AB
-   * @deprecated Use
-   *             {@link Distance#pointToLinePerpendicular(Coordinate, Coordinate, Coordinate)}
-   *             instead.
-   */
-  public static double distancePointLinePerpendicular(Coordinate p,
+  /// Computes the perpendicular distance from a point p to the (infinite) line
+  /// containing the points AB
+  /// 
+  /// @param p
+  ///          the point to compute the distance for
+  /// @param A
+  ///          one point of the line
+  /// @param B
+  ///          another point of the line (must be different to A)
+  /// @return the distance from p to line AB
+  /// @deprecated Use
+  ///             {@link Distance#pointToLinePerpendicular(Coordinate, Coordinate, Coordinate)}
+  ///             instead.
+   static double distancePointLinePerpendicular(Coordinate p,
       Coordinate A, Coordinate B)
   {
     // use comp.graphics.algorithms Frequently Asked Questions method
@@ -392,19 +362,17 @@ public class CGAlgorithms
     return Math.abs(s) * Math.sqrt(len2);
   }
 
-  /**
-   * Computes the distance from a point to a sequence of line segments.
-   * 
-   * @param p
-   *          a point
-   * @param line
-   *          a sequence of contiguous line segments defined by their vertices
-   * @return the minimum distance between the point and the line segments
-   * @deprecated Use
-   *             {@link Distance#pointToSegmentString(Coordinate, Coordinate[])}
-   *             instead.
-   */
-  public static double distancePointLine(Coordinate p, Coordinate[] line)
+  /// Computes the distance from a point to a sequence of line segments.
+  /// 
+  /// @param p
+  ///          a point
+  /// @param line
+  ///          a sequence of contiguous line segments defined by their vertices
+  /// @return the minimum distance between the point and the line segments
+  /// @deprecated Use
+  ///             {@link Distance#pointToSegmentString(Coordinate, Coordinate[])}
+  ///             instead.
+   static double distancePointLine(Coordinate p, Coordinate[] line)
   {
     if (line.length == 0)
       throw new IllegalArgumentException(
@@ -420,24 +388,22 @@ public class CGAlgorithms
     return minDistance;
   }
 
-  /**
-   * Computes the distance from a line segment AB to a line segment CD
-   * 
-   * Note: NON-ROBUST!
-   * 
-   * @param A
-   *          a point of one line
-   * @param B
-   *          the second point of (must be different to A)
-   * @param C
-   *          one point of the line
-   * @param D
-   *          another point of the line (must be different to A)
-   * @deprecated Use
-   *             {@link Distance#segmentToSegment(Coordinate, Coordinate, Coordinate, Coordinate)}
-   *             instead.
-   */
-  public static double distanceLineLine(Coordinate A, Coordinate B,
+  /// Computes the distance from a line segment AB to a line segment CD
+  /// 
+  /// Note: NON-ROBUST!
+  /// 
+  /// @param A
+  ///          a point of one line
+  /// @param B
+  ///          the second point of (must be different to A)
+  /// @param C
+  ///          one point of the line
+  /// @param D
+  ///          another point of the line (must be different to A)
+  /// @deprecated Use
+  ///             {@link Distance#segmentToSegment(Coordinate, Coordinate, Coordinate, Coordinate)}
+  ///             instead.
+   static double distanceLineLine(Coordinate A, Coordinate B,
       Coordinate C, Coordinate D)
   {
     // check for zero-length segments
@@ -473,7 +439,7 @@ public class CGAlgorithms
      *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
      */
 
-    boolean noIntersection = false;
+    bool noIntersection = false;
     if (! Envelope.intersects(A, B, C, D)) {
       noIntersection = true;
     }
@@ -506,18 +472,16 @@ public class CGAlgorithms
     return 0.0; 
   }
 
-  /**
-   * Computes the signed area for a ring. The signed area is positive if the
-   * ring is oriented CW, negative if the ring is oriented CCW, and zero if the
-   * ring is degenerate or flat.
-   * 
-   * @param ring
-   *          the coordinates forming the ring
-   * @return the signed area of the ring
-   * @deprecated Use {@link Area#ofRing(Coordinate[])} or
-   *             {@link Area#ofRingSigned(Coordinate[])} instead.
-   */
-  public static double signedArea(Coordinate[] ring)
+  /// Computes the signed area for a ring. The signed area is positive if the
+  /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the
+  /// ring is degenerate or flat.
+  /// 
+  /// @param ring
+  ///          the coordinates forming the ring
+  /// @return the signed area of the ring
+  /// @deprecated Use {@link Area#ofRing(Coordinate[])} or
+  ///             {@link Area#ofRingSigned(Coordinate[])} instead.
+   static double signedArea(Coordinate[] ring)
   {
     if (ring.length < 3)
       return 0.0;
@@ -536,21 +500,19 @@ public class CGAlgorithms
     return sum / 2.0;
   }
 
-  /**
-   * Computes the signed area for a ring. The signed area is:
-   * <ul>
-   * <li>positive if the ring is oriented CW
-   * <li>negative if the ring is oriented CCW
-   * <li>zero if the ring is degenerate or flat
-   * </ul>
-   * 
-   * @param ring
-   *          the coordinates forming the ring
-   * @return the signed area of the ring
-   * @deprecated Use {@link Area#ofRing(CoordinateSequence)} or
-   *             {@link Area#ofRingSigned(CoordinateSequence)} instead.
-   */
-  public static double signedArea(CoordinateSequence ring)
+  /// Computes the signed area for a ring. The signed area is:
+  /// <ul>
+  /// <li>positive if the ring is oriented CW
+  /// <li>negative if the ring is oriented CCW
+  /// <li>zero if the ring is degenerate or flat
+  /// </ul>
+  /// 
+  /// @param ring
+  ///          the coordinates forming the ring
+  /// @return the signed area of the ring
+  /// @deprecated Use {@link Area#ofRing(CoordinateSequence)} or
+  ///             {@link Area#ofRingSigned(CoordinateSequence)} instead.
+   static double signedArea(CoordinateSequence ring)
   {
     int n = ring.size();
     if (n < 3)
@@ -578,15 +540,13 @@ public class CGAlgorithms
     return sum / 2.0;
   }
 
-  /**
-   * Computes the length of a linestring specified by a sequence of points.
-   * 
-   * @param pts
-   *          the points specifying the linestring
-   * @return the length of the linestring
-   * @deprecated Use {@link Length#ofLine(CoordinateSequence)} instead.
-   */
-  public static double length(CoordinateSequence pts)
+  /// Computes the length of a linestring specified by a sequence of points.
+  /// 
+  /// @param pts
+  ///          the points specifying the linestring
+  /// @return the length of the linestring
+  /// @deprecated Use {@link Length#ofLine(CoordinateSequence)} instead.
+   static double length(CoordinateSequence pts)
   {
     // optimized for processing CoordinateSequences
     int n = pts.size();

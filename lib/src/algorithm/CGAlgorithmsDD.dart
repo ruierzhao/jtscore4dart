@@ -1,62 +1,60 @@
+// ignore_for_file: empty_constructor_bodies
+
 /*
  * Copyright (c) 2016 Martin Davis.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse  License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * The Eclipse  License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package jts.algorithm;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.math.DD;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.math.DD;
 
-/**
- * Implements basic computational geometry algorithms using {@link DD} arithmetic.
- * 
- * @author Martin Davis
- *
- */
-public class CGAlgorithmsDD
+import "package:jtscore4dart/src/geom/Coordinate.dart";
+
+
+/// Implements basic computational geometry algorithms using {@link DD} arithmetic.
+/// 
+/// @author Martin Davis
+///
+ class CGAlgorithmsDD
 {
-  private CGAlgorithmsDD() {}
+  /** private */ CGAlgorithmsDD() {}
 
-  /**
-   * Returns the index of the direction of the point {@code q} relative to
-   * a vector specified by {@code p1-p2}.
-   * 
-   * @param p1 the origin point of the vector
-   * @param p2 the final point of the vector
-   * @param q the point to compute the direction to
-   * 
-   * @return {@code 1} if q is counter-clockwise (left) from p1-p2
-   *         {@code -1} if q is clockwise (right) from p1-p2
-   *         {@code 0} if q is collinear with p1-p2
-   */
-  public static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
+  /// Returns the index of the direction of the point {@code q} relative to
+  /// a vector specified by {@code p1-p2}.
+  /// 
+  /// @param p1 the origin point of the vector
+  /// @param p2 the final point of the vector
+  /// @param q the point to compute the direction to
+  /// 
+  /// @return {@code 1} if q is counter-clockwise (left) from p1-p2
+  ///         {@code -1} if q is clockwise (right) from p1-p2
+  ///         {@code 0} if q is collinear with p1-p2
+   static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
   {
     return orientationIndex(p1.x, p1.y, p2.x, p2.y, q.x, q.y);
   }
   
-  /**
-   * Returns the index of the direction of the point {@code q} relative to
-   * a vector specified by {@code p1-p2}.
-   * 
-   * @param p1x the x ordinate of the vector origin point
-   * @param p1y the y ordinate of the vector origin point
-   * @param p2x the x ordinate of the vector final point
-   * @param p2y the y ordinate of the vector final point
-   * @param qx the x ordinate of the query point
-   * @param qy the y ordinate of the query point
-   * 
-   * @return 1 if q is counter-clockwise (left) from p1-p2
-   *        -1 if q is clockwise (right) from p1-p2
-   *         0 if q is collinear with p1-p2
-   */
-  public static int orientationIndex(double p1x, double p1y,
+  /// Returns the index of the direction of the point {@code q} relative to
+  /// a vector specified by {@code p1-p2}.
+  /// 
+  /// @param p1x the x ordinate of the vector origin point
+  /// @param p1y the y ordinate of the vector origin point
+  /// @param p2x the x ordinate of the vector final point
+  /// @param p2y the y ordinate of the vector final point
+  /// @param qx the x ordinate of the query point
+  /// @param qy the y ordinate of the query point
+  /// 
+  /// @return 1 if q is counter-clockwise (left) from p1-p2
+  ///        -1 if q is clockwise (right) from p1-p2
+  ///         0 if q is collinear with p1-p2
+   static int orientationIndex(double p1x, double p1y,
       double p2x, double p2y,
       double qx, double qy)
   {
@@ -75,29 +73,25 @@ public class CGAlgorithmsDD
     return dx1.selfMultiply(dy2).selfSubtract(dy1.selfMultiply(dx2)).signum();
   }
   
-  /**
-   * Computes the sign of the determinant of the 2x2 matrix
-   * with the given entries.
-   * 
-   * @return -1 if the determinant is negative,
-   *          1 if the determinant is positive,
-   *          0 if the determinant is 0.
-   */
-  public static int signOfDet2x2(DD x1, DD y1, DD x2, DD y2)
+  /// Computes the sign of the determinant of the 2x2 matrix
+  /// with the given entries.
+  /// 
+  /// @return -1 if the determinant is negative,
+  ///          1 if the determinant is positive,
+  ///          0 if the determinant is 0.
+   static int signOfDet2x2(DD x1, DD y1, DD x2, DD y2)
   {
     DD det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
     return det.signum();
   }
 
-  /**
-   * Computes the sign of the determinant of the 2x2 matrix
-   * with the given entries.
-   * 
-   * @return -1 if the determinant is negative,
-   *          1 if the determinant is positive,
-   *          0 if the determinant is 0.
-   */
-  public static int signOfDet2x2(double dx1, double dy1, double dx2, double dy2)
+  /// Computes the sign of the determinant of the 2x2 matrix
+  /// with the given entries.
+  /// 
+  /// @return -1 if the determinant is negative,
+  ///          1 if the determinant is positive,
+  ///          0 if the determinant is 0.
+   static int signOfDet2x2(double dx1, double dy1, double dx2, double dy2)
   {
     DD x1 = DD.valueOf(dx1);
     DD y1 = DD.valueOf(dy1);
@@ -108,35 +102,31 @@ public class CGAlgorithmsDD
     return det.signum();
   }
 
-  /**
-   * A value which is safely greater than the
-   * relative round-off error in double-precision numbers
-   */
+  /// A value which is safely greater than the
+  /// relative round-off error in double-precision numbers
   private static final double DP_SAFE_EPSILON = 1e-15;
 
-  /**
-   * A filter for computing the orientation index of three coordinates.
-   * <p>
-   * If the orientation can be computed safely using standard DP
-   * arithmetic, this routine returns the orientation index.
-   * Otherwise, a value i > 1 is returned.
-   * In this case the orientation index must 
-   * be computed using some other more robust method.
-   * The filter is fast to compute, so can be used to 
-   * avoid the use of slower robust methods except when they are really needed,
-   * thus providing better average performance.
-   * <p>
-   * Uses an approach due to Jonathan Shewchuk, which is in the public domain.
-   * 
-   * @param pax A coordinate
-   * @param pay A coordinate
-   * @param pbx B coordinate
-   * @param pby B coordinate
-   * @param pcx C coordinate
-   * @param pcy C coordinate
-   * @return the orientation index if it can be computed safely
-   * @return i > 1 if the orientation index cannot be computed safely
-   */
+  /// A filter for computing the orientation index of three coordinates.
+  /// <p>
+  /// If the orientation can be computed safely using standard DP
+  /// arithmetic, this routine returns the orientation index.
+  /// Otherwise, a value i > 1 is returned.
+  /// In this case the orientation index must 
+  /// be computed using some other more robust method.
+  /// The filter is fast to compute, so can be used to 
+  /// avoid the use of slower robust methods except when they are really needed,
+  /// thus providing better average performance.
+  /// <p>
+  /// Uses an approach due to Jonathan Shewchuk, which is in the  domain.
+  /// 
+  /// @param pax A coordinate
+  /// @param pay A coordinate
+  /// @param pbx B coordinate
+  /// @param pby B coordinate
+  /// @param pcx C coordinate
+  /// @param pcy C coordinate
+  /// @return the orientation index if it can be computed safely
+  /// @return i > 1 if the orientation index cannot be computed safely
   private static int orientationIndexFilter(double pax, double pay,
       double pbx, double pby, double pcx, double pcy) 
   {
@@ -181,19 +171,17 @@ public class CGAlgorithmsDD
     return 0;
   }
 
-  /**
-   * Computes an intersection point between two lines
-   * using DD arithmetic.
-   * If the lines are parallel (either identical
-   * or separate) a null value is returned.
-   * 
-   * @param p1 an endpoint of line segment 1
-   * @param p2 an endpoint of line segment 1
-   * @param q1 an endpoint of line segment 2
-   * @param q2 an endpoint of line segment 2
-   * @return an intersection point if one exists, or null if the lines are parallel
-   */
-  public static Coordinate intersection(
+  /// Computes an intersection point between two lines
+  /// using DD arithmetic.
+  /// If the lines are parallel (either identical
+  /// or separate) a null value is returned.
+  /// 
+  /// @param p1 an endpoint of line segment 1
+  /// @param p2 an endpoint of line segment 1
+  /// @param q1 an endpoint of line segment 2
+  /// @param q2 an endpoint of line segment 2
+  /// @return an intersection point if one exists, or null if the lines are parallel
+   static Coordinate intersection(
       Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2)
   {

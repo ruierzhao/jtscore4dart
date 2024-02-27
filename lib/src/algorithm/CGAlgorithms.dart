@@ -433,13 +433,13 @@ import "package:jtscore4dart/src/geom/Coordinate.dart";
      *   Py=Ay+r(By-Ay) 
      * By examining the values of r & s, you can also determine some other limiting
      * conditions: 
-     *   If 0<=r<=1 & 0<=s<=1, intersection exists 
+     *   If 0<=r<=1 & 0<=s<=1, package  exists 
      *      r<0 or r>1 or s<0 or s>1 line segments do not intersect 
      *   If the denominator in eqn 1 is zero, AB & CD are parallel 
      *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
      */
 
-    bool noIntersection = false;
+    bool nopackage  = false;
     if (! Envelope.intersects(A, B, C, D)) {
       noIntersection = true;
     }

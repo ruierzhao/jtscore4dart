@@ -99,15 +99,22 @@ class TestAngle {
     var cc = TestAngle.isAcute(p0, p1,p2);
     print('==============$cc====================='); // true
   }
-  static void test_project() {
-    var cc = TestAngle.project(p0, 1.5, 50);
-    print('==============$cc====================='); // true
-  }
   static void test_angleBetween(){
     var cc = angleBetween(p1, p0, p2);
     print(cc);
     var ccc = angleBetweenOriented(p1, p0, p2);
     print(ccc);
+  }
+  // static void test_project() {
+  //   var cc = TestAngle.project(p0, 1.5, 50);
+  //   print('==============$cc====================='); // true
+  // }
+  static void test_project(){
+    Coordinate orig = Coordinate(0,0);
+    var cc = TestAngle.project(orig, 1.5, 50);
+    print('==============$cc=====================');
+    cc = TestAngle.project(orig, 3.14, 50);
+    print('==============$cc=====================');
   }
 
 }
@@ -116,7 +123,7 @@ void main() {
   // TestAngle.test_angle(); 
   // TestAngle.test_isAcute();
   // TestAngle.test_angleBetween();
-  // TestAngle.test_project();
-  var cc = TestAngle.angle(Coordinate(560, 380), Coordinate(563.5368600833851 , 429.87474933020275));
-  print(cc);
+  TestAngle.test_project();
+  // var cc = TestAngle.angle(Coordinate(560, 380), Coordinate(563.5368600833851 , 429.87474933020275));
+  // print(cc); 
 }

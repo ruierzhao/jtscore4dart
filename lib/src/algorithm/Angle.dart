@@ -64,6 +64,13 @@ class Angle
       double dy = p1.y - p0.y;
       return Math.atan2(dy, dx);
   }
+  /// ruier add
+  /// alias of [angle]
+  static double of(Coordinate p0, Coordinate p1) {
+      double dx = p1.x - p0.x;
+      double dy = p1.y - p0.y;
+      return Math.atan2(dy, dx);
+  }
 
   /// Returns the angle of the vector from (0,0) to p,
   /// relative to the positive X-axis.
@@ -88,10 +95,11 @@ class Angle
   static bool isAcute(Coordinate p0, Coordinate p1, Coordinate p2)
   {
     // relies on fact that A dot B is positive if A ang B is acute
-    double dx0 = p0.x - p1.x;
-    double dy0 = p0.y - p1.y;
+    // 锐角：A 点乘 B 的值为正
+    double dx0 = p0.x - p1.x; 
+    double dy0 = p0.y - p1.y; // vec{p1 -> p0}
     double dx1 = p2.x - p1.x;
-    double dy1 = p2.y - p1.y;
+    double dy1 = p2.y - p1.y; // vec{p1 -> p0}
     double dotprod = dx0 * dx1 + dy0 * dy1;
     return dotprod > 0;
   }

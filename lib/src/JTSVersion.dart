@@ -48,7 +48,7 @@ class JTSVersion {
   /**
    * An optional string providing further release info (such as "alpha 1");
    */
-   static const String RELEASE_INFO = "SNAPSHOT";
+   static const String RELEASE_INFO = "SNAPSHOT - ruier jtsd core";
 
 
   /**

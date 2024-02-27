@@ -10,6 +10,8 @@ class TestAngle {
   static Coordinate p0 = Coordinate(560, 380);
   static Coordinate p1 = Coordinate(800, 500);
   static Coordinate p2 = Coordinate(680, 200);
+  // LINESTRING (560 380, 830 380) 水平线
+  static Coordinate p3 = Coordinate(830, 380);
   
   static double angle(Coordinate p0, Coordinate p1) {
       double dx = p1.x - p0.x;
@@ -29,8 +31,8 @@ class TestAngle {
 
 // ==========================test===========================
   static void test_angle() {
-    var c1 = TestAngle.angle(p1, p0);
-    print('==============$c1====================='); //0.4636476090008061
+    var c1 = TestAngle.angle(p3, p0); // 水平线
+    print('==============$c1====================='); // 3.141592653589793
     var cc = TestAngle.angle(p0, p1);
     print('==============$cc====================='); //0.4636476090008061
     var ccd = TestAngle.angle(p0, p2);

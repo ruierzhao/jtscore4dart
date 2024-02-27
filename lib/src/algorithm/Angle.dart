@@ -313,6 +313,6 @@ class Angle
   static Coordinate project(Coordinate p, double angle, double dist) {
     double x = p.getX() + dist * Angle.cosSnap(angle);
     double y = p.getY() + dist * Angle.sinSnap(angle);
-    return new Coordinate(x, y);
+    return Coordinate(x, y);
   }
 }

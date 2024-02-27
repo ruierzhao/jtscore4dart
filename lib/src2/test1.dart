@@ -1,4 +1,4 @@
-public class DiscreteFrechetDistance {
+class DiscreteFrechetDistance {
 
 /**
    * Computes the Discrete Fréchet Distance between two {@link Geometry}s
@@ -8,7 +8,7 @@ public class DiscreteFrechetDistance {
    * @param g1 the 2nd geometry
    * @return the cartesian distance between {#g0} and {#g1}
    */
-  public static double distance(Geometry g0, Geometry g1) {
+  static double distance(Geometry g0, Geometry g1) {
 
     DiscreteFrechetDistance dist = new DiscreteFrechetDistance(g0, g1);
     return dist.distance();

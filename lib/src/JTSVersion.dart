@@ -80,8 +80,9 @@
     String toString()
    {
      String ver = "$MAJOR.$MINOR.$PATCH";
-     if (RELEASE_INFO.isNotEmpty)
-       return ver + " " + RELEASE_INFO;
+     if (RELEASE_INFO.isNotEmpty) {
+       return "$ver $RELEASE_INFO";
+     }
      return ver;
    }
  

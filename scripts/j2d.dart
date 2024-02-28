@@ -4,7 +4,6 @@
 
 import 'dart:collection';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:path/path.dart' as p;
 
@@ -12,11 +11,9 @@ import 'package:path/path.dart' as p;
 /// 输入一行 返回修改后的 新行
 typedef EditerFileFunc = String Function(String codeSegment);
 
-/// 递归读取文件夹的回调函数
-typedef ReadDirCallback = void Function(String filename);
 
 /// 修改整个文件
-class FileCodeEditor{
+class FileCodeEditor {
   String code;
 
   FileCodeEditor(this.code);
@@ -29,6 +26,11 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   int get length => _handles.length;
 
   @override
+  void set length(int newlength) {
+    _handles.length = newlength;
+  }
+
+  @override
   operator [](int index) {
     return _handles[index];
   }
@@ -39,24 +41,30 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   }
 
   @override
-  set length(int length) {
-    _handles.length = length;
+  void add(EditerFileFunc element) {
+    if (!_handles.contains(element)) {
+      _handles.add(element);
+    }
   }
 
   @override
-  void add(EditerFileFunc element) {
-    if (!_handles.contains(element)) {
-      super.add(element);
+  void addAll(Iterable<EditerFileFunc> iterable) {
+    for (var editerFileFunc in iterable) {
+      add(editerFileFunc);
     }
   }
 
   ListEditorFunc(); // 默认无处理构造，按需添加处理函数
 
-  ListEditorFunc.registry() {
+  ListEditorFunc.defalutHandler() {
     // 初始化构造，注册所有处理函数
-    _handles.addAll(<EditerFileFunc>[
-      _deletePublic,
+    registry();
+  }
+
+  void registry() {
+    addAll(<EditerFileFunc>[
       _removeLine,
+      _edit,
       _replace,
     ]);
   }
@@ -66,34 +74,42 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
 
   /// delete line
   static const String pattern_package_line = "package "; // startwith
+
   /// replace code
+
   static const String pattern_boolean = "boolean";
   static const String pattern_boolean_to = "bool";
+  static const String pattern_hashmap = "HashMap";
+  static const String pattern_hashmap_to = "Map";
   static const String pattern_listCoordinate = "Coordinate[]";
   static const String pattern_listCoordinate_to = "List<Coordinate>";
+  static const String pattern_err = "IllegalArgumentException";
+  static const String pattern_err_to = "ArgumentError";
+
   static const String pattern_math_abs = "Math.abs";
   static const String pattern_math_abs_to = "";
 
-  static RegExp absRegexp =
-      RegExp(r"(?<abs>(?<=abs\()(.+?)(?=\)))"); // () 小括号 - (?<ruier> 匹配表达式 ) // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
+  static RegExp absRegexp = RegExp(
+      r"(?<abs>(?<=abs\()(.+?)(?=\)))"); // () 小括号 - (?<ruier> 匹配表达式 ) // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
 
   /// dart正则匹配小括号 原文链接：https://blog.csdn.net/qq_52421092/article/details/126106237
   static RegExp regexp2 = RegExp(r"/(?<=\[)(.+?)(?=\])/g"); // [] 中括号
   static RegExp regexp3 = RegExp(r"/(?<=\{)(.+?)(?=\})/g"); // {} 花括号，大括号
 
-  static String _deletePublic(String codeSegment) {
-    print("<< _deletePublic");
-    return codeSegment.replaceAll(pattern_Delete_Public, "");
-    // if (codeSegment.contains(pattern_Delete_Public)) {
-    //   return codeSegment.replaceAll("public ", "");
-    // }else{
-    //   return codeSegment;
-    // }
+  static String _replace(String codeSegment) {
+    // TODO: 从文件读取转换规则 like: ./trans.rule
+    return codeSegment
+        .replaceAll(pattern_Delete_Public, "") // del public
+        .replaceAll(pattern_boolean, pattern_boolean_to) // boolean -> bool
+        .replaceAll(pattern_hashmap, pattern_hashmap_to) // HashMap -> Map
+        .replaceAll(pattern_err,
+            pattern_err_to) //IllegalArgumentException -> ArgumentError
+        .replaceAll(pattern_listCoordinate,
+            pattern_listCoordinate_to); // Coordinate[] -> List<Coordinate>
   }
 
   // delete "package ... " line
   static String _removeLine(String codeSegment) {
-    print("<< _removeLine");
     if (codeSegment.startsWith(pattern_package_line)) {
       return "";
     } else {
@@ -102,9 +118,10 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   }
 
   /// Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
-  static String _replace(String codeSegment) {
-    print("<< _replace");
-    String replaceMathAbs(String codeSegment){ // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
+  static String _edit(String codeSegment) {
+    print("<< _deletePublic");
+    String replaceMathAbs(String codeSegment) {
+      // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
       bool matched = absRegexp.hasMatch(codeSegment);
       if (matched) {
         var cc = absRegexp.allMatches(codeSegment);
@@ -117,25 +134,38 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
       }
       return codeSegment;
     }
+
     String newcode = replaceMathAbs(codeSegment);
     return newcode;
+  }
+
+  /// 处理转换后的整个文件
+  // ignore: unused_element
+  static String _handleAllFile(String codeSegment) {
+    throw UnimplementedError();
   }
 }
 
 class Editor {
   late File f;
+  late String filepath;
 
-  Editor(this.f);
+  Editor();
+  Editor.fromFile(this.f) : filepath = f.path;
 
-  Editor.fromFileName(String filename) : f = File(filename);
+  Editor.fromFileName(this.filepath) : f = File(filepath);
 
-  final ListEditorFunc _editorFuncs = ListEditorFunc.registry();
+  final ListEditorFunc _editorFuncs = ListEditorFunc.defalutHandler();
 
   String _srcExt = "java";
   String _targetExt = "dart";
 
   void addEditFun(EditerFileFunc editfunc) {
     _editorFuncs.add(editfunc);
+  }
+
+  void registryAllHandler() {
+    _editorFuncs.registry();
   }
 
   get tagetFilePath => p.setExtension(f.path, ".$_targetExt");
@@ -148,14 +178,31 @@ class Editor {
     }
   }
 
+  void setFile(String filepath) {
+    this.filepath = filepath;
+    f = File(filepath);
+  }
+
+  String getFile() {
+    return filepath;
+  }
+
   void setSrcExt(String ext) {
     _srcExt = ext;
   }
 
+  String getSrcExt() {
+    return _srcExt;
+  }
+
   /// 一行一行读取修改
-  Future<(File, String)> editLineByLine() {
+  Future<String> editLineByLine() {
     if (_editorFuncs.isEmpty) {
-      print("没有处理函数, maybe call `addEditFun` and then try again.");
+      print("没有处理函数, maybe call `setFile` and then try again.");
+      exit(0); // 没有处理函数，退出。。。
+    }
+    if (f == null) {
+      print("没有设置处理哪个文件, maybe call `addEditFun` and then try again.");
       exit(0); // 没有处理函数，退出。。。
     }
     return f.readAsLines().then((lines) {
@@ -173,13 +220,13 @@ class Editor {
           sb.write(newline);
           sb.write("\n");
         }
-        return (f, sb.toString());
+        return sb.toString();
       });
     });
   }
 
   void save2newFile(String newContents) {
-    print("save2newFile");
+    // print("save2newFile");
     // 先创建xin文件
     File f;
     f = File(tagetFilePath);
@@ -216,26 +263,63 @@ class Editor {
   }
 }
 
-/// 递归读取[currDir]文件夹下的文件及目录
-void readDirAndEditFile(String currDir, ReadDirCallback callbackHandler,
-    {srcExt = "java", targetExt = "dart"}) {
+
+/// 递归读取文件夹的回调函数
+typedef ReadDirCallback = void Function(
+  String filename,
+  bool needRename,
+  Editor editor, {
+  int? i,
+}); //void editFile(String filename, bool needRename, Editor? editor)
+
+// 修改代码源文件
+/// [i] 处理第i个文件。debug 参数
+void editFile(String filename, bool needRename, Editor editor, {int? i}) {
+  if (editor.getFile() != filename) {
+    print("编辑的文件不一致。。");
+    return;
+  }
+
+  print("开始处理${i ?? '第$i个'}文件: $filename");
+  editor.editLineByLine().then((value) {
+    // File oldFile = value.$1;
+    String editedString = value;
+
+    if (needRename) {
+      editor.save2newFile(editedString);
+    } else {
+      // 覆盖原来的文件
+      editor.saveNewContents(editedString);
+    }
+    print("${i ?? '第$i个'}文件: $filename 处理完成。。");
+  });
+}
+
+/// 递归读取[currDir]文件夹下的文件并编辑
+void readDirAndEditFile(
+  String currDir,
+  ReadDirCallback callbackHandler, {
+  Editor? editor,
+  needRename = false,
+}) {
   Directory dir = Directory(currDir);
   List<FileSystemEntity> dirlist = dir.listSync(recursive: true);
-  print('==============${dirlist.length}====================='); // 649
+  // print('==============${dirlist.length}====================='); // 649
+
+  editor ??= Editor(); //初始化编辑器
+
+  int i = 0;
   for (var path in dirlist) {
+    i++;
     var filestat = path.statSync();
 
     var srcName = path.path;
+    editor.setFile(srcName);
     if (FileSystemEntityType.file == filestat.type) {
-      if (!srcName.contains(srcExt)) {
-        continue;
-      } else {
-        callbackHandler(srcName);
-        // String newname = srcName.replaceAll(srcExt, targetExt);
-        // File(srcName).renameSync(newname);
-      }
+      callbackHandler(srcName, needRename, editor,i:i);
     } else {
       print('======dir:${path.path}');
+      print('==finished:${100 * i / dirlist.length}%');
     }
   }
 }
@@ -268,198 +352,17 @@ void renameJava2Dart(String dir) {
   })(dir);
 }
 
-// 修改代码源文件
-void editFile(String filename, {bool needRename = false}) {
-  Editor editor = Editor.fromFileName(filename);
-
-  editor.editLineByLine().then((value) {
-    File oldFile = value.$1;
-    String editedString = value.$2;
-
-    if (needRename) {
-      print(" >>> needRename...");
-      editor.save2newFile(editedString);
-    } else {
-      // 覆盖原来的文件
-      editor.saveNewContents(editedString);
-    }
-  });
-}
-
-// 修改文件内容并修改文件名
-void renameAndEdit(String dir) {
-  throw UnimplementedError("renameAndEdit not implements");
-}
-
 void main(List<String> args) {
-  // String srcDir = r"D:\carbon\jtsd\lib\src";
+  String srcDir = r"D:\carbon\jtsd\lib\src2";
   // renameJava2Dart(srcDir);
-  // var editor = Editor.fromFileName(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");
+  var editor = Editor();
 
-  // editFile(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");
+  readDirAndEditFile(srcDir, editFile);
+
+  // editFile(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test.dart",
+  //     editor: editor);
 
   // var f =
   //     File(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");
   // print(f.path);
-  // test_P_split();
-  // testreplace();
-  // test_break();
-  testreplace();
-  // testreplace2();
-}
-
-// ========================test========================
-void test_regEpx() {
-  var str2 = "123{456}hhh[789]zzz[yyy]bbb(90ba)kkk";
-  RegExp regexp1 = RegExp(r"(?<=\()(.+?)(?=\))");
-  // [] 中括号
-  RegExp regexp2 = RegExp(r"(?<=\[)(.+?)(?=\])");
-// {} 花括号，大括号
-  RegExp regexp3 = RegExp(r"(?<=\{)(.+?)(?=\})");
-
-  print(regexp1.stringMatch(str2)); //['90ba']
-// print(regexp1.firstMatch(str2)); //['90ba']
-//['789', 'yyy']
-// regexp2.allMatches(str2);
-// print(regexp3.allMatches(str2).toList());//['456']
-
-  RegExp exp = RegExp(
-      r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
-  bool matched = exp.hasMatch("15288144694");
-  print(matched);
-// 链接：https://juejin.cn/post/6943101444773904420
-}
-
-test_break() {
-  var ccs = List<int>.generate(10, (index) => 2 * index);
-  for (var i = 0; i < 5; i++) {
-    print("<< $i");
-    for (var cc in ccs) {
-      if (cc > 6) {
-        break;
-      }
-      print(cc);
-    }
-  }
-}
-
-void testreplace() {
-
-  String replaceMathAbs(String codeSegment){ // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
-    RegExp absRegexp =
-        RegExp(r"(?<abs>(?<=abs\()(.+?)(?=\)))"); // (?<ruier> 匹配表达式 )
-      bool matched = absRegexp.hasMatch(codeSegment);
-      if (matched) {
-        var cc = absRegexp.allMatches(codeSegment);
-        for (var c in cc) {
-          var value = c.namedGroup("abs");
-          String oldCode = "Math.abs($value)";
-          String replaceCode = "($value).abs()";
-          codeSegment = codeSegment.replaceAll(oldCode, replaceCode);
-        }
-      }
-      return codeSegment;
-    }
-  /// TODO: 测试完成
-  String abstr1 =
-      "double pdx = Math.abs(p.x - p0.x) -  Math.abs(p1.x - p2.x);"; //Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
-  String abstr2 = "double xAbs = Math.abs(cc);";
-  String abstr3 = "double xAbs = Math.log(x);";
-
-  // RegExp regexp1 = RegExp(r"(?<小括号>(?<=\()(.+?)(?=\)))"); // (?<ruier> 匹配表达式 )
-  RegExp regexp1 =
-      RegExp(r"(?<abs>(?<=abs\()(.+?)(?=\)))"); // (?<ruier> 匹配表达式 )
-var cc = replaceMathAbs(abstr3);
-print('==============${cc}=====================');
-
-}
-
-void testreplace2() {
-  const pattern =
-      r'^\[(?<Time>\s*((?<hour>\d+)):((?<minute>\d+))\.((?<ruier>\d+)))\]'
-      r'\s(?<Message>\s*(.*)$)';
-
-  final regExp = RegExp(
-    pattern,
-    multiLine: true,
-  );
-  const multilineText = '[00:13.37] This is a first message.\n'
-      '[01:15.57] This is a second message.\n';
-
-  RegExpMatch regExpMatch = regExp.firstMatch(multilineText)!;
-  // var regExpMatch = regExp.allMatches(multilineText);
-  // for (var cc in regExpMatch) {
-  //   print(cc.groupCount);
-  //   // print(cc[0]);
-  //   for (var i = 0; i < cc.groupCount; i++) {
-  //     print(cc.group(i));
-
-  //   }
-  // }
-  print(regExpMatch.groupNames.join('-')); // hour-minute-second-Time-Message.
-  final time = regExpMatch.namedGroup('Time'); // 00:13.37
-  final hour = regExpMatch.namedGroup('hour'); // 00
-  final minute = regExpMatch.namedGroup('minute'); // 13
-  final second = regExpMatch.namedGroup('ruier'); // 37
-  final message =
-      regExpMatch.namedGroup('Message'); // This is the first message.
-  // final date = regExpMatch.namedGroup('Date'); // Undefined `Date`, throws.
-
-  Iterable<RegExpMatch> matches = regExp.allMatches(multilineText);
-  for (final m in matches) {
-    print(m.namedGroup('Time'));
-    print(m.namedGroup('Message'));
-    // 00:13.37
-    // This is the first message.
-    // 01:15.57
-    // This is the second message.
-  }
-}
-
-void test_P_split() {
-  String tagetFilePath =
-      r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart";
-  File f = File(tagetFilePath);
-  if (f.existsSync()) {
-    var newfilepath =
-        "$tagetFilePath.${DateTime.now().microsecondsSinceEpoch}.edit";
-    print(newfilepath);
-  }
-}
-
-void testReadAndThenWrite() {
-  var f =
-      File(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");
-  f.readAsLines().then((value) {
-    var newString = StringBuffer();
-    for (var line in value) {
-      print(line);
-      String newline = line.replaceAll(",", "，");
-      newString.write(newline);
-      newString.write("\n");
-    }
-    f.writeAsString(newString.toString()); //会覆盖源文件
-  });
-}
-
-void test_editFile() {
-  String line = "   * @param g0 the 1st geometry";
-  var cc = line.startsWith("*"); // false
-  print(cc);
-}
-
-void test_emptyList() {
-  var ccs = <int>[];
-  for (var i = 0; i < 10; i++) {
-    // 不会操作
-    for (var cc in ccs) {
-      print("ruier");
-    }
-  }
-}
-
-void test_Error() {
-  print("normal");
-  throw Error();
-  // throw Exception("ruier");
 }

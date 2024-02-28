@@ -17,8 +17,8 @@ class DiscreteFrechetDistance {
   private final Geometry g0;
   private final Geometry g1;
   private double distance() {
-    Coordinate[] coords0 = g0.getCoordinates();
-    Coordinate[] coords1 = g1.getCoordinates();
+    List<Coordinate> coords0 = g0.getCoordinates();
+    List<Coordinate> coords1 = g1.getCoordinates();
 
     MatrixStorage distances = createMatrixStorage(coords0.length, coords1.length);
     int[] diagonal = bresenhamDiagonal(coords0.length, coords1.length);

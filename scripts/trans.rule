@@ -1,0 +1,12 @@
+replace: 
+    IllegalArgumentException -> ArgumentError
+    Coordinate[] -> List<Coordinate>
+    boolean -> bool
+    HashMap -> Map
+delete: 
+    word:
+        public
+        private
+    line: 
+        package
+

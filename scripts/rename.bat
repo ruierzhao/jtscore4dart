@@ -2,9 +2,10 @@
 
 @echo off
 
+del /f /s /q package-info.java
 
-for /r ../lib/src  %%i in (package-info.*) do ( 
-    echo ruier %%i
-    set originFile=%%i
-    del /f /p %originFile%
- )
+@REM for /r ../lib/src  %%i in (package-info.*) do ( 
+@REM     echo ruier %%i
+@REM     set originFile=%%i
+@REM     del /f %originFile%
+@REM  )

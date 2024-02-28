@@ -1,15 +1,10 @@
-@REM 遍历文件夹并改名
+@REM 遍历文件夹并删除 package-info.java
 
 @echo off
 
 
-for /r .  %%i in (*.java) do ( 
+for /r ../lib/src  %%i in (package-info.*) do ( 
+    echo ruier %%i
     set originFile=%%i
-    
-    set newfile=%originFile:java=dart%
-    echo newfile
-
-    ren %originFile% %newfile% 
-
-    echo %originFile% ===rename to=== %newfile%
+    del /f /p %originFile%
  )

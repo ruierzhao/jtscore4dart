@@ -43,7 +43,7 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
     }
   }
 
-  ListEditorFunc(); // 默认无处理构造，按需添加
+  ListEditorFunc(); // 默认无处理构造，按需添加处理函数
 
   ListEditorFunc.registry() {
     // 初始化构造，注册所有处理函数
@@ -54,7 +54,15 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   }
 
   static const String pattern_Delete_Public = "public ";
-  static const String pattern_package_line = "package "; // startwith 
+  static const String pattern_package_line = "package "; // startwith
+
+  /// dart正则匹配小括号 原文链接：https://blog.csdn.net/qq_52421092/article/details/126106237
+// () 小括号
+  static RegExp regexp1 = RegExp(r"/(?<=\()(.+?)(?=\))/g");
+  // [] 中括号
+  static RegExp regexp2 = RegExp(r"/(?<=\[)(.+?)(?=\])/g");
+// {} 花括号，大括号
+  static RegExp regexp3 = RegExp(r"/(?<=\{)(.+?)(?=\})/g");
 
   static String _deletePublic(String codeSegment) {
     print("<< _deletePublic");
@@ -71,7 +79,7 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
     print("<< _removeLine");
     if (codeSegment.startsWith(pattern_package_line)) {
       return "";
-    }else{
+    } else {
       return codeSegment;
     }
   }
@@ -125,7 +133,8 @@ class Editor {
         for (var line in lines) {
           String newline = line;
           for (var editer in _editorFuncs) {
-            if (newline.isEmpty) { // 跳过空行 有时候editor 返回空值
+            if (newline.isEmpty) {
+              // 跳过空行 有时候editor 返回空值
               break;
             }
             newline = editer(newline);
@@ -263,26 +272,49 @@ void main(List<String> args) {
   // print(f.path);
   // test_P_split();
   // testreplace();
-  test_break();
+  // test_break();
+  test_regEpx();
 }
 
 // ========================test========================
-test_break(){
-  var ccs = List<int>.generate(10, (index) => 2*index);
+void test_regEpx(){
+  var str2="123{456}hhh[789]zzz[yyy]bbb(90ba)kkk";
+  RegExp regexp1 = RegExp(r"(?<=\()(.+?)(?=\))");
+  // [] 中括号
+  RegExp regexp2 = RegExp(r"(?<=\[)(.+?)(?=\])");
+// {} 花括号，大括号
+  RegExp regexp3 = RegExp(r"(?<=\{)(.+?)(?=\})");
+ 
+print(regexp1.stringMatch(str2)); //['90ba']
+// print(regexp1.firstMatch(str2)); //['90ba']
+//['789', 'yyy']
+// regexp2.allMatches(str2);
+// print(regexp3.allMatches(str2).toList());//['456']
+
+RegExp exp = RegExp( r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
+bool matched = exp.hasMatch("15288144694");
+print(matched);
+// 链接：https://juejin.cn/post/6943101444773904420
+}
+
+test_break() {
+  var ccs = List<int>.generate(10, (index) => 2 * index);
   for (var i = 0; i < 5; i++) {
     print("<< $i");
     for (var cc in ccs) {
-      if (cc > 6){
+      if (cc > 6) {
         break;
       }
       print(cc);
     }
   }
 }
-void testreplace(){
+
+void testreplace() {
   var cc = "ruier".replaceAll("er", "");
   print(cc);
 }
+
 void test_P_split() {
   String tagetFilePath =
       r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart";

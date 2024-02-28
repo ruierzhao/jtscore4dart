@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 import org.locationtech.jts.algorithm.Angle;
 
@@ -29,33 +29,33 @@ import org.locationtech.jts.algorithm.Angle;
  * @author Martin Davis
  *
  */
-public class BufferParameters 
+class BufferParameters 
 {
   /**
    * Specifies a round line buffer end cap style.
    */
-  public static final int CAP_ROUND = 1;
+  static final int CAP_ROUND = 1;
   /**
    * Specifies a flat line buffer end cap style.
    */
-  public static final int CAP_FLAT = 2;
+  static final int CAP_FLAT = 2;
   /**
    * Specifies a square line buffer end cap style.
    */
-  public static final int CAP_SQUARE = 3;
+  static final int CAP_SQUARE = 3;
   
   /**
    * Specifies a round join style.
    */
-  public static final int JOIN_ROUND = 1;
+  static final int JOIN_ROUND = 1;
   /**
    * Specifies a mitre join style.
    */
-  public static final int JOIN_MITRE = 2;
+  static final int JOIN_MITRE = 2;
   /**
    * Specifies a bevel join style.
    */
-  public static final int JOIN_BEVEL = 3;
+  static final int JOIN_BEVEL = 3;
 
   /**
    * The default number of facets into which to divide a fillet of 90 degrees.
@@ -63,33 +63,33 @@ public class BufferParameters
    * For a max error of &lt; 1%, use QS = 12.
    * For a max error of &lt; 0.1%, use QS = 18.
    */
-  public static final int DEFAULT_QUADRANT_SEGMENTS = 8;
+  static final int DEFAULT_QUADRANT_SEGMENTS = 8;
 
   /**
    * The default mitre limit
    * Allows fairly pointy mitres.
    */
-  public static final double DEFAULT_MITRE_LIMIT = 5.0;
+  static final double DEFAULT_MITRE_LIMIT = 5.0;
   
   /**
    * The default simplify factor
    * Provides an accuracy of about 1%, which matches the accuracy of the default Quadrant Segments parameter.
    */
-  public static final double DEFAULT_SIMPLIFY_FACTOR = 0.01;
+  static final double DEFAULT_SIMPLIFY_FACTOR = 0.01;
   
 
   private int quadrantSegments = DEFAULT_QUADRANT_SEGMENTS;
   private int endCapStyle = CAP_ROUND;
   private int joinStyle = JOIN_ROUND;
   private double mitreLimit = DEFAULT_MITRE_LIMIT;
-  private boolean isSingleSided = false;
+  private bool isSingleSided = false;
   private double simplifyFactor = DEFAULT_SIMPLIFY_FACTOR;
   
   /**
    * Creates a default set of parameters
    *
    */
-  public BufferParameters() {
+  BufferParameters() {
   }
 
   /**
@@ -98,7 +98,7 @@ public class BufferParameters
    * 
    * @param quadrantSegments the number of quadrant segments to use
    */
-  public BufferParameters(int quadrantSegments) 
+  BufferParameters(int quadrantSegments) 
   {
     setQuadrantSegments(quadrantSegments);
   }
@@ -110,7 +110,7 @@ public class BufferParameters
    * @param quadrantSegments the number of quadrant segments to use
    * @param endCapStyle the end cap style to use
    */
-  public BufferParameters(int quadrantSegments,
+  BufferParameters(int quadrantSegments,
       int endCapStyle) 
   {
     setQuadrantSegments(quadrantSegments);
@@ -126,7 +126,7 @@ public class BufferParameters
    * @param joinStyle the join style to use
    * @param mitreLimit the mitre limit to use
    */
-  public BufferParameters(int quadrantSegments,
+  BufferParameters(int quadrantSegments,
       int endCapStyle,
       int joinStyle,
       double mitreLimit) 
@@ -143,7 +143,7 @@ public class BufferParameters
    * 
    * @return the number of quadrant segments
    */
-  public int getQuadrantSegments()
+  int getQuadrantSegments()
   {
     return quadrantSegments;
   }
@@ -164,7 +164,7 @@ public class BufferParameters
    * 
    * @param quadSegs the number of segments in a fillet for a circle quadrant
    */
-  public void setQuadrantSegments(int quadSegs)
+  void setQuadrantSegments(int quadSegs)
   {
     quadrantSegments = quadSegs;
   }
@@ -176,7 +176,7 @@ public class BufferParameters
    * @param quadSegs the number of segments used to approximate a quarter-circle
    * @return the error of approximation
    */
-  public static double bufferDistanceError(int quadSegs)
+  static double bufferDistanceError(int quadSegs)
   {
     double alpha = Angle.PI_OVER_2 / quadSegs;
     return 1 - Math.cos(alpha / 2.0);
@@ -187,7 +187,7 @@ public class BufferParameters
    * 
    * @return the end cap style code
    */
-  public int getEndCapStyle()
+  int getEndCapStyle()
   {
     return endCapStyle;
   }
@@ -199,7 +199,7 @@ public class BufferParameters
    *
    * @param endCapStyle the code for the end cap style
    */
-  public void setEndCapStyle(int endCapStyle)
+  void setEndCapStyle(int endCapStyle)
   {
     this.endCapStyle = endCapStyle;
   }
@@ -209,7 +209,7 @@ public class BufferParameters
    * 
    * @return the join style code
    */
-  public int getJoinStyle()
+  int getJoinStyle()
   {
     return joinStyle;
   }
@@ -222,7 +222,7 @@ public class BufferParameters
    * 
    * @param joinStyle the code for the join style
    */
-  public void setJoinStyle(int joinStyle)
+  void setJoinStyle(int joinStyle)
   {
     this.joinStyle = joinStyle;
   }
@@ -232,7 +232,7 @@ public class BufferParameters
    * 
    * @return the limit value
    */
-  public double getMitreLimit()
+  double getMitreLimit()
   {
     return mitreLimit;
   }
@@ -250,7 +250,7 @@ public class BufferParameters
    *
    * @param mitreLimit the mitre ratio limit
    */
-  public void setMitreLimit(double mitreLimit)
+  void setMitreLimit(double mitreLimit)
   {
     this.mitreLimit = mitreLimit;
   }
@@ -273,7 +273,7 @@ public class BufferParameters
    * 
    * @param isSingleSided true if a single-sided buffer should be constructed
    */
-  public void setSingleSided(boolean isSingleSided)
+  void setSingleSided(bool isSingleSided)
   {
     this.isSingleSided = isSingleSided;
   }
@@ -283,7 +283,7 @@ public class BufferParameters
    * 
    * @return true if the generated buffer is to be single-sided
    */
-  public boolean isSingleSided() {
+  bool isSingleSided() {
     return isSingleSided;
   }
 
@@ -292,7 +292,7 @@ public class BufferParameters
    * 
    * @return the simplify factor
    */
-  public double getSimplifyFactor() {
+  double getSimplifyFactor() {
     return simplifyFactor;
   }
   
@@ -306,12 +306,12 @@ public class BufferParameters
    * 
    * @param simplifyFactor a value greater than or equal to zero.
    */
-  public void setSimplifyFactor(double simplifyFactor)
+  void setSimplifyFactor(double simplifyFactor)
   {
     this.simplifyFactor = simplifyFactor < 0 ? 0 : simplifyFactor;
   }
   
-  public BufferParameters copy() {
+  BufferParameters copy() {
     BufferParameters bp = new BufferParameters();
     bp.quadrantSegments = quadrantSegments;
     bp.endCapStyle = endCapStyle;

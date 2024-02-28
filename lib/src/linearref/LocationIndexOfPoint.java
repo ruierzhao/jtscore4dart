@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.linearref;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -26,13 +26,13 @@ import org.locationtech.jts.util.Assert;
  */
 class LocationIndexOfPoint
 {
-  public static LinearLocation indexOf(Geometry linearGeom, Coordinate inputPt)
+  static LinearLocation indexOf(Geometry linearGeom, Coordinate inputPt)
   {
     LocationIndexOfPoint locater = new LocationIndexOfPoint(linearGeom);
     return locater.indexOf(inputPt);
   }
 
-  public static LinearLocation indexOfAfter(Geometry linearGeom, Coordinate inputPt, LinearLocation minIndex)
+  static LinearLocation indexOfAfter(Geometry linearGeom, Coordinate inputPt, LinearLocation minIndex)
   {
     LocationIndexOfPoint locater = new LocationIndexOfPoint(linearGeom);
     return locater.indexOfAfter(inputPt, minIndex);
@@ -40,7 +40,7 @@ class LocationIndexOfPoint
 
   private Geometry linearGeom;
 
-  public LocationIndexOfPoint(Geometry linearGeom) {
+  LocationIndexOfPoint(Geometry linearGeom) {
     this.linearGeom = linearGeom;
   }
 
@@ -50,7 +50,7 @@ class LocationIndexOfPoint
    * @param inputPt the coordinate to locate
    * @return the location of the nearest point
    */
-  public LinearLocation indexOf(Coordinate inputPt)
+  LinearLocation indexOf(Coordinate inputPt)
   {
     return indexOfFromStart(inputPt, null);
   }
@@ -70,7 +70,7 @@ class LocationIndexOfPoint
    * @param minIndex the minimum location for the point location
    * @return the location of the nearest point
    */
-  public LinearLocation indexOfAfter(Coordinate inputPt, LinearLocation minIndex)
+  LinearLocation indexOfAfter(Coordinate inputPt, LinearLocation minIndex)
   {
     if (minIndex == null) return indexOf(inputPt);
 

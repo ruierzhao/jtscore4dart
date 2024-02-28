@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.linemerge;
+
 
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.planargraph.Edge;
@@ -20,18 +20,18 @@ import org.locationtech.jts.planargraph.Edge;
  *
  * @version 1.7
  */
-public class LineMergeEdge extends Edge {
+class LineMergeEdge extends Edge {
   private LineString line;
   /**
    * Constructs a LineMergeEdge with vertices given by the specified LineString.
    */
-  public LineMergeEdge(LineString line) {
+  LineMergeEdge(LineString line) {
     this.line = line;
   }
   /**
    * Returns the LineString specifying the vertices of this edge.
    */
-  public LineString getLine() {
+  LineString getLine() {
     return line;
   }
 }

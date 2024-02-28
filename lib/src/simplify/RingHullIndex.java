@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.simplify;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,11 @@ class RingHullIndex {
   //TODO: use a proper spatial index
   List<RingHull> hulls = new ArrayList<RingHull>();
   
-  public void add(RingHull ringHull) {
+  void add(RingHull ringHull) {
     hulls.add(ringHull);
   }
   
-  public List<RingHull> query(Envelope queryEnv) {
+  List<RingHull> query(Envelope queryEnv) {
     List<RingHull> result = new ArrayList<RingHull>();
     for (RingHull hull : hulls) {
       Envelope envHull = hull.getEnvelope();

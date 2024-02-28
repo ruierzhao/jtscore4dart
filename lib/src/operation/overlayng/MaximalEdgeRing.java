@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ class MaximalEdgeRing {
    * - This edge is not yet linked
    * - The edge and its sym are NOT both marked as being in the result
    */
-  public static void linkResultAreaMaxRingAtNode(OverlayEdge nodeEdge)
+  static void linkResultAreaMaxRingAtNode(OverlayEdge nodeEdge)
   {
     Assert.isTrue(nodeEdge.isInResultArea(), "Attempt to link non-result edge");
     // assertion is only valid if building a polygonal geometry (ie not a coverage)
@@ -107,7 +107,7 @@ class MaximalEdgeRing {
 
   private OverlayEdge startEdge;
 
-  public MaximalEdgeRing(OverlayEdge e) {
+  MaximalEdgeRing(OverlayEdge e) {
     this.startEdge = e;
     attachEdges(e);
   }
@@ -127,7 +127,7 @@ class MaximalEdgeRing {
     } while (edge != startEdge);  
   }
   
-  public List<OverlayEdgeRing> buildMinimalRings(GeometryFactory geometryFactory)
+  List<OverlayEdgeRing> buildMinimalRings(GeometryFactory geometryFactory)
   {
     linkMinimalRings();
     
@@ -206,8 +206,8 @@ class MaximalEdgeRing {
    * @param maxRing the maximal edgering
    * @return true if the edge has already been linked into a minimal edgering.
    */
-  private static boolean isAlreadyLinked(OverlayEdge edge, MaximalEdgeRing maxRing) {
-    boolean isLinked = edge.getEdgeRingMax() == maxRing
+  private static bool isAlreadyLinked(OverlayEdge edge, MaximalEdgeRing maxRing) {
+    bool isLinked = edge.getEdgeRingMax() == maxRing
         && edge.isResultLinked();
     return isLinked;
   }
@@ -237,12 +237,12 @@ class MaximalEdgeRing {
     return null;
   }
   
-  public String toString() {
-    Coordinate[] pts = getCoordinates();
+  String toString() {
+    List<Coordinate> pts = getCoordinates();
     return WKTWriter.toLineString(pts);
   }
 
-  private Coordinate[] getCoordinates() {
+  private List<Coordinate> getCoordinates() {
     CoordinateList coords = new CoordinateList();
     OverlayEdge edge = startEdge;
     do {

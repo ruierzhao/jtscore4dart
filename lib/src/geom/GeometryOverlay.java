@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import org.locationtech.jts.geom.util.GeometryCollectionMapper;
 import org.locationtech.jts.geom.util.GeometryMapper;
@@ -35,17 +35,17 @@ import org.locationtech.jts.operation.union.UnaryUnionOp;
  */
 class GeometryOverlay 
 {
-  public static String OVERLAY_PROPERTY_NAME = "jts.overlay";
+  static String OVERLAY_PROPERTY_NAME = "jts.overlay";
   
-  public static String OVERLAY_PROPERTY_VALUE_NG = "ng";
-  public static String OVERLAY_PROPERTY_VALUE_OLD = "old";
+  static String OVERLAY_PROPERTY_VALUE_NG = "ng";
+  static String OVERLAY_PROPERTY_VALUE_OLD = "old";
   
   /**
    * Currently the original JTS overlay implementation is the default
    */
-  public static boolean OVERLAY_NG_DEFAULT = false;
+  static bool OVERLAY_NG_DEFAULT = false;
 
-  private static boolean isOverlayNG = OVERLAY_NG_DEFAULT;
+  private static bool isOverlayNG = OVERLAY_NG_DEFAULT;
 
   static {
     setOverlayImpl(System.getProperty(OVERLAY_PROPERTY_NAME));
@@ -106,7 +106,7 @@ class GeometryOverlay
       return GeometryCollectionMapper.map(
           (GeometryCollection) a,
           new GeometryMapper.MapOp() {
-            public Geometry map(Geometry g) {
+            Geometry map(Geometry g) {
               return g.intersection(g2);
             }
       });

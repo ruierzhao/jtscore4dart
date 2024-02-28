@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.io.PrintStream;
 import java.util.Iterator;
@@ -26,13 +26,13 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class EdgeIntersectionList
+class EdgeIntersectionList
 {
   // a Map <EdgeIntersection, EdgeIntersection>
   private Map nodeMap = new TreeMap();
   Edge edge;  // the parent edge
 
-  public EdgeIntersectionList(Edge edge)
+  EdgeIntersectionList(Edge edge)
   {
     this.edge = edge;
   }
@@ -47,7 +47,7 @@ public class EdgeIntersectionList
    *
    * @return the EdgeIntersection found or added
    */
-  public EdgeIntersection add(Coordinate intPt, int segmentIndex, double dist)
+  EdgeIntersection add(Coordinate intPt, int segmentIndex, double dist)
   {
     EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
     EdgeIntersection ei = (EdgeIntersection) nodeMap.get(eiNew);
@@ -63,7 +63,7 @@ public class EdgeIntersectionList
    *
    * @return an Iterator of EdgeIntersections
    */
-  public Iterator iterator() { return nodeMap.values().iterator(); }
+  Iterator iterator() { return nodeMap.values().iterator(); }
 
   /**
    * Tests if the given point is an edge intersection
@@ -71,7 +71,7 @@ public class EdgeIntersectionList
    * @param pt the point to test
    * @return true if the point is an intersection
    */
-  public boolean isIntersection(Coordinate pt)
+  bool isIntersection(Coordinate pt)
   {
     for (Iterator it = iterator(); it.hasNext(); ) {
       EdgeIntersection ei = (EdgeIntersection) it.next();
@@ -84,7 +84,7 @@ public class EdgeIntersectionList
   /**
    * Adds entries for the first and last points of the edge to the list
    */
-  public void addEndpoints()
+  void addEndpoints()
   {
     int maxSegIndex = edge.pts.length - 1;
     add(edge.pts[0], 0, 0.0);
@@ -99,7 +99,7 @@ public class EdgeIntersectionList
    *
    * @param edgeList a list of EdgeIntersections
    */
-  public void addSplitEdges(List edgeList)
+  void addSplitEdges(List edgeList)
   {
     // ensure that the list has entries for the first and last point of the edge
     addEndpoints();
@@ -130,12 +130,12 @@ public class EdgeIntersectionList
     // add it to the points list as well.
     // (This check is needed because the distance metric is not totally reliable!)
     // The check for point equality is 2D only - Z values are ignored
-    boolean useIntPt1 = ei1.dist > 0.0 || ! ei1.coord.equals2D(lastSegStartPt);
+    bool useIntPt1 = ei1.dist > 0.0 || ! ei1.coord.equals2D(lastSegStartPt);
     if (! useIntPt1) {
       npts--;
     }
 
-    Coordinate[] pts = new Coordinate[npts];
+    List<Coordinate> pts = new Coordinate[npts];
     int ipt = 0;
     pts[ipt++] = new Coordinate(ei0.coord);
     for (int i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
@@ -145,7 +145,7 @@ public class EdgeIntersectionList
     return new Edge(pts, new Label(edge.label));
   }
 
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     out.println("Intersections:");
     for (Iterator it = iterator(); it.hasNext(); ) {

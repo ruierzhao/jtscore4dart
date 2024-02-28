@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.tri;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.io.WKTWriter;
@@ -25,10 +25,10 @@ import org.locationtech.jts.io.WKTWriter;
  *
  */
 class TriEdge {
-  public Coordinate p0;
-  public Coordinate p1;
+  Coordinate p0;
+  Coordinate p1;
 
-  public TriEdge(Coordinate a, Coordinate b) {
+  TriEdge(Coordinate a, Coordinate b) {
     p0 = a;
     p1 = b;
     normalize();
@@ -43,7 +43,7 @@ class TriEdge {
   }
   
   @Override
-  public int hashCode() {
+  int hashCode() {
     int result = 17;
     result = 37 * result + Coordinate.hashCode(p0.x);
     result = 37 * result + Coordinate.hashCode(p1.x);
@@ -53,7 +53,7 @@ class TriEdge {
   }
 
   @Override
-  public boolean equals(Object arg) {
+  bool equals(Object arg) {
     if ( !(arg instanceof TriEdge) )
       return false;
     TriEdge other = (TriEdge) arg;
@@ -62,7 +62,7 @@ class TriEdge {
     return false;
   }
   
-  public String toString() {
-    return WKTWriter.toLineString(new Coordinate[] { p0, p1});
+  String toString() {
+    return WKTWriter.toLineString(new List<Coordinate> { p0, p1});
   }
 }

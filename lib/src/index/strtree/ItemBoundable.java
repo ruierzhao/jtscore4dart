@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 import java.io.Serializable;
 
@@ -19,18 +19,18 @@ import java.io.Serializable;
  *
  * @version 1.7
  */
-public class ItemBoundable implements Boundable, Serializable {
+class ItemBoundable implements Boundable, Serializable {
   private Object bounds;
   private Object item;
 
-  public ItemBoundable(Object bounds, Object item) {
+  ItemBoundable(Object bounds, Object item) {
     this.bounds = bounds;
     this.item = item;
   }
 
-  public Object getBounds() {
+  Object getBounds() {
     return bounds;
   }
 
-  public Object getItem() { return item; }
+  Object getItem() { return item; }
 }

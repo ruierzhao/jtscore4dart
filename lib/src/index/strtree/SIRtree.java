@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -28,10 +28,10 @@ import java.util.List;
  *
  * @version 1.7
  */
-public class SIRtree extends AbstractSTRtree {
+class SIRtree extends AbstractSTRtree {
 
   private Comparator comparator = new Comparator() {
-    public int compare(Object o1, Object o2) {
+    int compare(Object o1, Object o2) {
       return compareDoubles(
           ((Interval)((Boundable)o1).getBounds()).getCentre(),
           ((Interval)((Boundable)o2).getBounds()).getCentre());
@@ -39,7 +39,7 @@ public class SIRtree extends AbstractSTRtree {
   };
 
   private IntersectsOp intersectsOp = new IntersectsOp() {
-    public boolean intersects(Object aBounds, Object bBounds) {
+    bool intersects(Object aBounds, Object bBounds) {
       return ((Interval)aBounds).intersects((Interval)bBounds);
     }
   };
@@ -47,13 +47,13 @@ public class SIRtree extends AbstractSTRtree {
   /**
    * Constructs an SIRtree with the default node capacity.
    */
-  public SIRtree() { this(10); }
+  SIRtree() { this(10); }
    
   /**
    * Constructs an SIRtree with the given maximum number of child nodes that
    * a node may have
    */
-  public SIRtree(int nodeCapacity) {
+  SIRtree(int nodeCapacity) {
     super(nodeCapacity);
   }
 
@@ -78,14 +78,14 @@ public class SIRtree extends AbstractSTRtree {
   /**
    * Inserts an item having the given bounds into the tree.
    */
-  public void insert(double x1, double x2, Object item) {
+  void insert(double x1, double x2, Object item) {
     super.insert(new Interval(Math.min(x1, x2), Math.max(x1, x2)), item);
   }
 
   /**
    * Returns items whose bounds intersect the given value.
    */
-  public List query(double x) {
+  List query(double x) {
     return query(x, x);
   }
 
@@ -93,7 +93,7 @@ public class SIRtree extends AbstractSTRtree {
    * Returns items whose bounds intersect the given bounds.
    * @param x1 possibly equal to x2
    */
-  public List query(double x1, double x2) {
+  List query(double x1, double x2) {
     return super.query(new Interval(Math.min(x1, x2), Math.max(x1, x2)));
   }
 

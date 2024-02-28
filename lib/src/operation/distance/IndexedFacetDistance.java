@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.distance;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -48,7 +48,7 @@ import org.locationtech.jts.index.strtree.STRtree;
  * @author Martin Davis
  *
  */
-public class IndexedFacetDistance 
+class IndexedFacetDistance 
 {
   private static final FacetSequenceDistance FACET_SEQ_DIST = new FacetSequenceDistance();
 
@@ -63,7 +63,7 @@ public class IndexedFacetDistance
    * @param g2 a geometry
    * @return the distance between facets of the geometries
    */
-  public static double distance(Geometry g1, Geometry g2)
+  static double distance(Geometry g1, Geometry g2)
   {
     IndexedFacetDistance dist = new IndexedFacetDistance(g1);
     return dist.distance(g2);
@@ -77,7 +77,7 @@ public class IndexedFacetDistance
    * @param distance the distance limit
    * @return true if two facets lie with the given distance
    */
-  public static boolean isWithinDistance(Geometry g1, Geometry g2, double distance) {
+  static bool isWithinDistance(Geometry g1, Geometry g2, double distance) {
     IndexedFacetDistance dist = new IndexedFacetDistance(g1);
     return dist.isWithinDistance(g2, distance);
   }
@@ -89,7 +89,7 @@ public class IndexedFacetDistance
    * @param g2 a geometry
    * @return the nearest points on the facets of the geometries
    */
-  public static Coordinate[] nearestPoints(Geometry g1, Geometry g2) {
+  static List<Coordinate> nearestPoints(Geometry g1, Geometry g2) {
     IndexedFacetDistance dist = new IndexedFacetDistance(g1);
     return dist.nearestPoints(g2);
   }
@@ -110,7 +110,7 @@ public class IndexedFacetDistance
    * 
    * @param geom a Geometry, which may be of any type.
    */
-  public IndexedFacetDistance(Geometry geom) {
+  IndexedFacetDistance(Geometry geom) {
     this.baseGeometry = geom;
     cachedTree = FacetSequenceTreeBuilder.build(geom);
   }
@@ -123,7 +123,7 @@ public class IndexedFacetDistance
    * 
    * @return the computed distance
    */
-  public double distance(Geometry g)
+  double distance(Geometry g)
   {
     STRtree tree2 = FacetSequenceTreeBuilder.build(g);
     Object[] obj = cachedTree.nearestNeighbour(tree2, 
@@ -140,7 +140,7 @@ public class IndexedFacetDistance
    * @param g the geometry to compute the nearest location to
    * @return the nearest locations
    */
-  public GeometryLocation[] nearestLocations(Geometry g)
+  GeometryLocation[] nearestLocations(Geometry g)
   {
     STRtree tree2 = FacetSequenceTreeBuilder.build(g);
     Object[] obj = cachedTree.nearestNeighbour(tree2, 
@@ -157,16 +157,16 @@ public class IndexedFacetDistance
    * @param g the geometry to compute the nearest point to
    * @return the nearest points
    */
-  public Coordinate[] nearestPoints(Geometry g) {
+  List<Coordinate> nearestPoints(Geometry g) {
     GeometryLocation[] minDistanceLocation = nearestLocations(g);
-    Coordinate[] nearestPts = toPoints(minDistanceLocation);
+    List<Coordinate> nearestPts = toPoints(minDistanceLocation);
     return nearestPts;
   }
 
-  private static Coordinate[] toPoints(GeometryLocation[] locations) {
+  private static List<Coordinate> toPoints(GeometryLocation[] locations) {
     if (locations == null) 
       return null;
-    Coordinate[] nearestPts = new Coordinate[] {
+    List<Coordinate> nearestPts = new List<Coordinate> {
         locations[0].getCoordinate(),
       locations[1].getCoordinate() };
     return nearestPts;
@@ -180,7 +180,7 @@ public class IndexedFacetDistance
    * @param maxDistance the maximum distance to test
    * @return true if the geometry lies with the specified distance
    */
-  public boolean isWithinDistance(Geometry g, double maxDistance) {
+  bool isWithinDistance(Geometry g, double maxDistance) {
     // short-ciruit check
     double envDist = baseGeometry.getEnvelopeInternal().distance(g.getEnvelopeInternal());
     if (envDist > maxDistance)
@@ -194,7 +194,7 @@ public class IndexedFacetDistance
   private static class FacetSequenceDistance
   implements ItemDistance
   {
-    public double distance(ItemBoundable item1, ItemBoundable item2) {
+    double distance(ItemBoundable item1, ItemBoundable item2) {
       FacetSequence fs1 = (FacetSequence) item1.getItem();
       FacetSequence fs2 = (FacetSequence) item2.getItem();
       return fs1.distance(fs2);    

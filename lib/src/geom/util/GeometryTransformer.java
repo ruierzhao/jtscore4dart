@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @see GeometryEditor
  */
-public class GeometryTransformer
+class GeometryTransformer
 {
 
   /**
@@ -81,26 +81,26 @@ public class GeometryTransformer
   /**
    * <code>true</code> if empty geometries should not be included in the result
    */
-  private boolean pruneEmptyGeometry = true;
+  private bool pruneEmptyGeometry = true;
 
   /**
    * <code>true</code> if a homogenous collection result
    * from a {@link GeometryCollection} should still
    * be a general GeometryCollection
    */
-  private boolean preserveGeometryCollectionType = true;
+  private bool preserveGeometryCollectionType = true;
 
   /**
    * <code>true</code> if the output from a collection argument should still be a collection
    */
-  private boolean preserveCollections = false;
+  private bool preserveCollections = false;
 
   /**
    * <code>true</code> if the type of the input should be preserved
    */
-  private boolean preserveType = false;
+  private bool preserveType = false;
 
-  public GeometryTransformer() {
+  GeometryTransformer() {
   }
 
   /**
@@ -108,9 +108,9 @@ public class GeometryTransformer
    *
    * @return the input geometry
    */
-  public Geometry getInputGeometry() { return inputGeom; }
+  Geometry getInputGeometry() { return inputGeom; }
 
-  public final Geometry transform(Geometry inputGeom)
+  final Geometry transform(Geometry inputGeom)
   {
     this.inputGeom = inputGeom;
     this.factory = inputGeom.getFactory();
@@ -132,7 +132,7 @@ public class GeometryTransformer
     if (inputGeom instanceof GeometryCollection)
       return transformGeometryCollection((GeometryCollection) inputGeom, null);
 
-    throw new IllegalArgumentException("Unknown Geometry subtype: " + inputGeom.getClass().getName());
+    throw new ArgumentError("Unknown Geometry subtype: " + inputGeom.getClass().getName());
   }
 
   /**
@@ -142,7 +142,7 @@ public class GeometryTransformer
    * @param coords the coordinate array to copy
    * @return a coordinate sequence for the array
    */
-  protected final CoordinateSequence createCoordinateSequence(Coordinate[] coords)
+  protected final CoordinateSequence createCoordinateSequence(List<Coordinate> coords)
   {
     return factory.getCoordinateSequenceFactory().create(coords);
   }
@@ -245,11 +245,11 @@ public class GeometryTransformer
   }
 
   protected Geometry transformPolygon(Polygon geom, Geometry parent) {
-    boolean isAllValidLinearRings = true;
+    bool isAllValidLinearRings = true;
     Geometry shell = transformLinearRing(geom.getExteriorRing(), geom);
 
     // handle empty inputs, or inputs which are made empty
-    boolean shellIsNullOrEmpty = shell == null || shell.isEmpty();
+    bool shellIsNullOrEmpty = shell == null || shell.isEmpty();
     if (geom.isEmpty() && shellIsNullOrEmpty ) {
       return factory.createPolygon();
     }

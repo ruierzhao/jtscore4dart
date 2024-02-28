@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 /**
  * @version 1.7
@@ -52,13 +52,13 @@ class BufferSubgraph
   private Coordinate rightMostCoord = null;
   private Envelope env = null;
 
-  public BufferSubgraph()
+  BufferSubgraph()
   {
     finder = new RightmostEdgeFinder();
   }
 
-  public List getDirectedEdges() { return dirEdgeList; }
-  public List getNodes() { return nodes; }
+  List getDirectedEdges() { return dirEdgeList; }
+  List getNodes() { return nodes; }
 
   /**
    * Computes the envelope of the edges in the subgraph.
@@ -66,13 +66,13 @@ class BufferSubgraph
    *
    * @return the envelope of the graph.
    */
-  public Envelope getEnvelope()
+  Envelope getEnvelope()
   {
     if (env == null) {
       Envelope edgeEnv = new Envelope();
       for (Iterator it = dirEdgeList.iterator(); it.hasNext(); ) {
         DirectedEdge dirEdge = (DirectedEdge) it.next();
-        Coordinate[] pts = dirEdge.getEdge().getCoordinates();
+        List<Coordinate> pts = dirEdge.getEdge().getCoordinates();
         for (int i = 0; i < pts.length - 1; i++) {
           edgeEnv.expandToInclude(pts[i]);
         }
@@ -85,7 +85,7 @@ class BufferSubgraph
   /**
    * Gets the rightmost coordinate in the edges of the subgraph
    */
-  public Coordinate getRightmostCoordinate()
+  Coordinate getRightmostCoordinate()
   {
     return rightMostCoord;
   }
@@ -96,7 +96,7 @@ class BufferSubgraph
    *
    * @param node a node to start the graph traversal from
    */
-  public void create(Node node)
+  void create(Node node)
   {
     addReachable(node);
     finder.findEdge(dirEdgeList);
@@ -150,7 +150,7 @@ class BufferSubgraph
     }
   }
 
-  public void computeDepth(int outsideDepth)
+  void computeDepth(int outsideDepth)
   {
     clearVisitedEdges();
     // find an outside edge to assign depth to
@@ -245,7 +245,7 @@ class BufferSubgraph
    * Interior Area edges are the result of dimensional collapses.
    * They do not form part of the result area boundary.
    */
-  public void findResultEdges()
+  void findResultEdges()
   {
     for (Iterator it = dirEdgeList.iterator(); it.hasNext(); ) {
       DirectedEdge de = (DirectedEdge) it.next();
@@ -277,7 +277,7 @@ class BufferSubgraph
    * This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
    * be built before holes.
    */
-  public int compareTo(Object o) {
+  int compareTo(Object o) {
     BufferSubgraph graph = (BufferSubgraph) o;
     if (this.rightMostCoord.x < graph.rightMostCoord.x) {
       return -1;
@@ -292,7 +292,7 @@ class BufferSubgraph
 // DEBUGGING only - comment out
   private static final String SAVE_DIREDGES = "saveDirEdges";
   private static int saveCount = 0;
-  public void saveDirEdges()
+  void saveDirEdges()
   {
     GeometryFactory fact = new GeometryFactory();
     for (Iterator it = dirEdgeList.iterator(); it.hasNext(); ) {
@@ -305,7 +305,7 @@ class BufferSubgraph
           p0.x + .4 * Math.cos(ang),
           p0.y + .4 * Math.sin(ang));
 //      DebugFeature.add(SAVE_DIREDGES,
-//                       fact.createLineString(new Coordinate[] { p0, p1 } ),
+//                       fact.createLineString(new List<Coordinate> { p0, p1 } ),
 //                       de.getDepth(Position.LEFT) + "/" + de.getDepth(Position.RIGHT)
 //                       );
     }

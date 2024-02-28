@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.MultiLineString;
  * @version 1.7
  * @see GeometryExtracter
  */
-public class LineStringExtracter
+class LineStringExtracter
   implements GeometryFilter
 {
   /**
@@ -37,7 +37,7 @@ public class LineStringExtracter
    * @param lines the list to add the extracted LineStrings to
    * @return the list argument
    */
-  public static List getLines(Geometry geom, List lines)
+  static List getLines(Geometry geom, List lines)
   {
   	if (geom instanceof LineString) {
   		lines.add(geom);
@@ -57,7 +57,7 @@ public class LineStringExtracter
    * @param geom the geometry from which to extract
    * @return a list containing the linear elements
    */
-  public static List getLines(Geometry geom)
+  static List getLines(Geometry geom)
   {
     return getLines(geom, new ArrayList());
   }
@@ -69,7 +69,7 @@ public class LineStringExtracter
    * @param geom the geometry from which to extract
    * @return a linear geometry
   */
-  public static Geometry getGeometry(Geometry geom)
+  static Geometry getGeometry(Geometry geom)
   {
     return geom.getFactory().buildGeometry(getLines(geom));
   }
@@ -79,12 +79,12 @@ public class LineStringExtracter
   /**
    * Constructs a filter with a list in which to store the elements found.
    */
-  public LineStringExtracter(List comps)
+  LineStringExtracter(List comps)
   {
     this.comps = comps;
   }
 
-  public void filter(Geometry geom)
+  void filter(Geometry geom)
   {
     if (geom instanceof LineString) comps.add(geom);
   }

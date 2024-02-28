@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.Polygon;
  * @version 1.7
  * @see GeometryExtracter
  */
-public class PolygonExtracter
+class PolygonExtracter
   implements GeometryFilter
 {
   /**
@@ -35,7 +35,7 @@ public class PolygonExtracter
    * @param geom the geometry from which to extract
    * @param list the list to add the extracted elements to
    */
-  public static List getPolygons(Geometry geom, List list)
+  static List getPolygons(Geometry geom, List list)
   {
   	if (geom instanceof Polygon) {
   		list.add(geom);
@@ -54,7 +54,7 @@ public class PolygonExtracter
    * 
    * @param geom the geometry from which to extract
    */
-  public static List getPolygons(Geometry geom)
+  static List getPolygons(Geometry geom)
   {
     return getPolygons(geom, new ArrayList());
   }
@@ -63,12 +63,12 @@ public class PolygonExtracter
   /**
    * Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
    */
-  public PolygonExtracter(List comps)
+  PolygonExtracter(List comps)
   {
     this.comps = comps;
   }
 
-  public void filter(Geometry geom)
+  void filter(Geometry geom)
   {
     if (geom instanceof Polygon) comps.add(geom);
   }

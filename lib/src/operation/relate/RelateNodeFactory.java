@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.relate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geomgraph.Node;
@@ -21,10 +21,10 @@ import org.locationtech.jts.geomgraph.NodeMap;
  *
  * @version 1.7
  */
-public class RelateNodeFactory
+class RelateNodeFactory
   extends NodeFactory
 {
-  public Node createNode(Coordinate coord)
+  Node createNode(Coordinate coord)
   {
     return new RelateNode(coord, new EdgeEndBundleStar());
   }

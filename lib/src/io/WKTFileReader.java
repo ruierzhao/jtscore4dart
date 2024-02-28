@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.io;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,7 +31,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Martin Davis
  *
  */
-public class WKTFileReader 
+class WKTFileReader 
 {
 	private File file = null;
   private Reader reader;
@@ -40,7 +40,7 @@ public class WKTFileReader
 	private int count = 0;
 	private int limit = -1;
 	private int offset = 0;
-  private boolean isStrictParsing = true;
+  private bool isStrictParsing = true;
 	
   /**
    * Creates a new <tt>WKTFileReader</tt> given the <tt>File</tt> to read from 
@@ -49,7 +49,7 @@ public class WKTFileReader
    * @param file the <tt>File</tt> to read from
    * @param wktReader the geometry reader to use
    */
-	public WKTFileReader(File file, WKTReader wktReader)
+	WKTFileReader(File file, WKTReader wktReader)
 	{
 		this.file = file;
     this.wktReader = wktReader;
@@ -61,7 +61,7 @@ public class WKTFileReader
    * @param filename the name of the file to read from
    * @param wktReader the geometry reader to use
    */
-  public WKTFileReader(String filename, WKTReader wktReader)
+  WKTFileReader(String filename, WKTReader wktReader)
   {
     this(new File(filename), wktReader);
   }
@@ -72,7 +72,7 @@ public class WKTFileReader
    * @param reader the reader to read from
    * @param wktReader the geometry reader to use
    */
-  public WKTFileReader(Reader reader, WKTReader wktReader)
+  WKTFileReader(Reader reader, WKTReader wktReader)
   {
     this.reader = reader;
     this.wktReader = wktReader;
@@ -83,7 +83,7 @@ public class WKTFileReader
    * 
    * @param limit the maximum number of geometries to read
    */
-  public void setLimit(int limit)
+  void setLimit(int limit)
   {
     this.limit = limit;
   }
@@ -95,7 +95,7 @@ public class WKTFileReader
    * 
    * @param isStrict whether to ignore parse errors
    */
-  public void setStrictParsing(boolean isStrict)
+  void setStrictParsing(bool isStrict)
   {
     this.isStrictParsing = isStrict;
   }
@@ -105,7 +105,7 @@ public class WKTFileReader
    * 
 	 * @param offset the number of geometries to skip
 	 */
-	public void setOffset(int offset)
+	void setOffset(int offset)
 	{
 		this.offset = offset;
 	}
@@ -119,7 +119,7 @@ public class WKTFileReader
 	 * @throws IOException if an I/O exception was encountered
 	 * @throws ParseException if an error occurred reading a geometry
 	 */
-	public List read() 
+	List read() 
 	throws IOException, ParseException 
 	{
     // do this here so that constructors don't throw exceptions
@@ -163,7 +163,7 @@ public class WKTFileReader
     }
   }
 
-	private boolean isAtLimit(List geoms)
+	private bool isAtLimit(List geoms)
 	{
 		if (limit < 0) return false;
 		if (geoms.size() < limit) return false;
@@ -173,7 +173,7 @@ public class WKTFileReader
   /**
 	 * Tests if reader is at EOF, and skips any leading whitespace
 	 */
-  private boolean isAtEndOfFile(BufferedReader bufferedReader) throws IOException {
+  private bool isAtEndOfFile(BufferedReader bufferedReader) throws IOException {
     // skip whitespace
     int ch;
     do {

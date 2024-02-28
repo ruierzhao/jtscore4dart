@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.algorithm.Distance;
 import org.locationtech.jts.geom.Coordinate;
@@ -101,7 +101,7 @@ import org.locationtech.jts.operation.distance.FacetSequenceTreeBuilder;
  * @author Martin Davis
  *
  */
-public class MinimumClearance 
+class MinimumClearance 
 {
   /**
    * Computes the Minimum Clearance distance for 
@@ -110,7 +110,7 @@ public class MinimumClearance
    * @param g the input geometry
    * @return the Minimum Clearance distance
    */
-  public static double getDistance(Geometry g)
+  static double getDistance(Geometry g)
   {
     MinimumClearance rp = new MinimumClearance(g);
     return rp.getDistance();
@@ -125,7 +125,7 @@ public class MinimumClearance
    * @return the value of the minimum clearance distance
    * or <tt>LINESTRING EMPTY</tt> if no Minimum Clearance distance exists
    */
-  public static Geometry getLine(Geometry g)
+  static Geometry getLine(Geometry g)
   {
     MinimumClearance rp = new MinimumClearance(g);
     return rp.getLine();
@@ -133,7 +133,7 @@ public class MinimumClearance
   
   private Geometry inputGeom;
   private double minClearance;
-  private Coordinate[] minClearancePts;
+  private List<Coordinate> minClearancePts;
   
   /**
    * Creates an object to compute the Minimum Clearance
@@ -141,7 +141,7 @@ public class MinimumClearance
    * 
    * @param geom the input geometry
    */
-  public MinimumClearance(Geometry geom)
+  MinimumClearance(Geometry geom)
   {
     inputGeom = geom;
   }
@@ -156,7 +156,7 @@ public class MinimumClearance
    * @return the value of the minimum clearance distance
    * or <tt>Double.MAX_VALUE</tt> if no Minimum Clearance distance exists
    */
-  public double getDistance()
+  double getDistance()
   {
     compute();
     return minClearance;
@@ -173,7 +173,7 @@ public class MinimumClearance
    * @return the value of the minimum clearance distance
    * or <tt>LINESTRING EMPTY</tt> if no Minimum Clearance distance exists
    */
-  public LineString getLine()
+  LineString getLine()
   {
     compute();
     // return empty line string if no min pts where found
@@ -229,21 +229,21 @@ public class MinimumClearance
   implements ItemDistance
   {
     private double minDist = Double.MAX_VALUE;
-    private Coordinate[] minPts = new Coordinate[2];
+    private List<Coordinate> minPts = new Coordinate[2];
     
-    public Coordinate[] getCoordinates()
+    List<Coordinate> getCoordinates()
     {
       return minPts;
     }
     
-    public double distance(ItemBoundable b1, ItemBoundable b2) {
+    double distance(ItemBoundable b1, ItemBoundable b2) {
       FacetSequence fs1 = (FacetSequence) b1.getItem();
       FacetSequence fs2 = (FacetSequence) b2.getItem();
       minDist = Double.MAX_VALUE;
       return distance(fs1, fs2);
     }
     
-    public double distance(FacetSequence fs1, FacetSequence fs2) {
+    double distance(FacetSequence fs1, FacetSequence fs2) {
       
       // compute MinClearance distance metric
 

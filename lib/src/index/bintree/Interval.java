@@ -9,32 +9,32 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.bintree;
+
 
 /**
  * Represents an (1-dimensional) closed interval on the Real number line.
  *
  * @version 1.7
  */
-public class Interval {
+class Interval {
 
-  public double min, max;
+  double min, max;
 
-  public Interval()
+  Interval()
   {
     min = 0.0;
     max = 0.0;
   }
 
-  public Interval(double min, double max)
+  Interval(double min, double max)
   {
     init(min, max);
   }
-  public Interval(Interval interval)
+  Interval(Interval interval)
   {
     init(interval.min, interval.max);
   }
-  public void init(double min, double max)
+  void init(double min, double max)
   {
     this.min = min;
     this.max = max;
@@ -43,40 +43,40 @@ public class Interval {
       this.max = min;
     }
   }
-  public double getMin() { return min; }
-  public double getMax() { return max; }
-  public double getWidth() { return max - min; }
+  double getMin() { return min; }
+  double getMax() { return max; }
+  double getWidth() { return max - min; }
 
-  public void expandToInclude(Interval interval)
+  void expandToInclude(Interval interval)
   {
     if (interval.max > max) max = interval.max;
     if (interval.min < min) min = interval.min;
   }
-  public boolean overlaps(Interval interval)
+  bool overlaps(Interval interval)
   {
     return overlaps(interval.min, interval.max);
   }
 
-  public boolean overlaps(double min, double max)
+  bool overlaps(double min, double max)
   {
     if (this.min > max || this.max < min) return false;
     return true;
   }
 
-  public boolean contains(Interval interval)
+  bool contains(Interval interval)
   {
     return contains(interval.min, interval.max);
   }
-  public boolean contains(double min, double max)
+  bool contains(double min, double max)
   {
     return (min >= this.min && max <= this.max);
   }
-  public boolean contains(double p)
+  bool contains(double p)
   {
     return (p >= this.min && p <= this.max);
   }
 
-  public String toString()
+  String toString()
   {
     return "[" + min + ", " + max + "]";
   }

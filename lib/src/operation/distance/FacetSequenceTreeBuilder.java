@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.distance;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,14 +24,14 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.index.strtree.STRtree;
 
 
-public class FacetSequenceTreeBuilder {
+class FacetSequenceTreeBuilder {
   // 6 seems to be a good facet sequence size
   private static final int FACET_SEQUENCE_SIZE = 6;
 
   // Seems to be better to use a minimum node capacity
   private static final int STR_TREE_NODE_CAPACITY = 4;
 
-  public static STRtree build(Geometry g) {
+  static STRtree build(Geometry g) {
     STRtree tree = new STRtree(STR_TREE_NODE_CAPACITY);
     List sections = computeFacetSequences(g);
     for (Iterator i = sections.iterator(); i.hasNext();) {
@@ -53,7 +53,7 @@ public class FacetSequenceTreeBuilder {
 
     g.apply(new GeometryComponentFilter() {
 
-      public void filter(Geometry geom) {
+      void filter(Geometry geom) {
         CoordinateSequence seq = null;
         if (geom instanceof LineString) {
           seq = ((LineString) geom).getCoordinateSequence();

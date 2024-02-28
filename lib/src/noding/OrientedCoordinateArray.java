@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateArrays;
@@ -21,11 +21,11 @@ import org.locationtech.jts.geom.CoordinateArrays;
  * @author Martin Davis
  * @version 1.7
  */
-public class OrientedCoordinateArray
+class OrientedCoordinateArray
     implements Comparable
 {
-  private Coordinate[] pts;
-  private boolean orientation;
+  private List<Coordinate> pts;
+  private bool orientation;
 
   /**
    * Creates a new {@link OrientedCoordinateArray}
@@ -33,7 +33,7 @@ public class OrientedCoordinateArray
    *
    * @param pts the coordinates to orient
    */
-  public OrientedCoordinateArray(Coordinate[] pts)
+  OrientedCoordinateArray(List<Coordinate> pts)
   {
     this.pts = pts;
     orientation = orientation(pts);
@@ -46,7 +46,7 @@ public class OrientedCoordinateArray
    * @return <code>true</code> if the points are oriented forwards
    * or <code>false</code if the points are oriented in reverse
    */
-  private static boolean orientation(Coordinate[] pts)
+  private static bool orientation(List<Coordinate> pts)
   {
     return CoordinateArrays.increasingDirection(pts) == 1;
   }
@@ -59,7 +59,7 @@ public class OrientedCoordinateArray
    * 1 this one is greater
    */
 
-  public int compareTo(Object o1) {
+  int compareTo(Object o1) {
     OrientedCoordinateArray oca = (OrientedCoordinateArray) o1;
     int comp = compareOriented(pts, orientation,
                                oca.pts, oca.orientation);
@@ -69,8 +69,8 @@ public class OrientedCoordinateArray
     if ((oldComp == 0 || comp == 0) && oldComp != comp) {
       System.out.println("bidir mismatch");
 
-      boolean orient1 = orientation(pts);
-      boolean orient2 = orientation(oca.pts);
+      bool orient1 = orientation(pts);
+      bool orient2 = orientation(oca.pts);
       int comp2 = compareOriented(pts, orientation,
                                oca.pts, oca.orientation);
       int oldComp2 = SegmentStringDissolver.ptsComp.compare(pts, oca.pts);
@@ -79,10 +79,10 @@ public class OrientedCoordinateArray
     return comp;
   }
 
-  private static int compareOriented(Coordinate[] pts1,
-                                     boolean orientation1,
-                                     Coordinate[] pts2,
-                                     boolean orientation2)
+  private static int compareOriented(List<Coordinate> pts1,
+                                     bool orientation1,
+                                     List<Coordinate> pts2,
+                                     bool orientation2)
   {
     int dir1 = orientation1 ? 1 : -1;
     int dir2 = orientation2 ? 1 : -1;
@@ -97,8 +97,8 @@ public class OrientedCoordinateArray
         return compPt;
       i1 += dir1;
       i2 += dir2;
-      boolean done1 = i1 == limit1;
-      boolean done2 = i2 == limit2;
+      bool done1 = i1 == limit1;
+      bool done2 = i2 == limit2;
       if (done1 && ! done2) return -1;
       if (! done1 && done2) return 1;
       if (done1 && done2) return 0;

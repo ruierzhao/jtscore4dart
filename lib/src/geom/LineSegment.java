@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import java.io.Serializable;
 
@@ -34,42 +34,42 @@ import org.locationtech.jts.io.WKTConstants;
  *
  *@version 1.7
  */
-public class LineSegment
+class LineSegment
   implements Comparable, Serializable
 {
   private static final long serialVersionUID = 3252005833466256227L;
 
-  public Coordinate p0, p1;
+  Coordinate p0, p1;
 
-  public LineSegment(Coordinate p0, Coordinate p1) {
+  LineSegment(Coordinate p0, Coordinate p1) {
     this.p0 = p0;
     this.p1 = p1;
   }
 
-  public LineSegment(double x0, double y0, double x1, double y1) {
+  LineSegment(double x0, double y0, double x1, double y1) {
     this(new Coordinate(x0, y0), new Coordinate(x1, y1));
   }
 
-  public LineSegment(LineSegment ls) {
+  LineSegment(LineSegment ls) {
     this(ls.p0, ls.p1);
   }
 
-  public LineSegment() {
+  LineSegment() {
     this(new Coordinate(), new Coordinate());
   }
 
-  public Coordinate getCoordinate(int i)
+  Coordinate getCoordinate(int i)
   {
     if (i == 0) return p0;
     return p1;
   }
 
-  public void setCoordinates(LineSegment ls)
+  void setCoordinates(LineSegment ls)
   {
     setCoordinates(ls.p0, ls.p1);
   }
 
-  public void setCoordinates(Coordinate p0, Coordinate p1)
+  void setCoordinates(Coordinate p0, Coordinate p1)
   {
     this.p0.x = p0.x;
     this.p0.y = p0.y;
@@ -81,7 +81,7 @@ public class LineSegment
    * Gets the minimum X ordinate.
    * @return the minimum X ordinate
    */
-  public double minX() {
+  double minX() {
     return Math.min(p0.x, p1.x);
   }
   
@@ -89,7 +89,7 @@ public class LineSegment
    * Gets the maximum X ordinate.
    * @return the maximum X ordinate
    */
-  public double maxX() {
+  double maxX() {
     return Math.max(p0.x, p1.x);
   }
 
@@ -97,7 +97,7 @@ public class LineSegment
    * Gets the minimum Y ordinate.
    * @return the minimum Y ordinate
    */
-  public double minY() {
+  double minY() {
     return Math.min(p0.y, p1.y);
   }
   
@@ -105,7 +105,7 @@ public class LineSegment
    * Gets the maximum Y ordinate.
    * @return the maximum Y ordinate
    */
-  public double maxY() {
+  double maxY() {
     return Math.max(p0.y, p1.y);
   }
 
@@ -113,7 +113,7 @@ public class LineSegment
    * Computes the length of the line segment.
    * @return the length of the line segment
    */
-  public double getLength()
+  double getLength()
   {
     return p0.distance(p1);
   }
@@ -123,14 +123,14 @@ public class LineSegment
    *
    * @return <code>true</code> if the segment is horizontal
    */
-  public boolean isHorizontal() { return p0.y == p1.y; }
+  bool isHorizontal() { return p0.y == p1.y; }
 
   /**
    * Tests whether the segment is vertical.
    *
    * @return <code>true</code> if the segment is vertical
    */
-  public boolean isVertical() { return p0.x == p1.x; }
+  bool isVertical() { return p0.x == p1.x; }
 
   /**
    * Determines the orientation of a LineSegment relative to this segment.
@@ -151,7 +151,7 @@ public class LineSegment
    * @return -1 if <code>seg</code> is to the right of this segment
    * @return 0 if <code>seg</code> is collinear to or crosses this segment
    */
-  public int orientationIndex(LineSegment seg)
+  int orientationIndex(LineSegment seg)
   {
     int orient0 = Orientation.index(p0, p1, seg.p0);
     int orient1 = Orientation.index(p0, p1, seg.p1);
@@ -177,7 +177,7 @@ public class LineSegment
    * 
    * @see Orientation#index(Coordinate, Coordinate, Coordinate)
    */
-  public int orientationIndex(Coordinate p)
+  int orientationIndex(Coordinate p)
   {
     return Orientation.index(p0, p1, p);
   }
@@ -185,7 +185,7 @@ public class LineSegment
   /**
    * Reverses the direction of the line segment.
    */
-  public void reverse()
+  void reverse()
   {
     Coordinate temp = p0;
     p0 = p1;
@@ -199,7 +199,7 @@ public class LineSegment
    * A segment in normalized form has the first point smaller
    * than the second (according to the standard ordering on {@link Coordinate}).
    */
-  public void normalize()
+  void normalize()
   {
     if (p1.compareTo(p0) < 0) reverse();
   }
@@ -211,7 +211,7 @@ public class LineSegment
    *
    * @return the angle this segment makes with the X-axis (in radians)
    */
-  public double angle()
+  double angle()
   {
     return Math.atan2(p1.y - p0.y, p1.x - p0.x);
   }
@@ -221,7 +221,7 @@ public class LineSegment
    *
    * @return the midpoint of the segment
    */
-  public Coordinate midPoint()
+  Coordinate midPoint()
   {
     return midPoint(p0, p1);
   }
@@ -231,7 +231,7 @@ public class LineSegment
    *
    * @return the midpoint of the segment
    */
-  public static Coordinate midPoint(Coordinate p0, Coordinate p1)
+  static Coordinate midPoint(Coordinate p0, Coordinate p1)
   {
     return new Coordinate( (p0.x + p1.x) / 2,
                            (p0.y + p1.y) / 2);
@@ -242,7 +242,7 @@ public class LineSegment
    *
    * @return the distance to the other segment
    */
-  public double distance(LineSegment ls)
+  double distance(LineSegment ls)
   {
     return Distance.segmentToSegment(p0, p1, ls.p0, ls.p1);
   }
@@ -252,7 +252,7 @@ public class LineSegment
    *
    * @return the distance from this segment to the given point
    */
-  public double distance(Coordinate p)
+  double distance(Coordinate p)
   {
     return Distance.pointToSegment(p, p0, p1);
   }
@@ -266,7 +266,7 @@ public class LineSegment
    * @param p the point to compute the distance to
    * @return the perpendicular distance between the line and point
    */
-  public double distancePerpendicular(Coordinate p)
+  double distancePerpendicular(Coordinate p)
   {
     if (p0.equals2D(p1))
       return p0.distance(p);
@@ -284,7 +284,7 @@ public class LineSegment
    * @param p the point to compute the distance to
    * @return the oriented perpendicular distance between the line and point
    */
-  public double distancePerpendicularOriented(Coordinate p)
+  double distancePerpendicularOriented(Coordinate p)
   {
     if (p0.equals2D(p1))
       return p0.distance(p);
@@ -305,7 +305,7 @@ public class LineSegment
    * @param segmentLengthFraction the fraction of the segment length along the line
    * @return the point at that distance
    */
-  public Coordinate pointAlong(double segmentLengthFraction)
+  Coordinate pointAlong(double segmentLengthFraction)
   {
     Coordinate coord = p0.create();
     coord.x = p0.x + segmentLengthFraction * (p1.x - p0.x);
@@ -329,7 +329,7 @@ public class LineSegment
    * 
    * @throws IllegalStateException if the segment has zero length
    */
-  public Coordinate pointAlongOffset(double segmentLengthFraction, double offsetDistance)
+  Coordinate pointAlongOffset(double segmentLengthFraction, double offsetDistance)
   {
   	// the point on the segment line
     double segx = p0.x + segmentLengthFraction * (p1.x - p0.x);
@@ -372,7 +372,7 @@ public class LineSegment
    * @param p the point to compute the factor for
    * @return the projection factor for the point
    */
-  public double projectionFactor(Coordinate p)
+  double projectionFactor(Coordinate p)
   {
     if (p.equals(p0)) return 0.0;
     if (p.equals(p1)) return 1.0;
@@ -412,7 +412,7 @@ public class LineSegment
    * @param inputPt the point
    * @return the fraction along the line segment the projection of the point occurs
    */
-  public double segmentFraction(
+  double segmentFraction(
       Coordinate inputPt)
   {
     double segFrac = projectionFactor(inputPt);
@@ -431,7 +431,7 @@ public class LineSegment
    * may lie outside the line segment.  If this is the case,
    * the projection factor will lie outside the range [0.0, 1.0].
    */
-  public Coordinate project(Coordinate p)
+  Coordinate project(Coordinate p)
   {
     if (p.equals(p0) || p.equals(p1)) return p.copy();
 
@@ -459,7 +459,7 @@ public class LineSegment
    * @param seg the line segment to project
    * @return the projected line segment, or <code>null</code> if there is no overlap
    */
-  public LineSegment project(LineSegment seg)
+  LineSegment project(LineSegment seg)
   {
     double pf0 = projectionFactor(seg.p0);
     double pf1 = projectionFactor(seg.p1);
@@ -490,7 +490,7 @@ public class LineSegment
    * 
    * @throws IllegalStateException if the segment has zero length
    */
-  public LineSegment offset(double offsetDistance) {
+  LineSegment offset(double offsetDistance) {
     Coordinate offset0 = pointAlongOffset(0, offsetDistance);
     Coordinate offset1 = pointAlongOffset(1, offsetDistance);
     return new LineSegment(offset0, offset1);
@@ -503,7 +503,7 @@ public class LineSegment
    * @param p the point to reflect
    * @return the reflected point
    */
-  public Coordinate reflect(Coordinate p) {
+  Coordinate reflect(Coordinate p) {
     // general line equation
     double A = p1.getY() - p0.getY();
     double B = p0.getX() - p1.getX();
@@ -529,7 +529,7 @@ public class LineSegment
    * @param p the point to find the closest point to
    * @return a Coordinate which is the closest point on the line segment to the point p
    */
-  public Coordinate closestPoint(Coordinate p)
+  Coordinate closestPoint(Coordinate p)
   {
     double factor = projectionFactor(p);
     if (factor > 0 && factor < 1) {
@@ -547,19 +547,19 @@ public class LineSegment
    * @param line the segment to find the closest point to
    * @return a pair of Coordinates which are the closest points on the line segments
    */
-  public Coordinate[] closestPoints(LineSegment line)
+  List<Coordinate> closestPoints(LineSegment line)
   {
     // test for intersection
     Coordinate intPt = intersection(line);
     if (intPt != null) {
-      return new Coordinate[] { intPt, intPt };
+      return new List<Coordinate> { intPt, intPt };
     }
 
     /**
      *  if no intersection closest pair contains at least one endpoint.
      * Test each endpoint in turn.
      */
-    Coordinate[] closestPt = new Coordinate[2];
+    List<Coordinate> closestPt = new Coordinate[2];
     double minDistance = Double.MAX_VALUE;
     double dist;
 
@@ -609,7 +609,7 @@ public class LineSegment
    * 
    * @see RobustLineIntersector
    */
-  public Coordinate intersection(LineSegment line)
+  Coordinate intersection(LineSegment line)
   {
     LineIntersector li = new RobustLineIntersector();
     li.computeIntersection(p0, p1, line.p0, line.p1);
@@ -635,7 +635,7 @@ public class LineSegment
    * 
    * @see RobustLineIntersector
    */
-  public Coordinate lineIntersection(LineSegment line)
+  Coordinate lineIntersection(LineSegment line)
   {
     Coordinate intPt = Intersection.intersection(p0, p1, line.p0, line.p1);
     return intPt;
@@ -647,9 +647,9 @@ public class LineSegment
    * @param geomFactory the geometry factory to use
    * @return a LineString with the same geometry as this segment
    */
-  public LineString toGeometry(GeometryFactory geomFactory)
+  LineString toGeometry(GeometryFactory geomFactory)
   {
-    return geomFactory.createLineString(new Coordinate[] { p0, p1 });
+    return geomFactory.createLineString(new List<Coordinate> { p0, p1 });
   }
   
   /**
@@ -660,7 +660,7 @@ public class LineSegment
    *@return        <code>true</code> if <code>other</code> is a <code>LineSegment</code>
    *      with the same values for the x and y ordinates.
    */
-  public boolean equals(Object o) {
+  bool equals(Object o) {
     if (!(o instanceof LineSegment)) {
       return false;
     }
@@ -673,7 +673,7 @@ public class LineSegment
    * 
    * @return a hashcode for this object
    */
-  public int hashCode() {
+  int hashCode() {
     int hash = 17;
     hash = hash * 29 + Double.hashCode(p0.x);
     hash = hash * 29 + Double.hashCode(p0.y);
@@ -682,7 +682,7 @@ public class LineSegment
     return hash;
   }
 
-  public int OLDhashCode() {
+  int OLDhashCode() {
     long bits0 = java.lang.Double.doubleToLongBits(p0.x);
     bits0 ^= java.lang.Double.doubleToLongBits(p0.y) * 31;
     int hash0 = (((int) bits0) ^ ((int) (bits0  >> 32)));
@@ -704,7 +704,7 @@ public class LineSegment
    *@return    a negative integer, zero, or a positive integer as this <code>LineSegment</code>
    *      is less than, equal to, or greater than the specified <code>LineSegment</code>
    */
-  public int compareTo(Object o) {
+  int compareTo(Object o) {
     LineSegment other = (LineSegment) o;
     int comp0 = p0.compareTo(other.p0);
     if (comp0 != 0) return comp0;
@@ -720,14 +720,14 @@ public class LineSegment
    *@return        <code>true</code> if <code>other</code> is a <code>LineSegment</code>
    *      with the same values for the x and y ordinates.
    */
-  public boolean equalsTopo(LineSegment other)
+  bool equalsTopo(LineSegment other)
   {
     return
       p0.equals(other.p0) && p1.equals(other.p1)
       || p0.equals(other.p1) && p1.equals(other.p0);
   }
 
-  public String toString()
+  String toString()
   {
     return WKTConstants.LINESTRING + " (" +
         p0.x + " " + p0.y

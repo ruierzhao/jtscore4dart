@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.IntersectionMatrix;
@@ -21,41 +21,41 @@ import org.locationtech.jts.util.Assert;
  * Label.
  * @version 1.7
  */
-abstract public class GraphComponent {
+abstract class GraphComponent {
 
   protected Label label;
   /**
    * isInResult indicates if this component has already been included in the result
    */
-  private boolean isInResult = false;
-  private boolean isCovered = false;
-  private boolean isCoveredSet = false;
-  private boolean isVisited = false;
+  private bool isInResult = false;
+  private bool isCovered = false;
+  private bool isCoveredSet = false;
+  private bool isVisited = false;
 
-  public GraphComponent() {
+  GraphComponent() {
   }
 
-  public GraphComponent(Label label) {
+  GraphComponent(Label label) {
     this.label = label;
   }
 
-  public Label getLabel() { return label; }
-  public void setLabel(Label label) { this.label = label; }
-  public void setInResult(boolean isInResult) { this.isInResult = isInResult; }
-  public boolean isInResult() { return isInResult; }
-  public void setCovered(boolean isCovered)
+  Label getLabel() { return label; }
+  void setLabel(Label label) { this.label = label; }
+  void setInResult(bool isInResult) { this.isInResult = isInResult; }
+  bool isInResult() { return isInResult; }
+  void setCovered(bool isCovered)
   {
     this.isCovered = isCovered;
     this.isCoveredSet = true;
   }
-  public boolean isCovered()    { return isCovered; }
-  public boolean isCoveredSet() { return isCoveredSet; }
-  public boolean isVisited() { return isVisited; }
-  public void setVisited(boolean isVisited) { this.isVisited = isVisited; }
+  bool isCovered()    { return isCovered; }
+  bool isCoveredSet() { return isCoveredSet; }
+  bool isVisited() { return isVisited; }
+  void setVisited(bool isVisited) { this.isVisited = isVisited; }
   /**
    * @return a coordinate in this component (or null, if there are none)
    */
-  abstract public Coordinate getCoordinate();
+  abstract Coordinate getCoordinate();
   /**
    * Compute the contribution to an IM for this component.
    *
@@ -69,13 +69,13 @@ abstract public class GraphComponent {
    *
    * @return true if this component is isolated
    */
-  abstract public boolean isIsolated();
+  abstract bool isIsolated();
   /**
    * Update the IM with the contribution for this component.
    * A component only contributes if it has a labelling for both parent geometries
    * @param im Intersection matrix
    */
-  public void updateIM(IntersectionMatrix im)
+  void updateIM(IntersectionMatrix im)
   {
     Assert.isTrue(label.getGeometryCount() >= 2, "found partial label");
     computeIM(im);

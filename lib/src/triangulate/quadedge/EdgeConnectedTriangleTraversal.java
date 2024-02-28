@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -21,12 +21,12 @@ import java.util.LinkedList;
  * @author Martin Davis
  * @version 1.0
  */
-public class EdgeConnectedTriangleTraversal {
+class EdgeConnectedTriangleTraversal {
     private LinkedList triQueue = new LinkedList();
 
-    public EdgeConnectedTriangleTraversal() {}
+    EdgeConnectedTriangleTraversal() {}
 
-    public void init(QuadEdgeTriangle tri) {
+    void init(QuadEdgeTriangle tri) {
         triQueue.addLast(tri);
     }
 
@@ -35,7 +35,7 @@ public class EdgeConnectedTriangleTraversal {
      * 
      * @param tris a collection of QuadEdgeTriangle
      */
-    public void init(Collection tris) {
+    void init(Collection tris) {
         triQueue.addAll(tris);
     }
 
@@ -52,7 +52,7 @@ public class EdgeConnectedTriangleTraversal {
     /**
      * Subclasses call this method to perform the visiting process.
      */
-    public void visitAll(TraversalVisitor visitor) {
+    void visitAll(TraversalVisitor visitor) {
         while (!triQueue.isEmpty()) {
             QuadEdgeTriangle tri = (QuadEdgeTriangle) triQueue.removeFirst();
             process(tri, visitor);

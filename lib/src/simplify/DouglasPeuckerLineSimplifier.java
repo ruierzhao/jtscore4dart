@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateArrays;
@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.LineSegment;
  */
 class DouglasPeuckerLineSimplifier
 {
-  public static Coordinate[] simplify(Coordinate[] pts, double distanceTolerance, boolean isPreserveEndpoint)
+  static List<Coordinate> simplify(List<Coordinate> pts, double distanceTolerance, bool isPreserveEndpoint)
   {
     DouglasPeuckerLineSimplifier simp = new DouglasPeuckerLineSimplifier(pts);
     simp.setDistanceTolerance(distanceTolerance);
@@ -33,12 +33,12 @@ class DouglasPeuckerLineSimplifier
     return simp.simplify();
   }
 
-  private Coordinate[] pts;
-  private boolean[] usePt;
+  private List<Coordinate> pts;
+  private bool[] usePt;
   private double distanceTolerance;
-  private boolean isPreserveEndpoint = false;
+  private bool isPreserveEndpoint = false;
 
-  public DouglasPeuckerLineSimplifier(Coordinate[] pts)
+  DouglasPeuckerLineSimplifier(List<Coordinate> pts)
   {
     this.pts = pts;
   }
@@ -49,17 +49,17 @@ class DouglasPeuckerLineSimplifier
    *
    * @param distanceTolerance the approximation tolerance to use
    */
-  public void setDistanceTolerance(double distanceTolerance) {
+  void setDistanceTolerance(double distanceTolerance) {
     this.distanceTolerance = distanceTolerance;
   }
 
-  private void setPreserveEndpoint(boolean isPreserveEndpoint) {
+  private void setPreserveEndpoint(bool isPreserveEndpoint) {
     this.isPreserveEndpoint  = isPreserveEndpoint;
   }
   
-  public Coordinate[] simplify()
+  List<Coordinate> simplify()
   {
-    usePt = new boolean[pts.length];
+    usePt = new bool[pts.length];
     for (int i = 0; i < pts.length; i++) {
       usePt[i] = true;
     }

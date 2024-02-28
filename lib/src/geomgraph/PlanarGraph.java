@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 /**
  * @version 1.7
@@ -45,7 +45,7 @@ import org.locationtech.jts.util.Debug;
  *
  * @version 1.7
  */
-public class PlanarGraph
+class PlanarGraph
 {
   /**
    * For nodes in the Collection, link the DirectedEdges at the node that are in the result.
@@ -54,7 +54,7 @@ public class PlanarGraph
    *
    * @param nodes Collection of nodes
    */
-  public static void linkResultDirectedEdges(Collection nodes)
+  static void linkResultDirectedEdges(Collection nodes)
   {
     for (Iterator nodeit = nodes.iterator(); nodeit.hasNext(); ) {
       Node node = (Node) nodeit.next();
@@ -66,18 +66,18 @@ public class PlanarGraph
   protected NodeMap nodes;
   protected List edgeEndList  = new ArrayList();
 
-  public PlanarGraph(NodeFactory nodeFact) {
+  PlanarGraph(NodeFactory nodeFact) {
     nodes = new NodeMap(nodeFact);
   }
 
-  public PlanarGraph() {
+  PlanarGraph() {
     nodes = new NodeMap(new NodeFactory());
   }
 
-  public Iterator getEdgeIterator() { return edges.iterator(); }
-  public Collection getEdgeEnds() { return edgeEndList; }
+  Iterator getEdgeIterator() { return edges.iterator(); }
+  Collection getEdgeEnds() { return edgeEndList; }
 
-  public boolean isBoundaryNode(int geomIndex, Coordinate coord)
+  bool isBoundaryNode(int geomIndex, Coordinate coord)
   {
     Node node = nodes.find(coord);
     if (node == null) return false;
@@ -89,23 +89,23 @@ public class PlanarGraph
   {
     edges.add(e);
   }
-  public void add(EdgeEnd e)
+  void add(EdgeEnd e)
   {
     nodes.add(e);
     edgeEndList.add(e);
   }
 
-  public Iterator getNodeIterator() { return nodes.iterator(); }
-  public Collection getNodes() { return nodes.values(); }
-  public Node addNode(Node node) { return nodes.addNode(node); }
-  public Node addNode(Coordinate coord) { return nodes.addNode(coord); }
+  Iterator getNodeIterator() { return nodes.iterator(); }
+  Collection getNodes() { return nodes.values(); }
+  Node addNode(Node node) { return nodes.addNode(node); }
+  Node addNode(Coordinate coord) { return nodes.addNode(coord); }
   /**
    * Find coordinate.
    *
    * @param coord Coordinate to find
    * @return the node if found; null otherwise
    */
-  public Node find(Coordinate coord) { return nodes.find(coord); }
+  Node find(Coordinate coord) { return nodes.find(coord); }
 
   /**
    * Add a set of edges to the graph.  For each edge two DirectedEdges
@@ -113,7 +113,7 @@ public class PlanarGraph
    *
    * @param edgesToAdd Set of edges to add to the graph
    */
-  public void addEdges(List edgesToAdd)
+  void addEdges(List edgesToAdd)
   {
     // create all the nodes for the edges
     for (Iterator it = edgesToAdd.iterator(); it.hasNext(); ) {
@@ -135,7 +135,7 @@ public class PlanarGraph
    * This allows clients to link only a subset of nodes in the graph, for
    * efficiency (because they know that only a subset is of interest).
    */
-  public void linkResultDirectedEdges()
+  void linkResultDirectedEdges()
   {
     for (Iterator nodeit = nodes.iterator(); nodeit.hasNext(); ) {
       Node node = (Node) nodeit.next();
@@ -147,7 +147,7 @@ public class PlanarGraph
    * This allows clients to link only a subset of nodes in the graph, for
    * efficiency (because they know that only a subset is of interest).
    */
-  public void linkAllDirectedEdges()
+  void linkAllDirectedEdges()
   {
     for (Iterator nodeit = nodes.iterator(); nodeit.hasNext(); ) {
       Node node = (Node) nodeit.next();
@@ -162,7 +162,7 @@ public class PlanarGraph
    * @return the edge, if found
    *    <code>null</code> if the edge was not found
    */
-  public EdgeEnd findEdgeEnd(Edge e)
+  EdgeEnd findEdgeEnd(Edge e)
   {
     for (Iterator i = getEdgeEnds().iterator(); i.hasNext(); ) {
       EdgeEnd ee = (EdgeEnd) i.next();
@@ -180,11 +180,11 @@ public class PlanarGraph
    * @return the edge, if found
    *    <code>null</code> if the edge was not found
    */
-  public Edge findEdge(Coordinate p0, Coordinate p1)
+  Edge findEdge(Coordinate p0, Coordinate p1)
   {
     for (int i = 0; i < edges.size(); i++) {
       Edge e = (Edge) edges.get(i);
-      Coordinate[] eCoord = e.getCoordinates();
+      List<Coordinate> eCoord = e.getCoordinates();
       if (p0.equals(eCoord[0]) && p1.equals(eCoord[1]) )
         return e;
     }
@@ -199,12 +199,12 @@ public class PlanarGraph
    * @return matching edge, if found
    *    <code>null</code> if the edge was not found
    */
-  public Edge findEdgeInSameDirection(Coordinate p0, Coordinate p1)
+  Edge findEdgeInSameDirection(Coordinate p0, Coordinate p1)
   {
     for (int i = 0; i < edges.size(); i++) {
       Edge e = (Edge) edges.get(i);
 
-      Coordinate[] eCoord = e.getCoordinates();
+      List<Coordinate> eCoord = e.getCoordinates();
       if (matchInSameDirection(p0, p1, eCoord[0], eCoord[1]) )
         return e;
 
@@ -219,7 +219,7 @@ public class PlanarGraph
    * E.g. the segments are parallel and in the same quadrant
    * (as opposed to parallel and opposite!).
    */
-  private boolean matchInSameDirection(Coordinate p0, Coordinate p1, Coordinate ep0, Coordinate ep1)
+  private bool matchInSameDirection(Coordinate p0, Coordinate p1, Coordinate ep0, Coordinate ep1)
   {
     if (! p0.equals(ep0))
       return false;
@@ -230,7 +230,7 @@ public class PlanarGraph
     return false;
   }
 
-  public void printEdges(PrintStream out)
+  void printEdges(PrintStream out)
   {
     out.println("Edges:");
     for (int i = 0; i < edges.size(); i++) {

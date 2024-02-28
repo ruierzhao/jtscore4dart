@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.algorithm.match;
+
 
 import org.locationtech.jts.geom.Geometry;
 
@@ -27,7 +27,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author mbdavis
  *
  */
-public interface SimilarityMeasure
+interface SimilarityMeasure
 {
 	/**
 	 * Computes the similarity measure between two geometries

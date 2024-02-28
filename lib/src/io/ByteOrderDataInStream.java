@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
  * {@link InStream},
  * with the representation being in either common byte ordering.
  */
-public class ByteOrderDataInStream
+class ByteOrderDataInStream
 {
  
   private int byteOrder = ByteOrderValues.BIG_ENDIAN;
@@ -31,12 +31,12 @@ public class ByteOrderDataInStream
   
   private long count = 0;
 
-  public ByteOrderDataInStream()
+  ByteOrderDataInStream()
   {
     this.stream = null;
   }
 
-  public ByteOrderDataInStream(InStream stream)
+  ByteOrderDataInStream(InStream stream)
   {
     this.stream = stream;
   }
@@ -47,7 +47,7 @@ public class ByteOrderDataInStream
    *
    * @param stream
    */
-  public void setInStream(InStream stream)
+  void setInStream(InStream stream)
   {
     this.stream = stream;
   }
@@ -57,7 +57,7 @@ public class ByteOrderDataInStream
    * 
    * @param byteOrder the byte order code
    */
-  public void setOrder(int byteOrder)
+  void setOrder(int byteOrder)
   {
     this.byteOrder = byteOrder;
   }
@@ -67,7 +67,7 @@ public class ByteOrderDataInStream
    * 
    * @return the number of bytes read
    */
-  public long getCount() {
+  long getCount() {
     return count;
   }
   
@@ -76,7 +76,7 @@ public class ByteOrderDataInStream
    * 
    * @return the data last read
    */
-  public byte[] getData() {
+  byte[] getData() {
     return bufLast;
   }
   
@@ -87,7 +87,7 @@ public class ByteOrderDataInStream
    * @throws IOException if an I/O error occurred
    * @throws ParseException if not enough data could be read
    */
-  public byte readByte()
+  byte readByte()
   	throws IOException, ParseException
   {
     read(buf1);
@@ -101,7 +101,7 @@ public class ByteOrderDataInStream
    * @throws IOException if an I/O error occurred
    * @throws ParseException if not enough data could be read
    */
-  public int readInt()
+  int readInt()
 	throws IOException, ParseException
   {
     read(buf4);
@@ -115,7 +115,7 @@ public class ByteOrderDataInStream
    * @throws IOException if an I/O error occurred
    * @throws ParseException if not enough data could be read
    */
-  public long readLong()
+  long readLong()
 	throws IOException, ParseException
   {
     read(buf8);
@@ -129,7 +129,7 @@ public class ByteOrderDataInStream
    * @throws IOException if an I/O error occurred
    * @throws ParseException if not enough data could be read
    */
-  public double readDouble()
+  double readDouble()
 	throws IOException, ParseException
   {
     read(buf8);

@@ -10,9 +10,9 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
 
-import java.util.HashMap;
+
+import java.util.Map;
 import java.util.Map;
 
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -64,9 +64,9 @@ import org.locationtech.jts.geom.util.GeometryTransformer;
  * @see DouglasPeuckerSimplifier
  *
  */
-public class TopologyPreservingSimplifier
+class TopologyPreservingSimplifier
 {
-  public static Geometry simplify(Geometry geom, double distanceTolerance)
+  static Geometry simplify(Geometry geom, double distanceTolerance)
   {
     TopologyPreservingSimplifier tss = new TopologyPreservingSimplifier(geom);
     tss.setDistanceTolerance(distanceTolerance);
@@ -77,7 +77,7 @@ public class TopologyPreservingSimplifier
   private TaggedLinesSimplifier lineSimplifier = new TaggedLinesSimplifier();
   private Map<LineString, TaggedLineString> linestringMap;
 
-  public TopologyPreservingSimplifier(Geometry inputGeom)
+  TopologyPreservingSimplifier(Geometry inputGeom)
   {
     this.inputGeom = inputGeom;
  }
@@ -91,18 +91,18 @@ public class TopologyPreservingSimplifier
    *
    * @param distanceTolerance the approximation tolerance to use
    */
-  public void setDistanceTolerance(double distanceTolerance) {
+  void setDistanceTolerance(double distanceTolerance) {
     if (distanceTolerance < 0.0)
-      throw new IllegalArgumentException("Tolerance must be non-negative");
+      throw new ArgumentError("Tolerance must be non-negative");
     lineSimplifier.setDistanceTolerance(distanceTolerance);
   }
 
-  public Geometry getResultGeometry() 
+  Geometry getResultGeometry() 
   {
     // empty input produces an empty result
     if (inputGeom.isEmpty()) return inputGeom.copy();
     
-    linestringMap = new HashMap<LineString, TaggedLineString>();
+    linestringMap = new Map<LineString, TaggedLineString>();
     inputGeom.apply(new LineStringMapBuilderFilter(this));
     lineSimplifier.simplify(linestringMap.values());
     Geometry result = (new LineStringTransformer(linestringMap)).transform(inputGeom);
@@ -114,7 +114,7 @@ public class TopologyPreservingSimplifier
   {
     private Map<LineString, TaggedLineString> linestringMap;
     
-    public LineStringTransformer(Map<LineString, TaggedLineString> linestringMap) {
+    LineStringTransformer(Map<LineString, TaggedLineString> linestringMap) {
       this.linestringMap = linestringMap;
     }
     
@@ -156,7 +156,7 @@ public class TopologyPreservingSimplifier
      * 
      * geom a geometry of any type 
      */
-    public void filter(Geometry geom)
+    void filter(Geometry geom)
     {
       if (geom instanceof LineString) {
         LineString line = (LineString) geom;
@@ -164,7 +164,7 @@ public class TopologyPreservingSimplifier
         if (line.isEmpty()) return;
         
         int minSize = ((LineString) line).isClosed() ? 4 : 2;
-        boolean isRing = (line instanceof LinearRing) ? true : false;
+        bool isRing = (line instanceof LinearRing) ? true : false;
         TaggedLineString taggedLine = new TaggedLineString((LineString) line, minSize, isRing);
         tps.linestringMap.put(line, taggedLine);
       }

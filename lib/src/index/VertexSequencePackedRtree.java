@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -35,7 +35,7 @@ import org.locationtech.jts.util.IntArrayList;
  * @author Martin Davis
  *
  */
-public class VertexSequencePackedRtree {
+class VertexSequencePackedRtree {
   
   /**
    * Number of items/nodes in a parent node.
@@ -43,11 +43,11 @@ public class VertexSequencePackedRtree {
    */
   private static final int NODE_CAPACITY = 16;
   
-  private Coordinate[] items;
+  private List<Coordinate> items;
   private int[] levelOffset;
   private int nodeCapacity  = NODE_CAPACITY;
   private Envelope[] bounds;
-  private boolean[] isRemoved;
+  private bool[] isRemoved;
 
   /**
    * Creates a new tree over the given sequence of coordinates.
@@ -55,13 +55,13 @@ public class VertexSequencePackedRtree {
    * 
    * @param pts a sequence of points
    */
-  public VertexSequencePackedRtree(Coordinate[] pts) {
+  VertexSequencePackedRtree(List<Coordinate> pts) {
     this.items = pts;
-    isRemoved = new boolean[pts.length];
+    isRemoved = new bool[pts.length];
     build();
   }
 
-  public Envelope[] getBounds() {
+  Envelope[] getBounds() {
     return bounds.clone();
   }
   
@@ -140,7 +140,7 @@ public class VertexSequencePackedRtree {
     return env;
   }
   
-  private static Envelope computeItemEnvelope(Coordinate[] items, int start, int end) {
+  private static Envelope computeItemEnvelope(List<Coordinate> items, int start, int end) {
     Envelope env = new Envelope();
     for (int i = start; i < end; i++) {
       env.expandToInclude(items[i]);
@@ -158,7 +158,7 @@ public class VertexSequencePackedRtree {
    * @param queryEnv the query extent
    * @return an array of the indices of the input coordinates
    */
-  public int[] query(Envelope queryEnv) {
+  int[] query(Envelope queryEnv) {
     IntArrayList resultList = new IntArrayList();
     int level = levelOffset.length - 1;
     queryNode(queryEnv, level, 0, resultList);
@@ -218,7 +218,7 @@ public class VertexSequencePackedRtree {
    * 
    * @param index the index of the item in the input
    */
-  public void remove(int index) {
+  void remove(int index) {
     isRemoved[index] = true;
     
     //--- prune the item parent node if all its items are removed
@@ -241,7 +241,7 @@ public class VertexSequencePackedRtree {
     //TODO: propagate removal up the tree nodes?
   }
   
-  private boolean isNodeEmpty(int level, int index) {
+  private bool isNodeEmpty(int level, int index) {
     int start = index * nodeCapacity;
     int end = MathUtil.clampMax(start + nodeCapacity, levelOffset[level]);
     for (int i = start; i < end; i++) {
@@ -250,7 +250,7 @@ public class VertexSequencePackedRtree {
     return true;
   }
 
-  private boolean isItemsNodeEmpty(int nodeIndex) {
+  private bool isItemsNodeEmpty(int nodeIndex) {
     int start = nodeIndex * nodeCapacity;
     int end = MathUtil.clampMax(start + nodeCapacity, items.length);
     for (int i = start; i < end; i++) {

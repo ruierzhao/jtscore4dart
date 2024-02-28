@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +32,7 @@ import org.locationtech.jts.index.strtree.STRtree;
  * 
  * @version 1.7
  */
-public class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
+class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
 {
   /**
   * The {@link SpatialIndex} used should be something that supports
@@ -48,12 +48,12 @@ public class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualInter
    * 
    * @param baseSegStrings the base segment strings to intersect
    */
-  public MCIndexSegmentSetMutualIntersector(Collection baseSegStrings)
+  MCIndexSegmentSetMutualIntersector(Collection baseSegStrings)
   {
     initBaseSegments(baseSegStrings);
   }
 
-  public MCIndexSegmentSetMutualIntersector(Collection baseSegStrings, double overlapTolerance)
+  MCIndexSegmentSetMutualIntersector(Collection baseSegStrings, double overlapTolerance)
   {
     initBaseSegments(baseSegStrings);
     this.overlapTolerance  = overlapTolerance;
@@ -66,7 +66,7 @@ public class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualInter
    * 
    * @return the constructed index
    */
-  public SpatialIndex getIndex() { return index; }
+  SpatialIndex getIndex() { return index; }
 
   private void initBaseSegments(Collection<SegmentString> segStrings)
   {
@@ -96,7 +96,7 @@ public class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualInter
    * @param segStrings set of segments to intersect
    * @param segInt segment intersector to use
    */
-  public void process(Collection segStrings, SegmentIntersector segInt)
+  void process(Collection segStrings, SegmentIntersector segInt)
   {
   	List monoChains = new ArrayList();
     for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
@@ -134,17 +134,17 @@ public class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualInter
     }
   }
 
-  public static class SegmentOverlapAction
+  static class SegmentOverlapAction
       extends MonotoneChainOverlapAction
   {
     private SegmentIntersector si = null;
 
-    public SegmentOverlapAction(SegmentIntersector si)
+    SegmentOverlapAction(SegmentIntersector si)
     {
       this.si = si;
     }
 
-    public void overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
+    void overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
     {
       SegmentString ss1 = (SegmentString) mc1.getContext();
       SegmentString ss2 = (SegmentString) mc2.getContext();

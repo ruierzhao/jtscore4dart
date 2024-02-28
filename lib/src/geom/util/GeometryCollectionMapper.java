@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,9 @@ import org.locationtech.jts.geom.util.GeometryMapper.MapOp;
  * @author Martin Davis
  *
  */
-public class GeometryCollectionMapper 
+class GeometryCollectionMapper 
 {
-  public static GeometryCollection map(GeometryCollection gc, MapOp op)
+  static GeometryCollection map(GeometryCollection gc, MapOp op)
   {
     GeometryCollectionMapper mapper = new GeometryCollectionMapper(op);
     return mapper.map(gc);
@@ -38,11 +38,11 @@ public class GeometryCollectionMapper
   
   private MapOp mapOp = null;
   
-  public GeometryCollectionMapper(MapOp mapOp) {
+  GeometryCollectionMapper(MapOp mapOp) {
     this.mapOp = mapOp;
   }
 
-  public GeometryCollection map(GeometryCollection gc)
+  GeometryCollection map(GeometryCollection gc)
   {
     List mapped = new ArrayList();
     for (int i = 0; i < gc.getNumGeometries(); i++) {

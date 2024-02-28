@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.locate;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,7 +50,7 @@ import org.locationtech.jts.index.intervalrtree.SortedPackedIntervalRTree;
  * @author Martin Davis
  *
  */
-public class IndexedPointInAreaLocator 
+class IndexedPointInAreaLocator 
   implements PointOnGeometryLocator
 {
   
@@ -64,7 +64,7 @@ public class IndexedPointInAreaLocator
    * 
    * @param g the Geometry to locate in
    */
-  public IndexedPointInAreaLocator(Geometry g)
+  IndexedPointInAreaLocator(Geometry g)
   {
     geom = g;
   }
@@ -75,7 +75,7 @@ public class IndexedPointInAreaLocator
    * @param p the point to test
    * @return the location of the point in the geometry  
    */
-  public int locate(Coordinate p)
+  int locate(Coordinate p)
   {
     // avoid calling synchronized method improves performance
     if (index == null) createIndex();
@@ -110,12 +110,12 @@ public class IndexedPointInAreaLocator
   {
     private final RayCrossingCounter counter;
     
-    public SegmentVisitor(RayCrossingCounter counter)
+    SegmentVisitor(RayCrossingCounter counter)
     {
       this.counter = counter;
     }
     
-    public void visitItem(Object item)
+    void visitItem(Object item)
     {
       LineSegment seg = (LineSegment) item;
       counter.countSegment(seg.getCoordinate(0), seg.getCoordinate(1));
@@ -124,10 +124,10 @@ public class IndexedPointInAreaLocator
   
   private static class IntervalIndexedGeometry
   {
-    private final boolean isEmpty;
+    private final bool isEmpty;
     private final SortedPackedIntervalRTree index= new SortedPackedIntervalRTree();
 
-    public IntervalIndexedGeometry(Geometry geom)
+    IntervalIndexedGeometry(Geometry geom)
     {
       if (geom.isEmpty())
         isEmpty = true;
@@ -146,12 +146,12 @@ public class IndexedPointInAreaLocator
         if (! line.isClosed())
           continue;
         
-        Coordinate[] pts = line.getCoordinates();
+        List<Coordinate> pts = line.getCoordinates();
         addLine(pts);
       }
     }
     
-    private void addLine(Coordinate[] pts)
+    private void addLine(List<Coordinate> pts)
     {
       for (int i = 1; i < pts.length; i++) {
         LineSegment seg = new LineSegment(pts[i-1], pts[i]);
@@ -161,7 +161,7 @@ public class IndexedPointInAreaLocator
       }
     }
     
-    public List query(double min, double max)
+    List query(double min, double max)
     {
      if (isEmpty) 
         return new ArrayList();
@@ -171,7 +171,7 @@ public class IndexedPointInAreaLocator
       return visitor.getItems();
     }
     
-    public void query(double min, double max, ItemVisitor visitor)
+    void query(double min, double max, ItemVisitor visitor)
     {
       if (isEmpty) 
         return;

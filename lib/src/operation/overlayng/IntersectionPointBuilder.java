@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,19 +46,19 @@ class IntersectionPointBuilder {
    * to participate in the result computation.
    * True provides the original JTS semantics.
    */
-  private boolean isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
+  private bool isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
   
-  public IntersectionPointBuilder(OverlayGraph graph,
+  IntersectionPointBuilder(OverlayGraph graph,
       GeometryFactory geomFact) {
     this.graph = graph;
     this.geometryFactory = geomFact;
   }
 
-  public void setStrictMode(boolean isStrictMode) {
+  void setStrictMode(bool isStrictMode) {
     isAllowCollapseLines = ! isStrictMode;
   }
   
-  public List<Point> getPoints() {
+  List<Point> getPoints() {
     addResultPoints();
     return points;
   }
@@ -80,9 +80,9 @@ class IntersectionPointBuilder {
    * @param nodeEdge an edge originating at the node
    * @return true if this node is a result point
    */
-  private boolean isResultPoint(OverlayEdge nodeEdge) {
-    boolean isEdgeOfA = false;
-    boolean isEdgeOfB = false;
+  private bool isResultPoint(OverlayEdge nodeEdge) {
+    bool isEdgeOfA = false;
+    bool isEdgeOfB = false;
     
     OverlayEdge edge = nodeEdge;
     do {
@@ -92,11 +92,11 @@ class IntersectionPointBuilder {
       isEdgeOfB |= isEdgeOf(label, 1);
       edge = (OverlayEdge) edge.oNext();
     } while (edge != nodeEdge);
-    boolean isNodeInBoth = isEdgeOfA && isEdgeOfB;
+    bool isNodeInBoth = isEdgeOfA && isEdgeOfB;
     return isNodeInBoth;
   }
 
-  private boolean isEdgeOf(OverlayLabel label, int i) {
+  private bool isEdgeOf(OverlayLabel label, int i) {
     if (! isAllowCollapseLines && label.isBoundaryCollapse())
       return false;
     return label.isBoundary(i) || label.isLine(i);

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ class OverlayUtil {
    * @param pm
    * @return
    */
-  static boolean isFloating(PrecisionModel pm) {
+  static bool isFloating(PrecisionModel pm) {
     if (pm == null) return true;
     return pm.isFloating();
   }
@@ -160,7 +160,7 @@ class OverlayUtil {
    * @param inputGeom the input geometries
    * @return true if the overlay result is determined to be empty
    */
-  static boolean isEmptyResult(int opCode, Geometry a, Geometry b, PrecisionModel pm) {
+  static bool isEmptyResult(int opCode, Geometry a, Geometry b, PrecisionModel pm) {
     switch (opCode) {
     case OverlayNG.INTERSECTION:
       if (isEnvDisjoint(a, b, pm)) 
@@ -179,7 +179,7 @@ class OverlayUtil {
     return false;
   }
   
-  private static boolean isEmpty(Geometry geom) {
+  private static bool isEmpty(Geometry geom) {
     return geom == null || geom.isEmpty();
   }
 
@@ -193,7 +193,7 @@ class OverlayUtil {
    * @param pm the precision model being used
    * @return true if the geometry envelopes are disjoint or empty
    */
-  static boolean isEnvDisjoint(Geometry a, Geometry b, PrecisionModel pm) {
+  static bool isEnvDisjoint(Geometry a, Geometry b, PrecisionModel pm) {
     if (isEmpty(a) || isEmpty(b)) return true;
     if (isFloating(pm)) {
       return a.getEnvelopeInternal().disjoint(b.getEnvelopeInternal());
@@ -211,7 +211,7 @@ class OverlayUtil {
    * @param pm the precision model
    * @return true if the envelopes are disjoint
    */
-  private static boolean isDisjoint(Envelope envA, Envelope envB, PrecisionModel pm) {
+  private static bool isDisjoint(Envelope envA, Envelope envB, PrecisionModel pm) {
     if (pm.makePrecise(envB.getMinX()) > pm.makePrecise(envA.getMaxX())) return true;
     if (pm.makePrecise(envB.getMaxX()) < pm.makePrecise(envA.getMinX())) return true;
     if (pm.makePrecise(envB.getMinY()) > pm.makePrecise(envA.getMaxY())) return true;
@@ -272,7 +272,7 @@ class OverlayUtil {
    * @param dim1 dimension of the RH input
    * @return the dimension of the result
    */
-  public static int resultDimension(int opCode, int dim0, int dim1)
+  static int resultDimension(int opCode, int dim0, int dim1)
   { 
     int resultDimension = -1;
     switch (opCode) {
@@ -323,13 +323,13 @@ class OverlayUtil {
     return geometryFactory.buildGeometry(geomList);
   }
 
-  static Geometry toLines(OverlayGraph graph, boolean isOutputEdges, GeometryFactory geomFact) {
+  static Geometry toLines(OverlayGraph graph, bool isOutputEdges, GeometryFactory geomFact) {
     List<LineString> lines = new ArrayList<LineString>();
     for (OverlayEdge edge : graph.getEdges()) {
-      boolean includeEdge = isOutputEdges || edge.isInResultArea();
+      bool includeEdge = isOutputEdges || edge.isInResultArea();
       if (! includeEdge) continue;
-      //Coordinate[] pts = getCoords(nss);
-      Coordinate[] pts = edge.getCoordinatesOriented();
+      //List<Coordinate> pts = getCoords(nss);
+      List<Coordinate> pts = edge.getCoordinatesOriented();
       LineString line = geomFact.createLineString(pts);
       line.setUserData(labelForResult(edge) );
       lines.add(line);
@@ -349,7 +349,7 @@ class OverlayUtil {
    * @param pt the Point to round
    * @return the rounded point coordinate, or null if empty
    */
-  public static Coordinate round(Point pt, PrecisionModel pm) {
+  static Coordinate round(Point pt, PrecisionModel pm) {
     if (pt.isEmpty()) return null;
     return round( pt.getCoordinate(), pm );
   }
@@ -361,7 +361,7 @@ class OverlayUtil {
    * @param p the coordinate to round
    * @return the rounded coordinate
    */
-  public static Coordinate round(Coordinate p, PrecisionModel pm) {
+  static Coordinate round(Coordinate p, PrecisionModel pm) {
     if (! isFloating(pm)) {
       Coordinate pRound = p.copy();
       pm.makePrecise(pRound);
@@ -388,7 +388,7 @@ class OverlayUtil {
    * @param result the overlay result
    * @return true if the result area is consistent
    */
-  public static boolean isResultAreaConsistent(Geometry geom0, Geometry geom1, int opCode, Geometry result) {
+  static bool isResultAreaConsistent(Geometry geom0, Geometry geom1, int opCode, Geometry result) {
     if (geom0 == null || geom1 == null) 
       return true;
     
@@ -398,7 +398,7 @@ class OverlayUtil {
     double areaA = geom0.getArea();
     double areaB = geom1.getArea();
     
-    boolean isConsistent = true;
+    bool isConsistent = true;
     switch (opCode) {
     case OverlayNG.INTERSECTION:
       isConsistent = isLess(areaResult, areaA, AREA_HEURISTIC_TOLERANCE) 
@@ -429,18 +429,18 @@ class OverlayUtil {
    * 
    * @return true if the difference area is consistent.
    */
-  private static boolean isDifferenceAreaConsistent(double areaA, double areaB, double areaResult, double tolFrac) {
+  private static bool isDifferenceAreaConsistent(double areaA, double areaB, double areaResult, double tolFrac) {
     if (! isLess(areaResult, areaA, tolFrac))
       return false;
     double areaDiffMin = areaA - areaB - tolFrac * areaA;
     return areaResult > areaDiffMin;
   }
 
-  private static boolean isLess(double v1, double v2, double tol) {
+  private static bool isLess(double v1, double v2, double tol) {
     return v1 <= v2 * (1 + tol);
   }
   
-  private static boolean isGreater(double v1, double v2, double tol) {
+  private static bool isGreater(double v1, double v2, double tol) {
     return v1 >= v2 * (1 - tol);
   }
   

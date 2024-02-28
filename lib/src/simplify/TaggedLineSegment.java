@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -27,16 +27,16 @@ class TaggedLineSegment
   private Geometry parent;
   private int index;
 
-  public TaggedLineSegment(Coordinate p0, Coordinate p1, Geometry parent, int index) {
+  TaggedLineSegment(Coordinate p0, Coordinate p1, Geometry parent, int index) {
     super(p0, p1);
     this.parent = parent;
     this.index = index;
   }
 
-  public TaggedLineSegment(Coordinate p0, Coordinate p1) {
+  TaggedLineSegment(Coordinate p0, Coordinate p1) {
     this(p0, p1, null, -1);
   }
 
-  public Geometry getParent() { return parent; }
-  public int getIndex() { return index; }
+  Geometry getParent() { return parent; }
+  int getIndex() { return index; }
 }

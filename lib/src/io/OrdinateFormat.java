@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.io;
+
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -33,24 +33,24 @@ import java.util.Locale;
  * @author mdavis
  *
  */
-public class OrdinateFormat
+class OrdinateFormat
 {
   private static final String DECIMAL_PATTERN = "0";
 
   /**
    * The output representation of {@link Double#POSITIVE_INFINITY}
    */
-  public static final String REP_POS_INF = "Inf";
+  static final String REP_POS_INF = "Inf";
 
   /**
    * The output representation of {@link Double#NEGATIVE_INFINITY}
    */
-  public static final String REP_NEG_INF = "-Inf";
+  static final String REP_NEG_INF = "-Inf";
 
   /**
    * The output representation of {@link Double#NaN}
    */
-  public static final String REP_NAN = "NaN";
+  static final String REP_NAN = "NaN";
 
   /**
    * The maximum number of fraction digits to support output of reasonable ordinate values.
@@ -58,12 +58,12 @@ public class OrdinateFormat
    * The default is chosen to allow representing the smallest possible IEEE-754 double-precision value,
    * although this is not expected to occur (and is not supported by other areas of the JTS code).
    */
-  public static final int MAX_FRACTION_DIGITS = 325;
+  static final int MAX_FRACTION_DIGITS = 325;
   
   /**
    * The default formatter using the maximum number of digits in the fraction portion of a number.
    */
-  public static OrdinateFormat DEFAULT = new OrdinateFormat();
+  static OrdinateFormat DEFAULT = new OrdinateFormat();
 
   /**
    * Creates a new formatter with the given maximum number of digits in the fraction portion of a number.
@@ -71,7 +71,7 @@ public class OrdinateFormat
    * @param maximumFractionDigits the maximum number of fraction digits to output
    * @return a formatter
    */
-  public static OrdinateFormat create(int maximumFractionDigits) {
+  static OrdinateFormat create(int maximumFractionDigits) {
     return new OrdinateFormat(maximumFractionDigits);
   }
   
@@ -80,7 +80,7 @@ public class OrdinateFormat
   /**
    * Creates an OrdinateFormat using the default maximum number of fraction digits.
    */
-  public OrdinateFormat() {
+  OrdinateFormat() {
     format = createFormat(MAX_FRACTION_DIGITS);
   }
 
@@ -89,7 +89,7 @@ public class OrdinateFormat
    * 
    * @param maximumFractionDigits the maximum number of fraction digits to output
    */
-  public OrdinateFormat(int maximumFractionDigits) {
+  OrdinateFormat(int maximumFractionDigits) {
     format = createFormat(maximumFractionDigits);
   }
 
@@ -115,7 +115,7 @@ public class OrdinateFormat
    * @param ord the ordinate value
    * @return the formatted number string
    */
-  public synchronized String format(double ord)
+  synchronized String format(double ord)
   {
     /**
      * FUTURE: If it seems better to use scientific notation 

@@ -9,10 +9,10 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.hull;
+
 
 import java.util.ArrayDeque;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +55,9 @@ import org.locationtech.jts.triangulate.tri.Tri;
  * A value of 1 produces the convex hull; a value of 0 produces the original polygons.
  * </ul>
  * Optionally the concave hull can be allowed to contain holes, 
- * via {@link #setHolesAllowed(boolean)}.
+ * via {@link #setHolesAllowed(bool)}.
  * <p>
- * The hull can be specified as being "tight", via {@link #setTight(boolean)}.
+ * The hull can be specified as being "tight", via {@link #setTight(bool)}.
  * This causes the result to follow the outer boundaries of the input polygons. 
  * <p>
  * Instead of the complete hull, the "fill area" between the input polygons 
@@ -72,7 +72,7 @@ import org.locationtech.jts.triangulate.tri.Tri;
  * @author Martin Davis
  *
  */
-public class ConcaveHullOfPolygons {
+class ConcaveHullOfPolygons {
  
   /**
    * Computes a concave hull of set of polygons
@@ -82,7 +82,7 @@ public class ConcaveHullOfPolygons {
    * @param maxLength the target maximum edge length
    * @return the concave hull
    */
-  public static Geometry concaveHullByLength(Geometry polygons, double maxLength) {
+  static Geometry concaveHullByLength(Geometry polygons, double maxLength) {
     return concaveHullByLength(polygons, maxLength, false, false);
   }
   
@@ -98,8 +98,8 @@ public class ConcaveHullOfPolygons {
    * @param isHolesAllowed true if holes are allowed in the hull polygon
    * @return the concave hull
    */
-  public static Geometry concaveHullByLength(Geometry polygons, double maxLength,
-      boolean isTight, boolean isHolesAllowed) {
+  static Geometry concaveHullByLength(Geometry polygons, double maxLength,
+      bool isTight, bool isHolesAllowed) {
     ConcaveHullOfPolygons hull = new ConcaveHullOfPolygons(polygons);
     hull.setMaximumEdgeLength(maxLength);
     hull.setHolesAllowed(isHolesAllowed);
@@ -115,7 +115,7 @@ public class ConcaveHullOfPolygons {
    * @param lengthRatio the target maximum edge length ratio
    * @return the concave hull
    */
-  public static Geometry concaveHullByLengthRatio(Geometry polygons, double lengthRatio) {
+  static Geometry concaveHullByLengthRatio(Geometry polygons, double lengthRatio) {
     return concaveHullByLengthRatio(polygons, lengthRatio, false, false);
   }
   
@@ -131,8 +131,8 @@ public class ConcaveHullOfPolygons {
    * @param isHolesAllowed true if holes are allowed in the hull polygon
    * @return the concave hull
    */
-  public static Geometry concaveHullByLengthRatio(Geometry polygons, double lengthRatio,
-      boolean isTight, boolean isHolesAllowed) {
+  static Geometry concaveHullByLengthRatio(Geometry polygons, double lengthRatio,
+      bool isTight, bool isHolesAllowed) {
     ConcaveHullOfPolygons hull = new ConcaveHullOfPolygons(polygons);
     hull.setMaximumEdgeLengthRatio(lengthRatio);
     hull.setHolesAllowed(isHolesAllowed);
@@ -148,7 +148,7 @@ public class ConcaveHullOfPolygons {
    * @param maxLength the target maximum edge length
    * @return the concave fill
    */
-  public static Geometry concaveFillByLength(Geometry polygons, double maxLength) {
+  static Geometry concaveFillByLength(Geometry polygons, double maxLength) {
     ConcaveHullOfPolygons hull = new ConcaveHullOfPolygons(polygons);
     hull.setMaximumEdgeLength(maxLength);
     return hull.getFill();
@@ -162,7 +162,7 @@ public class ConcaveHullOfPolygons {
    * @param lengthRatio the target maximum edge length ratio
    * @return the concave fill
    */
-  public static Geometry concaveFillByLengthRatio(Geometry polygons, double lengthRatio) {
+  static Geometry concaveFillByLengthRatio(Geometry polygons, double lengthRatio) {
     ConcaveHullOfPolygons hull = new ConcaveHullOfPolygons(polygons);
     hull.setMaximumEdgeLengthRatio(lengthRatio);
     return hull.getFill();
@@ -175,8 +175,8 @@ public class ConcaveHullOfPolygons {
   private Geometry inputPolygons;
   private double maxEdgeLength = 0.0;
   private double maxEdgeLengthRatio = NOT_SPECIFIED;
-  private boolean isHolesAllowed = false;
-  private boolean isTight = false;
+  private bool isHolesAllowed = false;
+  private bool isTight = false;
   
   private GeometryFactory geomFactory;
   private LinearRing[] polygonRings;
@@ -187,16 +187,16 @@ public class ConcaveHullOfPolygons {
    * Records the edge index of the longest border edge for border tris,
    * so it can be tested for length and possible removal.
    */
-  private Map<Tri, Integer> borderEdgeMap = new HashMap<Tri, Integer>();
+  private Map<Tri, Integer> borderEdgeMap = new Map<Tri, Integer>();
   
   /**
    * Creates a new instance for a given geometry.
    * 
    * @param geom the input geometry
    */
-  public ConcaveHullOfPolygons(Geometry polygons) {
+  ConcaveHullOfPolygons(Geometry polygons) {
     if (! (polygons instanceof Polygon || polygons instanceof MultiPolygon)) {
-      throw new IllegalArgumentException("Input must be polygonal");
+      throw new ArgumentError("Input must be polygonal");
     }
     this.inputPolygons = polygons;
     geomFactory = inputPolygons.getFactory();
@@ -215,9 +215,9 @@ public class ConcaveHullOfPolygons {
    * 
    * @param edgeLength a non-negative length
    */
-  public void setMaximumEdgeLength(double edgeLength) {
+  void setMaximumEdgeLength(double edgeLength) {
     if (edgeLength < 0)
-      throw new IllegalArgumentException("Edge length must be non-negative");
+      throw new ArgumentError("Edge length must be non-negative");
     this.maxEdgeLength = edgeLength;
     maxEdgeLengthRatio = NOT_SPECIFIED;
   }
@@ -237,9 +237,9 @@ public class ConcaveHullOfPolygons {
    * 
    * @param edgeLengthRatio a length factor value between 0 and 1
    */
-  public void setMaximumEdgeLengthRatio(double edgeLengthRatio) {
+  void setMaximumEdgeLengthRatio(double edgeLengthRatio) {
     if (edgeLengthRatio < 0 || edgeLengthRatio > 1)
-      throw new IllegalArgumentException("Edge length ratio must be in range [0,1]");
+      throw new ArgumentError("Edge length ratio must be in range [0,1]");
     this.maxEdgeLengthRatio = edgeLengthRatio;
   }
   
@@ -248,7 +248,7 @@ public class ConcaveHullOfPolygons {
    * 
    * @param isHolesAllowed true if holes are allowed in the result
    */
-  public void setHolesAllowed(boolean isHolesAllowed) {
+  void setHolesAllowed(bool isHolesAllowed) {
     this.isHolesAllowed = isHolesAllowed;
   }
   
@@ -258,7 +258,7 @@ public class ConcaveHullOfPolygons {
    * 
    * @param isTight true if the boundary is kept tight
    */
-  public void setTight(boolean isTight) {
+  void setTight(bool isTight) {
     this.isTight = isTight;
   }
   
@@ -267,7 +267,7 @@ public class ConcaveHullOfPolygons {
    * 
    * @return the concave hull
    */
-  public Geometry getHull() {
+  Geometry getHull() {
     if (inputPolygons.isEmpty()) {
       return createEmptyHull();
     }
@@ -282,7 +282,7 @@ public class ConcaveHullOfPolygons {
    * 
    * @return the concave fill
    */
-  public Geometry getFill() {
+  Geometry getFill() {
     isTight = true;
     if (inputPolygons.isEmpty()) {
       return createEmptyHull();
@@ -303,7 +303,7 @@ public class ConcaveHullOfPolygons {
     List<Tri> tris = cdt.getTriangles();
     //System.out.println(tris);
     
-    Coordinate[] framePts = frame.getExteriorRing().getCoordinates();
+    List<Coordinate> framePts = frame.getExteriorRing().getCoordinates();
     if (maxEdgeLengthRatio >= 0) {
       maxEdgeLength = computeTargetEdgeLength(tris, framePts, maxEdgeLengthRatio);
     }
@@ -315,7 +315,7 @@ public class ConcaveHullOfPolygons {
   }
 
   private static double computeTargetEdgeLength(List<Tri> triList, 
-      Coordinate[] frameCorners,
+      List<Coordinate> frameCorners,
       double edgeLengthRatio) {
     if (edgeLengthRatio == 0) return 0;
     double maxEdgeLen = -1;
@@ -344,18 +344,18 @@ public class ConcaveHullOfPolygons {
     return edgeLengthRatio * (maxEdgeLen - minEdgeLen) + minEdgeLen;
   }
 
-  private static boolean isFrameTri(Tri tri, Coordinate[] frameCorners) {
+  private static bool isFrameTri(Tri tri, List<Coordinate> frameCorners) {
     int index = vertexIndex(tri, frameCorners);
-    boolean isFrameTri = index >= 0;
+    bool isFrameTri = index >= 0;
     return isFrameTri;
   }
   
-  private Set<Tri> removeFrameCornerTris(List<Tri> tris, Coordinate[] frameCorners) {
+  private Set<Tri> removeFrameCornerTris(List<Tri> tris, List<Coordinate> frameCorners) {
     Set<Tri> hullTris = new HashSet<Tri>();
     borderTriQue = new ArrayDeque<Tri>();
     for (Tri tri : tris) {
       int index = vertexIndex(tri, frameCorners);
-      boolean isFrameTri = index != NOT_FOUND;
+      bool isFrameTri = index != NOT_FOUND;
       if (isFrameTri) {
         /**
          * Frame tris are adjacent to at most one border tri,
@@ -365,7 +365,7 @@ public class ConcaveHullOfPolygons {
          */
         int oppIndex = Tri.oppEdge(index);
         Tri oppTri = tri.getAdjacent(oppIndex);
-        boolean isBorderTri = oppTri != null && ! isFrameTri(oppTri, frameCorners);
+        bool isBorderTri = oppTri != null && ! isFrameTri(oppTri, frameCorners);
         if (isBorderTri) {
           addBorderTri(tri, oppIndex);
         }
@@ -388,7 +388,7 @@ public class ConcaveHullOfPolygons {
    * @param pts the points to test
    * @return the vertex index of a point, or -1
    */
-  private static int vertexIndex(Tri tri, Coordinate[] pts) {
+  private static int vertexIndex(Tri tri, List<Coordinate> pts) {
     for (Coordinate p : pts) {
       int index = tri.getIndex(p);
       if (index >= 0) 
@@ -431,7 +431,7 @@ public class ConcaveHullOfPolygons {
     return null;
   }
 
-  private boolean isHoleSeedTri(Tri tri) {
+  private bool isHoleSeedTri(Tri tri) {
     if (isBorderTri(tri))
       return false;
     for (int i = 0; i < 3; i++) {
@@ -442,7 +442,7 @@ public class ConcaveHullOfPolygons {
     return false;
   }
 
-  private boolean isBorderTri(Tri tri) {
+  private bool isBorderTri(Tri tri) {
     for (int i = 0; i < 3; i++) {
       if (! tri.hasAdjacent(i))
           return true;
@@ -450,7 +450,7 @@ public class ConcaveHullOfPolygons {
     return false;
   }
 
-  private boolean isRemovable(Tri tri) {
+  private bool isRemovable(Tri tri) {
     //-- remove non-bridging tris if keeping hull boundary tight
     if (isTight && isTouchingSinglePolygon(tri))
       return true;
@@ -474,7 +474,7 @@ public class ConcaveHullOfPolygons {
    * @param tri
    * @return true if the tri touches a single polygon
    */
-  private boolean isTouchingSinglePolygon(Tri tri) {
+  private bool isTouchingSinglePolygon(Tri tri) {
     Envelope envTri = envelope(tri);
     for (LinearRing ring : polygonRings) {
       //-- optimization heuristic: a touching tri must be in ring envelope
@@ -519,7 +519,7 @@ public class ConcaveHullOfPolygons {
     borderEdgeMap.remove(tri);
   }
   
-  private static boolean hasAllVertices(LinearRing ring, Tri tri) {
+  private static bool hasAllVertices(LinearRing ring, Tri tri) {
     for (int i = 0; i < 3; i++) {
       Coordinate v = tri.getCoordinate(i);
       if (! hasVertex(ring, v)) {
@@ -529,7 +529,7 @@ public class ConcaveHullOfPolygons {
     return true;
   }
   
-  private static boolean hasVertex(LinearRing ring, Coordinate v) {
+  private static bool hasVertex(LinearRing ring, Coordinate v) {
     for(int i = 1; i < ring.getNumPoints(); i++) {
       if (v.equals2D(ring.getCoordinateN(i))) {
         return true;
@@ -544,7 +544,7 @@ public class ConcaveHullOfPolygons {
     return env;
   }
 
-  private Geometry createHullGeometry(Set<Tri> hullTris, boolean isIncludeInput) {
+  private Geometry createHullGeometry(Set<Tri> hullTris, bool isIncludeInput) {
     if (! isIncludeInput && hullTris.isEmpty())
       return createEmptyHull();
     

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,18 +37,18 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @see RingClipper
  */
-public class LineLimiter {
+class LineLimiter {
   private Envelope limitEnv;
   private CoordinateList ptList;
   private Coordinate lastOutside = null;
-  private List<Coordinate[]> sections = null;
+  private List<List<Coordinate>> sections = null;
 
   /**
    * Creates a new limiter for a given envelope.
    * 
    * @param env the envelope to limit to
    */
-  public LineLimiter(Envelope env) {
+  LineLimiter(Envelope env) {
     this.limitEnv = env;
   }
   
@@ -58,10 +58,10 @@ public class LineLimiter {
    * @param pts the segment sequence to limit
    * @return the sections which intersect the limit envelope
    */
-  public List<Coordinate[]> limit(Coordinate[] pts) {
+  List<List<Coordinate>> limit(List<Coordinate> pts) {
     lastOutside = null;
     ptList = null;
-    sections = new ArrayList<Coordinate[]>();
+    sections = new ArrayList<List<Coordinate>>();
     
     for (int i = 0; i < pts.length; i++) {
       Coordinate p = pts[i];
@@ -83,7 +83,7 @@ public class LineLimiter {
   }
 
   private void addOutside(Coordinate p) {
-    boolean segIntersects = isLastSegmentIntersecting(p);
+    bool segIntersects = isLastSegmentIntersecting(p);
     if ( ! segIntersects  ) {
       finishSection();
     }
@@ -94,7 +94,7 @@ public class LineLimiter {
     lastOutside = p;
   }
   
-  private boolean isLastSegmentIntersecting(Coordinate p) {
+  private bool isLastSegmentIntersecting(Coordinate p) {
     if (lastOutside == null) {
       // last point must have been inside
       if (isSectionOpen())
@@ -104,7 +104,7 @@ public class LineLimiter {
     return limitEnv.intersects(lastOutside, p);
   }
 
-  private boolean isSectionOpen() {
+  private bool isSectionOpen() {
     return ptList != null;
   }
 
@@ -127,7 +127,7 @@ public class LineLimiter {
       lastOutside = null;
     }
 
-    Coordinate[] section = ptList.toCoordinateArray();
+    List<Coordinate> section = ptList.toCoordinateArray();
     sections.add(section);
     ptList = null;
   }

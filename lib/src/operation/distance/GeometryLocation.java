@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.distance;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -27,14 +27,14 @@ import org.locationtech.jts.io.WKTWriter;
  *
  * @version 1.7
  */
-public class GeometryLocation
+class GeometryLocation
 {
   /**
    * A special value of segmentIndex used for locations inside area geometries. 
    * These locations are not located on a segment, 
    * and thus do not have an associated segment index.
    */
-  public static final int INSIDE_AREA = -1;
+  static final int INSIDE_AREA = -1;
 
   private Geometry component = null;
   private int segIndex;
@@ -49,7 +49,7 @@ public class GeometryLocation
    * @param segIndex the segment index of the location, or INSIDE_AREA
    * @param pt the coordinate of the location
    */
-  public GeometryLocation(Geometry component, int segIndex, Coordinate pt)
+  GeometryLocation(Geometry component, int segIndex, Coordinate pt)
   {
     this.component = component;
     this.segIndex = segIndex;
@@ -62,7 +62,7 @@ public class GeometryLocation
    * @param component the component of the geometry containing the point
    * @param pt the coordinate of the location
    */  
-  public GeometryLocation(Geometry component,Coordinate pt)
+  GeometryLocation(Geometry component,Coordinate pt)
   {
     this(component, INSIDE_AREA, pt);
   }
@@ -70,7 +70,7 @@ public class GeometryLocation
   /**
    * Returns the geometry component on (or in) which this location occurs.
    */
-  public Geometry getGeometryComponent() { return component; }
+  Geometry getGeometryComponent() { return component; }
   
   /**
    * Returns the segment index for this location. If the location is inside an
@@ -78,19 +78,19 @@ public class GeometryLocation
    *
    * @return the segment index for the location, or INSIDE_AREA
    */
-  public int getSegmentIndex() { return segIndex; }
+  int getSegmentIndex() { return segIndex; }
   
   /**
    * Returns the {@link Coordinate} of this location.
    */
-  public Coordinate getCoordinate() { return pt; }
+  Coordinate getCoordinate() { return pt; }
   
   /**
    * Tests whether this location represents a point inside an area geometry.
    */
-  public boolean isInsideArea() { return segIndex == INSIDE_AREA; }
+  bool isInsideArea() { return segIndex == INSIDE_AREA; }
   
-  public String toString() {
+  String toString() {
     return component.getGeometryType() 
         + "[" + segIndex + "]" 
         + "-" + WKTWriter.toPoint(pt);

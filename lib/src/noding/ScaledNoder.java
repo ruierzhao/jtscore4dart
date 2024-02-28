@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.noding;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,36 +34,36 @@ import org.locationtech.jts.geom.CoordinateArrays;
  *
  * @version 1.7
  */
-public class ScaledNoder
+class ScaledNoder
     implements Noder
 {
   private Noder noder;
   private double scaleFactor;
   private double offsetX;
   private double offsetY;
-  private boolean isScaled = false;
+  private bool isScaled = false;
 
-  public ScaledNoder(Noder noder, double scaleFactor) {
+  ScaledNoder(Noder noder, double scaleFactor) {
     this(noder, scaleFactor, 0, 0);
   }
 
-  public ScaledNoder(Noder noder, double scaleFactor, double offsetX, double offsetY) {
+  ScaledNoder(Noder noder, double scaleFactor, double offsetX, double offsetY) {
     this.noder = noder;
     this.scaleFactor = scaleFactor;
     // no need to scale if input precision is already integral
     isScaled = ! isIntegerPrecision();
   }
 
-  public boolean isIntegerPrecision() { return scaleFactor == 1.0; }
+  bool isIntegerPrecision() { return scaleFactor == 1.0; }
 
-  public Collection getNodedSubstrings()
+  Collection getNodedSubstrings()
   {
     Collection splitSS = noder.getNodedSubstrings();
     if (isScaled) rescale(splitSS);
     return splitSS;
   }
 
-  public void computeNodes(Collection inputSegStrings)
+  void computeNodes(Collection inputSegStrings)
   {
     Collection intSegStrings = inputSegStrings;
     if (isScaled)
@@ -81,9 +81,9 @@ public class ScaledNoder
     return nodedSegmentStrings;
   }
 
-  private Coordinate[] scale(Coordinate[] pts)
+  private List<Coordinate> scale(List<Coordinate> pts)
   {
-    Coordinate[] roundPts = new Coordinate[pts.length];
+    List<Coordinate> roundPts = new Coordinate[pts.length];
     for (int i = 0; i < pts.length; i++) {
       roundPts[i] = new Coordinate(
           Math.round((pts[i].x - offsetX) * scaleFactor),
@@ -91,7 +91,7 @@ public class ScaledNoder
           pts[i].getZ()
         );
     }
-    Coordinate[] roundPtsNoDup = CoordinateArrays.removeRepeatedPoints(roundPts);
+    List<Coordinate> roundPtsNoDup = CoordinateArrays.removeRepeatedPoints(roundPts);
     return roundPtsNoDup;
   }
 
@@ -105,7 +105,7 @@ public class ScaledNoder
     }
   }
 
-  private void rescale(Coordinate[] pts)
+  private void rescale(List<Coordinate> pts)
   {
     for (int i = 0; i < pts.length; i++) {
       pts[i].x = pts[i].x / scaleFactor + offsetX;

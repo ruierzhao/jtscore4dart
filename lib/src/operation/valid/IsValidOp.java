@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.valid;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @version 1.7
  */
-public class IsValidOp
+class IsValidOp
 {
   private static final int MIN_SIZE_LINESTRING = 2;
   private static final int MIN_SIZE_RING = 4;
@@ -38,7 +38,7 @@ public class IsValidOp
    * @param geom the Geometry to test
    * @return true if the geometry is valid
    */
-  public static boolean isValid(Geometry geom)
+  static bool isValid(Geometry geom)
   {
     IsValidOp isValidOp = new IsValidOp(geom);
     return isValidOp.isValid();
@@ -52,7 +52,7 @@ public class IsValidOp
    * @param coord the coordinate to validate
    * @return <code>true</code> if the coordinate is valid
    */
-  public static boolean isValid(Coordinate coord)
+  static bool isValid(Coordinate coord)
   {
     if (Double.isNaN(coord.x)) return false;
     if (Double.isInfinite(coord.x)) return false;
@@ -69,7 +69,7 @@ public class IsValidOp
    * If the following condition is TRUE JTS will validate inverted shells and exverted holes
    * (the ESRI SDE model)
    */
-  private boolean isInvertedRingValid = false;
+  private bool isInvertedRingValid = false;
   
   private TopologyValidationError validErr;
 
@@ -78,7 +78,7 @@ public class IsValidOp
    * 
    * @param inputGeometry the geometry to validate
    */
-  public IsValidOp(Geometry inputGeometry)
+  IsValidOp(Geometry inputGeometry)
   {
     this.inputGeometry = inputGeometry;
   }
@@ -112,7 +112,7 @@ public class IsValidOp
    *
    * @param isValid states whether geometry with this condition is valid
    */
-  public void setSelfTouchingRingFormingHoleValid(boolean isValid)
+  void setSelfTouchingRingFormingHoleValid(bool isValid)
   {
     isInvertedRingValid = isValid;
   }
@@ -122,7 +122,7 @@ public class IsValidOp
    * 
    * @return true if the geometry is valid
    */
-  public boolean isValid()
+  bool isValid()
   {
     return isValidGeometry(inputGeometry);
   }
@@ -135,7 +135,7 @@ public class IsValidOp
    * @return the validation error, if the geometry is invalid
    * or null if the geometry is valid
    */
-  public TopologyValidationError getValidationError()
+  TopologyValidationError getValidationError()
   {
     isValidGeometry(inputGeometry);
     return validErr;
@@ -145,12 +145,12 @@ public class IsValidOp
     validErr = new TopologyValidationError(code, pt);   
   }
   
-  private boolean hasInvalidError() {
+  private bool hasInvalidError() {
     return validErr != null;
     
   }
   
-  private boolean isValidGeometry(Geometry g)
+  private bool isValidGeometry(Geometry g)
   {
     validErr = null;
 
@@ -172,7 +172,7 @@ public class IsValidOp
   /**
    * Tests validity of a Point.
    */
-  private boolean isValid(Point g)
+  private bool isValid(Point g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -182,7 +182,7 @@ public class IsValidOp
   /**
    * Tests validity of a MultiPoint.
    */
-  private boolean isValid(MultiPoint g)
+  private bool isValid(MultiPoint g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -193,7 +193,7 @@ public class IsValidOp
    * Tests validity of a LineString.  
    * Almost anything goes for linestrings!
    */
-  private boolean isValid(LineString g)
+  private bool isValid(LineString g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -205,7 +205,7 @@ public class IsValidOp
   /**
    * Tests validity of a LinearRing.
    */
-  private boolean isValid(LinearRing g)
+  private bool isValid(LinearRing g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -224,7 +224,7 @@ public class IsValidOp
    * Tests the validity of a polygon.
    * Sets the validErr flag.
    */
-  private boolean isValid(Polygon g)
+  private bool isValid(Polygon g)
   {
     checkCoordinatesValid(g);
     if (hasInvalidError()) return false;
@@ -258,7 +258,7 @@ public class IsValidOp
    * @param g
    * @return
    */
-  private boolean isValid(MultiPolygon g)
+  private bool isValid(MultiPolygon g)
   {
     for (int i = 0; i < g.getNumGeometries(); i++) {
       Polygon p = (Polygon) g.getGeometryN(i);
@@ -301,7 +301,7 @@ public class IsValidOp
    * @param gc
    * @return
    */
-  private boolean isValid(GeometryCollection gc)
+  private bool isValid(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       if (! isValidGeometry( gc.getGeometryN(i) )) 
@@ -310,7 +310,7 @@ public class IsValidOp
     return true;
   }
 
-  private void checkCoordinatesValid(Coordinate[] coords)
+  private void checkCoordinatesValid(List<Coordinate> coords)
   {
     for (int i = 0; i < coords.length; i++) {
       if (! isValid(coords[i])) {
@@ -386,7 +386,7 @@ public class IsValidOp
    * @param minSize the minimum line size
    * @return true if the line has the required number of non-repeated points
    */
-  private boolean isNonRepeatedSizeAtLeast(LineString line, int minSize) {
+  private bool isNonRepeatedSizeAtLeast(LineString line, int minSize) {
     int numPts = 0;
     Coordinate prevPt = null;
     for (int i = 0; i < line.getNumPoints(); i++) {
@@ -437,7 +437,7 @@ public class IsValidOp
     if (poly.getNumInteriorRing() <= 0) return;
     
     LinearRing shell = poly.getExteriorRing();
-    boolean isShellEmpty = shell.isEmpty();
+    bool isShellEmpty = shell.isEmpty();
     
     for (int i = 0; i < poly.getNumInteriorRing(); i++) {
       LinearRing hole = poly.getInteriorRingN(i);

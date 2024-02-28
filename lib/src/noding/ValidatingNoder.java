@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 
@@ -28,7 +28,7 @@ import java.util.Collection;
  * @see FastNodingValidator
  *
  */
-public class ValidatingNoder implements Noder {
+class ValidatingNoder implements Noder {
 
   private final Noder noder;
   private Collection<SegmentString> nodedSS;
@@ -38,7 +38,7 @@ public class ValidatingNoder implements Noder {
    * 
    * @param noder the Noder to validate
    */
-  public ValidatingNoder(Noder noder) {
+  ValidatingNoder(Noder noder) {
     this.noder = noder;
   }
   
@@ -50,7 +50,7 @@ public class ValidatingNoder implements Noder {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void computeNodes(@SuppressWarnings("rawtypes") Collection segStrings) {
+  void computeNodes(@SuppressWarnings("rawtypes") Collection segStrings) {
     noder.computeNodes(segStrings);
     nodedSS = noder.getNodedSubstrings(); 
     validate();
@@ -63,7 +63,7 @@ public class ValidatingNoder implements Noder {
 
   @SuppressWarnings("rawtypes")
   @Override
-  public Collection getNodedSubstrings() {
+  Collection getNodedSubstrings() {
     return nodedSS;
   }
 

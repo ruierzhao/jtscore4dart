@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,9 +74,9 @@ import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
  *
  * @see Geometry#isValid()
  */
-public class GeometryFixer {
+class GeometryFixer {
 
-  private static final boolean DEFAULT_KEEP_MULTI = true;
+  private static final bool DEFAULT_KEEP_MULTI = true;
 
   /**
    * Fixes a geometry to be valid.
@@ -84,7 +84,7 @@ public class GeometryFixer {
    * @param geom the geometry to be fixed
    * @return the valid fixed geometry
    */
-  public static Geometry fix(Geometry geom) {
+  static Geometry fix(Geometry geom) {
     return fix(geom, DEFAULT_KEEP_MULTI);
   }
 
@@ -98,7 +98,7 @@ public class GeometryFixer {
    *                    if they consist of only one item.
    * @return the valid fixed geometry
    */
-  public static Geometry fix(Geometry geom, boolean isKeepMulti) {
+  static Geometry fix(Geometry geom, bool isKeepMulti) {
     GeometryFixer fix = new GeometryFixer(geom);
     fix.setKeepMulti(isKeepMulti);
     return fix.getResult();
@@ -106,15 +106,15 @@ public class GeometryFixer {
 
   private Geometry geom;
   private GeometryFactory factory;
-  private boolean isKeepCollapsed = false;
-  private boolean isKeepMulti = DEFAULT_KEEP_MULTI;
+  private bool isKeepCollapsed = false;
+  private bool isKeepMulti = DEFAULT_KEEP_MULTI;
 
   /**
    * Creates a new instance to fix a given geometry.
    *
    * @param geom the geometry to be fixed
    */
-  public GeometryFixer(Geometry geom) {
+  GeometryFixer(Geometry geom) {
     this.geom = geom;
     this.factory = geom.getFactory();
   }
@@ -127,7 +127,7 @@ public class GeometryFixer {
    *
    * @param isKeepCollapsed whether collapses should be converted to a lower dimension geometry
    */
-  public void setKeepCollapsed(boolean isKeepCollapsed) {
+  void setKeepCollapsed(bool isKeepCollapsed) {
     this.isKeepCollapsed  = isKeepCollapsed;
   }
 
@@ -139,7 +139,7 @@ public class GeometryFixer {
    *
    * @param isKeepMulti flag whether to keep {@code MULTI} geometries.
    */
-  public void setKeepMulti(boolean isKeepMulti) {
+  void setKeepMulti(bool isKeepMulti) {
     this.isKeepMulti  = isKeepMulti;
   }
 
@@ -148,7 +148,7 @@ public class GeometryFixer {
    *
    * @return the fixed geometry
    */
-  public Geometry getResult() {
+  Geometry getResult() {
     /*
      *  Truly empty geometries are simply copied.
      *  Geometry collections with elements are evaluated on a per-element basis.
@@ -183,7 +183,7 @@ public class GeometryFixer {
     return (Point) geom.copy();
   }
 
-  private static boolean isValidPoint(Point pt) {
+  private static bool isValidPoint(Point pt) {
     Coordinate p = pt.getCoordinate();
     return p.isValid();
   }
@@ -214,8 +214,8 @@ public class GeometryFixer {
 
   private Geometry fixLinearRingElement(LinearRing geom) {
     if (geom.isEmpty()) return null;
-    Coordinate[] pts = geom.getCoordinates();
-    Coordinate[] ptsFix = fixCoordinates(pts);
+    List<Coordinate> pts = geom.getCoordinates();
+    List<Coordinate> ptsFix = fixCoordinates(pts);
     if (this.isKeepCollapsed) {
       if (ptsFix.length == 1) {
         return factory.createPoint(ptsFix[0]);
@@ -246,8 +246,8 @@ public class GeometryFixer {
 
   private Geometry fixLineStringElement(LineString geom) {
     if (geom.isEmpty()) return null;
-    Coordinate[] pts = geom.getCoordinates();
-    Coordinate[] ptsFix = fixCoordinates(pts);
+    List<Coordinate> pts = geom.getCoordinates();
+    List<Coordinate> ptsFix = fixCoordinates(pts);
     if (this.isKeepCollapsed && ptsFix.length == 1) {
       return factory.createPoint(ptsFix[0]);
     }
@@ -263,14 +263,14 @@ public class GeometryFixer {
    * @param pts coordinates to clean
    * @return an array of clean coordinates
    */
-  private static Coordinate[] fixCoordinates(Coordinate[] pts) {
-    Coordinate[] ptsClean = CoordinateArrays.removeRepeatedOrInvalidPoints(pts);
+  private static List<Coordinate> fixCoordinates(List<Coordinate> pts) {
+    List<Coordinate> ptsClean = CoordinateArrays.removeRepeatedOrInvalidPoints(pts);
     return CoordinateArrays.copyDeep(ptsClean);
   }
 
   private Geometry fixMultiLineString(MultiLineString geom) {
     List<Geometry> fixed = new ArrayList<Geometry>();
-    boolean isMixed = false;
+    bool isMixed = false;
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       LineString line = (LineString) geom.getGeometryN(i);
       if (line.isEmpty()) continue;
@@ -424,7 +424,7 @@ public class GeometryFixer {
     return factory.createGeometryCollection(geomRep);
   }
 
-  private static Geometry fix(Geometry geom, boolean isKeepCollapsed, boolean isKeepMulti) {
+  private static Geometry fix(Geometry geom, bool isKeepCollapsed, bool isKeepMulti) {
     GeometryFixer fix = new GeometryFixer(geom);
     fix.setKeepCollapsed(isKeepCollapsed);
     fix.setKeepMulti(isKeepMulti);

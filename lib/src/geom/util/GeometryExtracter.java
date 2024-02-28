@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @version 1.7
  */
-public class GeometryExtracter
+class GeometryExtracter
   implements GeometryFilter
 {
   /**
@@ -41,7 +41,7 @@ public class GeometryExtracter
    * @param list the list to add the extracted elements to
    * @deprecated Use {@link GeometryExtracter#extract(Geometry, String, List)}
    */
-  public static List extract(Geometry geom, Class clz, List list)
+  static List extract(Geometry geom, Class clz, List list)
   {
   	return extract(geom, toGeometryType(clz), list);
   }
@@ -79,7 +79,7 @@ public class GeometryExtracter
    * @param geometryType Geometry type to extract (null means all types)
    * @param list the list to add the extracted elements to
    */
-  public static List extract(Geometry geom, String geometryType, List list)
+  static List extract(Geometry geom, String geometryType, List list)
   {
   	if (geom.getGeometryType() == geometryType) {
   		list.add(geom);
@@ -99,12 +99,12 @@ public class GeometryExtracter
    * @param geom the geometry from which to extract
    * @deprecated Use {@link GeometryExtracter#extract(Geometry, String)}
    */
-  public static List extract(Geometry geom, Class clz)
+  static List extract(Geometry geom, Class clz)
   {
     return extract(geom, clz, new ArrayList());
   }
   
-  public static List extract(Geometry geom, String geometryType)
+  static List extract(Geometry geom, String geometryType)
   {
     return extract(geom, geometryType, new ArrayList());
   }
@@ -119,7 +119,7 @@ public class GeometryExtracter
    * @param comps the list to extract into
    * @deprecated
    */
-  public GeometryExtracter(Class clz, List comps)
+  GeometryExtracter(Class clz, List comps)
   {
   	this.geometryType = toGeometryType(clz);
     this.comps = comps;
@@ -131,20 +131,20 @@ public class GeometryExtracter
    * @param geometryType Geometry type to extract (null means all types)
    * @param comps the list to extract into
    */
-  public GeometryExtracter(String geometryType, List comps)
+  GeometryExtracter(String geometryType, List comps)
   {
   	this.geometryType = geometryType;
     this.comps = comps;
   }
   
-  protected static boolean isOfType(Geometry geom, String geometryType) {
+  protected static bool isOfType(Geometry geom, String geometryType) {
     if (geom.getGeometryType() == geometryType) return true;
     if (geometryType == Geometry.TYPENAME_LINESTRING
       && geom.getGeometryType() == Geometry.TYPENAME_LINEARRING) return true;
     return false;
   }
 
-  public void filter(Geometry geom) {
+  void filter(Geometry geom) {
     if (geometryType == null || isOfType(geom, geometryType))
       comps.add(geom);
   }

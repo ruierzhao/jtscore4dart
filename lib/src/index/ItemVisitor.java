@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.index;
+
 
 /**
  * A visitor for items in a {@link SpatialIndex}.
@@ -18,7 +18,7 @@ package org.locationtech.jts.index;
  * @version 1.7
  */
 
-public interface ItemVisitor
+interface ItemVisitor
 {
   /**
    * Visits an item in the index.

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -39,7 +39,7 @@ import org.locationtech.jts.geom.Polygon;
  * @see ConvexHull
  *
  */
-public class MinimumAreaRectangle
+class MinimumAreaRectangle
 {
   /**
    * Gets the minimum-area rectangular {@link Polygon} which encloses the input geometry.
@@ -49,19 +49,19 @@ public class MinimumAreaRectangle
    * @param geom the geometry
    * @return the minimum rectangle enclosing the geometry
    */
-  public static Geometry getMinimumRectangle(Geometry geom) {
+  static Geometry getMinimumRectangle(Geometry geom) {
     return (new MinimumAreaRectangle(geom)).getMinimumRectangle();
   }
   
   private final Geometry inputGeom;
-  private final boolean isConvex;
+  private final bool isConvex;
 
   /**
    * Compute a minimum-area rectangle for a given {@link Geometry}.
    *
    * @param inputGeom a Geometry
    */
-  public MinimumAreaRectangle(Geometry inputGeom)
+  MinimumAreaRectangle(Geometry inputGeom)
   {
     this(inputGeom, false);
   }
@@ -75,7 +75,7 @@ public class MinimumAreaRectangle
    * @param inputGeom a Geometry which is convex
    * @param isConvex <code>true</code> if the input geometry is convex
    */
-  public MinimumAreaRectangle(Geometry inputGeom, boolean isConvex)
+  MinimumAreaRectangle(Geometry inputGeom, bool isConvex)
   {
     this.inputGeom = inputGeom;
     this.isConvex = isConvex;
@@ -96,7 +96,7 @@ public class MinimumAreaRectangle
   private Geometry computeConvex(Geometry convexGeom)
   {
 //System.out.println("Input = " + geom);
-    Coordinate[] convexHullPts = null;
+    List<Coordinate> convexHullPts = null;
     if (convexGeom instanceof Polygon)
       convexHullPts = ((Polygon) convexGeom).getExteriorRing().getCoordinates();
     else
@@ -124,7 +124,7 @@ public class MinimumAreaRectangle
    *
    * @param ring the convex ring to scan
    */
-  private Polygon computeConvexRing(Coordinate[] ring)
+  private Polygon computeConvexRing(List<Coordinate> ring)
   {
     // Assert: ring is oriented CW
     
@@ -179,7 +179,7 @@ public class MinimumAreaRectangle
         inputGeom.getFactory());
   }
 
-  private int findFurthestVertex(Coordinate[] pts, LineSegment baseSeg, int startIndex, int orient)
+  private int findFurthestVertex(List<Coordinate> pts, LineSegment baseSeg, int startIndex, int orient)
   {
     double maxDistance = orientedDistance(baseSeg, pts[startIndex], orient);
     double nextDistance = maxDistance;
@@ -198,24 +198,24 @@ public class MinimumAreaRectangle
     return maxIndex;
   }
 
-  private boolean isFurtherOrEqual(double d1, double d2, int orient) {
+  private bool isFurtherOrEqual(double d1, double d2, int orient) {
     switch (orient) {
-    case 0: return Math.abs(d1) >= Math.abs(d2);
+    case 0: return (d1).abs() >= (d2).abs();
     case 1: return d1 >= d2;
     case -1: return d1 <= d2;  
     }
-    throw new IllegalArgumentException("Invalid orientation index: " + orient);
+    throw new ArgumentError("Invalid orientation index: " + orient);
   }
 
   private static double orientedDistance(LineSegment seg, Coordinate p, int orient) {
     double dist = seg.distancePerpendicularOriented(p);
     if (orient == 0) {
-      return Math.abs(dist);
+      return (dist).abs();
     }
     return dist;
   }
 
-  private static int nextIndex(Coordinate[] ring, int index)
+  private static int nextIndex(List<Coordinate> ring, int index)
   {
     index++;
     if (index >= ring.length - 1) index = 0;
@@ -228,7 +228,7 @@ public class MinimumAreaRectangle
    * @param factory the geometry factory
    * @return the line of maximum extent
    */
-  private static LineString computeMaximumLine(Coordinate[] pts, GeometryFactory factory) {
+  private static LineString computeMaximumLine(List<Coordinate> pts, GeometryFactory factory) {
     //-- find max and min pts for X and Y
     Coordinate ptMinX = null;
     Coordinate ptMaxX = null;
@@ -247,6 +247,6 @@ public class MinimumAreaRectangle
       p0 = ptMinY;
       p1 = ptMaxY;
     }
-    return factory.createLineString(new Coordinate[] { p0.copy(), p1.copy() });
+    return factory.createLineString(new List<Coordinate> { p0.copy(), p1.copy() });
   }
 }

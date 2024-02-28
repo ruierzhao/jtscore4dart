@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.math;
+
 
 import java.io.Serializable;
 
@@ -90,46 +90,46 @@ import java.io.Serializable;
  * @author Martin Davis
  *
  */
-public strictfp final class DD 
+strictfp final class DD 
   implements Serializable, Comparable, Cloneable
 {
   /**
    * The value nearest to the constant Pi.
    */
-  public static final DD PI = new DD(
+  static final DD PI = new DD(
       3.141592653589793116e+00,
       1.224646799147353207e-16);
   
   /**
    * The value nearest to the constant 2 * Pi.
    */ 
-  public static final DD TWO_PI = new DD(
+  static final DD TWO_PI = new DD(
       6.283185307179586232e+00,
       2.449293598294706414e-16);
   
   /**
    * The value nearest to the constant Pi / 2.
    */
-  public static final DD PI_2 = new DD(
+  static final DD PI_2 = new DD(
       1.570796326794896558e+00,
       6.123233995736766036e-17);
   
   /**
    * The value nearest to the constant e (the natural logarithm base). 
    */
-  public static final DD E = new DD(
+  static final DD E = new DD(
       2.718281828459045091e+00,
       1.445646891729250158e-16);
   
   /**
    * A value representing the result of an operation which does not return a valid number.
    */
-  public static final DD NaN = new DD(Double.NaN, Double.NaN);
+  static final DD NaN = new DD(Double.NaN, Double.NaN);
   
   /**
    * The smallest representable relative difference between two {link @ DoubleDouble} values
    */
-  public static final double EPS = 1.23259516440783e-32;  /* = 2^-106 */
+  static final double EPS = 1.23259516440783e-32;  /* = 2^-106 */
   
   private static DD createNaN()
   {
@@ -143,7 +143,7 @@ public strictfp final class DD
    * @return the extended precision version of the value
    * @throws NumberFormatException if <tt>s</tt> is not a valid representation of a number
    */
-  public static DD valueOf(String str) 
+  static DD valueOf(String str) 
   throws NumberFormatException
   { 
     return parse(str); 
@@ -155,7 +155,7 @@ public strictfp final class DD
    * @param x a numeric value
    * @return the extended precision version of the value
    */
-  public static DD valueOf(double x) { return new DD(x); }
+  static DD valueOf(double x) { return new DD(x); }
   
   /**
    * The value to split a double-precision value on during multiplication
@@ -175,7 +175,7 @@ public strictfp final class DD
   /**
    * Creates a new DoubleDouble with value 0.0.
    */
-  public DD()
+  DD()
   {
     init(0.0);
   }
@@ -185,7 +185,7 @@ public strictfp final class DD
    * 
    * @param x the value to initialize
    */
-  public DD(double x)
+  DD(double x)
   {
     init(x);
   }
@@ -196,7 +196,7 @@ public strictfp final class DD
    * @param hi the high-order component 
    * @param lo the high-order component 
    */
-  public DD(double hi, double lo)
+  DD(double hi, double lo)
   {
     init(hi, lo);
   }
@@ -206,7 +206,7 @@ public strictfp final class DD
    * 
    * @param dd the value to initialize
    */
-  public DD(DD dd)
+  DD(DD dd)
   {
     init(dd);
   }
@@ -217,7 +217,7 @@ public strictfp final class DD
    * @param str the value to initialize by
    * @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
    */
-  public DD(String str)
+  DD(String str)
     throws NumberFormatException
   {
     this(parse(str));
@@ -229,7 +229,7 @@ public strictfp final class DD
    * @param dd the DoubleDouble value to copy
    * @return a copy of the input value
    */
-  public static DD copy(DD dd)
+  static DD copy(DD dd)
   {
     return new DD(dd);
   }
@@ -239,7 +239,7 @@ public strictfp final class DD
    * 
    * @return a copy of this value
    */
-  public Object clone()
+  Object clone()
   {
     try {
       return super.clone();
@@ -276,7 +276,7 @@ public strictfp final class DD
   
   // Testing only - should not be public
   /*
-  public void RENORM()
+  void RENORM()
   {
     double s = hi + lo;
     double err = lo - (s - hi);
@@ -291,7 +291,7 @@ public strictfp final class DD
    * @param value a DD instance supplying an extended-precision value.
    * @return a self-reference to the DD instance.
    */
-  public DD setValue(DD value) {
+  DD setValue(DD value) {
     init(value);
     return this;
   }
@@ -302,7 +302,7 @@ public strictfp final class DD
    * @param value a floating point value to be stored in the instance.
    * @return a self-reference to the DD instance.
    */
-  public DD setValue(double value) {
+  DD setValue(double value) {
     init(value);
     return this;
   }
@@ -314,7 +314,7 @@ public strictfp final class DD
    * @param y the addend
    * @return <tt>(this + y)</tt>
    */ 
-  public final DD add(DD y)
+  final DD add(DD y)
   {
     return copy(this).selfAdd(y);
   }
@@ -325,7 +325,7 @@ public strictfp final class DD
    * @param y the addend
    * @return <tt>(this + y)</tt>
    */ 
-  public final DD add(double y)
+  final DD add(double y)
   {
     return copy(this).selfAdd(y);
   }
@@ -339,7 +339,7 @@ public strictfp final class DD
    * @param y the addend
    * @return this object, increased by y
    */
-  public final DD selfAdd(DD y)
+  final DD selfAdd(DD y)
   {
     return selfAdd(y.hi, y.lo);
   }
@@ -353,7 +353,7 @@ public strictfp final class DD
    * @param y the addend
    * @return this object, increased by y
    */
-  public final DD selfAdd(double y)
+  final DD selfAdd(double y)
   {
     double H, h, S, s, e, f;
     S = hi + y;
@@ -395,7 +395,7 @@ public strictfp final class DD
    * @param y the subtrahend
    * @return <tt>(this - y)</tt>
    */
-  public final DD subtract(DD y)
+  final DD subtract(DD y)
   {
     return add(y.negate());
   }
@@ -406,7 +406,7 @@ public strictfp final class DD
    * @param y the subtrahend
    * @return <tt>(this - y)</tt>
    */
-  public final DD subtract(double y)
+  final DD subtract(double y)
   {
     return add(-y);
   }
@@ -421,7 +421,7 @@ public strictfp final class DD
    * @param y the addend
    * @return this object, decreased by y
    */
-  public final DD selfSubtract(DD y)
+  final DD selfSubtract(DD y)
   {
     if (isNaN()) return this;
     return selfAdd(-y.hi, -y.lo);
@@ -436,7 +436,7 @@ public strictfp final class DD
    * @param y the addend
    * @return this object, decreased by y
    */
-  public final DD selfSubtract(double y)
+  final DD selfSubtract(double y)
   {
     if (isNaN()) return this;
     return selfAdd(-y, 0.0);
@@ -447,7 +447,7 @@ public strictfp final class DD
    * 
    * @return <tt>-this</tt>
    */
-  public final DD negate()
+  final DD negate()
   {
     if (isNaN()) return this;
     return new DD(-hi, -lo);
@@ -459,7 +459,7 @@ public strictfp final class DD
    * @param y the multiplicand
    * @return <tt>(this * y)</tt>
    */
-  public final DD multiply(DD y)
+  final DD multiply(DD y)
   {
     if (y.isNaN()) return createNaN();
     return copy(this).selfMultiply(y);
@@ -471,7 +471,7 @@ public strictfp final class DD
    * @param y the multiplicand
    * @return <tt>(this * y)</tt>
    */
-  public final DD multiply(double y)
+  final DD multiply(double y)
   {
     if (Double.isNaN(y)) return createNaN();
     return copy(this).selfMultiply(y, 0.0);
@@ -486,7 +486,7 @@ public strictfp final class DD
    * @param y the value to multiply by
    * @return this object, multiplied by y
    */
-  public final DD selfMultiply(DD y)
+  final DD selfMultiply(DD y)
   {
     return selfMultiply(y.hi, y.lo);
   }
@@ -500,7 +500,7 @@ public strictfp final class DD
    * @param y the value to multiply by
    * @return this object, multiplied by y
    */
-  public final DD selfMultiply(double y)
+  final DD selfMultiply(double y)
   {
     return selfMultiply(y, 0.0);
   }
@@ -525,7 +525,7 @@ public strictfp final class DD
    * @param y the divisor
    * @return a new object with the value <tt>(this / y)</tt>
    */
-  public final DD divide(DD y)
+  final DD divide(DD y)
   {
     double hc, tc, hy, ty, C, c, U, u;
     C = hi/y.hi; c = SPLIT*C; hc =c-C;  u = SPLIT*y.hi; hc = c-hc;
@@ -545,7 +545,7 @@ public strictfp final class DD
    * @param y the divisor
    * @return a new object with the value <tt>(this / y)</tt>
    */
-  public final DD divide(double y)
+  final DD divide(double y)
   {
     if (Double.isNaN(y)) return createNaN();
     return copy(this).selfDivide(y, 0.0);  
@@ -560,7 +560,7 @@ public strictfp final class DD
    * @param y the value to divide by
    * @return this object, divided by y
    */
-  public final DD selfDivide(DD y)
+  final DD selfDivide(DD y)
   {
     return selfDivide(y.hi, y.lo);
   }
@@ -574,7 +574,7 @@ public strictfp final class DD
    * @param y the value to divide by
    * @return this object, divided by y
    */
-  public final DD selfDivide(double y)
+  final DD selfDivide(double y)
   {
     return selfDivide(y, 0.0);
   }
@@ -598,7 +598,7 @@ public strictfp final class DD
    * 
    * @return the reciprocal of this value
    */
-  public final DD reciprocal()
+  final DD reciprocal()
   {
     double  hc, tc, hy, ty, C, c, U, u;
     C = 1.0/hi; 
@@ -627,7 +627,7 @@ public strictfp final class DD
    * value that is not greater than the argument 
    * and is equal to a mathematical integer.
    */
-  public DD floor()
+  DD floor()
   {
     if (isNaN()) return NaN;
     double fhi=Math.floor(hi);
@@ -651,7 +651,7 @@ public strictfp final class DD
    * @return the smallest (closest to negative infinity) value 
    * that is not less than the argument and is equal to a mathematical integer. 
    */
-  public DD ceil()
+  DD ceil()
   {
     if (isNaN()) return NaN;
     double fhi=Math.ceil(hi);
@@ -675,7 +675,7 @@ public strictfp final class DD
    * 
    * @return an integer indicating the sign of this value
    */
-  public int signum()
+  int signum()
   {
     if (hi > 0) return 1;
     if (hi < 0) return -1;
@@ -694,7 +694,7 @@ public strictfp final class DD
    *
    * @return this value rounded to the nearest integer
    */
-  public DD rint()
+  DD rint()
   {
     if (isNaN()) return this;
     // may not be 100% correct
@@ -712,7 +712,7 @@ public strictfp final class DD
    *  
    * @return the integer which is largest in absolute value and not further from zero than this value
    */
-  public DD trunc()
+  DD trunc()
   {
     if (isNaN()) return NaN;
     if (isPositive()) 
@@ -730,7 +730,7 @@ public strictfp final class DD
    * 
    * @return the absolute value of this value
    */
-  public DD abs()
+  DD abs()
   {
     if (isNaN()) return NaN;
     if (isNegative())
@@ -743,7 +743,7 @@ public strictfp final class DD
    * 
    * @return the square of this value.
    */
-  public DD sqr()
+  DD sqr()
   {
     return this.multiply(this);
   }
@@ -756,7 +756,7 @@ public strictfp final class DD
    * 
    * @return the square of this value.
    */
-  public DD selfSqr()
+  DD selfSqr()
   {
     return this.selfMultiply(this);
   }
@@ -766,7 +766,7 @@ public strictfp final class DD
    * 
    * @return the square of this value.
    */
-  public static DD sqr(double x)
+  static DD sqr(double x)
   {
     return valueOf(x).selfMultiply(x);
   }
@@ -778,7 +778,7 @@ public strictfp final class DD
    * @return the positive square root of this number. 
    * If the argument is NaN or less than zero, the result is NaN.
    */
-  public DD sqrt()
+  DD sqrt()
   {
     /* Strategy:  Use Karp's trick:  if x is an approximation
     to sqrt(a), then
@@ -807,7 +807,7 @@ public strictfp final class DD
     return axdd.add(d2);
   }
   
-  public static DD sqrt(double x)
+  static DD sqrt(double x)
   {
     return valueOf(x).sqrt();
   }
@@ -819,14 +819,14 @@ public strictfp final class DD
    * @param exp the integer exponent
    * @return x raised to the integral power exp
    */
-  public DD pow(int exp)
+  DD pow(int exp)
   {
     if (exp == 0.0)
       return valueOf(1.0);
     
     DD r = new DD(this);
     DD s = valueOf(1.0);
-    int n = Math.abs(exp);
+    int n = (exp).abs();
 
     if (n > 1) {
       /* Use binary exponentiation */
@@ -857,7 +857,7 @@ public strictfp final class DD
    * @param y2 a double value
    * @return the determinant of the values
    */
-  public static DD determinant(double x1, double y1, double x2, double y2)
+  static DD determinant(double x1, double y1, double x2, double y2)
   {
     return determinant(valueOf(x1), valueOf(y1), valueOf(x2), valueOf(y2) );
   }
@@ -871,7 +871,7 @@ public strictfp final class DD
    * @param y2 a matrix entry
    * @return the determinant of the matrix of values
    */
-  public static DD determinant(DD x1, DD y1, DD x2, DD y2)
+  static DD determinant(DD x1, DD y1, DD x2, DD y2)
   {
     DD det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
     return det;
@@ -888,7 +888,7 @@ public strictfp final class DD
    * @param x a DD number
    * @return the minimum of the two numbers
    */
-  public DD min(DD x) {
+  DD min(DD x) {
     if (this.le(x)) {
       return this;
     }
@@ -903,7 +903,7 @@ public strictfp final class DD
    * @param x a DD number
    * @return the maximum of the two numbers
    */
-  public DD max(DD x) {
+  DD max(DD x) {
     if (this.ge(x)) {
       return this;
     }
@@ -922,7 +922,7 @@ public strictfp final class DD
    * 
    * @return the nearest double-precision number to this value
    */
-  public double doubleValue()
+  double doubleValue()
   {
     return hi + lo;
   }
@@ -932,7 +932,7 @@ public strictfp final class DD
    * 
    * @return the nearest integer to this value
    */
-  public int intValue()
+  int intValue()
   {
     return (int) hi;
   }
@@ -947,7 +947,7 @@ public strictfp final class DD
    * 
    * @return true if this value is equal to 0
    */
-  public boolean isZero() 
+  bool isZero() 
   {
     return hi == 0.0 && lo == 0.0;
   }
@@ -957,7 +957,7 @@ public strictfp final class DD
    * 
    * @return true if this value is less than 0
    */
-  public boolean isNegative()
+  bool isNegative()
   {
     return hi < 0.0 || (hi == 0.0 && lo < 0.0);
   }
@@ -967,7 +967,7 @@ public strictfp final class DD
    * 
    * @return true if this value is greater than 0
    */
-  public boolean isPositive()
+  bool isPositive()
   {
     return hi > 0.0 || (hi == 0.0 && lo > 0.0);
   }
@@ -977,7 +977,7 @@ public strictfp final class DD
    * 
    * @return true if this value is NaN
    */
-  public boolean isNaN() { return Double.isNaN(hi); }
+  bool isNaN() { return Double.isNaN(hi); }
   
   /**
    * Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
@@ -985,7 +985,7 @@ public strictfp final class DD
    * @param y a DoubleDouble value
    * @return true if this value = y
    */
-  public boolean equals(DD y)
+  bool equals(DD y)
   {
     return hi == y.hi && lo == y.lo;
   }
@@ -995,7 +995,7 @@ public strictfp final class DD
    * @param y a DoubleDouble value
    * @return true if this value &gt; y
    */
-  public boolean gt(DD y)
+  bool gt(DD y)
   {
     return (hi > y.hi) || (hi == y.hi && lo > y.lo);
   }
@@ -1004,7 +1004,7 @@ public strictfp final class DD
    * @param y a DoubleDouble value
    * @return true if this value &gt;= y
    */
-  public boolean ge(DD y)
+  bool ge(DD y)
   {
     return (hi > y.hi) || (hi == y.hi && lo >= y.lo);
   }
@@ -1013,7 +1013,7 @@ public strictfp final class DD
    * @param y a DoubleDouble value
    * @return true if this value &lt; y
    */
-  public boolean lt(DD y)
+  bool lt(DD y)
   {
     return (hi < y.hi) || (hi == y.hi && lo < y.lo);
   }
@@ -1022,7 +1022,7 @@ public strictfp final class DD
    * @param y a DoubleDouble value
    * @return true if this value &lt;= y
    */
-  public boolean le(DD y)
+  bool le(DD y)
   {
     return (hi < y.hi) || (hi == y.hi && lo <= y.lo);
   }
@@ -1033,7 +1033,7 @@ public strictfp final class DD
    * @return -1,0 or 1 depending on whether this value is less than, equal to
    * or greater than the value of <tt>o</tt>
    */
-  public int compareTo(Object o) 
+  int compareTo(Object o) 
   {
     DD other = (DD) o;
 
@@ -1061,7 +1061,7 @@ public strictfp final class DD
    * 
    * @return a string showing the components of the number
    */
-  public String dump()
+  String dump()
   {
     return "DD<" + hi + ", " + lo + ">";
   }
@@ -1073,7 +1073,7 @@ public strictfp final class DD
    * 
    * @return a string representation of this number
    */
-  public String toString()
+  String toString()
   {
     int mag = magnitude(hi);
     if (mag >= -3 && mag <= 20)
@@ -1086,7 +1086,7 @@ public strictfp final class DD
    * 
    * @return the string representation in standard notation 
    */
-  public String toStandardNotation()
+  String toStandardNotation()
   {
     String specialStr = getSpecialNumberString();
     if (specialStr != null)
@@ -1122,7 +1122,7 @@ public strictfp final class DD
    * 
    * @return the string representation in scientific notation 
    */
-  public String toSciNotation()
+  String toSciNotation()
   {
     // special case zero, to allow as
     if (isZero())
@@ -1164,7 +1164,7 @@ public strictfp final class DD
    * @param decimalPointPos the position in which to insert a decimal point
    * @return the string containing the significant digits and possibly a decimal point
    */
-  private String extractSignificantDigits(boolean insertDecimalPoint, int[] magnitude)
+  private String extractSignificantDigits(bool insertDecimalPoint, int[] magnitude)
   {
     DD y = this.abs();
     // compute *correct* magnitude of y
@@ -1209,7 +1209,7 @@ public strictfp final class DD
         break;
         // throw new IllegalStateException("Internal errror: found digit = " + digit);
       }
-      boolean rebiasBy10 = false;
+      bool rebiasBy10 = false;
       char digitChar = 0;
       if (digit > 9) {
         // set flag to re-bias after next 10-shift
@@ -1226,7 +1226,7 @@ public strictfp final class DD
       if (rebiasBy10)
         y.selfAdd(TEN);
       
-      boolean continueExtractingDigits = true;
+      bool continueExtractingDigits = true;
       /**
        * Heuristic check: if the remaining portion of 
        * y is non-positive, assume that output is complete
@@ -1239,7 +1239,7 @@ public strictfp final class DD
        * Do this by comparing the magnitude of the remainder with the expected precision.
        */
       int remMag = magnitude(y.hi);
-      if (remMag < 0 && Math.abs(remMag) >= (numDigits - i)) 
+      if (remMag < 0 && (remMag).abs() >= (numDigits - i)) 
         continueExtractingDigits = false;
       if (! continueExtractingDigits)
         break;
@@ -1291,7 +1291,7 @@ public strictfp final class DD
    */
   private static int magnitude(double x)
   {
-    double xAbs = Math.abs(x);
+    double xAbs = (x).abs();
     double xLog10 = Math.log(xAbs) / Math.log(10);
     int xMag = (int) Math.floor(xLog10); 
     /**
@@ -1324,7 +1324,7 @@ public strictfp final class DD
    * @return the value of the parsed number
    * @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
    */
-  public static DD parse(String str)
+  static DD parse(String str)
     throws NumberFormatException
   {
     int i = 0;
@@ -1335,7 +1335,7 @@ public strictfp final class DD
       i++;
     
     // check for sign
-    boolean isNegative = false;
+    bool isNegative = false;
     if (i < strlen) {
       char signCh = str.charAt(i);
       if (signCh == '-' || signCh == '+') {
@@ -1351,7 +1351,7 @@ public strictfp final class DD
     int numDigits = 0;
     int numBeforeDec = 0;
     int exp = 0;
-    boolean hasDecimalChar = false;
+    bool hasDecimalChar = false;
     while (true) {
       if (i >= strlen)
         break;

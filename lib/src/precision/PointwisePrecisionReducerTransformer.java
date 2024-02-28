@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.util.GeometryTransformer;
  */
 class PointwisePrecisionReducerTransformer extends GeometryTransformer {
   
-  public static Geometry reduce(Geometry geom, PrecisionModel targetPM) {
+  static Geometry reduce(Geometry geom, PrecisionModel targetPM) {
     PointwisePrecisionReducerTransformer trans = new PointwisePrecisionReducerTransformer(targetPM);
     return trans.transform(geom);
   }
@@ -41,12 +41,12 @@ class PointwisePrecisionReducerTransformer extends GeometryTransformer {
     if (coordinates.size() == 0)
       return null;
 
-    Coordinate[] coordsReduce = reducePointwise(coordinates);
+    List<Coordinate> coordsReduce = reducePointwise(coordinates);
     return factory.getCoordinateSequenceFactory().create(coordsReduce);
   }
 
-  private Coordinate[] reducePointwise(CoordinateSequence coordinates) {
-    Coordinate[] coordReduce = new Coordinate[coordinates.size()];
+  private List<Coordinate> reducePointwise(CoordinateSequence coordinates) {
+    List<Coordinate> coordReduce = new Coordinate[coordinates.size()];
     // copy coordinates and reduce
     for (int i = 0; i < coordinates.size(); i++) {
       Coordinate coord = coordinates.getCoordinate(i).copy();

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.shape;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -18,43 +18,43 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineSegment;
 
-public abstract class GeometricShapeBuilder 
+abstract class GeometricShapeBuilder 
 {
 	protected Envelope extent = new Envelope(0, 1, 0, 1);
 	protected int numPts = 0;
 	protected GeometryFactory geomFactory;
 	
-	public GeometricShapeBuilder(GeometryFactory geomFactory)
+	GeometricShapeBuilder(GeometryFactory geomFactory)
 	{
 		this.geomFactory = geomFactory;
 	}
 	
-	public void setExtent(Envelope extent)
+	void setExtent(Envelope extent)
 	{
 		this.extent = extent;
 	}
 	
-	public Envelope getExtent()
+	Envelope getExtent()
 	{
 		return extent;
 	}
 	
-	public Coordinate getCentre()
+	Coordinate getCentre()
 	{
 		return extent.centre();
 	}
 	
-	public double getDiameter()
+	double getDiameter()
 	{
 		return Math.min(extent.getHeight(), extent.getWidth());
 	}
 	
-	public double getRadius()
+	double getRadius()
 	{
 		return getDiameter() / 2;
 	}
 	
-	public LineSegment getSquareBaseLine()
+	LineSegment getSquareBaseLine()
 	{
 		double radius = getRadius();
 		
@@ -64,7 +64,7 @@ public abstract class GeometricShapeBuilder
 		return new LineSegment(p0, p1);
 	}
 	
-	public Envelope getSquareExtent()
+	Envelope getSquareExtent()
 	{
 		double radius = getRadius();
 		
@@ -79,9 +79,9 @@ public abstract class GeometricShapeBuilder
    * The created geometry will have no more than this number of points,
    * unless more are needed to create a valid geometry.
    */
-  public void setNumPoints(int numPts) { this.numPts = numPts; }
+  void setNumPoints(int numPts) { this.numPts = numPts; }
 
-  public abstract Geometry getGeometry();
+  abstract Geometry getGeometry();
 
   protected Coordinate createCoord(double x, double y)
   {

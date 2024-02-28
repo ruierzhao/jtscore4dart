@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ class OverlayLabeller {
   private InputGeometry inputGeometry;
   private Collection<OverlayEdge> edges;
   
-  public OverlayLabeller(OverlayGraph graph, InputGeometry inputGeometry) {
+  OverlayLabeller(OverlayGraph graph, InputGeometry inputGeometry) {
     this.graph = graph;
     this.inputGeometry = inputGeometry;
     edges = graph.getEdges();
@@ -46,7 +46,7 @@ class OverlayLabeller {
    * Computes the topological labelling for the edges in the graph.
    * 
    */
-  public void computeLabelling() {
+  void computeLabelling() {
     Collection<OverlayEdge> nodes = graph.getNodeEdges();
     
     labelAreaNodeEdges(nodes);
@@ -90,7 +90,7 @@ class OverlayLabeller {
    * 
    * @param geomIndex the geometry to propagate locations for
    */
-  public void propagateAreaLocations(OverlayEdge nodeEdge, int geomIndex) {
+  void propagateAreaLocations(OverlayEdge nodeEdge, int geomIndex) {
     /**
      * Only propagate for area geometries
      */
@@ -247,7 +247,7 @@ class OverlayLabeller {
     if (linearEdges.size() <= 0) return;
     
     Deque<OverlayEdge> edgeStack = new ArrayDeque<OverlayEdge>(linearEdges);
-    boolean isInputLine = inputGeometry.isLine(geomIndex);
+    bool isInputLine = inputGeometry.isLine(geomIndex);
     // traverse connected linear edges, labeling unknown ones
     while (! edgeStack.isEmpty()) {
       OverlayEdge lineEdge = edgeStack.removeFirst();
@@ -260,7 +260,7 @@ class OverlayLabeller {
   }
   
   private static void propagateLinearLocationAtNode(OverlayEdge eNode, 
-      int geomIndex, boolean isInputLine, 
+      int geomIndex, bool isInputLine, 
       Deque<OverlayEdge> edgeStack) {
     int lineLoc = eNode.getLabel().getLineLocation(geomIndex);
     /**
@@ -423,12 +423,12 @@ class OverlayLabeller {
      */
     int locOrig = inputGeometry.locatePointInArea(geomIndex, edge.orig());
     int locDest = inputGeometry.locatePointInArea(geomIndex, edge.dest());
-    boolean isInt = locOrig != Location.EXTERIOR && locDest != Location.EXTERIOR;
+    bool isInt = locOrig != Location.EXTERIOR && locDest != Location.EXTERIOR;
     int edgeLoc = isInt ? Location.INTERIOR : Location.EXTERIOR;
     return edgeLoc;
   } 
 
-  public void markResultAreaEdges(int overlayOpCode) {
+  void markResultAreaEdges(int overlayOpCode) {
     for (OverlayEdge edge : edges) {
       markInResultArea(edge, overlayOpCode);
     }
@@ -444,7 +444,7 @@ class OverlayLabeller {
    * @param e the edge to mark
    * @param overlayOpCode the overlay operation
    */
-  public void markInResultArea(OverlayEdge e, int overlayOpCode) {
+  void markInResultArea(OverlayEdge e, int overlayOpCode) {
     OverlayLabel label = e.getLabel();
     if ( label.isBoundaryEither()
         && OverlayNG.isResultOfOp(
@@ -462,7 +462,7 @@ class OverlayLabeller {
    * This has the effect of merging edge-adjacent result areas,
    * as required by polygon validity rules.
    */
-  public void unmarkDuplicateEdgesFromResultArea() {
+  void unmarkDuplicateEdgesFromResultArea() {
     for (OverlayEdge edge : edges ) {
       if ( edge.isInResultAreaBoth() ) {
         edge.unmarkFromResultAreaBoth();     
@@ -470,7 +470,7 @@ class OverlayLabeller {
     }
   }
 
-  public static String toString(OverlayEdge nodeEdge) {
+  static String toString(OverlayEdge nodeEdge) {
     Coordinate orig = nodeEdge.orig();
     StringBuilder sb = new StringBuilder();
     sb.append("Node( "+ WKTWriter.format(orig) + " )" + "\n");

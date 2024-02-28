@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlay;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,12 +36,12 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class PolygonBuilder {
+class PolygonBuilder {
 
   private GeometryFactory geometryFactory;
   private List shellList        = new ArrayList();
 
-  public PolygonBuilder(GeometryFactory geometryFactory)
+  PolygonBuilder(GeometryFactory geometryFactory)
   {
     this.geometryFactory = geometryFactory;
   }
@@ -51,7 +51,7 @@ public class PolygonBuilder {
    * The graph is assumed to contain one or more polygons,
    * possibly with holes.
    */
-  public void add(PlanarGraph graph)
+  void add(PlanarGraph graph)
   {
     add(graph.getEdgeEnds(), graph.getNodes());
   }
@@ -61,7 +61,7 @@ public class PolygonBuilder {
    * The graph is assumed to contain one or more polygons,
    * possibly with holes.
    */
-  public void add(Collection dirEdges, Collection nodes)
+  void add(Collection dirEdges, Collection nodes)
   {
     PlanarGraph.linkResultDirectedEdges(nodes);
     List maxEdgeRings = buildMaximalEdgeRings(dirEdges);
@@ -72,7 +72,7 @@ public class PolygonBuilder {
     //Assert: every hole on freeHoleList has a shell assigned to it
   }
 
-  public List getPolygons()
+  List getPolygons()
   {
     List resultPolyList = computePolygons(shellList);
     return resultPolyList;
@@ -250,7 +250,7 @@ public class PolygonBuilder {
       if (! tryShellEnv.contains(testEnv)) continue;
       
       testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryShellRing.getCoordinates());
-      boolean isContained = false;
+      bool isContained = false;
       if (PointLocation.isInRing(testPt, tryShellRing.getCoordinates()) )
         isContained = true;
 

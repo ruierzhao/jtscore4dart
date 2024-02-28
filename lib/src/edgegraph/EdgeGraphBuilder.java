@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.edgegraph;
+
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,9 +27,9 @@ import org.locationtech.jts.geom.LineString;
  * @author mdavis
  *
  */
-public class EdgeGraphBuilder 
+class EdgeGraphBuilder 
 {
-  public static EdgeGraph build(Collection geoms) {
+  static EdgeGraph build(Collection geoms) {
     EdgeGraphBuilder builder = new EdgeGraphBuilder();
     builder.add(geoms);
     return builder.getGraph();
@@ -37,12 +37,12 @@ public class EdgeGraphBuilder
 
   private EdgeGraph graph = new EdgeGraph();
 
-  public EdgeGraphBuilder()
+  EdgeGraphBuilder()
   {
     
   }
   
-  public EdgeGraph getGraph()
+  EdgeGraph getGraph()
   {
     return graph;
   }
@@ -55,9 +55,9 @@ public class EdgeGraphBuilder
    * 
    * @param geometry geometry to be added
    */  
-  public void add(Geometry geometry) {
+  void add(Geometry geometry) {
     geometry.apply(new GeometryComponentFilter() {
-      public void filter(Geometry component) {
+      void filter(Geometry component) {
         if (component instanceof LineString) {
           add((LineString)component);
         }
@@ -71,7 +71,7 @@ public class EdgeGraphBuilder
    * 
    * @param geometries the geometries to be added
    */
-  public void add(Collection geometries) 
+  void add(Collection geometries) 
   {
     for (Iterator i = geometries.iterator(); i.hasNext(); ) {
       Geometry geometry = (Geometry) i.next();

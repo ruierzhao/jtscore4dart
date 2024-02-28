@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.Polygonal;
  * @author mbdavis
  * @see GeometryFactory#buildGeometry
  */
-public class GeometryCombiner 
+class GeometryCombiner 
 {
 	/**
 	 * Combines a collection of geometries.
@@ -43,7 +43,7 @@ public class GeometryCombiner
 	 * @param geoms the geometries to combine
 	 * @return the combined geometry
 	 */
-	public static Geometry combine(Collection geoms)
+	static Geometry combine(Collection geoms)
 	{
 		GeometryCombiner combiner = new GeometryCombiner(geoms);
 		return combiner.combine();
@@ -56,7 +56,7 @@ public class GeometryCombiner
 	 * @param g1 a geometry to combine
 	 * @return the combined geometry
 	 */
-	public static Geometry combine(Geometry g0, Geometry g1)
+	static Geometry combine(Geometry g0, Geometry g1)
 	{
 		GeometryCombiner combiner = new GeometryCombiner(createList(g0, g1));
 		return combiner.combine();
@@ -70,7 +70,7 @@ public class GeometryCombiner
 	 * @param g2 a geometry to combine
 	 * @return the combined geometry
 	 */
-	public static Geometry combine(Geometry g0, Geometry g1, Geometry g2)
+	static Geometry combine(Geometry g0, Geometry g1, Geometry g2)
 	{
 		GeometryCombiner combiner = new GeometryCombiner(createList(g0, g1, g2));
 		return combiner.combine();
@@ -108,7 +108,7 @@ public class GeometryCombiner
   }
   
 	private GeometryFactory geomFactory;
-	private boolean skipEmpty = false;
+	private bool skipEmpty = false;
 	private Collection inputGeoms;
 		
 	/**
@@ -116,7 +116,7 @@ public class GeometryCombiner
 	 * 
 	 * @param geoms the geometries to combine
 	 */
-	public GeometryCombiner(Collection geoms)
+	GeometryCombiner(Collection geoms)
 	{
 		geomFactory = extractFactory(geoms);
 		this.inputGeoms = geoms;
@@ -128,7 +128,7 @@ public class GeometryCombiner
 	 * @param geoms
 	 * @return a GeometryFactory
 	 */
-	public static GeometryFactory extractFactory(Collection geoms) {
+	static GeometryFactory extractFactory(Collection geoms) {
 		if (geoms.isEmpty())
 			return null;
 		return ((Geometry) geoms.iterator().next()).getFactory();
@@ -140,7 +140,7 @@ public class GeometryCombiner
 	 * 
 	 * @return a Geometry which is the combination of the inputs
 	 */
-  public Geometry combine()
+  Geometry combine()
   {
   	List elems = new ArrayList();
   	for (Iterator i = inputGeoms.iterator(); i.hasNext(); ) {

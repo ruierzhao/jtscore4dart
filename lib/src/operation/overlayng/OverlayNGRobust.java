@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.Collection;
 
@@ -54,7 +54,7 @@ import org.locationtech.jts.operation.union.UnionStrategy;
  * 
  * @see OverlayNG
  */
-public class OverlayNGRobust
+class OverlayNGRobust
 {
   /**
    * Computes the unary union of a geometry using robust computation.
@@ -64,7 +64,7 @@ public class OverlayNGRobust
    * 
    * @see UnaryUnionOp
    */
-  public static Geometry union(Geometry geom) {
+  static Geometry union(Geometry geom) {
     UnaryUnionOp op = new UnaryUnionOp(geom);
     op.setUnionFunction(OVERLAY_UNION);
     return op.union();
@@ -78,7 +78,7 @@ public class OverlayNGRobust
    * 
    * @see UnaryUnionOp
    */
-  public static Geometry union(Collection<Geometry> geoms) {
+  static Geometry union(Collection<Geometry> geoms) {
     UnaryUnionOp op = new UnaryUnionOp(geoms);
     op.setUnionFunction(OVERLAY_UNION);
     return op.union();
@@ -91,7 +91,7 @@ public class OverlayNGRobust
    * @param geomFact the geometry factory to use
    * @return the union of the geometries
    */
-  public static Geometry union(Collection<Geometry> geoms, GeometryFactory geomFact) {
+  static Geometry union(Collection<Geometry> geoms, GeometryFactory geomFact) {
     UnaryUnionOp op = new UnaryUnionOp(geoms, geomFact);
     op.setUnionFunction(OVERLAY_UNION);
     return op.union();
@@ -99,12 +99,12 @@ public class OverlayNGRobust
   
   private static UnionStrategy OVERLAY_UNION = new UnionStrategy() {
 
-    public Geometry union(Geometry g0, Geometry g1) {
+    Geometry union(Geometry g0, Geometry g1) {
        return overlay(g0, g1, OverlayNG.UNION );
     }
 
     @Override
-    public boolean isFloatingPrecision() {
+    bool isFloatingPrecision() {
       return true;
     }
   };
@@ -121,7 +121,7 @@ public class OverlayNGRobust
    * 
    * @see OverlayNG
    */
-  public static Geometry overlay(Geometry geom0, Geometry geom1, int opCode)
+  static Geometry overlay(Geometry geom0, Geometry geom1, int opCode)
   {
     Geometry result;
     RuntimeException exOriginal;
@@ -313,9 +313,9 @@ public class OverlayNGRobust
     if (geom == null || geom.isEmpty()) return 0;
     Envelope env = geom.getEnvelopeInternal();
     double magMax = Math.max(
-        Math.abs(env.getMaxX()), Math.abs(env.getMaxY()));
+        (env.getMaxX().abs()), (env.getMaxY().abs()));
     double magMin = Math.max(
-        Math.abs(env.getMinX()), Math.abs(env.getMinY()));
+        (env.getMinX().abs()), (env.getMinY().abs()));
     return Math.max(magMax, magMin);
   }
   

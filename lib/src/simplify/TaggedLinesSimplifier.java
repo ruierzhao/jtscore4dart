@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,7 +28,7 @@ class TaggedLinesSimplifier
   
   private double distanceTolerance = 0.0;
 
-  public TaggedLinesSimplifier()
+  TaggedLinesSimplifier()
   {
 
   }
@@ -40,7 +40,7 @@ class TaggedLinesSimplifier
    *
    * @param distanceTolerance the approximation tolerance to use
    */
-  public void setDistanceTolerance(double distanceTolerance) {
+  void setDistanceTolerance(double distanceTolerance) {
     this.distanceTolerance = distanceTolerance;
   }
 
@@ -49,7 +49,7 @@ class TaggedLinesSimplifier
    *
    * @param taggedLines the collection of lines to simplify
    */
-  public void simplify(Collection taggedLines) {
+  void simplify(Collection taggedLines) {
     ComponentJumpChecker jumpChecker = new ComponentJumpChecker(taggedLines);
     
     for (Iterator i = taggedLines.iterator(); i.hasNext(); ) {

@@ -9,22 +9,22 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph.index;
+
 
 /**
  * @version 1.7
  */
-public class MonotoneChain {
+class MonotoneChain {
 
   MonotoneChainEdge mce;
   int chainIndex;
 
-  public MonotoneChain(MonotoneChainEdge mce, int chainIndex) {
+  MonotoneChain(MonotoneChainEdge mce, int chainIndex) {
     this.mce = mce;
     this.chainIndex = chainIndex;
   }
 
-  public void computeIntersections(MonotoneChain mc, SegmentIntersector si)
+  void computeIntersections(MonotoneChain mc, SegmentIntersector si)
   {
     this.mce.computeIntersectsForChain(chainIndex, mc.mce, mc.chainIndex, si);
   }

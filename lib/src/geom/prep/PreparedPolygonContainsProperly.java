@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ class PreparedPolygonContainsProperly
 	 * @param geom a test geometry
 	 * @return true if the polygon properly contains the geometry
 	 */
-	public static boolean containsProperly(PreparedPolygon prep, Geometry geom)
+	static bool containsProperly(PreparedPolygon prep, Geometry geom)
 	{
 		PreparedPolygonContainsProperly polyInt = new PreparedPolygonContainsProperly(prep);
     return polyInt.containsProperly(geom);
@@ -58,7 +58,7 @@ class PreparedPolygonContainsProperly
    * 
    * @param prepPoly the PreparedPolygon to evaluate
    */
-	public PreparedPolygonContainsProperly(PreparedPolygon prepPoly)
+	PreparedPolygonContainsProperly(PreparedPolygon prepPoly)
 	{
 		super(prepPoly);
 	}
@@ -69,7 +69,7 @@ class PreparedPolygonContainsProperly
 	 * @param geom the test geometry
 	 * @return true if the test geometry is contained properly
 	 */
-	public boolean containsProperly(Geometry geom)
+	bool containsProperly(Geometry geom)
 	{
 		/**
 		 * Do point-in-poly tests first, since they are cheaper and may result
@@ -77,14 +77,14 @@ class PreparedPolygonContainsProperly
 		 * 
 		 * If a point of any test components does not lie in the target interior, result is false
 		 */
-		boolean isAllInPrepGeomAreaInterior = isAllTestComponentsInTargetInterior(geom);
+		bool isAllInPrepGeomAreaInterior = isAllTestComponentsInTargetInterior(geom);
 		if (! isAllInPrepGeomAreaInterior) return false;
 		
 		/**
 		 * If any segments intersect, result is false.
 		 */
     List lineSegStr = SegmentStringUtil.extractSegmentStrings(geom);
-		boolean segsIntersect = prepPoly.getIntersectionFinder().intersects(lineSegStr);
+		bool segsIntersect = prepPoly.getIntersectionFinder().intersects(lineSegStr);
 		if (segsIntersect) 
       return false;
 		
@@ -95,7 +95,7 @@ class PreparedPolygonContainsProperly
 		 */
 		if (geom instanceof Polygonal) {
 			// TODO: generalize this to handle GeometryCollections
-			boolean isTargetGeomInTestArea = isAnyTargetComponentInAreaTest(geom, prepPoly.getRepresentativePoints());
+			bool isTargetGeomInTestArea = isAnyTargetComponentInAreaTest(geom, prepPoly.getRepresentativePoints());
 			if (isTargetGeomInTestArea) return false;
 		}
 		

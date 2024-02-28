@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.math.Vector3D;
@@ -22,11 +22,11 @@ import org.locationtech.jts.math.Vector3D;
  * @author mdavis
  *
  */
-public class CGAlgorithms3D 
+class CGAlgorithms3D 
 {
 	private CGAlgorithms3D() {}
 
-	public static double distance(Coordinate p0, Coordinate p1)
+	static double distance(Coordinate p0, Coordinate p1)
 	{
 		// default to 2D distance if either Z is not set
 		if (Double.isNaN(p0.getZ()) || Double.isNaN(p1.getZ()))
@@ -38,7 +38,7 @@ public class CGAlgorithms3D
 	    return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
-	public static double distancePointSegment(Coordinate p,
+	static double distancePointSegment(Coordinate p,
 			Coordinate A, Coordinate B) {
 	    // if start = end, then just compute distance to one of the endpoints
 	    if (A.equals3D(B))
@@ -60,7 +60,7 @@ public class CGAlgorithms3D
 
 	    double len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y) + (B.getZ() - A.getZ()) * (B.getZ() - A.getZ());
 	    if (Double.isNaN(len2))
-	    	throw new IllegalArgumentException("Ordinates must not be NaN");
+	    	throw new ArgumentError("Ordinates must not be NaN");
 	    double r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y) + (p.getZ() - A.getZ()) * (B.getZ() - A.getZ()))
 	        / len2;
 
@@ -90,7 +90,7 @@ public class CGAlgorithms3D
 	 * @param D the end point of the second segment
 	 * @return the distance between the segments
 	 */
-	public static double distanceSegmentSegment(
+	static double distanceSegmentSegment(
 			Coordinate A, Coordinate B, Coordinate C, Coordinate D) 
 	{
 		/*
@@ -114,7 +114,7 @@ public class CGAlgorithms3D
 		
 		double denom = a*c - b*b;
 	    if (Double.isNaN(denom))
-	    	throw new IllegalArgumentException("Ordinates must not be NaN");
+	    	throw new ArgumentError("Ordinates must not be NaN");
 		
 		double s;
 		double t;

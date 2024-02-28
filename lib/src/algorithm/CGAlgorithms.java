@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -26,7 +26,7 @@ import org.locationtech.jts.math.MathUtil;
  * @deprecated See {@link Length}, {@link Area}, {@link Distance},
  *             {@link Orientation}, {@link PointLocation}
  */
-public class CGAlgorithms
+class CGAlgorithms
 {
 
   /**
@@ -34,42 +34,42 @@ public class CGAlgorithms
    * 
    * @deprecated Use {@link Orientation#CLOCKWISE} instead.
    */
-  public static final int CLOCKWISE = -1;
+  static final int CLOCKWISE = -1;
 
   /**
    * A value that indicates an orientation of clockwise, or a right turn.
    * 
    * @deprecated Use {@link Orientation#RIGHT} instead.
    */
-  public static final int RIGHT = CLOCKWISE;
+  static final int RIGHT = CLOCKWISE;
 
   /**
    * A value that indicates an orientation of counterclockwise, or a left turn.
    * 
    * @deprecated Use {@link Orientation#COUNTERCLOCKWISE} instead.
    */
-  public static final int COUNTERCLOCKWISE = 1;
+  static final int COUNTERCLOCKWISE = 1;
 
   /**
    * A value that indicates an orientation of counterclockwise, or a left turn.
    * 
    * @deprecated Use {@link Orientation#LEFT} instead.
    */
-  public static final int LEFT = COUNTERCLOCKWISE;
+  static final int LEFT = COUNTERCLOCKWISE;
 
   /**
    * A value that indicates an orientation of collinear, or no turn (straight).
    * 
    * @deprecated Use {@link Orientation#COLLINEAR} instead.
    */
-  public static final int COLLINEAR = 0;
+  static final int COLLINEAR = 0;
 
   /**
    * A value that indicates an orientation of collinear, or no turn (straight).
    * 
    * @deprecated Use {@link Orientation#STRAIGHT} instead.
    */
-  public static final int STRAIGHT = COLLINEAR;
+  static final int STRAIGHT = COLLINEAR;
 
   /**
    * Returns the index of the direction of the point {@code q} relative to
@@ -86,7 +86,7 @@ public class CGAlgorithms
    * @deprecated Use {@link Orientation#index(Coordinate, Coordinate, Coordinate)}
    *             instead.
    */
-  public static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
+  static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
   {
     /*
       MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
@@ -118,7 +118,7 @@ public class CGAlgorithms
     
   }
 
-  public CGAlgorithms()
+  CGAlgorithms()
   {
   }
 
@@ -137,11 +137,11 @@ public class CGAlgorithms
    *          first point identical to last point)
    * @return true if p is inside ring
    * 
-   * @see #locatePointInRing(Coordinate, Coordinate[])  
-   * @deprecated Use {@link PointLocation#isInRing(Coordinate, Coordinate[])}
+   * @see #locatePointInRing(Coordinate, List<Coordinate>)  
+   * @deprecated Use {@link PointLocation#isInRing(Coordinate, List<Coordinate>)}
    *             instead.
    */
-  public static boolean isPointInRing(Coordinate p, Coordinate[] ring)
+  static bool isPointInRing(Coordinate p, List<Coordinate> ring)
   {
     return locatePointInRing(p, ring) != Location.EXTERIOR;
   }
@@ -160,10 +160,10 @@ public class CGAlgorithms
    *          first point identical to last point)
    * @return the {@link Location} of p relative to the ring
    * @deprecated Use
-   *             {@link PointLocation#locateInRing(Coordinate, Coordinate[])}
+   *             {@link PointLocation#locateInRing(Coordinate, List<Coordinate>)}
    *             instead.
    */
-  public static int locatePointInRing(Coordinate p, Coordinate[] ring)
+  static int locatePointInRing(Coordinate p, List<Coordinate> ring)
   {
     return RayCrossingCounter.locatePointInRing(p, ring);
   }
@@ -174,10 +174,10 @@ public class CGAlgorithms
    * 
    * @return true if the point is a vertex of the line or lies in the interior
    *         of a line segment in the linestring
-   * @deprecated Use {@link PointLocation#isOnLine(Coordinate, Coordinate[])}
+   * @deprecated Use {@link PointLocation#isOnLine(Coordinate, List<Coordinate>)}
    *             instead.
    */
-  public static boolean isOnLine(Coordinate p, Coordinate[] pt)
+  static bool isOnLine(Coordinate p, List<Coordinate> pt)
   {
     LineIntersector lineIntersector = new RobustLineIntersector();
     for (int i = 1; i < pt.length; i++) {
@@ -205,17 +205,17 @@ public class CGAlgorithms
    * @param ring
    *          an array of Coordinates forming a ring
    * @return true if the ring is oriented counter-clockwise.
-   * @throws IllegalArgumentException
+   * @throws ArgumentError
    *           if there are too few points to determine orientation (&lt; 4)
-   * @deprecated Use {@link Orientation#isCCW(Coordinate[])} instead.
+   * @deprecated Use {@link Orientation#isCCW(List<Coordinate>)} instead.
    */
-  public static boolean isCCW(Coordinate[] ring)
+  static bool isCCW(List<Coordinate> ring)
   {
     // # of points without closing endpoint
     int nPts = ring.length - 1;
     // sanity check
     if (nPts < 3)
-      throw new IllegalArgumentException(
+      throw new ArgumentError(
           "Ring has fewer than 4 points, so orientation cannot be determined");
 
     // find highest point
@@ -266,7 +266,7 @@ public class CGAlgorithms
       happen if the ring is valid, so don't check for it (Might want to assert
       this)
      */
-    boolean isCCW;
+    bool isCCW;
     if (disc == 0) {
       // poly is CCW if prev x is right of next x
       isCCW = (prev.x > next.x);
@@ -292,7 +292,7 @@ public class CGAlgorithms
    * @deprecated Use {@link Orientation#index(Coordinate, Coordinate, Coordinate)}
    *             instead.
    */
-  public static int computeOrientation(Coordinate p1, Coordinate p2,
+  static int computeOrientation(Coordinate p1, Coordinate p2,
       Coordinate q)
   {
     return orientationIndex(p1, p2, q);
@@ -314,7 +314,7 @@ public class CGAlgorithms
    *             {@link Distance#pointToSegment(Coordinate, Coordinate, Coordinate)}
    *             instead.
    */
-  public static double distancePointLine(Coordinate p, Coordinate A,
+  static double distancePointLine(Coordinate p, Coordinate A,
       Coordinate B)
   {
     // if start = end, then just compute distance to one of the endpoints
@@ -356,7 +356,7 @@ public class CGAlgorithms
      */
     double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
         / len2;
-    return Math.abs(s) * Math.sqrt(len2);
+    return (s).abs() * Math.sqrt(len2);
   }
 
   /**
@@ -374,7 +374,7 @@ public class CGAlgorithms
    *             {@link Distance#pointToLinePerpendicular(Coordinate, Coordinate, Coordinate)}
    *             instead.
    */
-  public static double distancePointLinePerpendicular(Coordinate p,
+  static double distancePointLinePerpendicular(Coordinate p,
       Coordinate A, Coordinate B)
   {
     // use comp.graphics.algorithms Frequently Asked Questions method
@@ -389,7 +389,7 @@ public class CGAlgorithms
     double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
         / len2;
 
-    return Math.abs(s) * Math.sqrt(len2);
+    return (s).abs() * Math.sqrt(len2);
   }
 
   /**
@@ -401,13 +401,13 @@ public class CGAlgorithms
    *          a sequence of contiguous line segments defined by their vertices
    * @return the minimum distance between the point and the line segments
    * @deprecated Use
-   *             {@link Distance#pointToSegmentString(Coordinate, Coordinate[])}
+   *             {@link Distance#pointToSegmentString(Coordinate, List<Coordinate>)}
    *             instead.
    */
-  public static double distancePointLine(Coordinate p, Coordinate[] line)
+  static double distancePointLine(Coordinate p, List<Coordinate> line)
   {
     if (line.length == 0)
-      throw new IllegalArgumentException(
+      throw new ArgumentError(
           "Line array must contain at least one vertex");
     // this handles the case of length = 1
     double minDistance = p.distance(line[0]);
@@ -437,7 +437,7 @@ public class CGAlgorithms
    *             {@link Distance#segmentToSegment(Coordinate, Coordinate, Coordinate, Coordinate)}
    *             instead.
    */
-  public static double distanceLineLine(Coordinate A, Coordinate B,
+  static double distanceLineLine(Coordinate A, Coordinate B,
       Coordinate C, Coordinate D)
   {
     // check for zero-length segments
@@ -473,7 +473,7 @@ public class CGAlgorithms
      *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
      */
 
-    boolean noIntersection = false;
+    bool noIntersection = false;
     if (! Envelope.intersects(A, B, C, D)) {
       noIntersection = true;
     }
@@ -514,10 +514,10 @@ public class CGAlgorithms
    * @param ring
    *          the coordinates forming the ring
    * @return the signed area of the ring
-   * @deprecated Use {@link Area#ofRing(Coordinate[])} or
-   *             {@link Area#ofRingSigned(Coordinate[])} instead.
+   * @deprecated Use {@link Area#ofRing(List<Coordinate>)} or
+   *             {@link Area#ofRingSigned(List<Coordinate>)} instead.
    */
-  public static double signedArea(Coordinate[] ring)
+  static double signedArea(List<Coordinate> ring)
   {
     if (ring.length < 3)
       return 0.0;
@@ -550,7 +550,7 @@ public class CGAlgorithms
    * @deprecated Use {@link Area#ofRing(CoordinateSequence)} or
    *             {@link Area#ofRingSigned(CoordinateSequence)} instead.
    */
-  public static double signedArea(CoordinateSequence ring)
+  static double signedArea(CoordinateSequence ring)
   {
     int n = ring.size();
     if (n < 3)
@@ -586,7 +586,7 @@ public class CGAlgorithms
    * @return the length of the linestring
    * @deprecated Use {@link Length#ofLine(CoordinateSequence)} instead.
    */
-  public static double length(CoordinateSequence pts)
+  static double length(CoordinateSequence pts)
   {
     // optimized for processing CoordinateSequences
     int n = pts.size();

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +27,7 @@ import org.locationtech.jts.geom.GeometryCollection;
  * @author Martin Davis
  *
  */
-public class GeometryMapper 
+class GeometryMapper 
 {
   /**
    * Maps the members of a {@link Geometry}
@@ -41,7 +41,7 @@ public class GeometryMapper
    * @param op the mapping operation
    * @return a result collection or geometry of most specific type
    */
-  public static Geometry map(Geometry geom, MapOp op)
+  static Geometry map(Geometry geom, MapOp op)
   {
     List mapped = new ArrayList();
     for (int i = 0; i < geom.getNumGeometries(); i++) {
@@ -52,7 +52,7 @@ public class GeometryMapper
     return geom.getFactory().buildGeometry(mapped);
   }
   
-  public static Collection map(Collection geoms, MapOp op)
+  static Collection map(Collection geoms, MapOp op)
   {
     List mapped = new ArrayList();
     for (Iterator i = geoms.iterator(); i.hasNext(); ) {
@@ -78,7 +78,7 @@ public class GeometryMapper
    * @param op the mapping operation
    * @return the mapped result
    */
-  public static Geometry flatMap(Geometry geom, int emptyDim, MapOp op)
+  static Geometry flatMap(Geometry geom, int emptyDim, MapOp op)
   {
     List<Geometry> mapped = new ArrayList<Geometry>();
     flatMap(geom, op, mapped);
@@ -127,7 +127,7 @@ public class GeometryMapper
    * @author Martin Davis
    *
    */
-  public interface MapOp 
+  interface MapOp 
   {
     /**
      * Maps a geometry value into another value.

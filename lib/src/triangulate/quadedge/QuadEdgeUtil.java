@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  * @author mbdavis
  * 
  */
-public class QuadEdgeUtil 
+class QuadEdgeUtil 
 {
 	/**
 	 * Gets all edges which are incident on the origin of the given edge.
@@ -32,7 +32,7 @@ public class QuadEdgeUtil
 	 * @return a List of edges which have their origin at the origin of the given
 	 *         edge
 	 */
-	public static List findEdgesIncidentOnOrigin(QuadEdge start) {
+	static List findEdgesIncidentOnOrigin(QuadEdge start) {
 		List incEdge = new ArrayList();
 
 		QuadEdge qe = start;

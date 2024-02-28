@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +28,7 @@ import org.locationtech.jts.noding.FastNodingValidator;
  * 
  * @see FastNodingValidator
  */
-public class EdgeNodingValidator 
+class EdgeNodingValidator 
 {  
 	/**
    * Checks whether the supplied {@link Edge}s
@@ -39,13 +39,13 @@ public class EdgeNodingValidator
    * @throws TopologyException if the SegmentStrings are not correctly noded
    *
    */
-	public static void checkValid(Collection edges)
+	static void checkValid(Collection edges)
 	{
 		EdgeNodingValidator validator = new EdgeNodingValidator(edges);
 		validator.checkValid();
 	}
 	
-  public static Collection toSegmentStrings(Collection edges)
+  static Collection toSegmentStrings(Collection edges)
   {
     // convert Edges to SegmentStrings
     Collection segStrings = new ArrayList();
@@ -63,7 +63,7 @@ public class EdgeNodingValidator
    * 
    * @param edges a collection of Edges.
    */
-  public EdgeNodingValidator(Collection edges)
+  EdgeNodingValidator(Collection edges)
   {
     nv = new FastNodingValidator(toSegmentStrings(edges));
   }
@@ -75,7 +75,7 @@ public class EdgeNodingValidator
    * @throws TopologyException if the SegmentStrings are not correctly noded
    *
    */
-  public void checkValid()
+  void checkValid()
   {
     nv.checkValid();
   }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 class OffsetSegmentString 
 {
-  private static final Coordinate[] COORDINATE_ARRAY_TYPE = new Coordinate[0];
+  private static final List<Coordinate> COORDINATE_ARRAY_TYPE = new Coordinate[0];
 
   private ArrayList ptList;
   private PrecisionModel precisionModel = null;
@@ -40,22 +40,22 @@ class OffsetSegmentString
    */
   private double minimimVertexDistance = 0.0;
 
-  public OffsetSegmentString()
+  OffsetSegmentString()
   {
   	ptList = new ArrayList();
   }
   
-  public void setPrecisionModel(PrecisionModel precisionModel)
+  void setPrecisionModel(PrecisionModel precisionModel)
   {
   	this.precisionModel = precisionModel;
   }
   
-  public void setMinimumVertexDistance(double minimimVertexDistance)
+  void setMinimumVertexDistance(double minimimVertexDistance)
   {
   	this.minimimVertexDistance = minimimVertexDistance;
   }
   
-  public void addPt(Coordinate pt)
+  void addPt(Coordinate pt)
   {
     Coordinate bufPt = new Coordinate(pt);
     precisionModel.makePrecise(bufPt);
@@ -66,7 +66,7 @@ class OffsetSegmentString
 //System.out.println(bufPt);
   }
   
-  public void addPts(Coordinate[] pt, boolean isForward)
+  void addPts(List<Coordinate> pt, bool isForward)
   {
     if (isForward) {
       for (int i = 0; i < pt.length; i++) {
@@ -88,7 +88,7 @@ class OffsetSegmentString
    * @param pt
    * @return true if the point is redundant
    */
-  private boolean isRedundant(Coordinate pt)
+  private bool isRedundant(Coordinate pt)
   {
     if (ptList.size() < 1)
     	return false;
@@ -99,7 +99,7 @@ class OffsetSegmentString
     return false;
   }
   
-  public void closeRing()
+  void closeRing()
   {
     if (ptList.size() < 1) return;
     Coordinate startPt = new Coordinate((Coordinate) ptList.get(0));
@@ -108,12 +108,12 @@ class OffsetSegmentString
     ptList.add(startPt);
   }
 
-  public void reverse()
+  void reverse()
   {
     
   }
   
-  public Coordinate[] getCoordinates()
+  List<Coordinate> getCoordinates()
   {
     /*
      // check that points are a ring - add the startpoint again if they are not
@@ -123,11 +123,11 @@ class OffsetSegmentString
       if (! start.equals(end) ) addPt(start);
     }
     */
-    Coordinate[] coord = (Coordinate[]) ptList.toArray(COORDINATE_ARRAY_TYPE);
+    List<Coordinate> coord = (List<Coordinate>) ptList.toArray(COORDINATE_ARRAY_TYPE);
     return coord;
   }
 
-  public String toString()
+  String toString()
   {
   	GeometryFactory fact = new GeometryFactory();
   	LineString line = fact.createLineString(getCoordinates());

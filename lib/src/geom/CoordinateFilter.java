@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 
 /**
@@ -30,7 +30,7 @@ package org.locationtech.jts.geom;
  *
  *@version 1.7
  */
-public interface CoordinateFilter {
+interface CoordinateFilter {
 
   /**
    * Performs an operation with the provided <code>coord</code>.

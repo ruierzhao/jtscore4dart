@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.awt;
+
 
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
@@ -27,7 +27,7 @@ import java.awt.geom.Rectangle2D;
  * @author Martin Davis
  * 
  */
-public interface PointShapeFactory {
+interface PointShapeFactory {
   /**
    * Creates a shape representing a {@link Point}.
    * 
@@ -37,12 +37,12 @@ public interface PointShapeFactory {
    */
   Shape createPoint(Point2D point);
 
-  public static abstract class BasePointShapeFactory implements
+  static abstract class BasePointShapeFactory implements
       PointShapeFactory {
     /**
      * The default size of the shape
      */
-    public static final double DEFAULT_SIZE = 3.0;
+    static final double DEFAULT_SIZE = 3.0;
 
     protected double size = DEFAULT_SIZE;
 
@@ -50,7 +50,7 @@ public interface PointShapeFactory {
      * Creates a new factory for points with default size.
      * 
      */
-    public BasePointShapeFactory() {
+    BasePointShapeFactory() {
     }
 
     /**
@@ -59,7 +59,7 @@ public interface PointShapeFactory {
      * @param size
      *          the size of the points
      */
-    public BasePointShapeFactory(double size) {
+    BasePointShapeFactory(double size) {
       this.size = size;
     }
 
@@ -70,15 +70,15 @@ public interface PointShapeFactory {
      *          the location of the point
      * @return a shape
      */
-    public abstract Shape createPoint(Point2D point);
+    abstract Shape createPoint(Point2D point);
   }
 
-  public static class Point extends BasePointShapeFactory {
+  static class Point extends BasePointShapeFactory {
     /**
      * Creates a new factory for points with default size.
      * 
      */
-    public Point() {
+    Point() {
       super();
     }
 
@@ -88,7 +88,7 @@ public interface PointShapeFactory {
      * @param size
      *          the size of the points
      */
-    public Point(double size) {
+    Point(double size) {
       super(size);
     }
 
@@ -99,7 +99,7 @@ public interface PointShapeFactory {
      *          the location of the point
      * @return a shape
      */
-    public Shape createPoint(Point2D point) {
+    Shape createPoint(Point2D point) {
       Line2D.Double pointMarker =
         new Line2D.Double(
         	point.getX(),
@@ -110,12 +110,12 @@ public interface PointShapeFactory {
     }
   }
   
-  public static class Square extends BasePointShapeFactory {
+  static class Square extends BasePointShapeFactory {
     /**
      * Creates a new factory for squares with default size.
      * 
      */
-    public Square() {
+    Square() {
       super();
     }
 
@@ -125,7 +125,7 @@ public interface PointShapeFactory {
      * @param size
      *          the size of the points
      */
-    public Square(double size) {
+    Square(double size) {
       super(size);
     }
 
@@ -136,7 +136,7 @@ public interface PointShapeFactory {
      *          the location of the point
      * @return a shape
      */
-    public Shape createPoint(Point2D point) {
+    Shape createPoint(Point2D point) {
       Rectangle2D.Double pointMarker =
         new Rectangle2D.Double(
           0.0,
@@ -150,12 +150,12 @@ public interface PointShapeFactory {
     }
   }
   
-  public static class Star extends BasePointShapeFactory {
+  static class Star extends BasePointShapeFactory {
     /**
      * Creates a new factory for points with default size.
      * 
      */
-    public Star() {
+    Star() {
       super();
     }
 
@@ -165,7 +165,7 @@ public interface PointShapeFactory {
      * @param size
      *          the size of the points
      */
-    public Star(double size) {
+    Star(double size) {
       super(size);
     }
 
@@ -176,7 +176,7 @@ public interface PointShapeFactory {
      *          the location of the point
      * @return a shape
      */
-    public Shape createPoint(Point2D point) {
+    Shape createPoint(Point2D point) {
       GeneralPath path = new GeneralPath();
       path.moveTo((float) point.getX(), (float) (point.getY() - size/2));
       path.lineTo((float) (point.getX() + size * 1/8), (float) (point.getY() - size * 1/8));
@@ -193,12 +193,12 @@ public interface PointShapeFactory {
     }
   }
   
-  public static class Triangle extends BasePointShapeFactory {
+  static class Triangle extends BasePointShapeFactory {
     /**
      * Creates a new factory for points with default size.
      * 
      */
-    public Triangle() {
+    Triangle() {
       super();
     }
 
@@ -208,7 +208,7 @@ public interface PointShapeFactory {
      * @param size
      *          the size of the points
      */
-    public Triangle(double size) {
+    Triangle(double size) {
       super(size);
     }
 
@@ -219,7 +219,7 @@ public interface PointShapeFactory {
      *          the location of the point
      * @return a shape
      */
-    public Shape createPoint(Point2D point) {
+    Shape createPoint(Point2D point) {
 
       GeneralPath path = new GeneralPath();
       path.moveTo((float) (point.getX()), (float) (point.getY() - size / 2));
@@ -231,12 +231,12 @@ public interface PointShapeFactory {
     }
 
   }
-  public static class Circle extends BasePointShapeFactory {
+  static class Circle extends BasePointShapeFactory {
     /**
      * Creates a new factory for points with default size.
      * 
      */
-    public Circle() {
+    Circle() {
       super();
     }
 
@@ -246,7 +246,7 @@ public interface PointShapeFactory {
      * @param size
      *          the size of the points
      */
-    public Circle(double size) {
+    Circle(double size) {
       super(size);
     }
 
@@ -257,7 +257,7 @@ public interface PointShapeFactory {
      *          the location of the point
      * @return a shape
      */
-    public Shape createPoint(Point2D point) {
+    Shape createPoint(Point2D point) {
       Ellipse2D.Double pointMarker =
         new Ellipse2D.Double(
           0.0,
@@ -271,12 +271,12 @@ public interface PointShapeFactory {
     }
 
   }
-  public static class Cross extends BasePointShapeFactory {
+  static class Cross extends BasePointShapeFactory {
     /**
      * Creates a new factory for points with default size.
      * 
      */
-    public Cross() {
+    Cross() {
       super();
     }
 
@@ -286,7 +286,7 @@ public interface PointShapeFactory {
      * @param size
      *          the size of the points
      */
-    public Cross(double size) {
+    Cross(double size) {
       super(size);
     }
 
@@ -297,7 +297,7 @@ public interface PointShapeFactory {
      *          the location of the point
      * @return a shape
      */
-    public Shape createPoint(Point2D point) {
+    Shape createPoint(Point2D point) {
 
       float x1 = (float) (point.getX() - size/2f);
       float x2 = (float) (point.getX() - size/4f);
@@ -328,12 +328,12 @@ public interface PointShapeFactory {
     }
 
   }
-  public static class X extends BasePointShapeFactory {
+  static class X extends BasePointShapeFactory {
     /**
      * Creates a new factory for points with default size.
      * 
      */
-    public X() {
+    X() {
       super();
     }
 
@@ -343,7 +343,7 @@ public interface PointShapeFactory {
      * @param size
      *          the size of the points
      */
-    public X(double size) {
+    X(double size) {
       super(size);
     }
 
@@ -354,7 +354,7 @@ public interface PointShapeFactory {
      *          the location of the point
      * @return a shape
      */
-    public Shape createPoint(Point2D point) {
+    Shape createPoint(Point2D point) {
       GeneralPath path = new GeneralPath();
       path.moveTo((float) (point.getX()), (float) (point.getY() - size * 1/8));
       path.lineTo((float) (point.getX() + size * 2/8), (float) (point.getY() - size/2));

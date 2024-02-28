@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -19,23 +19,23 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.util.GeometryEditor;
 
-public class PrecisionReducerCoordinateOperation extends
+class PrecisionReducerCoordinateOperation extends
 		GeometryEditor.CoordinateOperation 
 {
   private PrecisionModel targetPM;
-  private boolean removeCollapsed = true;
+  private bool removeCollapsed = true;
 
-	public PrecisionReducerCoordinateOperation(PrecisionModel targetPM, boolean removeCollapsed)
+	PrecisionReducerCoordinateOperation(PrecisionModel targetPM, bool removeCollapsed)
 	{
 		this.targetPM = targetPM;
 		this.removeCollapsed = removeCollapsed;
 	}
 	
-	public Coordinate[] edit(Coordinate[] coordinates, Geometry geom) {
+	List<Coordinate> edit(List<Coordinate> coordinates, Geometry geom) {
 		if (coordinates.length == 0)
 			return null;
 
-		Coordinate[] reducedCoords = new Coordinate[coordinates.length];
+		List<Coordinate> reducedCoords = new Coordinate[coordinates.length];
 		// copy coordinates and reduce
 		for (int i = 0; i < coordinates.length; i++) {
 			Coordinate coord = new Coordinate(coordinates[i]);
@@ -45,7 +45,7 @@ public class PrecisionReducerCoordinateOperation extends
 		// remove repeated points, to simplify returned geometry as much as possible
 		CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords,
 				false);
-		Coordinate[] noRepeatedCoords = noRepeatedCoordList.toCoordinateArray();
+		List<Coordinate> noRepeatedCoords = noRepeatedCoordList.toCoordinateArray();
 
 		/**
 		 * Check to see if the removal of repeated points collapsed the coordinate
@@ -62,7 +62,7 @@ public class PrecisionReducerCoordinateOperation extends
 		if (geom instanceof LinearRing)
 			minLength = 4;
 
-		Coordinate[] collapsedCoords = reducedCoords;
+		List<Coordinate> collapsedCoords = reducedCoords;
 		if (removeCollapsed)
 			collapsedCoords = null;
 

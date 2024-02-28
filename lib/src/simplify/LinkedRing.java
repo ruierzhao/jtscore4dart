@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.simplify;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -18,12 +18,12 @@ class LinkedRing {
   
   private static final int NO_COORD_INDEX = -1;
 
-  private final Coordinate[] coord;
+  private final List<Coordinate> coord;
   private int[] next = null;
   private int[] prev = null;
   private int size;
   
-  public LinkedRing(Coordinate[] pts) {
+  LinkedRing(List<Coordinate> pts) {
     coord = pts;
     size = pts.length - 1;
     next = createNextLinks(size);
@@ -48,36 +48,36 @@ class LinkedRing {
     return prev;
   }
   
-  public int size() {
+  int size() {
     return size;
   }
 
-  public int next(int i) {
+  int next(int i) {
     return next[i];
   }
 
-  public int prev(int i) {
+  int prev(int i) {
     return prev[i];
   }
   
-  public Coordinate getCoordinate(int index) {
+  Coordinate getCoordinate(int index) {
     return coord[index];
   }
 
-  public Coordinate prevCoordinate(int index) {
+  Coordinate prevCoordinate(int index) {
     return coord[prev(index)];
   }
 
-  public Coordinate nextCoordinate(int index) {
+  Coordinate nextCoordinate(int index) {
     return coord[next(index)];
   }  
   
-  public boolean hasCoordinate(int index) {
+  bool hasCoordinate(int index) {
     return index >= 0 && index < prev.length 
         && prev[index] != NO_COORD_INDEX;
   }
   
-  public void remove(int index) {
+  void remove(int index) {
     int iprev = prev[index];
     int inext = next[index];
     next[iprev] = inext;
@@ -87,7 +87,7 @@ class LinkedRing {
     size--;
   }
   
-  public Coordinate[] getCoordinates() {
+  List<Coordinate> getCoordinates() {
     CoordinateList coords = new CoordinateList();
     for (int i = 0; i < coord.length - 1; i++) {
       if (prev[i] != NO_COORD_INDEX) {

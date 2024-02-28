@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.union;
+
 
 import org.locationtech.jts.geom.Geometry;
 
@@ -20,7 +20,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Martin Davis
  *
  */
-public interface UnionStrategy {
+interface UnionStrategy {
 
   /**
    * Computes the union of two geometries.
@@ -44,5 +44,5 @@ public interface UnionStrategy {
    * 
    * @return true if the union function operates using floating precision
    */
-  boolean isFloatingPrecision();
+  bool isFloatingPrecision();
 }

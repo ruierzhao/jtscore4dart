@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
@@ -26,10 +26,10 @@ import org.locationtech.jts.io.WKTWriter;
  * @version 1.7
  * @see NodedSegmentString
  */
-public class BasicSegmentString
+class BasicSegmentString
 	implements SegmentString 
 {
-  private Coordinate[] pts;
+  private List<Coordinate> pts;
   private Object data;
 
   /**
@@ -38,7 +38,7 @@ public class BasicSegmentString
    * @param pts the vertices of the segment string
    * @param data the user-defined data of this segment string (may be null)
    */
-  public BasicSegmentString(Coordinate[] pts, Object data)
+  BasicSegmentString(List<Coordinate> pts, Object data)
   {
     this.pts = pts;
     this.data = data;
@@ -49,20 +49,20 @@ public class BasicSegmentString
    *
    * @return the user-defined data
    */
-  public Object getData() { return data; }
+  Object getData() { return data; }
 
   /**
    * Sets the user-defined data for this segment string.
    *
    * @param data an Object containing user-defined data
    */
-  public void setData(Object data) { this.data = data; }
+  void setData(Object data) { this.data = data; }
 
-  public int size() { return pts.length; }
-  public Coordinate getCoordinate(int i) { return pts[i]; }
-  public Coordinate[] getCoordinates() { return pts; }
+  int size() { return pts.length; }
+  Coordinate getCoordinate(int i) { return pts[i]; }
+  List<Coordinate> getCoordinates() { return pts; }
 
-  public boolean isClosed()
+  bool isClosed()
   {
     return pts[0].equals(pts[pts.length - 1]);
   }
@@ -74,13 +74,13 @@ public class BasicSegmentString
    * the last index in the vertex list
    * @return the octant of the segment at the vertex
    */
-  public int getSegmentOctant(int index)
+  int getSegmentOctant(int index)
   {
     if (index == pts.length - 1) return -1;
     return Octant.octant(getCoordinate(index), getCoordinate(index + 1));
   }
 
-  public String toString()
+  String toString()
   {
     return WKTWriter.toLineString(new CoordinateArraySequence(pts));
   }

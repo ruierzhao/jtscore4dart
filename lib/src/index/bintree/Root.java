@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.bintree;
+
 
 import org.locationtech.jts.index.quadtree.IntervalSize;
 import org.locationtech.jts.util.Assert;
@@ -21,21 +21,21 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class Root
+class Root
   extends NodeBase
 {
 
   // the singleton root node is centred at the origin.
   private static final double origin = 0.0;
 
-  public Root()
+  Root()
   {
   }
 
   /**
    * Insert an item into the tree this is the root of.
    */
-  public void insert(Interval itemInterval, Object item)
+  void insert(Interval itemInterval, Object item)
   {
     int index = getSubnodeIndex(itemInterval, origin);
     // if index is -1, itemEnv must contain the origin.
@@ -78,7 +78,7 @@ public class Root
     * to infinite recursion. Instead, use a heuristic of simply returning
     * the smallest existing node containing the query
     */
-    boolean isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax());
+    bool isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax());
     NodeBase node;
     if (isZeroArea)
       node = tree.find(itemInterval);
@@ -90,7 +90,7 @@ public class Root
   /**
    * The root node matches all searches
    */
-  protected boolean isSearchMatch(Interval interval)
+  protected bool isSearchMatch(Interval interval)
   {
     return true;
   }

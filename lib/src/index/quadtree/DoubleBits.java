@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.quadtree;
+
 
 /**
  * DoubleBits manipulates Double numbers
@@ -23,39 +23,39 @@ package org.locationtech.jts.index.quadtree;
  *
  * @version 1.7
  */
-public class DoubleBits {
+class DoubleBits {
 
-  public static final int EXPONENT_BIAS = 1023;
+  static final int EXPONENT_BIAS = 1023;
 
-  public static double powerOf2(int exp)
+  static double powerOf2(int exp)
   {
     if (exp > 1023 || exp < -1022)
-      throw new IllegalArgumentException("Exponent out of bounds");
+      throw new ArgumentError("Exponent out of bounds");
     long expBias = exp + EXPONENT_BIAS;
     long bits = expBias << 52;
     return Double.longBitsToDouble(bits);
   }
 
-  public static int exponent(double d)
+  static int exponent(double d)
   {
     DoubleBits db = new DoubleBits(d);
     return db.getExponent();
   }
 
-  public static double truncateToPowerOfTwo(double d)
+  static double truncateToPowerOfTwo(double d)
   {
     DoubleBits db = new DoubleBits(d);
     db.zeroLowerBits(52);
     return db.getDouble();
   }
 
-  public static String toBinaryString(double d)
+  static String toBinaryString(double d)
   {
     DoubleBits db = new DoubleBits(d);
     return db.toString();
   }
 
-  public static double maximumCommonMantissa(double d1, double d2)
+  static double maximumCommonMantissa(double d1, double d2)
   {
     if (d1 == 0.0 || d2 == 0.0) return 0.0;
 
@@ -72,13 +72,13 @@ public class DoubleBits {
   private double x;
   private long xBits;
 
-  public DoubleBits(double x)
+  DoubleBits(double x)
   {
     this.x = x;
     xBits = Double.doubleToLongBits(x);
   }
 
-  public double getDouble()
+  double getDouble()
   {
     return Double.longBitsToDouble(xBits);
   }
@@ -86,7 +86,7 @@ public class DoubleBits {
   /**
    * Determines the exponent for the number
    */
-  public int biasedExponent()
+  int biasedExponent()
   {
     int signExp = (int) (xBits >> 52);
     int exp = signExp & 0x07ff;
@@ -96,19 +96,19 @@ public class DoubleBits {
   /**
    * Determines the exponent for the number
    */
-  public int getExponent()
+  int getExponent()
   {
     return biasedExponent() - EXPONENT_BIAS;
   }
 
-  public void zeroLowerBits(int nBits)
+  void zeroLowerBits(int nBits)
   {
     long invMask = (1L << nBits) - 1L;
     long mask = ~ invMask;
     xBits &= mask;
   }
 
-  public int getBit(int i)
+  int getBit(int i)
   {
     long mask = (1L << i);
     return (xBits & mask) != 0 ? 1 : 0;
@@ -122,7 +122,7 @@ public class DoubleBits {
    * @param db
    * @return the number of common most-significant mantissa bits
    */
-  public int numCommonMantissaBits(DoubleBits db)
+  int numCommonMantissaBits(DoubleBits db)
   {
     for (int i = 0; i < 52; i++)
     {
@@ -135,7 +135,7 @@ public class DoubleBits {
   /**
    * A representation of the Double bits formatted for easy readability
    */
-  public String toString()
+  String toString()
   {
     String numStr = Long.toBinaryString(xBits);
     // 64 zeroes!

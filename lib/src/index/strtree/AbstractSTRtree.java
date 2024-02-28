@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 
 import java.io.Serializable;
@@ -40,7 +40,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public abstract class AbstractSTRtree implements Serializable {
+abstract class AbstractSTRtree implements Serializable {
 
   /**
    * 
@@ -59,12 +59,12 @@ public abstract class AbstractSTRtree implements Serializable {
      * @param bBounds the bounds of another spatial object
      * @return whether the two bounds intersect
      */
-    boolean intersects(Object aBounds, Object bBounds);
+    bool intersects(Object aBounds, Object bBounds);
   }
 
   protected AbstractNode root;
 
-  private boolean built = false;
+  private bool built = false;
   /**
    * Set to <tt>null</tt> when index is built, to avoid retaining memory.
    */
@@ -78,7 +78,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * Constructs an AbstractSTRtree with the 
    * default node capacity.
    */
-  public AbstractSTRtree() {
+  AbstractSTRtree() {
     this(DEFAULT_NODE_CAPACITY);
   }
 
@@ -88,7 +88,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * 
    * @param nodeCapacity the maximum number of child nodes in a node
    */
-  public AbstractSTRtree(int nodeCapacity) {
+  AbstractSTRtree(int nodeCapacity) {
     Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
     this.nodeCapacity = nodeCapacity;
   }
@@ -99,7 +99,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * @param nodeCapacity the maximum number of child nodes in a node
    * @param root the root node that links to all other nodes in the tree
    */
-  public AbstractSTRtree(int nodeCapacity, AbstractNode root) {
+  AbstractSTRtree(int nodeCapacity, AbstractNode root) {
     this(nodeCapacity);
     built = true;
     this.root = root;
@@ -112,7 +112,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * @param nodeCapacity the maximum number of child nodes in a node
    * @param itemBoundables the list of leaf nodes in the tree
    */
-  public AbstractSTRtree(int nodeCapacity, ArrayList itemBoundables) {
+  AbstractSTRtree(int nodeCapacity, ArrayList itemBoundables) {
     this(nodeCapacity);
     this.itemBoundables = itemBoundables;
   }
@@ -122,7 +122,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * called once, and thus can be called only after all of the data has been
    * inserted into the tree.
    */
-  public synchronized void build() {
+  synchronized void build() {
     if (built) return;
     root = itemBoundables.isEmpty()
            ? createNode(0)
@@ -188,7 +188,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * 
    * @return the root node
    */
-  public AbstractNode getRoot() 
+  AbstractNode getRoot() 
   {
     build();
     return root; 
@@ -199,7 +199,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * 
    * @return the node capacity
    */
-  public int getNodeCapacity() { return nodeCapacity; }
+  int getNodeCapacity() { return nodeCapacity; }
 
   /**
    * Tests whether the index contains any items.
@@ -208,7 +208,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * 
    * @return true if the index does not contain any items
    */
-  public boolean isEmpty()
+  bool isEmpty()
   {
     if (! built) return itemBoundables.isEmpty();
     return root.isEmpty();
@@ -353,7 +353,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * 
    * @return a List of items and/or Lists
    */
-  public List itemsTree()
+  List itemsTree()
   {
     build();
 
@@ -390,7 +390,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * Removes an item from the tree.
    * (Builds the tree, if necessary.)
    */
-  protected boolean remove(Object searchBounds, Object item) {
+  protected bool remove(Object searchBounds, Object item) {
     build();
     if (getIntersectsOp().intersects(root.getBounds(), searchBounds)) {
       return remove(searchBounds, root, item);
@@ -398,7 +398,7 @@ public abstract class AbstractSTRtree implements Serializable {
     return false;
   }
 
-  private boolean removeItem(AbstractNode node, Object item)
+  private bool removeItem(AbstractNode node, Object item)
   {
     Boundable childToRemove = null;
     for (Iterator i = node.getChildBoundables().iterator(); i.hasNext(); ) {
@@ -415,9 +415,9 @@ public abstract class AbstractSTRtree implements Serializable {
     return false;
   }
 
-  private boolean remove(Object searchBounds, AbstractNode node, Object item) {
+  private bool remove(Object searchBounds, AbstractNode node, Object item) {
     // first try removing item from this node
-    boolean found = removeItem(node, item);
+    bool found = removeItem(node, item);
     if (found)
       return true;
 

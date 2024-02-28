@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.locate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.Location;
  * 
  * @author Martin Davis
  */
-public interface PointOnGeometryLocator 
+interface PointOnGeometryLocator 
 {
   /**
    * Determines the {@link Location} of a point in the {@link Geometry}.

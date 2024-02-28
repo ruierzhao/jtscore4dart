@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 import org.locationtech.jts.algorithm.Distance;
 import org.locationtech.jts.algorithm.Orientation;
@@ -51,7 +51,7 @@ import org.locationtech.jts.geom.CoordinateList;
  * @author Martin Davis
  *
  */
-public class BufferInputLineSimplifier 
+class BufferInputLineSimplifier 
 {
   /**
    * Simplify the input coordinate list.
@@ -64,7 +64,7 @@ public class BufferInputLineSimplifier
    * @param distanceTol simplification distance tolerance to use
    * @return the simplified coordinate list
    */
-  public static Coordinate[] simplify(Coordinate[] inputLine, double distanceTol)
+  static List<Coordinate> simplify(List<Coordinate> inputLine, double distanceTol)
   {
     BufferInputLineSimplifier simp = new BufferInputLineSimplifier(inputLine);
     return simp.simplify(distanceTol);
@@ -72,14 +72,14 @@ public class BufferInputLineSimplifier
   
   private static final int DELETE = 1;
   
-  private Coordinate[] inputLine;
+  private List<Coordinate> inputLine;
   private double distanceTol;
-  private boolean isRing;
-  private boolean[] isDeleted;
+  private bool isRing;
+  private bool[] isDeleted;
   private int angleOrientation = Orientation.COUNTERCLOCKWISE;
 
   
-  public BufferInputLineSimplifier(Coordinate[] inputLine) {
+  BufferInputLineSimplifier(List<Coordinate> inputLine) {
     this.inputLine = inputLine;
     isRing = CoordinateArrays.isRing(inputLine);
   }
@@ -94,17 +94,17 @@ public class BufferInputLineSimplifier
    * @param distanceTol simplification distance tolerance to use
    * @return the simplified coordinate list
    */
-  public Coordinate[] simplify(double distanceTol)
+  List<Coordinate> simplify(double distanceTol)
   {
-    this.distanceTol = Math.abs(distanceTol);
+    this.distanceTol = (distanceTol).abs();
     angleOrientation = Orientation.COUNTERCLOCKWISE;
     if (distanceTol < 0)
       angleOrientation = Orientation.CLOCKWISE;
     
-    // rely on fact that boolean array is filled with false values
-    isDeleted = new boolean[inputLine.length];
+    // rely on fact that bool array is filled with false values
+    isDeleted = new bool[inputLine.length];
     
-    boolean isChanged = false;
+    bool isChanged = false;
     do {
       isChanged = deleteShallowConcavities();
     } while (isChanged);
@@ -119,7 +119,7 @@ public class BufferInputLineSimplifier
    * 
    * @return true if any vertices were deleted
    */
-  private boolean deleteShallowConcavities()
+  private bool deleteShallowConcavities()
   {
     /**
      * Do not simplify end line segments of lines.
@@ -130,10 +130,10 @@ public class BufferInputLineSimplifier
     int midIndex = nextIndex(index);
     int lastIndex = nextIndex(midIndex);
     
-    boolean isChanged = false;
+    bool isChanged = false;
     while (lastIndex < inputLine.length) {
       // test triple for shallow concavity
-    	boolean isMiddleVertexDeleted = false;
+    	bool isMiddleVertexDeleted = false;
       if (isDeletable(index, midIndex, lastIndex, 
           distanceTol)) {
         isDeleted[midIndex] = true;
@@ -166,7 +166,7 @@ public class BufferInputLineSimplifier
     return next;  
   }
   
-  private Coordinate[] collapseLine()
+  private List<Coordinate> collapseLine()
   {
     CoordinateList coordList = new CoordinateList();
     for (int i = 0; i < inputLine.length; i++) {
@@ -176,7 +176,7 @@ public class BufferInputLineSimplifier
     return coordList.toCoordinateArray();
   }
   
-  private boolean isDeletable(int i0, int i1, int i2, double distanceTol)
+  private bool isDeletable(int i0, int i1, int i2, double distanceTol)
   {
   	Coordinate p0 = inputLine[i0];
   	Coordinate p1 = inputLine[i1];
@@ -202,7 +202,7 @@ public class BufferInputLineSimplifier
    * @param distanceTol distance tolerance
    * @return
    */
-  private boolean isShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
+  private bool isShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
   {
     // check every n'th point to see if it is within tolerance
   	int inc = (i2 - i0) / NUM_PTS_TO_CHECK;
@@ -214,16 +214,16 @@ public class BufferInputLineSimplifier
   	return true;
   }
   
-  private static boolean isShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
+  private static bool isShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
   {
     double dist = Distance.pointToSegment(p1, p0, p2);
     return dist < distanceTol;
   }
   
-  private boolean isConcave(Coordinate p0, Coordinate p1, Coordinate p2)
+  private bool isConcave(Coordinate p0, Coordinate p1, Coordinate p2)
   {
     int orientation = Orientation.index(p0, p1, p2);
-    boolean isConcave = (orientation == angleOrientation);
+    bool isConcave = (orientation == angleOrientation);
     return isConcave;
   }
 }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -80,10 +80,10 @@ import org.locationtech.jts.geomgraph.index.SegmentIntersector;
  * 
  * @deprecated Replaced by org.locationtech.jts.operation.valid.IsSimpleOp
  */
-public class IsSimpleOp
+class IsSimpleOp
 {
   private Geometry inputGeom;
-  private boolean isClosedEndpointsInInterior = true;
+  private bool isClosedEndpointsInInterior = true;
   private Coordinate nonSimpleLocation = null;
 
   /**
@@ -91,7 +91,7 @@ public class IsSimpleOp
    *
    * @deprecated use IsSimpleOp(Geometry)
    */
-  public IsSimpleOp() {
+  IsSimpleOp() {
   }
 
   /**
@@ -99,7 +99,7 @@ public class IsSimpleOp
    *
    * @param geom the geometry to test
    */
-  public IsSimpleOp(Geometry geom) {
+  IsSimpleOp(Geometry geom) {
     this.inputGeom = geom;
   }
 
@@ -109,7 +109,7 @@ public class IsSimpleOp
    * @param geom the geometry to test
    * @param boundaryNodeRule the rule to use.
    */
-  public IsSimpleOp(Geometry geom, BoundaryNodeRule boundaryNodeRule)
+  IsSimpleOp(Geometry geom, BoundaryNodeRule boundaryNodeRule)
   {
     this.inputGeom = geom;
     isClosedEndpointsInInterior = ! boundaryNodeRule.isInBoundary(2);
@@ -120,13 +120,13 @@ public class IsSimpleOp
    *
    * @return true if the geometry is simple
    */
-  public boolean isSimple()
+  bool isSimple()
   {
     nonSimpleLocation = null;
     return computeSimple(inputGeom);
   }
   
-  private boolean computeSimple(Geometry geom)
+  private bool computeSimple(Geometry geom)
   {
     nonSimpleLocation = null;
     if (geom.isEmpty()) return true;
@@ -148,7 +148,7 @@ public class IsSimpleOp
    * @return a coordinate for the location of the non-boundary self-intersection
    * or null if the geometry is simple
    */
-  public Coordinate getNonSimpleLocation()
+  Coordinate getNonSimpleLocation()
   {
     return nonSimpleLocation;
   }
@@ -160,7 +160,7 @@ public class IsSimpleOp
    * @return true if the geometry is simple
    * @deprecated use isSimple()
    */
-  public boolean isSimple(LineString geom)
+  bool isSimple(LineString geom)
   {
     return isSimpleLinearGeometry(geom);
   }
@@ -172,7 +172,7 @@ public class IsSimpleOp
    * @return true if the geometry is simple
    * @deprecated use isSimple()
    */
-  public boolean isSimple(MultiLineString geom)
+  bool isSimple(MultiLineString geom)
   {
     return isSimpleLinearGeometry(geom);
   }
@@ -181,12 +181,12 @@ public class IsSimpleOp
    * A MultiPoint is simple if it has no repeated points
    * @deprecated use isSimple()
    */
-  public boolean isSimple(MultiPoint mp)
+  bool isSimple(MultiPoint mp)
   {
     return isSimpleMultiPoint(mp);
   }
 
-  private boolean isSimpleMultiPoint(MultiPoint mp)
+  private bool isSimpleMultiPoint(MultiPoint mp)
   {
     if (mp.isEmpty()) return true;
     Set points = new TreeSet();
@@ -210,7 +210,7 @@ public class IsSimpleOp
    * @param geom a Polygonal geometry
    * @return true if the geometry is simple
    */
-  private boolean isSimplePolygonal(Geometry geom)
+  private bool isSimplePolygonal(Geometry geom)
   {
     List rings = LinearComponentExtracter.getLines(geom);
     for (Iterator i = rings.iterator(); i.hasNext(); ) {
@@ -228,7 +228,7 @@ public class IsSimpleOp
    * @param geom
    * @return true if the geometry is simple
    */
-  private boolean isSimpleGeometryCollection(Geometry geom)
+  private bool isSimpleGeometryCollection(Geometry geom)
   {
     for (int i = 0; i < geom.getNumGeometries(); i++ ) {
       Geometry comp = geom.getGeometryN(i);
@@ -238,7 +238,7 @@ public class IsSimpleOp
     return true;
   }
   
-  private boolean isSimpleLinearGeometry(Geometry geom)
+  private bool isSimpleLinearGeometry(Geometry geom)
   {
     if (geom.isEmpty()) return true;
     GeometryGraph graph = new GeometryGraph(0, geom);
@@ -261,7 +261,7 @@ public class IsSimpleOp
    * For all edges, check if there are any intersections which are NOT at an endpoint.
    * The Geometry is not simple if there are intersections not at endpoints.
    */
-  private boolean hasNonEndpointIntersection(GeometryGraph graph)
+  private bool hasNonEndpointIntersection(GeometryGraph graph)
   {
     for (Iterator i = graph.getEdgeIterator(); i.hasNext(); ) {
       Edge e = (Edge) i.next();
@@ -279,19 +279,19 @@ public class IsSimpleOp
 
   private static class EndpointInfo {
     Coordinate pt;
-    boolean isClosed;
+    bool isClosed;
     int degree;
 
-    public EndpointInfo(Coordinate pt)
+    EndpointInfo(Coordinate pt)
     {
       this.pt = pt;
       isClosed = false;
       degree = 0;
     }
 
-    public Coordinate getCoordinate() { return pt; }
+    Coordinate getCoordinate() { return pt; }
 
-    public void addEndpoint(boolean isClosed)
+    void addEndpoint(bool isClosed)
     {
       degree++;
       this.isClosed |= isClosed;
@@ -306,12 +306,12 @@ public class IsSimpleOp
    * The degree of endpoints of closed lines
    * must be exactly 2.
    */
-  private boolean hasClosedEndpointIntersection(GeometryGraph graph)
+  private bool hasClosedEndpointIntersection(GeometryGraph graph)
   {
     Map endPoints = new TreeMap();
     for (Iterator i = graph.getEdgeIterator(); i.hasNext(); ) {
       Edge e = (Edge) i.next();
-      boolean isClosed = e.isClosed();
+      bool isClosed = e.isClosed();
       Coordinate p0 = e.getCoordinate(0);
       addEndpoint(endPoints, p0, isClosed);
       Coordinate p1 = e.getCoordinate(e.getNumPoints() - 1);
@@ -331,7 +331,7 @@ public class IsSimpleOp
   /**
    * Add an endpoint to the map, creating an entry for it if none exists
    */
-  private void addEndpoint(Map endPoints, Coordinate p, boolean isClosed)
+  private void addEndpoint(Map endPoints, Coordinate p, bool isClosed)
   {
     EndpointInfo eiInfo = (EndpointInfo) endPoints.get(p);
     if (eiInfo == null) {

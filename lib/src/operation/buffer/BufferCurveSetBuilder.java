@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 /**
  * @version 1.7
@@ -45,7 +45,7 @@ import org.locationtech.jts.noding.SegmentString;
  *
  * @version 1.7
  */
-public class BufferCurveSetBuilder {
+class BufferCurveSetBuilder {
   
   private Geometry inputGeom;
   private double distance;
@@ -53,9 +53,9 @@ public class BufferCurveSetBuilder {
 
   private List curveList = new ArrayList();
 
-  private boolean isInvertOrientation = false;
+  private bool isInvertOrientation = false;
 
-  public BufferCurveSetBuilder(
+  BufferCurveSetBuilder(
       Geometry inputGeom,
           double distance,
           PrecisionModel precisionModel,
@@ -74,7 +74,7 @@ public class BufferCurveSetBuilder {
    * 
    * @param isInvertOrientation true if input ring orientation should be inverted
    */
-  void setInvertOrientation(boolean isInvertOrientation) {
+  void setInvertOrientation(bool isInvertOrientation) {
     this.isInvertOrientation = isInvertOrientation;
   }
   
@@ -91,8 +91,8 @@ public class BufferCurveSetBuilder {
    * @param coord the ring coordinates
    * @return true if the ring is CCW
    */
-  private boolean isRingCCW(Coordinate[] coord) {
-    boolean isCCW = Orientation.isCCWArea(coord);
+  private bool isRingCCW(List<Coordinate> coord) {
+    bool isCCW = Orientation.isCCWArea(coord);
     //--- invert orientation if required
     if (isInvertOrientation) return ! isCCW;
     return isCCW;
@@ -105,7 +105,7 @@ public class BufferCurveSetBuilder {
    *
    * @return a Collection of SegmentStrings representing the raw buffer curves
    */
-  public List getCurves()
+  List getCurves()
   {
     add(inputGeom);
     return curveList;
@@ -120,7 +120,7 @@ public class BufferCurveSetBuilder {
    * <br>Left: Location.EXTERIOR
    * <br>Right: Location.INTERIOR
    */
-  private void addCurve(Coordinate[] coord, int leftLoc, int rightLoc)
+  private void addCurve(List<Coordinate> coord, int leftLoc, int rightLoc)
   {
     // don't add null or trivial curves
     if (coord == null || coord.length < 2) return;
@@ -160,11 +160,11 @@ public class BufferCurveSetBuilder {
     // a zero or negative width buffer of a point is empty
     if (distance <= 0.0) 
       return;
-    Coordinate[] coord = p.getCoordinates();
+    List<Coordinate> coord = p.getCoordinates();
     // skip if coordinate is invalid
     if (coord.length >= 1 && ! coord[0].isValid())
       return;
-    Coordinate[] curve = curveBuilder.getLineCurve(coord, distance);
+    List<Coordinate> curve = curveBuilder.getLineCurve(coord, distance);
     addCurve(curve, Location.EXTERIOR, Location.INTERIOR);
   }
   
@@ -172,7 +172,7 @@ public class BufferCurveSetBuilder {
   {
     if (curveBuilder.isLineOffsetEmpty(distance)) return;
     
-    Coordinate[] coord = clean(line.getCoordinates());
+    List<Coordinate> coord = clean(line.getCoordinates());
     
     /**
      * Rings (closed lines) are generated with a continuous curve, 
@@ -186,11 +186,11 @@ public class BufferCurveSetBuilder {
       addRingBothSides(coord, distance);
     }
     else {
-      Coordinate[] curve = curveBuilder.getLineCurve(coord, distance);
+      List<Coordinate> curve = curveBuilder.getLineCurve(coord, distance);
       addCurve(curve, Location.EXTERIOR, Location.INTERIOR);
     }
     // TESTING
-    //Coordinate[] curveTrim = BufferCurveLoopPruner.prune(curve); 
+    //List<Coordinate> curveTrim = BufferCurveLoopPruner.prune(curve); 
     //addCurve(curveTrim, Location.EXTERIOR, Location.INTERIOR);
   }
   
@@ -200,7 +200,7 @@ public class BufferCurveSetBuilder {
    * @param coordinates the coordinates to clean
    * @return an array of clean coordinates
    */
-  private static Coordinate[] clean(Coordinate[] coords) {
+  private static List<Coordinate> clean(List<Coordinate> coords) {
     return CoordinateArrays.removeRepeatedOrInvalidPoints(coords);
   }
 
@@ -214,7 +214,7 @@ public class BufferCurveSetBuilder {
     }
 
     LinearRing shell = p.getExteriorRing();
-    Coordinate[] shellCoord = clean(shell.getCoordinates());
+    List<Coordinate> shellCoord = clean(shell.getCoordinates());
     // optimization - don't bother computing buffer
     // if the polygon would be completely eroded
     if (distance < 0.0 && isErodedCompletely(shell, distance))
@@ -233,7 +233,7 @@ public class BufferCurveSetBuilder {
     for (int i = 0; i < p.getNumInteriorRing(); i++) {
 
       LinearRing hole = p.getInteriorRingN(i);
-      Coordinate[] holeCoord = clean(hole.getCoordinates());
+      List<Coordinate> holeCoord = clean(hole.getCoordinates());
 
       // optimization - don't bother computing buffer for this hole
       // if the hole would be completely covered
@@ -252,7 +252,7 @@ public class BufferCurveSetBuilder {
     }
   }
   
-  private void addRingBothSides(Coordinate[] coord, double distance)
+  private void addRingBothSides(List<Coordinate> coord, double distance)
   {
     addRingSide(coord, distance,
       Position.LEFT, 
@@ -278,7 +278,7 @@ public class BufferCurveSetBuilder {
    * @param cwLeftLoc the location on the L side of the ring (if it is CW)
    * @param cwRightLoc the location on the R side of the ring (if it is CW)
    */
-  private void addRingSide(Coordinate[] coord, double offsetDistance, int side, int cwLeftLoc, int cwRightLoc)
+  private void addRingSide(List<Coordinate> coord, double offsetDistance, int side, int cwLeftLoc, int cwRightLoc)
   {
     // don't bother adding ring if it is "flat" and will disappear in the output
     if (offsetDistance == 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE)
@@ -286,14 +286,14 @@ public class BufferCurveSetBuilder {
     
     int leftLoc  = cwLeftLoc;
     int rightLoc = cwRightLoc;
-    boolean isCCW = isRingCCW(coord);
+    bool isCCW = isRingCCW(coord);
     if (coord.length >= LinearRing.MINIMUM_VALID_SIZE 
       && isCCW) {
       leftLoc = cwRightLoc;
       rightLoc = cwLeftLoc;
       side = Position.opposite(side);
     }
-    Coordinate[] curve = curveBuilder.getRingCurve(coord, side, offsetDistance);
+    List<Coordinate> curve = curveBuilder.getRingCurve(coord, side, offsetDistance);
     
     /**
      * If the offset curve has inverted completely it will produce
@@ -332,7 +332,7 @@ public class BufferCurveSetBuilder {
    * @param curvePts the generated offset curve
    * @return true if the offset curve is inverted
    */
-  private static boolean isRingCurveInverted(Coordinate[] inputPts, double distance, Coordinate[] curvePts) {
+  private static bool isRingCurveInverted(List<Coordinate> inputPts, double distance, List<Coordinate> curvePts) {
     if (distance == 0.0) return false;
     /**
      * Only proper rings can invert.
@@ -356,9 +356,9 @@ public class BufferCurveSetBuilder {
      * than the buffer distance.
      * If so, the curve is NOT a valid buffer curve.
      */
-    double distTol = NEARNESS_FACTOR * Math.abs(distance);
+    double distTol = NEARNESS_FACTOR * (distance).abs();
     double maxDist = maxDistance(curvePts, inputPts);
-    boolean isCurveTooClose = maxDist < distTol;
+    bool isCurveTooClose = maxDist < distTol;
     return isCurveTooClose;
   }
 
@@ -369,7 +369,7 @@ public class BufferCurveSetBuilder {
    * @param line the linestring vertices
    * @return the maximum distance
    */
-  private static double maxDistance(Coordinate[] pts, Coordinate[] line) {
+  private static double maxDistance(List<Coordinate> pts, List<Coordinate> line) {
     double maxDistance = 0;
     for (Coordinate p : pts) {
       double dist = Distance.pointToSegmentString(p, line);
@@ -392,9 +392,9 @@ public class BufferCurveSetBuilder {
    * @param offsetDistance
    * @return
    */
-  private static boolean isErodedCompletely(LinearRing ring, double bufferDistance)
+  private static bool isErodedCompletely(LinearRing ring, double bufferDistance)
   {
-    Coordinate[] ringCoord = ring.getCoordinates();
+    List<Coordinate> ringCoord = ring.getCoordinates();
     // degenerate ring has no area
     if (ringCoord.length < 4)
       return bufferDistance < 0;
@@ -408,7 +408,7 @@ public class BufferCurveSetBuilder {
     Envelope env = ring.getEnvelopeInternal();
     double envMinDimension = Math.min(env.getHeight(), env.getWidth());
     if (bufferDistance < 0.0
-        && 2 * Math.abs(bufferDistance) > envMinDimension)
+        && 2 * (bufferDistance).abs() > envMinDimension)
       return true;
 
     return false;
@@ -431,14 +431,14 @@ public class BufferCurveSetBuilder {
    * @param bufferDistance
    * @return
    */
-  private static boolean isTriangleErodedCompletely(
-      Coordinate[] triangleCoord,
+  private static bool isTriangleErodedCompletely(
+      List<Coordinate> triangleCoord,
       double bufferDistance)
   {
     Triangle tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
     Coordinate inCentre = tri.inCentre();
     double distToCentre = Distance.pointToSegment(inCentre, tri.p0, tri.p1);
-    return distToCentre < Math.abs(bufferDistance);
+    return distToCentre < (bufferDistance).abs();
   }
 
 

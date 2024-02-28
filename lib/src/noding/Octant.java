@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.noding;
+
 
 import org.locationtech.jts.geom.Coordinate;
 /**
@@ -28,19 +28,19 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class Octant {
+class Octant {
 
   /**
    * Returns the octant of a directed line segment (specified as x and y
    * displacements, which cannot both be 0).
    */
-  public static int octant(double dx, double dy)
+  static int octant(double dx, double dy)
   {
     if (dx == 0.0 && dy == 0.0)
-      throw new IllegalArgumentException("Cannot compute the octant for point ( "+ dx + ", " + dy + " )" );
+      throw new ArgumentError("Cannot compute the octant for point ( "+ dx + ", " + dy + " )" );
 
-    double adx = Math.abs(dx);
-    double ady = Math.abs(dy);
+    double adx = (dx).abs();
+    double ady = (dy).abs();
 
     if (dx >= 0) {
       if (dy >= 0) {
@@ -75,12 +75,12 @@ public class Octant {
   /**
    * Returns the octant of a directed line segment from p0 to p1.
    */
-  public static int octant(Coordinate p0, Coordinate p1)
+  static int octant(Coordinate p0, Coordinate p1)
   {
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
     if (dx == 0.0 && dy == 0.0)
-      throw new IllegalArgumentException("Cannot compute the octant for two identical points " + p0);
+      throw new ArgumentError("Cannot compute the octant for two identical points " + p0);
     return octant(dx, dy);
   }
 

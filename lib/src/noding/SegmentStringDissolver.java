@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.CoordinateArrays;
  * @version 1.7
  * @see SegmentStringMerger
  */
-public class SegmentStringDissolver
+class SegmentStringDissolver
 {
 	/**
 	 * A merging strategy which can be used to update the context data of {@link SegmentString}s 
@@ -44,7 +44,7 @@ public class SegmentStringDissolver
 	 * @author mbdavis
 	 *
 	 */
-  public interface SegmentStringMerger 
+  interface SegmentStringMerger 
   {
     /**
      * Updates the context data of a SegmentString
@@ -55,7 +55,7 @@ public class SegmentStringDissolver
      * @param isSameOrientation <code>true</code> if the strings are in the same direction,
      * <code>false</code> if they are opposite
      */
-    void merge(SegmentString mergeTarget, SegmentString ssToMerge, boolean isSameOrientation);
+    void merge(SegmentString mergeTarget, SegmentString ssToMerge, bool isSameOrientation);
   }
 
   private SegmentStringMerger merger;
@@ -69,14 +69,14 @@ public class SegmentStringDissolver
    *
    * @param merger the merging strategy to use
    */
-  public SegmentStringDissolver(SegmentStringMerger merger) {
+  SegmentStringDissolver(SegmentStringMerger merger) {
     this.merger = merger;
   }
 
   /**
    * Creates a dissolver with the default merging strategy.
    */
-  public SegmentStringDissolver() {
+  SegmentStringDissolver() {
     this(null);
   }
 
@@ -84,7 +84,7 @@ public class SegmentStringDissolver
    * Dissolve all {@link SegmentString}s in the input {@link Collection}
    * @param segStrings
    */
-  public void dissolve(Collection segStrings)
+  void dissolve(Collection segStrings)
   {
     for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
       dissolve((SegmentString) i.next());
@@ -102,7 +102,7 @@ public class SegmentStringDissolver
    *
    * @param segString the string to dissolve
    */
-  public void dissolve(SegmentString segString)
+  void dissolve(SegmentString segString)
   {
     OrientedCoordinateArray oca = new OrientedCoordinateArray(segString.getCoordinates());
     SegmentString existing = findMatching(oca, segString);
@@ -111,7 +111,7 @@ public class SegmentStringDissolver
     }
     else {
       if (merger != null) {
-        boolean isSameOrientation
+        bool isSameOrientation
             = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates());
         merger.merge(existing, segString, isSameOrientation);
       }
@@ -123,7 +123,7 @@ public class SegmentStringDissolver
   {
     SegmentString matchSS = (SegmentString) ocaMap.get(oca);
     /*
-    boolean hasBeenAdded = checkAdded(oca);
+    bool hasBeenAdded = checkAdded(oca);
     if (matchSS == null && hasBeenAdded) {
       System.out.println("added!");
     }
@@ -133,7 +133,7 @@ public class SegmentStringDissolver
 
 /*
 
-  private boolean checkAdded(OrientedCoordinateArray oca)
+  private bool checkAdded(OrientedCoordinateArray oca)
   {
     for (Iterator i = testAddedSS.iterator(); i.hasNext(); ) {
       OrientedCoordinateArray addedOCA = (OrientedCoordinateArray) i.next();
@@ -149,7 +149,7 @@ public class SegmentStringDissolver
    *
    * @return the unique {@link SegmentString}s
    */
-  public Collection getDissolved() { return ocaMap.values(); }
+  Collection getDissolved() { return ocaMap.values(); }
 }
 
 

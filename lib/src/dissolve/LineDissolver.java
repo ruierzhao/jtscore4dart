@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.dissolve;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ import org.locationtech.jts.geom.LineString;
  * @author Martin Davis
  *
  */
-public class LineDissolver 
+class LineDissolver 
 {
   /**
    * Dissolves the linear components in a geometry.
@@ -61,7 +61,7 @@ public class LineDissolver
    * @param g the geometry to dissolve
    * @return the dissolved lines
    */
-  public static Geometry dissolve(Geometry g)
+  static Geometry dissolve(Geometry g)
   {
     LineDissolver d = new LineDissolver();
     d.add(g);
@@ -73,7 +73,7 @@ public class LineDissolver
   private final DissolveEdgeGraph graph;
   private final List lines = new ArrayList();
 
-  public LineDissolver()
+  LineDissolver()
   {
     graph = new DissolveEdgeGraph();
   }
@@ -86,9 +86,9 @@ public class LineDissolver
    * 
    * @param geometry geometry to be line-merged
    */  
-  public void add(Geometry geometry) {
+  void add(Geometry geometry) {
     geometry.apply(new GeometryComponentFilter() {
-      public void filter(Geometry component) {
+      void filter(Geometry component) {
         if (component instanceof LineString) {
           add((LineString)component);
         }
@@ -102,7 +102,7 @@ public class LineDissolver
    * 
    * @param geometries the geometries to be line-merged
    */
-  public void add(Collection geometries) 
+  void add(Collection geometries) 
   {
     for (Iterator i = geometries.iterator(); i.hasNext(); ) {
       Geometry geometry = (Geometry) i.next();
@@ -115,7 +115,7 @@ public class LineDissolver
       this.factory = lineString.getFactory();
     }
     CoordinateSequence seq = lineString.getCoordinateSequence();
-    boolean doneStart = false;
+    bool doneStart = false;
     for (int i = 1; i < seq.size(); i++) {
       DissolveHalfEdge e = (DissolveHalfEdge) graph.addEdge(seq.getCoordinate(i-1), seq.getCoordinate(i));
       // skip zero-length edges
@@ -136,7 +136,7 @@ public class LineDissolver
    * 
    * @return the dissolved lines
    */
-  public Geometry getResult()
+  Geometry getResult()
   {
     if (result == null)
       computeResult();

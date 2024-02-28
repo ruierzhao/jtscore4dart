@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.relate;
+
 
 import org.locationtech.jts.algorithm.BoundaryNodeRule;
 import org.locationtech.jts.geom.Geometry;
@@ -37,7 +37,7 @@ import org.locationtech.jts.operation.GeometryGraphOperation;
  *
  * @version 1.7
  */
-public class RelateOp
+class RelateOp
   extends GeometryGraphOperation
 {
   /**
@@ -48,7 +48,7 @@ public class RelateOp
    * @param b a Geometry to test
    * @return the IntersectionMatrix for the spatial relationship between the geometries
    */
-  public static IntersectionMatrix relate(Geometry a, Geometry b)
+  static IntersectionMatrix relate(Geometry a, Geometry b)
   {
     RelateOp relOp = new RelateOp(a, b);
     IntersectionMatrix im = relOp.getIntersectionMatrix();
@@ -64,7 +64,7 @@ public class RelateOp
    * @param boundaryNodeRule the Boundary Node Rule to use
    * @return the IntersectionMatrix for the spatial relationship between the input geometries
    */
-  public static IntersectionMatrix relate(Geometry a, Geometry b, BoundaryNodeRule boundaryNodeRule)
+  static IntersectionMatrix relate(Geometry a, Geometry b, BoundaryNodeRule boundaryNodeRule)
   {
     RelateOp relOp = new RelateOp(a, b, boundaryNodeRule);
     IntersectionMatrix im = relOp.getIntersectionMatrix();
@@ -79,7 +79,7 @@ public class RelateOp
    * @param g0 a Geometry to relate
    * @param g1 another Geometry to relate
    */
-  public RelateOp(Geometry g0, Geometry g1)
+  RelateOp(Geometry g0, Geometry g1)
   {
     super(g0, g1);
     relate = new RelateComputer(arg);
@@ -92,7 +92,7 @@ public class RelateOp
    * @param g1 another Geometry to relate
    * @param boundaryNodeRule the Boundary Node Rule to use
    */
-  public RelateOp(Geometry g0, Geometry g1, BoundaryNodeRule boundaryNodeRule)
+  RelateOp(Geometry g0, Geometry g1, BoundaryNodeRule boundaryNodeRule)
   {
     super(g0, g1, boundaryNodeRule);
     relate = new RelateComputer(arg);
@@ -104,7 +104,7 @@ public class RelateOp
    *
    * @return the IntersectionMatrix for the spatial relationship between the input geometries
    */
-  public IntersectionMatrix getIntersectionMatrix()
+  IntersectionMatrix getIntersectionMatrix()
   {
     return relate.computeIM();
   }

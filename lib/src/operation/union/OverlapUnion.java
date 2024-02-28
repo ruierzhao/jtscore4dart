@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.union;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -83,7 +83,7 @@ import org.locationtech.jts.geom.util.GeometryCombiner;
  * @deprecated due to impairing performance
  *
  */
-public class OverlapUnion 
+class OverlapUnion 
 {
   /**
    * Union a pair of geometries,
@@ -94,7 +94,7 @@ public class OverlapUnion
    * @param unionFun 
    * @return the union of the inputs
    */
-	public static Geometry union(Geometry g0, Geometry g1, UnionStrategy unionFun)
+	static Geometry union(Geometry g0, Geometry g1, UnionStrategy unionFun)
 	{
 		OverlapUnion union = new OverlapUnion(g0, g1, unionFun);
 		return union.union();
@@ -105,7 +105,7 @@ public class OverlapUnion
 	private Geometry g0;
 	private Geometry g1;
 
-  private boolean isUnionSafe;
+  private bool isUnionSafe;
 
   private UnionStrategy unionFun;
 
@@ -116,12 +116,12 @@ public class OverlapUnion
    * @param g0 a geometry to union
    * @param g1 a geometry to union
    */
-	public OverlapUnion(Geometry g0, Geometry g1)
+	OverlapUnion(Geometry g0, Geometry g1)
 	{
 		this(g0, g1, CascadedPolygonUnion.CLASSIC_UNION);
 	}
 	
-	public OverlapUnion(Geometry g0, Geometry g1, UnionStrategy unionFun) {
+	OverlapUnion(Geometry g0, Geometry g1, UnionStrategy unionFun) {
     this.g0 = g0;
     this.g1 = g1;
     geomFactory = g0.getFactory();
@@ -134,7 +134,7 @@ public class OverlapUnion
    * 
    * @return the union of the inputs
 	 */
-	public Geometry union()
+	Geometry union()
 	{
     Envelope overlapEnv = overlapEnvelope(g0,  g1);
     
@@ -176,7 +176,7 @@ public class OverlapUnion
 	 * 
 	 * @return true if the optimized union was performed
 	 */
-	boolean isUnionOptimized() {
+	bool isUnionOptimized() {
 	  return isUnionSafe;
 	}
 	
@@ -223,7 +223,7 @@ public class OverlapUnion
     return union;
   }
   
-  private boolean isBorderSegmentsSame(Geometry result, Envelope env) {
+  private bool isBorderSegmentsSame(Geometry result, Envelope env) {
     List<LineSegment> segsBefore = extractBorderSegments(g0, g1, env);
     
     List<LineSegment> segsAfter = new ArrayList<LineSegment>();
@@ -233,7 +233,7 @@ public class OverlapUnion
     return isEqual(segsBefore, segsAfter);
   }
   
-  private boolean isEqual(List<LineSegment> segs0, List<LineSegment> segs1) {
+  private bool isEqual(List<LineSegment> segs0, List<LineSegment> segs1) {
     if (segs0.size() != segs1.size())
       return false;
     
@@ -256,15 +256,15 @@ public class OverlapUnion
     return segs;
   }
   
-  private static boolean intersects(Envelope env, Coordinate p0, Coordinate p1) {
+  private static bool intersects(Envelope env, Coordinate p0, Coordinate p1) {
     return env.intersects(p0) || env.intersects(p1);
   }
 
-  private static boolean containsProperly(Envelope env, Coordinate p0, Coordinate p1) {
+  private static bool containsProperly(Envelope env, Coordinate p0, Coordinate p1) {
     return containsProperly(env, p0) && containsProperly(env, p1);
   }
 
-  private static boolean containsProperly(Envelope env, Coordinate p) {
+  private static bool containsProperly(Envelope env, Coordinate p) {
       if (env.isNull()) return false;
       return p.getX() > env.getMinX() &&
           p.getX() < env.getMaxX() &&
@@ -275,22 +275,22 @@ public class OverlapUnion
   private static void extractBorderSegments(Geometry geom, Envelope env, List<LineSegment> segs) {
     geom.apply(new CoordinateSequenceFilter() {
 
-      public void filter(CoordinateSequence seq, int i) {
+      void filter(CoordinateSequence seq, int i) {
         if (i <= 0) return;
         
         // extract LineSegment
         Coordinate p0 = seq.getCoordinate(i - 1);
         Coordinate p1 = seq.getCoordinate(i);
-        boolean isBorder = intersects(env, p0, p1) && ! containsProperly(env, p0, p1);
+        bool isBorder = intersects(env, p0, p1) && ! containsProperly(env, p0, p1);
         if (isBorder) {
           LineSegment seg = new LineSegment(p0, p1);
           segs.add(seg);
         }
       }
 
-      public boolean isDone() {   return false;   }
+      bool isDone() {   return false;   }
 
-      public boolean isGeometryChanged() {   return false;   }
+      bool isGeometryChanged() {   return false;   }
       
     });
   }

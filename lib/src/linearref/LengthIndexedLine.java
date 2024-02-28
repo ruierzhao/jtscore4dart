@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.linearref;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.LineString;
  * Non-simple lines (i.e. which loop back to cross or touch
  * themselves) are supported.
  */
-public class LengthIndexedLine
+class LengthIndexedLine
 {
   private Geometry linearGeom;
 
@@ -36,7 +36,7 @@ public class LengthIndexedLine
    *
    * @param linearGeom the linear geometry to reference along
    */
-  public LengthIndexedLine(Geometry linearGeom) {
+  LengthIndexedLine(Geometry linearGeom) {
     this.linearGeom = linearGeom;
   }
 
@@ -51,7 +51,7 @@ public class LengthIndexedLine
    * @param index the index of the desired point
    * @return the Coordinate at the given index
    */
-  public Coordinate extractPoint(double index)
+  Coordinate extractPoint(double index)
   {
     LinearLocation loc = LengthLocationMap.getLocation(linearGeom, index);
     return loc.getCoordinate(linearGeom);
@@ -73,7 +73,7 @@ public class LengthIndexedLine
    *    (positive is to the left, negative is to the right)
    * @return the Coordinate at the given index
    */
-  public Coordinate extractPoint(double index, double offsetDistance)
+  Coordinate extractPoint(double index, double offsetDistance)
   {
     LinearLocation loc = LengthLocationMap.getLocation(linearGeom, index);
     LinearLocation locLow = loc.toLowest(linearGeom);
@@ -90,12 +90,12 @@ public class LengthIndexedLine
    * @param endIndex the index of the end of the interval
    * @return the linear interval between the indices
    */
-  public Geometry extractLine(double startIndex, double endIndex)
+  Geometry extractLine(double startIndex, double endIndex)
   {
     double startIndex2 = clampIndex(startIndex);
     double endIndex2 = clampIndex(endIndex);
     // if extracted line is zero-length, resolve start lower as well to ensure they are equal
-    boolean resolveStartLower = startIndex2 == endIndex2;
+    bool resolveStartLower = startIndex2 == endIndex2;
     LinearLocation startLoc = locationOf(startIndex2, resolveStartLower);
 //    LinearLocation endLoc = locationOf(endIndex2, true);
 //    LinearLocation startLoc = locationOf(startIndex2);
@@ -108,7 +108,7 @@ public class LengthIndexedLine
     return LengthLocationMap.getLocation(linearGeom, index);
   }
 
-  private LinearLocation locationOf(double index, boolean resolveLower)
+  private LinearLocation locationOf(double index, bool resolveLower)
   {
     return LengthLocationMap.getLocation(linearGeom, index, resolveLower);
   }
@@ -130,7 +130,7 @@ public class LengthIndexedLine
    *
    * @see #project(Coordinate)
    */
-  public double indexOf(Coordinate pt)
+  double indexOf(Coordinate pt)
   {
     return LengthIndexOfPoint.indexOf(linearGeom, pt);
   }
@@ -157,7 +157,7 @@ public class LengthIndexedLine
    *
    * @see #project(Coordinate)
    */
-  public double indexOfAfter(Coordinate pt, double minIndex)
+  double indexOfAfter(Coordinate pt, double minIndex)
   {
     return LengthIndexOfPoint.indexOfAfter(linearGeom, pt, minIndex);
   }
@@ -171,7 +171,7 @@ public class LengthIndexedLine
    * @param subLine a subLine of the line
    * @return a pair of indices for the start and end of the subline.
    */
-  public double[] indicesOf(Geometry subLine)
+  double[] indicesOf(Geometry subLine)
   {
     LinearLocation[] locIndex = LocationIndexOfLine.indicesOf(linearGeom, subLine);
     double[] index = new double[] {
@@ -191,7 +191,7 @@ public class LengthIndexedLine
    * @param pt a point on the line
    * @return the index of the point
    */
-  public double project(Coordinate pt)
+  double project(Coordinate pt)
   {
     return LengthIndexOfPoint.indexOf(linearGeom, pt);
   }
@@ -200,7 +200,7 @@ public class LengthIndexedLine
    * Returns the index of the start of the line
    * @return the start index
    */
-  public double getStartIndex()
+  double getStartIndex()
   {
     return 0.0;
   }
@@ -209,7 +209,7 @@ public class LengthIndexedLine
    * Returns the index of the end of the line
    * @return the end index
    */
-  public double getEndIndex()
+  double getEndIndex()
   {
     return linearGeom.getLength();
   }
@@ -220,7 +220,7 @@ public class LengthIndexedLine
    * @param index the index to test
    * @return <code>true</code> if the index is in the valid range
    */
-  public boolean isValidIndex(double index)
+  bool isValidIndex(double index)
   {
     return (index >= getStartIndex()
             && index <= getEndIndex());
@@ -232,7 +232,7 @@ public class LengthIndexedLine
    *
    * @return a valid index value
    */
-  public double clampIndex(double index)
+  double clampIndex(double index)
   {
     double posIndex = positiveIndex(index);
     double startIndex = getStartIndex();

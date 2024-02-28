@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 /**
  * An interface for classes which locate an edge in a {@link QuadEdgeSubdivision}
@@ -21,6 +21,6 @@ package org.locationtech.jts.triangulate.quadedge;
  * 
  * @author Martin Davis
  */
-public interface QuadEdgeLocator {
+interface QuadEdgeLocator {
     QuadEdge locate(Vertex v);
 }

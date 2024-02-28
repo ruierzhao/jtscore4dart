@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.LineString;
  *
  * @version 1.7
  */
-public class InteriorPointLine {
+class InteriorPointLine {
   
   /**
    * Computes an interior point for the
@@ -38,7 +38,7 @@ public class InteriorPointLine {
    * @return the computed interior point,
    * or <code>null</code> if the geometry has no linear components
    */
-  public static Coordinate getInteriorPoint(Geometry geom) {
+  static Coordinate getInteriorPoint(Geometry geom) {
     InteriorPointLine intPt = new InteriorPointLine(geom);
     return intPt.getInteriorPoint();
   }
@@ -48,7 +48,7 @@ public class InteriorPointLine {
 
   private Coordinate interiorPoint = null;
 
-  public InteriorPointLine(Geometry g)
+  InteriorPointLine(Geometry g)
   {
     centroid = g.getCentroid().getCoordinate();
     addInterior(g);
@@ -56,7 +56,7 @@ public class InteriorPointLine {
       addEndpoints(g);
   }
 
-  public Coordinate getInteriorPoint()
+  Coordinate getInteriorPoint()
   {
     return interiorPoint;
   }
@@ -82,7 +82,7 @@ public class InteriorPointLine {
       }
     }
   }
-  private void addInterior(Coordinate[] pts)
+  private void addInterior(List<Coordinate> pts)
   {
     for (int i = 1; i < pts.length - 1; i++) {
       add(pts[i]);
@@ -109,7 +109,7 @@ public class InteriorPointLine {
       }
     }
   }
-  private void addEndpoints(Coordinate[] pts)
+  private void addEndpoints(List<Coordinate> pts)
   {
     add(pts[0]);
     add(pts[pts.length - 1]);

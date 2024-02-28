@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 
 import java.io.PrintStream;
@@ -26,14 +26,14 @@ import org.locationtech.jts.geom.Location;
  * A map of nodes, indexed by the coordinate of the node
  * @version 1.7
  */
-public class NodeMap
+class NodeMap
 
 {
-  //Map nodeMap = new HashMap();
+  //Map nodeMap = new Map();
   Map nodeMap = new TreeMap();
   NodeFactory nodeFact;
 
-  public NodeMap(NodeFactory nodeFact) {
+  NodeMap(NodeFactory nodeFact) {
     this.nodeFact = nodeFact;
   }
 
@@ -51,7 +51,7 @@ public class NodeMap
    * @param coord Coordinate
    * @return node for the provided coord
    */
-  public Node addNode(Coordinate coord)
+  Node addNode(Coordinate coord)
   {
     Node node = (Node) nodeMap.get(coord);
     if (node == null) {
@@ -61,7 +61,7 @@ public class NodeMap
     return node;
   }
 
-  public Node addNode(Node n)
+  Node addNode(Node n)
   {
     Node node = (Node) nodeMap.get(n.getCoordinate());
     if (node == null) {
@@ -79,7 +79,7 @@ public class NodeMap
    *
    * @param e EdgeEnd
    */
-  public void add(EdgeEnd e)
+  void add(EdgeEnd e)
   {
     Coordinate p = e.getCoordinate();
     Node n = addNode(p);
@@ -91,18 +91,18 @@ public class NodeMap
    * @param coord Coordinate to find
    * @return the node if found; null otherwise
    */
-  public Node find(Coordinate coord)  {    return (Node) nodeMap.get(coord);  }
+  Node find(Coordinate coord)  {    return (Node) nodeMap.get(coord);  }
 
-  public Iterator iterator()
+  Iterator iterator()
   {
     return nodeMap.values().iterator();
   }
-  public Collection values()
+  Collection values()
   {
     return nodeMap.values();
   }
 
-  public Collection getBoundaryNodes(int geomIndex)
+  Collection getBoundaryNodes(int geomIndex)
   {
     Collection bdyNodes = new ArrayList();
     for (Iterator i = iterator(); i.hasNext(); ) {
@@ -113,7 +113,7 @@ public class NodeMap
     return bdyNodes;
   }
 
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     for (Iterator it = iterator(); it.hasNext(); )
     {

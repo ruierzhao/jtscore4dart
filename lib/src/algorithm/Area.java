@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -20,7 +20,7 @@ import org.locationtech.jts.geom.CoordinateSequence;
  * @author Martin Davis
  *
  */
-public class Area {
+class Area {
 
   /**
    * Computes the area for a ring. 
@@ -28,9 +28,9 @@ public class Area {
    * @param ring the coordinates forming the ring
    * @return the area of the ring
    */
-  public static double ofRing(Coordinate[] ring)
+  static double ofRing(List<Coordinate> ring)
   {
-    return Math.abs(ofRingSigned(ring));
+    return (ofRingSigned(ring).abs());
   }
  
   /**
@@ -39,9 +39,9 @@ public class Area {
    * @param ring the coordinates forming the ring
    * @return the area of the ring
    */
-  public static double ofRing(CoordinateSequence ring)
+  static double ofRing(CoordinateSequence ring)
   {
-    return Math.abs(ofRingSigned(ring));
+    return (ofRingSigned(ring).abs());
   }
 
   /**
@@ -53,7 +53,7 @@ public class Area {
    *          the coordinates forming the ring
    * @return the signed area of the ring
    */
-  public static double ofRingSigned(Coordinate[] ring)
+  static double ofRingSigned(List<Coordinate> ring)
   {
     if (ring.length < 3)
       return 0.0;
@@ -84,7 +84,7 @@ public class Area {
    *          the coordinates forming the ring
    * @return the signed area of the ring
    */
-  public static double ofRingSigned(CoordinateSequence ring)
+  static double ofRingSigned(CoordinateSequence ring)
   {
     int n = ring.size();
     if (n < 3)

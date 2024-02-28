@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.math;
+
 
 import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.algorithm.CGAlgorithmsDD;
@@ -22,7 +22,7 @@ import org.locationtech.jts.util.Assert;
  * @author mbdavis
  * 
  */
-public class Vector2D {
+class Vector2D {
   /**
    * Creates a new vector with given X and Y components.
    * 
@@ -30,7 +30,7 @@ public class Vector2D {
    * @param y the y component
    * @return a new vector
    */
-	public static Vector2D create(double x, double y) {
+	static Vector2D create(double x, double y) {
 		return new Vector2D(x, y);
 	}
 
@@ -40,7 +40,7 @@ public class Vector2D {
    * @param v the vector to copy
    * @return a new vector
    */
-	public static Vector2D create(Vector2D v) {
+	static Vector2D create(Vector2D v) {
 		return new Vector2D(v);
 	}
 
@@ -50,7 +50,7 @@ public class Vector2D {
    * @param coord the Coordinate to copy
    * @return a new vector
    */
-	public static Vector2D create(Coordinate coord) {
+	static Vector2D create(Coordinate coord) {
 		return new Vector2D(coord);
 	}
 
@@ -63,7 +63,7 @@ public class Vector2D {
    * @param to the destination Coordinate
    * @return a new vector
    */
-	public static Vector2D create(Coordinate from, Coordinate to) {
+	static Vector2D create(Coordinate from, Coordinate to) {
 		return new Vector2D(from, to);
 	}
 
@@ -77,49 +77,49 @@ public class Vector2D {
 	 */
 	private double y;
 
-	public Vector2D() {
+	Vector2D() {
 		this(0.0, 0.0);
 	}
 
-	public Vector2D(double x, double y) {
+	Vector2D(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public Vector2D(Vector2D v) {
+	Vector2D(Vector2D v) {
 		x = v.x;
 		y = v.y;
 	}
 
-	public Vector2D(Coordinate from, Coordinate to) {
+	Vector2D(Coordinate from, Coordinate to) {
 		x = to.x - from.x;
 		y = to.y - from.y;
 	}
 
-	public Vector2D(Coordinate v) {
+	Vector2D(Coordinate v) {
 		x = v.x;
 		y = v.y;
 	}
 
-	public double getX() {
+	double getX() {
 		return x;
 	}
 
-	public double getY() {
+	double getY() {
 		return y;
 	}
 
-	public double getComponent(int index) {
+	double getComponent(int index) {
 		if (index == 0)
 			return x;
 		return y;
 	}
 
-	public Vector2D add(Vector2D v) {
+	Vector2D add(Vector2D v) {
 		return create(x + v.x, y + v.y);
 	}
 
-	public Vector2D subtract(Vector2D v) {
+	Vector2D subtract(Vector2D v) {
 		return create(x - v.x, y - v.y);
 	}
 
@@ -129,7 +129,7 @@ public class Vector2D {
    * @param d the value to multiply by
    * @return a new vector with the value v * d
    */
-	public Vector2D multiply(double d) {
+	Vector2D multiply(double d) {
 		return create(x * d, y * d);
 	}
 
@@ -139,30 +139,30 @@ public class Vector2D {
    * @param d the value to divide by
    * @return a new vector with the value v / d
    */
-	public Vector2D divide(double d) {
+	Vector2D divide(double d) {
 		return create(x / d, y / d);
 	}
 
-	public Vector2D negate() {
+	Vector2D negate() {
 		return create(-x , -y);
 	}
 
-	public double length() {
+	double length() {
 		return Math.hypot(x, y);
 	}
 
-	public double lengthSquared() {
+	double lengthSquared() {
 		return x * x + y * y;
 	}
 
-	public Vector2D normalize() {
+	Vector2D normalize() {
 		double length = length();
 		if (length > 0.0)
 			return divide(length);
 		return create(0.0, 0.0);
 	}
 
-	public Vector2D average(Vector2D v) {
+	Vector2D average(Vector2D v) {
 		return weightedSum(v, 0.5);
 	}
   
@@ -181,7 +181,7 @@ public class Vector2D {
 	 * @param frac the fraction of the total contributed by this vector
 	 * @return the weighted sum of the two vectors
 	 */
-	public Vector2D weightedSum(Vector2D v, double frac) {
+	Vector2D weightedSum(Vector2D v, double frac) {
 		return create(
 				frac * x + (1.0 - frac) * v.x, 
 				frac * y + (1.0 - frac) * v.y);
@@ -192,7 +192,7 @@ public class Vector2D {
    * @param v a vector
    * @return the distance between the vectors
    */
-  public double distance(Vector2D v)
+  double distance(Vector2D v)
   {
     double delx = v.x - x;
     double dely = v.y - y;
@@ -205,21 +205,21 @@ public class Vector2D {
 	 * @param v a vector
 	 * @return the dot product of the vectors
 	 */
-	public double dot(Vector2D v) {
+	double dot(Vector2D v) {
 		return x * v.x + y * v.y;
 	}
 
-	public double angle()
+	double angle()
 	{
 		return Math.atan2(y, x);
 	}
 	
-  public double angle(Vector2D v)
+  double angle(Vector2D v)
   {
     return Angle.diff(v.angle(), angle());
   }
   
-  public double angleTo(Vector2D v)
+  double angleTo(Vector2D v)
   {
     double a1 = angle();
     double a2 = v.angle();
@@ -233,7 +233,7 @@ public class Vector2D {
     return angDel;
   }
   
-	public Vector2D rotate(double angle)
+	Vector2D rotate(double angle)
 	{
 		double cos = Math.cos(angle);
 		double sin = Math.sin(angle);
@@ -254,7 +254,7 @@ public class Vector2D {
 	 *          the number of quarter-circles to rotate by
 	 * @return the rotated vector.
 	 */
-	public Vector2D rotateByQuarterCircle(int numQuarters) {
+	Vector2D rotateByQuarterCircle(int numQuarters) {
 		int nQuad = numQuarters % 4;
 		if (numQuarters < 0 && nQuad != 0) {
 			nQuad = nQuad + 4;
@@ -273,16 +273,16 @@ public class Vector2D {
 		return null;
 	}
 
-  public boolean isParallel(Vector2D v)
+  bool isParallel(Vector2D v)
   {
     return 0.0 == CGAlgorithmsDD.signOfDet2x2(x, y, v.x, v.y);
   }
   
-	public Coordinate translate(Coordinate coord) {
+	Coordinate translate(Coordinate coord) {
 		return new Coordinate(x + coord.x, y + coord.y);
 	}
 
-	public Coordinate toCoordinate() {
+	Coordinate toCoordinate() {
 		return new Coordinate(x, y);
 	}
 
@@ -291,7 +291,7 @@ public class Vector2D {
    * 
    * @return a copy of this vector
    */
-  public Object clone()
+  Object clone()
   {
     return new Vector2D(this);
   }
@@ -301,7 +301,7 @@ public class Vector2D {
    * 
    * @return a string representing this vector
    */
-	public String toString() {
+	String toString() {
 		return "[" + x + ", " + y + "]";
 	}
 	
@@ -314,7 +314,7 @@ public class Vector2D {
 	 * @return true if <tt>other</tt> is a <tt>Vector2D</tt> with the same
 	 *         values for the x and y components.
 	 */
-	public boolean equals(Object o) {
+	bool equals(Object o) {
 		if (!(o instanceof Vector2D)) {
 			return false;
 		}
@@ -327,7 +327,7 @@ public class Vector2D {
 	 * 
 	 * @return a hashcode for this vector
 	 */
-	public int hashCode() {
+	int hashCode() {
 		// Algorithm from Effective Java by Joshua Bloch
 		int result = 17;
 		result = 37 * result + Coordinate.hashCode(x);

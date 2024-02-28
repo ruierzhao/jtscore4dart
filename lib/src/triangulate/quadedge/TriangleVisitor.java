@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 /**
  * An interface for algorithms which process the triangles in a {@link QuadEdgeSubdivision}.
@@ -18,7 +18,7 @@ package org.locationtech.jts.triangulate.quadedge;
  * @author Martin Davis
  * @version 1.0
  */
-public interface TriangleVisitor {
+interface TriangleVisitor {
     /**
      * Visits the {@link QuadEdge}s of a triangle.
      * 

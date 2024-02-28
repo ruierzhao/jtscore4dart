@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.polygon;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ import org.locationtech.jts.triangulate.tri.Tri;
  * It may contain repeated points, which are treated as a single vertex.
  * By default every vertex is triangulated, 
  * including ones which are "flat" (the adjacent segments are collinear).  
- * These can be removed by setting {@link #setSkipFlatCorners(boolean)}
+ * These can be removed by setting {@link #setSkipFlatCorners(bool)}
  * <p>
  * The polygon representation does not allow holes.
  * Polygons with holes can be triangulated by preparing them 
@@ -56,19 +56,19 @@ class PolygonEarClipper {
    * @param polyShell the vertices of the polygon
    * @return a list of the Tris
    */
-  public static List<Tri> triangulate(Coordinate[] polyShell) {
+  static List<Tri> triangulate(List<Coordinate> polyShell) {
     PolygonEarClipper clipper = new PolygonEarClipper(polyShell);
     return clipper.compute();
   }
   
-  private boolean isFlatCornersSkipped = false;
+  private bool isFlatCornersSkipped = false;
 
   /**
    * The polygon vertices are provided in CW orientation. 
    * Thus for convex interior angles 
    * the vertices forming the angle are in CW orientation.
    */
-  private final Coordinate[] vertex;
+  private final List<Coordinate> vertex;
   
   private final int[] vertexNext;
   private int vertexSize;
@@ -91,7 +91,7 @@ class PolygonEarClipper {
    * 
    * @param polyShell the polygon vertices to process
    */
-  public PolygonEarClipper(Coordinate[] polyShell) {
+  PolygonEarClipper(List<Coordinate> polyShell) {
     this.vertex = polyShell;
     
     // init working storage
@@ -127,11 +127,11 @@ class PolygonEarClipper {
    * 
    * @param isFlatCornersSkipped whether to skip collinear vertices
    */
-  public void setSkipFlatCorners(boolean isFlatCornersSkipped) {
+  void setSkipFlatCorners(bool isFlatCornersSkipped) {
     this.isFlatCornersSkipped  = isFlatCornersSkipped;
   }
   
-  public List<Tri> compute() {
+  List<Tri> compute() {
     List<Tri> triList = new ArrayList<Tri>();
 
     /**
@@ -141,7 +141,7 @@ class PolygonEarClipper {
     int cornerScanCount = 0;
     
     initCornerIndex();
-    Coordinate[] corner = new Coordinate[3];
+    List<Coordinate> corner = new Coordinate[3];
     fetchCorner(corner);
     
     /**
@@ -156,7 +156,7 @@ class PolygonEarClipper {
        */
       if (! isConvex(corner)) {
         // remove the corner if it is invalid or flat (if required)        
-        boolean isCornerRemoved = isCornerInvalid(corner)
+        bool isCornerRemoved = isCornerInvalid(corner)
             || (isFlatCornersSkipped && isFlat(corner));
         if (isCornerRemoved) {
           //System.out.println(WKTWriter.toLineString(corner));
@@ -196,7 +196,7 @@ class PolygonEarClipper {
     }
   }
   
-  private boolean isValidEar(int cornerIndex, Coordinate[] corner) {
+  private bool isValidEar(int cornerIndex, List<Coordinate> corner) {
     int intApexIndex = findIntersectingVertex(cornerIndex, corner);
     //--- no intersections found
     if (intApexIndex == NO_VERTEX_INDEX)
@@ -222,7 +222,7 @@ class PolygonEarClipper {
    * @param corner the corner vertices
    * @return the index of an intersecting or duplicate vertex, or {@link #NO_VERTEX_INDEX} if none
    */
-  private int findIntersectingVertex(int cornerIndex, Coordinate[] corner) {
+  private int findIntersectingVertex(int cornerIndex, List<Coordinate> corner) {
     Envelope cornerEnv = envelope(corner);
     int[] result = vertexCoordIndex.query(cornerEnv);
     
@@ -271,7 +271,7 @@ class PolygonEarClipper {
    * @param corner the corner vertices
    * @return true if the corner ia a valid ear
    */
-  private boolean isValidEarScan(int cornerIndex, Coordinate[] corner) {
+  private bool isValidEarScan(int cornerIndex, List<Coordinate> corner) {
     double cornerAngle = Angle.angleBetweenOriented(corner[0], corner[1], corner[2]);
     
     int currIndex = nextIndex(vertexFirst);
@@ -311,7 +311,7 @@ class PolygonEarClipper {
     return true;
   }
   
-  private static Envelope envelope(Coordinate[] corner) {
+  private static Envelope envelope(List<Coordinate> corner) {
     Envelope cornerEnv = new Envelope(corner[0], corner[1]);
     cornerEnv.expandToInclude(corner[2]);
     return cornerEnv;
@@ -334,7 +334,7 @@ class PolygonEarClipper {
     cornerIndex[2] = nextIndex(cornerIndex[1]);
   }
 
-  private boolean isRemoved(int vertexIndex) {
+  private bool isRemoved(int vertexIndex) {
     return NO_VERTEX_INDEX == vertexNext[vertexIndex];
   }
   
@@ -350,7 +350,7 @@ class PolygonEarClipper {
    * 
    * @param corner an array for the corner vertices
    */
-  private void fetchCorner(Coordinate[] cornerVertex) {
+  private void fetchCorner(List<Coordinate> cornerVertex) {
     cornerVertex[0] = vertex[cornerIndex[0]]; 
     cornerVertex[1] = vertex[cornerIndex[1]]; 
     cornerVertex[2] = vertex[cornerIndex[2]]; 
@@ -359,7 +359,7 @@ class PolygonEarClipper {
   /**
    * Move to next corner.
    */
-  private void nextCorner(Coordinate[] cornerVertex) {
+  private void nextCorner(List<Coordinate> cornerVertex) {
     if ( vertexSize < 3 ) {
       return;
     }
@@ -380,11 +380,11 @@ class PolygonEarClipper {
     return vertexNext[index];
   }
 
-  private static boolean isConvex(Coordinate[] pts) {
+  private static bool isConvex(List<Coordinate> pts) {
     return Orientation.CLOCKWISE == Orientation.index(pts[0], pts[1], pts[2]);
   }
   
-  private static boolean isFlat(Coordinate[] pts) {
+  private static bool isFlat(List<Coordinate> pts) {
     return Orientation.COLLINEAR == Orientation.index(pts[0], pts[1], pts[2]);
   }
   
@@ -393,11 +393,11 @@ class PolygonEarClipper {
    * @param pts the corner points
    * @return true if the corner is flat or collapsed
    */
-  private static boolean isCornerInvalid(Coordinate[] pts) {
+  private static bool isCornerInvalid(List<Coordinate> pts) {
     return pts[1].equals2D(pts[0]) || pts[1].equals2D(pts[2]) || pts[0].equals2D(pts[2]);
   }
   
-  public Polygon toGeometry() {
+  Polygon toGeometry() {
     GeometryFactory fact = new GeometryFactory();
     CoordinateList coordList = new CoordinateList();
     int index = vertexFirst;

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate;
+
 
 
 import org.locationtech.jts.geom.Coordinate;
@@ -20,6 +20,6 @@ import org.locationtech.jts.geom.Coordinate;
  * 
  * @author Martin Davis
  */
-public interface ConstraintVertexFactory {
+interface ConstraintVertexFactory {
     ConstraintVertex createVertex(Coordinate p, Segment constraintSeg);
 }

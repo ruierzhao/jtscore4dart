@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import java.util.List;
 
@@ -50,19 +50,19 @@ abstract class AbstractPreparedPolygonContains
 	 * For contains the value is true.
 	 * For covers the value is false.
 	 */
-	protected boolean requireSomePointInInterior = true; 
+	protected bool requireSomePointInInterior = true; 
 	
 	// information about geometric situation
-	private boolean hasSegmentIntersection = false;
-  private boolean hasProperIntersection = false;
-  private boolean hasNonProperIntersection = false;
+	private bool hasSegmentIntersection = false;
+  private bool hasProperIntersection = false;
+  private bool hasNonProperIntersection = false;
 	
   /**
    * Creates an instance of this operation.
    * 
    * @param prepPoly the PreparedPolygon to evaluate
    */
-	public AbstractPreparedPolygonContains(PreparedPolygon prepPoly)
+	AbstractPreparedPolygonContains(PreparedPolygon prepPoly)
 	{
 		super(prepPoly);
 	}
@@ -74,7 +74,7 @@ abstract class AbstractPreparedPolygonContains
 	 * @param geom the test geometry
 	 * @return true if the test geometry is contained
 	 */
-	protected boolean eval(Geometry geom)
+	protected bool eval(Geometry geom)
 	{
 	  if (geom.getDimension() == 0) {
 	    return evalPoints(geom);
@@ -86,7 +86,7 @@ abstract class AbstractPreparedPolygonContains
 		 * 
 		 * If a point of any test components does not lie in target, result is false
 		 */
-		boolean isAllInTargetArea = isAllTestComponentsInTarget(geom);
+		bool isAllInTargetArea = isAllTestComponentsInTarget(geom);
 		if (! isAllInTargetArea) return false;
 		
 		/**
@@ -103,7 +103,7 @@ abstract class AbstractPreparedPolygonContains
 		 * is some portion of the interior of the test geometry lying outside
 		 * the target, which means that the test is not contained.
 		 */
-		boolean properIntersectionImpliesNotContained = isProperIntersectionImpliesNotContainedSituation(geom);
+		bool properIntersectionImpliesNotContained = isProperIntersectionImpliesNotContainedSituation(geom);
 		// MD - testing only
 //		properIntersectionImpliesNotContained = true;
 		
@@ -148,7 +148,7 @@ abstract class AbstractPreparedPolygonContains
 		 */
 		if (geom instanceof Polygonal) {
 			// TODO: generalize this to handle GeometryCollections
-			boolean isTargetInTestArea = isAnyTargetComponentInAreaTest(geom, prepPoly.getRepresentativePoints());
+			bool isTargetInTestArea = isAnyTargetComponentInAreaTest(geom, prepPoly.getRepresentativePoints());
 			if (isTargetInTestArea) return false;
 		}
 		return true;
@@ -161,14 +161,14 @@ abstract class AbstractPreparedPolygonContains
 	 * @param geom a Point or MultiPoint geometry
 	 * @return the value of the predicate being evaluated
 	 */
-	private boolean evalPoints(Geometry geom) {
+	private bool evalPoints(Geometry geom) {
     /**
      * Do point-in-poly tests first, since they are cheaper and may result
      * in a quick negative result.
      * 
      * If a point of any test components does not lie in target, result is false
      */
-    boolean isAllInTargetArea = isAllTestPointsInTarget(geom);
+    bool isAllInTargetArea = isAllTestPointsInTarget(geom);
     if (! isAllInTargetArea) return false;
     
     /**
@@ -180,13 +180,13 @@ abstract class AbstractPreparedPolygonContains
      * which implies not contained.
      */
     if (requireSomePointInInterior) {
-      boolean isAnyInTargetInterior = isAnyTestPointInTargetInterior(geom);
+      bool isAnyInTargetInterior = isAnyTestPointInTargetInterior(geom);
       return isAnyInTargetInterior;
     }
     return true;
   }
 
-  private boolean isProperIntersectionImpliesNotContainedSituation(Geometry testGeom)
+  private bool isProperIntersectionImpliesNotContainedSituation(Geometry testGeom)
 	{
     /**
      * If the test geometry is polygonal we have the A/A situation.
@@ -212,7 +212,7 @@ abstract class AbstractPreparedPolygonContains
    *  
    * @return true if the geometry is a single polygon with no holes
    */
-	private boolean isSingleShell(Geometry geom)
+	private bool isSingleShell(Geometry geom)
 	{
     // handles single-element MultiPolygons, as well as Polygons
 		if (geom.getNumGeometries() != 1) return false;
@@ -243,6 +243,6 @@ abstract class AbstractPreparedPolygonContains
 	 * @param geom the test geometry
 	 * @return true if this prepared polygon has the relationship with the test geometry
 	 */
-	protected abstract boolean fullTopologicalPredicate(Geometry geom);
+	protected abstract bool fullTopologicalPredicate(Geometry geom);
 	
 }

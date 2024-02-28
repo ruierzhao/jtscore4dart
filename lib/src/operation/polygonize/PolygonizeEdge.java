@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.polygonize;
+
 
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.planargraph.Edge;
@@ -24,9 +24,9 @@ class PolygonizeEdge
 {
   private LineString line;
 
-  public PolygonizeEdge(LineString line)
+  PolygonizeEdge(LineString line)
   {
     this.line = line;
   }
-  public LineString getLine() { return line; }
+  LineString getLine() { return line; }
 }

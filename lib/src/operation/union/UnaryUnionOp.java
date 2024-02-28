@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.union;
+
 
 
 import java.util.Collection;
@@ -59,7 +59,7 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
  * @author mbdavis
  *
  */
-public class UnaryUnionOp 
+class UnaryUnionOp 
 {
 	/**
 	 * Computes the geometric union of a {@link Collection} 
@@ -69,7 +69,7 @@ public class UnaryUnionOp
 	 * @return the union of the geometries, 
 	 * or <code>null</code> if the input is empty
 	 */
-	public static Geometry union(Collection geoms)
+	static Geometry union(Collection geoms)
 	{
 		UnaryUnionOp op = new UnaryUnionOp(geoms);
 		return op.union();
@@ -87,7 +87,7 @@ public class UnaryUnionOp
 	 * @return the union of the geometries,
 	 * or an empty GEOMETRYCOLLECTION
 	 */
-	public static Geometry union(Collection geoms, GeometryFactory geomFact)
+	static Geometry union(Collection geoms, GeometryFactory geomFact)
 	{
 		UnaryUnionOp op = new UnaryUnionOp(geoms, geomFact);
 		return op.union();
@@ -101,7 +101,7 @@ public class UnaryUnionOp
 	 * @return the union of the elements of the geometry
 	 * or an empty GEOMETRYCOLLECTION
 	 */
-	public static Geometry union(Geometry geom)
+	static Geometry union(Geometry geom)
 	{
 		UnaryUnionOp op = new UnaryUnionOp(geom);
 		return op.union();
@@ -119,7 +119,7 @@ public class UnaryUnionOp
 	 * @param geoms a collection of geometries
 	 * @param geomFact the geometry factory to use if the collection is empty
 	 */
-	public UnaryUnionOp(Collection geoms, GeometryFactory geomFact)
+	UnaryUnionOp(Collection geoms, GeometryFactory geomFact)
 	{
 		this.geomFact = geomFact;
 		extract(geoms);
@@ -132,7 +132,7 @@ public class UnaryUnionOp
 	 * 
 	 * @param geoms a collection of geometries
 	 */
-	public UnaryUnionOp(Collection geoms)
+	UnaryUnionOp(Collection geoms)
 	{
 		extract(geoms);
 	}
@@ -142,12 +142,12 @@ public class UnaryUnionOp
 	 * (which may be a {@link GeometryCollection}).
 	 * @param geom
 	 */
-	public UnaryUnionOp(Geometry geom)
+	UnaryUnionOp(Geometry geom)
 	{
 		extract(geom);
 	}
 	
-	public void setUnionFunction(UnionStrategy unionFun) {
+	void setUnionFunction(UnionStrategy unionFun) {
 	  this.unionFunction = unionFun;
 	}
 	
@@ -178,7 +178,7 @@ public class UnaryUnionOp
 	 * or an empty atomic geometry, or an empty GEOMETRYCOLLECTION,
 	 * or <code>null</code> if no GeometryFactory was provided
 	 */
-	public Geometry union()
+	Geometry union()
 	{
 	  if (geomFact == null)
 	    geomFact = extracter.getFactory();

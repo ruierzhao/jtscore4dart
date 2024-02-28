@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.sweepline;
+
 
 /**
  * An action taken when a {@link SweepLineIndex} detects that two
@@ -17,7 +17,7 @@ package org.locationtech.jts.index.sweepline;
  *
  * @version 1.7
  */
-public interface SweepLineOverlapAction {
+interface SweepLineOverlapAction {
 
   void overlap(SweepLineInterval s0, SweepLineInterval s1);
 }

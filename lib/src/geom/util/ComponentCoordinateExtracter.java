@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.Point;
  *
  * @version 1.9
  */
-public class ComponentCoordinateExtracter
+class ComponentCoordinateExtracter
   implements GeometryComponentFilter
 {
 
@@ -41,7 +41,7 @@ public class ComponentCoordinateExtracter
    * @param geom the Geometry from which to extract
    * @return a list of representative Coordinates
    */
-  public static List getCoordinates(Geometry geom)
+  static List getCoordinates(Geometry geom)
   {
     List coords = new ArrayList();
     geom.apply(new ComponentCoordinateExtracter(coords));
@@ -53,12 +53,12 @@ public class ComponentCoordinateExtracter
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.
    */
-  public ComponentCoordinateExtracter(List coords)
+  ComponentCoordinateExtracter(List coords)
   {
     this.coords = coords;
   }
 
-  public void filter(Geometry geom)
+  void filter(Geometry geom)
   {
     if (geom.isEmpty())
       return;

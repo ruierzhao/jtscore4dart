@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.util.GeometryEditor;
  * ensuring that the result is valid (unless specified otherwise).
  * <p>
  * By default the geometry precision model is not changed.
- * This can be overridden by using {@link #setChangePrecisionModel(boolean)}.
+ * This can be overridden by using {@link #setChangePrecisionModel(bool)}.
  *  
  * <h4>Topological Precision Reduction</h4>
  * 
@@ -39,17 +39,17 @@ import org.locationtech.jts.geom.util.GeometryEditor;
  * Normally, collapsed linear components (e.g. lines collapsing to a point) 
  * are not included in the result. 
  * This behavior can be changed 
- * by setting {@link #setRemoveCollapsedComponents(boolean)} to <code>false</code>,
+ * by setting {@link #setRemoveCollapsedComponents(bool)} to <code>false</code>,
  * or by using the static method {@link #reduceKeepCollapsed(Geometry, PrecisionModel)}.
  * <p>
- * In general input must be valid geometry, or an {@link IllegalArgumentException} 
+ * In general input must be valid geometry, or an {@link ArgumentError} 
  * will be thrown. However if the invalidity is "mild" or very small then it
  * may be eliminated by precision reduction.
  * 
  * 
  * <h4>Pointwise Precision Reduction</h4>
  * 
- * Alternatively, geometry can be reduced pointwise by using {@link #setPointwise(boolean)}.
+ * Alternatively, geometry can be reduced pointwise by using {@link #setPointwise(bool)}.
  * Linear and point geometry are always reduced pointwise (i.e. without further change to 
  * topology or structure), since this does not change validity.
  * Invalid inputs are allowed.
@@ -61,7 +61,7 @@ import org.locationtech.jts.geom.util.GeometryEditor;
  *
  * @version 1.12
  */
-public class GeometryPrecisionReducer
+class GeometryPrecisionReducer
 {
 	/**
 	 * Reduces precision of a geometry, ensuring output geometry is valid.
@@ -75,9 +75,9 @@ public class GeometryPrecisionReducer
 	 * @param g the geometry to reduce
 	 * @param precModel the precision model to use
 	 * @return the reduced geometry
-   * @throws IllegalArgumentException if the reduction fails due to invalid input geometry
+   * @throws ArgumentError if the reduction fails due to invalid input geometry
 	 */
-	public static Geometry reduce(Geometry g, PrecisionModel precModel)
+	static Geometry reduce(Geometry g, PrecisionModel precModel)
 	{
 		GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(precModel);
 		return reducer.reduce(g);
@@ -95,9 +95,9 @@ public class GeometryPrecisionReducer
    * @param g the geometry to reduce
    * @param precModel the precision model to use
    * @return the reduced geometry
-   * @throws IllegalArgumentException if the reduction fails due to invalid input geometry
+   * @throws ArgumentError if the reduction fails due to invalid input geometry
    */
-  public static Geometry reduceKeepCollapsed(Geometry geom, PrecisionModel pm) {
+  static Geometry reduceKeepCollapsed(Geometry geom, PrecisionModel pm) {
     GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(pm);
     reducer.setRemoveCollapsedComponents(false);
     return reducer.reduce(geom);
@@ -117,7 +117,7 @@ public class GeometryPrecisionReducer
 	 * @param precModel the precision model to use
 	 * @return the reduced geometry
 	 */
-	public static Geometry reducePointwise(Geometry g, PrecisionModel precModel)
+	static Geometry reducePointwise(Geometry g, PrecisionModel precModel)
 	{
 		GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(precModel);
 		reducer.setPointwise(true);
@@ -125,11 +125,11 @@ public class GeometryPrecisionReducer
 	}
 	
   private PrecisionModel targetPM;
-  private boolean removeCollapsed = true;
-  private boolean changePrecisionModel = false;
-  private boolean isPointwise = false;
+  private bool removeCollapsed = true;
+  private bool changePrecisionModel = false;
+  private bool isPointwise = false;
 
-  public GeometryPrecisionReducer(PrecisionModel pm)
+  GeometryPrecisionReducer(PrecisionModel pm)
   {
     targetPM = pm;
   }
@@ -142,7 +142,7 @@ public class GeometryPrecisionReducer
    *
    * @param removeCollapsed if <code>true</code> collapsed components will be removed
    */
-  public void setRemoveCollapsedComponents(boolean removeCollapsed)
+  void setRemoveCollapsedComponents(bool removeCollapsed)
   {
     this.removeCollapsed = removeCollapsed;
   }
@@ -157,7 +157,7 @@ public class GeometryPrecisionReducer
    * @param changePrecisionModel if <code>true</code> the precision model of the created Geometry will be the
    * the precisionModel supplied in the constructor.
    */
-  public void setChangePrecisionModel(boolean changePrecisionModel)
+  void setChangePrecisionModel(bool changePrecisionModel)
   {
     this.changePrecisionModel = changePrecisionModel;
   }
@@ -172,7 +172,7 @@ public class GeometryPrecisionReducer
    * 
    * @param isPointwise if reduction should be done pointwise only
    */
-  public void setPointwise(boolean isPointwise)
+  void setPointwise(bool isPointwise)
   {
     this.isPointwise = isPointwise;
   }
@@ -183,9 +183,9 @@ public class GeometryPrecisionReducer
    * 
    * @param geom the geometry to reduce
    * @return the precision-reduced geometry
-   * @throws IllegalArgumentException if the reduction fails due to invalid input geometry is invalid
+   * @throws ArgumentError if the reduction fails due to invalid input geometry is invalid
    */
-  public Geometry reduce(Geometry geom)
+  Geometry reduce(Geometry geom)
   {
     Geometry reduced;
     if (isPointwise) {

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.distance;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @version 1.7
  */
-public class ConnectedElementLocationFilter
+class ConnectedElementLocationFilter
   implements GeometryFilter
 {
 
@@ -40,7 +40,7 @@ public class ConnectedElementLocationFilter
    * not a GeometryCollection, an empty list will be returned. The elements of the list 
    * are {@link org.locationtech.jts.operation.distance.GeometryLocation}s.
    */  
-  public static List getLocations(Geometry geom)
+  static List getLocations(Geometry geom)
   {
     List locations = new ArrayList();
     geom.apply(new ConnectedElementLocationFilter(locations));
@@ -54,7 +54,7 @@ public class ConnectedElementLocationFilter
     this.locations = locations;
   }
 
-  public void filter(Geometry geom)
+  void filter(Geometry geom)
   {
     // empty geometries do not provide a location
     if (geom.isEmpty()) return;

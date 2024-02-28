@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.algorithm.HCoordinate;
@@ -22,7 +22,7 @@ import org.locationtech.jts.math.DD;
  * 
  * @version 1.7
  */
-public class Triangle
+class Triangle
 {
 
   /**
@@ -38,7 +38,7 @@ public class Triangle
    * @param c a vertex of the triangle
    * @return true if the triangle is acute
    */
-  public static boolean isAcute(Coordinate a, Coordinate b, Coordinate c)
+  static bool isAcute(Coordinate a, Coordinate b, Coordinate c)
   {
     if (!Angle.isAcute(a, b, c))
       return false;
@@ -57,7 +57,7 @@ public class Triangle
    * @param c a vertex of the triangle
    * @return true if the triangle orientation is counter-clockwise
    */
-  public static boolean isCCW(Coordinate a, Coordinate b, Coordinate c)
+  static bool isCCW(Coordinate a, Coordinate b, Coordinate c)
   {
     return Orientation.COUNTERCLOCKWISE == Orientation.index(a, b, c);
   }
@@ -71,7 +71,7 @@ public class Triangle
    * @param p the point to test
    * @return true if the triangle intersects the point
    */
-  public static boolean intersects(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
+  static bool intersects(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
   {
     int exteriorIndex = isCCW(a, b, c) ? 
         Orientation.CLOCKWISE : Orientation.COUNTERCLOCKWISE;
@@ -91,7 +91,7 @@ public class Triangle
    *          another point
    * @return the perpendicular bisector, as an HCoordinate
    */
-  public static HCoordinate perpendicularBisector(Coordinate a, Coordinate b)
+  static HCoordinate perpendicularBisector(Coordinate a, Coordinate b)
   {
     // returns the perpendicular bisector of the line segment ab
     double dx = b.x - a.x;
@@ -112,7 +112,7 @@ public class Triangle
    * @param c a vertex of the triangle
    * @return the circumradius of the triangle
    */
-  public static double circumradius(Coordinate a, Coordinate b, Coordinate c) {
+  static double circumradius(Coordinate a, Coordinate b, Coordinate c) {
     double A = a.distance(b);
     double B = b.distance(c);
     double C = c.distance(a);
@@ -138,7 +138,7 @@ public class Triangle
    * @return the circumcentre of the triangle
    */
   /*
-   * // original non-robust algorithm public static Coordinate
+   * // original non-robust algorithm static Coordinate
    * circumcentre(Coordinate a, Coordinate b, Coordinate c) { // compute the
    * perpendicular bisector of chord ab HCoordinate cab =
    * perpendicularBisector(a, b); // compute the perpendicular bisector of chord
@@ -178,7 +178,7 @@ public class Triangle
    *          a vertex of the triangle
    * @return the circumcentre of the triangle
    */
-  public static Coordinate circumcentre(Coordinate a, Coordinate b, Coordinate c)
+  static Coordinate circumcentre(Coordinate a, Coordinate b, Coordinate c)
   {
     double cx = c.x;
     double cy = c.y;
@@ -218,7 +218,7 @@ public class Triangle
    *          a vertex of the triangle
    * @return the circumcentre of the triangle
    */
-  public static Coordinate circumcentreDD(Coordinate a, Coordinate b, Coordinate c)
+  static Coordinate circumcentreDD(Coordinate a, Coordinate b, Coordinate c)
   {
     DD ax = DD.valueOf(a.x).subtract(c.x);
     DD ay = DD.valueOf(a.y).subtract(c.y);
@@ -273,7 +273,7 @@ public class Triangle
    *          a vertex of the triangle
    * @return the point which is the incentre of the triangle
    */
-  public static Coordinate inCentre(Coordinate a, Coordinate b, Coordinate c)
+  static Coordinate inCentre(Coordinate a, Coordinate b, Coordinate c)
   {
     // the lengths of the sides, labelled by their opposite vertex
     double len0 = b.distance(c);
@@ -303,7 +303,7 @@ public class Triangle
    *          a vertex of the triangle
    * @return the centroid of the triangle
    */
-  public static Coordinate centroid(Coordinate a, Coordinate b, Coordinate c)
+  static Coordinate centroid(Coordinate a, Coordinate b, Coordinate c)
   {
     double x = (a.x + b.x + c.x) / 3;
     double y = (a.y + b.y + c.y) / 3;
@@ -318,7 +318,7 @@ public class Triangle
    * @param c a vertex of the triangle
    * @return the length of the triangle perimeter
    */
-  public static double length(Coordinate a, Coordinate b, Coordinate c)
+  static double length(Coordinate a, Coordinate b, Coordinate c)
   {
     return a.distance(b) + b.distance(c) + c.distance(a);
   }
@@ -334,7 +334,7 @@ public class Triangle
    *          a vertex of the triangle
    * @return the length of the longest side of the triangle
    */
-  public static double longestSideLength(Coordinate a, Coordinate b,
+  static double longestSideLength(Coordinate a, Coordinate b,
       Coordinate c)
   {
     double lenAB = a.distance(b);
@@ -360,7 +360,7 @@ public class Triangle
    *          a vertex of the triangle
    * @return the angle bisector cut point
    */
-  public static Coordinate angleBisector(Coordinate a, Coordinate b,
+  static Coordinate angleBisector(Coordinate a, Coordinate b,
       Coordinate c)
   {
     /**
@@ -390,7 +390,7 @@ public class Triangle
    * 
    * @see #signedArea(Coordinate, Coordinate, Coordinate)
    */
-  public static double area(Coordinate a, Coordinate b, Coordinate c)
+  static double area(Coordinate a, Coordinate b, Coordinate c)
   {
     return Math
         .abs(((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2);
@@ -415,7 +415,7 @@ public class Triangle
    * 
    * @see Orientation#index(Coordinate, Coordinate, Coordinate)
    */
-  public static double signedArea(Coordinate a, Coordinate b, Coordinate c)
+  static double signedArea(Coordinate a, Coordinate b, Coordinate c)
   {
     /**
      * Uses the formula 1/2 * | u x v | where u,v are the side vectors of the
@@ -437,7 +437,7 @@ public class Triangle
    *          a vertex of the triangle
    * @return the 3D area of the triangle
    */
-  public static double area3D(Coordinate a, Coordinate b, Coordinate c)
+  static double area3D(Coordinate a, Coordinate b, Coordinate c)
   {
     /**
      * Uses the formula 1/2 * | u x v | where u,v are the side vectors of the
@@ -483,7 +483,7 @@ public class Triangle
    *          a vertex of a triangle, with a Z ordinate
    * @return the computed Z-value (elevation) of the point
    */
-  public static double interpolateZ(Coordinate p, Coordinate v0, Coordinate v1,
+  static double interpolateZ(Coordinate p, Coordinate v0, Coordinate v1,
       Coordinate v2)
   {
     double x0 = v0.x;
@@ -504,7 +504,7 @@ public class Triangle
   /**
    * The coordinates of the vertices of the triangle
    */
-  public Coordinate p0, p1, p2;
+  Coordinate p0, p1, p2;
 
   /**
    * Creates a new triangle with the given vertices.
@@ -516,7 +516,7 @@ public class Triangle
    * @param p2
    *          a vertex
    */
-  public Triangle(Coordinate p0, Coordinate p1, Coordinate p2)
+  Triangle(Coordinate p0, Coordinate p1, Coordinate p2)
   {
     this.p0 = p0;
     this.p1 = p1;
@@ -532,7 +532,7 @@ public class Triangle
    * 
    * @return the point which is the inCentre of this triangle
    */
-  public Coordinate inCentre()
+  Coordinate inCentre()
   {
     return inCentre(p0, p1, p2);
   }
@@ -547,7 +547,7 @@ public class Triangle
    * 
    * @return true if this triangle is acute
    */
-  public boolean isAcute()
+  bool isAcute()
   {
     return isAcute(p0, p1, p2);
   }
@@ -557,7 +557,7 @@ public class Triangle
    * 
    * @return true if the triangle orientation is counter-clockwise
    */
-  public boolean isCCW() {
+  bool isCCW() {
     return isCCW(p0, p1, p2);
   }
   
@@ -576,7 +576,7 @@ public class Triangle
    * 
    * @return the circumcentre of this triangle
    */
-  public Coordinate circumcentre()
+  Coordinate circumcentre()
   {
     return circumcentre(p0, p1, p2);
   }
@@ -586,7 +586,7 @@ public class Triangle
    * 
    * @return the triangle circumradius
    */
-  public double circumradius()
+  double circumradius()
   {
     return circumradius(p0, p1, p2);
   }
@@ -601,7 +601,7 @@ public class Triangle
    * 
    * @return the centroid of this triangle
    */
-  public Coordinate centroid()
+  Coordinate centroid()
   {
     return centroid(p0, p1, p2);
   }
@@ -611,7 +611,7 @@ public class Triangle
    * 
    * @return the length of the perimeter
    */
-  public double length()
+  double length()
   {
     return length(p0, p1, p2);
   }
@@ -621,7 +621,7 @@ public class Triangle
    * 
    * @return the length of the longest side of this triangle
    */
-  public double longestSideLength()
+  double longestSideLength()
   {
     return longestSideLength(p0, p1, p2);
   }
@@ -634,7 +634,7 @@ public class Triangle
    * 
    * @see #signedArea()
    */
-  public double area()
+  double area()
   {
     return area(p0, p1, p2);
   }
@@ -652,7 +652,7 @@ public class Triangle
    * 
    * @see Orientation#index(Coordinate, Coordinate, Coordinate)
    */
-  public double signedArea()
+  double signedArea()
   {
     return signedArea(p0, p1, p2);
   }
@@ -663,7 +663,7 @@ public class Triangle
    * 
    * @return the 3D area of this triangle
    */
-  public double area3D()
+  double area3D()
   {
     return area3D(p0, p1, p2);
   }
@@ -681,10 +681,10 @@ public class Triangle
    *          the point to compute the Z-value of
    * @return the computed Z-value (elevation) of the point
    */
-  public double interpolateZ(Coordinate p)
+  double interpolateZ(Coordinate p)
   {
     if (p == null)
-      throw new IllegalArgumentException("Supplied point is null.");
+      throw new ArgumentError("Supplied point is null.");
     return interpolateZ(p, this.p0, this.p1, this.p2);
   }
 

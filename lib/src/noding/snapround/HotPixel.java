@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.noding.snapround;
+
 
 import org.locationtech.jts.algorithm.CGAlgorithmsDD;
 import org.locationtech.jts.algorithm.LineIntersector;
@@ -39,10 +39,10 @@ import org.locationtech.jts.io.WKTWriter;
  *
  * @version 1.7
  */
-public class HotPixel
+class HotPixel
 {
   // testing only
-//  public static int nTests = 0;
+//  static int nTests = 0;
   
   private static final double TOLERANCE = 0.5;
 
@@ -58,7 +58,7 @@ public class HotPixel
   /**
    * Indicates if this hot pixel must be a node in the output.
    */
-  private boolean isNode = false;
+  private bool isNode = false;
   
   /**
    * Creates a new hot pixel centered on a rounded point, using a given scale factor.
@@ -67,12 +67,12 @@ public class HotPixel
    * @param pt the coordinate at the centre of the pixel (already rounded)
    * @param scaleFactor the scaleFactor determining the pixel size.  Must be &gt; 0
    */
-  public HotPixel(Coordinate pt, double scaleFactor) {
+  HotPixel(Coordinate pt, double scaleFactor) {
     originalPt = pt;
     this.scaleFactor = scaleFactor;
     
     if (scaleFactor <= 0) 
-      throw new IllegalArgumentException("Scale factor must be non-zero");
+      throw new ArgumentError("Scale factor must be non-zero");
     if (scaleFactor != 1.0) {
       hpx = scaleRound(pt.getX());
       hpy = scaleRound(pt.getY());
@@ -88,14 +88,14 @@ public class HotPixel
    * 
    * @return the coordinate of the pixel
    */
-  public Coordinate getCoordinate() { return originalPt; }
+  Coordinate getCoordinate() { return originalPt; }
 
   /**
    * Gets the scale factor for the precision grid for this pixel.
    * 
    * @return the pixel scale factor
    */
-  public double getScaleFactor() {
+  double getScaleFactor() {
     return scaleFactor;
   }
 
@@ -104,7 +104,7 @@ public class HotPixel
    * 
    * @return the width of the hot pixel tolerance square
    */
-  public double getWidth() {
+  double getWidth() {
     return 1.0 / scaleFactor;
   }
   
@@ -113,14 +113,14 @@ public class HotPixel
    * 
    * @return true if the pixel is marked as a node
    */
-  public boolean isNode() {
+  bool isNode() {
     return isNode;
   }
   
   /**
    * Sets this pixel to be a node.
    */
-  public void setToNode() {
+  void setToNode() {
     //System.out.println(this + " set to Node");
     isNode = true;
   }
@@ -151,7 +151,7 @@ public class HotPixel
    * @param p the coordinate to test
    * @return true if the coordinate intersects this hot pixel
    */
-  public boolean intersects(Coordinate p) {
+  bool intersects(Coordinate p) {
     double x = scale(p.x);
     double y = scale(p.y);
     if (x >= hpx + TOLERANCE) return false;
@@ -172,7 +172,7 @@ public class HotPixel
    * @param p1 the second coordinate of the line segment to test
    * @return true if the line segment intersects this hot pixel
    */
-  public boolean intersects(Coordinate p0, Coordinate p1)
+  bool intersects(Coordinate p0, Coordinate p1)
   {
     if (scaleFactor == 1.0)
       return intersectsScaled(p0.x, p0.y, p1.x, p1.y);
@@ -184,7 +184,7 @@ public class HotPixel
     return intersectsScaled(sp0x, sp0y, sp1x, sp1y);
   }
 
-  private boolean intersectsScaled(double p0x, double p0y,
+  private bool intersectsScaled(double p0x, double p0y,
       double p1x, double p1y) {
     // determine oriented segment pointing in positive X direction
     double px = p0x;
@@ -313,14 +313,14 @@ public class HotPixel
    * @param p1 the end point of a line segment
    * @return <code>true</code> if the segment intersects the closure of the pixel's tolerance square
    */
-  private boolean intersectsPixelClosure(Coordinate p0, Coordinate p1)
+  private bool intersectsPixelClosure(Coordinate p0, Coordinate p1)
   {
     double minx = hpx - TOLERANCE;
     double maxx = hpx + TOLERANCE;
     double miny = hpy - TOLERANCE;
     double maxy = hpy + TOLERANCE;
     
-    Coordinate[] corner = new Coordinate[4];
+    List<Coordinate> corner = new Coordinate[4];
     corner[UPPER_RIGHT] = new Coordinate(maxx, maxy);
     corner[UPPER_LEFT] = new Coordinate(minx, maxy);
     corner[LOWER_LEFT] = new Coordinate(minx, miny);
@@ -339,7 +339,7 @@ public class HotPixel
     return false;
   }
   
-  public String toString() {
+  String toString() {
     return "HP(" + WKTWriter.format(originalPt) + ")";
   }
 

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.io;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,7 +33,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Martin Davis
  *
  */
-public class WKBHexFileReader 
+class WKBHexFileReader 
 {
 	private File file = null;
   private Reader reader;
@@ -49,7 +49,7 @@ public class WKBHexFileReader
    * @param file the <tt>File</tt> to read from
    * @param wkbReader the geometry reader to use
    */
-	public WKBHexFileReader(File file, WKBReader wkbReader)
+	WKBHexFileReader(File file, WKBReader wkbReader)
 	{
 		this.file = file;
     this.wkbReader = wkbReader;
@@ -61,7 +61,7 @@ public class WKBHexFileReader
    * @param filename the name of the file to read from
    * @param wkbReader the geometry reader to use
    */
-  public WKBHexFileReader(String filename, WKBReader wkbReader)
+  WKBHexFileReader(String filename, WKBReader wkbReader)
   {
     this(new File(filename), wkbReader);
   }
@@ -72,7 +72,7 @@ public class WKBHexFileReader
    * @param reader the reader to read from
    * @param wkbReader the geometry reader to use
    */
-  public WKBHexFileReader(Reader reader, WKBReader wkbReader)
+  WKBHexFileReader(Reader reader, WKBReader wkbReader)
   {
     this.reader = reader;
     this.wkbReader = wkbReader;
@@ -83,7 +83,7 @@ public class WKBHexFileReader
    * 
 	 * @param limit the maximum number of geometries to read
 	 */
-	public void setLimit(int limit)
+	void setLimit(int limit)
 	{
 		this.limit = limit;
 	}
@@ -93,7 +93,7 @@ public class WKBHexFileReader
    * 
 	 * @param offset the number of geometries to skip
 	 */
-	public void setOffset(int offset)
+	void setOffset(int offset)
 	{
 		this.offset = offset;
 	}
@@ -107,7 +107,7 @@ public class WKBHexFileReader
 	 * @throws IOException if an I/O exception was encountered
 	 * @throws ParseException if an error occurred reading a geometry
 	 */
-	public List read() 
+	List read() 
 	throws IOException, ParseException 
 	{
     // do this here so that constructors don't throw exceptions
@@ -142,7 +142,7 @@ public class WKBHexFileReader
 		return geoms;
 	}
 	
-	private boolean isAtLimit(List geoms)
+	private bool isAtLimit(List geoms)
 	{
 		if (limit < 0) return false;
 		if (geoms.size() < limit) return false;
@@ -154,7 +154,7 @@ public class WKBHexFileReader
   /**
 	 * Tests if reader is at EOF.
 	 */
-	private boolean isAtEndOfFile(BufferedReader bufferedReader)
+	private bool isAtEndOfFile(BufferedReader bufferedReader)
 			throws IOException 
 			{
 		bufferedReader.mark(MAX_LOOKAHEAD);

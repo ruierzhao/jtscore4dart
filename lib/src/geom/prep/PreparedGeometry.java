@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -34,7 +34,7 @@ import org.locationtech.jts.geom.GeometryCollection;
  * @author Martin Davis
  *
  */
-public interface PreparedGeometry 
+interface PreparedGeometry 
 {
 	
 	/**
@@ -52,7 +52,7 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#contains(Geometry)
 	 */
-	boolean contains(Geometry geom);
+	bool contains(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} properly contains a given geometry.
@@ -85,7 +85,7 @@ public interface PreparedGeometry
 	 * @see Geometry#contains
 	 * 
 	 */
-	boolean containsProperly(Geometry geom);
+	bool containsProperly(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} is covered by a given geometry.
@@ -95,7 +95,7 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#coveredBy(Geometry)
 	 */
-	boolean coveredBy(Geometry geom);
+	bool coveredBy(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} covers a given geometry.
@@ -105,7 +105,7 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#covers(Geometry)
 	 */
-	boolean covers(Geometry geom);
+	bool covers(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} crosses a given geometry.
@@ -115,7 +115,7 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#crosses(Geometry)
 	 */
-	boolean crosses(Geometry geom);
+	bool crosses(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} is disjoint from a given geometry.
@@ -126,7 +126,7 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#disjoint(Geometry)
 	 */
-	boolean disjoint(Geometry geom);
+	bool disjoint(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} intersects a given geometry.
@@ -137,7 +137,7 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#intersects(Geometry)
 	 */
-	boolean intersects(Geometry geom);
+	bool intersects(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} overlaps a given geometry.
@@ -147,7 +147,7 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#overlaps(Geometry)
 	 */
-	boolean overlaps(Geometry geom);
+	bool overlaps(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} touches a given geometry.
@@ -157,7 +157,7 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#touches(Geometry)
 	 */
-	boolean touches(Geometry geom);
+	bool touches(Geometry geom);
 
 	/**
 	 * Tests whether the base {@link Geometry} is within a given geometry.
@@ -167,6 +167,6 @@ public interface PreparedGeometry
 	 * 
 	 * @see Geometry#within(Geometry)
 	 */
-	boolean within(Geometry geom);
+	bool within(Geometry geom);
 
 }

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.noding;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.util.Assert;
@@ -26,7 +26,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class SegmentPointComparator {
+class SegmentPointComparator {
 
   /**
    * Compares two {@link Coordinate}s for their relative position along a segment
@@ -36,7 +36,7 @@ public class SegmentPointComparator {
    * 0 the two nodes are equal;
    * 1 node1 occurs first
    */
-  public static int compare(int octant, Coordinate p0, Coordinate p1)
+  static int compare(int octant, Coordinate p0, Coordinate p1)
   {
     // nodes can only be equal if their coordinates are equal
     if (p0.equals2D(p1)) return 0;
@@ -58,7 +58,7 @@ public class SegmentPointComparator {
     return 0;
   }
 
-  public static int relativeSign(double x0, double x1)
+  static int relativeSign(double x0, double x1)
   {
     if (x0 < x1) return -1;
     if (x0 > x1) return 1;

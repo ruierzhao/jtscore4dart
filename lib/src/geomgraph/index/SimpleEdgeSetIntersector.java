@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph.index;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -24,16 +24,16 @@ import org.locationtech.jts.geomgraph.Edge;
  * This algorithm is too slow for production use, but is useful for testing purposes.
  * @version 1.7
  */
-public class SimpleEdgeSetIntersector
+class SimpleEdgeSetIntersector
   extends EdgeSetIntersector
 {
   // statistics information
   int nOverlaps;
 
-  public SimpleEdgeSetIntersector() {
+  SimpleEdgeSetIntersector() {
   }
 
-  public void computeIntersections(List edges, SegmentIntersector si, boolean testAllSegments)
+  void computeIntersections(List edges, SegmentIntersector si, bool testAllSegments)
   {
     nOverlaps = 0;
 
@@ -48,7 +48,7 @@ public class SimpleEdgeSetIntersector
   }
 
 
-  public void computeIntersections(List edges0, List edges1, SegmentIntersector si)
+  void computeIntersections(List edges0, List edges1, SegmentIntersector si)
   {
     nOverlaps = 0;
 
@@ -68,8 +68,8 @@ public class SimpleEdgeSetIntersector
    */
   private void computeIntersects(Edge e0, Edge e1, SegmentIntersector si)
   {
-   Coordinate[] pts0 = e0.getCoordinates();
-    Coordinate[] pts1 = e1.getCoordinates();
+   List<Coordinate> pts0 = e0.getCoordinates();
+    List<Coordinate> pts1 = e1.getCoordinates();
     for (int i0 = 0; i0 < pts0.length - 1; i0++) {
       for (int i1 = 0; i1 < pts1.length - 1; i1++) {
         si.addIntersections(e0, i0, e1, i1);

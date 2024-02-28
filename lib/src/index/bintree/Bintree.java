@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.bintree;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,13 +46,13 @@ import java.util.List;
  *
  * @version 1.7
  */
-public class Bintree
+class Bintree
 {
   /**
    * Ensure that the Interval for the inserted item has non-zero extents.
    * Use the current minExtent to pad it, if necessary
    */
-  public static Interval ensureExtent(Interval itemInterval, double minExtent)
+  static Interval ensureExtent(Interval itemInterval, double minExtent)
   {
     double min = itemInterval.getMin();
     double max = itemInterval.getMax();
@@ -80,17 +80,17 @@ public class Bintree
   **/
   private double minExtent = 1.0;
 
-  public Bintree()
+  Bintree()
   {
     root = new Root();
   }
 
-  public int depth()
+  int depth()
   {
     if (root != null) return root.depth();
     return 0;
   }
-  public int size()
+  int size()
   {
     if (root != null) return root.size();
     return 0;
@@ -100,13 +100,13 @@ public class Bintree
    *
    * @return the number of nodes in the tree
    */
-  public int nodeSize()
+  int nodeSize()
   {
     if (root != null) return root.nodeSize();
     return 0;
   }
 
-  public void insert(Interval itemInterval, Object item)
+  void insert(Interval itemInterval, Object item)
   {
     collectStats(itemInterval);
     Interval insertInterval = ensureExtent(itemInterval, minExtent);
@@ -130,20 +130,20 @@ if (newSize <= oldSize) {
    * @param item the item to remove
    * @return <code>true</code> if the item was found (and thus removed)
    */
-  public boolean remove(Interval itemInterval, Object item)
+  bool remove(Interval itemInterval, Object item)
   {
     Interval insertInterval = ensureExtent(itemInterval, minExtent);
     return root.remove(insertInterval, item);
   }
   
-  public Iterator iterator()
+  Iterator iterator()
   {
     List foundItems = new ArrayList();
     root.addAllItems(foundItems);
     return foundItems.iterator();
   }
 
-  public List query(double x)
+  List query(double x)
   {
     return query(new Interval(x, x));
   }
@@ -155,7 +155,7 @@ if (newSize <= oldSize) {
    * 
    * min and max may be the same value
    */
-  public List query(Interval interval)
+  List query(Interval interval)
   {
     /**
      * the items that are matched are all items in intervals
@@ -174,7 +174,7 @@ if (newSize <= oldSize) {
    * @param interval a query interval, or null
    * @param foundItems the candidate items found
    */
-  public void query(Interval interval, Collection foundItems)
+  void query(Interval interval, Collection foundItems)
   {
     root.addAllItemsFromOverlapping(interval, foundItems);
   }

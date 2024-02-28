@@ -9,19 +9,19 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * Useful utility functions for handling Coordinate objects.
  */
-public class Coordinates {
+class Coordinates {
   /**
    * Factory method providing access to common Coordinate implementations.
    * 
    * @param dimension
    * @return created coordinate
    */
-  public static Coordinate create(int dimension)
+  static Coordinate create(int dimension)
   {
     return create(dimension, 0);
   }
@@ -33,7 +33,7 @@ public class Coordinates {
    * @param measures
    * @return created coordinate
    */
-  public static Coordinate create(int dimension, int measures)
+  static Coordinate create(int dimension, int measures)
   {
     if (dimension == 2) {
       return new CoordinateXY();
@@ -53,7 +53,7 @@ public class Coordinates {
    * @param coordinate supplied coordinate
    * @return number of ordinates recorded
    */
-  public static int dimension(Coordinate coordinate)
+  static int dimension(Coordinate coordinate)
   {
     if (coordinate instanceof CoordinateXY) {
       return 2;
@@ -73,7 +73,7 @@ public class Coordinates {
    * @param coordinate supplied coordinate
    * @return number of measures recorded
    */
-  public static int measures(Coordinate coordinate)
+  static int measures(Coordinate coordinate)
   {
     if (coordinate instanceof CoordinateXY) {
       return 0;

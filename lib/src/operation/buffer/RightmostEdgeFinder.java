@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 /**
  * @version 1.7
@@ -43,14 +43,14 @@ class RightmostEdgeFinder {
    * A RightmostEdgeFinder finds the DirectedEdge with the rightmost coordinate.
    * The DirectedEdge returned is guaranteed to have the R of the world on its RHS.
    */
-  public RightmostEdgeFinder()
+  RightmostEdgeFinder()
   {
   }
   
-  public DirectedEdge getEdge()  {    return orientedDe;  }
-  public Coordinate getCoordinate()  {    return minCoord;  }
+  DirectedEdge getEdge()  {    return orientedDe;  }
+  Coordinate getCoordinate()  {    return minCoord;  }
 
-  public void findEdge(List dirEdgeList)
+  void findEdge(List dirEdgeList)
   {
     /**
      * Check all forward DirectedEdges only.  This is still general,
@@ -103,12 +103,12 @@ class RightmostEdgeFinder {
        * If these segments are both above or below the rightmost point, we need to
        * determine their relative orientation to decide which is rightmost.
        */
-      Coordinate[] pts = minDe.getEdge().getCoordinates();
+      List<Coordinate> pts = minDe.getEdge().getCoordinates();
       Assert.isTrue(minIndex > 0 && minIndex < pts.length, "rightmost point expected to be interior vertex of edge");
       Coordinate pPrev = pts[minIndex - 1];
       Coordinate pNext = pts[minIndex + 1];
       int orientation = Orientation.index(minCoord, pNext, pPrev);
-      boolean usePrev = false;
+      bool usePrev = false;
         // both segments are below min point
       if (pPrev.y < minCoord.y && pNext.y < minCoord.y
          && orientation == Orientation.COUNTERCLOCKWISE) {
@@ -126,7 +126,7 @@ class RightmostEdgeFinder {
   }
   private void checkForRightmostCoordinate(DirectedEdge de)
   {
-    Coordinate[] coord = de.getEdge().getCoordinates();
+    List<Coordinate> coord = de.getEdge().getCoordinates();
     for (int i = 0; i < coord.length - 1; i++) {
       // only check vertices which are the start or end point of a non-horizontal segment
      // <FIX> MD 19 Sep 03 - NO!  we can test all vertices, since the rightmost must have a non-horiz segment adjacent to it

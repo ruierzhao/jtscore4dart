@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -19,10 +19,10 @@ import java.util.Comparator;
  * The Class BoundablePairDistanceComparator. It implements Java comparator and is used 
  * as a parameter to sort the BoundablePair list.
  */
-public class BoundablePairDistanceComparator implements Comparator<BoundablePair>, Serializable{
+class BoundablePairDistanceComparator implements Comparator<BoundablePair>, Serializable{
 	
 	/** The normal order. */
-	boolean normalOrder;
+	bool normalOrder;
 
 	/**
 	 * Instantiates a new boundable pair distance comparator.
@@ -30,7 +30,7 @@ public class BoundablePairDistanceComparator implements Comparator<BoundablePair
 	 * @param normalOrder true puts the lowest record at the head of this queue.
 	 * This is the natural order. PriorityQueue peek() will get the least element. 
 	 */
-	public BoundablePairDistanceComparator(boolean normalOrder)
+	BoundablePairDistanceComparator(bool normalOrder)
 	{
 		this.normalOrder = normalOrder;
 	}
@@ -38,7 +38,7 @@ public class BoundablePairDistanceComparator implements Comparator<BoundablePair
 	/* (non-Javadoc)
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
-	public int compare(BoundablePair p1, BoundablePair p2) {
+	int compare(BoundablePair p1, BoundablePair p2) {
 		double distance1 = p1.getDistance();
 		double distance2 = p2.getDistance();
 		if(this.normalOrder)

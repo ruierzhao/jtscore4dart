@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.relate;
+
 
 /**
  * @version 1.7
@@ -53,7 +53,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class RelateComputer
+class RelateComputer
 {
   private LineIntersector li = new RobustLineIntersector();
   private PointLocator ptLocator = new PointLocator();
@@ -66,11 +66,11 @@ public class RelateComputer
   // the intersection point found (if any)
   private Coordinate invalidPoint;
 
-  public RelateComputer(GeometryGraph[] arg) {
+  RelateComputer(GeometryGraph[] arg) {
     this.arg = arg;
   }
 
-  public IntersectionMatrix computeIM()
+  IntersectionMatrix computeIM()
   {
     IntersectionMatrix im = new IntersectionMatrix();
     // since Geometries are finite and embedded in a 2-D space, the EE element must always be 2
@@ -156,8 +156,8 @@ public class RelateComputer
     // If a proper intersection is found, we can set a lower bound on the IM.
     int dimA = arg[0].getGeometry().getDimension();
     int dimB = arg[1].getGeometry().getDimension();
-    boolean hasProper         = intersector.hasProperIntersection();
-    boolean hasProperInterior = intersector.hasProperInteriorIntersection();
+    bool hasProper         = intersector.hasProperIntersection();
+    bool hasProperInterior = intersector.hasProperInteriorIntersection();
 
       // For Geometry's of dim 0 there can never be proper intersections.
 

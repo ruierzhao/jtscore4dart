@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 
@@ -24,7 +24,7 @@ import java.util.Collection;
  *
  * @version 1.7
  */
-public class FastSegmentSetIntersectionFinder 
+class FastSegmentSetIntersectionFinder 
 {
 	private final SegmentSetMutualIntersector segSetMutInt; 
 	// for testing purposes
@@ -35,7 +35,7 @@ public class FastSegmentSetIntersectionFinder
 	 * 
 	 * @param baseSegStrings the segment strings to search for intersections
 	 */
-	public FastSegmentSetIntersectionFinder(Collection baseSegStrings)
+	FastSegmentSetIntersectionFinder(Collection baseSegStrings)
 	{
 	    segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
 	}
@@ -46,7 +46,7 @@ public class FastSegmentSetIntersectionFinder
 	 * 
 	 * @return the segment set intersector used
 	 */
-	public SegmentSetMutualIntersector getSegmentSetIntersector()
+	SegmentSetMutualIntersector getSegmentSetIntersector()
 	{
 		return segSetMutInt;
 	}
@@ -57,7 +57,7 @@ public class FastSegmentSetIntersectionFinder
 	 * @param segStrings the SegmentStrings to test
 	 * @return true if an intersection is found
 	 */
-	public boolean intersects(Collection segStrings)
+	bool intersects(Collection segStrings)
 	{
 		SegmentIntersectionDetector intFinder = new SegmentIntersectionDetector();
 		return intersects(segStrings, intFinder);
@@ -71,7 +71,7 @@ public class FastSegmentSetIntersectionFinder
 	 * @param intDetector the intersection detector to use
 	 * @return true if the detector reports intersections
 	 */
-	public boolean intersects(Collection segStrings, SegmentIntersectionDetector intDetector)
+	bool intersects(Collection segStrings, SegmentIntersectionDetector intDetector)
 	{
 		segSetMutInt.process(segStrings, intDetector);
  		return intDetector.hasIntersection();

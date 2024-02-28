@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * @author Martin Davis
  * @deprecated
  */
-public class PriorityQueue 
+class PriorityQueue 
 {
   private int size; // Number of elements in queue
   private ArrayList items; // The queue binary heap array
@@ -27,7 +27,7 @@ public class PriorityQueue
   /**
    * Creates a new empty priority queue
    */
-  public PriorityQueue() {
+  PriorityQueue() {
     size = 0;
     items = new ArrayList();
     // create space for sentinel
@@ -39,7 +39,7 @@ public class PriorityQueue
    * Duplicates are allowed.
    * @param x the item to insert.
    */
-  public void add(Comparable x) 
+  void add(Comparable x) 
   {
     // increase the size of the items heap to create a hole for the new item
     items.add(null);
@@ -72,7 +72,7 @@ public class PriorityQueue
    * Test if the priority queue is logically empty.
    * @return true if empty, false otherwise.
    */
-  public boolean isEmpty() {
+  bool isEmpty() {
     return size == 0;
   }
 
@@ -80,14 +80,14 @@ public class PriorityQueue
    * Returns size.
    * @return current size.
    */
-  public int size() {
+  int size() {
     return size;
   }
 
   /**
    * Make the priority queue logically empty.
    */
-  public void clear() {
+  void clear() {
     size = 0;
     items.clear();
   }
@@ -96,7 +96,7 @@ public class PriorityQueue
    * Remove the smallest item from the priority queue.
    * @return the smallest item, or null if empty
    */
-  public Object poll() 
+  Object poll() 
   {
     if (isEmpty())
       return null;
@@ -108,7 +108,7 @@ public class PriorityQueue
     return minItem;
   }
 
-  public Object peek() 
+  Object peek() 
   {
     if (isEmpty())
       return null;

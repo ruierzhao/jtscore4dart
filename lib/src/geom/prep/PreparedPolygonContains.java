@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 
 import org.locationtech.jts.geom.Geometry;
@@ -37,7 +37,7 @@ class PreparedPolygonContains
 	 * @param geom a test geometry
 	 * @return true if the polygon contains the geometry
 	 */
-	public static boolean contains(PreparedPolygon prep, Geometry geom)
+	static bool contains(PreparedPolygon prep, Geometry geom)
 	{
     PreparedPolygonContains polyInt = new PreparedPolygonContains(prep);
     return polyInt.contains(geom);
@@ -48,7 +48,7 @@ class PreparedPolygonContains
    * 
    * @param prepPoly the PreparedPolygon to evaluate
    */
-	public PreparedPolygonContains(PreparedPolygon prepPoly)
+	PreparedPolygonContains(PreparedPolygon prepPoly)
 	{
 		super(prepPoly);
 	}
@@ -59,7 +59,7 @@ class PreparedPolygonContains
 	 * @param geom the test geometry
 	 * @return true if the test geometry is contained
 	 */
-	public boolean contains(Geometry geom)
+	bool contains(Geometry geom)
 	{
 		return eval(geom);
 	}
@@ -71,9 +71,9 @@ class PreparedPolygonContains
 	 * @param geom the test geometry
 	 * @return true if this prepared polygon contains the test geometry
 	 */
-	protected boolean fullTopologicalPredicate(Geometry geom)
+	protected bool fullTopologicalPredicate(Geometry geom)
 	{
-		boolean isContained = prepPoly.getGeometry().contains(geom);
+		bool isContained = prepPoly.getGeometry().contains(geom);
 		return isContained;
 	}
 	

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.index.strtree;
+
 
 
 /**
@@ -31,7 +31,7 @@ package org.locationtech.jts.index.strtree;
  * @author Martin Davis
  *
  */
-public interface ItemDistance 
+interface ItemDistance 
 {
   /**
    * Computes the distance between two items.
@@ -40,7 +40,7 @@ public interface ItemDistance
    * @param item2
    * @return the distance between the items
    * 
-   * @throws IllegalArgumentException if the metric is not applicable to the arguments
+   * @throws ArgumentError if the metric is not applicable to the arguments
    */
   double distance(ItemBoundable item1, ItemBoundable item2);
 

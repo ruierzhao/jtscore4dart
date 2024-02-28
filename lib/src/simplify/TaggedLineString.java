@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,43 +34,43 @@ class TaggedLineString
   private TaggedLineSegment[] segs;
   private List<LineSegment> resultSegs = new ArrayList<LineSegment>();
   private int minimumSize;
-  private boolean isRing = true;
+  private bool isRing = true;
 
-  public TaggedLineString(LineString parentLine, int minimumSize, boolean isRing) {
+  TaggedLineString(LineString parentLine, int minimumSize, bool isRing) {
     this.parentLine = parentLine;
     this.minimumSize = minimumSize;
     this.isRing = isRing;
     init();
   }
 
-  public boolean isRing() {
+  bool isRing() {
     return isRing;
   }
   
-  public int getMinimumSize()  {    return minimumSize;  }
-  public LineString getParent() { return parentLine; }
-  public Coordinate[] getParentCoordinates() { return parentLine.getCoordinates(); }
-  public Coordinate[] getResultCoordinates() { return extractCoordinates(resultSegs); }
+  int getMinimumSize()  {    return minimumSize;  }
+  LineString getParent() { return parentLine; }
+  List<Coordinate> getParentCoordinates() { return parentLine.getCoordinates(); }
+  List<Coordinate> getResultCoordinates() { return extractCoordinates(resultSegs); }
 
-  public Coordinate getCoordinate(int i) {
+  Coordinate getCoordinate(int i) {
     return parentLine.getCoordinateN(i);
   }
 
-  public int size() {
+  int size() {
     return parentLine.getNumPoints();
   }
   
-  public Coordinate getComponentPoint() {
+  Coordinate getComponentPoint() {
     return getParentCoordinates()[1];
   }
   
-  public int getResultSize()
+  int getResultSize()
   {
     int resultSegsSize = resultSegs.size();
     return resultSegsSize == 0 ? 0 : resultSegsSize + 1;
   }
 
-  public TaggedLineSegment getSegment(int i) { return segs[i]; }
+  TaggedLineSegment getSegment(int i) { return segs[i]; }
 
   /**
    * Gets a segment of the result list.
@@ -78,7 +78,7 @@ class TaggedLineString
    * @param i the segment index to retrieve
    * @return the result segment
    */
-  public LineSegment getResultSegment(int i) { 
+  LineSegment getResultSegment(int i) { 
     int index = i;
     if (i < 0) {
       index = resultSegs.size() + i;
@@ -88,7 +88,7 @@ class TaggedLineString
 
   private void init()
   {
-    Coordinate[] pts = parentLine.getCoordinates();
+    List<Coordinate> pts = parentLine.getCoordinates();
     segs = new TaggedLineSegment[pts.length - 1];
     for (int i = 0; i < pts.length - 1; i++) {
       TaggedLineSegment seg
@@ -97,7 +97,7 @@ class TaggedLineString
     }
   }
 
-  public TaggedLineSegment[] getSegments() { return segs; }
+  TaggedLineSegment[] getSegments() { return segs; }
 
   /**
    * Add a simplified segment to the result.
@@ -106,23 +106,23 @@ class TaggedLineString
    * 
    * @param seg the result segment to add
    */
-  public void addToResult(LineSegment seg)
+  void addToResult(LineSegment seg)
   {
     resultSegs.add(seg);
   }
 
-  public LineString asLineString()
+  LineString asLineString()
   {
     return parentLine.getFactory().createLineString(extractCoordinates(resultSegs));
   }
 
-  public LinearRing asLinearRing() {
+  LinearRing asLinearRing() {
     return parentLine.getFactory().createLinearRing(extractCoordinates(resultSegs));
   }
 
-  private static Coordinate[] extractCoordinates(List<LineSegment> segs)
+  private static List<Coordinate> extractCoordinates(List<LineSegment> segs)
   {
-    Coordinate[] pts = new Coordinate[segs.size() + 1];
+    List<Coordinate> pts = new Coordinate[segs.size() + 1];
     LineSegment seg = null;
     for (int i = 0; i < segs.size(); i++) {
       seg = (LineSegment) segs.get(i);

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.chain;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import org.locationtech.jts.geom.Quadrant;
  *
  * @version 1.7
  */
-public class MonotoneChainBuilder {
+class MonotoneChainBuilder {
 
   /**
    * Computes a list of the {@link MonotoneChain}s
@@ -32,7 +32,7 @@ public class MonotoneChainBuilder {
    * @param pts the list of points to compute chains for
    * @return a list of the monotone chains for the points 
    */
-  public static List getChains(Coordinate[] pts)
+  static List getChains(List<Coordinate> pts)
   {
     return getChains(pts, null);
   }
@@ -46,7 +46,7 @@ public class MonotoneChainBuilder {
    * @param context a data object to attach to each chain
    * @return a list of the monotone chains for the points 
    */
-  public static List getChains(Coordinate[] pts, Object context)
+  static List getChains(List<Coordinate> pts, Object context)
   {
     List mcList = new ArrayList();
     if (pts.length == 0)
@@ -72,7 +72,7 @@ public class MonotoneChainBuilder {
    * @return the index of the last point in the monotone chain 
    * starting at <code>start</code>.
    */
-  private static int findChainEnd(Coordinate[] pts, int start)
+  private static int findChainEnd(List<Coordinate> pts, int start)
   {
   	int safeStart = start;
   	// skip any zero-length segments at the start of the sequence

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -37,13 +37,13 @@ class BasicPreparedGeometry
   private final Geometry baseGeom;
   private final List representativePts;  // List<Coordinate>
 
-  public BasicPreparedGeometry(Geometry geom) 
+  BasicPreparedGeometry(Geometry geom) 
   {
     baseGeom = geom;
     representativePts = ComponentCoordinateExtracter.getCoordinates(geom);
   }
 
-  public Geometry getGeometry() { return baseGeom; }
+  Geometry getGeometry() { return baseGeom; }
 
   /**
    * Gets the list of representative points for this geometry.
@@ -54,7 +54,7 @@ class BasicPreparedGeometry
    * 
    * @return a List of Coordinate
    */
-  public List getRepresentativePoints()
+  List getRepresentativePoints()
   {
 	//TODO wrap in unmodifiable?
     return representativePts;
@@ -68,7 +68,7 @@ class BasicPreparedGeometry
 	 * @param testGeom the test geometry
 	 * @return true if any component intersects the areal test geometry
 	 */
-	public boolean isAnyTargetComponentInTest(Geometry testGeom)
+	bool isAnyTargetComponentInTest(Geometry testGeom)
 	{
 		PointLocator locator = new PointLocator();
     for (Iterator i = representativePts.iterator(); i.hasNext(); ) {
@@ -86,7 +86,7 @@ class BasicPreparedGeometry
    * @param g a Geometry
    * @return true if the envelopes intersect
    */
-  protected boolean envelopesIntersect(Geometry g)
+  protected bool envelopesIntersect(Geometry g)
   {
     if (! baseGeom.getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
       return false;
@@ -101,7 +101,7 @@ class BasicPreparedGeometry
    * @param g a Geometry
    * @return true if g is contained in this envelope
    */
-  protected boolean envelopeCovers(Geometry g)
+  protected bool envelopeCovers(Geometry g)
   {
     if (! baseGeom.getEnvelopeInternal().covers(g.getEnvelopeInternal()))
       return false;
@@ -111,7 +111,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean contains(Geometry g)
+  bool contains(Geometry g)
   {
     return baseGeom.contains(g);
   }
@@ -119,7 +119,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean containsProperly(Geometry g)
+  bool containsProperly(Geometry g)
   {
   	// since raw relate is used, provide some optimizations
   	
@@ -134,7 +134,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean coveredBy(Geometry g)
+  bool coveredBy(Geometry g)
   {
     return baseGeom.coveredBy(g);
   }
@@ -142,7 +142,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean covers(Geometry g)
+  bool covers(Geometry g)
   {
     return baseGeom.covers(g);
   }
@@ -150,7 +150,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean crosses(Geometry g)
+  bool crosses(Geometry g)
   {
     return baseGeom.crosses(g);
   }
@@ -159,7 +159,7 @@ class BasicPreparedGeometry
    * Standard implementation for all geometries.
    * Supports {@link GeometryCollection}s as input.
    */
-  public boolean disjoint(Geometry g)
+  bool disjoint(Geometry g)
   {
     return ! intersects(g);
   }
@@ -167,7 +167,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean intersects(Geometry g)
+  bool intersects(Geometry g)
   {
     return baseGeom.intersects(g);
   }
@@ -175,7 +175,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean overlaps(Geometry g)
+  bool overlaps(Geometry g)
   {
     return baseGeom.overlaps(g);
   }
@@ -183,7 +183,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean touches(Geometry g)
+  bool touches(Geometry g)
   {
     return baseGeom.touches(g);
   }
@@ -191,12 +191,12 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
-  public boolean within(Geometry g)
+  bool within(Geometry g)
   {
     return baseGeom.within(g);
   }
   
-  public String toString()
+  String toString()
   {
   	return baseGeom.toString();
   }

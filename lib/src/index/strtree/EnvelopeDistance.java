@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 import org.locationtech.jts.geom.Envelope;
 
@@ -19,7 +19,7 @@ import org.locationtech.jts.geom.Envelope;
  * @author mdavis
  *
  */
-public class EnvelopeDistance 
+class EnvelopeDistance 
 {
   /**
    * Computes the maximum distance between the points defining two envelopes.
@@ -32,7 +32,7 @@ public class EnvelopeDistance
    * @param env2 an envelope
    * @return the maximum distance between the points defining the envelopes
    */
-  public static double maximumDistance(Envelope env1, Envelope env2)
+  static double maximumDistance(Envelope env1, Envelope env2)
   {
     double minx = Math.min(env1.getMinX(), env2.getMinX());
     double miny = Math.min(env1.getMinY(), env2.getMinY());
@@ -62,7 +62,7 @@ public class EnvelopeDistance
    * @param b an envelope
    * @return the min-max-distance between the envelopes
    */
-  public static double minMaxDistance(Envelope a, Envelope b)
+  static double minMaxDistance(Envelope a, Envelope b)
   {
     double aminx = a.getMinX();
     double aminy = a.getMinY();

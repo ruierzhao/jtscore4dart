@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.relate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.IntersectionMatrix;
@@ -21,11 +21,11 @@ import org.locationtech.jts.geomgraph.Node;
  *
  * @version 1.7
  */
-public class RelateNode
+class RelateNode
   extends Node
 {
 
-  public RelateNode(Coordinate coord, EdgeEndStar edges)
+  RelateNode(Coordinate coord, EdgeEndStar edges)
   {
     super(coord, edges);
   }

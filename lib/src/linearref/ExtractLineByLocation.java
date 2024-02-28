@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.linearref;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -36,7 +36,7 @@ class ExtractLineByLocation
    * @param end the end location
    * @return the extracted subline
    */
-  public static Geometry extract(Geometry line, LinearLocation start, LinearLocation end)
+  static Geometry extract(Geometry line, LinearLocation start, LinearLocation end)
   {
     ExtractLineByLocation ls = new ExtractLineByLocation(line);
     return ls.extract(start, end);
@@ -44,7 +44,7 @@ class ExtractLineByLocation
 
   private Geometry line;
 
-  public ExtractLineByLocation(Geometry line) {
+  ExtractLineByLocation(Geometry line) {
     this.line = line;
   }
 
@@ -56,7 +56,7 @@ class ExtractLineByLocation
    * @param end the end location
    * @return a linear geometry
    */
-  public Geometry extract(LinearLocation start, LinearLocation end)
+  Geometry extract(LinearLocation start, LinearLocation end)
   {
     if (end.compareTo(start) < 0) {
       return reverse(computeLinear(end, start));
@@ -81,7 +81,7 @@ class ExtractLineByLocation
    */
   private LineString computeLine(LinearLocation start, LinearLocation end)
   {
-    Coordinate[] coordinates = line.getCoordinates();
+    List<Coordinate> coordinates = line.getCoordinates();
     CoordinateList newCoordinates = new CoordinateList();
 
     int startSegmentIndex = start.getSegmentIndex();
@@ -107,14 +107,14 @@ class ExtractLineByLocation
     if (newCoordinates.size() <= 0)
       newCoordinates.add(start.getCoordinate(line));
 
-    Coordinate[] newCoordinateArray = newCoordinates.toCoordinateArray();
+    List<Coordinate> newCoordinateArray = newCoordinates.toCoordinateArray();
     /**
      * Ensure there is enough coordinates to build a valid line.
      * Make a 2-point line with duplicate coordinates, if necessary.
      * There will always be at least one coordinate in the coordList.
      */
     if (newCoordinateArray.length <= 1) {
-      newCoordinateArray = new Coordinate[] { newCoordinateArray[0], newCoordinateArray[0]};
+      newCoordinateArray = new List<Coordinate> { newCoordinateArray[0], newCoordinateArray[0]};
     }
     return line.getFactory().createLineString(newCoordinateArray);
   }

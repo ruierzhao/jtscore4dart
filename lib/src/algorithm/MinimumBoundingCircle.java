@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateArrays;
@@ -60,7 +60,7 @@ import org.locationtech.jts.util.Assert;
  * @see MinimumDiameter
  *
  */
-public class MinimumBoundingCircle 
+class MinimumBoundingCircle 
 {
   /*
    * The algorithm used is based on the one by Jon Rokne in 
@@ -68,7 +68,7 @@ public class MinimumBoundingCircle
    */
 	
 	private Geometry input;
-	private Coordinate[] extremalPts = null;
+	private List<Coordinate> extremalPts = null;
 	private Coordinate centre = null;
 	private double radius = 0.0;
 	
@@ -78,7 +78,7 @@ public class MinimumBoundingCircle
 	 * 
 	 * @param geom the geometry to use to obtain the point set 
 	 */
-	public MinimumBoundingCircle(Geometry geom)
+	MinimumBoundingCircle(Geometry geom)
 	{
 		this.input = geom;
 	}
@@ -94,7 +94,7 @@ public class MinimumBoundingCircle
 	 * 
 	 * @return a Geometry representing the Minimum Bounding Circle.
 	 */
-	public Geometry getCircle()
+	Geometry getCircle()
 	{
 		//TODO: ensure the output circle contains the extermal points.
 		//TODO: or maybe even ensure that the returned geometry contains ALL the input points?
@@ -120,7 +120,7 @@ public class MinimumBoundingCircle
    * @return a empty LineString if the input is empty
    * @return a Point if the input is a point
    */
-  public Geometry getMaximumDiameter() {
+  Geometry getMaximumDiameter() {
     compute();
     switch (extremalPts.length) {
     case 0:
@@ -129,9 +129,9 @@ public class MinimumBoundingCircle
       return input.getFactory().createPoint(centre);
     case 2:
       return input.getFactory().createLineString(
-          new Coordinate[] { extremalPts[0], extremalPts[1] });
+          new List<Coordinate> { extremalPts[0], extremalPts[1] });
     default: // case 3
-      Coordinate[] maxDiameter = farthestPoints(extremalPts);
+      List<Coordinate> maxDiameter = farthestPoints(extremalPts);
       return input.getFactory().createLineString(maxDiameter);
     }
   }
@@ -149,7 +149,7 @@ public class MinimumBoundingCircle
    * 
    * @deprecated use #getMaximumDiameter()
    */
-  public Geometry getFarthestPoints() {
+  Geometry getFarthestPoints() {
     return getMaximumDiameter();
   }
 
@@ -158,17 +158,17 @@ public class MinimumBoundingCircle
    * @param pts the array of extremal points
    * @return the pair of farthest points
    */
-  private static Coordinate[] farthestPoints(Coordinate[] pts) {
+  private static List<Coordinate> farthestPoints(List<Coordinate> pts) {
     double dist01 = pts[0].distance(pts[1]);
     double dist12 = pts[1].distance(pts[2]);
     double dist20 = pts[2].distance(pts[0]);
     if (dist01 >= dist12 && dist01 >= dist20) {
-      return new Coordinate[] { pts[0], pts[1] };
+      return new List<Coordinate> { pts[0], pts[1] };
     }
     if (dist12 >= dist01 && dist12 >= dist20) {
-      return new Coordinate[] { pts[1], pts[2] };
+      return new List<Coordinate> { pts[1], pts[2] };
     }
-    return new Coordinate[] { pts[2], pts[0] };
+    return new List<Coordinate> { pts[2], pts[0] };
   }
 
   /**
@@ -179,7 +179,7 @@ public class MinimumBoundingCircle
    * @return a empty LineString if the input is empty
    * @return a Point if the input is a point
    */
-  public Geometry getDiameter() {
+  Geometry getDiameter() {
     compute();
     switch (extremalPts.length) {
     case 0:
@@ -191,7 +191,7 @@ public class MinimumBoundingCircle
     // them through the centre point with len = 2*radius
     Coordinate p0 = extremalPts[0];
     Coordinate p1 = extremalPts[1];
-    return input.getFactory().createLineString(new Coordinate[] { p0, p1 });
+    return input.getFactory().createLineString(new List<Coordinate> { p0, p1 });
   }
 
 	/**
@@ -207,7 +207,7 @@ public class MinimumBoundingCircle
    * 
    * @return the points defining the Minimum Bounding Circle
    */
-	public Coordinate[] getExtremalPoints() 
+	List<Coordinate> getExtremalPoints() 
 	{
 		compute();
 		return extremalPts;
@@ -219,7 +219,7 @@ public class MinimumBoundingCircle
    * @return the centre point of the Minimum Bounding Circle
    * @return null if the input is empty
    */
-  public Coordinate getCentre() {
+  Coordinate getCentre() {
     compute();
     return centre;
   }
@@ -229,7 +229,7 @@ public class MinimumBoundingCircle
 	 * 
 	 * @return the radius of the Minimum Bounding Circle
 	 */
-	public double getRadius() 
+	double getRadius() 
 	{
 		compute();
 		return radius;
@@ -274,8 +274,8 @@ public class MinimumBoundingCircle
 			return;
 		}
 		if (input.getNumPoints() == 1) {
-			Coordinate[] pts = input.getCoordinates();
-			extremalPts = new Coordinate[] { new Coordinate(pts[0]) };
+			List<Coordinate> pts = input.getCoordinates();
+			extremalPts = new List<Coordinate> { new Coordinate(pts[0]) };
 			return;
 		}
 		
@@ -285,10 +285,10 @@ public class MinimumBoundingCircle
 		 */
 		Geometry convexHull = input.convexHull();
 		
-		Coordinate[] hullPts = convexHull.getCoordinates();
+		List<Coordinate> hullPts = convexHull.getCoordinates();
 		
 		// strip duplicate final point, if any
-		Coordinate[] pts = hullPts;
+		List<Coordinate> pts = hullPts;
 		if (hullPts[0].equals2D(hullPts[hullPts.length - 1])) {
 			pts = new Coordinate[hullPts.length - 1];
 			CoordinateArrays.copyDeep(hullPts, 0, pts, 0, hullPts.length - 1);
@@ -320,7 +320,7 @@ public class MinimumBoundingCircle
 			
 			if (Angle.isObtuse(P, R, Q)) {
 				// if PRQ is obtuse, then MBC is determined by P and Q
-				extremalPts = new Coordinate[] { new Coordinate(P), new Coordinate(Q) };
+				extremalPts = new List<Coordinate> { new Coordinate(P), new Coordinate(Q) };
 				return;
 			}
 			else if (Angle.isObtuse(R, P, Q)) {
@@ -335,14 +335,14 @@ public class MinimumBoundingCircle
 			}
 			else {
 				// otherwise all angles are acute, and the MBC is determined by the triangle PQR
-				extremalPts = new Coordinate[] { new Coordinate(P), new Coordinate(Q), new Coordinate(R) };
+				extremalPts = new List<Coordinate> { new Coordinate(P), new Coordinate(Q), new Coordinate(R) };
 				return;
 			}
 		}
 		Assert.shouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!"); 
 	}
 	
-	private static Coordinate lowestPoint(Coordinate[] pts)
+	private static Coordinate lowestPoint(List<Coordinate> pts)
 	{
 		Coordinate min = pts[0];
 		for (int i = 1; i < pts.length; i++) {
@@ -352,7 +352,7 @@ public class MinimumBoundingCircle
 		return min;
 	}
 	
-	private static Coordinate pointWitMinAngleWithX(Coordinate[] pts, Coordinate P)
+	private static Coordinate pointWitMinAngleWithX(List<Coordinate> pts, Coordinate P)
 	{
 		double minSin = Double.MAX_VALUE;
 		Coordinate minAngPt = null;
@@ -378,7 +378,7 @@ public class MinimumBoundingCircle
 		return minAngPt;
 	}
 	
-	private static Coordinate pointWithMinAngleWithSegment(Coordinate[] pts, Coordinate P, Coordinate Q)
+	private static Coordinate pointWithMinAngleWithSegment(List<Coordinate> pts, Coordinate P, Coordinate Q)
 	{
 		double minAng = Double.MAX_VALUE;
 		Coordinate minAngPt = null;

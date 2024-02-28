@@ -9,9 +9,9 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.tri;
 
-import java.util.HashMap;
+
+import java.util.Map;
 import java.util.List;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -23,18 +23,18 @@ import org.locationtech.jts.geom.Coordinate;
  * @author mdavis
  *
  */
-public class TriangulationBuilder {
+class TriangulationBuilder {
 
   /**
    * Computes the triangulation of a set of {@link Tri}s.
    * 
    * @param triList the list of Tris
    */
-  public static void build(List<? extends Tri> triList) {
+  static void build(List<? extends Tri> triList) {
     new TriangulationBuilder(triList);
   }
   
-  private HashMap<TriEdge, Tri> triMap;
+  private Map<TriEdge, Tri> triMap;
 
   /**
    * Computes the triangulation of a set of {@link Tri}s.
@@ -42,7 +42,7 @@ public class TriangulationBuilder {
    * @param triList the list of Tris
    */
   private TriangulationBuilder(List<? extends Tri> triList) {
-    triMap = new HashMap<TriEdge, Tri>();
+    triMap = new Map<TriEdge, Tri>();
     for (Tri tri : triList) {
       add(tri);
     }

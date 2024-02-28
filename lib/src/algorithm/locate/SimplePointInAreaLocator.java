@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.locate;
+
 
 import java.util.Iterator;
 
@@ -45,7 +45,7 @@ import org.locationtech.jts.geom.Polygonal;
  *
  * @version 1.7
  */
-public class SimplePointInAreaLocator
+class SimplePointInAreaLocator
 	implements PointOnGeometryLocator
 {
 
@@ -62,7 +62,7 @@ public class SimplePointInAreaLocator
    * @param geom the areal geometry to test
    * @return the Location of the point in the geometry  
    */
-  public static int locate(Coordinate p, Geometry geom)
+  static int locate(Coordinate p, Geometry geom)
   {
     if (geom.isEmpty()) return Location.EXTERIOR;
     /**
@@ -86,7 +86,7 @@ public class SimplePointInAreaLocator
    * @param geom the geometry to test
    * @return true if the point lies in or on the geometry  
    */
-  public static boolean isContained(Coordinate p, Geometry geom) {
+  static bool isContained(Coordinate p, Geometry geom) {
     return Location.EXTERIOR != locate(p, geom);
   }
   
@@ -126,7 +126,7 @@ public class SimplePointInAreaLocator
    * @return the Location of the point in the polygon  
    *
    */
-  public static int locatePointInPolygon(Coordinate p, Polygon poly)
+  static int locatePointInPolygon(Coordinate p, Polygon poly)
   {
     if (poly.isEmpty()) return Location.EXTERIOR;
     LinearRing shell = poly.getExteriorRing();
@@ -154,7 +154,7 @@ public class SimplePointInAreaLocator
    * @param poly the geometry to test
    * @return true if the point lies in or on the polygon  
    */
-  public static boolean containsPointInPolygon(Coordinate p, Polygon poly) {
+  static bool containsPointInPolygon(Coordinate p, Polygon poly) {
     return Location.EXTERIOR != locatePointInPolygon(p, poly);
   }
   
@@ -182,7 +182,7 @@ public class SimplePointInAreaLocator
 	 * 
 	 * @param geom the areal geometry to locate in
 	 */
-	public SimplePointInAreaLocator(Geometry geom) {
+	SimplePointInAreaLocator(Geometry geom) {
 		this.geom = geom;
 	}
 
@@ -198,7 +198,7 @@ public class SimplePointInAreaLocator
    * @param p the point to test
    * @return the Location of the point in the geometry  
    */
-	public int locate(Coordinate p) {
+	int locate(Coordinate p) {
 		return SimplePointInAreaLocator.locate(p, geom);
 	}
 

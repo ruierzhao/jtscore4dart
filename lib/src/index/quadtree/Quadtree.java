@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.quadtree;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ import org.locationtech.jts.index.SpatialIndex;
  *
  * @version 1.7
  */
-public class Quadtree
+class Quadtree
     implements SpatialIndex, Serializable
 {
   private static final long serialVersionUID = -7461163625812743604L;
@@ -58,7 +58,7 @@ public class Quadtree
    * Ensure that the envelope for the inserted item has non-zero extents.
    * Use the current minExtent to pad the envelope, if necessary
    */
-  public static Envelope ensureExtent(Envelope itemEnv, double minExtent)
+  static Envelope ensureExtent(Envelope itemEnv, double minExtent)
   {
     //The names "ensureExtent" and "minExtent" are misleading -- sounds like
     //this method ensures that the extents are greater than minExtent.
@@ -98,7 +98,7 @@ public class Quadtree
   /**
    * Constructs a Quadtree with zero items.
    */
-  public Quadtree()
+  Quadtree()
   {
     root = new Root();
   }
@@ -106,7 +106,7 @@ public class Quadtree
   /**
    * Returns the number of levels in the tree.
    */
-  public int depth()
+  int depth()
   {
     //I don't think it's possible for root to be null. Perhaps we should
     //remove the check. [Jon Aquino]
@@ -120,7 +120,7 @@ public class Quadtree
    * 
    * @return true if the index does not contain any items
    */
-  public boolean isEmpty()
+  bool isEmpty()
   {
     if (root == null) return true;
     return root.isEmpty();
@@ -131,13 +131,13 @@ public class Quadtree
    *
    * @return the number of items in the tree
    */
-  public int size()
+  int size()
   {
     if (root != null) return root.size();
     return 0;
   }
 
-  public void insert(Envelope itemEnv, Object item)
+  void insert(Envelope itemEnv, Object item)
   {
     collectStats(itemEnv);
     Envelope insertEnv = ensureExtent(itemEnv, minExtent);
@@ -151,14 +151,14 @@ public class Quadtree
    * @param item the item to remove
    * @return <code>true</code> if the item was found (and thus removed)
    */
-  public boolean remove(Envelope itemEnv, Object item)
+  bool remove(Envelope itemEnv, Object item)
   {
     Envelope posEnv = ensureExtent(itemEnv, minExtent);
     return root.remove(posEnv, item);
   }
 
 /*
-  public List OLDquery(Envelope searchEnv)
+  List OLDquery(Envelope searchEnv)
   {
     /**
      * the items that are matched are the items in quads which
@@ -184,7 +184,7 @@ public class Quadtree
    * @param searchEnv the envelope of the desired query area.
    * @return a List of items which may intersect the search envelope
    */
-  public List query(Envelope searchEnv)
+  List query(Envelope searchEnv)
   {
     /**
      * the items that are matched are the items in quads which
@@ -208,7 +208,7 @@ public class Quadtree
    * @param searchEnv the envelope of the desired query area.
    * @param visitor a visitor object which is passed the visited items
    */
-  public void query(Envelope searchEnv, ItemVisitor visitor)
+  void query(Envelope searchEnv, ItemVisitor visitor)
   {
     /**
      * the items that are matched are the items in quads which
@@ -220,7 +220,7 @@ public class Quadtree
   /**
    * Return a list of all items in the Quadtree
    */
-  public List queryAll()
+  List queryAll()
   {
     List foundItems = new ArrayList();
     root.addAllItems(foundItems);

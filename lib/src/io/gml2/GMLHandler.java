@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io.gml2;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +46,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author David Zwiers, Vivid Solutions. 
  */
-public class GMLHandler extends DefaultHandler {
+class GMLHandler extends DefaultHandler {
 
 	/**
 	 * This class is intended to log the SAX activity within a given element until its termination.
@@ -66,7 +66,7 @@ public class GMLHandler extends DefaultHandler {
 		 * @param strategy 
 		 * @param attributes Nullable
 		 */
-		public Handler(ParseStrategy strategy, Attributes attributes) {
+		Handler(ParseStrategy strategy, Attributes attributes) {
 			if (attributes != null)
 				this.attrs = new AttributesImpl(attributes);
 			this.strategy = strategy;
@@ -78,7 +78,7 @@ public class GMLHandler extends DefaultHandler {
 		 * Caches text for the future
 		 * @param str
 		 */
-		public void addText(String str) {
+		void addText(String str) {
 			if (text == null)
 				text = new StringBuffer();
 			text.append(str);
@@ -91,7 +91,7 @@ public class GMLHandler extends DefaultHandler {
 		 * 
 		 * @param obj
 		 */
-		public void keep(Object obj) {
+		void keep(Object obj) {
 			if (children == null)
 				children = new LinkedList();
 			children.add(obj);
@@ -103,7 +103,7 @@ public class GMLHandler extends DefaultHandler {
 		 * @return Parsed Object
 		 * @throws SAXException 
 		 */
-		public Object create(GeometryFactory gf) throws SAXException {
+		Object create(GeometryFactory gf) throws SAXException {
 			return strategy.parse(this, gf);
 		}
 	}
@@ -128,7 +128,7 @@ public class GMLHandler extends DefaultHandler {
 	 * @see org.xml.sax.Locator
 	 * 
 	 */
-	public GMLHandler(GeometryFactory gf, ErrorHandler delegate) {
+	GMLHandler(GeometryFactory gf, ErrorHandler delegate) {
 		this.delegate = delegate;
 		this.gf = gf;
 		stack.push(new Handler(null, null));
@@ -142,7 +142,7 @@ public class GMLHandler extends DefaultHandler {
 	 * 
 	 * @return if the parsing of the geometry is complete
 	 */
-	public boolean isGeometryComplete()
+	bool isGeometryComplete()
 	{
 		if (stack.size() > 1)
 			return false;
@@ -161,7 +161,7 @@ public class GMLHandler extends DefaultHandler {
 	 * @return the parsed Geometry, or a GeometryCollection if more than one geometry was parsed
 	 * @throws IllegalStateException if called before the parse is complete
 	 */
-	public Geometry getGeometry() {
+	Geometry getGeometry() {
 		if (stack.size() == 1) {
 			Handler h = (Handler) stack.peek();
 			if (h.children.size() == 1)
@@ -180,7 +180,7 @@ public class GMLHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
 	 */
-	public void characters(char[] ch, int start, int length) throws SAXException {
+	void characters(char[] ch, int start, int length) throws SAXException {
 		if (!stack.isEmpty())
 			((Handler) stack.peek()).addText(new String(ch, start, length));
 	}
@@ -188,7 +188,7 @@ public class GMLHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler#ignorableWhitespace(char[], int, int)
 	 */
-	public void ignorableWhitespace(char[] ch, int start, int length)
+	void ignorableWhitespace(char[] ch, int start, int length)
 			throws SAXException {
 		if (!stack.isEmpty())
 			((Handler) stack.peek()).addText(" ");
@@ -197,7 +197,7 @@ public class GMLHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public void endElement(String uri, String localName, String qName)
+	void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		Handler thisAction = (Handler) stack.pop();
 		((Handler) stack.peek()).keep(thisAction.create(gf));
@@ -206,7 +206,7 @@ public class GMLHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
-	public void startElement(String uri, String localName, String qName,
+	void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 		// create a handler
 		ParseStrategy ps = GeometryStrategies.findStrategy(uri, localName);
@@ -225,7 +225,7 @@ public class GMLHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator)
 	 */
-	public void setDocumentLocator(Locator locator) {
+	void setDocumentLocator(Locator locator) {
 		this.locator = locator;
 		if (delegate instanceof ContentHandler)
 			((ContentHandler) delegate).setDocumentLocator(locator);
@@ -244,7 +244,7 @@ public class GMLHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler#fatalError(org.xml.sax.SAXParseException)
 	 */
-	public void fatalError(SAXParseException e) throws SAXException {
+	void fatalError(SAXParseException e) throws SAXException {
 		if (delegate != null)
 			delegate.fatalError(e);
 		else
@@ -254,7 +254,7 @@ public class GMLHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler#error(org.xml.sax.SAXParseException)
 	 */
-	public void error(SAXParseException e) throws SAXException {
+	void error(SAXParseException e) throws SAXException {
 		if (delegate != null)
 			delegate.error(e);
 		else
@@ -264,7 +264,7 @@ public class GMLHandler extends DefaultHandler {
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler#warning(org.xml.sax.SAXParseException)
 	 */
-	public void warning(SAXParseException e) throws SAXException {
+	void warning(SAXParseException e) throws SAXException {
 		if (delegate != null)
 			delegate.warning(e);
 		else

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.Coordinate;
  * @author David Skea
  * @version 1.7
  */
-public class HCoordinate
+class HCoordinate
 {
 
   /**
@@ -36,7 +36,7 @@ public class HCoordinate
    * 
    * @deprecated use {@link Intersection#intersection(Coordinate, Coordinate, Coordinate, Coordinate)}
    */
-  public static Coordinate intersection(
+  static Coordinate intersection(
       Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2)
       throws NotRepresentableException
@@ -66,7 +66,7 @@ public class HCoordinate
   }
 
   /*
-  public static Coordinate OLDintersection(
+  static Coordinate OLDintersection(
       Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2)
       throws NotRepresentableException
@@ -79,33 +79,33 @@ public class HCoordinate
   }
   */
 
-  public double x,y,w;
+  double x,y,w;
 
-  public HCoordinate() {
+  HCoordinate() {
     x = 0.0;
     y = 0.0;
     w = 1.0;
   }
 
-  public HCoordinate(double _x, double _y, double _w) {
+  HCoordinate(double _x, double _y, double _w) {
     x = _x;
     y = _y;
     w = _w;
   }
 
-  public HCoordinate(double _x, double _y) {
+  HCoordinate(double _x, double _y) {
     x = _x;
     y = _y;
     w = 1.0;
   }
 
-  public HCoordinate(Coordinate p) {
+  HCoordinate(Coordinate p) {
     x = p.x;
     y = p.y;
     w = 1.0;
   }
 
-  public HCoordinate(HCoordinate p1, HCoordinate p2) 
+  HCoordinate(HCoordinate p1, HCoordinate p2) 
   {
     x = p1.y * p2.w - p2.y * p1.w;
     y = p2.x * p1.w - p1.x * p2.w;
@@ -120,7 +120,7 @@ public class HCoordinate
    * @param p1
    * @param p2
    */
-  public HCoordinate(Coordinate p1, Coordinate p2) 
+  HCoordinate(Coordinate p1, Coordinate p2) 
   {
   	// optimization when it is known that w = 1
     x = p1.y - p2.y;
@@ -128,7 +128,7 @@ public class HCoordinate
     w = p1.x * p2.y - p2.x * p1.y;
   }
   
-  public HCoordinate(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) 
+  HCoordinate(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) 
   {
   	// unrolled computation
     double px = p1.y - p2.y;
@@ -144,7 +144,7 @@ public class HCoordinate
     w = px * qy - qx * py;
   }
   
-  public double getX() throws NotRepresentableException {
+  double getX() throws NotRepresentableException {
     double a = x/w;
     if ((Double.isNaN(a)) || (Double.isInfinite(a))) {
       throw new NotRepresentableException();
@@ -152,7 +152,7 @@ public class HCoordinate
     return a;
   }
 
-  public double getY() throws NotRepresentableException {
+  double getY() throws NotRepresentableException {
     double a = y/w;
     if  ((Double.isNaN(a)) || (Double.isInfinite(a))) {
       throw new NotRepresentableException();
@@ -160,7 +160,7 @@ public class HCoordinate
     return a;
   }
 
-  public Coordinate getCoordinate() throws NotRepresentableException {
+  Coordinate getCoordinate() throws NotRepresentableException {
     Coordinate p = new Coordinate();
     p.x = getX();
     p.y = getY();

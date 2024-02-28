@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.locationtech.jts.io.WKTWriter;
  * By default validation stops after a single 
  * non-noded intersection is detected. 
  * Alternatively, it can be requested to detect all intersections
- * by using {@link #setFindAllIntersections(boolean)}.
+ * by using {@link #setFindAllIntersections(bool)}.
  * <p>
  * The validator does not check for topology collapse situations
  * (e.g. where two segment strings are fully co-incident).
@@ -45,7 +45,7 @@ import org.locationtech.jts.io.WKTWriter;
  * 
  * @see NodingIntersectionFinder
  */
-public class FastNodingValidator 
+class FastNodingValidator 
 {
   /**
    * Gets a list of all intersections found.
@@ -55,7 +55,7 @@ public class FastNodingValidator
    * @param segStrings a collection of SegmentStrings
    * @return a list of Coordinate
    */
-  public static List computeIntersections(Collection segStrings)
+  static List computeIntersections(Collection segStrings)
   {
     FastNodingValidator nv = new FastNodingValidator(segStrings);
     nv.setFindAllIntersections(true);
@@ -66,21 +66,21 @@ public class FastNodingValidator
   private LineIntersector li = new RobustLineIntersector();
 
   private Collection segStrings;
-  private boolean findAllIntersections = false;
+  private bool findAllIntersections = false;
   private NodingIntersectionFinder segInt = null;
-  private boolean isValid = true;
+  private bool isValid = true;
   
   /**
    * Creates a new noding validator for a given set of linework.
    * 
    * @param segStrings a collection of {@link SegmentString}s
    */
-  public FastNodingValidator(Collection segStrings)
+  FastNodingValidator(Collection segStrings)
   {
     this.segStrings = segStrings;
   }
 
-  public void setFindAllIntersections(boolean findAllIntersections)
+  void setFindAllIntersections(bool findAllIntersections)
   {
     this.findAllIntersections = findAllIntersections;
   }
@@ -92,7 +92,7 @@ public class FastNodingValidator
    * 
    * @return a list of Coordinate
    */
-  public List getIntersections()
+  List getIntersections()
   {
     return segInt.getIntersections();
   }
@@ -103,7 +103,7 @@ public class FastNodingValidator
    * 
    * @return true if the arrangement contains an interior intersection
    */
-  public boolean isValid()
+  bool isValid()
   {
   	execute();
   	return isValid;
@@ -115,11 +115,11 @@ public class FastNodingValidator
    * 
    * @return an error message documenting the intersection location
    */
-  public String getErrorMessage()
+  String getErrorMessage()
   {
   	if (isValid) return "no intersections found";
   	
-		Coordinate[] intSegs = segInt.getIntersectionSegments();
+		List<Coordinate> intSegs = segInt.getIntersectionSegments();
     return "found non-noded intersection between "
         + WKTWriter.toLineString(intSegs[0], intSegs[1])
         + " and "
@@ -132,7 +132,7 @@ public class FastNodingValidator
    *
    * @throws TopologyException if an intersection is found
    */
-  public void checkValid()
+  void checkValid()
   {
   	execute();
   	if (! isValid)

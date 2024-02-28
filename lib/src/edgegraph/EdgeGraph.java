@@ -10,10 +10,10 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.edgegraph;
+
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Map;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -35,11 +35,11 @@ import org.locationtech.jts.geom.Coordinate;
  * @author Martin Davis
  *
  */
-public class EdgeGraph 
+class EdgeGraph 
 {
-  private Map vertexMap = new HashMap();
+  private Map vertexMap = new Map();
   
-  public EdgeGraph() {
+  EdgeGraph() {
   }
 
   /**
@@ -81,7 +81,7 @@ public class EdgeGraph
    * 
    * @see #isValidEdge(Coordinate, Coordinate)
    */
-  public HalfEdge addEdge(Coordinate orig, Coordinate dest) {
+  HalfEdge addEdge(Coordinate orig, Coordinate dest) {
     if (! isValidEdge(orig, dest)) return null;
     
     /**
@@ -109,7 +109,7 @@ public class EdgeGraph
    * @param dest the end coordinate
    * @return true if the edge formed is valid
    */
-  public static boolean isValidEdge(Coordinate orig, Coordinate dest) {
+  static bool isValidEdge(Coordinate orig, Coordinate dest) {
     int cmp = dest.compareTo(orig);
     return cmp != 0;
   }
@@ -149,7 +149,7 @@ public class EdgeGraph
    * 
    * @return a collection of the graph edges
    */
-  public Collection getVertexEdges()
+  Collection getVertexEdges()
   {
     return vertexMap.values();
   }
@@ -162,7 +162,7 @@ public class EdgeGraph
    * @param dest the destination location.
    * @return an edge with the given orig and dest, or null if none exists
    */
-  public HalfEdge findEdge(Coordinate orig, Coordinate dest) {
+  HalfEdge findEdge(Coordinate orig, Coordinate dest) {
     HalfEdge e = (HalfEdge) vertexMap.get(orig);
     if (e == null) return null;
     return e.find(dest);

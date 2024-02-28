@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 
 import java.util.ArrayList;
@@ -76,20 +76,20 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class GeometryEditor
+class GeometryEditor
 {
   /**
    * The factory used to create the modified Geometry.
    * If <tt>null</tt> the GeometryFactory of the input is used.
    */
   private GeometryFactory factory = null;
-  private boolean isUserDataCopied = false;
+  private bool isUserDataCopied = false;
 
   /**
    * Creates a new GeometryEditor object which will create
    * edited {@link Geometry}s with the same {@link GeometryFactory} as the input Geometry.
    */
-  public GeometryEditor()
+  GeometryEditor()
   {
   }
 
@@ -99,7 +99,7 @@ public class GeometryEditor
    *
    * @param factory the GeometryFactory to create  edited Geometrys with
    */
-  public GeometryEditor(GeometryFactory factory)
+  GeometryEditor(GeometryFactory factory)
   {
     this.factory = factory;
   }
@@ -110,7 +110,7 @@ public class GeometryEditor
    * 
    * @param isUserDataCopied true if the input user data should be copied.
    */
-  public void setCopyUserData(boolean isUserDataCopied)
+  void setCopyUserData(bool isUserDataCopied)
   {
     this.isUserDataCopied = isUserDataCopied;
   }
@@ -124,7 +124,7 @@ public class GeometryEditor
    * @param operation the edit operation to carry out
    * @return a new {@link Geometry} which is the result of the editing (which may be empty)
    */
-  public Geometry edit(Geometry geometry, GeometryEditorOperation operation)
+  Geometry edit(Geometry geometry, GeometryEditorOperation operation)
   {
     // nothing to do
     if (geometry == null) return null;
@@ -231,7 +231,7 @@ public class GeometryEditor
    *
    * @version 1.7
    */
-  public interface GeometryEditorOperation
+  interface GeometryEditorOperation
   {
     /**
      * Edits a Geometry by returning a new Geometry with a modification.
@@ -260,10 +260,10 @@ public class GeometryEditor
    * @author mbdavis
    *
    */
-  public static class NoOpGeometryOperation
+  static class NoOpGeometryOperation
   implements GeometryEditorOperation
   {
-  	public Geometry edit(Geometry geometry, GeometryFactory factory)
+  	Geometry edit(Geometry geometry, GeometryFactory factory)
   	{
   		return geometry;
   	}
@@ -273,10 +273,10 @@ public class GeometryEditor
    * A {@link GeometryEditorOperation} which edits the coordinate list of a {@link Geometry}.
    * Operates on Geometry subclasses which contains a single coordinate list.
    */
-  public abstract static class CoordinateOperation
+  abstract static class CoordinateOperation
       implements GeometryEditorOperation
   {
-    public final Geometry edit(Geometry geometry, GeometryFactory factory) {
+    final Geometry edit(Geometry geometry, GeometryFactory factory) {
       if (geometry instanceof LinearRing) {
         return factory.createLinearRing(edit(geometry.getCoordinates(),
             geometry));
@@ -288,7 +288,7 @@ public class GeometryEditor
       }
 
       if (geometry instanceof Point) {
-        Coordinate[] newCoordinates = edit(geometry.getCoordinates(),
+        List<Coordinate> newCoordinates = edit(geometry.getCoordinates(),
             geometry);
 
         return factory.createPoint((newCoordinates.length > 0)
@@ -309,7 +309,7 @@ public class GeometryEditor
      * @param geometry the geometry containing the coordinate list
      * @return an edited coordinate array (which may be the same as the input)
      */
-    public abstract Coordinate[] edit(Coordinate[] coordinates,
+    abstract List<Coordinate> edit(List<Coordinate> coordinates,
                                       Geometry geometry);
   }
   
@@ -318,10 +318,10 @@ public class GeometryEditor
    * of a {@link Geometry}.
    * Operates on Geometry subclasses which contains a single coordinate list.
    */
-  public abstract static class CoordinateSequenceOperation
+  abstract static class CoordinateSequenceOperation
       implements GeometryEditorOperation
   {
-    public final Geometry edit(Geometry geometry, GeometryFactory factory) {
+    final Geometry edit(Geometry geometry, GeometryFactory factory) {
       if (geometry instanceof LinearRing) {
         return factory.createLinearRing(edit(
             ((LinearRing)geometry).getCoordinateSequence(),
@@ -350,7 +350,7 @@ public class GeometryEditor
      * @param geometry the geometry containing the coordinate list
      * @return an edited coordinate sequence (which may be the same as the input)
      */
-    public abstract CoordinateSequence edit(CoordinateSequence coordSeq,
+    abstract CoordinateSequence edit(CoordinateSequence coordSeq,
                                       Geometry geometry);
   }
 }

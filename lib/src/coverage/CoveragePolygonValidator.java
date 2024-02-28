@@ -9,10 +9,10 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Map;
 
@@ -84,7 +84,7 @@ import org.locationtech.jts.noding.MCIndexSegmentSetMutualIntersector;
  * @author Martin Davis
  *
  */
-public class CoveragePolygonValidator {
+class CoveragePolygonValidator {
   
   /**
    * Validates that a polygon is coverage-valid  against the
@@ -94,7 +94,7 @@ public class CoveragePolygonValidator {
    * @param adjPolygons the adjacent polygons
    * @return a linear geometry containing the segments causing invalidity (if any)
    */
-  public static Geometry validate(Geometry targetPolygon, Geometry[] adjPolygons) {
+  static Geometry validate(Geometry targetPolygon, Geometry[] adjPolygons) {
     CoveragePolygonValidator v = new CoveragePolygonValidator(targetPolygon, adjPolygons);
     return v.validate();
   }
@@ -112,7 +112,7 @@ public class CoveragePolygonValidator {
    * @param gapWidth the maximum width of invalid gaps
    * @return a linear geometry containing the segments causing invalidity (if any)
    */  
-  public static Geometry validate(Geometry targetPolygon, Geometry[] adjPolygons, double gapWidth) {
+  static Geometry validate(Geometry targetPolygon, Geometry[] adjPolygons, double gapWidth) {
     CoveragePolygonValidator v = new CoveragePolygonValidator(targetPolygon, adjPolygons);
     v.setGapWidth(gapWidth);
     return v.validate();
@@ -135,7 +135,7 @@ public class CoveragePolygonValidator {
    * @param geom the geometry to validate
    * @param adjGeoms the adjacent polygons in the polygonal coverage
    */
-  public CoveragePolygonValidator(Geometry geom, Geometry[] adjGeoms) {
+  CoveragePolygonValidator(Geometry geom, Geometry[] adjGeoms) {
     this.targetGeom = geom;
     this.adjGeoms = adjGeoms;
     geomFactory = targetGeom.getFactory();
@@ -146,7 +146,7 @@ public class CoveragePolygonValidator {
    * 
    * @param gapWidth the maximum width of gaps to detect
    */
-  public void setGapWidth(double gapWidth) {
+  void setGapWidth(double gapWidth) {
     this.gapWidth = gapWidth;
   }
   
@@ -157,7 +157,7 @@ public class CoveragePolygonValidator {
    * @param adjGeoms the surrounding polygons in the coverage
    * @return a linear geometry containing the segments causing invalidity (if any)
    */
-  public Geometry validate() {
+  Geometry validate() {
     adjPolygons = extractPolygons(adjGeoms);
     adjPolygonLocators = new IndexedPointInAreaLocator[adjPolygons.size()];
     
@@ -231,7 +231,7 @@ public class CoveragePolygonValidator {
    */
   private void markMatchedSegments(List<CoverageRing> targetRings,
       List<CoverageRing> adjRngs, Envelope targetEnv) {
-    Map<CoverageRingSegment, CoverageRingSegment> segmentMap = new HashMap<CoverageRingSegment, CoverageRingSegment>();
+    Map<CoverageRingSegment, CoverageRingSegment> segmentMap = new Map<CoverageRingSegment, CoverageRingSegment>();
     markMatchedSegments(targetRings, targetEnv, segmentMap);
     markMatchedSegments(adjRngs, targetEnv, segmentMap);
   }
@@ -283,7 +283,7 @@ public class CoveragePolygonValidator {
    * orientation, and marks them as coverage-invalid.
    */
   private static class CoverageRingSegment extends LineSegment {
-    public static CoverageRingSegment create(CoverageRing ring, int index) {
+    static CoverageRingSegment create(CoverageRing ring, int index) {
       Coordinate p0 = ring.getCoordinate(index);
       Coordinate p1 = ring.getCoordinate(index + 1);
       //-- orient segment as if ring is in canonical orientation
@@ -315,8 +315,8 @@ public class CoveragePolygonValidator {
       }
     }
     
-    public void match(CoverageRingSegment seg) {
-      boolean isInvalid = checkInvalid(seg);
+    void match(CoverageRingSegment seg) {
+      bool isInvalid = checkInvalid(seg);
       if (isInvalid) {
         return;
       }
@@ -334,7 +334,7 @@ public class CoveragePolygonValidator {
       ringOpp.markMatched(indexOpp);
     }
     
-    private boolean checkInvalid(CoverageRingSegment seg) {
+    private bool checkInvalid(CoverageRingSegment seg) {
       if (ringForward != null && seg.ringForward != null) {
         ringForward.markInvalid(indexForward);
         seg.ringForward.markInvalid(seg.indexForward);
@@ -407,7 +407,7 @@ public class CoveragePolygonValidator {
    * @param adjPolygons the list of polygons
    * @return true if the point is in the interior
    */
-  private boolean isInteriorVertex(Coordinate p, List<Polygon> adjPolygons) {
+  private bool isInteriorVertex(Coordinate p, List<Polygon> adjPolygons) {
     /**
      * There should not be too many adjacent polygons, 
      * and hopefully not too many segments with unknown status
@@ -423,7 +423,7 @@ public class CoveragePolygonValidator {
     return false;
   }
 
-  private boolean polygonContainsPoint(int index, Polygon poly, Coordinate pt) {
+  private bool polygonContainsPoint(int index, Polygon poly, Coordinate pt) {
     if (! poly.getEnvelopeInternal().intersects(pt))
       return false;
     PointOnGeometryLocator pia = getLocator(index, poly);

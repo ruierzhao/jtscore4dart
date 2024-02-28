@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -29,7 +29,7 @@ import org.locationtech.jts.util.GeometricShapeFactory;
  * @author Martin Davis
  *
  */
-public class SineStarFactory
+class SineStarFactory
 	extends GeometricShapeFactory
 {
   /**
@@ -42,7 +42,7 @@ public class SineStarFactory
    * @param armLengthRatio the arm length ratio
    * @return a sine star shape
    */
-  public static Geometry create(Coordinate origin, double size, int nPts, int nArms, double armLengthRatio) {
+  static Geometry create(Coordinate origin, double size, int nPts, int nArms, double armLengthRatio) {
     SineStarFactory gsf = new SineStarFactory();
     gsf.setCentre(origin);
     gsf.setSize(size);
@@ -60,7 +60,7 @@ public class SineStarFactory
    * Creates a factory which will create sine stars using the default
    * {@link GeometryFactory}.
    */
-	public SineStarFactory()
+	SineStarFactory()
 	{
 		super();
 	}
@@ -71,7 +71,7 @@ public class SineStarFactory
    *
    * @param geomFact the factory to use
    */
-  public SineStarFactory(GeometryFactory geomFact)
+  SineStarFactory(GeometryFactory geomFact)
   {
     super(geomFact);
   }
@@ -81,7 +81,7 @@ public class SineStarFactory
    * 
    * @param numArms the number of arms to generate
    */
-  public void setNumArms(int numArms)
+  void setNumArms(int numArms)
   {
   	this.numArms = numArms;
   }
@@ -93,7 +93,7 @@ public class SineStarFactory
    * 
    * @param armLengthRatio the ratio determining the length of them arms.
    */
-  public void setArmLengthRatio(double armLengthRatio)
+  void setArmLengthRatio(double armLengthRatio)
   {
   	this.armLengthRatio = armLengthRatio;
   }
@@ -103,7 +103,7 @@ public class SineStarFactory
    * 
    * @return the geometry representing the sine star
    */
-  public Geometry createSineStar()
+  Geometry createSineStar()
   {
     Envelope env = dim.getEnvelope();
     double radius = env.getWidth() / 2.0;
@@ -120,7 +120,7 @@ public class SineStarFactory
     double centreX = env.getMinX() + radius;
     double centreY = env.getMinY() + radius;
 
-    Coordinate[] pts = new Coordinate[nPts + 1];
+    List<Coordinate> pts = new Coordinate[nPts + 1];
     int iPt = 0;
     for (int i = 0; i < nPts; i++) {
       // the fraction of the way through the current arm - in [0,1]

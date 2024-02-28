@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -36,15 +36,15 @@ import org.locationtech.jts.operation.overlayng.PrecisionReducer;
  */
 class PrecisionReducerTransformer extends GeometryTransformer {
   
-  public static Geometry reduce(Geometry geom, PrecisionModel targetPM, boolean isRemoveCollapsed) {
+  static Geometry reduce(Geometry geom, PrecisionModel targetPM, bool isRemoveCollapsed) {
     PrecisionReducerTransformer trans = new PrecisionReducerTransformer(targetPM, isRemoveCollapsed);
     return trans.transform(geom);
   }
   
   private PrecisionModel targetPM;
-  private boolean isRemoveCollapsed = false;
+  private bool isRemoveCollapsed = false;
   
-  PrecisionReducerTransformer(PrecisionModel targetPM, boolean isRemoveCollapsed) {
+  PrecisionReducerTransformer(PrecisionModel targetPM, bool isRemoveCollapsed) {
     this.targetPM = targetPM;
     this.isRemoveCollapsed  = isRemoveCollapsed;
   }
@@ -54,7 +54,7 @@ class PrecisionReducerTransformer extends GeometryTransformer {
     if (coordinates.size() == 0)
       return null;
 
-    Coordinate[] coordsReduce = reduceCompress(coordinates);
+    List<Coordinate> coordsReduce = reduceCompress(coordinates);
 
     /**
      * Check if the removal of repeated points collapsed the coordinate
@@ -84,10 +84,10 @@ class PrecisionReducerTransformer extends GeometryTransformer {
     return factory.getCoordinateSequenceFactory().create(coordsReduce);
   }
 
-  private Coordinate[] extend(Coordinate[] coords, int minLength) {
+  private List<Coordinate> extend(List<Coordinate> coords, int minLength) {
     if (coords.length >= minLength)
       return coords;
-    Coordinate[] exCoords = new Coordinate[minLength];
+    List<Coordinate> exCoords = new Coordinate[minLength];
     for (int i = 0; i < exCoords.length; i++) {
       int iSrc = i < coords.length ? i : coords.length - 1;
       exCoords[i] = coords[iSrc].copy();
@@ -95,7 +95,7 @@ class PrecisionReducerTransformer extends GeometryTransformer {
     return exCoords;
   }
 
-  private Coordinate[] reduceCompress(CoordinateSequence coordinates) {
+  private List<Coordinate> reduceCompress(CoordinateSequence coordinates) {
     CoordinateList noRepeatCoordList = new CoordinateList();
     // copy coordinates and reduce
     for (int i = 0; i < coordinates.size(); i++) {
@@ -104,7 +104,7 @@ class PrecisionReducerTransformer extends GeometryTransformer {
       noRepeatCoordList.add(coord, false);
     }
     // remove repeated points, to simplify geometry as much as possible
-    Coordinate[] noRepeatCoords = noRepeatCoordList.toCoordinateArray();
+    List<Coordinate> noRepeatCoords = noRepeatCoordList.toCoordinateArray();
     return noRepeatCoords;
   }
 

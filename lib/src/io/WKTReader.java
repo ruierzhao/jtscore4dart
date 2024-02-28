@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 
 import java.io.IOException;
@@ -66,10 +66,10 @@ import org.locationtech.jts.util.AssertionFailedException;
  * If the coordinate dimension is not specified, the default behaviour is to 
  * create XYZ geometry (this is backwards compatible with older JTS versions).  
  * This can be altered to create XY geometry by
- * calling {@link #setIsOldJtsCoordinateSyntaxAllowed(boolean)}.
+ * calling {@link #setIsOldJtsCoordinateSyntaxAllowed(bool)}.
  * <p>
  * A reader can be set to ensure the input is structurally valid
- * by calling {@link #setFixStructure(boolean)}.
+ * by calling {@link #setFixStructure(bool)}.
  * This ensures that geometry can be constructed without errors due to missing coordinates.
  * The created geometry may still be topologically invalid.
  * 
@@ -142,7 +142,7 @@ import org.locationtech.jts.util.AssertionFailedException;
  *@version 1.7
  * @see WKTWriter
  */
-public class WKTReader
+class WKTReader
 {
   private static final String COMMA = ",";
   private static final String L_PAREN = "(";
@@ -158,23 +158,23 @@ public class WKTReader
    * Flag indicating that the old notation of coordinates in JTS
    * is supported.
    */
-  private static final boolean ALLOW_OLD_JTS_COORDINATE_SYNTAX = true;
-  private boolean isAllowOldJtsCoordinateSyntax = ALLOW_OLD_JTS_COORDINATE_SYNTAX;
+  private static final bool ALLOW_OLD_JTS_COORDINATE_SYNTAX = true;
+  private bool isAllowOldJtsCoordinateSyntax = ALLOW_OLD_JTS_COORDINATE_SYNTAX;
 
   /**
    * Flag indicating that the old notation of MultiPoint coordinates in JTS
    * is supported.
    */
-  private static final boolean ALLOW_OLD_JTS_MULTIPOINT_SYNTAX = true;
-  private boolean isAllowOldJtsMultipointSyntax = ALLOW_OLD_JTS_MULTIPOINT_SYNTAX;
+  private static final bool ALLOW_OLD_JTS_MULTIPOINT_SYNTAX = true;
+  private bool isAllowOldJtsMultipointSyntax = ALLOW_OLD_JTS_MULTIPOINT_SYNTAX;
   
   
-  private boolean isFixStructure = false;
+  private bool isFixStructure = false;
 
   /**
    * Creates a reader that creates objects using the default {@link GeometryFactory}.
    */
-  public WKTReader() {
+  WKTReader() {
     this(new GeometryFactory());
   }
 
@@ -184,7 +184,7 @@ public class WKTReader
    *
    *@param  geometryFactory  the factory used to create <code>Geometry</code>s.
    */
-  public WKTReader(GeometryFactory geometryFactory) {
+  WKTReader(GeometryFactory geometryFactory) {
     this.geometryFactory = geometryFactory;
     this.csFactory = geometryFactory.getCoordinateSequenceFactory();
     this.precisionModel = geometryFactory.getPrecisionModel();
@@ -194,18 +194,18 @@ public class WKTReader
    * Sets a flag indicating, that coordinates may have 3 ordinate values even though no Z or M ordinate indicator
    * is present. The default value is {@link #ALLOW_OLD_JTS_COORDINATE_SYNTAX}.
    *
-   * @param value a boolean value
+   * @param value a bool value
    */
-  public void setIsOldJtsCoordinateSyntaxAllowed(boolean value) {
+  void setIsOldJtsCoordinateSyntaxAllowed(bool value) {
     isAllowOldJtsCoordinateSyntax = value;
   }
 
   /**
    * Sets a flag indicating, that point coordinates in a MultiPoint geometry must not be enclosed in paren.
    * The default value is {@link #ALLOW_OLD_JTS_MULTIPOINT_SYNTAX}
-   * @param value a boolean value
+   * @param value a bool value
    */
-  public void setIsOldJtsMultiPointSyntaxAllowed(boolean value) {
+  void setIsOldJtsMultiPointSyntaxAllowed(bool value) {
     isAllowOldJtsMultipointSyntax = value;
   }
 
@@ -218,7 +218,7 @@ public class WKTReader
    * 
    * @see LinearRing#MINIMUM_VALID_SIZE
    */
-  public void setFixStructure(boolean isFixStructure) {
+  void setFixStructure(bool isFixStructure) {
     this.isFixStructure = isFixStructure;
   }
   
@@ -233,7 +233,7 @@ public class WKTReader
    * @throws ParseException
    *             if a parsing problem occurs
    */
-  public Geometry read(String wellKnownText) throws ParseException {
+  Geometry read(String wellKnownText) throws ParseException {
     StringReader reader = new StringReader(wellKnownText);
     try {
       return read(reader);
@@ -252,7 +252,7 @@ public class WKTReader
    *@return                  a <code>Geometry</code> read from <code>reader</code>
    *@throws  ParseException  if a parsing problem occurs
    */
-  public Geometry read(Reader reader) throws ParseException {
+  Geometry read(Reader reader) throws ParseException {
     StreamTokenizer tokenizer = createTokenizer(reader);
     try {
       return readGeometryTaggedText(tokenizer);
@@ -299,10 +299,10 @@ public class WKTReader
    *@throws  IOException     if an I/O error occurs
    *@throws  ParseException  if an unexpected token was encountered
    */
-  private Coordinate getCoordinate(StreamTokenizer tokenizer, EnumSet<Ordinate> ordinateFlags, boolean tryParen)
+  private Coordinate getCoordinate(StreamTokenizer tokenizer, EnumSet<Ordinate> ordinateFlags, bool tryParen)
       throws IOException, ParseException
   {
-    boolean opened = false;
+    bool opened = false;
     if (tryParen && isOpenerNext(tokenizer) ) {
       tokenizer.nextToken();
       opened = true;
@@ -333,8 +333,8 @@ public class WKTReader
   }
   
   private Coordinate createCoordinate(EnumSet<Ordinate> ordinateFlags) {
-    boolean hasZ = ordinateFlags.contains(Ordinate.Z);
-    boolean hasM = ordinateFlags.contains(Ordinate.M);
+    bool hasZ = ordinateFlags.contains(Ordinate.Z);
+    bool hasM = ordinateFlags.contains(Ordinate.M);
     if (hasZ && hasM) 
       return new CoordinateXYZM();
     if (hasM)
@@ -360,7 +360,7 @@ public class WKTReader
    *@throws  IOException     if an I/O error occurs
    *@throws  ParseException  if an unexpected token was encountered
    */
-  private CoordinateSequence getCoordinateSequence(StreamTokenizer tokenizer, EnumSet<Ordinate> ordinateFlags, int minSize, boolean isRing)
+  private CoordinateSequence getCoordinateSequence(StreamTokenizer tokenizer, EnumSet<Ordinate> ordinateFlags, int minSize, bool isRing)
           throws IOException, ParseException {
     if (getNextEmptyOrOpener(tokenizer).equals(WKTConstants.EMPTY))
       return createCoordinateSequenceEmpty(ordinateFlags);
@@ -373,11 +373,11 @@ public class WKTReader
     if (isFixStructure) {
       fixStructure(coordinates, minSize, isRing);
     }
-    Coordinate[] coordArray = coordinates.toArray(new Coordinate[0]);
+    List<Coordinate> coordArray = coordinates.toArray(new Coordinate[0]);
     return csFactory.create(coordArray);
   }
 
-  private static void fixStructure(List<Coordinate> coords, int minSize, boolean isRing) {
+  private static void fixStructure(List<Coordinate> coords, int minSize, bool isRing) {
     if (coords.size() == 0)
       return;
     if (isRing && ! isClosed(coords)) {
@@ -388,7 +388,7 @@ public class WKTReader
     }
   }
 
-  private static boolean isClosed(List<Coordinate> coords) {
+  private static bool isClosed(List<Coordinate> coords) {
     if (coords.size() == 0) return true;
     if (coords.size() == 1 
         || ! coords.get(0).equals2D(coords.get(coords.size() - 1))) {
@@ -426,7 +426,7 @@ S  */
       coordinates.add(getCoordinate(tokenizer, ordinateFlags, true));
     } while (getNextCloserOrComma(tokenizer).equals(COMMA));
 
-    Coordinate[] coordArray = coordinates.toArray(new Coordinate[0]);
+    List<Coordinate> coordArray = coordinates.toArray(new Coordinate[0]);
     return csFactory.create(coordArray);  }
 
   /**
@@ -456,7 +456,7 @@ S  */
    * @return {@code true} if the next token is a number, otherwise {@code false}
    * @throws  IOException     if an I/O error occurs
    */
-  private static boolean isNumberNext(StreamTokenizer tokenizer) throws IOException {
+  private static bool isNumberNext(StreamTokenizer tokenizer) throws IOException {
     int type = tokenizer.nextToken();
     tokenizer.pushBack();
     return type == StreamTokenizer.TT_WORD;
@@ -469,7 +469,7 @@ S  */
    * @return {@code true} if the next token is a {@link #L_PAREN}, otherwise {@code false}
    * @throws  IOException     if an I/O error occurs
    */
-  private static boolean isOpenerNext(StreamTokenizer tokenizer) throws IOException {
+  private static bool isOpenerNext(StreamTokenizer tokenizer) throws IOException {
     int type = tokenizer.nextToken();
     tokenizer.pushBack();
     return type == '(';
@@ -765,12 +765,12 @@ S  */
     throw parseErrorWithLine(tokenizer, "Unknown geometry type: " + type);
   }
 
-  private boolean isTypeName(StreamTokenizer tokenizer, String type, String typeName) throws ParseException {
+  private bool isTypeName(StreamTokenizer tokenizer, String type, String typeName) throws ParseException {
     if (! type.startsWith(typeName))
       return false;
     
     String modifiers = type.substring(typeName.length());
-    boolean isValidMod = modifiers.length() <= 2 &&
+    bool isValidMod = modifiers.length() <= 2 &&
         (modifiers.length() == 0
         ||modifiers.equals(WKTConstants.Z)
         || modifiers.equals(WKTConstants.M)

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.overlay.validate;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ import org.locationtech.jts.geom.Polygon;
  * @author Martin Davis
  * @version 1.7
  */
-public class FuzzyPointLocator
+class FuzzyPointLocator
 {
   private Geometry g;
   private double boundaryDistanceTolerance;
@@ -47,14 +47,14 @@ public class FuzzyPointLocator
   private PointLocator ptLocator = new PointLocator();
   private LineSegment seg = new LineSegment();
   
-  public FuzzyPointLocator(Geometry g, double boundaryDistanceTolerance)
+  FuzzyPointLocator(Geometry g, double boundaryDistanceTolerance)
   {
     this.g = g;
     this.boundaryDistanceTolerance = boundaryDistanceTolerance;
     linework = extractLinework(g);
   }
 
-  public int getLocation(Coordinate pt)
+  int getLocation(Coordinate pt)
   {
     if (isWithinToleranceOfBoundary(pt))
     		return Location.BOUNDARY;
@@ -85,7 +85,7 @@ public class FuzzyPointLocator
   	return g.getFactory().createMultiLineString(lines);
   }
   
-  private boolean isWithinToleranceOfBoundary(Coordinate pt)
+  private bool isWithinToleranceOfBoundary(Coordinate pt)
   {
   	for (int i = 0; i < linework.getNumGeometries(); i++) {
   		LineString line = (LineString) linework.getGeometryN(i);
@@ -113,7 +113,7 @@ class PolygonalLineworkExtracter
 {
 	private List linework; 
 	
-	public PolygonalLineworkExtracter()
+	PolygonalLineworkExtracter()
 	{
 		linework = new ArrayList();
 	}
@@ -121,7 +121,7 @@ class PolygonalLineworkExtracter
 	/**
 	 * Filters out all linework for polygonal elements
 	 */
-	public void filter(Geometry g)
+	void filter(Geometry g)
 	{
 		if (g instanceof Polygon) {
 			Polygon poly = (Polygon) g;
@@ -137,5 +137,5 @@ class PolygonalLineworkExtracter
 	 * 
 	 * @return a List of LineStrings
 	 */
-	public List getLinework() { return linework; }
+	List getLinework() { return linework; }
 }

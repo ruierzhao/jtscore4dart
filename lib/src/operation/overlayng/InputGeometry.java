@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
 import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
@@ -33,34 +33,34 @@ class InputGeometry {
   private Geometry[] geom = new Geometry[2];
   private PointOnGeometryLocator ptLocatorA;
   private PointOnGeometryLocator ptLocatorB;
-  private boolean[] isCollapsed = new boolean[2];
+  private bool[] isCollapsed = new bool[2];
   
-  public InputGeometry(Geometry geomA, Geometry geomB) {
+  InputGeometry(Geometry geomA, Geometry geomB) {
     geom = new Geometry[] { geomA, geomB };
   }
   
-  public boolean isSingle() {
+  bool isSingle() {
     return geom[1] == null;
   }
   
-  public int getDimension(int index) {
+  int getDimension(int index) {
     if (geom[index] == null) return -1;
     return geom[index].getDimension();
   }
 
-  public Geometry getGeometry(int geomIndex) {
+  Geometry getGeometry(int geomIndex) {
     return geom[geomIndex];
   }
 
-  public Envelope getEnvelope(int geomIndex) {
+  Envelope getEnvelope(int geomIndex) {
     return geom[geomIndex].getEnvelopeInternal();
   }
 
-  public boolean isEmpty(int geomIndex) {
+  bool isEmpty(int geomIndex) {
     return geom[geomIndex].isEmpty();
   }
   
-  public boolean isArea(int geomIndex) {
+  bool isArea(int geomIndex) {
     return geom[geomIndex] != null && geom[geomIndex].getDimension() == 2;
   }
   
@@ -72,22 +72,22 @@ class InputGeometry {
    * 
    * @return the index of an area input, or -1
    */
-  public int getAreaIndex() {
+  int getAreaIndex() {
     if (getDimension(0) == 2) return 0;
     if (getDimension(1) == 2) return 1;
     return -1;
   }
   
-  public boolean isLine(int geomIndex) {
+  bool isLine(int geomIndex) {
     return getDimension(geomIndex) == 1;
   }
 
-  public boolean isAllPoints() {
+  bool isAllPoints() {
     return getDimension(0) == 0 
         && geom[1] != null && getDimension(1) == 0;
   }
   
-  public boolean hasPoints() {
+  bool hasPoints() {
     return getDimension(0) == 0 || getDimension(1) == 0;
   }
   
@@ -98,7 +98,7 @@ class InputGeometry {
    * @param geomIndex
    * @return true if the input geometry has edges
    */
-  public boolean hasEdges(int geomIndex) {
+  bool hasEdges(int geomIndex) {
     return geom[geomIndex] != null && geom[geomIndex].getDimension() > 0;
   }
   
@@ -113,7 +113,7 @@ class InputGeometry {
    * 
    * @see Location
    */
-  public int locatePointInArea(int geomIndex, Coordinate pt) {
+  int locatePointInArea(int geomIndex, Coordinate pt) {
     // Assert: only called if dimension(geomIndex) = 2
     
     if ( isCollapsed[geomIndex]) 
@@ -146,7 +146,7 @@ class InputGeometry {
     } 
   }
 
-  public void setCollapsed(int geomIndex, boolean isGeomCollapsed) {
+  void setCollapsed(int geomIndex, bool isGeomCollapsed) {
     isCollapsed[geomIndex] = isGeomCollapsed;
   }
 

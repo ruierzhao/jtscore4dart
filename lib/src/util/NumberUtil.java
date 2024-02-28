@@ -10,14 +10,14 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.util;
 
-public class NumberUtil
+
+class NumberUtil
 {
 
-  public static boolean equalsWithTolerance(double x1, double x2, double tolerance)
+  static bool equalsWithTolerance(double x1, double x2, double tolerance)
   {
-    return Math.abs(x1 - x2) <= tolerance;
+    return (x1 - x2).abs() <= tolerance;
   }
 
 }

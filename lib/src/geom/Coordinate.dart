@@ -172,14 +172,14 @@ class Coordinate implements Comparable<Coordinate> {
   /// 
   /// @param ordinateIndex the ordinate index
   /// @return the value of the ordinate
-  /// @throws IllegalArgumentException if the index is not valid
+  /// @throws ArgumentError if the index is not valid
   double getOrdinate(int ordinateIndex) {
     switch (ordinateIndex) {
     case X: return x;
     case Y: return y;
     case Z: return getZ()?? 0; // sure to delegate to subclass rather than offer direct field access
     }
-    // throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+    // throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
     throw ArgumentError("Invalid ordinate index: $ordinateIndex");
   }
   
@@ -191,7 +191,7 @@ class Coordinate implements Comparable<Coordinate> {
   /// 
   /// @param ordinateIndex the ordinate index
   /// @param value the value to set
-  /// @throws IllegalArgumentException if the index is not valid
+  /// @throws ArgumentError if the index is not valid
   void setOrdinate(int ordinateIndex, double value)
   {
     switch (ordinateIndex) {
@@ -456,7 +456,7 @@ class Coordinate implements Comparable<Coordinate> {
     DimensionalComparator(int dimensionsToTest)
     {
       if (dimensionsToTest != 2 && dimensionsToTest != 3)
-        throw new IllegalArgumentException("only 2 or 3 dimensions may be specified");
+        throw new ArgumentError("only 2 or 3 dimensions may be specified");
       this.dimensionsToTest = dimensionsToTest;
     }
 

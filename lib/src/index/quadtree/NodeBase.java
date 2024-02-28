@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.quadtree;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import org.locationtech.jts.index.ItemVisitor;
  *
  * @version 1.7
  */
-public abstract class NodeBase implements Serializable {
+abstract class NodeBase implements Serializable {
 
 //DEBUG private static int itemCount = 0;  // debugging
   
@@ -36,7 +36,7 @@ public abstract class NodeBase implements Serializable {
    * @return the index of the subquad that wholly contains the given envelope
    * or -1 if no subquad wholly contains the envelope
    */
-  public static int getSubnodeIndex(Envelope env, double centrex, double centrey)
+  static int getSubnodeIndex(Envelope env, double centrex, double centrey)
   {
     int subnodeIndex = -1;
     if (env.getMinX() >= centrex) {
@@ -62,14 +62,14 @@ public abstract class NodeBase implements Serializable {
    */
   protected Node[] subnode = new Node[4];
 
-  public NodeBase() {
+  NodeBase() {
   }
 
-  public List getItems() { return items; }
+  List getItems() { return items; }
 
-  public boolean hasItems() { return ! items.isEmpty(); }
+  bool hasItems() { return ! items.isEmpty(); }
 
-  public void add(Object item)
+  void add(Object item)
   {
     items.add(item);
 //DEBUG itemCount++;
@@ -83,13 +83,13 @@ public abstract class NodeBase implements Serializable {
    * @param item the item to remove
    * @return <code>true</code> if the item was found and removed
    */
-  public boolean remove(Envelope itemEnv, Object item)
+  bool remove(Envelope itemEnv, Object item)
   {
     // use envelope to restrict nodes scanned
     if (! isSearchMatch(itemEnv))
       return false;
 
-    boolean found = false;
+    bool found = false;
     for (int i = 0; i < 4; i++) {
       if (subnode[i] != null) {
         found = subnode[i].remove(itemEnv, item);
@@ -108,12 +108,12 @@ public abstract class NodeBase implements Serializable {
     return found;
   }
 
-  public boolean isPrunable()
+  bool isPrunable()
   {
     return ! (hasChildren() || hasItems());
   }
 
-  public boolean hasChildren()
+  bool hasChildren()
   {
     for (int i = 0; i < 4; i++) {
       if (subnode[i] != null)
@@ -122,9 +122,9 @@ public abstract class NodeBase implements Serializable {
     return false;
   }
 
-  public boolean isEmpty()
+  bool isEmpty()
   {
-    boolean isEmpty = true;
+    bool isEmpty = true;
     if (! items.isEmpty()) isEmpty = false;
     else {
       for (int i = 0; i < 4; i++) {
@@ -141,7 +141,7 @@ public abstract class NodeBase implements Serializable {
 
   //<<TODO:RENAME?>> Sounds like this method adds resultItems to items
   //(like List#addAll). Perhaps it should be renamed to "addAllItemsTo" [Jon Aquino]
-  public List addAllItems(List resultItems)
+  List addAllItems(List resultItems)
   {
     // this node may have items as well as subnodes (since items may not
     // be wholely contained in any single subnode
@@ -153,9 +153,9 @@ public abstract class NodeBase implements Serializable {
     }
     return resultItems;
   }
-  protected abstract boolean isSearchMatch(Envelope searchEnv);
+  protected abstract bool isSearchMatch(Envelope searchEnv);
 
-  public void addAllItemsFromOverlapping(Envelope searchEnv, List resultItems)
+  void addAllItemsFromOverlapping(Envelope searchEnv, List resultItems)
   {
     if (! isSearchMatch(searchEnv))
       return;
@@ -171,7 +171,7 @@ public abstract class NodeBase implements Serializable {
     }
   }
 
-  public void visit(Envelope searchEnv, ItemVisitor visitor)
+  void visit(Envelope searchEnv, ItemVisitor visitor)
   {
     if (! isSearchMatch(searchEnv))
       return;

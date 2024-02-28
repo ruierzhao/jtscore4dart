@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding.snapround;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +44,7 @@ class HotPixelIndex {
    */
   private KdTree index = new KdTree();
 
-  public HotPixelIndex(PrecisionModel pm) {
+  HotPixelIndex(PrecisionModel pm) {
     this.precModel = pm;
     scaleFactor = pm.getScale();
   }
@@ -58,7 +58,7 @@ class HotPixelIndex {
   private static final class CoordinateShuffler implements Iterator<Coordinate> {
 
     private final Random rnd = new Random(13);
-    private final Coordinate[] coordinates;
+    private final List<Coordinate> coordinates;
     private final int[] indices;
     private int index;
 
@@ -66,7 +66,7 @@ class HotPixelIndex {
      * Creates an instance of this class
      * @param pts An array of {@link Coordinate}s.
      */
-    public CoordinateShuffler(Coordinate[] pts) {
+    CoordinateShuffler(List<Coordinate> pts) {
       coordinates = pts;
       indices = new int[pts.length];
       for (int i = 0; i < pts.length; i++)
@@ -75,12 +75,12 @@ class HotPixelIndex {
     }
 
     @Override
-    public boolean hasNext() {
+    bool hasNext() {
       return index >= 0;
     }
 
     @Override
-    public Coordinate next() {
+    Coordinate next() {
       int j = rnd.nextInt(index + 1);
       Coordinate res = coordinates[indices[j]];
       indices[j] = indices[index--];
@@ -93,7 +93,7 @@ class HotPixelIndex {
    *
    * @param pts the points to add
    */
-  public void add(Coordinate[] pts) {
+  void add(List<Coordinate> pts) {
     /**
      * Shuffle the points before adding.
      * This avoids having long monontic runs of points
@@ -111,7 +111,7 @@ class HotPixelIndex {
    *
    * @param pts the points to add
    */
-  public void addNodes(List<Coordinate> pts) {
+  void addNodes(List<Coordinate> pts) {
     /**
      * Node points are not shuffled, since they are
      * added after the vertex points, and hence the KD-tree should 
@@ -130,7 +130,7 @@ class HotPixelIndex {
    * @param p the point to add
    * @return the HotPixel for the point
    */
-  public HotPixel add(Coordinate p) {
+  HotPixel add(Coordinate p) {
     // TODO: is there a faster way of doing this?
     Coordinate pRound = round(p);
 
@@ -177,7 +177,7 @@ class HotPixelIndex {
    * @param p1 the segment end point
    * @param visitor the visitor to apply
    */
-  public void query(Coordinate p0, Coordinate p1, KdNodeVisitor visitor) {
+  void query(Coordinate p0, Coordinate p1, KdNodeVisitor visitor) {
     Envelope queryEnv = new Envelope(p0, p1);
     // expand query range to account for HotPixel extent
     // expand by full width of one pixel to be safe

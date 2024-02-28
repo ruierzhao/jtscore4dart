@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import org.locationtech.jts.io.OrdinateFormat;
 
@@ -19,14 +19,14 @@ import org.locationtech.jts.io.OrdinateFormat;
  *
  * @version 1.7
  */
-public class CoordinateSequences {
+class CoordinateSequences {
 
   /**
    * Reverses the coordinates in a sequence in-place.
    * 
    * @param seq the coordinate sequence to reverse
    */
-  public static void reverse(CoordinateSequence seq)
+  static void reverse(CoordinateSequence seq)
   {
     if (seq.size() <= 1) return;
     
@@ -44,7 +44,7 @@ public class CoordinateSequences {
    * @param i the index of a coordinate to swap
    * @param j the index of a coordinate to swap
    */
-  public static void swap(CoordinateSequence seq, int i, int j)
+  static void swap(CoordinateSequence seq, int i, int j)
   {
     if (i == j) return;
     for (int dim = 0; dim < seq.getDimension(); dim++) {
@@ -65,7 +65,7 @@ public class CoordinateSequences {
    * @param destPos the position in the destination sequence to copy to
    * @param length the number of coordinates to copy
    */
-  public static void copy(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos, int length)
+  static void copy(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos, int length)
   {
   	for (int i = 0; i < length; i++) {
   		copyCoord(src, srcPos + i, dest, destPos + i);
@@ -82,7 +82,7 @@ public class CoordinateSequences {
    * @param dest the sequence to copy to
    * @param destPos the destination coordinate to copy to
    */
-  public static void copyCoord(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos)
+  static void copyCoord(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos)
   {
     int minDim = Math.min(src.getDimension(), dest.getDimension());
 		for (int dim = 0; dim < minDim; dim++) {
@@ -100,7 +100,7 @@ public class CoordinateSequences {
    * @return true if the sequence is a ring
    * @see LinearRing
    */
-  public static boolean isRing(CoordinateSequence seq) 
+  static bool isRing(CoordinateSequence seq) 
   {
   	int n = seq.size();
   	if (n == 0) return true;
@@ -124,7 +124,7 @@ public class CoordinateSequences {
    * @param seq the sequence to test
    * @return the original sequence, if it was a valid ring, or a new sequence which is valid.
    */
-  public static CoordinateSequence ensureValidRing(CoordinateSequenceFactory fact, CoordinateSequence seq)
+  static CoordinateSequence ensureValidRing(CoordinateSequenceFactory fact, CoordinateSequence seq)
   {
   	int n = seq.size();
   	// empty sequence is valid
@@ -133,7 +133,7 @@ public class CoordinateSequences {
   	if (n <= 3) 
   		return createClosedRing(fact, seq, 4);
   	
-  	boolean isClosed = seq.getOrdinate(0, CoordinateSequence.X) == seq.getOrdinate(n-1, CoordinateSequence.X)
+  	bool isClosed = seq.getOrdinate(0, CoordinateSequence.X) == seq.getOrdinate(n-1, CoordinateSequence.X)
 		&& seq.getOrdinate(0, CoordinateSequence.Y) == seq.getOrdinate(n-1, CoordinateSequence.Y);
   	if (isClosed) return seq;
   	// make a new closed ring
@@ -151,7 +151,7 @@ public class CoordinateSequences {
     return newseq;
   }
   
-  public static CoordinateSequence extend(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
+  static CoordinateSequence extend(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
   {
     CoordinateSequence newseq = fact.create(size, seq.getDimension());
     int n = seq.size();
@@ -176,7 +176,7 @@ public class CoordinateSequences {
    * @param cs2 a CoordinateSequence
    * @return true if the sequences are equal in the common dimensions
    */
-  public static boolean isEqual(CoordinateSequence cs1, CoordinateSequence cs2) {
+  static bool isEqual(CoordinateSequence cs1, CoordinateSequence cs2) {
     int cs1Size = cs1.size();
     int cs2Size = cs2.size();
     if (cs1Size != cs2Size) return false;
@@ -210,7 +210,7 @@ public class CoordinateSequences {
    * @param cs the sequence to output
    * @return the string representation of the sequence
    */
-  public static String toString(CoordinateSequence cs)
+  static String toString(CoordinateSequence cs)
   {
     int size = cs.size();
     if (size == 0) 
@@ -236,7 +236,7 @@ public class CoordinateSequences {
    *@return  the minimum coordinate in the sequence, found using <code>compareTo</code>
    *@see Coordinate#compareTo(Object)
    */
-  public static Coordinate minCoordinate(CoordinateSequence seq)
+  static Coordinate minCoordinate(CoordinateSequence seq)
   {
     Coordinate minCoord = null;
     for (int i = 0; i < seq.size(); i++) {
@@ -255,7 +255,7 @@ public class CoordinateSequences {
    *@return  the index of the minimum coordinate in the sequence, found using <code>compareTo</code>
    *@see Coordinate#compareTo(Object)
    */
-  public static int minCoordinateIndex(CoordinateSequence seq) {
+  static int minCoordinateIndex(CoordinateSequence seq) {
     return minCoordinateIndex(seq, 0, seq.size() - 1);
   }
 
@@ -270,7 +270,7 @@ public class CoordinateSequences {
    *@return  the index of the minimum coordinate in the sequence, found using <code>compareTo</code>
    *@see Coordinate#compareTo(Object)
    */
-  public static int minCoordinateIndex(CoordinateSequence seq, int from, int to)
+  static int minCoordinateIndex(CoordinateSequence seq, int from, int to)
   {
     int minCoordIndex = -1;
     Coordinate minCoord = null;
@@ -291,7 +291,7 @@ public class CoordinateSequences {
    *@param  seq      the coordinate sequence to rearrange
    *@param  firstCoordinate  the coordinate to make first
    */
-  public static void scroll(CoordinateSequence seq, Coordinate firstCoordinate) {
+  static void scroll(CoordinateSequence seq, Coordinate firstCoordinate) {
     int i = indexOf(firstCoordinate, seq);
     if (i <= 0) return;
     scroll(seq, i);
@@ -304,7 +304,7 @@ public class CoordinateSequences {
    *@param  seq      the coordinate sequence to rearrange
    *@param  indexOfFirstCoordinate  the index of the coordinate to make first
    */
-  public static void scroll(CoordinateSequence seq, int indexOfFirstCoordinate)
+  static void scroll(CoordinateSequence seq, int indexOfFirstCoordinate)
   {
     scroll(seq, indexOfFirstCoordinate, CoordinateSequences.isRing(seq));
   }
@@ -319,7 +319,7 @@ public class CoordinateSequences {
    *@param  ensureRing
    *                 makes sure that {@code} will be a closed ring upon exit
    */
-    public static void scroll(CoordinateSequence seq, int indexOfFirstCoordinate, boolean ensureRing) {
+    static void scroll(CoordinateSequence seq, int indexOfFirstCoordinate, bool ensureRing) {
     int i = indexOfFirstCoordinate;
     if (i <= 0) return;
 
@@ -352,7 +352,7 @@ public class CoordinateSequences {
    *@return              the position of <code>coordinate</code>, or -1 if it is
    *      not found
    */
-  public static int indexOf(Coordinate coordinate, CoordinateSequence seq) {
+  static int indexOf(Coordinate coordinate, CoordinateSequence seq) {
     for (int i = 0; i < seq.size(); i++) {
       if (coordinate.x == seq.getOrdinate(i, CoordinateSequence.X) &&
           coordinate.y == seq.getOrdinate(i, CoordinateSequence.Y)) {

@@ -9,14 +9,14 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * Indicates an invalid or inconsistent topological situation encountered during processing
  *
  * @version 1.7
  */
-public class TopologyException
+class TopologyException
   extends RuntimeException
 {
   private static String msgWithCoord(String msg, Coordinate pt)
@@ -28,17 +28,17 @@ public class TopologyException
 
   private Coordinate pt = null;
 
-  public TopologyException(String msg)
+  TopologyException(String msg)
   {
     super(msg);
   }
 
-  public TopologyException(String msg, Coordinate pt)
+  TopologyException(String msg, Coordinate pt)
   {
     super(msgWithCoord(msg, pt));
     this.pt = new Coordinate(pt);
   }
 
-  public Coordinate getCoordinate() { return pt; }
+  Coordinate getCoordinate() { return pt; }
 
 }

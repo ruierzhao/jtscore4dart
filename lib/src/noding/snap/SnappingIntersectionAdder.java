@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding.snap;
+
 
 import org.locationtech.jts.algorithm.Distance;
 import org.locationtech.jts.algorithm.LineIntersector;
@@ -25,7 +25,7 @@ import org.locationtech.jts.noding.SegmentString;
  *
  * @version 1.17
  */
-public class SnappingIntersectionAdder
+class SnappingIntersectionAdder
     implements SegmentIntersector
 {
   private LineIntersector li = new RobustLineIntersector();;
@@ -41,7 +41,7 @@ public class SnappingIntersectionAdder
    * @param snapTolerance the snapping tolerance distance
    * @param snapPointIndex the snapPointIndex
    */
-  public SnappingIntersectionAdder(double snapTolerance, SnappingPointIndex snapPointIndex)
+  SnappingIntersectionAdder(double snapTolerance, SnappingPointIndex snapPointIndex)
   {
     this.snapPointIndex = snapPointIndex;
     this.snapTolerance = snapTolerance;
@@ -55,7 +55,7 @@ public class SnappingIntersectionAdder
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
-  public void processIntersections(
+  void processIntersections(
       SegmentString seg0,  int segIndex0,
       SegmentString seg1,  int segIndex1
       )
@@ -143,11 +143,11 @@ public class SnappingIntersectionAdder
    * Closed segStrings require a check for the point shared by the beginning
    * and end segments.
    */
-  private static boolean isAdjacent(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1)
+  private static bool isAdjacent(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1)
   {
     if (ss0 != ss1) return false;
     
-    boolean isAdjacent = Math.abs(segIndex0 - segIndex1) == 1;
+    bool isAdjacent = (segIndex0 - segIndex1).abs() == 1;
     if (isAdjacent)
       return true;
     if (ss0.isClosed()) {
@@ -165,6 +165,6 @@ public class SnappingIntersectionAdder
    * 
    * @return false always
    */
-  public boolean isDone() { return false; }
+  bool isDone() { return false; }
 
 }

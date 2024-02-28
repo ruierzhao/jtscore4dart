@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -30,16 +30,16 @@ import org.locationtech.jts.geom.LineSegment;
  * @author Martin Davis
  * @version 1.7
  */
-public class TaggedLineStringSimplifier
+class TaggedLineStringSimplifier
 {
   private LineIntersector li = new RobustLineIntersector();
   private LineSegmentIndex inputIndex;
   private LineSegmentIndex outputIndex;
   private ComponentJumpChecker jumpChecker;
   private TaggedLineString line;
-  private Coordinate[] linePts;
+  private List<Coordinate> linePts;
 
-  public TaggedLineStringSimplifier(LineSegmentIndex inputIndex,
+  TaggedLineStringSimplifier(LineSegmentIndex inputIndex,
                                      LineSegmentIndex outputIndex, 
                                      ComponentJumpChecker crossChecker)
   {
@@ -78,7 +78,7 @@ public class TaggedLineStringSimplifier
       return;
     }
 
-    boolean isValidToSimplify = true;
+    bool isValidToSimplify = true;
 
     /**
      * Following logic ensures that there is enough points in the output line.
@@ -138,7 +138,7 @@ public class TaggedLineStringSimplifier
     }
   }
 
-  private int findFurthestPoint(Coordinate[] pts, int i, int j, double[] maxDistance)
+  private int findFurthestPoint(List<Coordinate> pts, int i, int j, double[] maxDistance)
   {
     LineSegment seg = new LineSegment();
     seg.p0 = pts[i];
@@ -193,7 +193,7 @@ public class TaggedLineStringSimplifier
    * @param flatSeg
    * @return true if the flattening leaves valid topology
    */
-  private boolean isTopologyValid(TaggedLineString line,
+  private bool isTopologyValid(TaggedLineString line,
                        int sectionStart, int sectionEnd,
                        LineSegment flatSeg)
   {
@@ -206,7 +206,7 @@ public class TaggedLineStringSimplifier
     return true;
   }
 
-  private boolean isTopologyValid(TaggedLineString line, LineSegment seg1, LineSegment seg2,
+  private bool isTopologyValid(TaggedLineString line, LineSegment seg1, LineSegment seg2,
       LineSegment flatSeg) {
     //-- if segments are already flat, topology is unchanged and so is valid
     //-- (otherwise, output and/or input intersection test would report false positive)
@@ -221,11 +221,11 @@ public class TaggedLineStringSimplifier
     return true;
   }
   
-  private boolean isCollinear(Coordinate pt, LineSegment seg) {
+  private bool isCollinear(Coordinate pt, LineSegment seg) {
     return Orientation.COLLINEAR == seg.orientationIndex(pt);
   }
 
-  private boolean hasOutputIntersection(LineSegment flatSeg)
+  private bool hasOutputIntersection(LineSegment flatSeg)
   {
     List querySegs = outputIndex.query(flatSeg);
     for (Iterator i = querySegs.iterator(); i.hasNext(); ) {
@@ -237,12 +237,12 @@ public class TaggedLineStringSimplifier
     return false;
   }
 
-  private boolean hasInputIntersection(LineSegment flatSeg)
+  private bool hasInputIntersection(LineSegment flatSeg)
   {
     return hasInputIntersection(null, -1, -1, flatSeg);
   }
   
-  private boolean hasInputIntersection(TaggedLineString line,
+  private bool hasInputIntersection(TaggedLineString line,
                         int excludeStart, int excludeEnd,
                        LineSegment flatSeg)
   {
@@ -275,7 +275,7 @@ public class TaggedLineStringSimplifier
    * @param seg the segment to test
    * @return true if the test segment intersects some segment in the line not in the excluded section
    */
-  private static boolean isInLineSection(
+  private static bool isInLineSection(
       TaggedLineString line,
       int excludeStart, int excludeEnd,
       TaggedLineSegment seg)
@@ -297,7 +297,7 @@ public class TaggedLineStringSimplifier
     return false;
   }
 
-  private boolean hasInvalidIntersection(LineSegment seg0, LineSegment seg1)
+  private bool hasInvalidIntersection(LineSegment seg0, LineSegment seg1)
   {
     //-- segments must not be equal
     if (seg0.equalsTopo(seg1))

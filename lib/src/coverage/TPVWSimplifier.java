@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -53,7 +53,7 @@ class TPVWSimplifier {
    * @param distanceTolerance the simplification tolerance
    * @return the simplified lines
    */
-  public static MultiLineString simplify(MultiLineString lines, double distanceTolerance) {
+  static MultiLineString simplify(MultiLineString lines, double distanceTolerance) {
     TPVWSimplifier simp = new TPVWSimplifier(lines, distanceTolerance);
     MultiLineString result = (MultiLineString) simp.simplify();
     return result;
@@ -72,7 +72,7 @@ class TPVWSimplifier {
    * @param distanceTolerance the simplification tolerance
    * @return the simplified lines
    */
-  public static MultiLineString simplify(MultiLineString lines, BitSet freeRings,
+  static MultiLineString simplify(MultiLineString lines, BitSet freeRings,
       MultiLineString constraintLines, double distanceTolerance) {
     TPVWSimplifier simp = new TPVWSimplifier(lines, distanceTolerance);
     simp.setFreeRingIndices(freeRings);
@@ -97,7 +97,7 @@ class TPVWSimplifier {
     this.constraintLines = constraints;
   }
 
-  public void setFreeRingIndices(BitSet isFreeRing) {
+  void setFreeRingIndices(BitSet isFreeRing) {
     //Assert: bit set has same size as number of lines.
     this.isFreeRing = isFreeRing;
   }
@@ -113,7 +113,7 @@ class TPVWSimplifier {
     LineString[] result = new LineString[edges.size()];
     for (int i = 0 ; i < edges.size(); i++) {
       Edge edge = edges.get(i);
-      Coordinate[] ptsSimp = edge.simplify(edgeIndex);
+      List<Coordinate> ptsSimp = edge.simplify(edgeIndex);
       result[i] = geomFactory.createLineString(ptsSimp);
     }
     return geomFactory.createMultiLineString(result);
@@ -125,7 +125,7 @@ class TPVWSimplifier {
       return edges;
     for (int i = 0 ; i < lines.getNumGeometries(); i++) {
       LineString line = (LineString) lines.getGeometryN(i);
-      boolean isFree = isFreeRing == null ? false : isFreeRing.get(i);
+      bool isFree = isFreeRing == null ? false : isFreeRing.get(i);
       edges.add(new Edge(line, isFree, areaTolerance));
     }
     return edges;
@@ -135,7 +135,7 @@ class TPVWSimplifier {
     private double areaTolerance;
     private LinkedLine linkedLine;
     private int minEdgeSize;
-    private boolean isFreeRing;
+    private bool isFreeRing;
     private int nbPts;
 
     private VertexSequencePackedRtree vertexIndex;
@@ -150,11 +150,11 @@ class TPVWSimplifier {
      * @param isFreeRing whether a ring endpoint can be removed
      * @param areaTolerance the simplification tolerance
      */
-    Edge(LineString inputLine, boolean isFreeRing, double areaTolerance) {
+    Edge(LineString inputLine, bool isFreeRing, double areaTolerance) {
       this.areaTolerance = areaTolerance;
       this.isFreeRing = isFreeRing;
       this.envelope = inputLine.getEnvelopeInternal();
-      Coordinate[] pts = inputLine.getCoordinates();
+      List<Coordinate> pts = inputLine.getCoordinates();
       this.nbPts = pts.length;
       linkedLine = new LinkedLine(pts);
       minEdgeSize = linkedLine.isRing() ? 3 : 2;
@@ -170,15 +170,15 @@ class TPVWSimplifier {
       return linkedLine.getCoordinate(index);
     }
   
-    public Envelope getEnvelope() {
+    Envelope getEnvelope() {
       return envelope;
     }
     
-    public int size() {
+    int size() {
       return linkedLine.size();
     }
     
-    private Coordinate[] simplify(EdgeIndex edgeIndex) {        
+    private List<Coordinate> simplify(EdgeIndex edgeIndex) {        
       PriorityQueue<Corner> cornerQueue = createQueue();
       while (! cornerQueue.isEmpty()
           && size() > minEdgeSize) {
@@ -216,7 +216,7 @@ class TPVWSimplifier {
       }
     }
     
-    private boolean isRemovable(Corner corner, EdgeIndex edgeIndex) {
+    private bool isRemovable(Corner corner, EdgeIndex edgeIndex) {
       Envelope cornerEnv = corner.envelope();
       //-- check nearby lines for violating intersections
       //-- the query also returns this line for checking
@@ -226,7 +226,7 @@ class TPVWSimplifier {
         //-- check if corner base equals line (2-pts)
         //-- if so, don't remove corner, since that would collapse to the line
         if (edge != this && edge.size() == 2) {
-          Coordinate[] linePts = edge.linkedLine.getCoordinates();
+          List<Coordinate> linePts = edge.linkedLine.getCoordinates();
           if (corner.isBaseline(linePts[0], linePts[1]))
             return false;
         }
@@ -243,7 +243,7 @@ class TPVWSimplifier {
      * @param edge the hull to test
      * @return true if there is an intersecting vertex
      */
-    private boolean hasIntersectingVertex(Corner corner, Envelope cornerEnv, 
+    private bool hasIntersectingVertex(Corner corner, Envelope cornerEnv, 
         Edge edge) {
       int[] result = edge.query(cornerEnv);
       for (int index : result) {
@@ -285,7 +285,7 @@ class TPVWSimplifier {
       addCorner(next, cornerQueue);
     }
 
-    public String toString() {
+    String toString() {
       return linkedLine.toString();
     }
   }
@@ -294,17 +294,17 @@ class TPVWSimplifier {
 
     STRtree index = new STRtree(); 
     
-    public void add(List<Edge> edges) {
+    void add(List<Edge> edges) {
       for (Edge edge : edges) {
         add(edge);
       }
     }
     
-    public void add(Edge edge) {
+    void add(Edge edge) {
       index.insert(edge.getEnvelope(), edge);
     }
     
-    public List<Edge> query(Envelope queryEnv) {
+    List<Edge> query(Envelope queryEnv) {
       return index.query(queryEnv);
     }
   }

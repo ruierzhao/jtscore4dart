@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 /**
  *  Thrown when the application is in an inconsistent state. Indicates a problem
@@ -17,12 +17,12 @@ package org.locationtech.jts.util;
  *
  *@version 1.7
  */
-public class AssertionFailedException extends RuntimeException {
+class AssertionFailedException extends RuntimeException {
 
   /**
    *  Creates an <code>AssertionFailedException</code>.
    */
-  public AssertionFailedException() {
+  AssertionFailedException() {
     super();
   }
 
@@ -32,7 +32,7 @@ public class AssertionFailedException extends RuntimeException {
    *
    *@param  message  a description of the assertion
    */
-  public AssertionFailedException(String message) {
+  AssertionFailedException(String message) {
     super(message);
   }
 }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.polygon;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,41 +34,41 @@ import org.locationtech.jts.noding.SegmentString;
  */
 class PolygonNoder {
 
-  private boolean[] isHoleTouching;
+  private bool[] isHoleTouching;
   private List<NodedSegmentString> nodedRings;
 
-  public PolygonNoder(Coordinate[] shellRing, Coordinate[][] holeRings) {
+  PolygonNoder(List<Coordinate> shellRing, List<Coordinate>[] holeRings) {
     nodedRings = createNodedSegmentStrings(shellRing, holeRings);
-    isHoleTouching = new boolean[holeRings.length];
+    isHoleTouching = new bool[holeRings.length];
   }
 
-  public void node() {
+  void node() {
     SegmentIntersector nodeAdder = new NodeAdder(isHoleTouching);
     MCIndexNoder noder = new MCIndexNoder(nodeAdder);
     noder.computeNodes(nodedRings);
   }
 
-  public boolean isShellNoded() {
+  bool isShellNoded() {
     return nodedRings.get(0).hasNodes();
   }
   
-  public boolean isHoleNoded(int i) {
+  bool isHoleNoded(int i) {
     return nodedRings.get(i + 1).hasNodes();
   }
   
-  public Coordinate[] getNodedShell() {
+  List<Coordinate> getNodedShell() {
     return nodedRings.get(0).getNodedCoordinates();
   }
   
-  public Coordinate[] getNodedHole(int i) {
+  List<Coordinate> getNodedHole(int i) {
     return nodedRings.get(i + 1).getNodedCoordinates();
   }
   
-  public boolean[] getHolesTouching() {
+  bool[] getHolesTouching() {
     return isHoleTouching;
   }
   
-  public static List<NodedSegmentString> createNodedSegmentStrings(Coordinate[] shellRing, Coordinate[][] holeRings)
+  static List<NodedSegmentString> createNodedSegmentStrings(List<Coordinate> shellRing, List<Coordinate>[] holeRings)
   {
     List<NodedSegmentString> segStr = new ArrayList<NodedSegmentString>();
     segStr.add(createNodedSegString(shellRing, -1));
@@ -78,7 +78,7 @@ class PolygonNoder {
     return segStr;
   }
   
-  private static NodedSegmentString createNodedSegString(Coordinate[] ringPts, int i) {
+  private static NodedSegmentString createNodedSegString(List<Coordinate> ringPts, int i) {
     return new NodedSegmentString(ringPts, i);
   }
   
@@ -93,14 +93,14 @@ class PolygonNoder {
   private static class NodeAdder implements SegmentIntersector {
 
     private LineIntersector li = new RobustLineIntersector();
-    private boolean[] isHoleTouching;
+    private bool[] isHoleTouching;
 
-    public NodeAdder(boolean[] isHoleTouching) {
+    NodeAdder(bool[] isHoleTouching) {
       this.isHoleTouching = isHoleTouching;
     }
 
     @Override
-    public void processIntersections(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
+    void processIntersections(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
       //-- input is assumed valid, so rings do not self-intersect
       if (ss0 == ss1)
         return;
@@ -136,7 +136,7 @@ class PolygonNoder {
     }
 
     @Override
-    public boolean isDone() {
+    bool isDone() {
       return false;
     }
   }

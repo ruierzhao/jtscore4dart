@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Location;
 import org.locationtech.jts.geom.Position;
@@ -93,22 +93,22 @@ class OverlayLabel {
   /**
    * The dimension of an input geometry which is not known
    */
-  public static final int DIM_UNKNOWN = -1;
+  static final int DIM_UNKNOWN = -1;
   
   /**
    * The dimension of an edge which is not part of a specified input geometry.
    */
-  public static final int DIM_NOT_PART = DIM_UNKNOWN;
+  static final int DIM_NOT_PART = DIM_UNKNOWN;
   
   /**
    * The dimension of an edge which is a line.
    */
-  public static final int DIM_LINE = 1;
+  static final int DIM_LINE = 1;
   
   /**
    * The dimension for an edge which is part of an input Area geometry boundary.
    */
-  public static final int DIM_BOUNDARY = 2;
+  static final int DIM_BOUNDARY = 2;
   
   /**
    * The dimension for an edge which is a collapsed part of an input Area geometry boundary.
@@ -116,22 +116,22 @@ class OverlayLabel {
    * They usually are caused by edges in valid polygonal geometries
    * having their endpoints become identical due to precision reduction.
    */
-  public static final int DIM_COLLAPSE = 3;
+  static final int DIM_COLLAPSE = 3;
   
   /**
    * Indicates that the location is currently unknown
    */
-  public static int LOC_UNKNOWN = Location.NONE;
+  static int LOC_UNKNOWN = Location.NONE;
   
   
   private int aDim = DIM_NOT_PART;
-  private boolean aIsHole = false;
+  private bool aIsHole = false;
   private int aLocLeft = LOC_UNKNOWN;
   private int aLocRight = LOC_UNKNOWN;
   private int aLocLine = LOC_UNKNOWN;
   
   private int bDim = DIM_NOT_PART;
-  private boolean bIsHole = false;
+  private bool bIsHole = false;
   private int bLocLeft = LOC_UNKNOWN;
   private int bLocRight = LOC_UNKNOWN;
   private int bLocLine = LOC_UNKNOWN;
@@ -145,7 +145,7 @@ class OverlayLabel {
    * @param locRight the location of the right side of the edge
    * @param isHole whether the edge role is a hole or a shell
    */
-  public OverlayLabel(int index, int locLeft, int locRight, boolean isHole)
+  OverlayLabel(int index, int locLeft, int locRight, bool isHole)
   {
     initBoundary(index, locLeft, locRight, isHole);
   }
@@ -155,7 +155,7 @@ class OverlayLabel {
    * 
    * @param index the input index of the parent geometry
    */
-  public OverlayLabel(int index)
+  OverlayLabel(int index)
   {
     initLine(index);
   }
@@ -164,7 +164,7 @@ class OverlayLabel {
    * Creates an uninitialized label.
    * 
    */
-  public OverlayLabel()
+  OverlayLabel()
   {
   }
 
@@ -173,7 +173,7 @@ class OverlayLabel {
    * 
    * @param lbl
    */
-  public OverlayLabel(OverlayLabel lbl) {
+  OverlayLabel(OverlayLabel lbl) {
     this.aLocLeft = lbl.aLocLeft;
     this.aLocRight = lbl.aLocRight;
     this.aLocLine = lbl.aLocLine;
@@ -199,7 +199,7 @@ class OverlayLabel {
    * @see #DIM_BOUNDARY
    * @see #DIM_COLLAPSE
    */
-  public int dimension(int index) {
+  int dimension(int index) {
     if (index == 0)
       return aDim;
     return bDim;
@@ -213,7 +213,7 @@ class OverlayLabel {
    * @param locRight the location of the right side of the edge
    * @param isHole whether the edge role is a hole or a shell
    */
-  public void initBoundary(int index, int locLeft, int locRight, boolean isHole) {
+  void initBoundary(int index, int locLeft, int locRight, bool isHole) {
     if (index == 0) {
       aDim = DIM_BOUNDARY;
       aIsHole = isHole;
@@ -240,7 +240,7 @@ class OverlayLabel {
    * @param index the index of the parent input geometry
    * @param isHole whether the dominant edge role is a hole or a shell
    */
-  public void initCollapse(int index, boolean isHole) {
+  void initCollapse(int index, bool isHole) {
     if (index == 0) {
       aDim = DIM_COLLAPSE;
       aIsHole = isHole;
@@ -256,7 +256,7 @@ class OverlayLabel {
    * 
    * @param index the index of the parent input geometry
    */
-  public void initLine(int index) {
+  void initLine(int index) {
     if (index == 0) {
       aDim = DIM_LINE;
       aLocLine = LOC_UNKNOWN;
@@ -271,7 +271,7 @@ class OverlayLabel {
    * Initializes the label for an edge which is not part of an input geometry.
    * @param index the index of the input geometry
    */
-  public void initNotPart(int index) {
+  void initNotPart(int index) {
     // this assumes locations are initialized to UNKNOWN
     if (index == 0) {
       aDim = DIM_NOT_PART;
@@ -290,7 +290,7 @@ class OverlayLabel {
    * @param index source to update
    * @param loc location to set
    */
-  public void setLocationLine(int index, int loc) {
+  void setLocationLine(int index, int loc) {
     if (index == 0) {
       aLocLine = loc;
     }
@@ -305,7 +305,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @param loc the location to set
    */
-  public void setLocationAll(int index, int loc) {
+  void setLocationAll(int index, int loc) {
     if (index == 0) {
       aLocLine = loc;
       aLocLeft = loc;
@@ -328,7 +328,7 @@ class OverlayLabel {
    * 
    * @param index the index of the input geometry
    */
-  public void setLocationCollapse(int index) {
+  void setLocationCollapse(int index) {
     int loc = isHole(index) ? Location.INTERIOR : Location.EXTERIOR;
     if (index == 0) {
       aLocLine = loc;
@@ -343,7 +343,7 @@ class OverlayLabel {
    * 
    * @return true if at least one source is a line
    */
-  public boolean isLine() {
+  bool isLine() {
     return aDim == DIM_LINE || bDim == DIM_LINE;
   }
   
@@ -353,7 +353,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return true if the input is a Line
    */
-  public boolean isLine(int index) {
+  bool isLine(int index) {
     if (index == 0) {
       return aDim == DIM_LINE;
     }
@@ -366,7 +366,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return true if the edge is linear
    */
-  public boolean isLinear(int index) {
+  bool isLinear(int index) {
     if (index == 0) {
       return aDim == DIM_LINE || aDim == DIM_COLLAPSE;
     }
@@ -379,7 +379,7 @@ class OverlayLabel {
    * @param index the index of the source geometry
    * @return true if the source is known
    */
-  public boolean isKnown(int index) {
+  bool isKnown(int index) {
     if (index == 0) {
       return aDim != DIM_UNKNOWN;
     }
@@ -393,7 +393,7 @@ class OverlayLabel {
    * @param index the index of the source geometry
    * @return true if the edge is not part of the geometry
    */
-  public boolean isNotPart(int index) {
+  bool isNotPart(int index) {
     if (index == 0) {
       return aDim == DIM_NOT_PART;
     }
@@ -405,7 +405,7 @@ class OverlayLabel {
    * 
    * @return true if the label is a boundary for either source
    */
-  public boolean isBoundaryEither() {
+  bool isBoundaryEither() {
     return aDim == DIM_BOUNDARY || bDim == DIM_BOUNDARY;
   }
   
@@ -414,7 +414,7 @@ class OverlayLabel {
    * 
    * @return true if the label is a boundary for both sources
    */
-  public boolean isBoundaryBoth() {
+  bool isBoundaryBoth() {
     return aDim == DIM_BOUNDARY && bDim == DIM_BOUNDARY;
   }
   
@@ -424,7 +424,7 @@ class OverlayLabel {
    * 
    * @return true if the label is for a collapse coincident with a boundary
    */
-  public boolean isBoundaryCollapse() {
+  bool isBoundaryCollapse() {
     if (isLine()) return false;
     return ! isBoundaryBoth();
   }
@@ -435,7 +435,7 @@ class OverlayLabel {
    * 
    * @return true if the edge is a boundary touch
    */
-  public boolean isBoundaryTouch() {
+  bool isBoundaryTouch() {
     return isBoundaryBoth()
         && getLocation(0, Position.RIGHT, true) != getLocation(1, Position.RIGHT, true);
   }
@@ -447,7 +447,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return true if the label is a boundary for the source
    */
-  public boolean isBoundary(int index) {
+  bool isBoundary(int index) {
     if (index == 0) {
       return aDim == DIM_BOUNDARY;
     }
@@ -460,7 +460,7 @@ class OverlayLabel {
    * 
    * @return true if the edge is a boundary singleton
    */
-  public boolean isBoundarySingleton() {
+  bool isBoundarySingleton() {
     if (aDim == DIM_BOUNDARY && bDim == DIM_NOT_PART) return true;
     if (bDim == DIM_BOUNDARY && aDim == DIM_NOT_PART) return true;
     return false;
@@ -472,7 +472,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return true if the line location is unknown
    */
-  public boolean isLineLocationUnknown(int index) {
+  bool isLineLocationUnknown(int index) {
     if (index == 0) {
       return aLocLine == LOC_UNKNOWN;
     }
@@ -488,7 +488,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return true if the line is inside the source geometry
    */
-  public boolean isLineInArea(int index) {
+  bool isLineInArea(int index) {
     if (index == 0) {
       return aLocLine == Location.INTERIOR;
     }
@@ -501,7 +501,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return true if the ring role is a hole
    */
-  public boolean isHole(int index) {
+  bool isHole(int index) {
     if (index == 0) {
       return aIsHole;
     }
@@ -516,7 +516,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return true if the label indicates the edge is a collapse for the source
    */
-  public boolean isCollapse(int index) {
+  bool isCollapse(int index) {
     return dimension(index) == DIM_COLLAPSE;
   }
   
@@ -526,7 +526,7 @@ class OverlayLabel {
    * 
    * @return true if the label is an Interior Collapse to a source geometry
    */
-  public boolean isInteriorCollapse() {
+  bool isInteriorCollapse() {
     if (aDim == DIM_COLLAPSE && aLocLine == Location.INTERIOR) return true;
     if (bDim == DIM_COLLAPSE && bLocLine == Location.INTERIOR) return true;
     return false;
@@ -538,7 +538,7 @@ class OverlayLabel {
    * 
    * @return true if the label is a Collapse and a NotPart with Location Interior
    */
-  public boolean isCollapseAndNotPartInterior() {
+  bool isCollapseAndNotPartInterior() {
     if (aDim == DIM_COLLAPSE && bDim == DIM_NOT_PART && bLocLine == Location.INTERIOR) return true;
     if (bDim == DIM_COLLAPSE && aDim == DIM_NOT_PART && aLocLine == Location.INTERIOR) return true;
     return false;
@@ -550,7 +550,7 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return the line location for the source
    */
-  public int getLineLocation(int index) {
+  int getLineLocation(int index) {
     if (index == 0) {
       return aLocLine;
     }
@@ -565,7 +565,7 @@ class OverlayLabel {
    * @param index the index of the source geometry
    * @return true if the label is a line and is interior
    */
-  public boolean isLineInterior(int index) {
+  bool isLineInterior(int index) {
     if (index == 0) {
       return aLocLine == Location.INTERIOR;
     }
@@ -581,7 +581,7 @@ class OverlayLabel {
    * @param isForward true if the orientation of the containing edge is forward
    * @return the location of the oriented position in the source
    */
-  public int getLocation(int index, int position, boolean isForward) {
+  int getLocation(int index, int position, bool isForward) {
     if (index == 0) {
       switch (position) {
         case Position.LEFT: return isForward ? aLocLeft : aLocRight;
@@ -609,7 +609,7 @@ class OverlayLabel {
    * @param isForward the direction for a boundary label
    * @return the location for the specified position
    */
-  public int getLocationBoundaryOrLine(int index, int position, boolean isForward) {
+  int getLocationBoundaryOrLine(int index, int position, bool isForward) {
     if (isBoundary(index)) {
       return getLocation(index, position, isForward);
     }
@@ -622,7 +622,7 @@ class OverlayLabel {
    * @param index the source geometry index
    * @return the linear location for the source
    */
-  public int getLocation(int index) {
+  int getLocation(int index) {
     if (index == 0) {
       return aLocLine;
     }
@@ -636,7 +636,7 @@ class OverlayLabel {
    * @param index the source geometry index
    * @return true if at least one side position is known
    */
-  public boolean hasSides(int index) {
+  bool hasSides(int index) {
     if (index == 0) {
       return aLocLeft != LOC_UNKNOWN
           || aLocRight != LOC_UNKNOWN;
@@ -650,16 +650,16 @@ class OverlayLabel {
    * 
    * @return a copy of the label
    */
-  public OverlayLabel copy() {
+  OverlayLabel copy() {
     return new OverlayLabel(this);
   }
     
-  public String toString()
+  String toString()
   {
     return toString(true);
   }
 
-  public String toString(boolean isForward)
+  String toString(bool isForward)
   {
     StringBuilder buf = new StringBuilder();
     buf.append("A:");
@@ -669,7 +669,7 @@ class OverlayLabel {
     return buf.toString();
   }
 
-  private String locationString(int index, boolean isForward) {
+  private String locationString(int index, bool isForward) {
     StringBuilder buf = new StringBuilder();
     if (isBoundary(index)) {
       buf.append( Location.toLocationSymbol( getLocation(index, Position.LEFT, isForward) ) );
@@ -693,7 +693,7 @@ class OverlayLabel {
    * @param isHole true for a hole, false for a shell
    * @return the ring role symbol character
    */
-  public static char ringRoleSymbol(boolean isHole) {
+  static char ringRoleSymbol(bool isHole) {
     return isHole ? 'h' : 's';
   }
 
@@ -703,7 +703,7 @@ class OverlayLabel {
    * @param dim the dimension code
    * @return the dimension symbol character
    */
-  public static char dimensionSymbol(int dim) {
+  static char dimensionSymbol(int dim) {
     switch (dim) {
     case DIM_LINE: return SYM_LINE;
     case DIM_COLLAPSE: return SYM_COLLAPSE;

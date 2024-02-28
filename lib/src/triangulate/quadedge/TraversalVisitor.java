@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 /**
  * Interface for classes which process triangles visited during traversals of a
@@ -18,7 +18,7 @@ package org.locationtech.jts.triangulate.quadedge;
  * 
  * @author Martin Davis
  */
-public interface TraversalVisitor {
+interface TraversalVisitor {
     /**
      * Visits a triangle during a traversal of a {@link QuadEdgeSubdivision}. An implementation of
      * this method may perform processing on the current triangle. It must also decide whether a
@@ -34,5 +34,5 @@ public interface TraversalVisitor {
      * @param neighbTri a neighbouring triangle next in line to visit
      * @return true if the neighbour triangle should be visited
      */
-    boolean visit(QuadEdgeTriangle currTri, int edgeIndex, QuadEdgeTriangle neighbTri);
+    bool visit(QuadEdgeTriangle currTri, int edgeIndex, QuadEdgeTriangle neighbTri);
 }

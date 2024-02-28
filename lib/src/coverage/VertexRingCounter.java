@@ -9,9 +9,9 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
 
-import java.util.HashMap;
+
+import java.util.Map;
 import java.util.Map;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -30,8 +30,8 @@ import org.locationtech.jts.geom.Geometry;
  */
 class VertexRingCounter implements CoordinateSequenceFilter {
 
-  public static Map<Coordinate, Integer> count(Geometry[] geoms) {
-    Map<Coordinate, Integer> vertexRingCount = new HashMap<Coordinate, Integer>();
+  static Map<Coordinate, Integer> count(Geometry[] geoms) {
+    Map<Coordinate, Integer> vertexRingCount = new Map<Coordinate, Integer>();
     VertexRingCounter counter = new VertexRingCounter(vertexRingCount);
     for (Geometry geom : geoms) {
       geom.apply(counter);
@@ -41,12 +41,12 @@ class VertexRingCounter implements CoordinateSequenceFilter {
 
   private Map<Coordinate, Integer> vertexRingCount;
   
-  public VertexRingCounter(Map<Coordinate, Integer> vertexRingCount) {
+  VertexRingCounter(Map<Coordinate, Integer> vertexRingCount) {
     this.vertexRingCount = vertexRingCount;
   }
 
   @Override
-  public void filter(CoordinateSequence seq, int i) {
+  void filter(CoordinateSequence seq, int i) {
     //-- for rings don't double-count duplicate endpoint
     if (CoordinateSequences.isRing(seq) && i == 0)
       return;
@@ -57,12 +57,12 @@ class VertexRingCounter implements CoordinateSequenceFilter {
   }
 
   @Override
-  public boolean isDone() {
+  bool isDone() {
     return false;
   }
 
   @Override
-  public boolean isGeometryChanged() {
+  bool isGeometryChanged() {
     return false;
   }
 

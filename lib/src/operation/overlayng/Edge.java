@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Dimension;
@@ -47,7 +47,7 @@ class Edge {
    * @param pts the point sequence to check
    * @return true if the points form a collapsed line
    */
-  public static boolean isCollapsed(Coordinate[] pts) {
+  static bool isCollapsed(List<Coordinate> pts) {
     if (pts.length < 2) return true;
     // zero-length line
     if (pts[0].equals2D(pts[1])) return true;
@@ -58,35 +58,35 @@ class Edge {
     return false;
   }
   
-  private Coordinate[] pts;
+  private List<Coordinate> pts;
   
   private int aDim = OverlayLabel.DIM_UNKNOWN;
   private int aDepthDelta = 0;
-  private boolean aIsHole = false;
+  private bool aIsHole = false;
   
   private int bDim = OverlayLabel.DIM_UNKNOWN;
   private int bDepthDelta = 0;
-  private boolean bIsHole = false;
+  private bool bIsHole = false;
 
-  public Edge(Coordinate[] pts, EdgeSourceInfo info) {
+  Edge(List<Coordinate> pts, EdgeSourceInfo info) {
     this.pts = pts;
     copyInfo(info);
   }
   
-  public Coordinate[] getCoordinates() {
+  List<Coordinate> getCoordinates() {
     return pts;
   }
 
-  public Coordinate getCoordinate(int index) {
+  Coordinate getCoordinate(int index) {
     return pts[index];
   }
   
-  public int size() {
+  int size() {
     return pts.length;
   }
   
-  public boolean direction() {
-    Coordinate[] pts = getCoordinates();
+  bool direction() {
+    List<Coordinate> pts = getCoordinates();
     if (pts.length < 2) {
       throw new IllegalStateException("Edge must have >= 2 points");
     }
@@ -120,7 +120,7 @@ class Edge {
    * @param edge2 an edge
    * @return true if the edges have the same direction, false if not
    */
-  public boolean relativeDirection(Edge edge2) {
+  bool relativeDirection(Edge edge2) {
     // assert: the edges match (have the same coordinates up to direction)
     if (! getCoordinate(0).equals2D(edge2.getCoordinate(0)))
       return false;
@@ -129,7 +129,7 @@ class Edge {
     return true;
   }
   
-  public OverlayLabel createLabel() {
+  OverlayLabel createLabel() {
     OverlayLabel lbl = new OverlayLabel();
     initLabel(lbl, 0, aDim, aDepthDelta, aIsHole);
     initLabel(lbl, 1, bDim, bDepthDelta, bIsHole);
@@ -159,7 +159,7 @@ class Edge {
    * @param dim
    * @param depthDelta
    */
-  private static void initLabel(OverlayLabel lbl, int geomIndex, int dim, int depthDelta, boolean isHole) {
+  private static void initLabel(OverlayLabel lbl, int geomIndex, int dim, int depthDelta, bool isHole) {
     int dimLabel = labelDim(dim, depthDelta);
     
     switch (dimLabel) {
@@ -186,7 +186,7 @@ class Edge {
       return OverlayLabel.DIM_LINE;
     
     // assert: dim is A
-    boolean isCollapse = depthDelta == 0;
+    bool isCollapse = depthDelta == 0;
     if (isCollapse) return OverlayLabel.DIM_COLLAPSE;
         
     return OverlayLabel.DIM_BOUNDARY;
@@ -199,7 +199,7 @@ class Edge {
    * @param geomIndex the index of the geometry
    * @return true if this edge is a boundary and part of a shell
    */
-  private boolean isShell(int geomIndex) {
+  private bool isShell(int geomIndex) {
     if (geomIndex == 0) {
       return aDim == OverlayLabel.DIM_BOUNDARY && ! aIsHole;
     }
@@ -252,7 +252,7 @@ class Edge {
    * 
    * @param edge
    */
-  public void merge(Edge edge) {
+  void merge(Edge edge) {
     /**
      * Marks this
      * as a shell edge if any contributing edge is a shell.
@@ -264,7 +264,7 @@ class Edge {
     if (edge.aDim > aDim) aDim = edge.aDim;
     if (edge.bDim > bDim) bDim = edge.bDim;
     
-    boolean relDir = relativeDirection(edge);
+    bool relDir = relativeDirection(edge);
     int flipFactor = relDir ? 1 : -1;
     aDepthDelta += flipFactor * edge.aDepthDelta;
     bDepthDelta += flipFactor * edge.bDepthDelta;
@@ -275,16 +275,16 @@ class Edge {
     */
   }
 
-  private static boolean isHoleMerged(int geomIndex, Edge edge1, Edge edge2) {
+  private static bool isHoleMerged(int geomIndex, Edge edge1, Edge edge2) {
     // TOD: this might be clearer with tri-state logic for isHole?
-    boolean isShell1 = edge1.isShell(geomIndex);
-    boolean isShell2 = edge2.isShell(geomIndex);
-    boolean isShellMerged = isShell1 || isShell2;
+    bool isShell1 = edge1.isShell(geomIndex);
+    bool isShell2 = edge2.isShell(geomIndex);
+    bool isShellMerged = isShell1 || isShell2;
     // flip since isHole is stored
     return ! isShellMerged;
   }
 
-  public String toString() {
+  String toString() {
     
     String ptsStr = toStringPts(pts);
     
@@ -295,11 +295,11 @@ class Edge {
         + aInfo + "/" + bInfo;
   }
   
-  public String toLineString() {
+  String toLineString() {
     return WKTWriter.toLineString(pts);
   }
 
-  private static String toStringPts(Coordinate[] pts) {
+  private static String toStringPts(List<Coordinate> pts) {
     Coordinate orig = pts[0];
     Coordinate dest = pts[pts.length - 1];
     String dirPtStr = (pts.length > 2)
@@ -311,7 +311,7 @@ class Edge {
     return ptsStr;
   }
 
-  public static String infoString(int index, int dim, boolean isHole, int depthDelta) {
+  static String infoString(int index, int dim, bool isHole, int depthDelta) {
     return
         (index == 0 ? "A:" : "B:")
         + OverlayLabel.dimensionSymbol(dim)
@@ -319,12 +319,12 @@ class Edge {
         + Integer.toString(depthDelta);  // force to string
   }
   
-  private static String ringRoleSymbol(int dim, boolean isHole) {
+  private static String ringRoleSymbol(int dim, bool isHole) {
     if (hasAreaParent(dim)) return "" + OverlayLabel.ringRoleSymbol(isHole);
     return "";
   }
   
-  private static boolean hasAreaParent(int dim) {
+  private static bool hasAreaParent(int dim) {
     return dim == OverlayLabel.DIM_BOUNDARY || dim == OverlayLabel.DIM_COLLAPSE;
   }
 }

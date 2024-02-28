@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.algorithm.RobustLineIntersector;
@@ -25,24 +25,24 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class SegmentIntersectionDetector
+class SegmentIntersectionDetector
     implements SegmentIntersector
 {
   private LineIntersector li;
-  private boolean findProper = false;
-  private boolean findAllTypes = false;
+  private bool findProper = false;
+  private bool findAllTypes = false;
   
-  private boolean hasIntersection = false;
-  private boolean hasProperIntersection = false;
-  private boolean hasNonProperIntersection = false;
+  private bool hasIntersection = false;
+  private bool hasProperIntersection = false;
+  private bool hasNonProperIntersection = false;
   
   private Coordinate intPt = null;
-  private Coordinate[] intSegments = null;
+  private List<Coordinate> intSegments = null;
 
   /**
    * Creates an intersection finder using a {@link RobustLineIntersector}.
    */
-  public SegmentIntersectionDetector()
+  SegmentIntersectionDetector()
   {
     this(new RobustLineIntersector());
   }
@@ -52,7 +52,7 @@ public class SegmentIntersectionDetector
    *
    * @param li the LineIntersector to use
    */
-  public SegmentIntersectionDetector(LineIntersector li)
+  SegmentIntersectionDetector(LineIntersector li)
   {
     this.li = li;
   }
@@ -62,7 +62,7 @@ public class SegmentIntersectionDetector
    * 
    * @param findProper true if processing should continue until a proper intersection is found
    */
-  public void setFindProper(boolean findProper)
+  void setFindProper(bool findProper)
   {
     this.findProper = findProper;
   }
@@ -72,7 +72,7 @@ public class SegmentIntersectionDetector
    * 
    * @param findAllTypes true if processing can terminate once any intersection is found.
    */
-  public void setFindAllIntersectionTypes(boolean findAllTypes)
+  void setFindAllIntersectionTypes(bool findAllTypes)
   {
     this.findAllTypes = findAllTypes;
   }
@@ -82,7 +82,7 @@ public class SegmentIntersectionDetector
    * 
    * @return true if an intersection was found
    */
-  public boolean hasIntersection() 
+  bool hasIntersection() 
   { 
   	return hasIntersection; 
   }
@@ -92,7 +92,7 @@ public class SegmentIntersectionDetector
    * 
    * @return true if a proper intersection was found
    */
-  public boolean hasProperIntersection() 
+  bool hasProperIntersection() 
   { 
     return hasProperIntersection; 
   }
@@ -102,7 +102,7 @@ public class SegmentIntersectionDetector
    * 
    * @return true if a non-proper intersection was found
    */
-  public boolean hasNonProperIntersection() 
+  bool hasNonProperIntersection() 
   { 
     return hasNonProperIntersection; 
   }
@@ -113,7 +113,7 @@ public class SegmentIntersectionDetector
    * 
    * @return the coordinate for the intersection location
    */
-  public Coordinate getIntersection()  
+  Coordinate getIntersection()  
   {    
   	return intPt;  
   }
@@ -124,7 +124,7 @@ public class SegmentIntersectionDetector
    * 
    * @return an array of the segment endpoints (p00, p01, p10, p11)
    */
-  public Coordinate[] getIntersectionSegments()
+  List<Coordinate> getIntersectionSegments()
   {
   	return intSegments;
   }
@@ -137,7 +137,7 @@ public class SegmentIntersectionDetector
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
-  public void processIntersections(
+  void processIntersections(
       SegmentString e0,  int segIndex0,
       SegmentString e1,  int segIndex1
       )
@@ -159,7 +159,7 @@ public class SegmentIntersectionDetector
     	// record intersection info
 			hasIntersection = true;
 			
-			boolean isProper = li.isProper();
+			bool isProper = li.isProper();
 			if (isProper)
 				hasProperIntersection = true;
       if (! isProper)
@@ -170,7 +170,7 @@ public class SegmentIntersectionDetector
 			 * OR no location has yet been recorded
 			 * save the location data
 			 */
-			boolean saveLocation = true;
+			bool saveLocation = true;
 			if (findProper && ! isProper) saveLocation = false;
 			
 			if (intPt == null || saveLocation) {
@@ -195,7 +195,7 @@ public class SegmentIntersectionDetector
    * 
    * @return true if processing can terminate
    */
-  public boolean isDone()
+  bool isDone()
   { 
     /**
      * If finding all types, we can stop

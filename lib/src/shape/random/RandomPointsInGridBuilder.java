@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.shape.random;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -27,17 +27,17 @@ import org.locationtech.jts.shape.GeometricShapeBuilder;
  * @author mbdavis
  *
  */
-public class RandomPointsInGridBuilder 
+class RandomPointsInGridBuilder 
 extends GeometricShapeBuilder
 {
-	private boolean isConstrainedToCircle = false;
+	private bool isConstrainedToCircle = false;
 	private double gutterFraction = 0;
 	
   /**
    * Create a builder which will create shapes using the default
    * {@link GeometryFactory}.
    */
-  public RandomPointsInGridBuilder()
+  RandomPointsInGridBuilder()
   {
     super(new GeometryFactory());
   }
@@ -48,7 +48,7 @@ extends GeometricShapeBuilder
    *
    * @param geomFact the factory to use
    */
-  public RandomPointsInGridBuilder(GeometryFactory geomFact)
+  RandomPointsInGridBuilder(GeometryFactory geomFact)
   {
   	super(geomFact);
   }
@@ -62,7 +62,7 @@ extends GeometricShapeBuilder
    * The default is to not be constrained to a circle.
    * @param isConstrainedToCircle
    */
-  public void setConstrainedToCircle(boolean isConstrainedToCircle)
+  void setConstrainedToCircle(bool isConstrainedToCircle)
   {
   	this.isConstrainedToCircle = isConstrainedToCircle;
   }
@@ -74,7 +74,7 @@ extends GeometricShapeBuilder
    * 
    * @param gutterFraction
    */
-  public void setGutterFraction(double gutterFraction)
+  void setGutterFraction(double gutterFraction)
   {
   	this.gutterFraction = gutterFraction;
   }
@@ -84,7 +84,7 @@ extends GeometricShapeBuilder
    * 
    * @return a MultiPoint
    */
-  public Geometry getGeometry()
+  Geometry getGeometry()
   {
     int nCells = (int) Math.sqrt(numPts);
     // ensure that at least numPts points are generated
@@ -101,7 +101,7 @@ extends GeometricShapeBuilder
     double cellDX = cellFrac * gridDX;
     double cellDY = cellFrac * gridDY;
     	
-    Coordinate[] pts = new Coordinate[nCells * nCells];
+    List<Coordinate> pts = new Coordinate[nCells * nCells];
     int index = 0;
     for (int i = 0; i < nCells; i++) {
       for (int j = 0; j < nCells; j++) {

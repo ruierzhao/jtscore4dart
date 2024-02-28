@@ -9,14 +9,14 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 /**
  * A spatial object in an AbstractSTRtree.
  *
  * @version 1.7
  */
-public interface Boundable {
+interface Boundable {
   /**
    * Returns a representation of space that encloses this Boundable, preferably
    * not much bigger than this Boundable's boundary yet fast to test for intersection

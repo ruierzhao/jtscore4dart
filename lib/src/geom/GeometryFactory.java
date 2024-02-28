@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -31,7 +31,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class GeometryFactory
+class GeometryFactory
     implements Serializable
 {
   private static final long serialVersionUID = -6820524753094095635L;
@@ -40,7 +40,7 @@ public class GeometryFactory
   private CoordinateSequenceFactory coordinateSequenceFactory;
 
 
-  public static Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
+  static Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
   {
     exemplar.getPrecisionModel().makePrecise(coord);
     return exemplar.getFactory().createPoint(coord);
@@ -50,7 +50,7 @@ public class GeometryFactory
    * Constructs a GeometryFactory that generates Geometries having the given
    * PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
    */
-  public GeometryFactory(PrecisionModel precisionModel, int SRID,
+  GeometryFactory(PrecisionModel precisionModel, int SRID,
                          CoordinateSequenceFactory coordinateSequenceFactory) {
       this.precisionModel = precisionModel;
       this.coordinateSequenceFactory = coordinateSequenceFactory;
@@ -62,7 +62,7 @@ public class GeometryFactory
    * CoordinateSequence implementation, a double-precision floating PrecisionModel and a
    * spatial-reference ID of 0.
    */
-  public GeometryFactory(CoordinateSequenceFactory coordinateSequenceFactory) {
+  GeometryFactory(CoordinateSequenceFactory coordinateSequenceFactory) {
     this(new PrecisionModel(), 0, coordinateSequenceFactory);
   }
 
@@ -73,7 +73,7 @@ public class GeometryFactory
    *
    * @param precisionModel the PrecisionModel to use
    */
-  public GeometryFactory(PrecisionModel precisionModel) {
+  GeometryFactory(PrecisionModel precisionModel) {
     this(precisionModel, 0, getDefaultCoordinateSequenceFactory());
   }
 
@@ -85,7 +85,7 @@ public class GeometryFactory
    * @param precisionModel the PrecisionModel to use
    * @param SRID the SRID to use
    */
-  public GeometryFactory(PrecisionModel precisionModel, int SRID) {
+  GeometryFactory(PrecisionModel precisionModel, int SRID) {
     this(precisionModel, SRID, getDefaultCoordinateSequenceFactory());
   }
 
@@ -93,7 +93,7 @@ public class GeometryFactory
    * Constructs a GeometryFactory that generates Geometries having a floating
    * PrecisionModel and a spatial-reference ID of 0.
    */
-  public GeometryFactory() {
+  GeometryFactory() {
     this(new PrecisionModel(), 0);
   }
 
@@ -108,7 +108,7 @@ public class GeometryFactory
    *@param  points  the <code>List</code> of Points to convert
    *@return         the <code>List</code> in array format
    */
-  public static Point[] toPointArray(Collection points) {
+  static Point[] toPointArray(Collection points) {
     Point[] pointArray = new Point[points.size()];
     return (Point[]) points.toArray(pointArray);
   }
@@ -119,7 +119,7 @@ public class GeometryFactory
    *@param  geometries  the list of <code>Geometry's</code> to convert
    *@return            the <code>List</code> in array format
    */
-  public static Geometry[] toGeometryArray(Collection geometries) {
+  static Geometry[] toGeometryArray(Collection geometries) {
     if (geometries == null) return null;
     Geometry[] geometryArray = new Geometry[geometries.size()];
     return (Geometry[]) geometries.toArray(geometryArray);
@@ -131,7 +131,7 @@ public class GeometryFactory
    *@param  linearRings  the <code>List</code> of LinearRings to convert
    *@return              the <code>List</code> in array format
    */
-  public static LinearRing[] toLinearRingArray(Collection linearRings) {
+  static LinearRing[] toLinearRingArray(Collection linearRings) {
     LinearRing[] linearRingArray = new LinearRing[linearRings.size()];
     return (LinearRing[]) linearRings.toArray(linearRingArray);
   }
@@ -142,7 +142,7 @@ public class GeometryFactory
    *@param  lineStrings  the <code>List</code> of LineStrings to convert
    *@return              the <code>List</code> in array format
    */
-  public static LineString[] toLineStringArray(Collection lineStrings) {
+  static LineString[] toLineStringArray(Collection lineStrings) {
     LineString[] lineStringArray = new LineString[lineStrings.size()];
     return (LineString[]) lineStrings.toArray(lineStringArray);
   }
@@ -153,7 +153,7 @@ public class GeometryFactory
    *@param  polygons  the <code>List</code> of Polygons to convert
    *@return           the <code>List</code> in array format
    */
-  public static Polygon[] toPolygonArray(Collection polygons) {
+  static Polygon[] toPolygonArray(Collection polygons) {
     Polygon[] polygonArray = new Polygon[polygons.size()];
     return (Polygon[]) polygons.toArray(polygonArray);
   }
@@ -164,7 +164,7 @@ public class GeometryFactory
    *@param  multiPolygons  the <code>List</code> of MultiPolygons to convert
    *@return                the <code>List</code> in array format
    */
-  public static MultiPolygon[] toMultiPolygonArray(Collection multiPolygons) {
+  static MultiPolygon[] toMultiPolygonArray(Collection multiPolygons) {
     MultiPolygon[] multiPolygonArray = new MultiPolygon[multiPolygons.size()];
     return (MultiPolygon[]) multiPolygons.toArray(multiPolygonArray);
   }
@@ -175,7 +175,7 @@ public class GeometryFactory
    *@param  multiLineStrings  the <code>List</code> of MultiLineStrings to convert
    *@return                   the <code>List</code> in array format
    */
-  public static MultiLineString[] toMultiLineStringArray(Collection multiLineStrings) {
+  static MultiLineString[] toMultiLineStringArray(Collection multiLineStrings) {
     MultiLineString[] multiLineStringArray = new MultiLineString[multiLineStrings.size()];
     return (MultiLineString[]) multiLineStrings.toArray(multiLineStringArray);
   }
@@ -186,7 +186,7 @@ public class GeometryFactory
    *@param  multiPoints  the <code>List</code> of MultiPoints to convert
    *@return              the <code>List</code> in array format
    */
-  public static MultiPoint[] toMultiPointArray(Collection multiPoints) {
+  static MultiPoint[] toMultiPointArray(Collection multiPoints) {
     MultiPoint[] multiPointArray = new MultiPoint[multiPoints.size()];
     return (MultiPoint[]) multiPoints.toArray(multiPointArray);
   }
@@ -210,7 +210,7 @@ public class GeometryFactory
    *	a <code>Point</code> (when min x = max x and min y = max y) or a
    *      <code>Polygon</code> (in all other cases)
    */
-  public Geometry toGeometry(Envelope envelope) 
+  Geometry toGeometry(Envelope envelope) 
   {
   	// null envelope - return empty point geometry
     if (envelope.isNull()) {
@@ -225,14 +225,14 @@ public class GeometryFactory
     // vertical or horizontal line?
     if (envelope.getMinX() == envelope.getMaxX()
     		|| envelope.getMinY() == envelope.getMaxY()) {
-    	return createLineString(new Coordinate[]{
+    	return createLineString(new List<Coordinate>{
           new Coordinate(envelope.getMinX(), envelope.getMinY()),
           new Coordinate(envelope.getMaxX(), envelope.getMaxY())
           });
     }
 
     // create a CW ring for the polygon 
-    return createPolygon(createLinearRing(new Coordinate[]{
+    return createPolygon(createLinearRing(new List<Coordinate>{
         new Coordinate(envelope.getMinX(), envelope.getMinY()),
         new Coordinate(envelope.getMinX(), envelope.getMaxY()),
         new Coordinate(envelope.getMaxX(), envelope.getMaxY()),
@@ -247,7 +247,7 @@ public class GeometryFactory
    * 
    * @return the PrecisionModel for this factory
    */
-  public PrecisionModel getPrecisionModel() {
+  PrecisionModel getPrecisionModel() {
     return precisionModel;
   }
 
@@ -256,8 +256,8 @@ public class GeometryFactory
    * 
    * @return an empty Point
    */
-  public Point createPoint() {
-	return createPoint(getCoordinateSequenceFactory().create(new Coordinate[]{}));
+  Point createPoint() {
+	return createPoint(getCoordinateSequenceFactory().create(new List<Coordinate>{}));
   }
   
   /**
@@ -267,8 +267,8 @@ public class GeometryFactory
    * @param coordinate a Coordinate, or null
    * @return the created Point
    */
-  public Point createPoint(Coordinate coordinate) {
-    return createPoint(coordinate != null ? getCoordinateSequenceFactory().create(new Coordinate[]{coordinate}) : null);
+  Point createPoint(Coordinate coordinate) {
+    return createPoint(coordinate != null ? getCoordinateSequenceFactory().create(new List<Coordinate>{coordinate}) : null);
   }
 
   /**
@@ -278,7 +278,7 @@ public class GeometryFactory
    * @param coordinates a CoordinateSequence (possibly empty), or null
    * @return the created Point
    */
-  public Point createPoint(CoordinateSequence coordinates) {
+  Point createPoint(CoordinateSequence coordinates) {
   	return new Point(coordinates, this);
   }
   
@@ -287,7 +287,7 @@ public class GeometryFactory
    * 
    * @return an empty MultiLineString
    */
-  public MultiLineString createMultiLineString() {
+  MultiLineString createMultiLineString() {
     return new MultiLineString(null, this);
   }
 
@@ -298,7 +298,7 @@ public class GeometryFactory
    * @param lineStrings LineStrings, each of which may be empty but not null
    * @return the created MultiLineString
    */
-  public MultiLineString createMultiLineString(LineString[] lineStrings) {
+  MultiLineString createMultiLineString(LineString[] lineStrings) {
   	return new MultiLineString(lineStrings, this);
   }
   
@@ -307,7 +307,7 @@ public class GeometryFactory
    * 
    * @return an empty GeometryCollection
    */
-  public GeometryCollection createGeometryCollection() {
+  GeometryCollection createGeometryCollection() {
     return new GeometryCollection(null, this);
   }
 
@@ -318,7 +318,7 @@ public class GeometryFactory
    * @param geometries an array of Geometries, each of which may be empty but not null, or null
    * @return the created GeometryCollection
    */
-  public GeometryCollection createGeometryCollection(Geometry[] geometries) {
+  GeometryCollection createGeometryCollection(Geometry[] geometries) {
   	return new GeometryCollection(geometries, this);
   }
   
@@ -327,7 +327,7 @@ public class GeometryFactory
    * 
    * @return an empty MultiPolygon
    */
-  public MultiPolygon createMultiPolygon() {
+  MultiPolygon createMultiPolygon() {
     return new MultiPolygon(null, this);
   }
 
@@ -342,7 +342,7 @@ public class GeometryFactory
    *            Polygons, each of which may be empty but not null
    * @return the created MultiPolygon
    */
-  public MultiPolygon createMultiPolygon(Polygon[] polygons) {
+  MultiPolygon createMultiPolygon(Polygon[] polygons) {
     return new MultiPolygon(polygons, this);
   }
   
@@ -351,8 +351,8 @@ public class GeometryFactory
    * 
    * @return an empty LinearRing
    */
-  public LinearRing createLinearRing() {
-    return createLinearRing(getCoordinateSequenceFactory().create(new Coordinate[]{}));
+  LinearRing createLinearRing() {
+    return createLinearRing(getCoordinateSequenceFactory().create(new List<Coordinate>{}));
   }
 
   /**
@@ -361,9 +361,9 @@ public class GeometryFactory
    * The points must form a closed and simple linestring. 
    * @param coordinates an array without null elements, or an empty array, or null
    * @return the created LinearRing
-   * @throws IllegalArgumentException if the ring is not closed, or has too few points
+   * @throws ArgumentError if the ring is not closed, or has too few points
    */
-  public LinearRing createLinearRing(Coordinate[] coordinates) {
+  LinearRing createLinearRing(List<Coordinate> coordinates) {
     return createLinearRing(coordinates != null ? getCoordinateSequenceFactory().create(coordinates) : null);
   }
 
@@ -374,9 +374,9 @@ public class GeometryFactory
    * 
    * @param coordinates a CoordinateSequence (possibly empty), or null
    * @return the created LinearRing
-   * @throws IllegalArgumentException if the ring is not closed, or has too few points
+   * @throws ArgumentError if the ring is not closed, or has too few points
    */
-  public LinearRing createLinearRing(CoordinateSequence coordinates) {
+  LinearRing createLinearRing(CoordinateSequence coordinates) {
     return new LinearRing(coordinates, this);
   }
   
@@ -385,7 +385,7 @@ public class GeometryFactory
    * 
    * @return an empty MultiPoint
    */
-  public MultiPoint createMultiPoint() {
+  MultiPoint createMultiPoint() {
     return new MultiPoint(null, this);
   }
 
@@ -396,7 +396,7 @@ public class GeometryFactory
    * @param point an array of Points (without null elements), or an empty array, or <code>null</code>
    * @return a MultiPoint object
    */
-  public MultiPoint createMultiPoint(Point[] point) {
+  MultiPoint createMultiPoint(Point[] point) {
   	return new MultiPoint(point, this);
   }
 
@@ -408,7 +408,7 @@ public class GeometryFactory
    * @return a MultiPoint object
    * @deprecated Use {@link GeometryFactory#createMultiPointFromCoords} instead
    */
-  public MultiPoint createMultiPoint(Coordinate[] coordinates) {
+  MultiPoint createMultiPoint(List<Coordinate> coordinates) {
       return createMultiPoint(coordinates != null
                               ? getCoordinateSequenceFactory().create(coordinates)
                               : null);
@@ -421,7 +421,7 @@ public class GeometryFactory
    * @param coordinates an array (without null elements), or an empty array, or <code>null</code>
    * @return a MultiPoint object
    */
-  public MultiPoint createMultiPointFromCoords(Coordinate[] coordinates) {
+  MultiPoint createMultiPointFromCoords(List<Coordinate> coordinates) {
       return createMultiPoint(coordinates != null
                               ? getCoordinateSequenceFactory().create(coordinates)
                               : null);
@@ -435,7 +435,7 @@ public class GeometryFactory
    * @param coordinates a CoordinateSequence (possibly empty), or <code>null</code>
    * @return a MultiPoint geometry
    */
-  public MultiPoint createMultiPoint(CoordinateSequence coordinates) {
+  MultiPoint createMultiPoint(CoordinateSequence coordinates) {
     if (coordinates == null) {
       return createMultiPoint(new Point[0]);
     }
@@ -461,9 +461,9 @@ public class GeometryFactory
    *            the inner boundaries of the new <code>Polygon</code>, or
    *            <code>null</code> or empty <code>LinearRing</code> s if
    *            the empty geometry is to be created.
-   * @throws IllegalArgumentException if a ring is invalid
+   * @throws ArgumentError if a ring is invalid
    */
-  public Polygon createPolygon(LinearRing shell, LinearRing[] holes) {
+  Polygon createPolygon(LinearRing shell, LinearRing[] holes) {
     return new Polygon(shell, holes, this);
   }
 
@@ -474,9 +474,9 @@ public class GeometryFactory
    *            the outer boundary of the new <code>Polygon</code>, or
    *            <code>null</code> or an empty <code>LinearRing</code> if
    *            the empty geometry is to be created.
-   * @throws IllegalArgumentException if the boundary ring is invalid
+   * @throws ArgumentError if the boundary ring is invalid
    */
-  public Polygon createPolygon(CoordinateSequence shell) {
+  Polygon createPolygon(CoordinateSequence shell) {
     return createPolygon(createLinearRing(shell));
   }
 
@@ -487,9 +487,9 @@ public class GeometryFactory
    *            the outer boundary of the new <code>Polygon</code>, or
    *            <code>null</code> or an empty <code>LinearRing</code> if
    *            the empty geometry is to be created.
-   * @throws IllegalArgumentException if the boundary ring is invalid
+   * @throws ArgumentError if the boundary ring is invalid
    */
-  public Polygon createPolygon(Coordinate[] shell) {
+  Polygon createPolygon(List<Coordinate> shell) {
     return createPolygon(createLinearRing(shell));
   }
 
@@ -500,9 +500,9 @@ public class GeometryFactory
    *            the outer boundary of the new <code>Polygon</code>, or
    *            <code>null</code> or an empty <code>LinearRing</code> if
    *            the empty geometry is to be created.
-   * @throws IllegalArgumentException if the boundary ring is invalid
+   * @throws ArgumentError if the boundary ring is invalid
    */
-  public Polygon createPolygon(LinearRing shell) {
+  Polygon createPolygon(LinearRing shell) {
     return createPolygon(shell, null);
   }
   
@@ -511,7 +511,7 @@ public class GeometryFactory
    * 
    * @return an empty polygon
    */
-  public Polygon createPolygon() {
+  Polygon createPolygon() {
     return createPolygon(null, null);
   }
 
@@ -542,14 +542,14 @@ public class GeometryFactory
    *      type-specific" class that can contain the elements of <code>geomList</code>
    *      .
    */
-  public Geometry buildGeometry(Collection geomList) {
+  Geometry buildGeometry(Collection geomList) {
   	
   	/**
   	 * Determine some facts about the geometries in the list
   	 */
     Class geomClass = null;
-    boolean isHeterogeneous = false;
-    boolean hasGeometryCollection = false;
+    bool isHeterogeneous = false;
+    bool hasGeometryCollection = false;
     for (Iterator i = geomList.iterator(); i.hasNext(); ) {
       Geometry geom = (Geometry) i.next();
       Class partClass = geom.getClass();
@@ -577,7 +577,7 @@ public class GeometryFactory
     // Determine the type of the result from the first Geometry in the list
     // this should always return a geometry, since otherwise an empty collection would have already been returned
     Geometry geom0 = (Geometry) geomList.iterator().next();
-    boolean isCollection = geomList.size() > 1;
+    bool isCollection = geomList.size() > 1;
     if (isCollection) {
       if (geom0 instanceof Polygon) {
         return createMultiPolygon(toPolygonArray(geomList));
@@ -598,8 +598,8 @@ public class GeometryFactory
    * 
    * @return an empty LineString
    */
-  public LineString createLineString() {
-    return createLineString(getCoordinateSequenceFactory().create(new Coordinate[]{}));
+  LineString createLineString() {
+    return createLineString(getCoordinateSequenceFactory().create(new List<Coordinate>{}));
   }
 
   /**
@@ -608,7 +608,7 @@ public class GeometryFactory
    * 
    * @param coordinates an array without null elements, or an empty array, or null
    */
-  public LineString createLineString(Coordinate[] coordinates) {
+  LineString createLineString(List<Coordinate> coordinates) {
     return createLineString(coordinates != null ? getCoordinateSequenceFactory().create(coordinates) : null);
   }
   /**
@@ -617,7 +617,7 @@ public class GeometryFactory
    * 
    * @param coordinates a CoordinateSequence (possibly empty), or null
    */
-  public LineString createLineString(CoordinateSequence coordinates) {
+  LineString createLineString(CoordinateSequence coordinates) {
 	return new LineString(coordinates, this);
   }
 
@@ -628,14 +628,14 @@ public class GeometryFactory
    * @param dimension the required dimension (-1, 0, 1 or 2)
    * @return an empty atomic geometry of given dimension
    */
-  public Geometry createEmpty(int dimension) {
+  Geometry createEmpty(int dimension) {
     switch (dimension) {
     case -1: return createGeometryCollection();
     case 0: return createPoint();
     case 1: return createLineString();
     case 2: return createPolygon();
     default:
-      throw new IllegalArgumentException("Invalid dimension: " + dimension);
+      throw new ArgumentError("Invalid dimension: " + dimension);
     }
   }
   
@@ -656,7 +656,7 @@ public class GeometryFactory
    * 
    * @see Geometry#copy() 
    */
-  public Geometry createGeometry(Geometry g)
+  Geometry createGeometry(Geometry g)
   {
     GeometryEditor editor = new GeometryEditor(this);
     return editor.edit(g, new CoordSeqCloneOp(coordinateSequenceFactory));
@@ -664,10 +664,10 @@ public class GeometryFactory
 
   private static class CoordSeqCloneOp extends GeometryEditor.CoordinateSequenceOperation {
     CoordinateSequenceFactory coordinateSequenceFactory;
-    public CoordSeqCloneOp(CoordinateSequenceFactory coordinateSequenceFactory) {
+    CoordSeqCloneOp(CoordinateSequenceFactory coordinateSequenceFactory) {
       this.coordinateSequenceFactory = coordinateSequenceFactory;
     }
-    public CoordinateSequence edit(CoordinateSequence coordSeq, Geometry geometry) {
+    CoordinateSequence edit(CoordinateSequence coordSeq, Geometry geometry) {
       return coordinateSequenceFactory.create(coordSeq);
     }
   }
@@ -677,13 +677,13 @@ public class GeometryFactory
    * 
    * @return the factory SRID value
    */
-  public int getSRID() {
+  int getSRID() {
     return SRID;
   }
 
   private int SRID;
 
-  public CoordinateSequenceFactory getCoordinateSequenceFactory() {
+  CoordinateSequenceFactory getCoordinateSequenceFactory() {
     return coordinateSequenceFactory;
   }
 

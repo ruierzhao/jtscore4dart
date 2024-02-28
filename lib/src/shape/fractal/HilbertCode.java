@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.shape.fractal;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -47,12 +47,12 @@ import org.locationtech.jts.geom.Coordinate;
  * @see HilbertCurveBuilder
  * @see MortonCode
  */
-public class HilbertCode
+class HilbertCode
 {
   /**
    * The maximum curve level that can be represented.
    */
-  public static final int MAX_LEVEL = 16;
+  static final int MAX_LEVEL = 16;
   
   /**
    * The number of points in the curve for the given level.
@@ -61,7 +61,7 @@ public class HilbertCode
    * @param level the level of the curve
    * @return the number of points
    */
-  public static int size(int level) {
+  static int size(int level) {
     checkLevel(level);
     return (int) Math.pow(2, 2 *level);
   }
@@ -74,7 +74,7 @@ public class HilbertCode
    * @param level the level of the curve
    * @return the maximum ordinate value
    */
-  public static int maxOrdinate(int level) {
+  static int maxOrdinate(int level) {
     checkLevel(level);
     return (int) Math.pow(2, level) - 1;
   }
@@ -86,7 +86,7 @@ public class HilbertCode
    * @param numPoints the number of points required
    * @return the level of the curve
    */
-  public static int level(int numPoints) {
+  static int level(int numPoints) {
     int pow2 = (int) ( (Math.log(numPoints)/Math.log(2)));
     int level = pow2 / 2;
     int size = size(level);
@@ -96,7 +96,7 @@ public class HilbertCode
   
   private static void checkLevel(int level) {
     if (level > MAX_LEVEL) {
-      throw new IllegalArgumentException("Level must be in range 0 to " + MAX_LEVEL);
+      throw new ArgumentError("Level must be in range 0 to " + MAX_LEVEL);
     }
   }
 
@@ -111,7 +111,7 @@ public class HilbertCode
    * @param y the y ordinate of the point
    * @return the index of the point along the Hilbert curve
    */
-  public static int encode(int level, int x, int y) {
+  static int encode(int level, int x, int y) {
     // Fast Hilbert curve algorithm by http://threadlocalmutex.com/
     // Ported from C++ https://github.com/rawrunprotected/hilbert_curves (public
     // domain)
@@ -199,7 +199,7 @@ public class HilbertCode
    * @param index the index of the point on the curve
    * @return the point on the Hilbert curve
    */
-  public static Coordinate decode(int level, int index) {
+  static Coordinate decode(int level, int index) {
     checkLevel(level);
     int lvl = levelClamp(level);
     

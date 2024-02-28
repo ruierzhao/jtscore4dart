@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * Models a collection of {@link Point}s.
@@ -18,7 +18,7 @@ package org.locationtech.jts.geom;
  *
  *@version 1.7
  */
-public class MultiPoint
+class MultiPoint
   extends GeometryCollection
   implements Puntal
 {
@@ -37,7 +37,7 @@ public class MultiPoint
    *      <code>MultiPoint</code>
    * @deprecated Use GeometryFactory instead
    */
-  public MultiPoint(Point[] points, PrecisionModel precisionModel, int SRID) {
+  MultiPoint(Point[] points, PrecisionModel precisionModel, int SRID) {
     super(points, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -46,23 +46,23 @@ public class MultiPoint
    *      , or <code>null</code> or an empty array to create the empty geometry.
    *      Elements may be empty <code>Point</code>s, but not <code>null</code>s.
    */
-  public MultiPoint(Point[] points, GeometryFactory factory) {
+  MultiPoint(Point[] points, GeometryFactory factory) {
     super(points, factory);
   }
 
-  public int getDimension() {
+  int getDimension() {
     return 0;
   }
 
-  public boolean hasDimension(int dim) {
+  bool hasDimension(int dim) {
     return dim == 0;
   }
   
-  public int getBoundaryDimension() {
+  int getBoundaryDimension() {
     return Dimension.FALSE;
   }
 
-  public String getGeometryType() {
+  String getGeometryType() {
     return Geometry.TYPENAME_MULTIPOINT;
   }
 
@@ -74,11 +74,11 @@ public class MultiPoint
    * @return an empty GeometryCollection
    * @see Geometry#getBoundary
    */
-  public Geometry getBoundary() {
+  Geometry getBoundary() {
     return getFactory().createGeometryCollection();
   }
 
-  public MultiPoint reverse() {
+  MultiPoint reverse() {
     return (MultiPoint) super.reverse();
   }
   
@@ -90,7 +90,7 @@ public class MultiPoint
     return new MultiPoint(points, factory);
   }
 
-  public boolean equalsExact(Geometry other, double tolerance) {
+  bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }

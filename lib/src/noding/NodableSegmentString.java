@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.noding;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -20,7 +20,7 @@ import org.locationtech.jts.geom.Coordinate;
  * 
  * @author Martin Davis
  */
-public interface NodableSegmentString
+interface NodableSegmentString
 	extends SegmentString
 {
   /**
@@ -29,5 +29,5 @@ public interface NodableSegmentString
    * @param intPt the location of the intersection
    * @param segmentIndex the index of the segment containing the intersection
    */
-  public void addIntersection(Coordinate intPt, int segmentIndex);
+  void addIntersection(Coordinate intPt, int segmentIndex);
 }

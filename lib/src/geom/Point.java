@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import org.locationtech.jts.util.Assert;
 
@@ -24,7 +24,7 @@ import org.locationtech.jts.util.Assert;
  *
  *@version 1.7
  */
-public class Point
+class Point
 	extends Geometry
 	implements Puntal
 {
@@ -45,17 +45,17 @@ public class Point
    *      <code>Point</code>
    * @deprecated Use GeometryFactory instead
    */
-  public Point(Coordinate coordinate, PrecisionModel precisionModel, int SRID) {
+  Point(Coordinate coordinate, PrecisionModel precisionModel, int SRID) {
     super(new GeometryFactory(precisionModel, SRID));
     init(getFactory().getCoordinateSequenceFactory().create(
-          coordinate != null ? new Coordinate[]{coordinate} : new Coordinate[]{}));
+          coordinate != null ? new List<Coordinate>{coordinate} : new List<Coordinate>{}));
   }
 
   /**
    *@param  coordinates      contains the single coordinate on which to base this <code>Point</code>
    *      , or <code>null</code> to create the empty geometry.
    */
-  public Point(CoordinateSequence coordinates, GeometryFactory factory) {
+  Point(CoordinateSequence coordinates, GeometryFactory factory) {
     super(factory);
     init(coordinates);
   }
@@ -63,57 +63,57 @@ public class Point
   private void init(CoordinateSequence coordinates)
   {
     if (coordinates == null) {
-      coordinates = getFactory().getCoordinateSequenceFactory().create(new Coordinate[]{});
+      coordinates = getFactory().getCoordinateSequenceFactory().create(new List<Coordinate>{});
     }
     Assert.isTrue(coordinates.size() <= 1);
     this.coordinates = coordinates;
   }
 
-  public Coordinate[] getCoordinates() {
-    return isEmpty() ? new Coordinate[]{} : new Coordinate[]{
+  List<Coordinate> getCoordinates() {
+    return isEmpty() ? new List<Coordinate>{} : new List<Coordinate>{
         getCoordinate()
         };
   }
 
-  public int getNumPoints() {
+  int getNumPoints() {
     return isEmpty() ? 0 : 1;
   }
 
-  public boolean isEmpty() {
+  bool isEmpty() {
     return coordinates.size() == 0;
   }
 
-  public boolean isSimple() {
+  bool isSimple() {
     return true;
   }
 
-  public int getDimension() {
+  int getDimension() {
     return 0;
   }
 
-  public int getBoundaryDimension() {
+  int getBoundaryDimension() {
     return Dimension.FALSE;
   }
 
-  public double getX() {
+  double getX() {
     if (getCoordinate() == null) {
       throw new IllegalStateException("getX called on empty Point");
     }
     return getCoordinate().x;
   }
 
-  public double getY() {
+  double getY() {
     if (getCoordinate() == null) {
       throw new IllegalStateException("getY called on empty Point");
     }
     return getCoordinate().y;
   }
 
-  public Coordinate getCoordinate() {
+  Coordinate getCoordinate() {
     return coordinates.size() != 0 ? coordinates.getCoordinate(0): null;
   }
 
-  public String getGeometryType() {
+  String getGeometryType() {
     return Geometry.TYPENAME_POINT;
   }
 
@@ -125,7 +125,7 @@ public class Point
    * @return an empty GeometryCollection
    * @see Geometry#getBoundary
    */
-  public Geometry getBoundary() {
+  Geometry getBoundary() {
     return getFactory().createGeometryCollection();
   }
 
@@ -138,7 +138,7 @@ public class Point
     return env;
   }
 
-  public boolean equalsExact(Geometry other, double tolerance) {
+  bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
@@ -151,12 +151,12 @@ public class Point
     return equal(((Point) other).getCoordinate(), this.getCoordinate(), tolerance);
   }
 
-  public void apply(CoordinateFilter filter) {
+  void apply(CoordinateFilter filter) {
 	    if (isEmpty()) { return; }
 	    filter.filter(getCoordinate());
 	  }
 
-  public void apply(CoordinateSequenceFilter filter)
+  void apply(CoordinateSequenceFilter filter)
   {
 	    if (isEmpty())
         return;
@@ -165,11 +165,11 @@ public class Point
         geometryChanged();
 	  }
 
-  public void apply(GeometryFilter filter) {
+  void apply(GeometryFilter filter) {
     filter.filter(this);
   }
 
-  public void apply(GeometryComponentFilter filter) {
+  void apply(GeometryComponentFilter filter) {
     filter.filter(this);
   }
 
@@ -180,7 +180,7 @@ public class Point
    * @return a clone of this instance
    * @deprecated
    */
-  public Object clone() {
+  Object clone() {
     return copy();
   }
 
@@ -188,7 +188,7 @@ public class Point
     return new Point(coordinates.copy(), factory);
   }
 
-  public Point reverse() {
+  Point reverse() {
     return (Point) super.reverse();
   }
 
@@ -197,7 +197,7 @@ public class Point
     return getFactory().createPoint(coordinates.copy());
   }
 
-  public void normalize()
+  void normalize()
   {
     // a Point is always in normalized form
   }
@@ -217,7 +217,7 @@ public class Point
     return Geometry.TYPECODE_POINT;
   }
 
-  public CoordinateSequence getCoordinateSequence() {
+  CoordinateSequence getCoordinateSequence() {
     return coordinates;
   }
 }

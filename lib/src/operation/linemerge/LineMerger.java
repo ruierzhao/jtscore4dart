@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.linemerge;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +46,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class LineMerger 
+class LineMerger 
 {
   private LineMergeGraph graph = new LineMergeGraph();
   private Collection mergedLineStrings = null;
@@ -56,7 +56,7 @@ public class LineMerger
    * Creates a new line merger.
    *
    */
-  public LineMerger()
+  LineMerger()
   {
   	
   }
@@ -68,9 +68,9 @@ public class LineMerger
    * 
    * @param geometry geometry to be line-merged
    */  
-  public void add(Geometry geometry) {
+  void add(Geometry geometry) {
     geometry.apply(new GeometryComponentFilter() {
-      public void filter(Geometry component) {
+      void filter(Geometry component) {
         if (component instanceof LineString) {
           add((LineString)component);
         }
@@ -84,7 +84,7 @@ public class LineMerger
    * 
    * @param geometries the geometries to be line-merged
    */
-  public void add(Collection geometries) 
+  void add(Collection geometries) 
   {
   	mergedLineStrings = null;
     for (Iterator i = geometries.iterator(); i.hasNext(); ) {
@@ -170,7 +170,7 @@ public class LineMerger
    * 
    * @return the collection of merged LineStrings
    */
-  public Collection getMergedLineStrings() {
+  Collection getMergedLineStrings() {
     merge();
     return mergedLineStrings;
   }

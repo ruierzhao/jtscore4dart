@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding.snapround;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ import org.locationtech.jts.noding.SegmentString;
  *
  * @version 1.17
  */
-public class SnapRoundingIntersectionAdder
+class SnapRoundingIntersectionAdder
     implements SegmentIntersector
 { 
   private final LineIntersector li;
@@ -55,7 +55,7 @@ public class SnapRoundingIntersectionAdder
    *
    * @param nearnessTol the intersection distance tolerance
    */
-  public SnapRoundingIntersectionAdder(double nearnessTol)
+  SnapRoundingIntersectionAdder(double nearnessTol)
   {
     this.nearnessTol =  nearnessTol;
     
@@ -73,7 +73,7 @@ public class SnapRoundingIntersectionAdder
    * 
    * @return a list of the intersection points
    */
-  public List<Coordinate> getIntersections()  {    return intersections;  }
+  List<Coordinate> getIntersections()  {    return intersections;  }
 
   /**
    * This method is called by clients
@@ -83,7 +83,7 @@ public class SnapRoundingIntersectionAdder
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
-  public void processIntersections(
+  void processIntersections(
       SegmentString e0,  int segIndex0,
       SegmentString e1,  int segIndex1
       )
@@ -163,6 +163,6 @@ public class SnapRoundingIntersectionAdder
    * 
    * @return false always
    */
-  public boolean isDone() { return false; }
+  bool isDone() { return false; }
 
 }

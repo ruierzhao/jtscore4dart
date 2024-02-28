@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -30,31 +30,31 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
  * @author Martin Davis
  *
  */
-public class Orientation {
+class Orientation {
   /**
    * A value that indicates an orientation of clockwise, or a right turn.
    */
-  public static final int CLOCKWISE = -1;
+  static final int CLOCKWISE = -1;
   /**
    * A value that indicates an orientation of clockwise, or a right turn.
    */
-  public static final int RIGHT = CLOCKWISE;
+  static final int RIGHT = CLOCKWISE;
   /**
    * A value that indicates an orientation of counterclockwise, or a left turn.
    */
-  public static final int COUNTERCLOCKWISE = 1;
+  static final int COUNTERCLOCKWISE = 1;
   /**
    * A value that indicates an orientation of counterclockwise, or a left turn.
    */
-  public static final int LEFT = COUNTERCLOCKWISE;
+  static final int LEFT = COUNTERCLOCKWISE;
   /**
    * A value that indicates an orientation of collinear, or no turn (straight).
    */
-  public static final int COLLINEAR = 0;
+  static final int COLLINEAR = 0;
   /**
    * A value that indicates an orientation of collinear, or no turn (straight).
    */
-  public static final int STRAIGHT = COLLINEAR;
+  static final int STRAIGHT = COLLINEAR;
 
   /**
    * Returns the orientation index of the direction of the point <code>q</code> relative to
@@ -72,7 +72,7 @@ public class Orientation {
    *         1 ( {@link #COUNTERCLOCKWISE} or {@link #LEFT} ) if q is counter-clockwise (left) from p1-p2;
    *         0 ( {@link #COLLINEAR} or {@link #STRAIGHT} ) if q is collinear with p1-p2
    */
-  public static int index(Coordinate p1, Coordinate p2, Coordinate q)
+  static int index(Coordinate p1, Coordinate p2, Coordinate q)
   {
     /*
      * MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
@@ -121,9 +121,9 @@ public class Orientation {
    * 
    * @param ring an array of Coordinates forming a ring (with first and last point identical)
    * @return true if the ring is oriented counter-clockwise.
-   * @throws IllegalArgumentException if there are too few points to determine orientation (&lt; 4)
+   * @throws ArgumentError if there are too few points to determine orientation (&lt; 4)
    */
-  public static boolean isCCW(Coordinate[] ring)
+  static bool isCCW(List<Coordinate> ring)
   {
     // wrap with an XY CoordinateSequence
     return isCCW(new CoordinateArraySequence(ring, 2, 0));
@@ -147,7 +147,7 @@ public class Orientation {
    * @param ring a CoordinateSequence forming a ring (with first and last point identical)
    * @return true if the ring is oriented counter-clockwise.
    */ 
-  public static boolean isCCW(CoordinateSequence ring)
+  static bool isCCW(CoordinateSequence ring)
   {
     // # of points without closing endpoint
     int nPts = ring.size() - 1;
@@ -257,7 +257,7 @@ public class Orientation {
    * @param ring an array of Coordinates forming a ring (with first and last point identical)
    * @return true if the ring is oriented counter-clockwise.
    */
-  public static boolean isCCWArea(Coordinate[] ring) {
+  static bool isCCWArea(List<Coordinate> ring) {
     return Area.ofRingSigned(ring) < 0;
   }
 }

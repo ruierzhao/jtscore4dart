@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.construct;
+
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ class IndexedPointInPolygonsLocator implements PointOnGeometryLocator {
   private Geometry geom;
   private STRtree index;
 
-  public IndexedPointInPolygonsLocator(Geometry geom) {
+  IndexedPointInPolygonsLocator(Geometry geom) {
     this.geom = geom;
   }
   
@@ -50,7 +50,7 @@ class IndexedPointInPolygonsLocator implements PointOnGeometryLocator {
   }
   
   @Override
-  public int locate(Coordinate p) {
+  int locate(Coordinate p) {
     init();
 
     List<IndexedPointInAreaLocator> results = index.query(new Envelope(p));

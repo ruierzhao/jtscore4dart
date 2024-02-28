@@ -9,18 +9,18 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Geometry;
 
-public class FastOverlayFilter {
+class FastOverlayFilter {
   // superceded by overlap clipping?
   // TODO: perhaps change this to RectangleClipping, with fast/looser semantics?
   
   private Geometry targetGeom;
-  private boolean isTargetRectangle;
+  private bool isTargetRectangle;
 
-  public FastOverlayFilter(Geometry geom) {
+  FastOverlayFilter(Geometry geom) {
     this.targetGeom = geom;
     isTargetRectangle = targetGeom.isRectangle();
   }
@@ -36,7 +36,7 @@ public class FastOverlayFilter {
    * @param overlayOpCode
    * @return overlay of the input geometries
    */
-  public Geometry overlay(Geometry geom, int overlayOpCode) {
+  Geometry overlay(Geometry geom, int overlayOpCode) {
     // for now only INTERSECTION is handled
     if (overlayOpCode != OverlayNG.INTERSECTION)
       return null;
@@ -75,11 +75,11 @@ public class FastOverlayFilter {
     return null;
   }
 
-  private boolean isEnvelopeIntersects(Geometry a, Geometry b) {
+  private bool isEnvelopeIntersects(Geometry a, Geometry b) {
     return a.getEnvelopeInternal().intersects( b.getEnvelopeInternal() );
   }
 
-  private boolean isEnvelopeCovers(Geometry a, Geometry b) {
+  private bool isEnvelopeCovers(Geometry a, Geometry b) {
     return a.getEnvelopeInternal().covers( b.getEnvelopeInternal() );
   }
 }

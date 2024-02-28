@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlay;
+
 
 /**
  * @version 1.7
@@ -26,10 +26,10 @@ import org.locationtech.jts.geomgraph.PlanarGraph;
  *
  * @version 1.7
  */
-public class OverlayNodeFactory
+class OverlayNodeFactory
   extends NodeFactory
 {
-  public Node createNode(Coordinate coord)
+  Node createNode(Coordinate coord)
   {
     return new Node(coord, new DirectedEdgeStar());
   }

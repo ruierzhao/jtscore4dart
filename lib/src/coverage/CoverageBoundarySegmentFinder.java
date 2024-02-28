@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +32,7 @@ import org.locationtech.jts.geom.LineSegment;
  */
 class CoverageBoundarySegmentFinder implements CoordinateSequenceFilter {
   
-  public static Set<LineSegment> findBoundarySegments(Geometry[] geoms) {
+  static Set<LineSegment> findBoundarySegments(Geometry[] geoms) {
     Set<LineSegment> segs = new HashSet<LineSegment>();
     CoverageBoundarySegmentFinder finder = new CoverageBoundarySegmentFinder(segs);
     for (Geometry geom : geoms) {
@@ -41,19 +41,19 @@ class CoverageBoundarySegmentFinder implements CoordinateSequenceFilter {
     return segs;
   }
 
-  public static boolean isBoundarySegment(Set<LineSegment> boundarySegs, CoordinateSequence seq, int i) {
+  static bool isBoundarySegment(Set<LineSegment> boundarySegs, CoordinateSequence seq, int i) {
     LineSegment seg = createSegment(seq, i);
     return boundarySegs.contains(seg);
   }
   
   private Set<LineSegment> boundarySegs;
 
-  public CoverageBoundarySegmentFinder(Set<LineSegment> segs) {
+  CoverageBoundarySegmentFinder(Set<LineSegment> segs) {
     this.boundarySegs = segs;
   }
 
   @Override
-  public void filter(CoordinateSequence seq, int i) {
+  void filter(CoordinateSequence seq, int i) {
     //-- final point does not start a segment
     if (i >= seq.size() - 1)
       return;
@@ -78,12 +78,12 @@ class CoverageBoundarySegmentFinder implements CoordinateSequenceFilter {
   }
 
   @Override
-  public boolean isDone() {
+  bool isDone() {
     return false;
   }
 
   @Override
-  public boolean isGeometryChanged() {
+  bool isGeometryChanged() {
     return false;
   }
 

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.linemerge;
+
 
 
 import java.util.ArrayList;
@@ -28,26 +28,26 @@ import org.locationtech.jts.geom.LineString;
  *
  * @version 1.7
  */
-public class EdgeString {
+class EdgeString {
   private GeometryFactory factory;
   private List directedEdges = new ArrayList();
-  private Coordinate[] coordinates = null;
+  private List<Coordinate> coordinates = null;
   /**
    * Constructs an EdgeString with the given factory used to convert this EdgeString
    * to a LineString
    */
-  public EdgeString(GeometryFactory factory) {
+  EdgeString(GeometryFactory factory) {
     this.factory = factory;
   }
 
   /**
    * Adds a directed edge which is known to form part of this line.
    */
-  public void add(LineMergeDirectedEdge directedEdge) {
+  void add(LineMergeDirectedEdge directedEdge) {
     directedEdges.add(directedEdge);
   }
 
-  private Coordinate[] getCoordinates() {
+  private List<Coordinate> getCoordinates() {
     if (coordinates == null) {
       int forwardDirectedEdges = 0;
       int reverseDirectedEdges = 0;
@@ -76,7 +76,7 @@ public class EdgeString {
   /**
    * Converts this EdgeString into a LineString.
    */
-  public LineString toLineString() {
+  LineString toLineString() {
     return factory.createLineString(getCoordinates());
   }
 }

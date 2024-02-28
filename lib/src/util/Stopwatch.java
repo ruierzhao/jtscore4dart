@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 /**
  * Implements a timer function which can compute
@@ -17,25 +17,25 @@ package org.locationtech.jts.util;
  *
  * @version 1.7
  */
-public class Stopwatch {
+class Stopwatch {
 
   private long startTimestamp;
   private long totalTime = 0;
-  private boolean isRunning = false;
+  private bool isRunning = false;
 
-  public Stopwatch()
+  Stopwatch()
   {
     start();
   }
 
-  public void start()
+  void start()
   {
     if (isRunning) return;
     startTimestamp = System.currentTimeMillis();
     isRunning = true;
   }
 
-  public long stop()
+  long stop()
   {
     if (isRunning) {
       updateTotalTime();
@@ -44,13 +44,13 @@ public class Stopwatch {
     return totalTime;
   }
 
-  public void reset()
+  void reset()
   {
     totalTime = 0;
     startTimestamp = System.currentTimeMillis();
   }
 
-  public long split()
+  long split()
   {
     if (isRunning)
       updateTotalTime();
@@ -65,19 +65,19 @@ public class Stopwatch {
     totalTime += elapsedTime;
   }
 
-  public long getTime()
+  long getTime()
   {
     updateTotalTime();
     return totalTime;
   }
 
-  public String getTimeString()
+  String getTimeString()
   {
     long totalTime = getTime();
     return getTimeString(totalTime);
   }
 
-  public static String getTimeString(long timeMillis) {
+  static String getTimeString(long timeMillis) {
     String totalTimeStr = timeMillis < 10000 
         ? timeMillis + " ms" 
         : (double) timeMillis / 1000.0 + " s";

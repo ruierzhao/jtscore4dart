@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
  *
  *@version 1.7
  */
-public class GeometryCollectionIterator implements Iterator {
+class GeometryCollectionIterator implements Iterator {
 
   /**
    *  The <code>Geometry</code> being iterated over.
@@ -36,7 +36,7 @@ public class GeometryCollectionIterator implements Iterator {
    *  Indicates whether or not the first element 
    *  (the root <code>GeometryCollection</code>) has been returned.
    */
-  private boolean atStart;
+  private bool atStart;
   /**
    *  The number of <code>Geometry</code>s in the the <code>GeometryCollection</code>.
    */
@@ -59,7 +59,7 @@ public class GeometryCollectionIterator implements Iterator {
    *@param  parent  the geometry over which to iterate; also, the first
    *      element returned by the iterator.
    */
-  public GeometryCollectionIterator(Geometry parent) {
+  GeometryCollectionIterator(Geometry parent) {
     this.parent = parent;
     atStart = true;
     index = 0;
@@ -71,7 +71,7 @@ public class GeometryCollectionIterator implements Iterator {
    * 
    * @return true if more geometry elements remain
    */
-  public boolean hasNext() {
+  bool hasNext() {
     if (atStart) {
       return true;
     }
@@ -92,7 +92,7 @@ public class GeometryCollectionIterator implements Iterator {
    * 
    * @return the next geometry in the iteration
    */
-  public Object next() {
+  Object next() {
     // the parent GeometryCollection is the first object returned
     if (atStart) {
       atStart = false;
@@ -120,7 +120,7 @@ public class GeometryCollectionIterator implements Iterator {
     return obj;
   }
 
-  private static boolean isAtomic(Geometry geom)
+  private static bool isAtomic(Geometry geom)
   {
     return ! (geom instanceof GeometryCollection);
   }
@@ -130,7 +130,7 @@ public class GeometryCollectionIterator implements Iterator {
    *
    * @throws  UnsupportedOperationException  This method is not implemented.
    */
-  public void remove() {
+  void remove() {
     throw new UnsupportedOperationException(getClass().getName());
   }
 }

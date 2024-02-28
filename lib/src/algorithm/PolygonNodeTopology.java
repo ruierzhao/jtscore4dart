@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Quadrant;
@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.Quadrant;
  * @author mdavis
  *
  */
-public class PolygonNodeTopology 
+class PolygonNodeTopology 
 {
   /**
    * Check if four segments at a node cross.
@@ -36,7 +36,7 @@ public class PolygonNodeTopology
    * @param b1 the next segment endpoint in the other ring
    * @return true if the rings cross at the node
    */
-  public static boolean isCrossing(Coordinate nodePt, Coordinate a0, Coordinate a1, Coordinate b0, Coordinate b1) {
+  static bool isCrossing(Coordinate nodePt, Coordinate a0, Coordinate a1, Coordinate b0, Coordinate b1) {
     Coordinate aLo = a0;
     Coordinate aHi = a1;
     if (isAngleGreater(nodePt, aLo, aHi)) {
@@ -44,8 +44,8 @@ public class PolygonNodeTopology
       aHi = a0;
     }
     /*
-    boolean isBetween0 = isBetween(nodePt, b0, aLo, aHi);
-    boolean isBetween1 = isBetween(nodePt, b1, aLo, aHi);
+    bool isBetween0 = isBetween(nodePt, b0, aLo, aHi);
+    bool isBetween1 = isBetween(nodePt, b1, aLo, aHi);
     
     return isBetween0 != isBetween1;
     */
@@ -76,17 +76,17 @@ public class PolygonNodeTopology
    * @param b the other vertex of the test segment
    * @return true if the segment is interior to the ring corner
    */
-  public static boolean isInteriorSegment(Coordinate nodePt, Coordinate a0, Coordinate a1, Coordinate b) {
+  static bool isInteriorSegment(Coordinate nodePt, Coordinate a0, Coordinate a1, Coordinate b) {
     Coordinate aLo = a0;
     Coordinate aHi = a1;
-    boolean isInteriorBetween = true;
+    bool isInteriorBetween = true;
     if (isAngleGreater(nodePt, aLo, aHi)) {
       aLo = a1;
       aHi = a0;
       isInteriorBetween = false;
     }
-    boolean isBetween = isBetween(nodePt, b, aLo, aHi);
-    boolean isInterior = (isBetween && isInteriorBetween)
+    bool isBetween = isBetween(nodePt, b, aLo, aHi);
+    bool isInterior = (isBetween && isInteriorBetween)
         || (! isBetween && ! isInteriorBetween);
     return isInterior;
   }
@@ -103,10 +103,10 @@ public class PolygonNodeTopology
    * @param e1 the destination point of edge e1
    * @return true if p is between e0 and e1
    */
-  private static boolean isBetween(Coordinate origin, Coordinate p, Coordinate e0, Coordinate e1) {
-    boolean isGreater0 = isAngleGreater(origin, p, e0);
+  private static bool isBetween(Coordinate origin, Coordinate p, Coordinate e0, Coordinate e1) {
+    bool isGreater0 = isAngleGreater(origin, p, e0);
     if (! isGreater0) return false;
-    boolean isGreater1 = isAngleGreater(origin, p, e1);
+    bool isGreater1 = isAngleGreater(origin, p, e1);
     return ! isGreater1;
   }
 
@@ -141,7 +141,7 @@ public class PolygonNodeTopology
    * @param q the endpoint of the vector Q
    * @return true if vector P has angle greater than Q
    */
-  private static boolean isAngleGreater(Coordinate origin, Coordinate p, Coordinate q) {      
+  private static bool isAngleGreater(Coordinate origin, Coordinate p, Coordinate q) {      
     int quadrantP = quadrant(origin, p);
     int quadrantQ = quadrant(origin, q);
 
@@ -168,7 +168,7 @@ public class PolygonNodeTopology
    * @param q the endpoint of the vector Q
    * @return a negative integer, zero, or a positive integer as this vector P has angle less than, equal to, or greater than vector Q
    */
-  public static int compareAngle(Coordinate origin, Coordinate p, Coordinate q) {      
+  static int compareAngle(Coordinate origin, Coordinate p, Coordinate q) {      
     int quadrantP = quadrant(origin, p);
     int quadrantQ = quadrant(origin, q);
 

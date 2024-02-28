@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * Coordinate subclass supporting XYM ordinates.
@@ -20,17 +20,17 @@ package org.locationtech.jts.geom;
  * 
  * @since 1.16
  */
-public class CoordinateXYM extends Coordinate {
+class CoordinateXYM extends Coordinate {
   private static final long serialVersionUID = 2842127537691165613L;
 
   /** Standard ordinate index value for X */
-  public static final int X = 0;
+  static final int X = 0;
 
   /** Standard ordinate index value for Y */
-  public static final int Y = 1;
+  static final int Y = 1;
 
   /** CoordinateXYM does not support Z values. */
-  public static final int Z = -1;
+  static final int Z = -1;
 
   /**
    * Standard ordinate index value for M in XYM sequences.
@@ -38,10 +38,10 @@ public class CoordinateXYM extends Coordinate {
    * <p>This constant assumes XYM coordinate sequence definition.  Check this assumption using
    * {@link CoordinateSequence#getDimension()} and {@link CoordinateSequence#getMeasures()} before use.
    */
-  public static final int M = 2;
+  static final int M = 2;
 
   /** Default constructor */
-  public CoordinateXYM() {
+  CoordinateXYM() {
     super();
     this.m = 0.0;
   }
@@ -53,7 +53,7 @@ public class CoordinateXYM extends Coordinate {
    * @param y the Y ordinate
    * @param m the M measure value
    */
-  public CoordinateXYM(double x, double y, double m) {
+  CoordinateXYM(double x, double y, double m) {
     super(x, y, Coordinate.NULL_ORDINATE);
     this.m = m;
   }
@@ -63,7 +63,7 @@ public class CoordinateXYM extends Coordinate {
    * 
    * @param coord the coordinate providing the ordinates
    */
-  public CoordinateXYM(Coordinate coord) {
+  CoordinateXYM(Coordinate coord) {
     super(coord.x,coord.y);
     m = getM();
   }
@@ -73,7 +73,7 @@ public class CoordinateXYM extends Coordinate {
    * 
    * @param coord the coordinate providing the ordinates
    */
-  public CoordinateXYM(CoordinateXYM coord) {
+  CoordinateXYM(CoordinateXYM coord) {
     super(coord.x,coord.y);
     m = coord.m;
   }
@@ -83,7 +83,7 @@ public class CoordinateXYM extends Coordinate {
    * 
    * @return a copy of this CoordinateXYM
    */
-  public CoordinateXYM copy() {
+  CoordinateXYM copy() {
     return new CoordinateXYM(this);
   }
   
@@ -93,7 +93,7 @@ public class CoordinateXYM extends Coordinate {
    * @return a new Coordinate
    */
   @Override
-  public Coordinate create() {
+  Coordinate create() {
       return new CoordinateXYM();
   }
     
@@ -101,28 +101,28 @@ public class CoordinateXYM extends Coordinate {
   protected double m;
 
   /** The m-measure, if available. */
-  public double getM() {
+  double getM() {
     return m;
   }
 
-  public void setM(double m) {
+  void setM(double m) {
     this.m = m;
   }
   
   /** The z-ordinate is not supported */
   @Override
-  public double getZ() {
+  double getZ() {
       return NULL_ORDINATE;
   }
 
   /** The z-ordinate is not supported */
   @Override
-  public void setZ(double z) {
-      throw new IllegalArgumentException("CoordinateXY dimension 2 does not support z-ordinate");
+  void setZ(double z) {
+      throw new ArgumentError("CoordinateXY dimension 2 does not support z-ordinate");
   }
   
   @Override
-  public void setCoordinate(Coordinate other)
+  void setCoordinate(Coordinate other)
   {
     x = other.x;
     y = other.y;
@@ -131,17 +131,17 @@ public class CoordinateXYM extends Coordinate {
   }
   
   @Override
-  public double getOrdinate(int ordinateIndex) {
+  double getOrdinate(int ordinateIndex) {
       switch (ordinateIndex) {
       case X: return x;
       case Y: return y;
       case M: return m;
       }
-      throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+      throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
   }
   
   @Override
-  public void setOrdinate(int ordinateIndex, double value) {
+  void setOrdinate(int ordinateIndex, double value) {
       switch (ordinateIndex) {
       case X:
         x = value;
@@ -153,11 +153,11 @@ public class CoordinateXYM extends Coordinate {
         m = value;
         break;
       default:
-        throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+        throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
     }
   }
   
-  public String toString() {
+  String toString() {
     return "(" + x + ", " + y + " m=" + getM() + ")";
   }
 }

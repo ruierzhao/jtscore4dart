@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation;
+
 
 import org.locationtech.jts.algorithm.BoundaryNodeRule;
 import org.locationtech.jts.algorithm.LineIntersector;
@@ -23,7 +23,7 @@ import org.locationtech.jts.geomgraph.GeometryGraph;
  *
  * @version 1.7
  */
-public class GeometryGraphOperation
+class GeometryGraphOperation
 {
   protected final LineIntersector li = new RobustLineIntersector();
   protected PrecisionModel resultPrecisionModel;
@@ -33,7 +33,7 @@ public class GeometryGraphOperation
    */
   protected GeometryGraph[] arg;  // the arg(s) of the operation
 
-  public GeometryGraphOperation(Geometry g0, Geometry g1)
+  GeometryGraphOperation(Geometry g0, Geometry g1)
   {
     this(g0, g1,
          BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE
@@ -41,7 +41,7 @@ public class GeometryGraphOperation
          );
   }
 
-  public GeometryGraphOperation(Geometry g0, Geometry g1, BoundaryNodeRule boundaryNodeRule)
+  GeometryGraphOperation(Geometry g0, Geometry g1, BoundaryNodeRule boundaryNodeRule)
   {
     // use the most precise model for the result
     if (g0.getPrecisionModel().compareTo(g1.getPrecisionModel()) >= 0)
@@ -54,14 +54,14 @@ public class GeometryGraphOperation
     arg[1] = new GeometryGraph(1, g1, boundaryNodeRule);
   }
 
-  public GeometryGraphOperation(Geometry g0) {
+  GeometryGraphOperation(Geometry g0) {
     setComputationPrecision(g0.getPrecisionModel());
 
     arg = new GeometryGraph[1];
     arg[0] = new GeometryGraph(0, g0);;
   }
 
-  public Geometry getArgGeometry(int i) { return arg[i].getGeometry(); }
+  Geometry getArgGeometry(int i) { return arg[i].getGeometry(); }
 
   protected void setComputationPrecision(PrecisionModel pm)
   {

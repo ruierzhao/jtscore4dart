@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.io;
+
 
 import java.util.EnumSet;
 
@@ -19,7 +19,7 @@ import java.util.EnumSet;
  * <p>
  * Intended to be used as an {@code EnumSet<Ordinate>}, optimized create methods have been provided for {@link #createXY()}, {@link #createXYM()}, {@link #createXYZ()} and {@link #createXYZM()}.
  */
-public enum Ordinate {
+enum Ordinate {
   /**
    * X-ordinate
    */
@@ -46,20 +46,20 @@ public enum Ordinate {
    * EnumSet of X and Y ordinates, a copy is returned as EnumSets are not immutable.
    * @return EnumSet of X and Y ordinates.
    */
-  public static EnumSet<Ordinate> createXY() { return XY.clone(); }
+  static EnumSet<Ordinate> createXY() { return XY.clone(); }
   /**
    * EnumSet of XYZ ordinates, a copy is returned as EnumSets are not immutable.
    * @return EnumSet of X and Y ordinates.
    */
-  public static EnumSet<Ordinate> createXYZ() { return XYZ.clone(); }
+  static EnumSet<Ordinate> createXYZ() { return XYZ.clone(); }
   /**
    * EnumSet of XYM ordinates, a copy is returned as EnumSets are not immutable.
    * @return EnumSet of X and Y ordinates.
    */
-  public static EnumSet<Ordinate> createXYM() { return XYM.clone(); }
+  static EnumSet<Ordinate> createXYM() { return XYM.clone(); }
   /**
    * EnumSet of XYZM ordinates, a copy is returned as EnumSets are not immutable.
    * @return EnumSet of X and Y ordinates.
    */
-  public static EnumSet<Ordinate> createXYZM() { return XYZM.clone(); }
+  static EnumSet<Ordinate> createXYZM() { return XYZM.clone(); }
 }

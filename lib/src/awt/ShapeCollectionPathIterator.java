@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.awt;
+
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -22,33 +22,33 @@ import java.util.Iterator;
  * 
  * @author Martin Davis
  */
-public class ShapeCollectionPathIterator implements PathIterator {
+class ShapeCollectionPathIterator implements PathIterator {
     private Iterator shapeIterator;
     
     // initialize with a no-op iterator
     private PathIterator currentPathIterator = new PathIterator() {
-            public int getWindingRule() {
+            int getWindingRule() {
                 throw new UnsupportedOperationException();
             }
 
-            public boolean isDone() {
+            bool isDone() {
                 return true;
             }
 
-            public void next() {
+            void next() {
             }
 
-            public int currentSegment(float[] coords) {
+            int currentSegment(float[] coords) {
                 throw new UnsupportedOperationException();
             }
 
-            public int currentSegment(double[] coords) {
+            int currentSegment(double[] coords) {
                 throw new UnsupportedOperationException();
             }
         };
 
     private AffineTransform affineTransform;
-    private boolean done = false;
+    private bool done = false;
 
     /**
      * Creates a new path iterator for a collection of {@link Shape}s.
@@ -56,14 +56,14 @@ public class ShapeCollectionPathIterator implements PathIterator {
      * @param shapes the Shapes in the collection
      * @param affineTransform a optional transformation to be applied to the coordinates in the path (may be null)
      */
-    public ShapeCollectionPathIterator(Collection shapes,
+    ShapeCollectionPathIterator(Collection shapes,
         AffineTransform affineTransform) {
         shapeIterator = shapes.iterator();
         this.affineTransform = affineTransform;
         next();
     }
 
-    public int getWindingRule() {
+    int getWindingRule() {
     	/**
        * WIND_NON_ZERO is more accurate than WIND_EVEN_ODD, and can be comparable
        * in speed. (See http://www.geometryalgorithms.com/Archive/algorithm_0103/algorithm_0103.htm#Winding%20Number)
@@ -74,11 +74,11 @@ public class ShapeCollectionPathIterator implements PathIterator {
       return PathIterator.WIND_EVEN_ODD;
     }
 
-    public boolean isDone() {
+    bool isDone() {
         return done;
     }
 
-    public void next() {
+    void next() {
         currentPathIterator.next();
 
         if (currentPathIterator.isDone() && !shapeIterator.hasNext()) {
@@ -90,11 +90,11 @@ public class ShapeCollectionPathIterator implements PathIterator {
         }
     }
 
-    public int currentSegment(float[] coords) {
+    int currentSegment(float[] coords) {
         return currentPathIterator.currentSegment(coords);
     }
 
-    public int currentSegment(double[] coords) {
+    int currentSegment(double[] coords) {
         return currentPathIterator.currentSegment(coords);
     }
 }

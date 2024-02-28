@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer.validate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -32,24 +32,24 @@ import org.locationtech.jts.geom.Geometry;
  * @author mbdavis
  *
  */
-public class BufferCurveMaximumDistanceFinder 
+class BufferCurveMaximumDistanceFinder 
 {
 	private Geometry inputGeom;
   private PointPairDistance maxPtDist = new PointPairDistance();
 
-	public BufferCurveMaximumDistanceFinder(Geometry inputGeom)
+	BufferCurveMaximumDistanceFinder(Geometry inputGeom)
 	{
 		this.inputGeom = inputGeom;
 	}
 	
-	public double findDistance(Geometry bufferCurve)
+	double findDistance(Geometry bufferCurve)
 	{
     computeMaxVertexDistance(bufferCurve);
     computeMaxMidpointDistance(bufferCurve);
     return maxPtDist.getDistance();
 	}
 	
-	public PointPairDistance getDistancePoints()
+	PointPairDistance getDistancePoints()
 	{
 		return maxPtDist;
 	}
@@ -67,38 +67,38 @@ public class BufferCurveMaximumDistanceFinder
     maxPtDist.setMaximum(distFilter.getMaxPointDistance());
 	}
 	
-  public static class MaxPointDistanceFilter implements CoordinateFilter {
+  static class MaxPointDistanceFilter implements CoordinateFilter {
 		private PointPairDistance maxPtDist = new PointPairDistance();
 		private PointPairDistance minPtDist = new PointPairDistance();
 		private Geometry geom;
 
-		public MaxPointDistanceFilter(Geometry geom) {
+		MaxPointDistanceFilter(Geometry geom) {
 			this.geom = geom;
 		}
 
-		public void filter(Coordinate pt) {
+		void filter(Coordinate pt) {
 			minPtDist.initialize();
 			DistanceToPointFinder.computeDistance(geom, pt, minPtDist);
 			maxPtDist.setMaximum(minPtDist);
 		}
 
-		public PointPairDistance getMaxPointDistance() {
+		PointPairDistance getMaxPointDistance() {
 			return maxPtDist;
 		}
 	}
 
-  public static class MaxMidpointDistanceFilter 
+  static class MaxMidpointDistanceFilter 
   	implements CoordinateSequenceFilter 
   	{
 		private PointPairDistance maxPtDist = new PointPairDistance();
 		private PointPairDistance minPtDist = new PointPairDistance();
 		private Geometry geom;
 
-		public MaxMidpointDistanceFilter(Geometry geom) {
+		MaxMidpointDistanceFilter(Geometry geom) {
 			this.geom = geom;
 		}
 
-		public void filter(CoordinateSequence seq, int index) 
+		void filter(CoordinateSequence seq, int index) 
 		{
 			if (index == 0)
 				return;
@@ -114,11 +114,11 @@ public class BufferCurveMaximumDistanceFinder
 			maxPtDist.setMaximum(minPtDist);
 		}
 
-		public boolean isGeometryChanged() { return false; }
+		bool isGeometryChanged() { return false; }
 		
-		public boolean isDone() { return false; }
+		bool isDone() { return false; }
 		
-		public PointPairDistance getMaxPointDistance() {
+		PointPairDistance getMaxPointDistance() {
 			return maxPtDist;
 		}
 	}

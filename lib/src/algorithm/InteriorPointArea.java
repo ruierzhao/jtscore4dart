@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +69,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.17
  */
-public class InteriorPointArea {
+class InteriorPointArea {
   
   /**
    * Computes an interior point for the
@@ -79,7 +79,7 @@ public class InteriorPointArea {
    * @return the computed interior point,
    * or <code>null</code> if the geometry has no polygonal components
    */
-  public static Coordinate getInteriorPoint(Geometry geom) {
+  static Coordinate getInteriorPoint(Geometry geom) {
     InteriorPointArea intPt = new InteriorPointArea(geom);
     return intPt.getInteriorPoint();
   }
@@ -96,7 +96,7 @@ public class InteriorPointArea {
    * 
    * @param g an areal geometry
    */
-  public InteriorPointArea(Geometry g) {
+  InteriorPointArea(Geometry g) {
     process(g);
   }
 
@@ -106,7 +106,7 @@ public class InteriorPointArea {
    * @return the coordinate of an interior point
    *  or <code>null</code> if the input geometry is empty
    */
-  public Coordinate getInteriorPoint() {
+  Coordinate getInteriorPoint() {
     return interiorPoint;
   }
 
@@ -167,7 +167,7 @@ public class InteriorPointArea {
      * 
      * @param polygon the polygon to test
      */
-    public InteriorPointPolygon(Polygon polygon) {
+    InteriorPointPolygon(Polygon polygon) {
       this.polygon = polygon;
       interiorPointY = ScanLineYOrdinateFinder.getScanLineY(polygon);
     }
@@ -178,7 +178,7 @@ public class InteriorPointArea {
      * @return the interior point coordinate,
      *  or <code>null</code> if the input geometry is empty
      */
-    public Coordinate getInteriorPoint() {
+    Coordinate getInteriorPoint() {
       return interiorPoint;
     }
 
@@ -188,7 +188,7 @@ public class InteriorPointArea {
      * 
      * @return the width
      */
-    public double getWidth() {
+    double getWidth() {
       return interiorSectionWidth;
     }
 
@@ -196,7 +196,7 @@ public class InteriorPointArea {
      * Compute the interior point.
      * 
      */
-    public void process() {
+    void process() {
       /**
        * This results in returning a null Coordinate
        */
@@ -285,7 +285,7 @@ public class InteriorPointArea {
      * @param scanY the Y-ordinate of the horizontal line
      * @return true if the edge crossing is counted
      */
-    private static boolean isEdgeCrossingCounted(Coordinate p0, Coordinate p1, double scanY) {
+    private static bool isEdgeCrossingCounted(Coordinate p0, Coordinate p1, double scanY) {
       double y0 = p0.getY();
       double y1 = p1.getY();
       // skip horizontal lines
@@ -335,7 +335,7 @@ public class InteriorPointArea {
      * @param y the Y-ordinate of the horizontal line
      * @return true if the envelope and line intersect
      */
-    private static boolean intersectsHorizontalLine(Envelope env, double y) {
+    private static bool intersectsHorizontalLine(Envelope env, double y) {
       if ( y < env.getMinY() )
         return false;
       if ( y > env.getMaxY() )
@@ -351,7 +351,7 @@ public class InteriorPointArea {
      * @param y the Y-ordinate of the horizontal line
      * @return true if the segment and line intersect
      */
-    private static boolean intersectsHorizontalLine(Coordinate p0, Coordinate p1, double y) {
+    private static bool intersectsHorizontalLine(Coordinate p0, Coordinate p1, double y) {
       // both ends above?
       if ( p0.getY() > y && p1.getY() > y )
         return false;
@@ -407,7 +407,7 @@ public class InteriorPointArea {
    *
    */
   private static class ScanLineYOrdinateFinder {
-    public static double getScanLineY(Polygon poly) {
+    static double getScanLineY(Polygon poly) {
       ScanLineYOrdinateFinder finder = new ScanLineYOrdinateFinder(poly);
       return finder.getScanLineY();
     }
@@ -418,7 +418,7 @@ public class InteriorPointArea {
     private double hiY = Double.MAX_VALUE;
     private double loY = -Double.MAX_VALUE;
 
-    public ScanLineYOrdinateFinder(Polygon poly) {
+    ScanLineYOrdinateFinder(Polygon poly) {
       this.poly = poly;
 
       // initialize using extremal values
@@ -427,7 +427,7 @@ public class InteriorPointArea {
       centreY = avg(loY, hiY);
     }
 
-    public double getScanLineY() {
+    double getScanLineY() {
       process(poly.getExteriorRing());
       for (int i = 0; i < poly.getNumInteriorRing(); i++) {
         process(poly.getInteriorRingN(i));

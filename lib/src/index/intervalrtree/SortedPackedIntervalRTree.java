@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.intervalrtree;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ import org.locationtech.jts.index.ItemVisitor;
  * 
  * @author Martin Davis
  */
-public class SortedPackedIntervalRTree 
+class SortedPackedIntervalRTree 
 {
   private final List leaves = new ArrayList();
   
@@ -45,7 +45,7 @@ public class SortedPackedIntervalRTree
    */
 	private volatile IntervalRTreeNode root = null;
 
-	public SortedPackedIntervalRTree()
+	SortedPackedIntervalRTree()
 	{
 		
 	}
@@ -59,7 +59,7 @@ public class SortedPackedIntervalRTree
    * 
    * @throws IllegalStateException if the index has already been queried
    */
-	public void insert(double min, double max, Object item)
+	void insert(double min, double max, Object item)
 	{
     if (root != null)
       throw new IllegalStateException("Index cannot be added to once it has been queried");
@@ -144,7 +144,7 @@ public class SortedPackedIntervalRTree
    * @param max the upper bound of the query interval
    * @param visitor the visitor to pass any matched items to
    */
-	public void query(double min, double max, ItemVisitor visitor)
+	void query(double min, double max, ItemVisitor visitor)
 	{
     init();
     

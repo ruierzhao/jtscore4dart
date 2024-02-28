@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.algorithm.distance;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -54,15 +54,15 @@ import org.locationtech.jts.geom.Geometry;
  *   HD(A, B) ~= 47.8
  * </pre>
  */
-public class DiscreteHausdorffDistance
+class DiscreteHausdorffDistance
 {
-  public static double distance(Geometry g0, Geometry g1)
+  static double distance(Geometry g0, Geometry g1)
   {
     DiscreteHausdorffDistance dist = new DiscreteHausdorffDistance(g0, g1);
     return dist.distance();
   }
 
-  public static double distance(Geometry g0, Geometry g1, double densifyFrac)
+  static double distance(Geometry g0, Geometry g1, double densifyFrac)
   {
     DiscreteHausdorffDistance dist = new DiscreteHausdorffDistance(g0, g1);
     dist.setDensifyFraction(densifyFrac);
@@ -78,7 +78,7 @@ public class DiscreteHausdorffDistance
    */
   private double densifyFrac = 0.0;
 
-  public DiscreteHausdorffDistance(Geometry g0, Geometry g1)
+  DiscreteHausdorffDistance(Geometry g0, Geometry g1)
   {
     this.g0 = g0;
     this.g1 = g1;
@@ -92,28 +92,28 @@ public class DiscreteHausdorffDistance
    * 
    * @param densifyFrac
    */
-  public void setDensifyFraction(double densifyFrac)
+  void setDensifyFraction(double densifyFrac)
   {
     if (densifyFrac > 1.0 
         || densifyFrac <= 0.0)
-      throw new IllegalArgumentException("Fraction is not in range (0.0 - 1.0]");
+      throw new ArgumentError("Fraction is not in range (0.0 - 1.0]");
         
     this.densifyFrac = densifyFrac;
   }
   
-  public double distance() 
+  double distance() 
   { 
     compute(g0, g1);
     return ptDist.getDistance(); 
   }
 
-  public double orientedDistance() 
+  double orientedDistance() 
   { 
     computeOrientedDistance(g0, g1, ptDist);
     return ptDist.getDistance(); 
   }
 
-  public Coordinate[] getCoordinates() { return ptDist.getCoordinates(); }
+  List<Coordinate> getCoordinates() { return ptDist.getCoordinates(); }
 
   private void compute(Geometry g0, Geometry g1)
   {
@@ -135,29 +135,29 @@ public class DiscreteHausdorffDistance
     }
   }
 
-  public static class MaxPointDistanceFilter
+  static class MaxPointDistanceFilter
       implements CoordinateFilter
   {
     private PointPairDistance maxPtDist = new PointPairDistance();
     private PointPairDistance minPtDist = new PointPairDistance();
     private Geometry geom;
 
-    public MaxPointDistanceFilter(Geometry geom)
+    MaxPointDistanceFilter(Geometry geom)
     {
       this.geom = geom;
     }
 
-    public void filter(Coordinate pt)
+    void filter(Coordinate pt)
     {
       minPtDist.initialize();
       DistanceToPoint.computeDistance(geom, pt, minPtDist);
       maxPtDist.setMaximum(minPtDist);
     }
 
-    public PointPairDistance getMaxPointDistance() { return maxPtDist; }
+    PointPairDistance getMaxPointDistance() { return maxPtDist; }
   }
   
-  public static class MaxDensifiedByFractionDistanceFilter 
+  static class MaxDensifiedByFractionDistanceFilter 
   implements CoordinateSequenceFilter 
   {
   private PointPairDistance maxPtDist = new PointPairDistance();
@@ -165,12 +165,12 @@ public class DiscreteHausdorffDistance
   private Geometry geom;
   private int numSubSegs = 0;
 
-  public MaxDensifiedByFractionDistanceFilter(Geometry geom, double fraction) {
+  MaxDensifiedByFractionDistanceFilter(Geometry geom, double fraction) {
     this.geom = geom;
     numSubSegs = (int) Math.rint(1.0/fraction);
   }
 
-  public void filter(CoordinateSequence seq, int index) 
+  void filter(CoordinateSequence seq, int index) 
   {
     /**
      * This logic also handles skipping Point geometries
@@ -196,11 +196,11 @@ public class DiscreteHausdorffDistance
     
   }
 
-  public boolean isGeometryChanged() { return false; }
+  bool isGeometryChanged() { return false; }
   
-  public boolean isDone() { return false; }
+  bool isDone() { return false; }
   
-  public PointPairDistance getMaxPointDistance() {
+  PointPairDistance getMaxPointDistance() {
     return maxPtDist;
   }
 }

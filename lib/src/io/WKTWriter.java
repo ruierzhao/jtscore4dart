@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 
 import java.io.IOException;
@@ -53,7 +53,7 @@ import org.locationtech.jts.util.Assert;
  * @version 1.7
  * @see WKTReader
  */
-public class WKTWriter
+class WKTWriter
 {
   /**
    * Generates the WKT for a <tt>POINT</tt>
@@ -63,7 +63,7 @@ public class WKTWriter
    *
    * @return the WKT
    */
-  public static String toPoint(Coordinate p0)
+  static String toPoint(Coordinate p0)
   {
     return WKTConstants.POINT + " ( " + format(p0) + " )";
   }
@@ -76,7 +76,7 @@ public class WKTWriter
    *
    * @return the WKT string
    */
-  public static String toLineString(CoordinateSequence seq)
+  static String toLineString(CoordinateSequence seq)
   {
     StringBuilder buf = new StringBuilder();
     buf.append(WKTConstants.LINESTRING);
@@ -103,7 +103,7 @@ public class WKTWriter
    *
    * @return the WKT string
    */
-  public static String toLineString(Coordinate[] coord)
+  static String toLineString(List<Coordinate> coord)
   {
     StringBuilder buf = new StringBuilder();
     buf.append(WKTConstants.LINESTRING);
@@ -131,12 +131,12 @@ public class WKTWriter
    *
    * @return the WKT
    */
-  public static String toLineString(Coordinate p0, Coordinate p1)
+  static String toLineString(Coordinate p0, Coordinate p1)
   {
     return WKTConstants.LINESTRING + " ( " + format(p0) + ", " + format(p1) + " )";
   }
 
-  public static String format(Coordinate p) {
+  static String format(Coordinate p) {
     return format(p.x, p.y);
   }
   
@@ -196,7 +196,7 @@ public class WKTWriter
     }
 
     /** @see org.locationtech.jts.geom.CoordinateSequenceFilter#isGeometryChanged */
-    public void filter(CoordinateSequence seq, int i) {
+    void filter(CoordinateSequence seq, int i) {
 
       if (checkOrdinateFlags.contains(Ordinate.Z) && !outputOrdinates.contains(Ordinate.Z)) {
         if (!Double.isNaN(seq.getZ(i)))
@@ -210,12 +210,12 @@ public class WKTWriter
     }
 
     /** @see org.locationtech.jts.geom.CoordinateSequenceFilter#isGeometryChanged */
-    public boolean isGeometryChanged() {
+    bool isGeometryChanged() {
       return false;
     }
 
     /** @see org.locationtech.jts.geom.CoordinateSequenceFilter#isDone */
-    public boolean isDone() {
+    bool isDone() {
       return outputOrdinates.equals(checkOrdinateFlags);
     }
 
@@ -233,14 +233,14 @@ public class WKTWriter
   private final int outputDimension;
   private PrecisionModel precisionModel = null;
   private OrdinateFormat ordinateFormat = null;
-  private boolean isFormatted = false;
+  private bool isFormatted = false;
   private int coordsPerLine = -1;
   private String indentTabStr ;
 
   /**
    * Creates a new WKTWriter with default settings
    */
-  public WKTWriter()
+  WKTWriter()
   {
     this(OUTPUT_DIMENSION);
   }
@@ -264,13 +264,13 @@ public class WKTWriter
    *
    * @param outputDimension the coordinate dimension to output (2 to 4)
    */
-  public WKTWriter(int outputDimension) {
+  WKTWriter(int outputDimension) {
 
     setTab(INDENT);
     this.outputDimension = outputDimension;
 
     if (outputDimension < 2 || outputDimension > 4)
-      throw new IllegalArgumentException("Invalid output dimension (must be 2 to 4)");
+      throw new ArgumentError("Invalid output dimension (must be 2 to 4)");
 
     this.outputOrdinates = EnumSet.of(Ordinate.X, Ordinate.Y);
     if (outputDimension > 2)
@@ -284,7 +284,7 @@ public class WKTWriter
    *
    * @param isFormatted true if the output is to be formatted
    */
-  public void setFormatted(boolean isFormatted)
+  void setFormatted(bool isFormatted)
   {
     this.isFormatted = isFormatted;
   }
@@ -297,7 +297,7 @@ public class WKTWriter
    *
    * @param coordsPerLine the number of coordinates per line to output.
    */
-  public void setMaxCoordinatesPerLine(int coordsPerLine)
+  void setMaxCoordinatesPerLine(int coordsPerLine)
   {
     this.coordsPerLine = coordsPerLine;
   }
@@ -306,12 +306,12 @@ public class WKTWriter
    * Sets the tab size to use for indenting.
    *
    * @param size the number of spaces to use as the tab string
-   * @throws IllegalArgumentException if the size is non-positive
+   * @throws ArgumentError if the size is non-positive
    */
-  public void setTab(int size)
+  void setTab(int size)
   {
     if(size <= 0)
-      throw new IllegalArgumentException("Tab count must be positive");
+      throw new ArgumentError("Tab count must be positive");
     this.indentTabStr = stringOfChar(' ', size);
   }
 
@@ -328,7 +328,7 @@ public class WKTWriter
    *
    * @param outputOrdinates A set of {@link Ordinate} values
    */
-  public void setOutputOrdinates(EnumSet<Ordinate> outputOrdinates) {
+  void setOutputOrdinates(EnumSet<Ordinate> outputOrdinates) {
 
     this.outputOrdinates.remove(Ordinate.Z);
     this.outputOrdinates.remove(Ordinate.M);
@@ -352,7 +352,7 @@ public class WKTWriter
    * @return an ordinate bit-pattern
    * @see #setOutputOrdinates(EnumSet)
    */
-  public EnumSet<Ordinate> getOutputOrdinates() {
+  EnumSet<Ordinate> getOutputOrdinates() {
     return this.outputOrdinates;
   }
 
@@ -365,7 +365,7 @@ public class WKTWriter
    * @param precisionModel
    *    the flag indicating if {@link Coordinate#z}/{} is actually a measure value.
    */
-  public void setPrecisionModel(PrecisionModel precisionModel) {
+  void setPrecisionModel(PrecisionModel precisionModel) {
     this.precisionModel = precisionModel;
     this.ordinateFormat = OrdinateFormat.create(precisionModel.getMaximumSignificantDigits());
   }
@@ -377,7 +377,7 @@ public class WKTWriter
    *@return           a &lt;Geometry Tagged Text&gt; string (see the OpenGIS Simple
    *      Features Specification)
    */
-  public String write(Geometry geometry)
+  String write(Geometry geometry)
   {
     Writer sw = new StringWriter();
 
@@ -395,7 +395,7 @@ public class WKTWriter
    *
    *@param  geometry  a <code>Geometry</code> to process
    */
-  public void write(Geometry geometry, Writer writer)
+  void write(Geometry geometry, Writer writer)
     throws IOException
   {
     // write the geometry
@@ -410,7 +410,7 @@ public class WKTWriter
    *@return           a &lt;Geometry Tagged Text&gt; string (see the OpenGIS Simple
    *      Features Specification), with newlines and spaces
    */
-  public String writeFormatted(Geometry geometry)
+  String writeFormatted(Geometry geometry)
   {
     Writer sw = new StringWriter();
     try {
@@ -427,7 +427,7 @@ public class WKTWriter
    *
    *@param  geometry  a <code>Geometry</code> to process
    */
-  public void writeFormatted(Geometry geometry, Writer writer)
+  void writeFormatted(Geometry geometry, Writer writer)
     throws IOException
   {
     writeFormatted(geometry, true, writer);
@@ -437,7 +437,7 @@ public class WKTWriter
    *
    *@param  geometry  a <code>Geometry</code> to process
    */
-  private void writeFormatted(Geometry geometry, boolean useFormatting, Writer writer)
+  private void writeFormatted(Geometry geometry, bool useFormatting, Writer writer)
     throws IOException
   {
     OrdinateFormat formatter = getFormatter(geometry);
@@ -466,7 +466,7 @@ public class WKTWriter
    * @param  formatter       the <code>DecimalFormatter</code> to use to convert
    *      from a precise coordinate to an external coordinate
    */
-  private void appendGeometryTaggedText(Geometry geometry, boolean useFormatting, Writer writer,
+  private void appendGeometryTaggedText(Geometry geometry, bool useFormatting, Writer writer,
                                         OrdinateFormat formatter)
     throws IOException
   {
@@ -490,7 +490,7 @@ public class WKTWriter
    *      from a precise coordinate to an external coordinate
    */
   private void appendGeometryTaggedText(
-          Geometry geometry, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          Geometry geometry, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
 
@@ -546,7 +546,7 @@ public class WKTWriter
    * @param  formatter          the formatter to use when writing numbers
    */
   private void appendPointTaggedText(
-          Point point, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          Point point, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -569,7 +569,7 @@ public class WKTWriter
    *      from a precise coordinate to an external coordinate
    */
   private void appendLineStringTaggedText(
-          LineString lineString, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          LineString lineString, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -592,7 +592,7 @@ public class WKTWriter
    *      from a precise coordinate to an external coordinate
    */
   private void appendLinearRingTaggedText(
-          LinearRing linearRing, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          LinearRing linearRing, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -615,7 +615,7 @@ public class WKTWriter
    *      from a precise coordinate to an external coordinate
    */
   private void appendPolygonTaggedText(
-          Polygon polygon, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          Polygon polygon, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -638,7 +638,7 @@ public class WKTWriter
    *      from a precise coordinate to an external coordinate
    */
   private void appendMultiPointTaggedText(MultiPoint multipoint, EnumSet<Ordinate> outputOrdinates,
-                                          boolean useFormatting, int level, Writer writer,
+                                          bool useFormatting, int level, Writer writer,
                                           OrdinateFormat formatter)
     throws IOException
   {
@@ -660,7 +660,7 @@ public class WKTWriter
    *      from a precise coordinate to an external coordinate
    */
   private void appendMultiLineStringTaggedText(
-          MultiLineString multiLineString, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          MultiLineString multiLineString, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -683,7 +683,7 @@ public class WKTWriter
    *      from a precise coordinate to an external coordinate
    */
   private void appendMultiPolygonTaggedText(
-          MultiPolygon multiPolygon, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          MultiPolygon multiPolygon, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -706,7 +706,7 @@ public class WKTWriter
    *      from a precise coordinate to an external coordinate
    */
   private void appendGeometryCollectionTaggedText(
-          GeometryCollection geometryCollection, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          GeometryCollection geometryCollection, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -797,8 +797,8 @@ public class WKTWriter
    * @param  writer          the output writer to append to
    * @param  formatter       the formatter to use for writing ordinate values.
    */
-  private void appendSequenceText(CoordinateSequence seq, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
-                                  int level, boolean indentFirst, Writer writer, OrdinateFormat formatter)
+  private void appendSequenceText(CoordinateSequence seq, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
+                                  int level, bool indentFirst, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
     if (seq.size() == 0) {
@@ -834,8 +834,8 @@ public class WKTWriter
    * @param  formatter       the formatter to use for writing ordinate values.
    */
   private void appendPolygonText(
-          Polygon polygon, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
-          int level, boolean indentFirst, Writer writer, OrdinateFormat formatter)
+          Polygon polygon, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
+          int level, bool indentFirst, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
     if (polygon.isEmpty()) {
@@ -866,7 +866,7 @@ public class WKTWriter
    * @param  formatter       the formatter to use for writing ordinate values.
    */
   private void appendMultiPointText(
-          MultiPoint multiPoint, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          MultiPoint multiPoint, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -900,7 +900,7 @@ public class WKTWriter
    * @param  formatter        the formatter to use for writing ordinate values.
    */
   private void appendMultiLineStringText(MultiLineString multiLineString, EnumSet<Ordinate> outputOrdinates,
-           boolean useFormatting, int level, /*boolean indentFirst, */Writer writer, OrdinateFormat formatter)
+           bool useFormatting, int level, /*bool indentFirst, */Writer writer, OrdinateFormat formatter)
     throws IOException
   {
     if (multiLineString.getNumGeometries() == 0) {
@@ -908,7 +908,7 @@ public class WKTWriter
     }
     else {
       int level2 = level;
-      boolean doIndent = false;
+      bool doIndent = false;
       writer.write("(");
       for (int i = 0; i < multiLineString.getNumGeometries(); i++) {
         if (i > 0) {
@@ -934,7 +934,7 @@ public class WKTWriter
    * @param  formatter       the formatter to use for writing ordinate values.
    */
   private void appendMultiPolygonText(
-          MultiPolygon multiPolygon, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          MultiPolygon multiPolygon, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -943,7 +943,7 @@ public class WKTWriter
     }
     else {
       int level2 = level;
-      boolean doIndent = false;
+      bool doIndent = false;
       writer.write("(");
       for (int i = 0; i < multiPolygon.getNumGeometries(); i++) {
         if (i > 0) {
@@ -969,7 +969,7 @@ public class WKTWriter
    * @param  formatter       the formatter to use for writing ordinate values.
    */
   private void appendGeometryCollectionText(
-          GeometryCollection geometryCollection, EnumSet<Ordinate> outputOrdinates, boolean useFormatting,
+          GeometryCollection geometryCollection, EnumSet<Ordinate> outputOrdinates, bool useFormatting,
           int level, Writer writer, OrdinateFormat formatter)
     throws IOException
   {
@@ -991,7 +991,7 @@ public class WKTWriter
     }
   }
 
-  private void indentCoords(boolean useFormatting, int coordIndex,  int level, Writer writer)
+  private void indentCoords(bool useFormatting, int coordIndex,  int level, Writer writer)
     throws IOException
   {
     if (coordsPerLine <= 0
@@ -1000,7 +1000,7 @@ public class WKTWriter
     indent(useFormatting, level, writer);
   }
 
-  private void indent(boolean useFormatting, int level, Writer writer)
+  private void indent(bool useFormatting, int level, Writer writer)
     throws IOException
   {
     if (! useFormatting || level <= 0)

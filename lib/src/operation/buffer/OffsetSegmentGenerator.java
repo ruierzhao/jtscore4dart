@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.algorithm.Distance;
@@ -101,9 +101,9 @@ class OffsetSegmentGenerator
   private LineSegment offset0 = new LineSegment();
   private LineSegment offset1 = new LineSegment();
   private int side = 0;
-  private boolean hasNarrowConcaveAngle = false;
+  private bool hasNarrowConcaveAngle = false;
 
-  public OffsetSegmentGenerator(PrecisionModel precisionModel,
+  OffsetSegmentGenerator(PrecisionModel precisionModel,
       BufferParameters bufParams, double distance) {
     this.precisionModel = precisionModel;
     this.bufParams = bufParams;
@@ -139,14 +139,14 @@ class OffsetSegmentGenerator
    * 
    * @return true if the input has a narrow concave angle
    */
-  public boolean hasNarrowConcaveAngle()
+  bool hasNarrowConcaveAngle()
   {
     return hasNarrowConcaveAngle;
   }
   
   private void init(double distance)
   {
-    this.distance = Math.abs(distance);
+    this.distance = (distance).abs();
     maxCurveSegmentError = this.distance * (1 - Math.cos(filletAngleQuantum / 2.0));
     segList = new OffsetSegmentString();
     segList.setPrecisionModel(precisionModel);
@@ -157,7 +157,7 @@ class OffsetSegmentGenerator
   }
 
 
-  public void initSideSegments(Coordinate s1, Coordinate s2, int side)
+  void initSideSegments(Coordinate s1, Coordinate s2, int side)
   {
     this.s1 = s1;
     this.s2 = s2;
@@ -166,23 +166,23 @@ class OffsetSegmentGenerator
     computeOffsetSegment(seg1, side, distance, offset1);
   }
 
-  public Coordinate[] getCoordinates()
+  List<Coordinate> getCoordinates()
   {
-    Coordinate[] pts = segList.getCoordinates();
+    List<Coordinate> pts = segList.getCoordinates();
     return pts;
   }
   
-  public void closeRing()
+  void closeRing()
   {
     segList.closeRing();
   }
   
-  public void addSegments(Coordinate[] pt, boolean isForward)
+  void addSegments(List<Coordinate> pt, bool isForward)
   {
     segList.addPts(pt, isForward);
   }
   
-  public void addFirstSegment()
+  void addFirstSegment()
   {
     segList.addPt(offset1.p0);
   }
@@ -190,14 +190,14 @@ class OffsetSegmentGenerator
   /**
    * Add last offset point
    */
-  public void addLastSegment()
+  void addLastSegment()
   {
     segList.addPt(offset1.p1);
   }
 
   //private static double MAX_CLOSING_SEG_LEN = 3.0;
 
-  public void addNextSegment(Coordinate p, boolean addStartPoint)
+  void addNextSegment(Coordinate p, bool addStartPoint)
   {
     // s0-s1-s2 are the coordinates of the previous segment and the current one
     s0 = s1;
@@ -212,7 +212,7 @@ class OffsetSegmentGenerator
     if (s1.equals(s2)) return;
 
     int orientation = Orientation.index(s0, s1, s2);
-    boolean outsideTurn =
+    bool outsideTurn =
           (orientation == Orientation.CLOCKWISE        && side == Position.LEFT)
       ||  (orientation == Orientation.COUNTERCLOCKWISE && side == Position.RIGHT);
 
@@ -228,7 +228,7 @@ class OffsetSegmentGenerator
     }
   }
   
-  private void addCollinear(boolean addStartPoint)
+  private void addCollinear(bool addStartPoint)
   {
     /**
      * This test could probably be done more efficiently,
@@ -268,7 +268,7 @@ class OffsetSegmentGenerator
    * @param orientation
    * @param addStartPoint
    */
-  private void addOutsideTurn(int orientation, boolean addStartPoint)
+  private void addOutsideTurn(int orientation, bool addStartPoint)
   {
     /**
      * Heuristic: If offset endpoints are very close together,
@@ -310,7 +310,7 @@ class OffsetSegmentGenerator
    * @param orientation
    * @param addStartPoint
    */
-  private void addInsideTurn(int orientation, boolean addStartPoint) {
+  private void addInsideTurn(int orientation, bool addStartPoint) {
     /**
      * add intersection point of offset segments (if any)
      */
@@ -411,7 +411,7 @@ class OffsetSegmentGenerator
   /**
    * Add an end cap around point p1, terminating a line segment coming from p0
    */
-  public void addLineEndCap(Coordinate p0, Coordinate p1)
+  void addLineEndCap(Coordinate p0, Coordinate p1)
   {
     LineSegment seg = new LineSegment(p0, p1);
 
@@ -439,8 +439,8 @@ class OffsetSegmentGenerator
       case BufferParameters.CAP_SQUARE:
         // add a square defined by extensions of the offset segment endpoints
         Coordinate squareCapSideOffset = new Coordinate();
-        squareCapSideOffset.x = Math.abs(distance) * Angle.cosSnap(angle);
-        squareCapSideOffset.y = Math.abs(distance) * Angle.sinSnap(angle);
+        squareCapSideOffset.x = (distance).abs() * Angle.cosSnap(angle);
+        squareCapSideOffset.y = (distance).abs() * Angle.sinSnap(angle);
 
         Coordinate squareCapLOffset = new Coordinate(
             offsetL.p1.x + squareCapSideOffset.x,
@@ -630,7 +630,7 @@ class OffsetSegmentGenerator
   {
     int directionFactor = direction == Orientation.CLOCKWISE ? -1 : 1;
 
-    double totalAngle = Math.abs(startAngle - endAngle);
+    double totalAngle = (startAngle - endAngle).abs();
     int nSegs = (int) (totalAngle / filletAngleQuantum + 0.5);
 
     if (nSegs < 1) return;    // no segments because angle is less than increment - nothing to do!
@@ -650,7 +650,7 @@ class OffsetSegmentGenerator
   /**
    * Creates a CW circle around a point
    */
-  public void createCircle(Coordinate p)
+  void createCircle(Coordinate p)
   {
     // add start point
     Coordinate pt = new Coordinate(p.x + distance, p.y);
@@ -662,7 +662,7 @@ class OffsetSegmentGenerator
   /**
    * Creates a CW square around a point
    */
-  public void createSquare(Coordinate p)
+  void createSquare(Coordinate p)
   {
     segList.addPt(new Coordinate(p.x + distance, p.y + distance));
     segList.addPt(new Coordinate(p.x + distance, p.y - distance));

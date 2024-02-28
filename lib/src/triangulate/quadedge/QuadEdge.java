@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineSegment;
@@ -35,7 +35,7 @@ import org.locationtech.jts.io.WKTWriter;
  * @author David Skea
  * @author Martin Davis
  */
-public class QuadEdge 
+class QuadEdge 
 {
     /**
      * Creates a new QuadEdge quartet from {@link Vertex} o to {@link Vertex} d.
@@ -46,7 +46,7 @@ public class QuadEdge
      *          the destination Vertex
      * @return the new QuadEdge quartet
      */
-  public static QuadEdge makeEdge(Vertex o, Vertex d) {
+  static QuadEdge makeEdge(Vertex o, Vertex d) {
     QuadEdge q0 = new QuadEdge();
     QuadEdge q1 = new QuadEdge();
     QuadEdge q2 = new QuadEdge();
@@ -76,7 +76,7 @@ public class QuadEdge
      * 
      * @return the connected edge.
      */
-    public static QuadEdge connect(QuadEdge a, QuadEdge b) {
+    static QuadEdge connect(QuadEdge a, QuadEdge b) {
         QuadEdge e = makeEdge(a.dest(), b.orig());
         splice(e, a.lNext());
         splice(e.sym(), b);
@@ -96,7 +96,7 @@ public class QuadEdge
      * @param b an edge to splice
      * 
      */
-    public static void splice(QuadEdge a, QuadEdge b) {
+    static void splice(QuadEdge a, QuadEdge b) {
         QuadEdge alpha = a.oNext().rot();
         QuadEdge beta = b.oNext().rot();
 
@@ -116,7 +116,7 @@ public class QuadEdge
      * 
      * @param e the quadedge to turn
      */
-    public static void swap(QuadEdge e) {
+    static void swap(QuadEdge e) {
         QuadEdge a = e.oPrev();
         QuadEdge b = e.sym().oPrev();
         splice(e, a);
@@ -151,7 +151,7 @@ public class QuadEdge
      * 
      * @return the primary quadedge
      */
-    public QuadEdge getPrimary()
+    QuadEdge getPrimary()
     {
     	if (orig().getCoordinate().compareTo(dest().getCoordinate()) <= 0)
     		return this;
@@ -164,7 +164,7 @@ public class QuadEdge
      * 
      * @param data an object containing external data
      */
-    public void setData(Object data) {
+    void setData(Object data) {
         this.data = data;
     }
     
@@ -173,7 +173,7 @@ public class QuadEdge
      * 
      * @return the data object
      */
-    public Object getData() {
+    Object getData() {
         return data;
     }
 
@@ -185,7 +185,7 @@ public class QuadEdge
      * in a subdivision.
      *
      */
-    public void delete() {
+    void delete() {
       rot = null;
     }
     
@@ -194,7 +194,7 @@ public class QuadEdge
      * 
      * @return true if this edge has not been deleted.
      */
-    public boolean isLive() {
+    bool isLive() {
       return rot != null;
     }
 
@@ -204,7 +204,7 @@ public class QuadEdge
      * 
      * @param next edge
      */
-    public void setNext(QuadEdge next) {
+    void setNext(QuadEdge next) {
         this.next = next;
     }
     
@@ -218,7 +218,7 @@ public class QuadEdge
      * 
      * @return the rotated edge
      */
-    public final QuadEdge rot() {
+    final QuadEdge rot() {
       return rot;
     }
 
@@ -227,7 +227,7 @@ public class QuadEdge
      * 
      * @return the inverse rotated edge.
      */
-    public final QuadEdge invRot() {
+    final QuadEdge invRot() {
       return rot.sym();
     }
 
@@ -236,7 +236,7 @@ public class QuadEdge
      * 
      * @return the sym of the edge
      */
-    public final QuadEdge sym() {
+    final QuadEdge sym() {
       return rot.rot;
     }
 
@@ -245,7 +245,7 @@ public class QuadEdge
      * 
      * @return the next linked edge.
      */
-    public final QuadEdge oNext() {
+    final QuadEdge oNext() {
         return next;
     }
 
@@ -254,7 +254,7 @@ public class QuadEdge
      * 
      * @return the previous edge.
      */
-    public final QuadEdge oPrev() {
+    final QuadEdge oPrev() {
         return rot.next.rot;
     }
 
@@ -263,7 +263,7 @@ public class QuadEdge
      * 
      * @return the next destination edge.
      */
-    public final QuadEdge dNext() {
+    final QuadEdge dNext() {
         return this.sym().oNext().sym();
     }
 
@@ -272,7 +272,7 @@ public class QuadEdge
      * 
      * @return the previous destination edge.
      */
-    public final QuadEdge dPrev() {
+    final QuadEdge dPrev() {
         return this.invRot().oNext().invRot();
     }
 
@@ -281,7 +281,7 @@ public class QuadEdge
      * 
      * @return the next left face edge.
      */
-    public final QuadEdge lNext() {
+    final QuadEdge lNext() {
         return this.invRot().oNext().rot();
     }
 
@@ -290,7 +290,7 @@ public class QuadEdge
      * 
      * @return the previous left face edge.
      */
-    public final QuadEdge lPrev() {
+    final QuadEdge lPrev() {
         return next.sym();
     }
 
@@ -299,7 +299,7 @@ public class QuadEdge
      * 
      * @return the next right face edge.
      */
-    public final QuadEdge rNext() {
+    final QuadEdge rNext() {
         return rot.next.invRot();
     }
 
@@ -308,7 +308,7 @@ public class QuadEdge
      * 
      * @return the previous right face edge.
      */
-    public final QuadEdge rPrev() {
+    final QuadEdge rPrev() {
         return this.sym().oNext();
     }
 
@@ -338,7 +338,7 @@ public class QuadEdge
      * 
      * @return the origin vertex
      */
-    public final Vertex orig() {
+    final Vertex orig() {
         return vertex;
     }
 
@@ -347,7 +347,7 @@ public class QuadEdge
      * 
      * @return the destination vertex
      */
-    public final Vertex dest() {
+    final Vertex dest() {
         return sym().orig();
     }
 
@@ -356,7 +356,7 @@ public class QuadEdge
      * 
      * @return the length of the quadedge
      */
-    public double getLength() {
+    double getLength() {
         return orig().getCoordinate().distance(dest().getCoordinate());
     }
 
@@ -367,7 +367,7 @@ public class QuadEdge
      * @param qe a quadedge
      * @return true if the quadedges are based on the same line segment regardless of orientation
      */
-    public boolean equalsNonOriented(QuadEdge qe) {
+    bool equalsNonOriented(QuadEdge qe) {
         if (equalsOriented(qe))
             return true;
         if (equalsOriented(qe.sym()))
@@ -382,7 +382,7 @@ public class QuadEdge
      * @param qe a quadedge
      * @return true if the quadedges are based on the same line segment
      */
-    public boolean equalsOriented(QuadEdge qe) {
+    bool equalsOriented(QuadEdge qe) {
         if (orig().getCoordinate().equals2D(qe.orig().getCoordinate())
                 && dest().getCoordinate().equals2D(qe.dest().getCoordinate()))
             return true;
@@ -395,7 +395,7 @@ public class QuadEdge
      * 
      * @return a LineSegment
      */
-    public LineSegment toLineSegment()
+    LineSegment toLineSegment()
     {
     	return new LineSegment(vertex.getCoordinate(), dest().getCoordinate());
     }
@@ -406,7 +406,7 @@ public class QuadEdge
      * 
      * @return a String representing this edge's geometry
      */
-    public String toString() {
+    String toString() {
         Coordinate p0 = vertex.getCoordinate();
         Coordinate p1 = dest().getCoordinate();
         return WKTWriter.toLineString(p0, p1);

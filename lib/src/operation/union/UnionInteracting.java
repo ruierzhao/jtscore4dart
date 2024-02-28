@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.union;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +29,9 @@ import org.locationtech.jts.geom.util.GeometryCombiner;
  * @author mbdavis
  *
  */
-public class UnionInteracting 
+class UnionInteracting 
 {
-	public static Geometry union(Geometry g0, Geometry g1)
+	static Geometry union(Geometry g0, Geometry g1)
 	{
 		UnionInteracting uue = new UnionInteracting(g0, g1);
 		return uue.union();
@@ -43,19 +43,19 @@ public class UnionInteracting
 	private Geometry g0;
 	private Geometry g1;
 	
-	private boolean[] interacts0;
-	private boolean[] interacts1;
+	private bool[] interacts0;
+	private bool[] interacts1;
 	
-	public UnionInteracting(Geometry g0, Geometry g1)
+	UnionInteracting(Geometry g0, Geometry g1)
 	{
 		this.g0 = g0;
 		this.g1 = g1;
 		geomFactory = g0.getFactory();
-		interacts0 = new boolean[g0.getNumGeometries()];
-		interacts1 = new boolean[g1.getNumGeometries()];
+		interacts0 = new bool[g0.getNumGeometries()];
+		interacts1 = new bool[g1.getNumGeometries()];
 	}
 	
-	public Geometry union()
+	Geometry union()
 	{
 		computeInteracting();
 		
@@ -96,12 +96,12 @@ public class UnionInteracting
 		}
 	}
 	
-	private boolean computeInteracting(Geometry elem0)
+	private bool computeInteracting(Geometry elem0)
 	{
-		boolean interactsWithAny = false;
+		bool interactsWithAny = false;
 		for (int i = 0; i < g1.getNumGeometries(); i++) {
 			Geometry elem1 = g1.getGeometryN(i);
-			boolean interacts = elem1.getEnvelopeInternal().intersects(elem0.getEnvelopeInternal());
+			bool interacts = elem1.getEnvelopeInternal().intersects(elem0.getEnvelopeInternal());
 			if (interacts) interacts1[i] = true;
 			if (interacts) 
 				interactsWithAny = true;
@@ -110,7 +110,7 @@ public class UnionInteracting
 	}
 	
   private Geometry extractElements(Geometry geom, 
-  		boolean[] interacts, boolean isInteracting)
+  		bool[] interacts, bool isInteracting)
   {
   	List extractedGeoms = new ArrayList();
   	for (int i = 0; i < geom.getNumGeometries(); i++) { 

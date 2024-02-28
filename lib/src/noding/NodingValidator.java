@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.GeometryFactory;
  *
  * @version 1.7
  */
-public class NodingValidator {
+class NodingValidator {
 
   private LineIntersector li = new RobustLineIntersector();
 
@@ -33,12 +33,12 @@ public class NodingValidator {
   
   private static final GeometryFactory fact = new GeometryFactory();
 
-  public NodingValidator(Collection segStrings)
+  NodingValidator(Collection segStrings)
   {
     this.segStrings = segStrings;
   }
 
-  public void checkValid()
+  void checkValid()
   {
   	// MD - is this call required?  Or could it be done in the Interior Intersection code?
     checkEndPtVertexIntersections();
@@ -59,7 +59,7 @@ public class NodingValidator {
 
   private void checkCollapses(SegmentString ss)
   {
-    Coordinate[] pts = ss.getCoordinates();
+    List<Coordinate> pts = ss.getCoordinates();
     for (int i = 0; i < pts.length - 2; i++) {
       checkCollapse(pts[i], pts[i + 1], pts[i + 2]);
     }
@@ -69,7 +69,7 @@ public class NodingValidator {
   {
     if (p0.equals(p2))
       throw new RuntimeException("found non-noded collapse at "
-        + fact.createLineString(new Coordinate[] { p0, p1, p2}));
+        + fact.createLineString(new List<Coordinate> { p0, p1, p2}));
   }
 
   /**
@@ -89,8 +89,8 @@ public class NodingValidator {
 
   private void checkInteriorIntersections(SegmentString ss0, SegmentString ss1)
   {
-    Coordinate[] pts0 = ss0.getCoordinates();
-    Coordinate[] pts1 = ss1.getCoordinates();
+    List<Coordinate> pts0 = ss0.getCoordinates();
+    List<Coordinate> pts1 = ss1.getCoordinates();
     for (int i0 = 0; i0 < pts0.length - 1; i0++) {
       for (int i1 = 0; i1 < pts1.length - 1; i1++) {
         checkInteriorIntersections(ss0, i0, ss1, i1);
@@ -123,7 +123,7 @@ public class NodingValidator {
   /**
    *@return true if there is an intersection point which is not an endpoint of the segment p0-p1
    */
-  private boolean hasInteriorIntersection(LineIntersector li, Coordinate p0, Coordinate p1)
+  private bool hasInteriorIntersection(LineIntersector li, Coordinate p0, Coordinate p1)
   {
     for (int i = 0; i < li.getIntersectionNum(); i++) {
       Coordinate intPt = li.getIntersection(i);
@@ -141,7 +141,7 @@ public class NodingValidator {
   {
     for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
       SegmentString ss = (SegmentString) i.next();
-      Coordinate[] pts = ss.getCoordinates();
+      List<Coordinate> pts = ss.getCoordinates();
       checkEndPtVertexIntersections(pts[0], segStrings);
       checkEndPtVertexIntersections(pts[pts.length - 1], segStrings);
     }
@@ -151,7 +151,7 @@ public class NodingValidator {
   {
     for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
       SegmentString ss = (SegmentString) i.next();
-      Coordinate[] pts = ss.getCoordinates();
+      List<Coordinate> pts = ss.getCoordinates();
       for (int j = 1; j < pts.length - 1; j++) {
         if (pts[j].equals(testPt))
           throw new RuntimeException("found endpt/interior pt intersection at index " + j + " :pt " + testPt);

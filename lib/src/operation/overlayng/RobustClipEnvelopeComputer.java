@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -32,7 +32,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 class RobustClipEnvelopeComputer {
   
-  public static Envelope getEnvelope(Geometry a, Geometry b, Envelope targetEnv) {
+  static Envelope getEnvelope(Geometry a, Geometry b, Envelope targetEnv) {
     RobustClipEnvelopeComputer cec = new RobustClipEnvelopeComputer(targetEnv);
     cec.add(a);
     cec.add(b);
@@ -42,16 +42,16 @@ class RobustClipEnvelopeComputer {
   private Envelope targetEnv;
   private Envelope clipEnv;
 
-  public RobustClipEnvelopeComputer(Envelope targetEnv) {
+  RobustClipEnvelopeComputer(Envelope targetEnv) {
     this.targetEnv = targetEnv;
     clipEnv = targetEnv.copy();
   }
 
-  public Envelope getEnvelope() {
+  Envelope getEnvelope() {
     return clipEnv;
   }
   
-  public void add(Geometry g) {
+  void add(Geometry g) {
     if ( g == null || g.isEmpty() )
       return;
 
@@ -99,7 +99,7 @@ class RobustClipEnvelopeComputer {
     }
   }
 
-  private static boolean intersectsSegment(Envelope env, Coordinate p1, Coordinate p2) {
+  private static bool intersectsSegment(Envelope env, Coordinate p1, Coordinate p2) {
     /**
      * This is a crude test of whether segment intersects envelope.
      * It could be refined by checking exact intersection.

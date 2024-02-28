@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index;
+
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @version 1.7
  */
-public interface SpatialIndex
+interface SpatialIndex
 {
   /**
    * Adds a spatial item with an extent specified by the given {@link Envelope} to the index
@@ -61,6 +61,6 @@ public interface SpatialIndex
    * @param item the item to remove
    * @return <code>true</code> if the item was found
    */
-  boolean remove(Envelope itemEnv, Object item);
+  bool remove(Envelope itemEnv, Object item);
 
 }

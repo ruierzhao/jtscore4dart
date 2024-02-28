@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.awt;
+
 
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.Polygon;
  * logic, rather than relying on Java2D <tt>AffineTransform</tt>s.
  * <p>
  * The writer supports removing duplicate consecutive points
- * (via the {@link #setRemoveDuplicatePoints(boolean)} method) 
+ * (via the {@link #setRemoveDuplicatePoints(bool)} method) 
  * as well as true <b>decimation</b>
  * (via the {@link #setDecimation(double)} method. 
  * Enabling one of these strategies can substantially improve 
@@ -50,17 +50,17 @@ import org.locationtech.jts.geom.Polygon;
  * <p>
  * 
  */
-public class ShapeWriter 
+class ShapeWriter 
 {
 	/**
 	 * The point transformation used by default.
 	 */
-	public static final PointTransformation DEFAULT_POINT_TRANSFORMATION = new IdentityPointTransformation();
+	static final PointTransformation DEFAULT_POINT_TRANSFORMATION = new IdentityPointTransformation();
 	
 	/**
 	 * The point shape factory used by default.
 	 */
-	public static final PointShapeFactory DEFAULT_POINT_FACTORY = new PointShapeFactory.Square(3.0);
+	static final PointShapeFactory DEFAULT_POINT_FACTORY = new PointShapeFactory.Square(3.0);
 	
 	private PointTransformation pointTransformer = DEFAULT_POINT_TRANSFORMATION;
 	private PointShapeFactory pointFactory = DEFAULT_POINT_FACTORY;
@@ -75,7 +75,7 @@ public class ShapeWriter
 	 * by removing consecutive duplicates.
 	 * 
 	 */
-	private boolean doRemoveDuplicatePoints = false;
+	private bool doRemoveDuplicatePoints = false;
 	
 	private double decimationDistance = 0;
 	
@@ -86,7 +86,7 @@ public class ShapeWriter
 	 * @param pointTransformer a transformation from model to view space to use 
 	 * @param pointFactory the PointShapeFactory to use
 	 */
-	public ShapeWriter(PointTransformation pointTransformer, PointShapeFactory pointFactory) 
+	ShapeWriter(PointTransformation pointTransformer, PointShapeFactory pointFactory) 
 	{
 		if (pointTransformer != null)
 			this.pointTransformer = pointTransformer;
@@ -100,7 +100,7 @@ public class ShapeWriter
 	 * 
 	 * @param pointTransformer a transformation from model to view space to use 
 	 */
-	public ShapeWriter(PointTransformation pointTransformer) 
+	ShapeWriter(PointTransformation pointTransformer) 
 	{
 		this(pointTransformer, null);
 	}
@@ -109,7 +109,7 @@ public class ShapeWriter
 	 * Creates a new ShapeWriter with the default (identity) point transformation.
 	 *
 	 */
-	public ShapeWriter() {
+	ShapeWriter() {
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class ShapeWriter
 	 * 
 	 * @param doRemoveDuplicatePoints whether decimation is to be used to remove duplicate points
 	 */
-  public void setRemoveDuplicatePoints(boolean doRemoveDuplicatePoints)
+  void setRemoveDuplicatePoints(bool doRemoveDuplicatePoints)
   {
     this.doRemoveDuplicatePoints = doRemoveDuplicatePoints;
   }
@@ -144,7 +144,7 @@ public class ShapeWriter
    * 
    * @param decimationDistance the distance below which vertices are considered to be duplicates
    */
-  public void setDecimation(double decimationDistance)
+  void setDecimation(double decimationDistance)
   {
     this.decimationDistance = decimationDistance;
   }
@@ -165,7 +165,7 @@ public class ShapeWriter
 	 * @param geometry the geometry to convert
 	 * @return a Shape representing the geometry
 	 */
-	public Shape toShape(Geometry geometry)
+	Shape toShape(Geometry geometry)
 	{
 		if (geometry.isEmpty()) return new GeneralPath();
 		if (geometry instanceof Polygon) return toShape((Polygon) geometry);
@@ -174,7 +174,7 @@ public class ShapeWriter
 		if (geometry instanceof Point) 			return toShape((Point) geometry);
 		if (geometry instanceof GeometryCollection) return toShape((GeometryCollection) geometry);
 
-		throw new IllegalArgumentException(
+		throw new ArgumentError(
 			"Unrecognized Geometry class: " + geometry.getClass());
 	}
 
@@ -190,7 +190,7 @@ public class ShapeWriter
 		return poly;
 	}
 
-	private void appendRing(PolygonShape poly, Coordinate[] coords) 
+	private void appendRing(PolygonShape poly, List<Coordinate> coords) 
 	{
 	  if (coords.length == 0) return;
 	  
@@ -207,9 +207,9 @@ public class ShapeWriter
 		for (int i = 0; i < n; i++) {
 		  
 		  if (decimationDistance > 0.0) {
-		    boolean isDecimated = prev != null 
-		      && Math.abs(coords[i].x - prev.x) < decimationDistance
-		      && Math.abs(coords[i].y - prev.y) < decimationDistance;
+		    bool isDecimated = prev != null 
+		      && (coords[i].x - prev.x).abs() < decimationDistance
+		      && (coords[i].y - prev.y).abs() < decimationDistance;
 		    if (i < n && isDecimated) 
 		      continue;
 		    prev = coords[i];
@@ -219,7 +219,7 @@ public class ShapeWriter
 			
 			if (doRemoveDuplicatePoints) {
         // skip duplicate points (except the last point)
-			  boolean isDup = transPoint.getX() == prevx && transPoint.getY() == prevy;
+			  bool isDup = transPoint.getX() == prevx && transPoint.getY() == prevy;
         if (i < n && isDup)
           continue;
         prevx = transPoint.getX();
@@ -269,9 +269,9 @@ public class ShapeWriter
     for (int i = 1; i <= n; i++) {
       Coordinate currentCoord = lineString.getCoordinateN(i);
       if (decimationDistance > 0.0) {
-        boolean isDecimated = prev != null
-            && Math.abs(currentCoord.x - prev.x) < decimationDistance
-            && Math.abs(currentCoord.y - prev.y) < decimationDistance;
+        bool isDecimated = prev != null
+            && (currentCoord.x - prev.x).abs() < decimationDistance
+            && (currentCoord.y - prev.y).abs() < decimationDistance;
         if (i < n && isDecimated) {
           continue;
         }
@@ -282,7 +282,7 @@ public class ShapeWriter
 
 			if (doRemoveDuplicatePoints) {
   			// skip duplicate points (except the last point)
-			  boolean isDup = transPoint.getX() == prevx && transPoint.getY() == prevy;
+			  bool isDup = transPoint.getX() == prevx && transPoint.getY() == prevy;
   			if (i < n && isDup)
   			  continue;
   			prevx = transPoint.getX();

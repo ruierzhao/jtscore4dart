@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.relate;
+
 
 import java.util.Iterator;
 
@@ -24,13 +24,13 @@ import org.locationtech.jts.geomgraph.EdgeEndStar;
  *
  * @version 1.7
  */
-public class EdgeEndBundleStar
+class EdgeEndBundleStar
   extends EdgeEndStar
 {
   /**
    * Creates a new empty EdgeEndBundleStar
    */
-  public EdgeEndBundleStar() {
+  EdgeEndBundleStar() {
   }
 
   /**
@@ -40,7 +40,7 @@ public class EdgeEndBundleStar
    * to contain the EdgeEnd.
    * <br>
    */
-  public void insert(EdgeEnd e)
+  void insert(EdgeEnd e)
   {
     EdgeEndBundle eb = (EdgeEndBundle) edgeMap.get(e);
     if (eb == null) {

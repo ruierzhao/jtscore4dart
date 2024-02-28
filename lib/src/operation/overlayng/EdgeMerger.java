@@ -9,10 +9,10 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Map;
 
@@ -48,10 +48,10 @@ import org.locationtech.jts.util.Assert;
  */
 class EdgeMerger {
  
-  public static List<Edge> merge(List<Edge> edges) {
+  static List<Edge> merge(List<Edge> edges) {
     // use a list to collect the final edges, to preserve order
     List<Edge> mergedEdges = new ArrayList<Edge>();
-    Map<EdgeKey, Edge> edgeMap = new HashMap<EdgeKey, Edge>();
+    Map<EdgeKey, Edge> edgeMap = new Map<EdgeKey, Edge>();
 
     for (Edge edge : edges) {
       EdgeKey edgeKey = EdgeKey.create(edge);

@@ -9,14 +9,14 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 /**
  *  A utility for making programming assertions.
  *
  *@version 1.7
  */
-public class Assert {
+class Assert {
 
   /**
    *  Throws an <code>AssertionFailedException</code> if the given assertion is
@@ -25,7 +25,7 @@ public class Assert {
    *@param  assertion                  a condition that is supposed to be true
    *@throws  AssertionFailedException  if the condition is false
    */
-  public static void isTrue(boolean assertion) {
+  static void isTrue(bool assertion) {
     isTrue(assertion, null);
   }
 
@@ -37,7 +37,7 @@ public class Assert {
    *@param  message                    a description of the assertion
    *@throws  AssertionFailedException  if the condition is false
    */
-  public static void isTrue(boolean assertion, String message) {
+  static void isTrue(bool assertion, String message) {
     if (!assertion) {
       if (message == null) {
         throw new AssertionFailedException();
@@ -56,7 +56,7 @@ public class Assert {
    *@param  actualValue                the value being checked
    *@throws  AssertionFailedException  if the two objects are not equal
    */
-  public static void equals(Object expectedValue, Object actualValue) {
+  static void equals(Object expectedValue, Object actualValue) {
     equals(expectedValue, actualValue, null);
   }
 
@@ -70,7 +70,7 @@ public class Assert {
    *@param  message                    a description of the assertion
    *@throws  AssertionFailedException  if the two objects are not equal
    */
-  public static void equals(Object expectedValue, Object actualValue, String message) {
+  static void equals(Object expectedValue, Object actualValue, String message) {
     if (!actualValue.equals(expectedValue)) {
       throw new AssertionFailedException("Expected " + expectedValue + " but encountered "
            + actualValue + (message != null ? ": " + message : ""));
@@ -82,7 +82,7 @@ public class Assert {
    *
    *@throws  AssertionFailedException  thrown always
    */
-  public static void shouldNeverReachHere() {
+  static void shouldNeverReachHere() {
     shouldNeverReachHere(null);
   }
 
@@ -93,7 +93,7 @@ public class Assert {
    *@param  message                    a description of the assertion
    *@throws  AssertionFailedException  thrown always
    */
-  public static void shouldNeverReachHere(String message) {
+  static void shouldNeverReachHere(String message) {
     throw new AssertionFailedException("Should never reach here"
          + (message != null ? ": " + message : ""));
   }

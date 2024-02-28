@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.algorithm.match;
+
 
 import org.locationtech.jts.algorithm.distance.DiscreteHausdorffDistance;
 import org.locationtech.jts.geom.Envelope;
@@ -30,18 +30,18 @@ import org.locationtech.jts.geom.Geometry;
  * @author mbdavis
  *
  */
-public class HausdorffSimilarityMeasure
+class HausdorffSimilarityMeasure
 	implements SimilarityMeasure
 {
 	/*
-	public static double measure(Geometry a, Geometry b)
+	static double measure(Geometry a, Geometry b)
 	{
 		HausdorffSimilarityMeasure gv = new HausdorffSimilarityMeasure(a, b);
 		return gv.measure();
 	}
 	*/
 
-	public HausdorffSimilarityMeasure()
+	HausdorffSimilarityMeasure()
 	{
 	}
 
@@ -50,7 +50,7 @@ public class HausdorffSimilarityMeasure
 	 */
 	private static final double DENSIFY_FRACTION = 0.25;
 
-	public double measure(Geometry g1, Geometry g2)
+	double measure(Geometry g1, Geometry g2)
 	{
 		double distance = DiscreteHausdorffDistance.distance(g1, g2, DENSIFY_FRACTION);
     if (distance == 0d) return 1d;
@@ -66,7 +66,7 @@ public class HausdorffSimilarityMeasure
 		return measure;
 	}
 
-	public static double diagonalSize(Envelope env)
+	static double diagonalSize(Envelope env)
 	{
 		if (env.isNull()) return 0.0;
 

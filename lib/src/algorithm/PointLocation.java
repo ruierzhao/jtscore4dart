@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.Location;
  * @author Martin Davis
  *
  */
-public class PointLocation {
+class PointLocation {
 
   /**
    * Tests whether a point lies on the line defined by a list of
@@ -33,7 +33,7 @@ public class PointLocation {
    * @return true if the point is a vertex of the line or lies in the interior
    *         of a line segment in the line
    */
-  public static boolean isOnLine(Coordinate p, Coordinate[] line)
+  static bool isOnLine(Coordinate p, List<Coordinate> line)
   {
     LineIntersector lineIntersector = new RobustLineIntersector();
     for (int i = 1; i < line.length; i++) {
@@ -56,7 +56,7 @@ public class PointLocation {
    * @return true if the point is a vertex of the line or lies in the interior
    *         of a line segment in the line
    */
-  public static boolean isOnLine(Coordinate p, CoordinateSequence line)
+  static bool isOnLine(Coordinate p, CoordinateSequence line)
   {
     LineIntersector lineIntersector = new RobustLineIntersector();
     Coordinate p0 = new Coordinate();
@@ -88,9 +88,9 @@ public class PointLocation {
    *          first point identical to last point)
    * @return true if p is inside ring
    * 
-   * @see PointLocation#locateInRing(Coordinate, Coordinate[])
+   * @see PointLocation#locateInRing(Coordinate, List<Coordinate>)
    */
-  public static boolean isInRing(Coordinate p, Coordinate[] ring)
+  static bool isInRing(Coordinate p, List<Coordinate> ring)
   {
     return PointLocation.locateInRing(p, ring) != Location.EXTERIOR;
   }
@@ -109,7 +109,7 @@ public class PointLocation {
    *          first point identical to last point)
    * @return the {@link Location} of p relative to the ring
    */
-  public static int locateInRing(Coordinate p, Coordinate[] ring)
+  static int locateInRing(Coordinate p, List<Coordinate> ring)
   {
     return RayCrossingCounter.locatePointInRing(p, ring);
   }

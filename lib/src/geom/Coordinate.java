@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -42,7 +42,7 @@ import org.locationtech.jts.util.NumberUtil;
  *
  * @version 1.16
  */
-public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializable {
+class Coordinate implements Comparable<Coordinate>, Cloneable, Serializable {
   private static final long serialVersionUID = 6683108902428366910L;
   
   /**
@@ -50,13 +50,13 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * In particular, used for the value of ordinates for dimensions 
    * greater than the defined dimension of a coordinate.
    */
-  public static final double NULL_ORDINATE = Double.NaN;
+  static final double NULL_ORDINATE = Double.NaN;
   
   /** Standard ordinate index value for, where X is 0 */
-  public static final int X = 0;
+  static final int X = 0;
 
   /** Standard ordinate index value for, where Y is 1 */
-  public static final int Y = 1;
+  static final int Y = 1;
   
   /**
    * Standard ordinate index value for, where Z is 2.
@@ -65,7 +65,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * using {@link CoordinateSequence#getDimension()} and {@link CoordinateSequence#getMeasures()}
    * before use.
    */
-  public static final int Z = 2;
+  static final int Z = 2;
 
   /**
    * Standard ordinate index value for, where M is 3.
@@ -74,24 +74,24 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * using {@link CoordinateSequence#getDimension()} and {@link CoordinateSequence#getMeasures()}
    * before use.
    */
-  public static final int M = 3;
+  static final int M = 3;
   
   /**
    * The x-ordinate.
    */
-  public double x;
+  double x;
   
   /**
    * The y-ordinate.
    */
-  public double y;
+  double y;
   
   /**
    * The z-ordinate.
    * <p>
    * Direct access to this field is discouraged; use {@link #getZ()}.
    */
-  public double z;
+  double z;
 
   /**
    *  Constructs a <code>Coordinate</code> at (x,y,z).
@@ -100,7 +100,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *@param  y  the y-ordinate
    *@param  z  the z-ordinate
    */
-  public Coordinate(double x, double y, double z) {
+  Coordinate(double x, double y, double z) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -109,7 +109,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
   /**
    *  Constructs a <code>Coordinate</code> at (0,0,NaN).
    */
-  public Coordinate() {
+  Coordinate() {
     this(0.0, 0.0);
   }
 
@@ -119,7 +119,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *
    *@param  c  the <code>Coordinate</code> to copy.
    */
-  public Coordinate(Coordinate c) {
+  Coordinate(Coordinate c) {
     this(c.x, c.y, c.getZ());
   }
 
@@ -129,7 +129,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *@param  x  the x-value
    *@param  y  the y-value
    */
-  public Coordinate(double x, double y) {
+  Coordinate(double x, double y) {
     this(x, y, NULL_ORDINATE);
   }
 
@@ -138,7 +138,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *
    *@param  other  the <code>Coordinate</code> to copy
    */
-  public void setCoordinate(Coordinate other) {
+  void setCoordinate(Coordinate other) {
     x = other.x;
     y = other.y;
     z = other.getZ();
@@ -149,7 +149,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *  
    *  @return the value of the X ordinate
    */  
-  public double getX() {
+  double getX() {
     return x;
   }
 
@@ -158,7 +158,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @param x the value to set as X
    */
-  public void setX(double x) {
+  void setX(double x) {
     this.x = x;
   }
   
@@ -167,7 +167,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *  
    *  @return the value of the Y ordinate
    */  
-  public double getY() {
+  double getY() {
       return y;      
   }
 
@@ -176,7 +176,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @param y the value to set as Y
    */
-  public void setY(double y) {
+  void setY(double y) {
     this.y = y;
   }
   
@@ -186,7 +186,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *  
    *  @return the value of the Z ordinate, or <tt>NaN</tt>
    */   
-  public double getZ() {
+  double getZ() {
       return z;      
   }
   
@@ -195,7 +195,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @param z the value to set as Z
    */
-  public void setZ(double z) {
+  void setZ(double z) {
     this.z = z;
   }
   
@@ -205,7 +205,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *  
    *  @return the value of the measure, or <tt>NaN</tt>
    */    
-  public double getM() {
+  double getM() {
     return Double.NaN;     
   }
   
@@ -214,8 +214,8 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @param m the value to set as M
    */
-  public void setM(double m) {
-    throw new IllegalArgumentException("Invalid ordinate index: " + M);
+  void setM(double m) {
+    throw new ArgumentError("Invalid ordinate index: " + M);
   }
   
   /**
@@ -226,16 +226,16 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @param ordinateIndex the ordinate index
    * @return the value of the ordinate
-   * @throws IllegalArgumentException if the index is not valid
+   * @throws ArgumentError if the index is not valid
    */
-  public double getOrdinate(int ordinateIndex)
+  double getOrdinate(int ordinateIndex)
   {
     switch (ordinateIndex) {
     case X: return x;
     case Y: return y;
     case Z: return getZ(); // sure to delegate to subclass rather than offer direct field access
     }
-    throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+    throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
   }
   
   /**
@@ -247,9 +247,9 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @param ordinateIndex the ordinate index
    * @param value the value to set
-   * @throws IllegalArgumentException if the index is not valid
+   * @throws ArgumentError if the index is not valid
    */
-  public void setOrdinate(int ordinateIndex, double value)
+  void setOrdinate(int ordinateIndex, double value)
   {
     switch (ordinateIndex) {
       case X:
@@ -262,7 +262,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
         setZ(value); // delegate to subclass rather than offer direct field access
         break;
       default:
-        throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+        throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
     }
   }
 
@@ -273,7 +273,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * @return true if the coordinate is valid
    * @see Double#isFinite(double)
    */
-  public boolean isValid() {
+  bool isValid() {
     if (! Double.isFinite(x)) return false;
     if (! Double.isFinite(y)) return false;
     return true;
@@ -287,7 +287,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *@return        <code>true</code> if the x- and y-coordinates are equal; the
    *      z-coordinates do not have to be equal.
    */
-  public boolean equals2D(Coordinate other) {
+  bool equals2D(Coordinate other) {
     if (x != other.x) {
       return false;
     }
@@ -307,7 +307,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *@return true if <code>other</code> is a <code>Coordinate</code>
    *      with the same values for X and Y.
    */
-  public boolean equals2D(Coordinate c, double tolerance){
+  bool equals2D(Coordinate c, double tolerance){
     if (! NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
       return false;
     }
@@ -324,7 +324,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *@return true if <code>other</code> is a <code>Coordinate</code>
    *      with the same values for X, Y and Z.
    */
-  public boolean equals3D(Coordinate other) {
+  bool equals3D(Coordinate other) {
     return (x == other.x) && (y == other.y) &&
                ((getZ() == other.getZ()) ||
                (Double.isNaN(getZ()) && Double.isNaN(other.getZ())));
@@ -337,7 +337,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * @param tolerance the tolerance value
    * @return true if the Z ordinates are within the given tolerance
    */
-  public boolean equalInZ(Coordinate c, double tolerance){
+  bool equalInZ(Coordinate c, double tolerance){
     return NumberUtil.equalsWithTolerance(this.getZ(), c.getZ(), tolerance);
   }
   
@@ -350,7 +350,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *@return        <code>true</code> if <code>other</code> is a <code>Coordinate</code>
    *      with the same values for the x and y ordinates.
    */
-  public boolean equals(Object other) {
+  bool equals(Object other) {
     if (!(other instanceof Coordinate)) {
       return false;
     }
@@ -375,7 +375,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *@return    -1, zero, or 1 as this <code>Coordinate</code>
    *      is less than, equal to, or greater than the specified <code>Coordinate</code>
    */
-  public int compareTo(Coordinate o) {
+  int compareTo(Coordinate o) {
     Coordinate other = (Coordinate) o;
 
     if (x < other.x) return -1;
@@ -390,11 +390,11 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    *
    *@return    a <code>String</code> of the form <I>(x,y,z)</I>
    */
-  public String toString() {
+  String toString() {
     return "(" + x + ", " + y + ", " + getZ() + ")";
   }
 
-  public Object clone() {
+  Object clone() {
     try {
       Coordinate coord = (Coordinate) super.clone();
 
@@ -412,7 +412,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @return a copy of this coordinate.
    */
-  public Coordinate copy() {
+  Coordinate copy() {
     return new Coordinate(this);
   }
   
@@ -421,7 +421,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @return a new Coordinate
    */
-  public Coordinate create() {
+  Coordinate create() {
       return new Coordinate();
   }
 
@@ -432,7 +432,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * @param c a point
    * @return the 2-dimensional Euclidean distance between the locations
    */
-  public double distance(Coordinate c) {
+  double distance(Coordinate c) {
     double dx = x - c.x;
     double dy = y - c.y;
     return Math.hypot(dx, dy);
@@ -444,7 +444,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * @param c a coordinate
    * @return the 3-dimensional Euclidean distance between the locations
    */
-  public double distance3D(Coordinate c) {
+  double distance3D(Coordinate c) {
     double dx = x - c.x;
     double dy = y - c.y;
     double dz = getZ() - c.getZ();
@@ -456,7 +456,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * 
    * @return a hashcode for this coordinate
    */
-  public int hashCode() {
+  int hashCode() {
     //Algorithm from Effective Java by Joshua Bloch [Jon Aquino]
     int result = 17;
     result = 37 * result + hashCode(x);
@@ -471,7 +471,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * @param x the value to compute for
    * @return a hashcode for x
    */
-  public static int hashCode(double x) {
+  static int hashCode(double x) {
     long f = Double.doubleToLongBits(x);
     return (int)(f^(f>>>32));
   }
@@ -481,7 +481,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
    * Compares two {@link Coordinate}s, allowing for either a 2-dimensional
    * or 3-dimensional comparison, and handling NaN values correctly.
    */
-  public static class DimensionalComparator
+  static class DimensionalComparator
       implements Comparator<Coordinate>
   {
     /**
@@ -492,7 +492,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
      * @param b a <code>double</code>
      * @return -1, 0, or 1 depending on whether a is less than, equal to or greater than b
      */
-    public static int compare(double a, double b)
+    static int compare(double a, double b)
     {
       if (a < b) return -1;
       if (a > b) return 1;
@@ -511,7 +511,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
     /**
      * Creates a comparator for 2 dimensional coordinates.
      */
-    public DimensionalComparator()
+    DimensionalComparator()
     {
       this(2);
     }
@@ -522,10 +522,10 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
      *
      * @param dimensionsToTest the number of dimensions to test
      */
-    public DimensionalComparator(int dimensionsToTest)
+    DimensionalComparator(int dimensionsToTest)
     {
       if (dimensionsToTest != 2 && dimensionsToTest != 3)
-        throw new IllegalArgumentException("only 2 or 3 dimensions may be specified");
+        throw new ArgumentError("only 2 or 3 dimensions may be specified");
       this.dimensionsToTest = dimensionsToTest;
     }
 
@@ -539,7 +539,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
      * equal to, or greater than 02
      *
      */
-    public int compare(Coordinate c1, Coordinate c2)
+    int compare(Coordinate c1, Coordinate c2)
     {
       int compX = compare(c1.x, c2.x);
       if (compX != 0) return compX;

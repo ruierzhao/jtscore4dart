@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.shape.fractal;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -31,7 +31,7 @@ import static org.locationtech.jts.shape.fractal.HilbertCode.size;
  * @author Martin Davis
  * @see HilbertCode
  */
-public class HilbertCurveBuilder
+class HilbertCurveBuilder
 extends GeometricShapeBuilder
 {
   private int order = -1;
@@ -41,7 +41,7 @@ extends GeometricShapeBuilder
    * 
    * @param geomFactory the geometry factory to use
    */
-  public HilbertCurveBuilder(GeometryFactory geomFactory)
+  HilbertCurveBuilder(GeometryFactory geomFactory)
   {
     super(geomFactory);
     // use a null extent to indicate no transformation
@@ -55,11 +55,11 @@ extends GeometricShapeBuilder
    * 
    * @param level the order of the curve
    */
-  public void setLevel(int level) {
+  void setLevel(int level) {
     this.numPts = size(level);  }
   
   @Override
-  public Geometry getGeometry() {
+  Geometry getGeometry() {
     int level = level(numPts);
     int nPts = size(level);
     
@@ -75,7 +75,7 @@ extends GeometricShapeBuilder
       scale = width / maxOrdinate;
     }
     
-    Coordinate[] pts = new Coordinate[nPts];
+    List<Coordinate> pts = new Coordinate[nPts];
     for (int i = 0; i < nPts; i++) {
        Coordinate pt = decode(level, i);
        double x = transform(pt.getX(), scale, baseX );

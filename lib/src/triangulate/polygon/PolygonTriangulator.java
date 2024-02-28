@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.polygon;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ import org.locationtech.jts.triangulate.tri.Tri;
  * @author Martin Davis
  *
  */
-public class PolygonTriangulator {
+class PolygonTriangulator {
   
   /**
    * Computes a triangulation of each polygon in a geometry.
@@ -47,7 +47,7 @@ public class PolygonTriangulator {
    * @param geom a geometry containing polygons
    * @return a GeometryCollection containing the triangle polygons
    */
-  public static Geometry triangulate(Geometry geom) {
+  static Geometry triangulate(Geometry geom) {
     PolygonTriangulator triangulator = new PolygonTriangulator(geom);
     return triangulator.getResult();
   }
@@ -61,7 +61,7 @@ public class PolygonTriangulator {
    * 
    * @param inputGeom the input geometry
    */
-  public PolygonTriangulator(Geometry inputGeom) {
+  PolygonTriangulator(Geometry inputGeom) {
     geomFact = inputGeom.getFactory();
     this.inputGeom = inputGeom;
   }
@@ -71,7 +71,7 @@ public class PolygonTriangulator {
    * 
    * @return a collection of the result triangle polygons
    */
-  public Geometry getResult() {
+  Geometry getResult() {
     compute();
     return Tri.toGeometry(triList, geomFact);
   }
@@ -81,7 +81,7 @@ public class PolygonTriangulator {
    * 
    * @return the list of Tris in the triangulation
    */
-  public List<Tri> getTriangles() {
+  List<Tri> getTriangles() {
     compute();
     return triList;
   }
@@ -103,7 +103,7 @@ public class PolygonTriangulator {
    * @return GeometryCollection of triangular polygons
    */
   private List<Tri> triangulatePolygon(Polygon poly) {
-    Coordinate[] polyShell = PolygonHoleJoiner.join(poly);
+    List<Coordinate> polyShell = PolygonHoleJoiner.join(poly);
     
     List<Tri> triList = PolygonEarClipper.triangulate(polyShell);
     //Tri.validate(triList);

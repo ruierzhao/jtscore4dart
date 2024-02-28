@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +36,7 @@ import org.locationtech.jts.io.WKTWriter;
  * @version 1.7
  * @see BasicSegmentString
  */
-public class NodedSegmentString
+class NodedSegmentString
 	implements NodableSegmentString
 {
 	/**
@@ -45,7 +45,7 @@ public class NodedSegmentString
 	 * @param segStrings a Collection of NodedSegmentStrings
 	 * @return a Collection of NodedSegmentStrings representing the substrings
 	 */
-  public static List getNodedSubstrings(Collection segStrings)
+  static List getNodedSubstrings(Collection segStrings)
   {
     List resultEdgelist = new ArrayList();
     getNodedSubstrings(segStrings, resultEdgelist);
@@ -58,7 +58,7 @@ public class NodedSegmentString
 	 * @param segStrings a Collection of NodedSegmentStrings
 	 * @param resultEdgelist a List which will collect the NodedSegmentStrings representing the substrings
 	 */
- public static void getNodedSubstrings(Collection segStrings, Collection resultEdgelist)
+ static void getNodedSubstrings(Collection segStrings, Collection resultEdgelist)
   {
     for (Object segString : segStrings) {
       NodedSegmentString ss = (NodedSegmentString) segString;
@@ -67,7 +67,7 @@ public class NodedSegmentString
   }
 
   private SegmentNodeList nodeList = new SegmentNodeList(this);
-  private Coordinate[] pts;
+  private List<Coordinate> pts;
   private Object data;
 
   /**
@@ -76,7 +76,7 @@ public class NodedSegmentString
    * @param pts the vertices of the segment string
    * @param data the user-defined data of this segment string (may be null)
    */
-  public NodedSegmentString(Coordinate[] pts, Object data)
+  NodedSegmentString(List<Coordinate> pts, Object data)
   {
     this.pts = pts;
     this.data = data;
@@ -87,7 +87,7 @@ public class NodedSegmentString
    *
    * @param ss the segment string to use
    */
-  public NodedSegmentString(SegmentString ss)
+  NodedSegmentString(SegmentString ss)
   {
     this.pts = ss.getCoordinates();
     this.data = ss.getData();
@@ -98,30 +98,30 @@ public class NodedSegmentString
    *
    * @return the user-defined data
    */
-  public Object getData() { return data; }
+  Object getData() { return data; }
 
   /**
    * Sets the user-defined data for this segment string.
    *
    * @param data an Object containing user-defined data
    */
-  public void setData(Object data) { this.data = data; }
+  void setData(Object data) { this.data = data; }
 
-  public SegmentNodeList getNodeList() { return nodeList; }
-  public int size() { return pts.length; }
-  public Coordinate getCoordinate(int i) { return pts[i]; }
-  public Coordinate[] getCoordinates() { return pts; }
+  SegmentNodeList getNodeList() { return nodeList; }
+  int size() { return pts.length; }
+  Coordinate getCoordinate(int i) { return pts[i]; }
+  List<Coordinate> getCoordinates() { return pts; }
 
   /**
    * Gets a list of coordinates with all nodes included.
    * 
    * @return an array of coordinates include nodes
    */
-  public Coordinate[] getNodedCoordinates() {
+  List<Coordinate> getNodedCoordinates() {
     return nodeList.getSplitCoordinates();
   }
   
-  public boolean isClosed()
+  bool isClosed()
   {
     return pts[0].equals(pts[pts.length - 1]);
   }
@@ -131,7 +131,7 @@ public class NodedSegmentString
    * 
    * @return true if the segment string has nodes
    */
-  public boolean hasNodes() {
+  bool hasNodes() {
     return nodeList.size() > 0;
   }
   /**
@@ -141,7 +141,7 @@ public class NodedSegmentString
    * the last index in the vertex list
    * @return the octant of the segment at the vertex
    */
-  public int getSegmentOctant(int index)
+  int getSegmentOctant(int index)
   {
     if (index == pts.length - 1) return -1;
     return safeOctant(getCoordinate(index), getCoordinate(index + 1));
@@ -158,7 +158,7 @@ public class NodedSegmentString
    * Adds EdgeIntersections for one or both
    * intersections found for a segment of an edge to the edge intersection list.
    */
-  public void addIntersections(LineIntersector li, int segmentIndex, int geomIndex)
+  void addIntersections(LineIntersector li, int segmentIndex, int geomIndex)
   {
     for (int i = 0; i < li.getIntersectionNum(); i++) {
       addIntersection(li, segmentIndex, geomIndex, i);
@@ -170,7 +170,7 @@ public class NodedSegmentString
    * of the SegmentString is normalized
    * to use the higher of the two possible segmentIndexes
    */
-  public void addIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
+  void addIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
   {
     Coordinate intPt = li.getIntersection(intIndex).copy();
     addIntersection(intPt, segmentIndex);
@@ -182,7 +182,7 @@ public class NodedSegmentString
    * @param intPt the location of the intersection
    * @param segmentIndex the index of the segment containing the intersection
    */
-  public void  addIntersection(Coordinate intPt, int segmentIndex) {
+  void  addIntersection(Coordinate intPt, int segmentIndex) {
   	addIntersectionNode(intPt, segmentIndex);
   }
   	
@@ -195,7 +195,7 @@ public class NodedSegmentString
    * @param segmentIndex the index of the segment containing the intersection
    * @return the intersection node for the point
    */
-  public SegmentNode addIntersectionNode(Coordinate intPt, int segmentIndex) {
+  SegmentNode addIntersectionNode(Coordinate intPt, int segmentIndex) {
 		int normalizedSegmentIndex = segmentIndex;
 		//Debug.println("edge intpt: " + intPt + " dist: " + dist);
 		// normalize the intersection point location
@@ -218,7 +218,7 @@ public class NodedSegmentString
 		return ei;
 	}
   
-  public String toString()
+  String toString()
   {
   	return WKTWriter.toLineString(new CoordinateArraySequence(pts));
   }

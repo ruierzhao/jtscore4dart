@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Dimension;
 
@@ -29,37 +29,37 @@ import org.locationtech.jts.geom.Dimension;
 class EdgeSourceInfo {
   private int index;
   private int dim = -999;
-  private boolean isHole = false;
+  private bool isHole = false;
   private int depthDelta = 0;
   
-  public EdgeSourceInfo(int index, int depthDelta, boolean isHole) {
+  EdgeSourceInfo(int index, int depthDelta, bool isHole) {
     this.index = index;
     this.dim = Dimension.A;
     this.depthDelta = depthDelta;
     this.isHole = isHole;
   }
   
-  public EdgeSourceInfo(int index) {
+  EdgeSourceInfo(int index) {
     this.index = index;
     this.dim = Dimension.L;
   }
   
-  public int getIndex() {
+  int getIndex() {
     return index;
   }
   
-  public int getDimension() {
+  int getDimension() {
     return dim;
   }
-  public int getDepthDelta() {
+  int getDepthDelta() {
     return depthDelta;
   }
   
-  public boolean isHole() {
+  bool isHole() {
     return isHole;
   }
   
-  public String toString() {
+  String toString() {
     return Edge.infoString(index, dim, isHole, depthDelta);
   }
 }

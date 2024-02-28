@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,19 +31,19 @@ class OverlayEdgeRing {
   
   private OverlayEdge startEdge;
   private LinearRing ring;
-  private boolean isHole;
-  private Coordinate[] ringPts;
+  private bool isHole;
+  private List<Coordinate> ringPts;
   private IndexedPointInAreaLocator locator;
   private OverlayEdgeRing shell;
   private List<OverlayEdgeRing> holes = new ArrayList<OverlayEdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
 
-  public OverlayEdgeRing(OverlayEdge start, GeometryFactory geometryFactory) {
+  OverlayEdgeRing(OverlayEdge start, GeometryFactory geometryFactory) {
     startEdge = start;
     ringPts = computeRingPts(start);
     computeRing(ringPts, geometryFactory);
   }
 
-  public LinearRing getRing() {
+  LinearRing getRing() {
     return ring;
   }
   
@@ -55,7 +55,7 @@ class OverlayEdgeRing {
    * Tests whether this ring is a hole.
    * @return <code>true</code> if this ring is a hole
    */
-  public boolean isHole()
+  bool isHole()
   {
     return isHole;
   }
@@ -65,7 +65,7 @@ class OverlayEdgeRing {
    * 
    * @param shell the shell ring
    */
-  public void setShell(OverlayEdgeRing shell) {
+  void setShell(OverlayEdgeRing shell) {
     this.shell = shell;
     if (shell != null) shell.addHole(this);
   }
@@ -75,7 +75,7 @@ class OverlayEdgeRing {
    * 
    * @return true if the ring has a shell
    */
-  public boolean hasShell() {
+  bool hasShell() {
     return shell != null;
   }
   
@@ -84,14 +84,14 @@ class OverlayEdgeRing {
    * 
    * @return the shell for this ring
    */
-  public OverlayEdgeRing getShell() {
+  OverlayEdgeRing getShell() {
     if (isHole()) return shell;
     return this;
   }
 
-  public void addHole(OverlayEdgeRing ring) { holes.add(ring); }
+  void addHole(OverlayEdgeRing ring) { holes.add(ring); }
 
-  private Coordinate[] computeRingPts(OverlayEdge start) {
+  private List<Coordinate> computeRingPts(OverlayEdge start) {
     OverlayEdge edge = start;
     CoordinateList pts = new CoordinateList();
     do {
@@ -116,7 +116,7 @@ class OverlayEdgeRing {
     return pts.toCoordinateArray();
   }
   
-  private void computeRing(Coordinate[] ringPts, GeometryFactory geometryFactory) {
+  private void computeRing(List<Coordinate> ringPts, GeometryFactory geometryFactory) {
     if (ring != null) return;   // don't compute more than once
     ring = geometryFactory.createLinearRing(ringPts);
     isHole = Orientation.isCCW(ring.getCoordinates());
@@ -128,7 +128,7 @@ class OverlayEdgeRing {
    *
    * @return an array of the {@link Coordinate}s in this ring
    */
-  private Coordinate[] getCoordinates()
+  private List<Coordinate> getCoordinates()
   {
     return ringPts;
   }
@@ -151,7 +151,7 @@ class OverlayEdgeRing {
    * 
    * @return containing EdgeRing or null if no containing EdgeRing is found
    */
-  public OverlayEdgeRing findEdgeRingContaining(List<OverlayEdgeRing> erList)
+  OverlayEdgeRing findEdgeRingContaining(List<OverlayEdgeRing> erList)
   {
     OverlayEdgeRing minContainingRing = null;
     
@@ -173,7 +173,7 @@ class OverlayEdgeRing {
     return locator;
   }
   
-  public int locate(Coordinate pt) {
+  int locate(Coordinate pt) {
     /**
      * Use an indexed point-in-polygon for performance
      */
@@ -188,7 +188,7 @@ class OverlayEdgeRing {
    * @param ring ring to test
    * @return true if ring is properly contained
    */
-  private boolean contains(OverlayEdgeRing ring) {
+  private bool contains(OverlayEdgeRing ring) {
     // the test envelope must be properly contained
     // (guards against testing rings against themselves)
     Envelope env = getEnvelope();
@@ -198,7 +198,7 @@ class OverlayEdgeRing {
     return isPointInOrOut(ring);
   }
   
-  private boolean isPointInOrOut(OverlayEdgeRing ring) {
+  private bool isPointInOrOut(OverlayEdgeRing ring) {
     // in most cases only one or two points will be checked
     for (Coordinate pt : ring.getCoordinates()) {
       int loc = locate(pt);
@@ -213,7 +213,7 @@ class OverlayEdgeRing {
     return false;
   }
 
-  public Coordinate getCoordinate() {
+  Coordinate getCoordinate() {
     return ringPts[0];
   }
 
@@ -222,7 +222,7 @@ class OverlayEdgeRing {
    *
    * @return the {@link Polygon} formed by this ring and its holes.
    */
-  public Polygon toPolygon(GeometryFactory factory)
+  Polygon toPolygon(GeometryFactory factory)
   {
     LinearRing[] holeLR = null;
     if (holes != null) {
@@ -235,7 +235,7 @@ class OverlayEdgeRing {
     return poly;
   }
 
-  public OverlayEdge getEdge() {
+  OverlayEdge getEdge() {
     return startEdge;
   }
 }

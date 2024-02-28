@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +30,11 @@ class LineSegmentIndex
 {
   private Quadtree index = new Quadtree();
 
-  public LineSegmentIndex()
+  LineSegmentIndex()
   {
   }
 
-  public void add(TaggedLineString line) {
+  void add(TaggedLineString line) {
     TaggedLineSegment[] segs = line.getSegments();
     for (int i = 0; i < segs.length; i++) {
       TaggedLineSegment seg = segs[i];
@@ -42,17 +42,17 @@ class LineSegmentIndex
     }
   }
 
-  public void add(LineSegment seg)
+  void add(LineSegment seg)
   {
     index.insert(new Envelope(seg.p0, seg.p1), seg);
   }
 
-  public void remove(LineSegment seg)
+  void remove(LineSegment seg)
   {
     index.remove(new Envelope(seg.p0, seg.p1), seg);
   }
 
-  public List<Object> query(LineSegment querySeg)
+  List<Object> query(LineSegment querySeg)
   {
     Envelope env = new Envelope(querySeg.p0, querySeg.p1);
 
@@ -80,16 +80,16 @@ class LineSegmentVisitor
   private LineSegment querySeg;
   private ArrayList<Object> items = new ArrayList<Object>();
 
-  public LineSegmentVisitor(LineSegment querySeg) {
+  LineSegmentVisitor(LineSegment querySeg) {
     this.querySeg = querySeg;
   }
 
-  public void visitItem(Object item)
+  void visitItem(Object item)
   {
     LineSegment seg = (LineSegment) item;
     if (Envelope.intersects(seg.p0, seg.p1, querySeg.p0, querySeg.p1))
       items.add(item);
   }
 
-  public ArrayList<Object> getItems() { return items; }
+  ArrayList<Object> getItems() { return items; }
 }

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.shape.fractal;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,22 +24,22 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.shape.GeometricShapeBuilder;
 
 
-public class SierpinskiCarpetBuilder 
+class SierpinskiCarpetBuilder 
 extends GeometricShapeBuilder
 {	
-	public SierpinskiCarpetBuilder(GeometryFactory geomFactory)
+	SierpinskiCarpetBuilder(GeometryFactory geomFactory)
 	{
 		super(geomFactory);
 	}
 	
-	public static int recursionLevelForSize(int numPts)
+	static int recursionLevelForSize(int numPts)
 	{
 		double pow4 = numPts / 3;
 		double exp = Math.log(pow4)/Math.log(4);
 		return (int) exp;
 	}
 	
-	public Geometry getGeometry()
+	Geometry getGeometry()
 	{
 		int level = recursionLevelForSize(numPts);
 		LineSegment baseLine = getSquareBaseLine();
@@ -81,7 +81,7 @@ extends GeometricShapeBuilder
 
 	private LinearRing createSquareHole(double x, double y, double width)
 	{
-		Coordinate[] pts = new Coordinate[]{
+		List<Coordinate> pts = new List<Coordinate>{
         new Coordinate(x, y),
         new Coordinate(x + width, y),
         new Coordinate(x + width, y + width),

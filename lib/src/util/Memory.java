@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 /**
  * Utility functions to report JVM memory usage.
@@ -17,59 +17,59 @@ package org.locationtech.jts.util;
  * @author mbdavis
  *
  */
-public class Memory 
+class Memory 
 {
-	public static long used()
+	static long used()
 	{
 		Runtime runtime = Runtime.getRuntime ();
 		return runtime.totalMemory() - runtime.freeMemory();
 	}
 	
-	public static String usedString()
+	static String usedString()
 	{
 		return format(used());
 	}
 	
-	public static long free()
+	static long free()
 	{
 		Runtime runtime = Runtime.getRuntime ();
 		return runtime.freeMemory();
 	}
 	
-	public static String freeString()
+	static String freeString()
 	{
 		return format(free());
 	}
 	
-	public static long total()
+	static long total()
 	{
 		Runtime runtime = Runtime.getRuntime ();
 		return runtime.totalMemory();
 	}
 	
-	public static String totalString()
+	static String totalString()
 	{
 		return format(total());
 	}
 	
-	public static String usedTotalString()
+	static String usedTotalString()
 	{
 		return "Used: " + usedString() 
 		+ "   Total: " + totalString();
 	}
 	
-	public static String allString()
+	static String allString()
 	{
 		return "Used: " + usedString() 
 		+ "   Free: " + freeString()
 		+ "   Total: " + totalString();
 	}
 	
-	public static final double KB = 1024;
-	public static final double MB = 1048576;
-	public static final double GB = 1073741824;
+	static final double KB = 1024;
+	static final double MB = 1048576;
+	static final double GB = 1073741824;
 
-	public static String format(long mem)
+	static String format(long mem)
 	{
 		if (mem < 2 * KB)
 			return mem + " bytes";
@@ -80,7 +80,7 @@ public class Memory
 		return round(mem / GB) + " GB";
 	}
 	
-	public static double round(double d)
+	static double round(double d)
 	{
 		return Math.ceil(d * 100) / 100;
 	}

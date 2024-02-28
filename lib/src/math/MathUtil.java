@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.math;
+
 
 import java.util.Random;
 
@@ -19,7 +19,7 @@ import java.util.Random;
  * @author mbdavis
  *
  */
-public class MathUtil 
+class MathUtil 
 {
   /**
    * Clamps a <tt>double</tt> value to a given range.
@@ -28,7 +28,7 @@ public class MathUtil
    * @param max the maximum value of the range
    * @return the clamped value
    */
-  public static double clamp(double x, double min, double max)
+  static double clamp(double x, double min, double max)
   {
     if (x < min) return min;
     if (x > max) return max;
@@ -42,7 +42,7 @@ public class MathUtil
    * @param max the maximum value of the range
    * @return the clamped value
    */
-  public static int clamp(int x, int min, int max)
+  static int clamp(int x, int min, int max)
   {
     if (x < min) return min;
     if (x > max) return max;
@@ -56,7 +56,7 @@ public class MathUtil
    * @param max the maximum value
    * @return the clamped value
    */
-  public static int clampMax(int x, int max)
+  static int clampMax(int x, int max)
   {
     if (x > max) return max;
     return x;
@@ -69,7 +69,7 @@ public class MathUtil
    * @param denom the denominator
    * @return the ceiling of num / denom
    */
-  public static int ceil(int num, int denom) {
+  static int ceil(int num, int denom) {
     int div = num / denom;
     return div * denom >= num ? div : div + 1;
   }
@@ -87,7 +87,7 @@ public class MathUtil
    * @param x a positive number
    * @return the value log a, the base-10 logarithm of the input value
    */
-  public static double log10(double x)
+  static double log10(double x)
   {
     double ln = Math.log(x);
     if (Double.isInfinite(ln)) return ln;
@@ -104,7 +104,7 @@ public class MathUtil
    * @param max the maximum value (or modulus)
    * @return the wrapped index
    */
-  public static int wrap(int index, int max)
+  static int wrap(int index, int max)
   {
     if (index < 0) {
       return max - ((-index) % max);
@@ -119,12 +119,12 @@ public class MathUtil
    * @param x2 a number
    * @return the average of the inputs
    */
-  public static double average(double x1, double x2)
+  static double average(double x1, double x2)
   {
     return (x1 + x2) / 2.0;
   }
   
-  public static double max(double v1, double v2, double v3)
+  static double max(double v1, double v2, double v3)
   {
     double max = v1;
     if (v2 > max) max = v2;
@@ -132,7 +132,7 @@ public class MathUtil
     return max;
   }
   
-  public static double max(double v1, double v2, double v3, double v4)
+  static double max(double v1, double v2, double v3, double v4)
   {
     double max = v1;
     if (v2 > max) max = v2;
@@ -141,7 +141,7 @@ public class MathUtil
     return max;
   }
   
-  public static double min(double v1, double v2, double v3, double v4)
+  static double min(double v1, double v2, double v3, double v4)
   {
     double min = v1;
     if (v2 < min) min = v2;
@@ -153,7 +153,7 @@ public class MathUtil
   /**
    * The inverse of the Golden Ratio phi.
    */
-  public static final double PHI_INV = (Math.sqrt(5) - 1.0) / 2.0;
+  static final double PHI_INV = (Math.sqrt(5) - 1.0) / 2.0;
 
   /**
    * Generates a quasi-random sequence of numbers in the range [0,1].
@@ -169,7 +169,7 @@ public class MathUtil
    * @param curr the current number in the sequence
    * @return the next value in the sequence
    */
-  public static double quasirandom( double curr) {
+  static double quasirandom( double curr) {
     return quasirandom(curr, PHI_INV);
   }
   
@@ -191,7 +191,7 @@ public class MathUtil
    * @param alpha the sequence additive constant
    * @return the next value in the sequence
    */
-  public static double quasirandom( double curr, double alpha) {
+  static double quasirandom( double curr, double alpha) {
     double next = curr + alpha;
     if (next < 1) return next;
     return next - Math.floor(next);
@@ -205,7 +205,7 @@ public class MathUtil
    * @param n the number of integers to shuffle
    * @return the shuffled array
    */
-  public static int[] shuffle(int n) {
+  static int[] shuffle(int n) {
     final Random rnd = new Random(13);
     int[] ints = new int[n];
     for (int i = 0; i < n; i++) {

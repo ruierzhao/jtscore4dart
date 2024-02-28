@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.hull;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,12 +58,12 @@ import org.locationtech.jts.geom.Polygon;
  * (unless it is degenerate, in which case it will be a {@link Point} or a {@link LineString}).
  * This constraint may cause the concave hull to fail to meet the target criterion.
  * <p>
- * Optionally the concave hull can be allowed to contain holes by calling {@link #setHolesAllowed(boolean)}.
+ * Optionally the concave hull can be allowed to contain holes by calling {@link #setHolesAllowed(bool)}.
  * 
  * @author Martin Davis
  *
  */
-public class ConcaveHull 
+class ConcaveHull 
 {
   /**
    * Computes the approximate edge length of
@@ -77,7 +77,7 @@ public class ConcaveHull
    * @param geom a geometry
    * @return the approximate uniform grid length
    */
-  public static double uniformGridEdgeLength(Geometry geom) {
+  static double uniformGridEdgeLength(Geometry geom) {
     double areaCH = geom.convexHull().getArea();
     int numPts = geom.getNumPoints();
     return Math.sqrt(areaCH / numPts);
@@ -91,7 +91,7 @@ public class ConcaveHull
    * @param maxLength the target maximum edge length
    * @return the concave hull
    */
-  public static Geometry concaveHullByLength(Geometry geom, double maxLength) {
+  static Geometry concaveHullByLength(Geometry geom, double maxLength) {
     return concaveHullByLength(geom, maxLength, false);
   }
   
@@ -105,7 +105,7 @@ public class ConcaveHull
    * @param isHolesAllowed whether holes are allowed in the result
    * @return the concave hull
    */
-  public static Geometry concaveHullByLength(Geometry geom, double maxLength, boolean isHolesAllowed) {
+  static Geometry concaveHullByLength(Geometry geom, double maxLength, bool isHolesAllowed) {
     ConcaveHull hull = new ConcaveHull(geom);
     hull.setMaximumEdgeLength(maxLength);
     hull.setHolesAllowed(isHolesAllowed);
@@ -123,7 +123,7 @@ public class ConcaveHull
    * @param lengthRatio the target edge length factor
    * @return the concave hull
    */
-  public static Geometry concaveHullByLengthRatio(Geometry geom, double lengthRatio) {
+  static Geometry concaveHullByLengthRatio(Geometry geom, double lengthRatio) {
     return concaveHullByLengthRatio(geom, lengthRatio, false);
   }
   
@@ -140,7 +140,7 @@ public class ConcaveHull
    * @param isHolesAllowed whether holes are allowed in the result
    * @return the concave hull
    */
-  public static Geometry concaveHullByLengthRatio(Geometry geom, double lengthRatio, boolean isHolesAllowed) {
+  static Geometry concaveHullByLengthRatio(Geometry geom, double lengthRatio, bool isHolesAllowed) {
     ConcaveHull hull = new ConcaveHull(geom);
     hull.setMaximumEdgeLengthRatio(lengthRatio);
     hull.setHolesAllowed(isHolesAllowed);
@@ -156,7 +156,7 @@ public class ConcaveHull
    * @param isHolesAllowed whether holes are allowed in the result
    * @return the alpha shape polygon
    */
-  public static Geometry alphaShape(Geometry geom, double alpha, boolean isHolesAllowed) {
+  static Geometry alphaShape(Geometry geom, double alpha, bool isHolesAllowed) {
     ConcaveHull hull = new ConcaveHull(geom);
     hull.setAlpha(alpha);
     hull.setHolesAllowed(isHolesAllowed);
@@ -169,7 +169,7 @@ public class ConcaveHull
   private Geometry inputGeometry;
   private double maxEdgeLengthRatio = -1;
   private double alpha = -1;
-  private boolean isHolesAllowed = false;
+  private bool isHolesAllowed = false;
   
   private int criteriaType = PARAM_EDGE_LENGTH;
   private double maxSizeInHull = 0.0;
@@ -181,7 +181,7 @@ public class ConcaveHull
    * 
    * @param geom the input geometry
    */
-  public ConcaveHull(Geometry geom) {
+  ConcaveHull(Geometry geom) {
     this.inputGeometry = geom;
     this.geomFactory = geom.getFactory();
   }
@@ -203,9 +203,9 @@ public class ConcaveHull
    * 
    * @see #uniformGridEdgeLength(Geometry)
    */
-  public void setMaximumEdgeLength(double edgeLength) {
+  void setMaximumEdgeLength(double edgeLength) {
     if (edgeLength < 0)
-      throw new IllegalArgumentException("Edge length must be non-negative");
+      throw new ArgumentError("Edge length must be non-negative");
     this.maxSizeInHull = edgeLength;
     maxEdgeLengthRatio = -1;
     criteriaType = PARAM_EDGE_LENGTH;
@@ -225,9 +225,9 @@ public class ConcaveHull
    * 
    * @param edgeLengthRatio a length factor value between 0 and 1
    */
-  public void setMaximumEdgeLengthRatio(double edgeLengthRatio) {
+  void setMaximumEdgeLengthRatio(double edgeLengthRatio) {
     if (edgeLengthRatio < 0 || edgeLengthRatio > 1)
-      throw new IllegalArgumentException("Edge length ratio must be in range [0,1]");
+      throw new ArgumentError("Edge length ratio must be in range [0,1]");
     this.maxEdgeLengthRatio = edgeLengthRatio;
     criteriaType = PARAM_EDGE_LENGTH;
   }
@@ -239,7 +239,7 @@ public class ConcaveHull
    * 
    * @param alpha the alpha radius
    */
-  public void setAlpha(double alpha) {
+  void setAlpha(double alpha) {
     this.alpha = alpha;
     maxSizeInHull = alpha;
     criteriaType = PARAM_ALPHA;
@@ -250,7 +250,7 @@ public class ConcaveHull
    * 
    * @param isHolesAllowed true if holes are allowed in the result
    */
-  public void setHolesAllowed(boolean isHolesAllowed) {
+  void setHolesAllowed(bool isHolesAllowed) {
     this.isHolesAllowed = isHolesAllowed;
   }
   
@@ -259,7 +259,7 @@ public class ConcaveHull
    * 
    * @return the concave hull
    */
-  public Geometry getHull() {
+  Geometry getHull() {
     if (inputGeometry.isEmpty()) {
       return geomFactory.createPolygon();
     }
@@ -391,7 +391,7 @@ public class ConcaveHull
    * @param tri the tri to test
    * @return true if the tri is included in the hull
    */
-  private boolean isInHull(HullTri tri) {
+  private bool isInHull(HullTri tri) {
     return tri.getSize() < maxSizeInHull;
   }
   
@@ -424,7 +424,7 @@ public class ConcaveHull
       //-- tris below the size threshold are in the hull, so NOT in a hole
       if (tri.getSize() < maxSizeInHull) continue;
       
-      boolean isTouchingBoundary = tri.isBorder() || tri.hasBoundaryTouch();
+      bool isTouchingBoundary = tri.isBorder() || tri.hasBoundaryTouch();
       if (! isTouchingBoundary) {
         candidates.add(tri);
       }
@@ -466,7 +466,7 @@ public class ConcaveHull
     }
   }
   
-  private boolean isRemovableBorder(HullTri tri) {
+  private bool isRemovableBorder(HullTri tri) {
     /**
      * Tri must have exactly 2 adjacent tris (i.e. a single boundary edge).
      * If it it has only 0 or 1 adjacent then removal would remove a vertex.
@@ -480,7 +480,7 @@ public class ConcaveHull
     return ! tri.isConnecting();
   }
   
-  private boolean isRemovableHole(HullTri tri) {
+  private bool isRemovableHole(HullTri tri) {
     /**
      * Tri must have exactly 2 adjacent tris (i.e. a single boundary edge).
      * If it it has only 0 or 1 adjacent then removal would remove a vertex.

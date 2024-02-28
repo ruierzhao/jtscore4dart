@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph.index;
+
 
 /**
  * @version 1.7
@@ -30,7 +30,7 @@ import org.locationtech.jts.geomgraph.Edge;
  *
  * @version 1.7
  */
-public class SimpleSweepLineIntersector
+class SimpleSweepLineIntersector
   extends EdgeSetIntersector
 {
 
@@ -38,10 +38,10 @@ public class SimpleSweepLineIntersector
   // statistics information
   int nOverlaps;
 
-  public SimpleSweepLineIntersector() {
+  SimpleSweepLineIntersector() {
   }
 
-  public void computeIntersections(List edges, SegmentIntersector si, boolean testAllSegments)
+  void computeIntersections(List edges, SegmentIntersector si, bool testAllSegments)
   {
     if (testAllSegments)
       add(edges, null);
@@ -50,7 +50,7 @@ public class SimpleSweepLineIntersector
     computeIntersections(si);
   }
 
-  public void computeIntersections(List edges0, List edges1, SegmentIntersector si)
+  void computeIntersections(List edges0, List edges1, SegmentIntersector si)
   {
     add(edges0, edges0);
     add(edges1, edges1);
@@ -76,7 +76,7 @@ public class SimpleSweepLineIntersector
 
   private void add(Edge edge, Object edgeSet)
   {
-    Coordinate[] pts = edge.getCoordinates();
+    List<Coordinate> pts = edge.getCoordinates();
     for (int i = 0; i < pts.length - 1; i++) {
       SweepLineSegment ss = new SweepLineSegment(edge, i);
       SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, ss.getMinX(), null);

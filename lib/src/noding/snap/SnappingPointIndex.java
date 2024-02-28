@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding.snap;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.index.kdtree.KdNode;
@@ -21,7 +21,7 @@ import org.locationtech.jts.index.kdtree.KdTree;
  * @author mdavis
  *
  */
-public class SnappingPointIndex {
+class SnappingPointIndex {
 
   private double snapTolerance;
 
@@ -37,7 +37,7 @@ public class SnappingPointIndex {
    * 
    * @param snapTolerance points are snapped if within this distance
    */
-  public SnappingPointIndex(double snapTolerance) {
+  SnappingPointIndex(double snapTolerance) {
     this.snapTolerance = snapTolerance;
     snapPointIndex = new KdTree(snapTolerance);
   }
@@ -50,7 +50,7 @@ public class SnappingPointIndex {
    * @param p the point to snap
    * @return the point it snapped to, or the input point
    */
-  public Coordinate snap(Coordinate p) {
+  Coordinate snap(Coordinate p) {
     /**
      * Inserting the coordinate snaps it to any existing
      * one within tolerance, or adds it if not.
@@ -64,7 +64,7 @@ public class SnappingPointIndex {
    * 
    * @return the snapping tolerance value
    */
-  public double getTolerance() {
+  double getTolerance() {
     return snapTolerance;
   }
 
@@ -73,7 +73,7 @@ public class SnappingPointIndex {
    * 
    * @return the depth of the index tree
    */
-  public int depth() {
+  int depth() {
     return snapPointIndex.depth();
   }
 

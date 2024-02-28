@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.planargraph;
+
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.Quadrant;
  *
  * @version 1.7
  */
-public class DirectedEdge
+class DirectedEdge
     extends GraphComponent
     implements Comparable
 {
@@ -38,7 +38,7 @@ public class DirectedEdge
    * Returns a List containing the parent Edge (possibly null) for each of the given
    * DirectedEdges.
    */
-  public static List toEdges(Collection dirEdges)
+  static List toEdges(Collection dirEdges)
   {
     List edges = new ArrayList();
     for (Iterator i = dirEdges.iterator(); i.hasNext(); ) {
@@ -52,7 +52,7 @@ public class DirectedEdge
   protected Node to;
   protected Coordinate p0, p1;
   protected DirectedEdge sym = null;  // optional
-  protected boolean edgeDirection;
+  protected bool edgeDirection;
   protected int quadrant;
   protected double angle;
 
@@ -68,7 +68,7 @@ public class DirectedEdge
    *   whether this DirectedEdge's direction is the same as or
    *   opposite to that of the parent Edge (if any)
    */
-  public DirectedEdge(Node from, Node to, Coordinate directionPt, boolean edgeDirection)
+  DirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
   {
     this.from = from;
     this.to = to;
@@ -85,54 +85,54 @@ public class DirectedEdge
   /**
    * Returns this DirectedEdge's parent Edge, or null if it has none.
    */
-  public Edge getEdge() { return parentEdge; }
+  Edge getEdge() { return parentEdge; }
   /**
    * Associates this DirectedEdge with an Edge (possibly null, indicating no associated
    * Edge).
    */
-  public void setEdge(Edge parentEdge) { this.parentEdge = parentEdge; }
+  void setEdge(Edge parentEdge) { this.parentEdge = parentEdge; }
   /**
    * Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
    * orientation lies.
    */
-  public int getQuadrant() { return quadrant; }
+  int getQuadrant() { return quadrant; }
   /**
    * Returns a point to which an imaginary line is drawn from the from-node to
    * specify this DirectedEdge's orientation.
    */
-  public Coordinate getDirectionPt() { return p1; }
+  Coordinate getDirectionPt() { return p1; }
   /**
    * Returns whether the direction of the parent Edge (if any) is the same as that
    * of this Directed Edge.
    */
-  public boolean getEdgeDirection() { return edgeDirection; }
+  bool getEdgeDirection() { return edgeDirection; }
   /**
    * Returns the node from which this DirectedEdge leaves.
    */
-  public Node getFromNode() { return from; }
+  Node getFromNode() { return from; }
   /**
    * Returns the node to which this DirectedEdge goes.
    */
-  public Node getToNode() { return to; }
+  Node getToNode() { return to; }
   /**
    * Returns the coordinate of the from-node.
    */
-  public Coordinate getCoordinate() { return from.getCoordinate(); }
+  Coordinate getCoordinate() { return from.getCoordinate(); }
   /**
    * Returns the angle that the start of this DirectedEdge makes with the
    * positive x-axis, in radians.
    */
-  public double getAngle() { return angle; }
+  double getAngle() { return angle; }
   /**
    * Returns the symmetric DirectedEdge -- the other DirectedEdge associated with
    * this DirectedEdge's parent Edge.
    */
-  public DirectedEdge getSym() { return sym; }
+  DirectedEdge getSym() { return sym; }
   /**
    * Sets this DirectedEdge's symmetric DirectedEdge, which runs in the opposite
    * direction.
    */
-  public void setSym(DirectedEdge sym) { this.sym = sym; }
+  void setSym(DirectedEdge sym) { this.sym = sym; }
 
   /**
    * Removes this directed edge from its containing graph.
@@ -147,7 +147,7 @@ public class DirectedEdge
    *
    * @return <code>true</code> if this directed edge is removed
    */
-  public boolean isRemoved()
+  bool isRemoved()
   {
     return parentEdge == null;
   }
@@ -167,7 +167,7 @@ public class DirectedEdge
    * function can be used to decide the relative orientation of the vectors.
    * </ul>
    */
-  public int compareTo(Object obj)
+  int compareTo(Object obj)
   {
       DirectedEdge de = (DirectedEdge) obj;
       return compareDirection(de);
@@ -188,7 +188,7 @@ public class DirectedEdge
    * function can be used to decide the relative orientation of the vectors.
    * </ul>
    */
-  public int compareDirection(DirectedEdge e)
+  int compareDirection(DirectedEdge e)
   {
     // if the rays are in different quadrants, determining the ordering is trivial
     if (quadrant > e.quadrant) return 1;
@@ -201,7 +201,7 @@ public class DirectedEdge
   /**
    * Prints a detailed string representation of this DirectedEdge to the given PrintStream.
    */
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     String className = getClass().getName();
     int lastDotPos = className.lastIndexOf('.');

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.linearref;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.MultiLineString;
  *
  * @version 1.7
  */
-public class LinearIterator
+class LinearIterator
 {
   private static int segmentEndVertexIndex(LinearLocation loc)
   {
@@ -58,9 +58,9 @@ public class LinearIterator
    * Creates an iterator initialized to the start of a linear {@link Geometry}
    *
    * @param linear the linear geometry to iterate over
-   * @throws IllegalArgumentException if linearGeom is not lineal
+   * @throws ArgumentError if linearGeom is not lineal
    */
-  public LinearIterator(Geometry linear) {
+  LinearIterator(Geometry linear) {
     this(linear, 0, 0);
   }
 
@@ -70,9 +70,9 @@ public class LinearIterator
    *
    * @param linear the linear geometry to iterate over
    * @param start the location to start at
-   * @throws IllegalArgumentException if linearGeom is not lineal
+   * @throws ArgumentError if linearGeom is not lineal
    */
-  public LinearIterator(Geometry linear, LinearLocation start) {
+  LinearIterator(Geometry linear, LinearLocation start) {
     this(linear, start.getComponentIndex(), segmentEndVertexIndex(start));
   }
 
@@ -83,12 +83,12 @@ public class LinearIterator
    * @param linearGeom the linear geometry to iterate over
    * @param componentIndex the component to start at
    * @param vertexIndex the vertex to start at
-   * @throws IllegalArgumentException if linearGeom is not lineal
+   * @throws ArgumentError if linearGeom is not lineal
    */
-  public LinearIterator(Geometry linearGeom, int componentIndex, int vertexIndex) 
+  LinearIterator(Geometry linearGeom, int componentIndex, int vertexIndex) 
   {
   	if (! (linearGeom instanceof Lineal))
-  			throw new IllegalArgumentException("Lineal geometry is required");
+  			throw new ArgumentError("Lineal geometry is required");
     this.linearGeom = linearGeom;
     numLines = linearGeom.getNumGeometries();
     this.componentIndex = componentIndex;
@@ -113,7 +113,7 @@ public class LinearIterator
    * 
    * @return <code>true</code> if there are more vertices to scan
    */
-  public boolean hasNext()
+  bool hasNext()
   {
     if (componentIndex >= numLines) return false;
     if (componentIndex == numLines - 1
@@ -125,7 +125,7 @@ public class LinearIterator
   /**
    * Moves the iterator ahead to the next vertex and (possibly) linear component.
    */
-  public void next()
+  void next()
   {
     if (! hasNext()) return;
 
@@ -143,7 +143,7 @@ public class LinearIterator
    *
    * @return <code>true</code> if the iterator is at an endpoint
    */
-  public boolean isEndOfLine() {
+  bool isEndOfLine() {
     if (componentIndex >= numLines) return false;
     //LineString currentLine = (LineString) linear.getGeometryN(componentIndex);
     if (vertexIndex < currentLine.getNumPoints() - 1)
@@ -155,26 +155,26 @@ public class LinearIterator
    * The component index of the vertex the iterator is currently at.
    * @return the current component index
    */
-  public int getComponentIndex() { return componentIndex; }
+  int getComponentIndex() { return componentIndex; }
 
   /**
    * The vertex index of the vertex the iterator is currently at.
    * @return the current vertex index
    */
-  public int getVertexIndex() { return vertexIndex; }
+  int getVertexIndex() { return vertexIndex; }
 
   /**
    * Gets the {@link LineString} component the iterator is current at.
    * @return a linestring
    */
-  public LineString getLine()  {    return currentLine;  }
+  LineString getLine()  {    return currentLine;  }
 
   /**
    * Gets the first {@link Coordinate} of the current segment.
    * (the coordinate of the current vertex).
    * @return a {@link Coordinate}
    */
-  public Coordinate getSegmentStart() { return currentLine.getCoordinateN(vertexIndex); }
+  Coordinate getSegmentStart() { return currentLine.getCoordinateN(vertexIndex); }
 
   /**
    * Gets the second {@link Coordinate} of the current segment.
@@ -183,7 +183,7 @@ public class LinearIterator
    *
    * @return a {@link Coordinate} or <code>null</code>
    */
-  public Coordinate getSegmentEnd()
+  Coordinate getSegmentEnd()
   {
     if (vertexIndex < getLine().getNumPoints() - 1)
       return currentLine.getCoordinateN(vertexIndex + 1);

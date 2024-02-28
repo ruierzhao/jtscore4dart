@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 
 /**
@@ -23,7 +23,7 @@ package org.locationtech.jts.geom;
  *
  *@version 1.7
  */
-public interface GeometryFilter {
+interface GeometryFilter {
 
   /**
    *  Performs an operation with or on <code>geom</code>.

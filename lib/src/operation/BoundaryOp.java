@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,7 +41,7 @@ import org.locationtech.jts.geom.Point;
  * @version 1.7
  */
 
-public class BoundaryOp
+class BoundaryOp
 {
   /**
    * Computes a geometry representing the boundary of a geometry.
@@ -49,7 +49,7 @@ public class BoundaryOp
    * @param g the input geometry
    * @return the computed boundary
    */
-  public static Geometry getBoundary(Geometry g)
+  static Geometry getBoundary(Geometry g)
   {
     BoundaryOp bop = new BoundaryOp(g);
     return bop.getBoundary();
@@ -63,7 +63,7 @@ public class BoundaryOp
    * @param bnRule the Boundary Node Rule to use
    * @return the computed boundary
    */
-  public static Geometry getBoundary(Geometry g, BoundaryNodeRule bnRule)
+  static Geometry getBoundary(Geometry g, BoundaryNodeRule bnRule)
   {
     BoundaryOp bop = new BoundaryOp(g, bnRule);
     return bop.getBoundary();
@@ -84,7 +84,7 @@ public class BoundaryOp
    * @param boundaryNodeRule  the Boundary Node Rule to use
    * @return true if the boundary exists
    */
-  public static boolean hasBoundary(Geometry geom, BoundaryNodeRule boundaryNodeRule) {
+  static bool hasBoundary(Geometry geom, BoundaryNodeRule boundaryNodeRule) {
     // Note that this does not handle geometry collections with a non-empty linear element
     if (geom.isEmpty()) return false;
     switch (geom.getDimension()) {
@@ -109,7 +109,7 @@ public class BoundaryOp
    * 
    * @param geom the input geometry
    */
-  public BoundaryOp(Geometry geom)
+  BoundaryOp(Geometry geom)
   {
     this(geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
   }
@@ -120,7 +120,7 @@ public class BoundaryOp
    * @param geom the input geometry
    * @param bnRule the Boundary Node Rule to use
    */
-  public BoundaryOp(Geometry geom, BoundaryNodeRule bnRule)
+  BoundaryOp(Geometry geom, BoundaryNodeRule bnRule)
   {
     this.geom = geom;
     geomFact = geom.getFactory();
@@ -132,7 +132,7 @@ public class BoundaryOp
    * 
    * @return the boundary geometry
    */
-  public Geometry getBoundary()
+  Geometry getBoundary()
   {
     if (geom instanceof LineString) return boundaryLineString((LineString) geom);
     if (geom instanceof MultiLineString) return boundaryMultiLineString((MultiLineString) geom);
@@ -150,7 +150,7 @@ public class BoundaryOp
       return getEmptyMultiPoint();
     }
 
-    Coordinate[] bdyPts = computeBoundaryCoordinates(mLine);
+    List<Coordinate> bdyPts = computeBoundaryCoordinates(mLine);
 
     // return Point or MultiPoint
     if (bdyPts.length == 1) {
@@ -162,17 +162,17 @@ public class BoundaryOp
 
 /*
 // MD - superseded
-  private Coordinate[] computeBoundaryFromGeometryGraph(MultiLineString mLine)
+  private List<Coordinate> computeBoundaryFromGeometryGraph(MultiLineString mLine)
   {
     GeometryGraph g = new GeometryGraph(0, mLine, bnRule);
-    Coordinate[] bdyPts = g.getBoundaryPoints();
+    List<Coordinate> bdyPts = g.getBoundaryPoints();
     return bdyPts;
   }
 */
 
   private Map endpointMap;
 
-  private Coordinate[] computeBoundaryCoordinates(MultiLineString mLine)
+  private List<Coordinate> computeBoundaryCoordinates(MultiLineString mLine)
   {
     List bdyPts = new ArrayList();
     endpointMap = new TreeMap();
@@ -214,7 +214,7 @@ public class BoundaryOp
 
     if (line.isClosed()) {
       // check whether endpoints of valence 2 are on the boundary or not
-      boolean closedEndpointOnBoundary = bnRule.isInBoundary(2);
+      bool closedEndpointOnBoundary = bnRule.isInBoundary(2);
       if (closedEndpointOnBoundary) {
         return line.getStartPoint();
       }

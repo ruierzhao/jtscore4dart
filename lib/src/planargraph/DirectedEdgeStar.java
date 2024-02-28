@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.planargraph;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,24 +24,24 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class DirectedEdgeStar
+class DirectedEdgeStar
 {
 
   /**
    * The underlying list of outgoing DirectedEdges
    */
   protected List<DirectedEdge> outEdges = new ArrayList<>();
-  private boolean sorted = false;
+  private bool sorted = false;
 
   /**
    * Constructs a DirectedEdgeStar with no edges.
    */
-  public DirectedEdgeStar() {
+  DirectedEdgeStar() {
   }
   /**
    * Adds a new member to this DirectedEdgeStar.
    */
-  public void add(DirectedEdge de)
+  void add(DirectedEdge de)
   {
     outEdges.add(de);
     sorted = false;
@@ -49,14 +49,14 @@ public class DirectedEdgeStar
   /**
    * Drops a member of this DirectedEdgeStar.
    */
-  public void remove(DirectedEdge de)
+  void remove(DirectedEdge de)
   {
     outEdges.remove(de);
   }
   /**
    * Returns an Iterator over the DirectedEdges, in ascending order by angle with the positive x-axis.
    */
-  public Iterator<DirectedEdge> iterator()
+  Iterator<DirectedEdge> iterator()
   {
     sortEdges();
     return outEdges.iterator();
@@ -65,12 +65,12 @@ public class DirectedEdgeStar
   /**
    * Returns the number of edges around the Node associated with this DirectedEdgeStar.
    */
-  public int getDegree() { return outEdges.size(); }
+  int getDegree() { return outEdges.size(); }
 
   /**
    * Returns the coordinate for the node at which this star is based
    */
-  public Coordinate getCoordinate()
+  Coordinate getCoordinate()
   {
     Iterator<DirectedEdge> it = iterator();
     if (! it.hasNext()) return null;
@@ -81,7 +81,7 @@ public class DirectedEdgeStar
   /**
    * Returns the DirectedEdges, in ascending order by angle with the positive x-axis.
    */
-  public List<DirectedEdge> getEdges()
+  List<DirectedEdge> getEdges()
   {
     sortEdges();
     return outEdges;
@@ -98,7 +98,7 @@ public class DirectedEdgeStar
    * Returns the zero-based index of the given Edge, after sorting in ascending order
    * by angle with the positive x-axis.
    */
-  public int getIndex(Edge edge)
+  int getIndex(Edge edge)
   {
     sortEdges();
     for (int i = 0; i < outEdges.size(); i++) {
@@ -112,7 +112,7 @@ public class DirectedEdgeStar
    * Returns the zero-based index of the given DirectedEdge, after sorting in ascending order
    * by angle with the positive x-axis.
    */  
-  public int getIndex(DirectedEdge dirEdge)
+  int getIndex(DirectedEdge dirEdge)
   {
     sortEdges();
     for (int i = 0; i < outEdges.size(); i++) {
@@ -128,7 +128,7 @@ public class DirectedEdgeStar
    * 
    * @param i an integer (positive, negative or zero)
    */
-  public int getIndex(int i)
+  int getIndex(int i)
   {
     int modi = i % outEdges.size();
     //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003] 
@@ -141,7 +141,7 @@ public class DirectedEdgeStar
    * side of the given {@link DirectedEdge} 
    * (which must be a member of this DirectedEdgeStar). 
    */
-  public DirectedEdge getNextEdge(DirectedEdge dirEdge)
+  DirectedEdge getNextEdge(DirectedEdge dirEdge)
   {
     int i = getIndex(dirEdge);
     return (DirectedEdge) outEdges.get(getIndex(i + 1));
@@ -152,7 +152,7 @@ public class DirectedEdgeStar
    * side of the given {@link DirectedEdge} 
    * (which must be a member of this DirectedEdgeStar). 
    */
-  public DirectedEdge getNextCWEdge(DirectedEdge dirEdge)
+  DirectedEdge getNextCWEdge(DirectedEdge dirEdge)
   {
     int i = getIndex(dirEdge);
     return (DirectedEdge) outEdges.get(getIndex(i - 1));

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.dissolve;
+
 
 import org.locationtech.jts.edgegraph.EdgeGraph;
 import org.locationtech.jts.edgegraph.HalfEdge;

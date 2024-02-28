@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.io.OrdinateFormat;
@@ -26,7 +26,7 @@ import org.locationtech.jts.io.OrdinateFormat;
  */
 class EdgeKey implements Comparable<EdgeKey> {
   
-  public static EdgeKey create(Edge edge) {
+  static EdgeKey create(Edge edge) {
     return new EdgeKey(edge);
   }
     
@@ -40,7 +40,7 @@ class EdgeKey implements Comparable<EdgeKey> {
   }
 
   private void initPoints(Edge edge) {
-    boolean direction = edge.direction();
+    bool direction = edge.direction();
     if (direction) {
       init(edge.getCoordinate(0), 
           edge.getCoordinate(1));
@@ -60,7 +60,7 @@ class EdgeKey implements Comparable<EdgeKey> {
   }
 
   @Override
-  public int compareTo(EdgeKey ek) {
+  int compareTo(EdgeKey ek) {
     if (p0x < ek.p0x) return -1;
     if (p0x > ek.p0x) return 1;
     if (p0y < ek.p0y) return -1;
@@ -73,7 +73,7 @@ class EdgeKey implements Comparable<EdgeKey> {
     return 0;
   }
   
-  public boolean equals(Object o) {
+  bool equals(Object o) {
     if (! (o instanceof EdgeKey)) {
       return false;
     }
@@ -89,7 +89,7 @@ class EdgeKey implements Comparable<EdgeKey> {
    * 
    * @return a hashcode for this object
    */
-  public int hashCode() {
+  int hashCode() {
     //Algorithm from Effective Java by Joshua Bloch
     int result = 17;
     result = 37 * result + hashCode(p0x);
@@ -106,12 +106,12 @@ class EdgeKey implements Comparable<EdgeKey> {
    * @param x the value to compute for
    * @return a hashcode for x
    */
-  public static int hashCode(double x) {
+  static int hashCode(double x) {
     long f = Double.doubleToLongBits(x);
     return (int)(f^(f>>>32));
   }
   
-  public String toString() {
+  String toString() {
     return "EdgeKey(" + format(p0x, p0y) 
       + ", " +  format(p1x, p1y) + ")";
   }

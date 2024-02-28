@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.awt;
+
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -42,7 +42,7 @@ import org.locationtech.jts.geom.LinearRing;
  * @author Martin Davis
  *
  */
-public class ShapeReader 
+class ShapeReader 
 {
   private static final AffineTransform INVERT_Y = AffineTransform.getScaleInstance(1, -1);
 
@@ -53,7 +53,7 @@ public class ShapeReader
    * @param geomFact the GeometryFactory to use
    * @return a Geometry representing the path
    */
-  public static Geometry read(PathIterator pathIt, GeometryFactory geomFact)
+  static Geometry read(PathIterator pathIt, GeometryFactory geomFact)
   {
     ShapeReader pc = new ShapeReader(geomFact);
     return pc.read(pathIt);
@@ -67,7 +67,7 @@ public class ShapeReader
    * @param geomFact the GeometryFactory to use
    * @return a Geometry representing the shape
    */
-  public static Geometry read(Shape shp, double flatness, GeometryFactory geomFact)
+  static Geometry read(Shape shp, double flatness, GeometryFactory geomFact)
   {
     PathIterator pathIt = shp.getPathIterator(INVERT_Y, flatness);
     return ShapeReader.read(pathIt, geomFact);
@@ -75,7 +75,7 @@ public class ShapeReader
 
   private GeometryFactory geometryFactory;
   
-  public ShapeReader(GeometryFactory geometryFactory) {
+  ShapeReader(GeometryFactory geometryFactory) {
     this.geometryFactory = geometryFactory;
   }
 
@@ -85,7 +85,7 @@ public class ShapeReader
    * @param pathIt the path to convert
    * @return a Geometry representing the path
    */
-  public Geometry read(PathIterator pathIt)
+  Geometry read(PathIterator pathIt)
   {
     List pathPtSeq = toCoordinates(pathIt);
     
@@ -94,14 +94,14 @@ public class ShapeReader
     while (seqIndex < pathPtSeq.size()) {
       // assume next seq is shell 
       // TODO: test this
-      Coordinate[] pts = (Coordinate[]) pathPtSeq.get(seqIndex);
+      List<Coordinate> pts = (List<Coordinate>) pathPtSeq.get(seqIndex);
       LinearRing shell = geometryFactory.createLinearRing(pts);
       seqIndex++;
       
       List holes = new ArrayList();
       // add holes as long as rings are CCW
-      while (seqIndex < pathPtSeq.size() && isHole((Coordinate[]) pathPtSeq.get(seqIndex))) {
-        Coordinate[] holePts = (Coordinate[]) pathPtSeq.get(seqIndex);
+      while (seqIndex < pathPtSeq.size() && isHole((List<Coordinate>) pathPtSeq.get(seqIndex))) {
+        List<Coordinate> holePts = (List<Coordinate>) pathPtSeq.get(seqIndex);
         LinearRing hole = geometryFactory.createLinearRing(holePts);
         holes.add(hole);
         seqIndex++;
@@ -112,7 +112,7 @@ public class ShapeReader
     return geometryFactory.buildGeometry(polys);
   }
   
-  private boolean isHole(Coordinate[] pts)
+  private bool isHole(List<Coordinate> pts)
   {
     return Orientation.isCCW(pts);
   }
@@ -123,13 +123,13 @@ public class ShapeReader
    * 
    * @param pathIt a path iterator
    * @return a List of Coordinate arrays
-   * @throws IllegalArgumentException if a non-linear segment type is encountered
+   * @throws ArgumentError if a non-linear segment type is encountered
    */
-  public static List toCoordinates(PathIterator pathIt)
+  static List toCoordinates(PathIterator pathIt)
   {
     List coordArrays = new ArrayList();
     while (! pathIt.isDone()) {
-      Coordinate[] pts = nextCoordinateArray(pathIt);
+      List<Coordinate> pts = nextCoordinateArray(pathIt);
       if (pts == null)
         break;
       coordArrays.add(pts);
@@ -137,11 +137,11 @@ public class ShapeReader
     return coordArrays;
   }
   
-  private static Coordinate[] nextCoordinateArray(PathIterator pathIt)
+  private static List<Coordinate> nextCoordinateArray(PathIterator pathIt)
   {
     double[] pathPt = new double[6];
     CoordinateList coordList = null;
-    boolean isDone = false;
+    bool isDone = false;
     while (! pathIt.isDone()) {
       int segType = pathIt.currentSegment(pathPt);
       switch (segType) {
@@ -166,7 +166,7 @@ public class ShapeReader
         isDone = true;   
         break;
       default:
-      	throw new IllegalArgumentException("unhandled (non-linear) segment type encountered");
+      	throw new ArgumentError("unhandled (non-linear) segment type encountered");
       }
       if (isDone) 
         break;

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.linearref;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.Geometry;
  * This class is intended for internal use only, and it
  * might be made package-private in a future version of this library
  */
-public class LengthLocationMap
+class LengthLocationMap
 {
   // TODO: cache computed cumulative length for each vertex
   // TODO: support user-defined measures
@@ -39,7 +39,7 @@ public class LengthLocationMap
    * @param length the length index of the location
    * @return the {@link LinearLocation} for the length
    */
-  public static LinearLocation getLocation(Geometry linearGeom, double length)
+  static LinearLocation getLocation(Geometry linearGeom, double length)
   {
     LengthLocationMap locater = new LengthLocationMap(linearGeom);
     return locater.getLocation(length);
@@ -56,7 +56,7 @@ public class LengthLocationMap
    * @param resolveLower if true lengths are resolved to the lowest possible index
    * @return the {@link LinearLocation} for the length
    */
-  public static LinearLocation getLocation(Geometry linearGeom, double length, boolean resolveLower)
+  static LinearLocation getLocation(Geometry linearGeom, double length, bool resolveLower)
   {
     LengthLocationMap locater = new LengthLocationMap(linearGeom);
     return locater.getLocation(length, resolveLower);
@@ -70,7 +70,7 @@ public class LengthLocationMap
    * @param loc the {@link LinearLocation} index of the location
    * @return the length for the {@link LinearLocation}
    */
-  public static double getLength(Geometry linearGeom, LinearLocation loc)
+  static double getLength(Geometry linearGeom, LinearLocation loc)
   {
     LengthLocationMap locater = new LengthLocationMap(linearGeom);
     return locater.getLength(loc);
@@ -78,7 +78,7 @@ public class LengthLocationMap
 
   private final Geometry linearGeom;
 
-  public LengthLocationMap(Geometry linearGeom)
+  LengthLocationMap(Geometry linearGeom)
   {
     this.linearGeom = linearGeom;
   }
@@ -92,7 +92,7 @@ public class LengthLocationMap
    * @param length the length index
    * @return the corresponding LinearLocation
    */
-  public LinearLocation getLocation(double length)
+  LinearLocation getLocation(double length)
   {
     return getLocation(length, true);
   }
@@ -107,7 +107,7 @@ public class LengthLocationMap
    * @param length the length index
    * @return the corresponding LinearLocation
    */
-  public LinearLocation getLocation(double length, boolean resolveLower)
+  LinearLocation getLocation(double length, bool resolveLower)
   {
     double forwardLength = length;
 
@@ -184,7 +184,7 @@ public class LengthLocationMap
     return new LinearLocation(compIndex, 0, 0.0);
   }
 
-  public double getLength(LinearLocation loc)
+  double getLength(LinearLocation loc)
   {
     double totalLength = 0.0;
 

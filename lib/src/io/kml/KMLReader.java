@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.io.kml;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -29,7 +29,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,7 @@ import java.util.Set;
  * Constructs a {@link Geometry} object from the OGC KML representation.
  * Works only with KML geometry elements and may also parse attributes within these elements
  */
-public class KMLReader {
+class KMLReader {
     private final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     private final GeometryFactory geometryFactory;
     private final Set<String> attributeNames;
@@ -58,7 +58,7 @@ public class KMLReader {
     /**
      * Creates a reader that creates objects using the default {@link GeometryFactory}.
      */
-    public KMLReader() {
+    KMLReader() {
         this(new GeometryFactory(), Collections.emptyList());
     }
 
@@ -68,7 +68,7 @@ public class KMLReader {
      *
      * @param geometryFactory the factory used to create <code>Geometry</code>s.
      */
-    public KMLReader(GeometryFactory geometryFactory) {
+    KMLReader(GeometryFactory geometryFactory) {
         this(geometryFactory, Collections.emptyList());
     }
 
@@ -77,7 +77,7 @@ public class KMLReader {
      *
      * @param attributeNames names of attributes that should be parsed (i.e. extrude, altitudeMode, tesselate, etc).
      */
-    public KMLReader(Collection<String> attributeNames) {
+    KMLReader(Collection<String> attributeNames) {
         this(new GeometryFactory(), attributeNames);
     }
 
@@ -88,7 +88,7 @@ public class KMLReader {
      * @param geometryFactory the factory used to create <code>Geometry</code>s.
      * @param attributeNames  names of attributes that should be parsed (i.e. extrude, altitudeMode, tesselate, etc).
      */
-    public KMLReader(GeometryFactory geometryFactory, Collection<String> attributeNames) {
+    KMLReader(GeometryFactory geometryFactory, Collection<String> attributeNames) {
         this.geometryFactory = geometryFactory;
         this.attributeNames = attributeNames == null
                 ? Collections.emptySet()
@@ -104,7 +104,7 @@ public class KMLReader {
      * @return a <code>Geometry</code> specified by <code>kmlGeometryString</code>
      * @throws ParseException if a parsing problem occurs
      */
-    public Geometry read(String kmlGeometryString) throws ParseException {
+    Geometry read(String kmlGeometryString) throws ParseException {
         try (StringReader sr = new StringReader(kmlGeometryString)) {
             XMLStreamReader xmlSr = inputFactory.createXMLStreamReader(sr);
             return parseKML(xmlSr);
@@ -113,7 +113,7 @@ public class KMLReader {
         }
     }
 
-    private Coordinate[] parseKMLCoordinates(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
+    private List<Coordinate> parseKMLCoordinates(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
         String coordinates = xmlStreamReader.getElementText();
 
         if (coordinates.isEmpty()) {
@@ -157,11 +157,11 @@ public class KMLReader {
             parsedOrdinates[0] = parsedOrdinates[1] = parsedOrdinates[2] = Double.NaN;
         }
 
-        return coordinateList.toArray(new Coordinate[]{});
+        return coordinateList.toArray(new List<Coordinate>{});
     }
 
     private KMLCoordinatesAndAttributes parseKMLCoordinatesAndAttributes(XMLStreamReader xmlStreamReader, String objectNodeName) throws XMLStreamException, ParseException {
-        Coordinate[] coordinates = null;
+        List<Coordinate> coordinates = null;
         Map<String, String> attributes = null;
 
         while (xmlStreamReader.hasNext() && !(xmlStreamReader.isEndElement() && xmlStreamReader.getLocalName().equals(objectNodeName))) {
@@ -172,7 +172,7 @@ public class KMLReader {
                     coordinates = parseKMLCoordinates(xmlStreamReader);
                 } else if (attributeNames.contains(elementName)) {
                     if (attributes == null) {
-                        attributes = new HashMap<>();
+                        attributes = new Map<>();
                     }
 
                     attributes.put(elementName, xmlStreamReader.getElementText());
@@ -228,7 +228,7 @@ public class KMLReader {
                     holes.add(geometryFactory.createLinearRing(parseKMLCoordinates(xmlStreamReader)));
                 } else if (attributeNames.contains(elementName)) {
                     if (attributes == null) {
-                        attributes = new HashMap<>();
+                        attributes = new Map<>();
                     }
 
                     attributes.put(elementName, xmlStreamReader.getElementText());
@@ -251,7 +251,7 @@ public class KMLReader {
     private Geometry parseKMLMultiGeometry(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
         List<Geometry> geometries = new ArrayList<>();
         String firstParsedType = null;
-        boolean allTypesAreSame = true;
+        bool allTypesAreSame = true;
 
         while (xmlStreamReader.hasNext()) {
             if (xmlStreamReader.isStartElement()) {
@@ -301,7 +301,7 @@ public class KMLReader {
     }
 
     private Geometry parseKML(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
-        boolean hasElement = false;
+        bool hasElement = false;
 
         while (xmlStreamReader.hasNext()) {
             if (xmlStreamReader.isStartElement()) {
@@ -334,7 +334,7 @@ public class KMLReader {
     }
 
     private void moveToElement(XMLStreamReader xmlStreamReader, String elementName, String endElementName) throws XMLStreamException, ParseException {
-        boolean elementFound = false;
+        bool elementFound = false;
 
         while (xmlStreamReader.hasNext() && !(xmlStreamReader.isEndElement() && xmlStreamReader.getLocalName().equals(endElementName))) {
             if (xmlStreamReader.isStartElement() && xmlStreamReader.getLocalName().equals(elementName)) {
@@ -359,10 +359,10 @@ public class KMLReader {
     }
 
     private static class KMLCoordinatesAndAttributes {
-        private final Coordinate[] coordinates;
+        private final List<Coordinate> coordinates;
         private final Map<String, String> attributes;
 
-        public KMLCoordinatesAndAttributes(Coordinate[] coordinates, Map<String, String> attributes) {
+        KMLCoordinatesAndAttributes(List<Coordinate> coordinates, Map<String, String> attributes) {
 
             this.coordinates = coordinates;
             this.attributes = attributes;

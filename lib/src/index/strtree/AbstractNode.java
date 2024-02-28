@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public abstract class AbstractNode implements Boundable, Serializable {
+abstract class AbstractNode implements Boundable, Serializable {
   /**
    * 
    */
@@ -41,7 +41,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
   /**
    * Default constructor required for serialization.
    */
-  public AbstractNode() {
+  AbstractNode() {
   }
 
   /**
@@ -49,7 +49,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
    * @param level 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
    * root node will have the highest level
    */
-  public AbstractNode(int level) {
+  AbstractNode(int level) {
     this.level = level;
   }
 
@@ -59,7 +59,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
    * 
    * @return a list of the children
    */
-  public List getChildBoundables() {
+  List getChildBoundables() {
     return childBoundables;
   }
 
@@ -80,7 +80,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
    * 
    * @return the object representing bounds in this index
    */
-  public Object getBounds() {
+  Object getBounds() {
     if (bounds == null) {
       bounds = computeBounds();
     }
@@ -93,7 +93,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
    * 
    * @return the node level
    */
-  public int getLevel() {
+  int getLevel() {
     return level;
   }
 
@@ -102,7 +102,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
    * 
    * @return the count of boundables at this node
    */
-  public int size()
+  int size()
   {
     return childBoundables.size();
   }
@@ -112,7 +112,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
    * 
    * @return true if there are boundables at this node
    */
-  public boolean isEmpty()
+  bool isEmpty()
   {
     return childBoundables.isEmpty();
   }
@@ -123,7 +123,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
    * 
    * @param childBoundable the child to add
    */
-  public void addChildBoundable(Boundable childBoundable) {
+  void addChildBoundable(Boundable childBoundable) {
     Assert.isTrue(bounds == null);
     childBoundables.add(childBoundable);
   }

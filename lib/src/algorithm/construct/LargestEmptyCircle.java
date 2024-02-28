@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.construct;
+
 
 import java.util.PriorityQueue;
 
@@ -58,7 +58,7 @@ import org.locationtech.jts.operation.distance.IndexedFacetDistance;
  * @see InteriorPoint
  * @see Centroid
  */
-public class LargestEmptyCircle {
+class LargestEmptyCircle {
 
   /**
    * Computes the center point of the Largest Empty Circle 
@@ -71,7 +71,7 @@ public class LargestEmptyCircle {
    * @param tolerance the distance tolerance for computing the center point
    * @return the center point of the Largest Empty Circle
    */
-  public static Point getCenter(Geometry obstacles, double tolerance) {
+  static Point getCenter(Geometry obstacles, double tolerance) {
     return getCenter(obstacles, null, tolerance);
   }
 
@@ -87,7 +87,7 @@ public class LargestEmptyCircle {
    * @param tolerance the distance tolerance for computing the center point
    * @return the center point of the Largest Empty Circle
    */
-  public static Point getCenter(Geometry obstacles, Geometry boundary, double tolerance) {
+  static Point getCenter(Geometry obstacles, Geometry boundary, double tolerance) {
     LargestEmptyCircle lec = new LargestEmptyCircle(obstacles, boundary, tolerance);
     return lec.getCenter();
   }
@@ -103,7 +103,7 @@ public class LargestEmptyCircle {
    * @param tolerance the distance tolerance for computing the center point
    * @return a line from the center of the circle to a point on the edge
    */
-  public static LineString getRadiusLine(Geometry obstacles, double tolerance) {
+  static LineString getRadiusLine(Geometry obstacles, double tolerance) {
     return getRadiusLine(obstacles, null, tolerance);
   }
   
@@ -119,7 +119,7 @@ public class LargestEmptyCircle {
    * @param tolerance the distance tolerance for computing the center point
    * @return a line from the center of the circle to a point on the edge
    */
-  public static LineString getRadiusLine(Geometry obstacles, Geometry boundary, double tolerance) {
+  static LineString getRadiusLine(Geometry obstacles, Geometry boundary, double tolerance) {
     LargestEmptyCircle lec = new LargestEmptyCircle(obstacles, boundary, tolerance);
     return lec.getRadiusLine();
   }
@@ -154,15 +154,15 @@ public class LargestEmptyCircle {
    * @param boundary a polygonal geometry (may be null or empty)
    * @param tolerance a distance tolerance for computing the circle center point (a positive value)
    */
-  public LargestEmptyCircle(Geometry obstacles, Geometry boundary, double tolerance) {
+  LargestEmptyCircle(Geometry obstacles, Geometry boundary, double tolerance) {
     if (obstacles == null || obstacles.isEmpty()) {
-      throw new IllegalArgumentException("Obstacles geometry is empty or null");
+      throw new ArgumentError("Obstacles geometry is empty or null");
     }
     if (boundary != null && ! (boundary instanceof Polygonal)) {
-      throw new IllegalArgumentException("Boundary must be polygonal");
+      throw new ArgumentError("Boundary must be polygonal");
     }
     if (tolerance <= 0) {
-      throw new IllegalArgumentException("Accuracy tolerance is non-positive: " + tolerance);
+      throw new ArgumentError("Accuracy tolerance is non-positive: " + tolerance);
     }
     this.obstacles = obstacles;
     this.boundary = boundary;
@@ -177,7 +177,7 @@ public class LargestEmptyCircle {
    * 
    * @return the center point of the Largest Empty Circle
    */
-  public Point getCenter() {
+  Point getCenter() {
     compute();
     return centerPoint;
   }
@@ -192,7 +192,7 @@ public class LargestEmptyCircle {
    * 
    * @return a point defining the radius of the Largest Empty Circle
    */
-  public Point getRadiusPoint() {
+  Point getRadiusPoint() {
     compute();
     return radiusPoint;
   }
@@ -202,10 +202,10 @@ public class LargestEmptyCircle {
    * 
    * @return a line from the center of the circle to a point on the edge
    */
-  public LineString getRadiusLine() {
+  LineString getRadiusLine() {
     compute();
     LineString radiusLine = factory.createLineString(
-        new Coordinate[] { centerPt.copy(), radiusPt.copy() });
+        new List<Coordinate> { centerPt.copy(), radiusPt.copy() });
     return radiusLine;
   }
   
@@ -220,7 +220,7 @@ public class LargestEmptyCircle {
    * @return the signed distance to the constraints (negative indicates outside the boundary)
    */
   private double distanceToConstraints(Point p) {
-    boolean isOutide = Location.EXTERIOR == boundaryPtLocater.locate(p.getCoordinate());
+    bool isOutide = Location.EXTERIOR == boundaryPtLocater.locate(p.getCoordinate());
     if (isOutide) {
       double boundaryDist = boundaryDistance.distance(p);
       return -boundaryDist;
@@ -315,7 +315,7 @@ public class LargestEmptyCircle {
     centerPt = new Coordinate(centerCell.getX(), centerCell.getY());
     centerPoint = factory.createPoint(centerPt);
     // compute radius point
-    Coordinate[] nearestPts = obstacleDistance.nearestPoints(centerPoint);
+    List<Coordinate> nearestPts = obstacleDistance.nearestPoints(centerPoint);
     radiusPt = nearestPts[0].copy();
     radiusPoint = factory.createPoint(radiusPt);
   }
@@ -328,7 +328,7 @@ public class LargestEmptyCircle {
    * @param cell the cell to test
    * @return true if the cell might contain the circle center
    */
-  private boolean mayContainCircleCenter(Cell cell) {
+  private bool mayContainCircleCenter(Cell cell) {
     /**
      * Every point in the cell lies outside the boundary,
      * so they cannot be the center point
@@ -343,7 +343,7 @@ public class LargestEmptyCircle {
      * is larger than the tolerance.
      */
     if (cell.isOutside()) {
-      boolean isOverlapSignificant = cell.getMaxDistance() > tolerance;
+      bool isOverlapSignificant = cell.getMaxDistance() > tolerance;
       return isOverlapSignificant;
     }
     
@@ -419,31 +419,31 @@ public class LargestEmptyCircle {
       this.maxDist = distance + hSide * SQRT2;
     }
 
-    public boolean isFullyOutside() {
+    bool isFullyOutside() {
       return getMaxDistance() < 0;
     }
 
-    public boolean isOutside() {
+    bool isOutside() {
       return distance < 0;
     }
 
-    public double getMaxDistance() {
+    double getMaxDistance() {
       return maxDist;
     }
 
-    public double getDistance() {
+    double getDistance() {
       return distance;
     }
 
-    public double getHSide() {
+    double getHSide() {
       return hSide;
     }
 
-    public double getX() {
+    double getX() {
       return x;
     }
 
-    public double getY() {
+    double getY() {
       return y;
     }
     
@@ -451,7 +451,7 @@ public class LargestEmptyCircle {
      * For maximum efficieny sort the PriorityQueue with largest maxDistance at front.
      * Since Java PQ sorts least-first, need to invert the comparison
      */
-    public int compareTo(Cell o) {
+    int compareTo(Cell o) {
       return -Double.compare(maxDist, o.maxDist);
     }
   }

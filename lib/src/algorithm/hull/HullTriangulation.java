@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.hull;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ import org.locationtech.jts.util.Assert;
  */
 class HullTriangulation 
 {
-  public static List<HullTri> createDelaunayTriangulation(Geometry geom) {
+  static List<HullTri> createDelaunayTriangulation(Geometry geom) {
     //TODO: implement a DT on Tris directly?
     DelaunayTriangulationBuilder dt = new DelaunayTriangulationBuilder();
     dt.setSites(geom);
@@ -58,10 +58,10 @@ class HullTriangulation
   private static class HullTriVisitor implements TriangleVisitor {
     private List<HullTri> triList = new ArrayList<HullTri>();
 
-    public HullTriVisitor() {
+    HullTriVisitor() {
     }
 
-    public void visit(QuadEdge[] triEdges) {
+    void visit(QuadEdge[] triEdges) {
       Coordinate p0 = triEdges[0].orig().getCoordinate();
       Coordinate p1 = triEdges[1].orig().getCoordinate();
       Coordinate p2 = triEdges[2].orig().getCoordinate();
@@ -75,7 +75,7 @@ class HullTriangulation
       triList.add(tri);
     }
     
-    public List<HullTri> getTriangles() {
+    List<HullTri> getTriangles() {
       return triList;
     }
   }
@@ -88,7 +88,7 @@ class HullTriangulation
    * @param geomFactory the geometry factory to use
    * @return the area polygonal geometry
    */
-  public static Geometry union(List<? extends Tri> triList, GeometryFactory geomFactory) {
+  static Geometry union(List<? extends Tri> triList, GeometryFactory geomFactory) {
     List<Polygon> polys = new ArrayList<Polygon>();
     for (Tri tri : triList) {
       Polygon poly = tri.toPolygon(geomFactory);
@@ -105,12 +105,12 @@ class HullTriangulation
    * @param geomFactory the geometry factory to use
    * @return the area polygon
    */
-  public static Geometry traceBoundaryPolygon(List<HullTri> triList, GeometryFactory geomFactory) {
+  static Geometry traceBoundaryPolygon(List<HullTri> triList, GeometryFactory geomFactory) {
     if (triList.size() == 1) {
       Tri tri = triList.get(0);
       return tri.toPolygon(geomFactory);
     }
-    Coordinate[] pts = traceBoundary(triList);
+    List<Coordinate> pts = traceBoundary(triList);
     return geomFactory.createPolygon(pts);
   }
   
@@ -124,7 +124,7 @@ class HullTriangulation
    * @param triList the triangulation
    * @return the points in the boundary of the triangulation
    */
-  private static Coordinate[] traceBoundary(List<HullTri> triList) {
+  private static List<Coordinate> traceBoundary(List<HullTri> triList) {
     HullTri triStart = findBorderTri(triList);
     CoordinateList coordList = new CoordinateList();
     HullTri tri = triStart;
@@ -153,7 +153,7 @@ class HullTriangulation
     return null;
   }
   
-  public static HullTri nextBorderTri(HullTri triStart) {
+  static HullTri nextBorderTri(HullTri triStart) {
     HullTri tri = triStart;
     //-- start at first non-border edge CW
     int index = Tri.next(tri.boundaryIndexCW());

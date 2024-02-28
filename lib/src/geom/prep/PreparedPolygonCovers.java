@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import org.locationtech.jts.geom.Geometry;
 
@@ -36,7 +36,7 @@ class PreparedPolygonCovers
 	 * @param geom a test geometry
 	 * @return true if the polygon covers the geometry
 	 */
-	public static boolean covers(PreparedPolygon prep, Geometry geom)
+	static bool covers(PreparedPolygon prep, Geometry geom)
 	{
     PreparedPolygonCovers polyInt = new PreparedPolygonCovers(prep);
     return polyInt.covers(geom);
@@ -47,7 +47,7 @@ class PreparedPolygonCovers
    * 
    * @param prepPoly the PreparedPolygon to evaluate
    */
-	public PreparedPolygonCovers(PreparedPolygon prepPoly)
+	PreparedPolygonCovers(PreparedPolygon prepPoly)
 	{
 		super(prepPoly);
 		requireSomePointInInterior = false;
@@ -59,7 +59,7 @@ class PreparedPolygonCovers
 	 * @param geom the test geometry
 	 * @return true if the test geometry is covered
 	 */
-	public boolean covers(Geometry geom)
+	bool covers(Geometry geom)
 	{
 		return eval(geom);
 	}
@@ -71,9 +71,9 @@ class PreparedPolygonCovers
 	 * @param geom the test geometry
 	 * @return true if this prepared polygon covers the test geometry
 	 */
-	protected boolean fullTopologicalPredicate(Geometry geom)
+	protected bool fullTopologicalPredicate(Geometry geom)
 	{
-		boolean result = prepPoly.getGeometry().covers(geom);
+		bool result = prepPoly.getGeometry().covers(geom);
 		return result;
 	}
 	

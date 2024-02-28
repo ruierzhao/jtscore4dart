@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.overlay.snap;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -27,14 +27,14 @@ import org.locationtech.jts.geom.LineString;
  * @author Martin Davis
  * @version 1.7
  */
-public class LineStringSnapper
+class LineStringSnapper
 {
   private double snapTolerance = 0.0;
 
-  private Coordinate[] srcPts;
+  private List<Coordinate> srcPts;
   private LineSegment seg = new LineSegment(); // for reuse during snapping
-  private boolean allowSnappingToSourceVertices = false;
-  private boolean isClosed = false;
+  private bool allowSnappingToSourceVertices = false;
+  private bool isClosed = false;
 
   /**
    * Creates a new snapper using the points in the given {@link LineString}
@@ -43,7 +43,7 @@ public class LineStringSnapper
    * @param srcLine a LineString to snap (may be empty)
    * @param snapTolerance the snap tolerance to use
    */
-  public LineStringSnapper(LineString srcLine, double snapTolerance)
+  LineStringSnapper(LineString srcLine, double snapTolerance)
   {
     this(srcLine.getCoordinates(), snapTolerance);
   }
@@ -55,18 +55,18 @@ public class LineStringSnapper
    * @param srcPts the points to snap 
    * @param snapTolerance the snap tolerance to use
    */
-  public LineStringSnapper(Coordinate[] srcPts, double snapTolerance)
+  LineStringSnapper(List<Coordinate> srcPts, double snapTolerance)
   {
     this.srcPts = srcPts;
     isClosed = isClosed(srcPts);
     this.snapTolerance = snapTolerance;
   }
 
-  public void setAllowSnappingToSourceVertices(boolean allowSnappingToSourceVertices)
+  void setAllowSnappingToSourceVertices(bool allowSnappingToSourceVertices)
   {
     this.allowSnappingToSourceVertices = allowSnappingToSourceVertices;
   }
-  private static boolean isClosed(Coordinate[] pts)
+  private static bool isClosed(List<Coordinate> pts)
   {
     if (pts.length <= 1) return false;
     return pts[0].equals2D(pts[pts.length - 1]);
@@ -78,14 +78,14 @@ public class LineStringSnapper
    * @param snapPts the vertices to snap to
    * @return a list of the snapped points
    */
-  public Coordinate[] snapTo(Coordinate[] snapPts)
+  List<Coordinate> snapTo(List<Coordinate> snapPts)
   {
     CoordinateList coordList = new CoordinateList(srcPts);
 
     snapVertices(coordList, snapPts);
     snapSegments(coordList, snapPts);
 
-    Coordinate[] newPts = coordList.toCoordinateArray();
+    List<Coordinate> newPts = coordList.toCoordinateArray();
     return newPts;
   }
 
@@ -95,7 +95,7 @@ public class LineStringSnapper
    * @param srcCoords the points to snap
    * @param snapPts the points to snap to
    */
-  private void snapVertices(CoordinateList srcCoords, Coordinate[] snapPts)
+  private void snapVertices(CoordinateList srcCoords, List<Coordinate> snapPts)
   {
     // try snapping vertices
     // if src is a ring then don't snap final vertex
@@ -113,7 +113,7 @@ public class LineStringSnapper
     }
   }
 
-  private Coordinate findSnapForVertex(Coordinate pt, Coordinate[] snapPts)
+  private Coordinate findSnapForVertex(Coordinate pt, List<Coordinate> snapPts)
   {
     for (int i = 0; i < snapPts.length; i++) {
       // if point is already equal to a src pt, don't snap
@@ -139,7 +139,7 @@ public class LineStringSnapper
    * @param srcCoords the coordinates of the source linestring to be snapped
    * @param snapPts the target snap vertices
    */
-  private void snapSegments(CoordinateList srcCoords, Coordinate[] snapPts)
+  private void snapSegments(CoordinateList srcCoords, List<Coordinate> snapPts)
   {
     // guard against empty input
     if (snapPts.length == 0) return;

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -21,14 +21,14 @@ import org.locationtech.jts.geom.GeometryCollection;
  *
  * @version 1.7
  */
-public abstract class ShortCircuitedGeometryVisitor
+abstract class ShortCircuitedGeometryVisitor
 {
-  private boolean isDone = false;
+  private bool isDone = false;
 
-  public ShortCircuitedGeometryVisitor() {
+  ShortCircuitedGeometryVisitor() {
   }
 
-  public void applyTo(Geometry geom) {
+  void applyTo(Geometry geom) {
     for (int i = 0; i < geom.getNumGeometries() && ! isDone; i++) {
       Geometry element = geom.getGeometryN(i);
       if (! (element instanceof GeometryCollection)) {
@@ -52,5 +52,5 @@ public abstract class ShortCircuitedGeometryVisitor
    * 
    * @return true if visiting can be terminated.
    */
-  protected abstract boolean isDone();
+  protected abstract bool isDone();
 }

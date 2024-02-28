@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.bintree;
+
 
 import org.locationtech.jts.util.Assert;
 
@@ -18,10 +18,10 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class Node
+class Node
   extends NodeBase
 {
-  public static Node createNode(Interval itemInterval)
+  static Node createNode(Interval itemInterval)
   {
     Key key = new Key(itemInterval);
 
@@ -30,7 +30,7 @@ public class Node
     return node;
   }
 
-  public static Node createExpanded(Node node, Interval addInterval)
+  static Node createExpanded(Node node, Interval addInterval)
   {
     Interval expandInt = new Interval(addInterval);
     if (node != null) expandInt.expandToInclude(node.interval);
@@ -44,16 +44,16 @@ public class Node
   private double centre;
   private int level;
 
-  public Node(Interval interval, int level)
+  Node(Interval interval, int level)
   {
     this.interval = interval;
     this.level = level;
     centre = (interval.getMin() + interval.getMax()) / 2;
   }
 
-  public Interval getInterval() { return interval; }
+  Interval getInterval() { return interval; }
 
-  protected boolean isSearchMatch(Interval itemInterval)
+  protected bool isSearchMatch(Interval itemInterval)
   {
 //    System.out.println(itemInterval + " overlaps " + interval + " : "
 //                       + itemInterval.overlaps(interval));
@@ -65,7 +65,7 @@ public class Node
    * Creates the node if
    * it does not already exist.
    */
-  public Node getNode(Interval searchInterval)
+  Node getNode(Interval searchInterval)
   {
     int subnodeIndex = getSubnodeIndex(searchInterval, centre);
     // if index is -1 searchEnv is not contained in a subnode
@@ -84,7 +84,7 @@ public class Node
    * Returns the smallest <i>existing</i>
    * node containing the envelope.
    */
-  public NodeBase find(Interval searchInterval)
+  NodeBase find(Interval searchInterval)
   {
     int subnodeIndex = getSubnodeIndex(searchInterval, centre);
     if (subnodeIndex == -1)

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph.index;
+
 
 /**
  * @version 1.7
@@ -31,7 +31,7 @@ import org.locationtech.jts.geomgraph.Edge;
  *
  * @version 1.7
  */
-public class SimpleMCSweepLineIntersector
+class SimpleMCSweepLineIntersector
   extends EdgeSetIntersector
 {
 
@@ -43,10 +43,10 @@ public class SimpleMCSweepLineIntersector
    * A SimpleMCSweepLineIntersector creates monotone chains from the edges
    * and compares them using a simple sweep-line along the x-axis.
    */
-  public SimpleMCSweepLineIntersector() {
+  SimpleMCSweepLineIntersector() {
   }
 
-  public void computeIntersections(List edges, SegmentIntersector si, boolean testAllSegments)
+  void computeIntersections(List edges, SegmentIntersector si, bool testAllSegments)
   {
     if (testAllSegments)
       addEdges(edges, null);
@@ -55,7 +55,7 @@ public class SimpleMCSweepLineIntersector
     computeIntersections(si);
   }
 
-  public void computeIntersections(List edges0, List edges1, SegmentIntersector si)
+  void computeIntersections(List edges0, List edges1, SegmentIntersector si)
   {
     addEdges(edges0, edges0);
     addEdges(edges1, edges1);

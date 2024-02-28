@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Lineal;
@@ -24,16 +24,16 @@ import org.locationtech.jts.noding.SegmentStringUtil;
  * @author mbdavis
  *
  */
-public class PreparedLineString
+class PreparedLineString
   extends BasicPreparedGeometry
 {
   private FastSegmentSetIntersectionFinder segIntFinder = null;
 
-  public PreparedLineString(Lineal line) {
+  PreparedLineString(Lineal line) {
     super((Geometry) line);
   }
 
-  public synchronized FastSegmentSetIntersectionFinder getIntersectionFinder()
+  synchronized FastSegmentSetIntersectionFinder getIntersectionFinder()
   {
   	/**
   	 * MD - Another option would be to use a simple scan for 
@@ -46,7 +46,7 @@ public class PreparedLineString
     return segIntFinder;
   }
   
-  public boolean intersects(Geometry g)
+  bool intersects(Geometry g)
   {
   	if (! envelopesIntersect(g)) return false;
     return PreparedLineStringIntersects.intersects(this, g);

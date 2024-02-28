@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.overlay.snap;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.operation.overlay.OverlayOp;
@@ -28,30 +28,30 @@ import org.locationtech.jts.precision.CommonBitsRemover;
  * @author Martin Davis
  * @version 1.7
  */
-public class SnapOverlayOp
+class SnapOverlayOp
 {
-  public static Geometry overlayOp(Geometry g0, Geometry g1, int opCode)
+  static Geometry overlayOp(Geometry g0, Geometry g1, int opCode)
   {
   	SnapOverlayOp op = new SnapOverlayOp(g0, g1);
   	return op.getResultGeometry(opCode);
   }
 
-  public static Geometry intersection(Geometry g0, Geometry g1)
+  static Geometry intersection(Geometry g0, Geometry g1)
   {
      return overlayOp(g0, g1, OverlayOp.INTERSECTION);
   }
 
-  public static Geometry union(Geometry g0, Geometry g1)
+  static Geometry union(Geometry g0, Geometry g1)
   {
      return overlayOp(g0, g1, OverlayOp.UNION);
   }
 
-  public static Geometry difference(Geometry g0, Geometry g1)
+  static Geometry difference(Geometry g0, Geometry g1)
   {
      return overlayOp(g0, g1, OverlayOp.DIFFERENCE);
   }
 
-  public static Geometry symDifference(Geometry g0, Geometry g1)
+  static Geometry symDifference(Geometry g0, Geometry g1)
   {
      return overlayOp(g0, g1, OverlayOp.SYMDIFFERENCE);
   }
@@ -60,7 +60,7 @@ public class SnapOverlayOp
   private Geometry[] geom = new Geometry[2];
   private double snapTolerance;
 
-  public SnapOverlayOp(Geometry g1, Geometry g2)
+  SnapOverlayOp(Geometry g1, Geometry g2)
   {
     geom[0] = g1;
     geom[1] = g2;
@@ -73,7 +73,7 @@ public class SnapOverlayOp
 		// System.out.println("Snap tol = " + snapTolerance);
 	}
 
-  public Geometry getResultGeometry(int opCode)
+  Geometry getResultGeometry(int opCode)
   {
 //  	Geometry[] selfSnapGeom = new Geometry[] { selfSnap(geom[0]), selfSnap(geom[1])};
     Geometry[] prepGeom = snap(geom);

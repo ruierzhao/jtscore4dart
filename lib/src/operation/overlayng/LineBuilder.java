@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +55,7 @@ class LineBuilder {
   private OverlayGraph graph;
   private int opCode;
   private int inputAreaIndex;
-  private boolean hasResultArea;
+  private bool hasResultArea;
   
   /**
    * Indicates whether intersections are allowed to produce
@@ -63,14 +63,14 @@ class LineBuilder {
    * This does not control inclusion of touches along collapses.
    * True provides the original JTS semantics.
    */
-  private boolean isAllowMixedResult = ! OverlayNG.STRICT_MODE_DEFAULT;
+  private bool isAllowMixedResult = ! OverlayNG.STRICT_MODE_DEFAULT;
   
   /**
    * Allow lines created by area topology collapses
    * to appear in the result.
    * True provides the original JTS semantics.
    */
-  private boolean isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
+  private bool isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
 
   
   private List<LineString> lines = new ArrayList<LineString>();
@@ -85,7 +85,7 @@ class LineBuilder {
    * @param opCode the overlay operation code
    * @param geomFact the output geometry factory
    */
-  public LineBuilder(InputGeometry inputGeom, OverlayGraph graph, boolean hasResultArea, int opCode, GeometryFactory geomFact) {
+  LineBuilder(InputGeometry inputGeom, OverlayGraph graph, bool hasResultArea, int opCode, GeometryFactory geomFact) {
     this.graph = graph;
     this.opCode = opCode;
     this.geometryFactory = geomFact;
@@ -93,12 +93,12 @@ class LineBuilder {
     inputAreaIndex = inputGeom.getAreaIndex();
   }
 
-  public void setStrictMode(boolean isStrictResultMode) {
+  void setStrictMode(bool isStrictResultMode) {
     isAllowCollapseLines = ! isStrictResultMode;
     isAllowMixedResult = ! isStrictResultMode;
   }
   
-  public List<LineString> getLines() {
+  List<LineString> getLines() {
     markResultLines();
     addResultLines();
     return lines;
@@ -133,7 +133,7 @@ class LineBuilder {
    * @param lbl the label for an edge
    * @return true if the edge should be included in the result
    */
-  private boolean isResultLine(OverlayLabel lbl) {
+  private bool isResultLine(OverlayLabel lbl) {
     /**
      * Omit edge which is a boundary of a single geometry
      * (i.e. not a collapse or line edge as well).
@@ -192,11 +192,11 @@ class LineBuilder {
     
     /**
      * Finally, determine included line edge
-     * according to overlay op boolean logic.
+     * according to overlay op bool logic.
      */
     int aLoc = effectiveLocation(lbl, 0);
     int bLoc = effectiveLocation(lbl, 1);
-    boolean isInResult = OverlayNG.isResultOfOp(opCode, aLoc, bLoc);
+    bool isInResult = OverlayNG.isResultOfOp(opCode, aLoc, bLoc);
     return isInResult;
   }
   
@@ -234,12 +234,12 @@ class LineBuilder {
   }
   
   private LineString toLine(OverlayEdge edge) {
-    boolean isForward = edge.isForward();
+    bool isForward = edge.isForward();
     CoordinateList pts = new CoordinateList();
     pts.add(edge.orig(), false);
     edge.addCoordinates(pts);
     
-    Coordinate[] ptsOut = pts.toCoordinateArray(isForward);
+    List<Coordinate> ptsOut = pts.toCoordinateArray(isForward);
     LineString line = geometryFactory.createLineString(ptsOut);
     return line;
   }
@@ -320,7 +320,7 @@ class LineBuilder {
     CoordinateList pts = new CoordinateList();
     pts.add(node.orig(), false);
     
-    boolean isForward = node.isForward();
+    bool isForward = node.isForward();
     
     OverlayEdge e = node;
     do {
@@ -336,7 +336,7 @@ class LineBuilder {
     }
     while (e != null);
     
-    Coordinate[] ptsOut = pts.toCoordinateArray(isForward);
+    List<Coordinate> ptsOut = pts.toCoordinateArray(isForward);
     
     LineString line = geometryFactory.createLineString(ptsOut);
     return line;

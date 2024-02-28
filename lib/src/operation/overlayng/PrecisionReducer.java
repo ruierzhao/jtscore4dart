@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
@@ -27,7 +27,7 @@ import org.locationtech.jts.precision.GeometryPrecisionReducer;
  * @see org.locationtech.jts.precision.GeometryPrecisionReducer
  * @author Martin Davis
  */
-public class PrecisionReducer {
+class PrecisionReducer {
 
   /**
    * Reduces the precision of a geometry by rounding and snapping it to the
@@ -47,9 +47,9 @@ public class PrecisionReducer {
    * @param pm the precision model to use
    * @return the precision-reduced geometry
    * 
-   * @throws IllegalArgumentException if the reduction fails due to invalid input geometry is invalid
+   * @throws ArgumentError if the reduction fails due to invalid input geometry is invalid
    */
-  public static Geometry reducePrecision(Geometry geom, PrecisionModel pm) {
+  static Geometry reducePrecision(Geometry geom, PrecisionModel pm) {
     OverlayNG ov = new OverlayNG(geom, pm);
     /**
      * Ensure reducing a area only produces polygonal result.
@@ -63,7 +63,7 @@ public class PrecisionReducer {
       return reduced;
     }
     catch (TopologyException ex) {
-      throw new IllegalArgumentException("Reduction failed, possible invalid input");
+      throw new ArgumentError("Reduction failed, possible invalid input");
     }
   }
 

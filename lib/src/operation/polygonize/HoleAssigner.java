@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.polygonize;
+
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import org.locationtech.jts.index.strtree.STRtree;
  * @author mdavis
  *
  */
-public class HoleAssigner 
+class HoleAssigner 
 {
   /**
    * Assigns hole rings to shell rings.
@@ -34,7 +34,7 @@ public class HoleAssigner
    * @param holes list of hole rings to assign
    * @param shells list of shell rings
    */
-  public static void assignHolesToShells(List<EdgeRing> holes, List<EdgeRing> shells) {
+  static void assignHolesToShells(List<EdgeRing> holes, List<EdgeRing> shells) {
     HoleAssigner assigner = new HoleAssigner(shells);
     assigner.assignHolesToShells(holes);
   }
@@ -47,7 +47,7 @@ public class HoleAssigner
    * 
    * @param shells the shells to be assigned to
    */
-  public HoleAssigner(List<EdgeRing> shells) {
+  HoleAssigner(List<EdgeRing> shells) {
     this.shells = shells;
     buildIndex();
   }
@@ -64,7 +64,7 @@ public class HoleAssigner
    * 
    * @param holeList list of hole rings to assign
    */
-  public void assignHolesToShells(List<EdgeRing> holeList)
+  void assignHolesToShells(List<EdgeRing> holeList)
   {
     for (EdgeRing holeER : holeList) {
       assignHoleToShell(holeER);

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +40,7 @@ class PreparedLineStringIntersects
 	 * @param geom a test geometry
 	 * @return true if the linestring intersects the geometry
 	 */
-	public static boolean intersects(PreparedLineString prep, Geometry geom)
+	static bool intersects(PreparedLineString prep, Geometry geom)
 	{
 		PreparedLineStringIntersects op = new PreparedLineStringIntersects(prep);
     return op.intersects(geom);
@@ -53,7 +53,7 @@ class PreparedLineStringIntersects
    * 
    * @param prepPoly the target PreparedLineString
    */
-	public PreparedLineStringIntersects(PreparedLineString prepLine)
+	PreparedLineStringIntersects(PreparedLineString prepLine)
 	{
 		this.prepLine = prepLine;
 	}
@@ -64,7 +64,7 @@ class PreparedLineStringIntersects
 	 * @param geom the test geometry
 	 * @return true if the test geometry intersects
 	 */
-	public boolean intersects(Geometry geom)
+	bool intersects(Geometry geom)
 	{
 		/**
 		 * If any segments intersect, obviously intersects = true
@@ -72,9 +72,9 @@ class PreparedLineStringIntersects
     List lineSegStr = SegmentStringUtil.extractSegmentStrings(geom);
     // only request intersection finder if there are segments (ie NOT for point inputs)
     if (lineSegStr.size() > 0) {
-  		boolean segsIntersect = prepLine.getIntersectionFinder().intersects(lineSegStr);
+  		bool segsIntersect = prepLine.getIntersectionFinder().intersects(lineSegStr);
   		// MD - performance testing
-  //		boolean segsIntersect = false;
+  //		bool segsIntersect = false;
   		if (segsIntersect) 
         return true;
     }
@@ -102,7 +102,7 @@ class PreparedLineStringIntersects
    * @param geom a Puntal geometry to test
    * @return true if any point of the argument intersects the prepared geometry
    */
-	protected boolean isAnyTestPointInTarget(Geometry testGeom)
+	protected bool isAnyTestPointInTarget(Geometry testGeom)
 	{
 		/**
 		 * This could be optimized by using the segment index on the lineal target.

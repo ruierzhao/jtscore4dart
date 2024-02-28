@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -25,7 +25,7 @@ class Corner implements Comparable<Corner> {
   private int next;
   private double area;
 
-  public Corner(LinkedLine edge, int i) {
+  Corner(LinkedLine edge, int i) {
     this.edge = edge;
     this.index = i; 
     this.prev = edge.prev(i);
@@ -33,29 +33,29 @@ class Corner implements Comparable<Corner> {
     this.area = area(edge, i);
   }
 
-  public boolean isVertex(int index) {
+  bool isVertex(int index) {
     return index == this.index
         || index == prev
         || index == next;
   }
 
-  public int getIndex() {
+  int getIndex() {
     return index;
   }
   
-  public Coordinate getCoordinate() {
+  Coordinate getCoordinate() {
     return edge.getCoordinate(index);
   }
   
-  public double getArea() {
+  double getArea() {
     return area;
   }
   
-  public Coordinate prev() {
+  Coordinate prev() {
     return edge.getCoordinate(prev);  
   }
   
-  public Coordinate next() {
+  Coordinate next() {
     return edge.getCoordinate(next);  
   }
   
@@ -72,7 +72,7 @@ class Corner implements Comparable<Corner> {
    * if area is equal then compares corner index.
    */
   @Override
-  public int compareTo(Corner o) {
+  int compareTo(Corner o) {
     int comp = Double.compare(area, o.area);
     if (comp != 0) 
       return comp;
@@ -80,7 +80,7 @@ class Corner implements Comparable<Corner> {
     return Integer.compare(index, o.index);
   }
   
-  public Envelope envelope() {
+  Envelope envelope() {
     Coordinate pp = edge.getCoordinate(prev);
     Coordinate p = edge.getCoordinate(index);
     Coordinate pn = edge.getCoordinate(next);
@@ -89,14 +89,14 @@ class Corner implements Comparable<Corner> {
     return env;
   }
   
-  public boolean isVertex(Coordinate v) {
+  bool isVertex(Coordinate v) {
     if (v.equals2D(edge.getCoordinate(prev))) return true;
     if (v.equals2D(edge.getCoordinate(index))) return true;
     if (v.equals2D(edge.getCoordinate(next))) return true;
     return false;
   }
 
-  public boolean isBaseline(Coordinate p0, Coordinate p1) {
+  bool isBaseline(Coordinate p0, Coordinate p1) {
     Coordinate prev = prev();
     Coordinate next = next();
     if (prev.equals2D( p0 ) && next.equals2D( p1 )) return true;
@@ -104,26 +104,26 @@ class Corner implements Comparable<Corner> {
     return false;
   }
   
-  public boolean intersects(Coordinate v) {
+  bool intersects(Coordinate v) {
     Coordinate pp = edge.getCoordinate(prev);
     Coordinate p = edge.getCoordinate(index);
     Coordinate pn = edge.getCoordinate(next);
     return Triangle.intersects(pp, p, pn, v);
   }
   
-  public boolean isRemoved() {
+  bool isRemoved() {
     return edge.prev(index) != prev || edge.next(index) != next;
   }
   
-  public LineString toLineString() {
+  LineString toLineString() {
     Coordinate pp = edge.getCoordinate(prev);
     Coordinate p = edge.getCoordinate(index);
     Coordinate pn = edge.getCoordinate(next);
     return (new GeometryFactory()).createLineString(
-        new Coordinate[] { safeCoord(pp), safeCoord(p), safeCoord(pn) });
+        new List<Coordinate> { safeCoord(pp), safeCoord(p), safeCoord(pn) });
   }
 
-  public String toString() {
+  String toString() {
     return toLineString().toString();
   }
 

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.math.DD;
@@ -20,7 +20,7 @@ import org.locationtech.jts.math.DD;
  * @author Martin Davis
  *
  */
-public class CGAlgorithmsDD
+class CGAlgorithmsDD
 {
   private CGAlgorithmsDD() {}
 
@@ -36,7 +36,7 @@ public class CGAlgorithmsDD
    *         {@code -1} if q is clockwise (right) from p1-p2
    *         {@code 0} if q is collinear with p1-p2
    */
-  public static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
+  static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
   {
     return orientationIndex(p1.x, p1.y, p2.x, p2.y, q.x, q.y);
   }
@@ -56,7 +56,7 @@ public class CGAlgorithmsDD
    *        -1 if q is clockwise (right) from p1-p2
    *         0 if q is collinear with p1-p2
    */
-  public static int orientationIndex(double p1x, double p1y,
+  static int orientationIndex(double p1x, double p1y,
       double p2x, double p2y,
       double qx, double qy)
   {
@@ -83,7 +83,7 @@ public class CGAlgorithmsDD
    *          1 if the determinant is positive,
    *          0 if the determinant is 0.
    */
-  public static int signOfDet2x2(DD x1, DD y1, DD x2, DD y2)
+  static int signOfDet2x2(DD x1, DD y1, DD x2, DD y2)
   {
     DD det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
     return det.signum();
@@ -97,7 +97,7 @@ public class CGAlgorithmsDD
    *          1 if the determinant is positive,
    *          0 if the determinant is 0.
    */
-  public static int signOfDet2x2(double dx1, double dy1, double dx2, double dy2)
+  static int signOfDet2x2(double dx1, double dy1, double dx2, double dy2)
   {
     DD x1 = DD.valueOf(dx1);
     DD y1 = DD.valueOf(dy1);
@@ -126,7 +126,7 @@ public class CGAlgorithmsDD
    * avoid the use of slower robust methods except when they are really needed,
    * thus providing better average performance.
    * <p>
-   * Uses an approach due to Jonathan Shewchuk, which is in the public domain.
+   * Uses an approach due to Jonathan Shewchuk, which is in the domain.
    * 
    * @param pax A coordinate
    * @param pay A coordinate
@@ -193,7 +193,7 @@ public class CGAlgorithmsDD
    * @param q2 an endpoint of line segment 2
    * @return an intersection point if one exists, or null if the lines are parallel
    */
-  public static Coordinate intersection(
+  static Coordinate intersection(
       Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2)
   {

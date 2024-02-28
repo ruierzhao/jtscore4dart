@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.planargraph;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +34,7 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public abstract class PlanarGraph
+abstract class PlanarGraph
 {
   protected Set edges = new HashSet();
   protected Set dirEdges = new HashSet();
@@ -43,7 +43,7 @@ public abstract class PlanarGraph
   /**
    * Constructs a empty graph.
    */
-  public PlanarGraph()
+  PlanarGraph()
   {
   }
 
@@ -55,7 +55,7 @@ public abstract class PlanarGraph
    * @return the node found
    * or <code>null</code> if this graph contains no node at the location
    */
-  public Node findNode(Coordinate pt)
+  Node findNode(Coordinate pt)
   {
     return (Node) nodeMap.find(pt);
   }
@@ -94,7 +94,7 @@ public abstract class PlanarGraph
   /**
    * Returns an Iterator over the Nodes in this PlanarGraph.
    */
-  public Iterator nodeIterator()  {    return nodeMap.iterator();  }
+  Iterator nodeIterator()  {    return nodeMap.iterator();  }
   /**
    * Returns the Nodes in this PlanarGraph.
    */
@@ -105,7 +105,7 @@ public abstract class PlanarGraph
    * @param e the edge to query
    * @return <code>true</code> if the graph contains the edge
    */
-  public boolean contains(Edge e)
+  bool contains(Edge e)
   {
     return edges.contains(e);
   }
@@ -116,12 +116,12 @@ public abstract class PlanarGraph
    * @param de the directed edge to query
    * @return <code>true</code> if the graph contains the directed edge
    */
-  public boolean contains(DirectedEdge de)
+  bool contains(DirectedEdge de)
   {
     return dirEdges.contains(de);
   }
 
-  public Collection getNodes()  {    return nodeMap.values();  }
+  Collection getNodes()  {    return nodeMap.values();  }
 
   /**
    * Returns an Iterator over the DirectedEdges in this PlanarGraph, in the order in which they
@@ -130,20 +130,20 @@ public abstract class PlanarGraph
    * @see #add(Edge)
    * @see #add(DirectedEdge)
    */
-  public Iterator dirEdgeIterator()  {    return dirEdges.iterator();  }
+  Iterator dirEdgeIterator()  {    return dirEdges.iterator();  }
   /**
    * Returns an Iterator over the Edges in this PlanarGraph, in the order in which they
    * were added.
    *
    * @see #add(Edge)
    */
-  public Iterator edgeIterator()  {    return edges.iterator();  }
+  Iterator edgeIterator()  {    return edges.iterator();  }
 
   /**
    * Returns the Edges that have been added to this PlanarGraph
    * @see #add(Edge)
    */
-  public Collection getEdges()  {    return edges;  }
+  Collection getEdges()  {    return edges;  }
 
   /**
    * Removes an {@link Edge} and its associated {@link DirectedEdge}s
@@ -152,7 +152,7 @@ public abstract class PlanarGraph
    * with the {@link Edge}, even if the removal of the {@link Edge}
    * reduces the degree of a {@link Node} to zero.
    */
-  public void remove(Edge edge)
+  void remove(Edge edge)
   {
     remove(edge.getDirEdge(0));
     remove(edge.getDirEdge(1));
@@ -165,7 +165,7 @@ public abstract class PlanarGraph
    * This method does not remove the {@link Node}s associated with the DirectedEdge,
    * even if the removal of the DirectedEdge reduces the degree of a Node to zero.
    */
-  public void remove(DirectedEdge de)
+  void remove(DirectedEdge de)
   {
     DirectedEdge sym = de.getSym();
     if (sym != null) sym.setSym(null);
@@ -179,7 +179,7 @@ public abstract class PlanarGraph
    * Removes a node from the graph, along with any associated DirectedEdges and
    * Edges.
    */
-  public void remove(Node node)
+  void remove(Node node)
   {
     // unhook all directed edges
     List outEdges = node.getOutEdges().getEdges();
@@ -205,7 +205,7 @@ public abstract class PlanarGraph
   /**
    * Returns all Nodes with the given number of Edges around it.
    */
-  public List findNodesOfDegree(int degree)
+  List findNodesOfDegree(int degree)
   {
     List nodesFound = new ArrayList();
     for (Iterator i = nodeIterator(); i.hasNext(); ) {

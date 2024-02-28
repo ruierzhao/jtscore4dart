@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.union;
+
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -33,9 +33,9 @@ import org.locationtech.jts.geom.util.GeometryCombiner;
  * @author mbdavis
  *
  */
-public class PointGeometryUnion 
+class PointGeometryUnion 
 {
-	public static Geometry union(Puntal pointGeom, Geometry otherGeom)
+	static Geometry union(Puntal pointGeom, Geometry otherGeom)
 	{
 		PointGeometryUnion unioner = new PointGeometryUnion(pointGeom, otherGeom);
 		return unioner.union();
@@ -45,14 +45,14 @@ public class PointGeometryUnion
 	private Geometry otherGeom;
 	private GeometryFactory geomFact;
 	
-	public PointGeometryUnion(Puntal pointGeom, Geometry otherGeom)
+	PointGeometryUnion(Puntal pointGeom, Geometry otherGeom)
 	{
 		this.pointGeom = (Geometry) pointGeom;
 		this.otherGeom = otherGeom;
 		geomFact = otherGeom.getFactory();
 	}
 	
-	public Geometry union()
+	Geometry union()
 	{
 		PointLocator locater = new PointLocator();
 		// use a set to eliminate duplicates, as required for union
@@ -72,7 +72,7 @@ public class PointGeometryUnion
 		
 		// make a puntal geometry of appropriate size
 		Geometry ptComp = null;
-		Coordinate[] coords = CoordinateArrays.toCoordinateArray(exteriorCoords);
+		List<Coordinate> coords = CoordinateArrays.toCoordinateArray(exteriorCoords);
 		if (coords.length == 1) {
 			ptComp = geomFact.createPoint(coords[0]);
 		}

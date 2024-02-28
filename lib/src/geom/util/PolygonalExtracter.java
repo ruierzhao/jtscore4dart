@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * Extracts the {@link Polygon} and {@link MultiPolygon} elements from a {@link Geometry}.
  */
-public class PolygonalExtracter
+class PolygonalExtracter
 {
   /**
    * Extracts the {@link Polygon} and {@link MultiPolygon} elements from a {@link Geometry}
@@ -31,7 +31,7 @@ public class PolygonalExtracter
    * @param geom the geometry from which to extract
    * @param list the list to add the extracted elements to
    */
-  public static List<Geometry> getPolygonals(Geometry geom, List<Geometry> list)
+  static List<Geometry> getPolygonals(Geometry geom, List<Geometry> list)
   {
   	if (geom instanceof Polygon || geom instanceof MultiPolygon) {
   		list.add(geom);
@@ -51,7 +51,7 @@ public class PolygonalExtracter
    * 
    * @param geom the geometry from which to extract
    */
-  public static List<Geometry> getPolygonals(Geometry geom)
+  static List<Geometry> getPolygonals(Geometry geom)
   {
     return getPolygonals(geom, new ArrayList<Geometry>());
   }

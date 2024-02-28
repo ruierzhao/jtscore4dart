@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-abstract public class EdgeEndStar
+abstract class EdgeEndStar
 {
 
   /**
@@ -49,7 +49,7 @@ abstract public class EdgeEndStar
    */
   private int[] ptInAreaLocation = { Location.NONE, Location.NONE };
 
-  public EdgeEndStar()
+  EdgeEndStar()
   {
 
   }
@@ -58,7 +58,7 @@ abstract public class EdgeEndStar
    * Insert a EdgeEnd into this EdgeEndStar
    * @param e EdgeEnd
    */
-  abstract public void insert(EdgeEnd e);
+  abstract void insert(EdgeEnd e);
 
   /**
    * Insert an EdgeEnd into the map, and clear the edgeList cache,
@@ -75,14 +75,14 @@ abstract public class EdgeEndStar
   /**
    * @return the coordinate for the node this star is based at
    */
-  public Coordinate getCoordinate()
+  Coordinate getCoordinate()
   {
     Iterator it = iterator();
     if (! it.hasNext()) return null;
     EdgeEnd e = (EdgeEnd) it.next();
     return e.getCoordinate();
   }
-  public int getDegree()
+  int getDegree()
   {
     return edgeMap.size();
   }
@@ -95,18 +95,18 @@ abstract public class EdgeEndStar
    *
    * @return access to ordered list of edges
    */
-  public Iterator iterator()
+  Iterator iterator()
   {
     return getEdges().iterator();
   }
-  public List getEdges()
+  List getEdges()
   {
     if (edgeList == null) {
       edgeList = new ArrayList(edgeMap.values());
     }
     return edgeList;
   }
-  public EdgeEnd getNextCW(EdgeEnd ee)
+  EdgeEnd getNextCW(EdgeEnd ee)
   {
     getEdges();
     int i = edgeList.indexOf(ee);
@@ -116,7 +116,7 @@ abstract public class EdgeEndStar
     return (EdgeEnd) edgeList.get(iNextCW);
   }
 
-  public void computeLabelling(GeometryGraph[] geomGraph)
+  void computeLabelling(GeometryGraph[] geomGraph)
   {
     computeEdgeEndLabels(geomGraph[0].getBoundaryNodeRule());
     // Propagate side labels  around the edges in the star
@@ -158,7 +158,7 @@ abstract public class EdgeEndStar
      * Not sure how solve this...  Possibly labelling needs to be split into several phases:
      * area label propagation, symLabel merging, then finally null label resolution.
      */
-    boolean[] hasDimensionalCollapseEdge = { false, false };
+    bool[] hasDimensionalCollapseEdge = { false, false };
     for (Iterator it = iterator(); it.hasNext(); ) {
       EdgeEnd e = (EdgeEnd) it.next();
       Label label = e.getLabel();
@@ -209,13 +209,13 @@ abstract public class EdgeEndStar
     return ptInAreaLocation[geomIndex];
   }
 
-  public boolean isAreaLabelsConsistent(GeometryGraph geomGraph)
+  bool isAreaLabelsConsistent(GeometryGraph geomGraph)
   {
     computeEdgeEndLabels(geomGraph.getBoundaryNodeRule());
     return checkAreaLabelsConsistent(0);
   }
 
-  private boolean checkAreaLabelsConsistent(int geomIndex)
+  private bool checkAreaLabelsConsistent(int geomIndex)
   {
     // Since edges are stored in CCW order around the node,
     // As we move around the ring we move from the right to the left side of the edge
@@ -307,7 +307,7 @@ abstract public class EdgeEndStar
     }
   }
 
-  public int findIndex(EdgeEnd eSearch)
+  int findIndex(EdgeEnd eSearch)
   {
     iterator();   // force edgelist to be computed
     for (int i = 0; i < edgeList.size(); i++ ) {
@@ -317,7 +317,7 @@ abstract public class EdgeEndStar
     return -1;
   }
 
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     out.println("EdgeEndStar:   " + getCoordinate());
     for (Iterator it = iterator(); it.hasNext(); ) {
@@ -326,7 +326,7 @@ abstract public class EdgeEndStar
     }
   }
   
-  public String toString()
+  String toString()
   {
     StringBuffer buf = new StringBuffer();
     buf.append("EdgeEndStar:   " + getCoordinate());

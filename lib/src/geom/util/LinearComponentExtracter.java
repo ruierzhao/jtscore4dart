@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.util;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.MultiLineString;
  *
  * @version 1.7
  */
-public class LinearComponentExtracter
+class LinearComponentExtracter
   implements GeometryComponentFilter
 {
   /**
@@ -41,7 +41,7 @@ public class LinearComponentExtracter
    * @param lines the collection to add the extracted linear components to
    * @return the collection of linear components (LineStrings or LinearRings)
    */
-  public static Collection getLines(Collection geoms, Collection lines)
+  static Collection getLines(Collection geoms, Collection lines)
   {
   	for (Iterator i = geoms.iterator(); i.hasNext(); ) {
   		Geometry g = (Geometry) i.next();
@@ -59,7 +59,7 @@ public class LinearComponentExtracter
    * @param forceToLineString true if LinearRings should be converted to LineStrings
    * @return the collection of linear components (LineStrings or LinearRings)
    */
-  public static Collection getLines(Collection geoms, Collection lines, boolean forceToLineString)
+  static Collection getLines(Collection geoms, Collection lines, bool forceToLineString)
   {
   	for (Iterator i = geoms.iterator(); i.hasNext(); ) {
   		Geometry g = (Geometry) i.next();
@@ -76,7 +76,7 @@ public class LinearComponentExtracter
    * @param lines the Collection to add the extracted linear components to
    * @return the Collection of linear components (LineStrings or LinearRings)
    */
-  public static Collection getLines(Geometry geom, Collection lines)
+  static Collection getLines(Geometry geom, Collection lines)
   {
   	if (geom instanceof LineString) {
   		lines.add(geom);
@@ -96,7 +96,7 @@ public class LinearComponentExtracter
    * @param forceToLineString true if LinearRings should be converted to LineStrings
    * @return the Collection of linear components (LineStrings or LinearRings)
    */
-  public static Collection getLines(Geometry geom, Collection lines, boolean forceToLineString)
+  static Collection getLines(Geometry geom, Collection lines, bool forceToLineString)
   {
     geom.apply(new LinearComponentExtracter(lines, forceToLineString));
     return lines;
@@ -111,7 +111,7 @@ public class LinearComponentExtracter
    * @param geom the geometry from which to extract linear components
    * @return the list of linear components
    */
-  public static List getLines(Geometry geom)
+  static List getLines(Geometry geom)
   {
     return getLines(geom, false);
   }
@@ -126,7 +126,7 @@ public class LinearComponentExtracter
    * @param forceToLineString true if LinearRings should be converted to LineStrings
    * @return the list of linear components
    */
-  public static List getLines(Geometry geom, boolean forceToLineString)
+  static List getLines(Geometry geom, bool forceToLineString)
   {
     List lines = new ArrayList();
     geom.apply(new LinearComponentExtracter(lines, forceToLineString));
@@ -140,7 +140,7 @@ public class LinearComponentExtracter
    * @param geom the geometry from which to extract
    * @return a linear geometry
    */
-  public static Geometry getGeometry(Geometry geom)
+  static Geometry getGeometry(Geometry geom)
   {
     return geom.getFactory().buildGeometry(getLines(geom));
   }
@@ -154,19 +154,19 @@ public class LinearComponentExtracter
    * @param forceToLineString true if LinearRings should be converted to LineStrings
    * @return a linear geometry
    */
-  public static Geometry getGeometry(Geometry geom, boolean forceToLineString)
+  static Geometry getGeometry(Geometry geom, bool forceToLineString)
   {
     return geom.getFactory().buildGeometry(getLines(geom, forceToLineString));
   }
 
 
   private Collection lines;
-  private boolean isForcedToLineString = false;
+  private bool isForcedToLineString = false;
   
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.
    */
-  public LinearComponentExtracter(Collection lines)
+  LinearComponentExtracter(Collection lines)
   {
     this.lines = lines;
   }
@@ -174,7 +174,7 @@ public class LinearComponentExtracter
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.
    */
-  public LinearComponentExtracter(Collection lines, boolean isForcedToLineString)
+  LinearComponentExtracter(Collection lines, bool isForcedToLineString)
   {
     this.lines = lines;
     this.isForcedToLineString = isForcedToLineString;
@@ -186,12 +186,12 @@ public class LinearComponentExtracter
    * 
    * @param isForcedToLineString true if LinearRings should be converted to LineStrings
    */
-  public void setForceToLineString(boolean isForcedToLineString)
+  void setForceToLineString(bool isForcedToLineString)
   {
   	this.isForcedToLineString = isForcedToLineString;
   }
   
-  public void filter(Geometry geom)
+  void filter(Geometry geom)
   {
   	if (isForcedToLineString && geom instanceof LinearRing) {
   		LineString line = geom.getFactory().createLineString( ((LinearRing) geom).getCoordinateSequence());

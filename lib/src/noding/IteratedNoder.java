@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 
@@ -31,17 +31,17 @@ import org.locationtech.jts.geom.TopologyException;
  *
  * @version 1.7
  */
-public class IteratedNoder
+class IteratedNoder
     implements Noder
 {
-  public static final int MAX_ITER = 5;
+  static final int MAX_ITER = 5;
 
   private PrecisionModel pm;
   private LineIntersector li;
   private Collection nodedSegStrings;
   private int maxIter = MAX_ITER;
 
-  public IteratedNoder(PrecisionModel pm)
+  IteratedNoder(PrecisionModel pm)
   {
     li = new RobustLineIntersector();
     this.pm = pm;
@@ -57,12 +57,12 @@ public class IteratedNoder
    *
    * @param maxIter the maximum number of iterations to perform
    */
-  public void setMaximumIterations(int maxIter)
+  void setMaximumIterations(int maxIter)
   {
     this.maxIter = maxIter;
   }
 
-  public Collection getNodedSubstrings()  {    return nodedSegStrings;  }
+  Collection getNodedSubstrings()  {    return nodedSegStrings;  }
 
   /**
    * Fully nodes a list of {@link SegmentString}s, i.e. performs noding iteratively
@@ -73,7 +73,7 @@ public class IteratedNoder
    * @param segStrings a collection of SegmentStrings to be noded
    * @throws TopologyException if the iterated noding fails to converge.
    */
-  public void computeNodes(Collection segStrings)
+  void computeNodes(Collection segStrings)
     throws TopologyException
   {
     int[] numInteriorIntersections = new int[1];

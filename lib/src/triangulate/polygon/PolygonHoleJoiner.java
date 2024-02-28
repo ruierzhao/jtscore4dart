@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.polygon;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +49,7 @@ import org.locationtech.jts.noding.SegmentString;
  * orientation (shell CW and rings CCW).
  * The output ring is always CW.
  */
-public class PolygonHoleJoiner {
+class PolygonHoleJoiner {
   
   /**
    * Joins the shell and holes of a polygon 
@@ -58,7 +58,7 @@ public class PolygonHoleJoiner {
    * @param inputPolygon the polygon to join
    * @return the result polygon
    */
-  public static Polygon joinAsPolygon(Polygon polygon) {
+  static Polygon joinAsPolygon(Polygon polygon) {
     return polygon.getFactory().createPolygon(join(polygon));
   }
   
@@ -69,18 +69,18 @@ public class PolygonHoleJoiner {
    * @param inputPolygon the polygon to join
    * @return the result coordinates
    */
-  public static Coordinate[] join(Polygon polygon) {
+  static List<Coordinate> join(Polygon polygon) {
     PolygonHoleJoiner joiner = new PolygonHoleJoiner(polygon);
     return joiner.compute();
   }
   
   private Polygon inputPolygon;
   //-- normalized, sorted and noded polygon rings
-  private Coordinate[] shellRing;
-  private Coordinate[][] holeRings;
+  private List<Coordinate> shellRing;
+  private List<Coordinate>[] holeRings;
   
   //-- indicates whether a hole should be testing for touching
-  private boolean[] isHoleTouchingHint;
+  private bool[] isHoleTouchingHint;
   
   private List<Coordinate> joinedRing;
   // a sorted and searchable version of the joinedRing
@@ -92,7 +92,7 @@ public class PolygonHoleJoiner {
    * 
    * @param polygon the polygon to join
    */
-  public PolygonHoleJoiner(Polygon polygon) {
+  PolygonHoleJoiner(Polygon polygon) {
     this.inputPolygon = polygon;
   }
 
@@ -101,7 +101,7 @@ public class PolygonHoleJoiner {
    * 
    * @return the points in the joined ring
    */
-  public Coordinate[] compute() {
+  List<Coordinate> compute() {
     extractOrientedRings(inputPolygon);
     if (holeRings.length > 0) 
       nodeRings();
@@ -120,13 +120,13 @@ public class PolygonHoleJoiner {
     }
   }
 
-  private static Coordinate[] extractOrientedRing(LinearRing ring, boolean isCW) {
-    Coordinate[] pts = ring.getCoordinates();
-    boolean isRingCW = ! Orientation.isCCW(pts);
+  private static List<Coordinate> extractOrientedRing(LinearRing ring, bool isCW) {
+    List<Coordinate> pts = ring.getCoordinates();
+    bool isRingCW = ! Orientation.isCCW(pts);
     if (isCW == isRingCW)
       return pts;
       //-- reverse a copy of the points
-    Coordinate[] ptsRev = pts.clone();
+    List<Coordinate> ptsRev = pts.clone();
     CoordinateArrays.reverse(ptsRev);
     return ptsRev;
   }
@@ -145,7 +145,7 @@ public class PolygonHoleJoiner {
     isHoleTouchingHint = noder.getHolesTouching();
   }
   
-  private static List<Coordinate> copyToList(Coordinate[] coords) {
+  private static List<Coordinate> copyToList(List<Coordinate> coords) {
     List<Coordinate> coordList = new ArrayList<Coordinate>();
     for (Coordinate p : coords) {
       coordList.add(p.copy());
@@ -164,10 +164,10 @@ public class PolygonHoleJoiner {
     }
   }
 
-  private void joinHole(int index, Coordinate[] holeCoords) {
+  private void joinHole(int index, List<Coordinate> holeCoords) {
     //-- check if hole is touching
     if (isHoleTouchingHint[index]) {
-      boolean isTouching = joinTouchingHole(holeCoords);
+      bool isTouching = joinTouchingHole(holeCoords);
       if (isTouching)
         return;
     }
@@ -181,7 +181,7 @@ public class PolygonHoleJoiner {
    * @param holeCoords the hole to join
    * @return true if the hole was touching, false if not
    */
-  private boolean joinTouchingHole(Coordinate[] holeCoords) {
+  private bool joinTouchingHole(List<Coordinate> holeCoords) {
     int holeTouchIndex = findHoleTouchIndex(holeCoords);
     
     //-- hole does not touch
@@ -209,7 +209,7 @@ public class PolygonHoleJoiner {
    * @param holeCoords the hole
    * @return the index of the touching vertex, or -1 if no touch
    */
-  private int findHoleTouchIndex(Coordinate[] holeCoords) {
+  private int findHoleTouchIndex(List<Coordinate> holeCoords) {
     for (int i = 0; i < holeCoords.length; i++) {
       if (joinedPts.contains(holeCoords[i])) 
         return i;
@@ -222,7 +222,7 @@ public class PolygonHoleJoiner {
    * 
    * @param hole the hole to join
    */
-  private void joinNonTouchingHole(Coordinate[] holeCoords) {
+  private void joinNonTouchingHole(List<Coordinate> holeCoords) {
     int holeJoinIndex = findLowestLeftVertexIndex(holeCoords);
     Coordinate holeJoinCoord = holeCoords[holeJoinIndex];
     Coordinate joinCoord = findJoinableVertex(holeJoinCoord);
@@ -292,7 +292,7 @@ public class PolygonHoleJoiner {
    * @param linePt the point to be joined to the ring
    * @return true if the line to the point is interior to the ring corner
    */
-  private boolean isLineInterior(List<Coordinate> ring, int ringIndex, 
+  private bool isLineInterior(List<Coordinate> ring, int ringIndex, 
       Coordinate linePt) {
     Coordinate nodePt = ring.get(ringIndex);
     Coordinate shell0 = ring.get( prev(ringIndex, ring.size()) );
@@ -326,12 +326,12 @@ public class PolygonHoleJoiner {
    * @param holeCoords the vertices of the hole to be inserted
    * @param holeJoinIndex index of join vertex in hole
    */
-  private void addJoinedHole(int joinIndex, Coordinate[] holeCoords, int holeJoinIndex) {
+  private void addJoinedHole(int joinIndex, List<Coordinate> holeCoords, int holeJoinIndex) {
     Coordinate joinPt = joinedRing.get(joinIndex);
     Coordinate holeJoinPt = holeCoords[holeJoinIndex];
     
     //-- check for touching (zero-length) join to avoid inserting duplicate vertices
-    boolean isVertexTouch = joinPt.equals2D(holeJoinPt);
+    bool isVertexTouch = joinPt.equals2D(holeJoinPt);
     Coordinate addJoinPt = isVertexTouch ? null : joinPt;
 
     //-- create new section of vertices to insert in shell
@@ -353,11 +353,11 @@ public class PolygonHoleJoiner {
    * @param joinPt the shell join vertex
    * @return a list of new vertices to be added
    */
-  private List<Coordinate> createHoleSection(Coordinate[] holeCoords, int holeJoinIndex, 
+  private List<Coordinate> createHoleSection(List<Coordinate> holeCoords, int holeJoinIndex, 
       Coordinate joinPt) {
     List<Coordinate> section = new ArrayList<Coordinate>();
     
-    boolean isNonTouchingHole = joinPt != null;
+    bool isNonTouchingHole = joinPt != null;
     /**
      * Add all hole vertices, including duplicate at hole join vertex
      * Except if hole DOES touch, join vertex is already in shell ring
@@ -398,14 +398,14 @@ public class PolygonHoleJoiner {
   }
   
   private static class EnvelopeComparator implements Comparator<Geometry> {
-    public int compare(Geometry g1, Geometry g2) {
+    int compare(Geometry g1, Geometry g2) {
       Envelope e1 = g1.getEnvelopeInternal();
       Envelope e2 = g2.getEnvelopeInternal();
       return e1.compareTo(e2);
     }
   }
   
-  private static int findLowestLeftVertexIndex(Coordinate[] coords) {
+  private static int findLowestLeftVertexIndex(List<Coordinate> coords) {
     Coordinate lowestLeftCoord = null;
     int lowestLeftIndex = -1;
     for (int i = 0; i < coords.length - 1; i++) {
@@ -425,9 +425,9 @@ public class PolygonHoleJoiner {
    * @param p1 the other segment vertex
    * @return true if the segment interior intersects a polygon boundary segment
    */
-  private boolean intersectsBoundary(Coordinate p0, Coordinate p1) {
+  private bool intersectsBoundary(Coordinate p0, Coordinate p1) {
     SegmentString segString = new BasicSegmentString(
-        new Coordinate[] { p0, p1 }, null);
+        new List<Coordinate> { p0, p1 }, null);
     List<SegmentString> segStrings = new ArrayList<SegmentString>();
     segStrings.add(segString);
     
@@ -442,14 +442,14 @@ public class PolygonHoleJoiner {
   private static class InteriorIntersectionDetector implements SegmentIntersector {
 
     private LineIntersector li = new RobustLineIntersector();
-    private boolean hasIntersection = false;
+    private bool hasIntersection = false;
 
-    public boolean hasIntersection() {
+    bool hasIntersection() {
       return hasIntersection;
     }
     
     @Override
-    public void processIntersections(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
+    void processIntersections(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
       Coordinate p00 = ss0.getCoordinate(segIndex0);
       Coordinate p01 = ss0.getCoordinate(segIndex0 + 1);
       Coordinate p10 = ss1.getCoordinate(segIndex1);
@@ -469,15 +469,15 @@ public class PolygonHoleJoiner {
    }
 
     @Override
-    public boolean isDone() {
+    bool isDone() {
       return hasIntersection;
     }
   }
   
-  private static SegmentSetMutualIntersector createBoundaryIntersector(Coordinate[] shellRing, Coordinate[][] holeRings) {
+  private static SegmentSetMutualIntersector createBoundaryIntersector(List<Coordinate> shellRing, List<Coordinate>[] holeRings) {
     List<SegmentString> polySegStrings = new ArrayList<SegmentString>();
     polySegStrings.add(new BasicSegmentString(shellRing, null));
-    for (Coordinate[] hole : holeRings) {
+    for (List<Coordinate> hole : holeRings) {
       polySegStrings.add(new BasicSegmentString(hole, null));
     }
     return new MCIndexSegmentSetMutualIntersector(polySegStrings);

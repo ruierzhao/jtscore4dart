@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * A factory to create concrete instances of {@link CoordinateSequence}s.
@@ -18,7 +18,7 @@ package org.locationtech.jts.geom;
  *
  * @version 1.7
  */
-public interface CoordinateSequenceFactory
+interface CoordinateSequenceFactory
 {
 
   /**
@@ -29,7 +29,7 @@ public interface CoordinateSequenceFactory
    *
    * @param coordinates the coordinates
    */
-  CoordinateSequence create(Coordinate[] coordinates);
+  CoordinateSequence create(List<Coordinate> coordinates);
 
   /**
    * Creates a {@link CoordinateSequence} which is a copy

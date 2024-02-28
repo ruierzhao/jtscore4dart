@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.simplify;
+
 
 import java.util.List;
 import java.util.PriorityQueue;
@@ -60,40 +60,40 @@ class RingHull {
    * @param ring the ring vertices to process
    * @param isOuter whether the hull is outer or inner
    */
-  public RingHull(LinearRing ring, boolean isOuter) {
+  RingHull(LinearRing ring, bool isOuter) {
     this.inputRing = ring; 
     init(ring.getCoordinates(), isOuter);
   }
   
-  public void setMinVertexNum(int minVertexNum) {
+  void setMinVertexNum(int minVertexNum) {
     targetVertexNum = minVertexNum;
   }
   
-  public void setMaxAreaDelta(double maxAreaDelta) {
+  void setMaxAreaDelta(double maxAreaDelta) {
     targetAreaDelta = maxAreaDelta;
   }
   
-  public Envelope getEnvelope() {
+  Envelope getEnvelope() {
     return inputRing.getEnvelopeInternal();
   }
   
-  public VertexSequencePackedRtree getVertexIndex() {
+  VertexSequencePackedRtree getVertexIndex() {
     return vertexIndex;
   }
   
-  public LinearRing getHull(RingHullIndex hullIndex) {
+  LinearRing getHull(RingHullIndex hullIndex) {
     compute(hullIndex);
-    Coordinate[] hullPts = vertexRing.getCoordinates();
+    List<Coordinate> hullPts = vertexRing.getCoordinates();
     return inputRing.getFactory().createLinearRing(hullPts);
   }
   
-  private void init(Coordinate[] ring, boolean isOuter) {
+  private void init(List<Coordinate> ring, bool isOuter) {
     /**
      * Ensure ring is oriented according to outer/inner:
      * - outer, CW
      * - inner: CCW 
      */
-    boolean orientCW = isOuter;
+    bool orientCW = isOuter;
     if (orientCW == Orientation.isCCW(ring)) {
       ring = ring.clone();
       CoordinateArrays.reverse(ring);
@@ -122,21 +122,21 @@ class RingHull {
     cornerQueue.add(corner);
   }
   
-  public static boolean isConvex(LinkedRing vertexRing, int index) {
+  static bool isConvex(LinkedRing vertexRing, int index) {
     Coordinate pp = vertexRing.prevCoordinate(index);
     Coordinate p = vertexRing.getCoordinate(index);
     Coordinate pn = vertexRing.nextCoordinate(index);
     return Orientation.CLOCKWISE == Orientation.index(pp, p, pn);
   }
 
-  public static double area(LinkedRing vertexRing, int index) {
+  static double area(LinkedRing vertexRing, int index) {
     Coordinate pp = vertexRing.prevCoordinate(index);
     Coordinate p = vertexRing.getCoordinate(index);
     Coordinate pn = vertexRing.nextCoordinate(index);
     return Triangle.area(pp, p, pn);
   }
   
-  public void compute(RingHullIndex hullIndex) {        
+  void compute(RingHullIndex hullIndex) {        
     while (! cornerQueue.isEmpty() 
         && vertexRing.size() > 3) {
       Corner corner = cornerQueue.poll();
@@ -155,7 +155,7 @@ class RingHull {
     }
   }
 
-  private boolean isAtTarget(Corner corner) {
+  private bool isAtTarget(Corner corner) {
     if (targetVertexNum >= 0) {
       return vertexRing.size() < targetVertexNum;
     }
@@ -190,7 +190,7 @@ class RingHull {
     addCorner(next, cornerQueue);
   }
 
-  private boolean isRemovable(Corner corner, RingHullIndex hullIndex) {
+  private bool isRemovable(Corner corner, RingHullIndex hullIndex) {
     Envelope cornerEnv = corner.envelope(vertexRing);
     if (hasIntersectingVertex(corner, cornerEnv, this))
       return false;
@@ -217,7 +217,7 @@ class RingHull {
    * @param hull the hull to test
    * @return true if there is an intersecting vertex
    */
-  private boolean hasIntersectingVertex(Corner corner, Envelope cornerEnv, 
+  private bool hasIntersectingVertex(Corner corner, Envelope cornerEnv, 
       RingHull hull) {
     int[] result = hull.query(cornerEnv);
     for (int i = 0; i < result.length; i++) {
@@ -256,9 +256,9 @@ class RingHull {
 
   }
 
-  public Polygon toGeometry() {
+  Polygon toGeometry() {
     GeometryFactory fact = new GeometryFactory();
-    Coordinate[] coords = vertexRing.getCoordinates();
+    List<Coordinate> coords = vertexRing.getCoordinates();
     return fact.createPolygon(fact.createLinearRing(coords));
   }
 
@@ -268,24 +268,24 @@ class RingHull {
     private int next;
     private double area;
 
-    public Corner(int i, int prev, int next, double area) {
+    Corner(int i, int prev, int next, double area) {
       this.index = i;
       this.prev = prev;
       this.next = next;
       this.area = area;
     }
 
-    public boolean isVertex(int index) {
+    bool isVertex(int index) {
       return index == this.index
           || index == prev
           || index == next;
     }
 
-    public int getIndex() {
+    int getIndex() {
       return index;
     }
     
-    public double getArea() {
+    double getArea() {
       return area;
     }
     
@@ -293,11 +293,11 @@ class RingHull {
      * Orders corners by increasing area
      */
     @Override
-    public int compareTo(Corner o) {
+    int compareTo(Corner o) {
       return Double.compare(area, o.area);
     }
     
-    public Envelope envelope(LinkedRing ring) {
+    Envelope envelope(LinkedRing ring) {
       Coordinate pp = ring.getCoordinate(prev);
       Coordinate p = ring.getCoordinate(index);
       Coordinate pn = ring.getCoordinate(next);
@@ -306,23 +306,23 @@ class RingHull {
       return env;
     }
     
-    public boolean intersects(Coordinate v, LinkedRing ring) {
+    bool intersects(Coordinate v, LinkedRing ring) {
       Coordinate pp = ring.getCoordinate(prev);
       Coordinate p = ring.getCoordinate(index);
       Coordinate pn = ring.getCoordinate(next);
       return Triangle.intersects(pp, p, pn, v);
     }
     
-    public boolean isRemoved(LinkedRing ring) {
+    bool isRemoved(LinkedRing ring) {
       return ring.prev(index) != prev || ring.next(index) != next;
     }
     
-    public LineString toLineString(LinkedRing ring) {
+    LineString toLineString(LinkedRing ring) {
       Coordinate pp = ring.getCoordinate(prev);
       Coordinate p = ring.getCoordinate(index);
       Coordinate pn = ring.getCoordinate(next);
       return (new GeometryFactory()).createLineString(
-          new Coordinate[] { safeCoord(pp), safeCoord(p), safeCoord(pn) });
+          new List<Coordinate> { safeCoord(pp), safeCoord(p), safeCoord(pn) });
     }
 
     private static Coordinate safeCoord(Coordinate p) {

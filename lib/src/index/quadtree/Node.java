@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.quadtree;
+
 
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.util.Assert;
@@ -21,17 +21,17 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class Node
+class Node
   extends NodeBase
 {
-  public static Node createNode(Envelope env)
+  static Node createNode(Envelope env)
   {
     Key key = new Key(env);
     Node node = new Node(key.getEnvelope(), key.getLevel());
     return node;
   }
 
-  public static Node createExpanded(Node node, Envelope addEnv)
+  static Node createExpanded(Node node, Envelope addEnv)
   {
     Envelope expandEnv = new Envelope(addEnv);
     if (node != null) expandEnv.expandToInclude(node.env);
@@ -46,7 +46,7 @@ public class Node
   private double centrey;
   private int level;
 
-  public Node(Envelope env, int level)
+  Node(Envelope env, int level)
   {
     //this.parent = parent;
     this.env = env;
@@ -55,9 +55,9 @@ public class Node
     centrey = (env.getMinY() + env.getMaxY()) / 2;
   }
 
-  public Envelope getEnvelope() { return env; }
+  Envelope getEnvelope() { return env; }
 
-  protected boolean isSearchMatch(Envelope searchEnv)
+  protected bool isSearchMatch(Envelope searchEnv)
   {
   	if (searchEnv == null) return false;
     return env.intersects(searchEnv);
@@ -70,7 +70,7 @@ public class Node
    * 
    * @return the subquad containing the search envelope
    */
-  public Node getNode(Envelope searchEnv)
+  Node getNode(Envelope searchEnv)
   {
     int subnodeIndex = getSubnodeIndex(searchEnv, centrex, centrey);
     // if subquadIndex is -1 searchEnv is not contained in a subquad
@@ -89,7 +89,7 @@ public class Node
    * Returns the smallest <i>existing</i>
    * node containing the envelope.
    */
-  public NodeBase find(Envelope searchEnv)
+  NodeBase find(Envelope searchEnv)
   {
     int subnodeIndex = getSubnodeIndex(searchEnv, centrex, centrey);
     if (subnodeIndex == -1)

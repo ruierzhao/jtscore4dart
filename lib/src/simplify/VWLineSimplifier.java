@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -26,32 +26,32 @@ import org.locationtech.jts.geom.Triangle;
  */
 class VWLineSimplifier
 {
-  public static Coordinate[] simplify(Coordinate[] pts, double distanceTolerance)
+  static List<Coordinate> simplify(List<Coordinate> pts, double distanceTolerance)
   {
     VWLineSimplifier simp = new VWLineSimplifier(pts, distanceTolerance);
     return simp.simplify();
   }
 
-  private Coordinate[] pts;
+  private List<Coordinate> pts;
   private double tolerance;
 
-  public VWLineSimplifier(Coordinate[] pts, double distanceTolerance)
+  VWLineSimplifier(List<Coordinate> pts, double distanceTolerance)
   {
     this.pts = pts;
     this.tolerance = distanceTolerance * distanceTolerance;
   }
 
-  public Coordinate[] simplify()
+  List<Coordinate> simplify()
   {
     VWLineSimplifier.VWVertex vwLine = VWVertex.buildLine(pts);
     double minArea = tolerance;
     do {
       minArea = simplifyVertex(vwLine);
     } while (minArea < tolerance);
-    Coordinate[] simp = vwLine.getCoordinates();
+    List<Coordinate> simp = vwLine.getCoordinates();
     // ensure computed value is a valid line
     if (simp.length < 2) {
-      return new Coordinate[] { simp[0], new Coordinate(simp[0]) };
+      return new List<Coordinate> { simp[0], new Coordinate(simp[0]) };
     }
     return simp;
   }
@@ -83,7 +83,7 @@ class VWLineSimplifier
 
   static class VWVertex
   {
-    public static VWLineSimplifier.VWVertex buildLine(Coordinate[] pts)
+    static VWLineSimplifier.VWVertex buildLine(List<Coordinate> pts)
     {
       VWLineSimplifier.VWVertex first = null;
       VWLineSimplifier.VWVertex prev = null;
@@ -101,47 +101,47 @@ class VWLineSimplifier
       return first;
     }
     
-    public static double MAX_AREA = Double.MAX_VALUE;
+    static double MAX_AREA = Double.MAX_VALUE;
     
     private Coordinate pt;
     private VWLineSimplifier.VWVertex prev;
     private VWLineSimplifier.VWVertex next;
     private double area = MAX_AREA;
-    private boolean isLive = true;
+    private bool isLive = true;
 
-    public VWVertex(Coordinate pt)
+    VWVertex(Coordinate pt)
     {
       this.pt = pt;
     }
 
-    public void setPrev(VWLineSimplifier.VWVertex prev)
+    void setPrev(VWLineSimplifier.VWVertex prev)
     {
       this.prev = prev;
     }
 
-    public void setNext(VWLineSimplifier.VWVertex next)
+    void setNext(VWLineSimplifier.VWVertex next)
     {
       this.next = next;
     }
 
-    public void updateArea()
+    void updateArea()
     {
       if (prev == null || next == null) {
         area = MAX_AREA;
         return;
       }
-      area = Math.abs(Triangle.area(prev.pt, pt, next.pt));
+      area = (Triangle.area(prev.pt, pt, next.pt).abs());
     }
 
-    public double getArea()
+    double getArea()
     {
       return area;
     }
-    public boolean isLive()
+    bool isLive()
     {
       return isLive;
     }
-    public VWLineSimplifier.VWVertex remove()
+    VWLineSimplifier.VWVertex remove()
     {
       VWLineSimplifier.VWVertex tmpPrev = prev;
       VWLineSimplifier.VWVertex tmpNext = next;
@@ -160,7 +160,7 @@ class VWLineSimplifier
       isLive = false;
       return result;
     }
-    public Coordinate[] getCoordinates()
+    List<Coordinate> getCoordinates()
     {
       CoordinateList coords = new CoordinateList();
       VWLineSimplifier.VWVertex curr = this;

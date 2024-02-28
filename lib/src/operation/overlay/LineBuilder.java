@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlay;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,7 +31,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class LineBuilder {
+class LineBuilder {
   private OverlayOp op;
   private GeometryFactory geometryFactory;
   private PointLocator ptLocator;
@@ -39,7 +39,7 @@ public class LineBuilder {
   private List lineEdgesList    = new ArrayList();
   private List resultLineList   = new ArrayList();
 
-  public LineBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
+  LineBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
     this.op = op;
     this.geometryFactory = geometryFactory;
     this.ptLocator = ptLocator;
@@ -47,7 +47,7 @@ public class LineBuilder {
   /**
    * @return a list of the LineStrings in the result of the specified overlay operation
    */
-  public List build(int opCode)
+  List build(int opCode)
   {
     findCoveredLineEdges();
     collectLines(opCode);
@@ -79,7 +79,7 @@ public class LineBuilder {
       DirectedEdge de = (DirectedEdge) it.next();
       Edge e = de.getEdge();
       if (de.isLineEdge() && ! e.isCoveredSet()) {
-        boolean isCovered = op.isCoveredByA(de.getCoordinate());
+        bool isCovered = op.isCoveredByA(de.getCoordinate());
         e.setCovered(isCovered);
       }
     }

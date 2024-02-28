@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 
 import org.locationtech.jts.algorithm.HCoordinate;
@@ -34,56 +34,56 @@ import org.locationtech.jts.geom.Coordinate;
  * @author David Skea
  * @author Martin Davis
  */
-public class Vertex 
+class Vertex 
 {
-    public static final int LEFT        = 0;
-    public static final int RIGHT       = 1;
-    public static final int BEYOND      = 2;
-    public static final int BEHIND      = 3;
-    public static final int BETWEEN     = 4;
-    public static final int ORIGIN      = 5;
-    public static final int DESTINATION = 6;
+    static final int LEFT        = 0;
+    static final int RIGHT       = 1;
+    static final int BEYOND      = 2;
+    static final int BEHIND      = 3;
+    static final int BETWEEN     = 4;
+    static final int ORIGIN      = 5;
+    static final int DESTINATION = 6;
 
     private Coordinate      p;
     // private int edgeNumber = -1;
 
-    public Vertex(double _x, double _y) {
+    Vertex(double _x, double _y) {
         p = new Coordinate(_x, _y);
     }
 
-    public Vertex(double _x, double _y, double _z) {
+    Vertex(double _x, double _y, double _z) {
         p = new Coordinate(_x, _y, _z);
     }
 
-    public Vertex(Coordinate _p) {
+    Vertex(Coordinate _p) {
         p = new Coordinate(_p);
     }
 
-    public double getX() {
+    double getX() {
         return p.x;
     }
 
-    public double getY() {
+    double getY() {
         return p.y;
     }
 
-    public double getZ() {
+    double getZ() {
         return p.getZ();
     }
 
-    public void setZ(double _z) {
+    void setZ(double _z) {
         p.setZ(_z);
     }
 
-    public Coordinate getCoordinate() {
+    Coordinate getCoordinate() {
         return p;
     }
 
-    public String toString() {
+    String toString() {
         return "POINT (" + p.x + " " + p.y + ")";
     }
 
-    public boolean equals(Vertex _x) {
+    bool equals(Vertex _x) {
         if (p.x == _x.getX() && p.y == _x.getY()) {
             return true;
         } else {
@@ -91,7 +91,7 @@ public class Vertex
         }
     }
 
-    public boolean equals(Vertex _x, double tolerance) {
+    bool equals(Vertex _x, double tolerance) {
         if (p.distance(_x.getCoordinate()) < tolerance) {
             return true;
         } else {
@@ -99,7 +99,7 @@ public class Vertex
         }
     }
 
-    public int classify(Vertex p0, Vertex p1) {
+    int classify(Vertex p0, Vertex p1) {
         Vertex p2 = this;
         Vertex a = p1.sub(p0);
         Vertex b = p2.sub(p0);
@@ -183,7 +183,7 @@ public class Vertex
    * @param c a vertex of the triangle
    * @return true if this vertex is in the circumcircle of (a,b,c)
    */
-  public boolean isInCircle(Vertex a, Vertex b, Vertex c) 
+  bool isInCircle(Vertex a, Vertex b, Vertex c) 
   {
     return TrianglePredicate.isInCircleRobust(a.p, b.p, c.p, this.p);
     // non-robust - best to not use
@@ -198,14 +198,14 @@ public class Vertex
    * @param c a vertex
    * @return true if the triangle is oriented CCW
    */
-  public final boolean isCCW(Vertex b, Vertex c) 
+  final bool isCCW(Vertex b, Vertex c) 
   {
       /*
       // test code used to check for robustness of triArea 
-      boolean isCCW = (b.p.x - p.x) * (c.p.y - p.y) 
+      bool isCCW = (b.p.x - p.x) * (c.p.y - p.y) 
       - (b.p.y - p.y) * (c.p.x - p.x) > 0;
-     //boolean isCCW = triArea(this, b, c) > 0;
-     boolean isCCWRobust = CGAlgorithms.orientationIndex(p, b.p, c.p) == CGAlgorithms.COUNTERCLOCKWISE; 
+     //bool isCCW = triArea(this, b, c) > 0;
+     bool isCCWRobust = CGAlgorithms.orientationIndex(p, b.p, c.p) == CGAlgorithms.COUNTERCLOCKWISE; 
      if (isCCWRobust != isCCW)
       System.out.println("CCW failure");
      //*/
@@ -216,16 +216,16 @@ public class Vertex
            - (b.p.y - p.y) * (c.p.x - p.x) > 0;
       
       // original rolled code
-      //boolean isCCW = triArea(this, b, c) > 0;
+      //bool isCCW = triArea(this, b, c) > 0;
       //return isCCW;
       
     }
 
-    public final boolean rightOf(QuadEdge e) {
+    final bool rightOf(QuadEdge e) {
         return isCCW(e.dest(), e.orig());
     }
 
-    public final boolean leftOf(QuadEdge e) {
+    final bool leftOf(QuadEdge e) {
         return isCCW(e.orig(), e.dest());
     }
 
@@ -253,7 +253,7 @@ public class Vertex
      * @param c third vertex of the triangle
      * @return ratio of circumradius to shortest edge.
      */
-    public double circumRadiusRatio(Vertex b, Vertex c) {
+    double circumRadiusRatio(Vertex b, Vertex c) {
         Vertex x = this.circleCenter(b, c);
         double radius = distance(x, b);
         double edgeLength = distance(this, b);
@@ -274,7 +274,7 @@ public class Vertex
      * @param a the other end point.
      * @return the point mid-way between this and that.
      */
-    public Vertex midPoint(Vertex a) {
+    Vertex midPoint(Vertex a) {
         double xm = (p.x + a.getX()) / 2.0;
         double ym = (p.y + a.getY()) / 2.0;
         double zm = (p.getZ() + a.getZ()) / 2.0;
@@ -288,7 +288,7 @@ public class Vertex
      * @param c
      * @return the Coordinate which is the circumcircle of the 3 points.
      */
-    public Vertex circleCenter(Vertex b, Vertex c) {
+    Vertex circleCenter(Vertex b, Vertex c) {
         Vertex a = new Vertex(this.getX(), this.getY());
         // compute the perpendicular bisector of cord ab
         HCoordinate cab = bisector(a, b);
@@ -310,7 +310,7 @@ public class Vertex
      * For this vertex enclosed in a triangle defined by three vertices v0, v1 and v2, interpolate
      * a z value from the surrounding vertices.
      */
-    public double interpolateZValue(Vertex v0, Vertex v1, Vertex v2) {
+    double interpolateZValue(Vertex v0, Vertex v1, Vertex v2) {
         double x0 = v0.getX();
         double y0 = v0.getY();
         double a = v1.getX() - x0;
@@ -339,7 +339,7 @@ public class Vertex
      * @param v2 a vertex of a triangle containing the p
      * @return the interpolated Z-value (height) of the point  
      */
-    public static double interpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2) {
+    static double interpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2) {
         double x0 = v0.x;
         double y0 = v0.y;
         double a = v1.x - x0;
@@ -363,7 +363,7 @@ public class Vertex
      * @param p1
      * @return the interpolated Z value
      */
-    public static double interpolateZ(Coordinate p, Coordinate p0, Coordinate p1) {
+    static double interpolateZ(Coordinate p, Coordinate p0, Coordinate p1) {
         double segLen = p0.distance(p1);
         double ptLen = p.distance(p0);
         double dz = p1.getZ() - p0.getZ();

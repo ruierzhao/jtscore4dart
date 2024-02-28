@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer.validate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -18,19 +18,19 @@ import org.locationtech.jts.geom.Coordinate;
  * Provides methods to update with a new point pair with
  * either maximum or minimum distance.
  */
-public class PointPairDistance {
+class PointPairDistance {
 
-  private Coordinate[] pt = { new Coordinate(), new Coordinate() };
+  private List<Coordinate> pt = { new Coordinate(), new Coordinate() };
   private double distance = Double.NaN;
-  private boolean isNull = true;
+  private bool isNull = true;
 
-  public PointPairDistance()
+  PointPairDistance()
   {
   }
 
-  public void initialize() { isNull = true; }
+  void initialize() { isNull = true; }
 
-  public void initialize(Coordinate p0, Coordinate p1)
+  void initialize(Coordinate p0, Coordinate p1)
   {
     pt[0].setCoordinate(p0);
     pt[1].setCoordinate(p1);
@@ -52,18 +52,18 @@ public class PointPairDistance {
     isNull = false;
   }
 
-  public double getDistance() { return distance; }
+  double getDistance() { return distance; }
 
-  public Coordinate[] getCoordinates() { return pt; }
+  List<Coordinate> getCoordinates() { return pt; }
 
-  public Coordinate getCoordinate(int i) { return pt[i]; }
+  Coordinate getCoordinate(int i) { return pt[i]; }
 
-  public void setMaximum(PointPairDistance ptDist)
+  void setMaximum(PointPairDistance ptDist)
   {
     setMaximum(ptDist.pt[0], ptDist.pt[1]);
   }
 
-  public void setMaximum(Coordinate p0, Coordinate p1)
+  void setMaximum(Coordinate p0, Coordinate p1)
   {
     if (isNull) {
       initialize(p0, p1);
@@ -74,12 +74,12 @@ public class PointPairDistance {
       initialize(p0, p1, dist);
   }
 
-  public void setMinimum(PointPairDistance ptDist)
+  void setMinimum(PointPairDistance ptDist)
   {
     setMinimum(ptDist.pt[0], ptDist.pt[1]);
   }
 
-  public void setMinimum(Coordinate p0, Coordinate p1)
+  void setMinimum(Coordinate p0, Coordinate p1)
   {
     if (isNull) {
       initialize(p0, p1);

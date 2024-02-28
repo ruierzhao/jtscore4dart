@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.bintree;
+
 
 
 
@@ -22,9 +22,9 @@ import org.locationtech.jts.index.quadtree.DoubleBits;
  *
  * @version 1.7
  */
-public class Key {
+class Key {
 
-  public static int computeLevel(Interval interval)
+  static int computeLevel(Interval interval)
   {
     double dx = interval.getWidth();
     //int level = BinaryPower.exponent(dx) + 1;
@@ -39,20 +39,20 @@ public class Key {
   // auxiliary data which is derived from the key for use in computation
   private Interval interval;
 
-  public Key(Interval interval)
+  Key(Interval interval)
   {
     computeKey(interval);
   }
 
-  public double getPoint() { return pt; }
-  public int getLevel() { return level; }
-  public Interval getInterval() { return interval; }
+  double getPoint() { return pt; }
+  int getLevel() { return level; }
+  Interval getInterval() { return interval; }
 
   /**
    * return a square envelope containing the argument envelope,
    * whose extent is a power of two and which is based at a power of 2
    */
-  public void computeKey(Interval itemInterval)
+  void computeKey(Interval itemInterval)
   {
     level = computeLevel(itemInterval);
     interval = new Interval();

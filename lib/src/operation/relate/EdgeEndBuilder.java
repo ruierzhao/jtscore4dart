@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.relate;
+
 
 /**
  * An EdgeEndBuilder creates EdgeEnds for all the "split edges"
@@ -34,12 +34,12 @@ import org.locationtech.jts.geomgraph.Label;
  *
  * @version 1.7
  */
-public class EdgeEndBuilder {
+class EdgeEndBuilder {
 
-  public EdgeEndBuilder() {
+  EdgeEndBuilder() {
   }
 
-  public List computeEdgeEnds(Iterator edges)
+  List computeEdgeEnds(Iterator edges)
   {
     List l = new ArrayList();
     for (Iterator i = edges; i.hasNext(); ) {
@@ -53,7 +53,7 @@ public class EdgeEndBuilder {
    * Creates stub edges for all the intersections in this
    * Edge (if any) and inserts them into the graph.
    */
-  public void computeEdgeEnds(Edge edge, List l)
+  void computeEdgeEnds(Edge edge, List l)
   {
     EdgeIntersectionList eiList = edge.getEdgeIntersectionList();
 //Debug.print(eiList);

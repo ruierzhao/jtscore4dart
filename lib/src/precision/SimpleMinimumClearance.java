@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.algorithm.Distance;
 import org.locationtech.jts.geom.Coordinate;
@@ -36,15 +36,15 @@ import org.locationtech.jts.geom.LineString;
  * @author Martin Davis
  *
  */
-public class SimpleMinimumClearance 
+class SimpleMinimumClearance 
 {
-  public static double getDistance(Geometry g)
+  static double getDistance(Geometry g)
   {
     SimpleMinimumClearance rp = new SimpleMinimumClearance(g);
     return rp.getDistance();
   }
   
-  public static Geometry getLine(Geometry g)
+  static Geometry getLine(Geometry g)
   {
     SimpleMinimumClearance rp = new SimpleMinimumClearance(g);
     return rp.getLine();
@@ -52,20 +52,20 @@ public class SimpleMinimumClearance
   
   private Geometry inputGeom;
   private double minClearance;
-  private Coordinate[] minClearancePts;
+  private List<Coordinate> minClearancePts;
   
-  public SimpleMinimumClearance(Geometry geom)
+  SimpleMinimumClearance(Geometry geom)
   {
     inputGeom = geom;
   }
   
-  public double getDistance()
+  double getDistance()
   {
     compute();
     return minClearance;
   }
   
-  public LineString getLine()
+  LineString getLine()
   {
     compute();
     return inputGeom.getFactory().createLineString(minClearancePts);
@@ -104,12 +104,12 @@ public class SimpleMinimumClearance
   {
     SimpleMinimumClearance smc;
     
-    public VertexCoordinateFilter(SimpleMinimumClearance smc)
+    VertexCoordinateFilter(SimpleMinimumClearance smc)
     {
       this.smc = smc;
     }
     
-    public void filter(Coordinate coord) {
+    void filter(Coordinate coord) {
       smc.inputGeom.apply(new ComputeMCCoordinateSequenceFilter(smc, coord));
     }
   }
@@ -120,12 +120,12 @@ public class SimpleMinimumClearance
     SimpleMinimumClearance smc;
     private Coordinate queryPt;
     
-    public ComputeMCCoordinateSequenceFilter(SimpleMinimumClearance smc, Coordinate queryPt)
+    ComputeMCCoordinateSequenceFilter(SimpleMinimumClearance smc, Coordinate queryPt)
     {
       this.smc = smc;
       this.queryPt = queryPt;
     }
-    public void filter(CoordinateSequence seq, int i) {
+    void filter(CoordinateSequence seq, int i) {
       // compare to vertex
       checkVertexDistance(seq.getCoordinate(i));
       
@@ -152,11 +152,11 @@ public class SimpleMinimumClearance
           smc.updateClearance(segDist, queryPt, seg1, seg0);
     }
     
-    public boolean isDone() {
+    bool isDone() {
       return false;
     }
     
-    public boolean isGeometryChanged() {
+    bool isGeometryChanged() {
       return false;
     }
     

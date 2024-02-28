@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -17,13 +17,13 @@ import org.locationtech.jts.geom.Coordinate;
 /**
  * @version 1.7
  */
-public class NodeFactory {
+class NodeFactory {
 /**
  * The basic node constructor does not allow for incident edges
  * @param coord Coordinate
  * @return created node
  */
-  public Node createNode(Coordinate coord)
+  Node createNode(Coordinate coord)
   {
     return new Node(coord, null);
   }

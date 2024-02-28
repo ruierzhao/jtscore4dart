@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,16 +36,16 @@ import org.locationtech.jts.geom.Geometry;
  * @see VoronoiDiagramBuilder
  *
  */
-public class VertexTaggedGeometryDataMapper 
+class VertexTaggedGeometryDataMapper 
 {
 	private Map coordDataMap = new TreeMap();
 	
-	public VertexTaggedGeometryDataMapper()
+	VertexTaggedGeometryDataMapper()
 	{
 		
 	}
 	
-	public void loadSourceGeometries(Collection geoms)
+	void loadSourceGeometries(Collection geoms)
 	{
 		for (Iterator i = geoms.iterator(); i.hasNext(); ) {
 			Geometry geom = (Geometry) i.next();
@@ -53,7 +53,7 @@ public class VertexTaggedGeometryDataMapper
 		}
 	}
 	
-	public void loadSourceGeometries(Geometry geomColl)
+	void loadSourceGeometries(Geometry geomColl)
 	{
 		for (int i = 0; i < geomColl.getNumGeometries(); i++) {
 			Geometry geom = geomColl.getGeometryN(i);
@@ -61,14 +61,14 @@ public class VertexTaggedGeometryDataMapper
 		}
 	}
 	
-	private void loadVertices(Coordinate[] pts, Object data)
+	private void loadVertices(List<Coordinate> pts, Object data)
 	{
 		for (int i = 0; i < pts.length; i++) {
 			coordDataMap.put(pts[i], data);
 		}
 	}
 	
-	public List getCoordinates()
+	List getCoordinates()
 	{
 		return new ArrayList(coordDataMap.keySet());
 	}
@@ -82,7 +82,7 @@ public class VertexTaggedGeometryDataMapper
 	 * 
 	 * @param targetGeom
 	 */
-	public void transferData(Geometry targetGeom)
+	void transferData(Geometry targetGeom)
 	{
 		for (int i = 0; i < targetGeom.getNumGeometries(); i++) {
 			Geometry geom = targetGeom.getGeometryN(i);

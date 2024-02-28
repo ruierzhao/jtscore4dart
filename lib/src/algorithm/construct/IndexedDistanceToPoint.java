@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.construct;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -32,7 +32,7 @@ class IndexedDistanceToPoint {
   private IndexedFacetDistance facetDistance;
   private IndexedPointInPolygonsLocator ptLocater;
 
-  public IndexedDistanceToPoint(Geometry geom) {
+  IndexedDistanceToPoint(Geometry geom) {
     this.targetGeometry = geom;
   }
   
@@ -49,7 +49,7 @@ class IndexedDistanceToPoint {
    * @param pt the input point
    * @return the distance to the geometry
    */
-  public double distance(Point pt) {
+  double distance(Point pt) {
     init();
     //-- distance is 0 if point is inside a target polygon
     if (isInArea(pt)) {
@@ -58,7 +58,7 @@ class IndexedDistanceToPoint {
     return facetDistance.distance(pt);
   }
   
-  private boolean isInArea(Point pt) {
+  private bool isInArea(Point pt) {
     return Location.EXTERIOR != ptLocater.locate(pt.getCoordinate());
   }
   
@@ -70,11 +70,11 @@ class IndexedDistanceToPoint {
    * @param pt the point to compute the nearest location for
    * @return a pair of locations
    */
-  public Coordinate[] nearestPoints(Point pt) {
+  List<Coordinate> nearestPoints(Point pt) {
     init();
     if (isInArea(pt)) {
       Coordinate p = pt.getCoordinate();
-      return new Coordinate[] { p.copy(), p.copy() };
+      return new List<Coordinate> { p.copy(), p.copy() };
     }
     return facetDistance.nearestPoints(pt);
   }

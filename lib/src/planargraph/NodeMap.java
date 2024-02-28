@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.planargraph;
+
 
 
 import java.util.Collection;
@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class NodeMap
+class NodeMap
 
 {
 
@@ -35,14 +35,14 @@ public class NodeMap
   /**
    * Constructs a NodeMap without any Nodes.
    */
-  public NodeMap() {
+  NodeMap() {
   }
 
   /**
    * Adds a node to the map, replacing any that is already at that location.
    * @return the added node
    */
-  public Node add(Node n)
+  Node add(Node n)
   {
     nodeMap.put(n.getCoordinate(), n);
     return n;
@@ -51,7 +51,7 @@ public class NodeMap
   /**
    * Removes the Node at the given location, and returns it (or null if no Node was there).
    */
-  public Node remove(Coordinate pt)
+  Node remove(Coordinate pt)
   {
     return (Node) nodeMap.remove(pt);
   }
@@ -59,13 +59,13 @@ public class NodeMap
   /**
    * Returns the Node at the given location, or null if no Node was there.
    */
-  public Node find(Coordinate coord)  {    return (Node) nodeMap.get(coord);  }
+  Node find(Coordinate coord)  {    return (Node) nodeMap.get(coord);  }
 
   /**
    * Returns an Iterator over the Nodes in this NodeMap, sorted in ascending order
    * by angle with the positive x-axis.
    */
-  public Iterator iterator()
+  Iterator iterator()
   {
     return nodeMap.values().iterator();
   }
@@ -73,7 +73,7 @@ public class NodeMap
    * Returns the Nodes in this NodeMap, sorted in ascending order
    * by angle with the positive x-axis.
    */
-  public Collection values()
+  Collection values()
   {
     return nodeMap.values();
   }

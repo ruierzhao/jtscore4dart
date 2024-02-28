@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.impl;
+
 
 import java.io.Serializable;
 
@@ -33,7 +33,7 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @version 1.7
  */
-public class CoordinateArraySequence
+class CoordinateArraySequence
     implements CoordinateSequence, Serializable
 {
   //With contributions from Markus Schaber [schabios@logi-track.com] 2004-03-26
@@ -50,7 +50,7 @@ public class CoordinateArraySequence
    */
   private int measures = 0;
   
-  private Coordinate[] coordinates;
+  private List<Coordinate> coordinates;
 
   /**
    * Constructs a sequence based on the given array
@@ -60,7 +60,7 @@ public class CoordinateArraySequence
    *
    * @param coordinates the coordinate array that will be referenced.
    */
-  public CoordinateArraySequence(Coordinate[] coordinates)
+  CoordinateArraySequence(List<Coordinate> coordinates)
   {
     this(coordinates, CoordinateArrays.dimension(coordinates), CoordinateArrays.measures(coordinates));
   }
@@ -73,7 +73,7 @@ public class CoordinateArraySequence
    * @param coordinates the coordinate array that will be referenced.
    * @param dimension the dimension of the coordinates
    */
-  public CoordinateArraySequence(Coordinate[] coordinates, int dimension) {
+  CoordinateArraySequence(List<Coordinate> coordinates, int dimension) {
     this(coordinates, dimension, CoordinateArrays.measures(coordinates));    
   }
   
@@ -83,12 +83,12 @@ public class CoordinateArraySequence
    * <p>
    * It is your responsibility to ensure the array contains Coordinates of the
    * indicated dimension and measures (See 
-   * {@link CoordinateArrays#enforceConsistency(Coordinate[])} ).</p>
+   * {@link CoordinateArrays#enforceConsistency(List<Coordinate>)} ).</p>
    *
    * @param coordinates the coordinate array that will be referenced.
    * @param dimension the dimension of the coordinates
    */
-  public CoordinateArraySequence(Coordinate[] coordinates, int dimension, int measures)
+  CoordinateArraySequence(List<Coordinate> coordinates, int dimension, int measures)
   {
     this.dimension = dimension;
     this.measures = measures;
@@ -106,7 +106,7 @@ public class CoordinateArraySequence
    *
    * @param size the size of the sequence to create
    */
-  public CoordinateArraySequence(int size) {
+  CoordinateArraySequence(int size) {
     coordinates = new Coordinate[size];
     for (int i = 0; i < size; i++) {
       coordinates[i] = new Coordinate();
@@ -120,7 +120,7 @@ public class CoordinateArraySequence
    * @param size the size of the sequence to create
    * @param dimension the dimension of the coordinates
    */
-  public CoordinateArraySequence(int size, int dimension) {
+  CoordinateArraySequence(int size, int dimension) {
     coordinates = new Coordinate[size];
     this.dimension = dimension;
     for (int i = 0; i < size; i++) {
@@ -134,7 +134,7 @@ public class CoordinateArraySequence
    * @param size the size of the sequence to create
    * @param dimension the dimension of the coordinates
    */
-  public CoordinateArraySequence(int size, int dimension,int measures) {
+  CoordinateArraySequence(int size, int dimension,int measures) {
     coordinates = new Coordinate[size];
     this.dimension = dimension;
     this.measures = measures;
@@ -149,7 +149,7 @@ public class CoordinateArraySequence
    *
    * @param coordSeq the coordinate sequence that will be copied.
    */
-  public CoordinateArraySequence(CoordinateSequence coordSeq)
+  CoordinateArraySequence(CoordinateSequence coordSeq)
   {
     // NOTE: this will make a sequence of the default dimension
     if (coordSeq == null) {
@@ -168,13 +168,13 @@ public class CoordinateArraySequence
   /**
    * @see org.locationtech.jts.geom.CoordinateSequence#getDimension()
    */
-  public int getDimension()
+  int getDimension()
   {
     return dimension;
   }
   
   @Override
-  public int getMeasures()
+  int getMeasures()
   {
     return measures;
   }
@@ -186,7 +186,7 @@ public class CoordinateArraySequence
    *                  the index of the coordinate
    * @return the requested Coordinate instance
    */
-  public Coordinate getCoordinate(int i) {
+  Coordinate getCoordinate(int i) {
     return coordinates[i];
   }
 
@@ -196,7 +196,7 @@ public class CoordinateArraySequence
    * @param i  the index of the coordinate
    * @return a copy of the requested Coordinate
    */
-  public Coordinate getCoordinateCopy(int i) {
+  Coordinate getCoordinateCopy(int i) {
     Coordinate copy = createCoordinate();
     copy.setCoordinate(coordinates[i]);
     return copy;
@@ -205,28 +205,28 @@ public class CoordinateArraySequence
   /**
    * @see org.locationtech.jts.geom.CoordinateSequence#getX(int)
    */
-  public void getCoordinate(int index, Coordinate coord) {
+  void getCoordinate(int index, Coordinate coord) {
     coord.setCoordinate(coordinates[index]);
   }
 
   /**
    * @see org.locationtech.jts.geom.CoordinateSequence#getX(int)
    */
-  public double getX(int index) {
+  double getX(int index) {
     return coordinates[index].x;
   }
 
   /**
    * @see org.locationtech.jts.geom.CoordinateSequence#getY(int)
    */
-  public double getY(int index) {
+  double getY(int index) {
     return coordinates[index].y;
   }
 
   /**
    * @see org.locationtech.jts.geom.CoordinateSequence#getZ(int)
    */
-  public double getZ(int index)
+  double getZ(int index)
   {
     if (hasZ()) {
       return coordinates[index].getZ();
@@ -239,7 +239,7 @@ public class CoordinateArraySequence
   /**
    * @see org.locationtech.jts.geom.CoordinateSequence#getM(int)
    */
-  public double getM(int index) {
+  double getM(int index) {
     if (hasM()) {
       return coordinates[index].getM();
     }
@@ -251,7 +251,7 @@ public class CoordinateArraySequence
   /**
    * @see org.locationtech.jts.geom.CoordinateSequence#getOrdinate(int, int)
    */
-  public double getOrdinate(int index, int ordinateIndex)
+  double getOrdinate(int index, int ordinateIndex)
   {
     switch (ordinateIndex) {
       case CoordinateSequence.X:  return coordinates[index].x;
@@ -267,7 +267,7 @@ public class CoordinateArraySequence
    * @return The deep copy
    * @deprecated
    */
-  public Object clone() {
+  Object clone() {
     return copy();
   }
   /**
@@ -275,8 +275,8 @@ public class CoordinateArraySequence
    *
    * @return The deep copy
    */
-  public CoordinateArraySequence copy() {
-    Coordinate[] cloneCoordinates = new Coordinate[size()];
+  CoordinateArraySequence copy() {
+    List<Coordinate> cloneCoordinates = new Coordinate[size()];
     for (int i = 0; i < coordinates.length; i++) {
       Coordinate duplicate = createCoordinate();
       duplicate.setCoordinate(coordinates[i]);
@@ -289,14 +289,14 @@ public class CoordinateArraySequence
    *
    * @return the number of coordinates
    */
-  public int size() {
+  int size() {
     return coordinates.length;
   }
 
   /**
    * @see org.locationtech.jts.geom.CoordinateSequence#setOrdinate(int, int, double)
    */
-  public void setOrdinate(int index, int ordinateIndex, double value)
+  void setOrdinate(int index, int ordinateIndex, double value)
   {
     switch (ordinateIndex) {
       case CoordinateSequence.X:
@@ -313,13 +313,13 @@ public class CoordinateArraySequence
   /**
    * This method exposes the internal Array of Coordinate Objects
    *
-   * @return the Coordinate[] array.
+   * @return the List<Coordinate> array.
    */
-  public Coordinate[] toCoordinateArray() {
+  List<Coordinate> toCoordinateArray() {
     return coordinates;
   }
 
-  public Envelope expandEnvelope(Envelope env)
+  Envelope expandEnvelope(Envelope env)
   {
     for (int i = 0; i < coordinates.length; i++ ) {
       env.expandToInclude(coordinates[i]);
@@ -332,7 +332,7 @@ public class CoordinateArraySequence
    *
    * @return The string
    */
-  public String toString() {
+  String toString() {
     if (coordinates.length > 0) {
       StringBuilder strBuilder = new StringBuilder(17 * coordinates.length);
       strBuilder.append('(');

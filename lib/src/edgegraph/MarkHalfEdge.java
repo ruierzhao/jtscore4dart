@@ -10,19 +10,19 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.edgegraph;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
 /**
  * A {@link HalfEdge} which supports
- * marking edges with a boolean flag.
+ * marking edges with a bool flag.
  * Useful for algorithms which perform graph traversals.
  * 
  * @author Martin Davis
  *
  */
-public class MarkHalfEdge extends HalfEdge
+class MarkHalfEdge extends HalfEdge
 {
   /**
    * Tests whether the given edge is marked.
@@ -30,7 +30,7 @@ public class MarkHalfEdge extends HalfEdge
    * @param e the edge to test
    * @return true if the edge is marked
    */
-  public static boolean isMarked(HalfEdge e) 
+  static bool isMarked(HalfEdge e) 
   {
     return ((MarkHalfEdge) e).isMarked();
   }
@@ -40,29 +40,29 @@ public class MarkHalfEdge extends HalfEdge
    * 
    * @param e the edge to mark
    */
-  public static void mark(HalfEdge e)
+  static void mark(HalfEdge e)
   {
     ((MarkHalfEdge) e).mark();
   }
 
   /**
-   * Sets the mark for the given edge to a boolean value.
+   * Sets the mark for the given edge to a bool value.
    * 
    * @param e the edge to set
    * @param isMarked the mark value
    */
-  public static void setMark(HalfEdge e, boolean isMarked)
+  static void setMark(HalfEdge e, bool isMarked)
   {
     ((MarkHalfEdge) e).setMark(isMarked);
   }
 
   /**
-   * Sets the mark for the given edge pair to a boolean value.
+   * Sets the mark for the given edge pair to a bool value.
    * 
    * @param e an edge of the pair to update
    * @param isMarked the mark value to set
    */
-  public static void setMarkBoth(HalfEdge e, boolean isMarked)
+  static void setMarkBoth(HalfEdge e, bool isMarked)
   {
     ((MarkHalfEdge) e).setMark(isMarked);
     ((MarkHalfEdge) e.sym()).setMark(isMarked);
@@ -73,19 +73,19 @@ public class MarkHalfEdge extends HalfEdge
    * 
    * @param e an edge of the pair to mark
    */
-  public static void markBoth(HalfEdge e) {
+  static void markBoth(HalfEdge e) {
     ((MarkHalfEdge) e).mark();
     ((MarkHalfEdge) e.sym()).mark();
   }
   
-  private boolean isMarked = false;
+  private bool isMarked = false;
 
   /**
    * Creates a new marked edge.
    * 
    * @param orig the coordinate of the edge origin
    */
-  public MarkHalfEdge(Coordinate orig) {
+  MarkHalfEdge(Coordinate orig) {
     super(orig);
   }
 
@@ -94,7 +94,7 @@ public class MarkHalfEdge extends HalfEdge
    * 
    * @return true if this edge is marked
    */
-  public boolean isMarked()
+  bool isMarked()
   {
     return isMarked ;
   }
@@ -103,7 +103,7 @@ public class MarkHalfEdge extends HalfEdge
    * Marks this edge.
    * 
    */
-  public void mark()
+  void mark()
   {
     isMarked = true;
   }
@@ -113,7 +113,7 @@ public class MarkHalfEdge extends HalfEdge
    * 
    * @param isMarked the mark value to set
    */
-  public void setMark(boolean isMarked)
+  void setMark(bool isMarked)
   {
     this.isMarked = isMarked;
   }

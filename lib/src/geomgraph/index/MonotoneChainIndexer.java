@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph.index;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +44,9 @@ import org.locationtech.jts.util.IntArrayList;
  *
  * @version 1.7
  */
-public class MonotoneChainIndexer {
+class MonotoneChainIndexer {
 
-  public static int[] toIntArray(List list)
+  static int[] toIntArray(List list)
   {
     int[] array = new int[list.size()];
     for (int i = 0; i < array.length; i++) {
@@ -55,10 +55,10 @@ public class MonotoneChainIndexer {
     return array;
   }
 
-  public MonotoneChainIndexer() {
+  MonotoneChainIndexer() {
   }
 
-  public int[] getChainStartIndices(Coordinate[] pts)
+  int[] getChainStartIndices(List<Coordinate> pts)
   {
     // find the startpoint (and endpoints) of all monotone chains in this edge
     int start = 0;
@@ -75,7 +75,7 @@ public class MonotoneChainIndexer {
     return startIndexList.toArray();
   }  
   
-  public int[] OLDgetChainStartIndices(Coordinate[] pts)
+  int[] OLDgetChainStartIndices(List<Coordinate> pts)
   {
     // find the startpoint (and endpoints) of all monotone chains in this edge
     int start = 0;
@@ -94,7 +94,7 @@ public class MonotoneChainIndexer {
   /**
    * @return the index of the last point in the monotone chain
    */
-  private int findChainEnd(Coordinate[] pts, int start)
+  private int findChainEnd(List<Coordinate> pts, int start)
   {
     // determine quadrant for chain
     int chainQuad = Quadrant.quadrant(pts[start], pts[start + 1]);

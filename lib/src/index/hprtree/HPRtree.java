@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.hprtree;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ import org.locationtech.jts.util.IntArrayList;
  * @author Martin Davis
  *
  */
-public class HPRtree
+class HPRtree
   implements SpatialIndex
 {
   private static final int ENV_SIZE = 4;
@@ -82,12 +82,12 @@ public class HPRtree
 
   private Object[] itemValues;
 
-  private volatile boolean isBuilt = false;
+  private volatile bool isBuilt = false;
 
   /**
    * Creates a new index with the default node capacity.
    */
-  public HPRtree() {
+  HPRtree() {
     this(DEFAULT_NODE_CAPACITY);
   }
   
@@ -96,7 +96,7 @@ public class HPRtree
    * 
    * @param nodeCapacity the node capacity to use
    */
-  public HPRtree(int nodeCapacity) {
+  HPRtree(int nodeCapacity) {
     this.nodeCapacity = nodeCapacity;
   }
   
@@ -105,12 +105,12 @@ public class HPRtree
    * 
    * @return the number of items
    */
-  public int size() {
+  int size() {
     return numItems;
   }
   
   @Override
-  public void insert(Envelope itemEnv, Object item) {
+  void insert(Envelope itemEnv, Object item) {
     if (isBuilt) {
       throw new IllegalStateException("Cannot insert items after tree is built.");
     }
@@ -120,7 +120,7 @@ public class HPRtree
   }
 
   @Override
-  public List query(Envelope searchEnv) {
+  List query(Envelope searchEnv) {
     build();
     
     if (! totalExtent.intersects(searchEnv)) 
@@ -132,7 +132,7 @@ public class HPRtree
   }
 
   @Override
-  public void query(Envelope searchEnv, ItemVisitor visitor) {
+  void query(Envelope searchEnv, ItemVisitor visitor) {
     build();
     if (! totalExtent.intersects(searchEnv)) 
       return;
@@ -167,8 +167,8 @@ public class HPRtree
     }
   }
 
-  private static boolean intersects(double[] bounds, int nodeIndex, Envelope env) {
-    boolean isBeyond = (env.getMaxX() < bounds[nodeIndex])
+  private static bool intersects(double[] bounds, int nodeIndex, Envelope env) {
+    bool isBeyond = (env.getMaxX() < bounds[nodeIndex])
     || (env.getMaxY() < bounds[nodeIndex+1])
     || (env.getMinX() > bounds[nodeIndex+2])
     || (env.getMinY() > bounds[nodeIndex+3]);
@@ -205,7 +205,7 @@ public class HPRtree
   }
 
   @Override
-  public boolean remove(Envelope itemEnv, Object item) {
+  bool remove(Envelope itemEnv, Object item) {
     // TODO Auto-generated method stub
     return false;
   }
@@ -213,7 +213,7 @@ public class HPRtree
   /**
    * Builds the index, if not already built.
    */
-  public void build() {
+  void build() {
     // skip if already built
     if (!isBuilt) {
       synchronized (this) {
@@ -347,7 +347,7 @@ public class HPRtree
    * 
    * @return a list of the internal node extents
    */
-  public Envelope[] getBounds() {
+  Envelope[] getBounds() {
     int numNodes = nodeBounds.length / 4;
     Envelope[] bounds = new Envelope[numNodes];
     // create from largest to smallest

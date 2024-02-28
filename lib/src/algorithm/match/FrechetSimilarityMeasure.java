@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.match;
+
 
 import org.locationtech.jts.algorithm.distance.DiscreteFrechetDistance;
 import org.locationtech.jts.geom.Coordinate;
@@ -36,20 +36,20 @@ import org.locationtech.jts.geom.MultiPoint;
  * @author Felix Obermaier
  *
  */
-public class FrechetSimilarityMeasure implements SimilarityMeasure {
+class FrechetSimilarityMeasure implements SimilarityMeasure {
 
   /**
    * Creates an instance of this class.
    */
-  public FrechetSimilarityMeasure()
+  FrechetSimilarityMeasure()
   { }
 
   @Override
-  public double measure(Geometry g1, Geometry g2) {
+  double measure(Geometry g1, Geometry g2) {
 
     // Check if input is of same type
     if (!g1.getGeometryType().equals(g2.getGeometryType()))
-      throw new IllegalArgumentException("g1 and g2 are of different type");
+      throw new ArgumentError("g1 and g2 are of different type");
 
     // Compute the distance
     double frechetDistance = DiscreteFrechetDistance.distance(g1, g2);

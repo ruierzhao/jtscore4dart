@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.linearref;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.MultiLineString;
  * Various methods are provided to manipulate the location value
  * and query the geometry it references.
  */
-public class LinearLocation
+class LinearLocation
     implements Comparable
 {
    /**
@@ -33,7 +33,7 @@ public class LinearLocation
     * @param linear the linear geometry
     * @return a new <tt>LinearLocation</tt>
     */
-  public static LinearLocation getEndLocation(Geometry linear)
+  static LinearLocation getEndLocation(Geometry linear)
   {
     // assert: linear is LineString or MultiLineString
     LinearLocation loc = new LinearLocation();
@@ -56,7 +56,7 @@ public class LinearLocation
    * @param frac the length to the desired point
    * @return the <tt>Coordinate</tt> of the desired point
    */
-  public static Coordinate pointAlongSegmentByFraction(Coordinate p0, Coordinate p1, double frac)
+  static Coordinate pointAlongSegmentByFraction(Coordinate p0, Coordinate p1, double frac)
   {
     if (frac <= 0.0) return p0;
     if (frac >= 1.0) return p1;
@@ -75,15 +75,15 @@ public class LinearLocation
   /**
    * Creates a location referring to the start of a linear geometry
    */
-  public LinearLocation()
+  LinearLocation()
   {
   }
 
-  public LinearLocation(int segmentIndex, double segmentFraction) {
+  LinearLocation(int segmentIndex, double segmentFraction) {
     this(0, segmentIndex, segmentFraction);
   }
 
-  public LinearLocation(int componentIndex, int segmentIndex, double segmentFraction)
+  LinearLocation(int componentIndex, int segmentIndex, double segmentFraction)
   {
     this.componentIndex = componentIndex;
     this.segmentIndex = segmentIndex;
@@ -91,7 +91,7 @@ public class LinearLocation
     normalize();
   }
 
-  private LinearLocation(int componentIndex, int segmentIndex, double segmentFraction, boolean doNormalize)
+  private LinearLocation(int componentIndex, int segmentIndex, double segmentFraction, bool doNormalize)
   {
     this.componentIndex = componentIndex;
     this.segmentIndex = segmentIndex;
@@ -105,7 +105,7 @@ public class LinearLocation
    * 
    * @param loc a LinearLocation
    */
-  public LinearLocation(LinearLocation loc)
+  LinearLocation(LinearLocation loc)
   {
     this.componentIndex = loc.componentIndex;
     this.segmentIndex = loc.segmentIndex;
@@ -149,7 +149,7 @@ public class LinearLocation
    *
    * @param linear a linear geometry
    */
-  public void clamp(Geometry linear)
+  void clamp(Geometry linear)
   {
     if (componentIndex >= linear.getNumGeometries()) {
       setToEnd(linear);
@@ -169,7 +169,7 @@ public class LinearLocation
    * @param linearGeom a linear geometry
    * @param minDistance the minimum allowable distance to a vertex
    */
-  public void snapToVertex(Geometry linearGeom, double minDistance)
+  void snapToVertex(Geometry linearGeom, double minDistance)
   {
     if (segmentFraction <= 0.0 || segmentFraction >= 1.0)
       return;
@@ -191,7 +191,7 @@ public class LinearLocation
    * @param linearGeom a linear geometry
    * @return the length of the segment
    */
-  public double getSegmentLength(Geometry linearGeom)
+  double getSegmentLength(Geometry linearGeom)
   {
     LineString lineComp = (LineString) linearGeom.getGeometryN(componentIndex);
 
@@ -211,7 +211,7 @@ public class LinearLocation
    *
    * @param linear the linear geometry to use to set the end
    */
-  public void setToEnd(Geometry linear)
+  void setToEnd(Geometry linear)
   {
     componentIndex = linear.getNumGeometries() - 1;
     LineString lastLine = (LineString) linear.getGeometryN(componentIndex);
@@ -224,28 +224,28 @@ public class LinearLocation
    *
    * @return the component index
    */
-  public int getComponentIndex() { return componentIndex; }
+  int getComponentIndex() { return componentIndex; }
 
   /**
    * Gets the segment index for this location
    *
    * @return the segment index
    */
-  public int getSegmentIndex() { return segmentIndex; }
+  int getSegmentIndex() { return segmentIndex; }
 
   /**
    * Gets the segment fraction for this location
    *
    * @return the segment fraction
    */
-  public double getSegmentFraction() { return segmentFraction; }
+  double getSegmentFraction() { return segmentFraction; }
 
   /**
    * Tests whether this location refers to a vertex
    *
    * @return true if the location is a vertex
    */
-  public boolean isVertex()
+  bool isVertex()
   {
     return segmentFraction <= 0.0 || segmentFraction >= 1.0;
   }
@@ -258,7 +258,7 @@ public class LinearLocation
    * @param linearGeom the linear geometry referenced by this location
    * @return the <tt>Coordinate</tt> at the location
    */
-  public Coordinate getCoordinate(Geometry linearGeom)
+  Coordinate getCoordinate(Geometry linearGeom)
   {
     LineString lineComp = (LineString) linearGeom.getGeometryN(componentIndex);
     Coordinate p0 = lineComp.getCoordinateN(segmentIndex);
@@ -275,7 +275,7 @@ public class LinearLocation
    * @param linearGeom a linear geometry
    * @return the <tt>LineSegment</tt> containing the location
    */
-  public LineSegment getSegment(Geometry linearGeom)
+  LineSegment getSegment(Geometry linearGeom)
   {
     LineString lineComp = (LineString) linearGeom.getGeometryN(componentIndex);
     Coordinate p0 = lineComp.getCoordinateN(segmentIndex);
@@ -295,7 +295,7 @@ public class LinearLocation
    * @param linearGeom a linear geometry
    * @return true if this location is valid
    */
-  public boolean isValid(Geometry linearGeom)
+  bool isValid(Geometry linearGeom)
   {
     if (componentIndex < 0 || componentIndex >= linearGeom.getNumGeometries())
       return false;
@@ -319,7 +319,7 @@ public class LinearLocation
    *@return    a negative integer, zero, or a positive integer as this <code>LineStringLocation</code>
    *      is less than, equal to, or greater than the specified <code>LineStringLocation</code>
    */
-  public int compareTo(Object o) {
+  int compareTo(Object o) {
     LinearLocation other = (LinearLocation) o;
     // compare component indices
     if (componentIndex < other.componentIndex) return -1;
@@ -343,7 +343,7 @@ public class LinearLocation
    * @return    a negative integer, zero, or a positive integer as this <code>LineStringLocation</code>
    *      is less than, equal to, or greater than the specified locationValues
    */
-  public int compareLocationValues(int componentIndex1, int segmentIndex1, double segmentFraction1) {
+  int compareLocationValues(int componentIndex1, int segmentIndex1, double segmentFraction1) {
     // compare component indices
     if (componentIndex < componentIndex1) return -1;
     if (componentIndex > componentIndex1) return 1;
@@ -370,7 +370,7 @@ public class LinearLocation
    *      as the first set of location values
    *      is less than, equal to, or greater than the second set of locationValues
    */
-  public static int compareLocationValues(
+  static int compareLocationValues(
       int componentIndex0, int segmentIndex0, double segmentFraction0,
       int componentIndex1, int segmentIndex1, double segmentFraction1)
   {
@@ -394,7 +394,7 @@ public class LinearLocation
    * @param loc a location on the same geometry
    * @return true if the locations are on the same segment of the parent geometry
    */
-  public boolean isOnSameSegment(LinearLocation loc)
+  bool isOnSameSegment(LinearLocation loc)
   {
   	if (componentIndex != loc.componentIndex) return false;
   	if (segmentIndex == loc.segmentIndex) return true;
@@ -414,7 +414,7 @@ public class LinearLocation
    * @param linearGeom the linear geometry referenced by this location
    * @return true if the location is a component endpoint
    */
-  public boolean isEndpoint(Geometry linearGeom)
+  bool isEndpoint(Geometry linearGeom)
   {
     LineString lineComp = (LineString) linearGeom.getGeometryN(componentIndex);
     // check for endpoint
@@ -437,7 +437,7 @@ public class LinearLocation
    * @param linearGeom the linear geometry referenced by this location
    * @return the lowest equivalent location
    */
-  public LinearLocation toLowest(Geometry linearGeom)
+  LinearLocation toLowest(Geometry linearGeom)
   {
     // TODO: compute lowest component index
     LineString lineComp = (LineString) linearGeom.getGeometryN(componentIndex);
@@ -453,7 +453,7 @@ public class LinearLocation
    * @return a copy of this location
    * @deprecated
    */
-  public Object clone()
+  Object clone()
   {
     return copy();
   }
@@ -463,11 +463,11 @@ public class LinearLocation
    *
    * @return a copy of this location
    */
-  public LinearLocation copy() {
+  LinearLocation copy() {
 	return new LinearLocation(componentIndex, segmentIndex, segmentFraction);
   }
   
-  public String toString()
+  String toString()
   {
     return "LinearLoc[" 
     + componentIndex + ", "

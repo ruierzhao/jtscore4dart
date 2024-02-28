@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.Comparator;
 
@@ -30,7 +30,7 @@ class OverlayEdge extends HalfEdge {
    * 
    * @return a new edge based on the given coordinates and direction
    */
-  public static OverlayEdge createEdge(Coordinate[] pts, OverlayLabel lbl, boolean direction)
+  static OverlayEdge createEdge(List<Coordinate> pts, OverlayLabel lbl, bool direction)
   {
     Coordinate origin;
     Coordinate dirPt;
@@ -46,7 +46,7 @@ class OverlayEdge extends HalfEdge {
     return new OverlayEdge(origin, dirPt, direction, lbl, pts);
   }
 
-  public static OverlayEdge createEdgePair(Coordinate[] pts, OverlayLabel lbl)
+  static OverlayEdge createEdgePair(List<Coordinate> pts, OverlayLabel lbl)
   {
     OverlayEdge e0 = OverlayEdge.createEdge(pts, lbl, true);
     OverlayEdge e1 = OverlayEdge.createEdge(pts, lbl, false);
@@ -59,29 +59,29 @@ class OverlayEdge extends HalfEdge {
    * 
    * @return a Comparator sorting by origin coordinate
    */
-  public static Comparator<OverlayEdge> nodeComparator() {
+  static Comparator<OverlayEdge> nodeComparator() {
     return new Comparator<OverlayEdge>() {
       @Override
-      public int compare(OverlayEdge e1, OverlayEdge e2) {
+      int compare(OverlayEdge e1, OverlayEdge e2) {
         return e1.orig().compareTo(e2.orig());
       }
     };
   }
   
-  private Coordinate[] pts;
+  private List<Coordinate> pts;
   
   /**
    * <code>true</code> indicates direction is forward along segString
    * <code>false</code> is reverse direction
    * The label must be interpreted accordingly.
    */
-  private boolean direction;
+  private bool direction;
   private Coordinate dirPt;
   private OverlayLabel label;
 
-  private boolean isInResultArea = false;
-  private boolean isInResultLine = false;
-  private boolean isVisited = false;
+  private bool isInResultArea = false;
+  private bool isInResultLine = false;
+  private bool isVisited = false;
 
   /**
    * Link to next edge in the result ring.
@@ -96,7 +96,7 @@ class OverlayEdge extends HalfEdge {
   private OverlayEdge nextResultMaxEdge;
 
 
-  public OverlayEdge(Coordinate orig, Coordinate dirPt, boolean direction, OverlayLabel label, Coordinate[] pts) {
+  OverlayEdge(Coordinate orig, Coordinate dirPt, bool direction, OverlayLabel label, List<Coordinate> pts) {
     super(orig);
     this.dirPt = dirPt;
     this.direction = direction;
@@ -104,34 +104,34 @@ class OverlayEdge extends HalfEdge {
     this.label = label;
   }
 
-  public boolean isForward() {
+  bool isForward() {
     return direction;
   }
-  public Coordinate directionPt() {
+  Coordinate directionPt() {
     return dirPt;
   }
   
-  public OverlayLabel getLabel() {
+  OverlayLabel getLabel() {
     return label;
   }
 
-  public int getLocation(int index, int position) {
+  int getLocation(int index, int position) {
     return label.getLocation(index, position, direction);
   }
 
-  public Coordinate getCoordinate() {
+  Coordinate getCoordinate() {
     return orig();
   }
   
-  public Coordinate[] getCoordinates() {
+  List<Coordinate> getCoordinates() {
     return pts;
   }
   
-  public Coordinate[] getCoordinatesOriented() {
+  List<Coordinate> getCoordinatesOriented() {
     if (direction) {
       return pts;
     }
-    Coordinate[] copy = pts.clone();
+    List<Coordinate> copy = pts.clone();
     CoordinateArrays.reverse(copy);
     return copy;
   }
@@ -145,9 +145,9 @@ class OverlayEdge extends HalfEdge {
    * 
    * @param coords the coordinate list to add to
    */
-  public void addCoordinates(CoordinateList coords)
+  void addCoordinates(CoordinateList coords)
   {
-    boolean isFirstEdge = coords.size() > 0;
+    bool isFirstEdge = coords.size() > 0;
     if (direction) {
       int startIndex = 1;
       if (isFirstEdge) startIndex = 0;
@@ -169,7 +169,7 @@ class OverlayEdge extends HalfEdge {
    * 
    * @return the symmetric pair edge
    */
-  public OverlayEdge symOE() {
+  OverlayEdge symOE() {
     return (OverlayEdge) sym();
   }
   
@@ -180,46 +180,46 @@ class OverlayEdge extends HalfEdge {
    * 
    * @return the next edge around the origin
    */
-  public OverlayEdge oNextOE() {
+  OverlayEdge oNextOE() {
     return (OverlayEdge) oNext();
   }
   
-  public boolean isInResultArea() {
+  bool isInResultArea() {
     return isInResultArea;
   }
   
-  public boolean isInResultAreaBoth() {
+  bool isInResultAreaBoth() {
     return isInResultArea && symOE().isInResultArea;
   }
   
-  public void unmarkFromResultAreaBoth() {
+  void unmarkFromResultAreaBoth() {
     isInResultArea = false;
     symOE().isInResultArea = false;
   }
   
-  public void markInResultArea() {
+  void markInResultArea() {
     isInResultArea  = true;
   }
 
-  public void markInResultAreaBoth() {
+  void markInResultAreaBoth() {
     isInResultArea  = true;
     symOE().isInResultArea = true;
   }
   
-  public boolean isInResultLine() {
+  bool isInResultLine() {
     return isInResultLine;
   }
 
-  public void markInResultLine() {
+  void markInResultLine() {
     isInResultLine  = true;
     symOE().isInResultLine = true;
   }
   
-  public boolean isInResult() {
+  bool isInResult() {
     return isInResultArea || isInResultLine;
   }
 
-  public boolean isInResultEither() {
+  bool isInResultEither() {
     return isInResult() || symOE().isInResult();
   }
 
@@ -228,11 +228,11 @@ class OverlayEdge extends HalfEdge {
     nextResultEdge = e;
   }
   
-  public OverlayEdge nextResult() {
+  OverlayEdge nextResult() {
     return nextResultEdge;
   }
   
-  public boolean isResultLinked() {
+  bool isResultLinked() {
     return nextResultEdge != null;
   }
   
@@ -241,15 +241,15 @@ class OverlayEdge extends HalfEdge {
     nextResultMaxEdge = e;
   }
   
-  public OverlayEdge nextResultMax() {
+  OverlayEdge nextResultMax() {
     return nextResultMaxEdge;
   }
 
-  public boolean isResultMaxLinked() {
+  bool isResultMaxLinked() {
     return nextResultMaxEdge != null;
   }
   
-  public boolean isVisited() {
+  bool isVisited() {
     return isVisited;
   }
   
@@ -257,28 +257,28 @@ class OverlayEdge extends HalfEdge {
     isVisited = true;
   }
   
-  public void markVisitedBoth() {
+  void markVisitedBoth() {
     markVisited();
     symOE().markVisited();
   }
   
-  public void setEdgeRing(OverlayEdgeRing edgeRing) {
+  void setEdgeRing(OverlayEdgeRing edgeRing) {
     this.edgeRing = edgeRing;
   } 
   
-  public OverlayEdgeRing getEdgeRing() {
+  OverlayEdgeRing getEdgeRing() {
     return edgeRing;
   } 
   
-  public MaximalEdgeRing getEdgeRingMax() {
+  MaximalEdgeRing getEdgeRingMax() {
     return maxEdgeRing;
   }
 
-  public void setEdgeRingMax(MaximalEdgeRing maximalEdgeRing) {
+  void setEdgeRingMax(MaximalEdgeRing maximalEdgeRing) {
     maxEdgeRing = maximalEdgeRing;
   }
 
-  public String toString() {
+  String toString() {
     Coordinate orig = orig();
     Coordinate dest = dest();
     String dirPtStr = (pts.length > 2)

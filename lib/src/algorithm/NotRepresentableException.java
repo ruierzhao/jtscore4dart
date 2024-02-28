@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 /**
  * Indicates that a {@link HCoordinate} has been computed which is
@@ -18,9 +18,9 @@ package org.locationtech.jts.algorithm;
  * @version 1.7
  * @see HCoordinate
  */
-public class NotRepresentableException extends Exception {
+class NotRepresentableException extends Exception {
 
-  public NotRepresentableException() {
+  NotRepresentableException() {
     super("Projective point not representable on the Cartesian plane.");
   }
 

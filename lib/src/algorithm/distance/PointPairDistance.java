@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.algorithm.distance;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.io.WKTWriter;
@@ -20,30 +20,30 @@ import org.locationtech.jts.io.WKTWriter;
  * Provides methods to update with a new point pair with
  * either maximum or minimum distance.
  */
-public class PointPairDistance {
+class PointPairDistance {
 
-  private final Coordinate[] pt = { new Coordinate(), new Coordinate() };
+  private final List<Coordinate> pt = { new Coordinate(), new Coordinate() };
   private double distance = Double.NaN;
-  private boolean isNull = true;
+  private bool isNull = true;
 
   /**
    * Creates an instance of this class
    */
-  public PointPairDistance()
+  PointPairDistance()
   {
   }
 
   /**
    * Initializes this instance.
    */
-  public void initialize() { isNull = true; }
+  void initialize() { isNull = true; }
 
   /**
    * Initializes the points, computing the distance between them.
    * @param p0 the 1st point
    * @param p1 the 2nd point
    */
-  public void initialize(Coordinate p0, Coordinate p1)  {
+  void initialize(Coordinate p0, Coordinate p1)  {
     initialize(p0, p1, p0.distance(p1));
   }
 
@@ -65,27 +65,27 @@ public class PointPairDistance {
    * Gets the distance between the paired points
    * @return the distance between the paired points
    */
-  public double getDistance() { return distance; }
+  double getDistance() { return distance; }
 
   /**
    * Gets the paired points
    * @return the paired points
    */
-  public Coordinate[] getCoordinates() { return pt; }
+  List<Coordinate> getCoordinates() { return pt; }
 
   /**
    * Gets one of the paired points
    * @param i the index of the paired point (0 or 1)
    * @return A point
    */
-  public Coordinate getCoordinate(int i) { return pt[i]; }
+  Coordinate getCoordinate(int i) { return pt[i]; }
 
-  public void setMaximum(PointPairDistance ptDist)
+  void setMaximum(PointPairDistance ptDist)
   {
     setMaximum(ptDist.pt[0], ptDist.pt[1]);
   }
 
-  public void setMaximum(Coordinate p0, Coordinate p1)
+  void setMaximum(Coordinate p0, Coordinate p1)
   {
     if (isNull) {
       initialize(p0, p1);
@@ -96,12 +96,12 @@ public class PointPairDistance {
       initialize(p0, p1, dist);
   }
 
-  public void setMinimum(PointPairDistance ptDist)
+  void setMinimum(PointPairDistance ptDist)
   {
     setMinimum(ptDist.pt[0], ptDist.pt[1]);
   }
 
-  public void setMinimum(Coordinate p0, Coordinate p1)
+  void setMinimum(Coordinate p0, Coordinate p1)
   {
     if (isNull) {
       initialize(p0, p1);
@@ -112,7 +112,7 @@ public class PointPairDistance {
       initialize(p0, p1, dist);
   }
 
-  public String toString()
+  String toString()
   {
   	return WKTWriter.toLineString(pt[0], pt[1]);
   }

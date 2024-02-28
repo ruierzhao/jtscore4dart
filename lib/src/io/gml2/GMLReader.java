@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io.gml2;
+
 
 import java.io.IOException;
 import java.io.Reader;
@@ -67,7 +67,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @see GMLHandler
  */
-public class GMLReader 
+class GMLReader 
 {
 
 	/**
@@ -85,7 +85,7 @@ public class GMLReader
 	 *
 	 * @see #read(Reader, GeometryFactory)
 	 */
-	public Geometry read(String gml, GeometryFactory geometryFactory) throws SAXException, IOException, ParserConfigurationException{
+	Geometry read(String gml, GeometryFactory geometryFactory) throws SAXException, IOException, ParserConfigurationException{
 		return read(new StringReader(gml),geometryFactory);
 	}
 
@@ -100,7 +100,7 @@ public class GMLReader
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public Geometry read(Reader reader, GeometryFactory geometryFactory) throws SAXException, IOException, ParserConfigurationException{
+	Geometry read(Reader reader, GeometryFactory geometryFactory) throws SAXException, IOException, ParserConfigurationException{
 		SAXParserFactory fact = SAXParserFactory.newInstance();
 
 		fact.setNamespaceAware(false);

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.relate;
+
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -31,13 +31,13 @@ import org.locationtech.jts.geomgraph.Label;
  *
  * @version 1.7
  */
-public class EdgeEndBundle
+class EdgeEndBundle
   extends EdgeEnd
 {
 //  private BoundaryNodeRule boundaryNodeRule;
   private List edgeEnds = new ArrayList();
 
-  public EdgeEndBundle(BoundaryNodeRule boundaryNodeRule, EdgeEnd e)
+  EdgeEndBundle(BoundaryNodeRule boundaryNodeRule, EdgeEnd e)
   {
     super(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()));
     insert(e);
@@ -49,16 +49,16 @@ public class EdgeEndBundle
     */
   }
 
-  public EdgeEndBundle(EdgeEnd e)
+  EdgeEndBundle(EdgeEnd e)
   {
     this(null, e);
   }
 
-  public Label getLabel() { return label; }
-  public Iterator iterator() { return edgeEnds.iterator(); }
-  public List getEdgeEnds() { return edgeEnds; }
+  Label getLabel() { return label; }
+  Iterator iterator() { return edgeEnds.iterator(); }
+  List getEdgeEnds() { return edgeEnds; }
 
-  public void insert(EdgeEnd e)
+  void insert(EdgeEnd e)
   {
     // Assert: start point is the same
     // Assert: direction is the same
@@ -69,11 +69,11 @@ public class EdgeEndBundle
    * edges in this EdgeStubBundle.  It essentially merges
    * the ON and side labels for each edge.  These labels must be compatible
    */
-  public void computeLabel(BoundaryNodeRule boundaryNodeRule)
+  void computeLabel(BoundaryNodeRule boundaryNodeRule)
   {
     // create the label.  If any of the edges belong to areas,
     // the label must be an area label
-    boolean isArea = false;
+    bool isArea = false;
     for (Iterator it = iterator(); it.hasNext(); ) {
       EdgeEnd e = (EdgeEnd) it.next();
       if (e.getLabel().isArea()) isArea = true;
@@ -115,7 +115,7 @@ public class EdgeEndBundle
   {
     // compute the ON location value
     int boundaryCount = 0;
-    boolean foundInterior = false;
+    bool foundInterior = false;
 
     for (Iterator it = iterator(); it.hasNext(); ) {
       EdgeEnd e = (EdgeEnd) it.next();
@@ -177,7 +177,7 @@ public class EdgeEndBundle
   {
     Edge.updateIM(label, im);
   }
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     out.println("EdgeEndBundle--> Label: " + label);
     for (Iterator it = iterator(); it.hasNext(); ) {

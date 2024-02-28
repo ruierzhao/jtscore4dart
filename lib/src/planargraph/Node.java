@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.planargraph;
+
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -27,13 +27,13 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class Node
+class Node
     extends GraphComponent
 {
   /**
    * Returns all Edges that connect the two nodes (which are assumed to be different).
    */
-  public static Collection getEdgesBetween(Node node0, Node node1)
+  static Collection getEdgesBetween(Node node0, Node node1)
   {
     List edges0 = DirectedEdge.toEdges(node0.getOutEdges().getEdges());
     Set commonEdges = new HashSet(edges0);
@@ -51,7 +51,7 @@ public class Node
   /**
    * Constructs a Node with the given location.
    */
-  public Node(Coordinate pt)
+  Node(Coordinate pt)
   {
     this(pt, new DirectedEdgeStar());
   }
@@ -59,7 +59,7 @@ public class Node
   /**
    * Constructs a Node with the given location and collection of outgoing DirectedEdges.
    */
-  public Node(Coordinate pt, DirectedEdgeStar deStar)
+  Node(Coordinate pt, DirectedEdgeStar deStar)
   {
     this.pt = pt;
     this.deStar = deStar;
@@ -68,12 +68,12 @@ public class Node
   /**
    * Returns the location of this Node.
    */
-  public Coordinate getCoordinate() { return pt; }
+  Coordinate getCoordinate() { return pt; }
 
   /**
    * Adds an outgoing DirectedEdge to this Node.
    */
-  public void addOutEdge(DirectedEdge de)
+  void addOutEdge(DirectedEdge de)
   {
     deStar.add(de);
   }
@@ -81,16 +81,16 @@ public class Node
   /**
    * Returns the collection of DirectedEdges that leave this Node.
    */
-  public DirectedEdgeStar getOutEdges() { return deStar; }
+  DirectedEdgeStar getOutEdges() { return deStar; }
   /**
    * Returns the number of edges around this Node.
    */
-  public int getDegree() { return deStar.getDegree(); }
+  int getDegree() { return deStar.getDegree(); }
   /**
    * Returns the zero-based index of the given Edge, after sorting in ascending order
    * by angle with the positive x-axis.
    */
-  public int getIndex(Edge edge)
+  int getIndex(Edge edge)
   {
     return deStar.getIndex(edge);
   }
@@ -99,7 +99,7 @@ public class Node
    * Removes a {@link DirectedEdge} incident on this node.
    * Does not change the state of the directed edge.
    */
-  public void remove(DirectedEdge de)
+  void remove(DirectedEdge de)
   {
     deStar.remove(de);
   }
@@ -117,7 +117,7 @@ public class Node
    *
    * @return <code>true</code> if this node is removed
    */
-  public boolean isRemoved()
+  bool isRemoved()
   {
     return pt == null;
   }

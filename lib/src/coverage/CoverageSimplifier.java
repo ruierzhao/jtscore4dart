@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import java.util.BitSet;
 import java.util.List;
@@ -50,7 +50,7 @@ import org.locationtech.jts.geom.MultiLineString;
  * 
  * @author Martin Davis
  */
-public class CoverageSimplifier {
+class CoverageSimplifier {
   
   /**
    * Simplifies the boundaries of a set of polygonal geometries forming a coverage,
@@ -60,7 +60,7 @@ public class CoverageSimplifier {
    * @param tolerance the simplification tolerance
    * @return the simplified polygons
    */
-  public static Geometry[] simplify(Geometry[] coverage, double tolerance) {
+  static Geometry[] simplify(Geometry[] coverage, double tolerance) {
     CoverageSimplifier simplifier = new CoverageSimplifier(coverage);
     return simplifier.simplify(tolerance);
   }
@@ -74,7 +74,7 @@ public class CoverageSimplifier {
    * @param tolerance the simplification tolerance
    * @return the simplified polygons
    */
-  public static Geometry[] simplifyInner(Geometry[] coverage, double tolerance) {
+  static Geometry[] simplifyInner(Geometry[] coverage, double tolerance) {
     CoverageSimplifier simplifier = new CoverageSimplifier(coverage);
     return simplifier.simplifyInner(tolerance);
   }
@@ -87,7 +87,7 @@ public class CoverageSimplifier {
    * 
    * @param coverage a set of polygonal geometries forming a coverage
    */
-  public CoverageSimplifier(Geometry[] coverage) {
+  CoverageSimplifier(Geometry[] coverage) {
     input = coverage;
     geomFactory = coverage[0].getFactory();
   }
@@ -98,7 +98,7 @@ public class CoverageSimplifier {
    * @param tolerance the simplification tolerance
    * @return the simplified polygons
    */
-  public Geometry[] simplify(double tolerance) {
+  Geometry[] simplify(double tolerance) {
     CoverageRingEdges cov = CoverageRingEdges.create(input);
     simplifyEdges(cov.getEdges(), null, tolerance);
     Geometry[] result = cov.buildCoverage();
@@ -113,7 +113,7 @@ public class CoverageSimplifier {
    * @param tolerance the simplification tolerance
    * @return the simplified polygons
    */
-  public Geometry[] simplifyInner(double tolerance) {
+  Geometry[] simplifyInner(double tolerance) {
     CoverageRingEdges cov = CoverageRingEdges.create(input);
     List<CoverageEdge> innerEdges = cov.selectEdges(2);
     List<CoverageEdge> outerEdges = cov.selectEdges(1);

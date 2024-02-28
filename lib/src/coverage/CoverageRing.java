@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +27,13 @@ import org.locationtech.jts.noding.BasicSegmentString;
 
 class CoverageRing extends BasicSegmentString {
   
-  public static List<CoverageRing> createRings(Geometry geom)
+  static List<CoverageRing> createRings(Geometry geom)
   {
     List<Polygon> polygons = PolygonExtracter.getPolygons(geom);
     return createRings(polygons);
   }
 
-  public static List<CoverageRing> createRings(List<Polygon> polygons) {
+  static List<CoverageRing> createRings(List<Polygon> polygons) {
     List<CoverageRing> rings = new ArrayList<CoverageRing>();
     for (Polygon poly : polygons) {
       createRings(poly, rings);
@@ -50,19 +50,19 @@ class CoverageRing extends BasicSegmentString {
     }
   }
 
-  private static void addRing(LinearRing ring, boolean isShell, List<CoverageRing> rings) {
+  private static void addRing(LinearRing ring, bool isShell, List<CoverageRing> rings) {
     if (ring.isEmpty())
       return;
     rings.add( createRing(ring, isShell));
   }
   
-  private static CoverageRing createRing(LinearRing ring, boolean isShell) {
-    Coordinate[] pts = ring.getCoordinates();
+  private static CoverageRing createRing(LinearRing ring, bool isShell) {
+    List<Coordinate> pts = ring.getCoordinates();
     if (CoordinateArrays.hasRepeatedOrInvalidPoints(pts)) {
       pts = CoordinateArrays.removeRepeatedOrInvalidPoints(pts);
     }
-    boolean isCCW = Orientation.isCCW(pts);
-    boolean isInteriorOnRight = isShell ? ! isCCW : isCCW;
+    bool isCCW = Orientation.isCCW(pts);
+    bool isInteriorOnRight = isShell ? ! isCCW : isCCW;
     return new CoverageRing(pts, isInteriorOnRight);
   }
   
@@ -73,7 +73,7 @@ class CoverageRing extends BasicSegmentString {
    * @param rings a list of rings
    * @return true if all ring segments have known status
    */
-  public static boolean isKnown(List<CoverageRing> rings) {
+  static bool isKnown(List<CoverageRing> rings) {
     for (CoverageRing ring : rings) {
       if (! ring.isKnown())
         return false;
@@ -81,15 +81,15 @@ class CoverageRing extends BasicSegmentString {
     return true;
   }
   
-  private boolean isInteriorOnRight;
-  private boolean[] isInvalid;
-  private boolean[] isMatched;
+  private bool isInteriorOnRight;
+  private bool[] isInvalid;
+  private bool[] isMatched;
 
-  private CoverageRing(Coordinate[] pts, boolean isInteriorOnRight) {
+  private CoverageRing(List<Coordinate> pts, bool isInteriorOnRight) {
     super(pts, null);
     this.isInteriorOnRight = isInteriorOnRight;
-    isInvalid = new boolean[size() - 1];
-    isMatched = new boolean[size() - 1];
+    isInvalid = new bool[size() - 1];
+    isMatched = new bool[size() - 1];
   }
   
   /**
@@ -98,7 +98,7 @@ class CoverageRing extends BasicSegmentString {
    * 
    * @return true if the polygon interior is on the right
    */
-  public boolean isInteriorOnRight() {
+  bool isInteriorOnRight() {
     return isInteriorOnRight;
   }
 
@@ -108,7 +108,7 @@ class CoverageRing extends BasicSegmentString {
    * 
    * @param i the segment index
    */
-  public void markInvalid(int i) {
+  void markInvalid(int i) {
     isInvalid[i] = true;
   }
 
@@ -117,7 +117,7 @@ class CoverageRing extends BasicSegmentString {
    * 
    * @param i the segment index
    */
-  public void markMatched(int i) {
+  void markMatched(int i) {
     //if (isInvalid[i])
     //  throw new IllegalStateException("Setting invalid edge to matched");
     isMatched[i] = true;
@@ -129,7 +129,7 @@ class CoverageRing extends BasicSegmentString {
    * 
    * @return true if all segments have known status
    */
-  public boolean isKnown() {
+  bool isKnown() {
     for (int i = 0; i < isMatched.length; i++) {
       if (! (isMatched[i] && isInvalid[i]))
         return false;
@@ -143,7 +143,7 @@ class CoverageRing extends BasicSegmentString {
    * @param index the segment index
    * @return true if the segment is invalid
    */
-  public boolean isInvalid(int index) {
+  bool isInvalid(int index) {
     return isInvalid[index];
   }
   
@@ -152,7 +152,7 @@ class CoverageRing extends BasicSegmentString {
    * 
    * @return true if all segments are invalid
    */
-  public boolean isInvalid() {
+  bool isInvalid() {
     for (int i = 0; i < isInvalid.length; i++) {
       if (! isInvalid[i])
         return false;
@@ -165,7 +165,7 @@ class CoverageRing extends BasicSegmentString {
    * 
    * @return true if some segment is invalid
    */
-  public boolean hasInvalid() {
+  bool hasInvalid() {
     for (int i = 0; i < isInvalid.length; i++) {
       if (isInvalid[i])
         return true;
@@ -179,7 +179,7 @@ class CoverageRing extends BasicSegmentString {
    * @param i the index of the ring segment
    * @return true if the segment state is known
    */
-  public boolean isKnown(int i) {
+  bool isKnown(int i) {
     return isMatched[i] || isInvalid[i];
   } 
   
@@ -190,7 +190,7 @@ class CoverageRing extends BasicSegmentString {
    * @param pt a coordinate value (which may not be a ring vertex)
    * @return the previous distinct vertex in the ring
    */
-  public Coordinate findVertexPrev(int index, Coordinate pt) {
+  Coordinate findVertexPrev(int index, Coordinate pt) {
     int iPrev = index;
     Coordinate prev = getCoordinate(iPrev);
     while (pt.equals2D(prev)) {
@@ -207,7 +207,7 @@ class CoverageRing extends BasicSegmentString {
    * @param pt a coordinate value (which may not be a ring vertex)
    * @return the next distinct vertex in the ring
    */
-  public Coordinate findVertexNext(int index, Coordinate pt) {
+  Coordinate findVertexNext(int index, Coordinate pt) {
     //-- safe, since index is always the start of a segment
     int iNext = index + 1;
     Coordinate next = getCoordinate(iNext);
@@ -224,7 +224,7 @@ class CoverageRing extends BasicSegmentString {
    * @param index a segment index
    * @return the index of the previous segment
    */
-  public int prev(int index) {
+  int prev(int index) {
     if (index == 0)
       return size() - 2;
     return index - 1;
@@ -236,13 +236,13 @@ class CoverageRing extends BasicSegmentString {
    * @param index a segment index
    * @return the index of the next segment
    */
-  public int next(int index) {
+  int next(int index) {
     if (index < size() - 2) 
       return index + 1;
     return 0;
   }
 
-  public void createInvalidLines(GeometryFactory geomFactory, List<LineString> lines) {
+  void createInvalidLines(GeometryFactory geomFactory, List<LineString> lines) {
     //-- empty case
     if (! hasInvalid()) {
       return;
@@ -300,15 +300,15 @@ class CoverageRing extends BasicSegmentString {
    * @return a line representing the section
    */
   private LineString createLine(int startIndex, int endIndex, GeometryFactory geomFactory) {
-    Coordinate[] pts = endIndex < startIndex ?
+    List<Coordinate> pts = endIndex < startIndex ?
           extractSectionWrap(startIndex, endIndex)
         : extractSection(startIndex, endIndex);    
     return geomFactory.createLineString(pts);
   }
 
-  private Coordinate[] extractSection(int startIndex, int endIndex) {
+  private List<Coordinate> extractSection(int startIndex, int endIndex) {
     int size = endIndex - startIndex + 1;
-    Coordinate[] pts = new Coordinate[size];
+    List<Coordinate> pts = new Coordinate[size];
     int ipts = 0;
     for (int i = startIndex; i <= endIndex; i++) {
       pts[ipts++] = getCoordinate(i).copy();
@@ -316,9 +316,9 @@ class CoverageRing extends BasicSegmentString {
     return pts;
   }
 
-  private Coordinate[] extractSectionWrap(int startIndex, int endIndex) {
+  private List<Coordinate> extractSectionWrap(int startIndex, int endIndex) {
     int size = endIndex + (size() - startIndex);
-    Coordinate[] pts = new Coordinate[size];
+    List<Coordinate> pts = new Coordinate[size];
     int index = startIndex;
     for (int i = 0; i < size; i++) {
       pts[i] = getCoordinate(index).copy();

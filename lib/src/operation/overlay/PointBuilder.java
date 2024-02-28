@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlay;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,12 +26,12 @@ import org.locationtech.jts.geomgraph.Node;
  * Constructs {@link Point}s from the nodes of an overlay graph.
  * @version 1.7
  */
-public class PointBuilder {
+class PointBuilder {
   private OverlayOp op;
   private GeometryFactory geometryFactory;
   private List resultPointList = new ArrayList();
 
-  public PointBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
+  PointBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
     this.op = op;
     this.geometryFactory = geometryFactory;
     // ptLocator is never used in this class
@@ -43,7 +43,7 @@ public class PointBuilder {
    *
    * @return a list of the Points objects in the result
    */
-  public List build(int opCode)
+  List build(int opCode)
   {
     extractNonCoveredResultNodes(opCode);
     /**

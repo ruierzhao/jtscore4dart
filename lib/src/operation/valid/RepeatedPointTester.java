@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.valid;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -26,17 +26,17 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @version 1.7
  */
-public class RepeatedPointTester {
+class RepeatedPointTester {
 
   // save the repeated coord found (if any)
   private Coordinate repeatedCoord;
 
-  public RepeatedPointTester() {
+  RepeatedPointTester() {
   }
 
-  public Coordinate getCoordinate() { return repeatedCoord; }
+  Coordinate getCoordinate() { return repeatedCoord; }
 
-  public boolean hasRepeatedPoint(Geometry g)
+  bool hasRepeatedPoint(Geometry g)
   {
     if (g.isEmpty()) return false;
     if (g instanceof Point)                   return false;
@@ -48,7 +48,7 @@ public class RepeatedPointTester {
     else  throw new UnsupportedOperationException(g.getClass().getName());
   }
 
-  public boolean hasRepeatedPoint(Coordinate[] coord)
+  bool hasRepeatedPoint(List<Coordinate> coord)
   {
     for (int i = 1; i < coord.length; i++) {
       if (coord[i - 1].equals(coord[i]) ) {
@@ -58,7 +58,7 @@ public class RepeatedPointTester {
     }
     return false;
   }
-  private boolean hasRepeatedPoint(Polygon p)
+  private bool hasRepeatedPoint(Polygon p)
   {
     if (hasRepeatedPoint(p.getExteriorRing().getCoordinates())) return true;
     for (int i = 0; i < p.getNumInteriorRing(); i++) {
@@ -66,7 +66,7 @@ public class RepeatedPointTester {
     }
     return false;
   }
-  private boolean hasRepeatedPoint(GeometryCollection gc)
+  private bool hasRepeatedPoint(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       Geometry g = gc.getGeometryN(i);

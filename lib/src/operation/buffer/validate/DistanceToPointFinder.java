@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer.validate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -22,12 +22,12 @@ import org.locationtech.jts.geom.Polygon;
  * Computes the Euclidean distance (L2 metric) from a Point to a Geometry.
  * Also computes two points which are separated by the distance.
  */
-public class DistanceToPointFinder {
+class DistanceToPointFinder {
 
-  public DistanceToPointFinder() {
+  DistanceToPointFinder() {
   }
 
-  public static void computeDistance(Geometry geom, Coordinate pt, PointPairDistance ptDist)
+  static void computeDistance(Geometry geom, Coordinate pt, PointPairDistance ptDist)
   {
     if (geom instanceof LineString) {
       computeDistance((LineString) geom, pt, ptDist);
@@ -46,9 +46,9 @@ public class DistanceToPointFinder {
       ptDist.setMinimum(geom.getCoordinate(), pt);
     }
   }
-  public static void computeDistance(LineString line, Coordinate pt, PointPairDistance ptDist)
+  static void computeDistance(LineString line, Coordinate pt, PointPairDistance ptDist)
   {
-    Coordinate[] coords = line.getCoordinates();
+    List<Coordinate> coords = line.getCoordinates();
     LineSegment tempSegment = new LineSegment();
     for (int i = 0; i < coords.length - 1; i++) {
       tempSegment.setCoordinates(coords[i], coords[i + 1]);
@@ -58,13 +58,13 @@ public class DistanceToPointFinder {
     }
   }
 
-  public static void computeDistance(LineSegment segment, Coordinate pt, PointPairDistance ptDist)
+  static void computeDistance(LineSegment segment, Coordinate pt, PointPairDistance ptDist)
   {
     Coordinate closestPt = segment.closestPoint(pt);
     ptDist.setMinimum(closestPt, pt);
   }
 
-  public static void computeDistance(Polygon poly, Coordinate pt, PointPairDistance ptDist)
+  static void computeDistance(Polygon poly, Coordinate pt, PointPairDistance ptDist)
   {
     computeDistance(poly.getExteriorRing(), pt, ptDist);
     for (int i = 0; i < poly.getNumInteriorRing(); i++) {

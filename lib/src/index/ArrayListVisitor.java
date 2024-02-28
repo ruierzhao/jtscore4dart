@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.index;
+
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * 
  * @version 1.7
  */
-public class ArrayListVisitor
+class ArrayListVisitor
     implements ItemVisitor
 {
 
@@ -28,7 +28,7 @@ public class ArrayListVisitor
   /**
    * Creates a new instance.
    */
-  public ArrayListVisitor() {
+  ArrayListVisitor() {
   }
 
   /**
@@ -36,7 +36,7 @@ public class ArrayListVisitor
    * 
    * @param item the item to visit
    */
-  public void visitItem(Object item)
+  void visitItem(Object item)
   {
     items.add(item);
   }
@@ -46,6 +46,6 @@ public class ArrayListVisitor
    * 
    * @return the array of items
    */
-  public ArrayList getItems() { return items; }
+  ArrayList getItems() { return items; }
 
 }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.sweepline;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,17 +21,17 @@ import java.util.List;
  *
  * @version 1.7
  */
-public class SweepLineIndex {
+class SweepLineIndex {
 
   List events = new ArrayList();
-  private boolean indexBuilt;
+  private bool indexBuilt;
   // statistics information
   private int nOverlaps;
 
-  public SweepLineIndex() {
+  SweepLineIndex() {
   }
 
-  public void add(SweepLineInterval sweepInt)
+  void add(SweepLineInterval sweepInt)
   {
     SweepLineEvent insertEvent = new SweepLineEvent(sweepInt.getMin(), null, sweepInt);
     events.add(insertEvent);
@@ -57,7 +57,7 @@ public class SweepLineIndex {
     indexBuilt = true;
   }
 
-  public void computeOverlaps(SweepLineOverlapAction action)
+  void computeOverlaps(SweepLineOverlapAction action)
   {
     nOverlaps = 0;
     buildIndex();

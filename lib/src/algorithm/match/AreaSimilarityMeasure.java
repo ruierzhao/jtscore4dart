@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.algorithm.match;
+
 
 import org.locationtech.jts.geom.Geometry;
 
@@ -25,11 +25,11 @@ import org.locationtech.jts.geom.Geometry;
  * @author mbdavis
  *
  */
-public class AreaSimilarityMeasure 
+class AreaSimilarityMeasure 
 	implements SimilarityMeasure
 {
 	/*
-	public static double measure(Geometry a, Geometry b)
+	static double measure(Geometry a, Geometry b)
 	{
 		AreaSimilarityMeasure gv = new AreaSimilarityMeasure(a, b);
 		return gv.measure();
@@ -39,11 +39,11 @@ public class AreaSimilarityMeasure
   /**
    * Creates a new instance.
    */
-	public AreaSimilarityMeasure()
+	AreaSimilarityMeasure()
 	{
 	}
 	
-	public double measure(Geometry g1, Geometry g2)
+	double measure(Geometry g1, Geometry g2)
 	{		
 		double areaInt = g1.intersection(g2).getArea();
 		double areaUnion = g1.union(g2).getArea();

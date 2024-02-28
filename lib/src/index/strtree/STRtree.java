@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class STRtree extends AbstractSTRtree 
+class STRtree extends AbstractSTRtree 
 implements SpatialIndex, Serializable 
 {
 
@@ -83,7 +83,7 @@ implements SpatialIndex, Serializable
   
   private static Comparator xComparator =
     new Comparator() {
-      public int compare(Object o1, Object o2) {
+      int compare(Object o1, Object o2) {
         return compareDoubles(
             centreX((Envelope)((Boundable)o1).getBounds()),
             centreX((Envelope)((Boundable)o2).getBounds()));
@@ -91,7 +91,7 @@ implements SpatialIndex, Serializable
     };
   private static Comparator yComparator =
     new Comparator() {
-      public int compare(Object o1, Object o2) {
+      int compare(Object o1, Object o2) {
         return compareDoubles(
             centreY((Envelope)((Boundable)o1).getBounds()),
             centreY((Envelope)((Boundable)o2).getBounds()));
@@ -109,7 +109,7 @@ implements SpatialIndex, Serializable
   private static double avg(double a, double b) { return (a + b) / 2d; }
 
   private static IntersectsOp intersectsOp = new IntersectsOp() {
-    public boolean intersects(Object aBounds, Object bBounds) {
+    bool intersects(Object aBounds, Object bBounds) {
       return ((Envelope)aBounds).intersects((Envelope)bBounds);
     }
   };
@@ -169,7 +169,7 @@ implements SpatialIndex, Serializable
   /**
    * Constructs an STRtree with the default node capacity.
    */
-  public STRtree() 
+  STRtree() 
   { 
     this(DEFAULT_NODE_CAPACITY); 
   }
@@ -181,7 +181,7 @@ implements SpatialIndex, Serializable
    * The minimum recommended capacity setting is 4.
    * 
    */
-  public STRtree(int nodeCapacity) {
+  STRtree(int nodeCapacity) {
     super(nodeCapacity);
   }
 
@@ -192,7 +192,7 @@ implements SpatialIndex, Serializable
    * The minimum recommended capacity setting is 4.
    *
    */
-  public STRtree(int nodeCapacity, STRtreeNode root) {
+  STRtree(int nodeCapacity, STRtreeNode root) {
     super(nodeCapacity, root);
   }
 
@@ -203,7 +203,7 @@ implements SpatialIndex, Serializable
    * The minimum recommended capacity setting is 4.
    *
    */
-  public STRtree(int nodeCapacity, ArrayList itemBoundables) {
+  STRtree(int nodeCapacity, ArrayList itemBoundables) {
     super(nodeCapacity, itemBoundables);
   }
 
@@ -218,7 +218,7 @@ implements SpatialIndex, Serializable
   /**
    * Inserts an item having the given bounds into the tree.
    */
-  public void insert(Envelope itemEnv, Object item) {
+  void insert(Envelope itemEnv, Object item) {
     if (itemEnv.isNull()) { return; }
     super.insert(itemEnv, item);
   }
@@ -226,7 +226,7 @@ implements SpatialIndex, Serializable
   /**
    * Returns items whose bounds intersect the given envelope.
    */
-  public List query(Envelope searchEnv) {
+  List query(Envelope searchEnv) {
     //Yes this method does something. It specifies that the bounds is an
     //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
     return super.query((Object)searchEnv);
@@ -235,7 +235,7 @@ implements SpatialIndex, Serializable
   /**
    * Returns items whose bounds intersect the given envelope.
    */
-  public void query(Envelope searchEnv, ItemVisitor visitor) {
+  void query(Envelope searchEnv, ItemVisitor visitor) {
     //Yes this method does something. It specifies that the bounds is an
     //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
     super.query(searchEnv, visitor);
@@ -248,7 +248,7 @@ implements SpatialIndex, Serializable
    * @param item the item to remove
    * @return <code>true</code> if the item was found
    */
-  public boolean remove(Envelope itemEnv, Object item) {
+  bool remove(Envelope itemEnv, Object item) {
     return super.remove(itemEnv, item);
   }
 
@@ -257,7 +257,7 @@ implements SpatialIndex, Serializable
    *
    * @return the number of items in the tree
    */
-  public int size()
+  int size()
   {
     return super.size();
   }
@@ -267,7 +267,7 @@ implements SpatialIndex, Serializable
    *
    * @return the number of levels in the tree
    */
-  public int depth()
+  int depth()
   {
     return super.depth();
   }
@@ -293,7 +293,7 @@ implements SpatialIndex, Serializable
    * @return the pair of the nearest items
    *    or <code>null</code> if the tree is empty
    */
-  public Object[] nearestNeighbour(ItemDistance itemDist)
+  Object[] nearestNeighbour(ItemDistance itemDist)
   {
     if (isEmpty()) return null;
     
@@ -319,7 +319,7 @@ implements SpatialIndex, Serializable
    * @return the nearest item in this tree
    *    or <code>null</code> if the tree is empty
    */
-  public Object nearestNeighbour(Envelope env, Object item, ItemDistance itemDist)
+  Object nearestNeighbour(Envelope env, Object item, ItemDistance itemDist)
   {
     if (isEmpty()) return null;
 
@@ -343,7 +343,7 @@ implements SpatialIndex, Serializable
    * @return the pair of the nearest items, one from each tree
    *    or <code>null</code> if no pair of distinct items can be found
    */
-  public Object[] nearestNeighbour(STRtree tree, ItemDistance itemDist)
+  Object[] nearestNeighbour(STRtree tree, ItemDistance itemDist)
   {
     if (isEmpty() || tree.isEmpty()) return null;
     BoundablePair bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist);
@@ -416,7 +416,7 @@ implements SpatialIndex, Serializable
    * @param maxDistance the distance limit for the search
    * @return true if there are items within the distance
    */
-  public boolean isWithinDistance(STRtree tree, ItemDistance itemDist, double maxDistance)
+  bool isWithinDistance(STRtree tree, ItemDistance itemDist, double maxDistance)
   {
     BoundablePair bp = new BoundablePair(this.getRoot(), tree.getRoot(), itemDist);
     return isWithinDistance(bp, maxDistance);
@@ -434,7 +434,7 @@ implements SpatialIndex, Serializable
    * @param maxDistance the maximum distance to search for
    * @return true if two items lie within the given distance
    */
-  private boolean isWithinDistance(BoundablePair initBndPair, double maxDistance) 
+  private bool isWithinDistance(BoundablePair initBndPair, double maxDistance) 
   {
     double distanceUpperBound = Double.POSITIVE_INFINITY;
     
@@ -522,7 +522,7 @@ implements SpatialIndex, Serializable
    * @param k the maximum number of nearest items to search for
    * @return an array of the nearest items found (with length between 0 and K)
    */
-  public Object[] nearestNeighbour(Envelope env, Object item, ItemDistance itemDist,int k)
+  Object[] nearestNeighbour(Envelope env, Object item, ItemDistance itemDist,int k)
   {
     if (isEmpty()) return new Object[0];
 

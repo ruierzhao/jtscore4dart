@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.algorithm.PointLocator;
 import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
@@ -27,12 +27,12 @@ class IndexedPointOnLineLocator implements PointOnGeometryLocator {
 
   private Geometry inputGeom;
 
-  public IndexedPointOnLineLocator(Geometry geomLinear) {
+  IndexedPointOnLineLocator(Geometry geomLinear) {
     this.inputGeom = geomLinear;
   }
 
   @Override
-  public int locate(Coordinate p) {
+  int locate(Coordinate p) {
     // TODO: optimize this with a segment index
     PointLocator locator = new PointLocator();
     return locator.locate(p, inputGeom);

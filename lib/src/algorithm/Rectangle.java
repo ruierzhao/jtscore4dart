@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -42,7 +42,7 @@ class Rectangle {
    * @param factory the geometry factory to use
    * @return the rectangular polygon
    */
-  public static Polygon createFromSidePts(Coordinate baseRightPt, Coordinate baseLeftPt, 
+  static Polygon createFromSidePts(Coordinate baseRightPt, Coordinate baseLeftPt, 
       Coordinate oppositePt, 
       Coordinate leftSidePt, Coordinate rightSidePt, 
       GeometryFactory factory)
@@ -82,7 +82,7 @@ class Rectangle {
         : oppLine.lineIntersection(rightLine);
     
     LinearRing shell = factory.createLinearRing(
-        new Coordinate[] { p0, p1, p2, p3, p0.copy() });
+        new List<Coordinate> { p0, p1, p2, p3, p0.copy() });
     return factory.createPolygon(shell);
   }
 
@@ -114,7 +114,7 @@ class Rectangle {
     * This handles lines that are vertical (b = 0, m = Inf ) 
     * and horizontal (a = 0, m = 0).
     */
-    if (Math.abs(b) > Math.abs(a)) {
+    if ((b).abs() > (a).abs()) {
       //-- abs(m) < 1
       p0 = new Coordinate(0.0, c/b);
       p1 = new Coordinate(1.0, c/b - a/b);

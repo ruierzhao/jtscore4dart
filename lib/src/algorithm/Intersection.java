@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -27,7 +27,7 @@ import org.locationtech.jts.geom.Coordinate;
  * @author Martin Davis
  *
  */
-public class Intersection {
+class Intersection {
   
   /**
    * Computes the intersection point of two lines.
@@ -43,7 +43,7 @@ public class Intersection {
    * 
    * @see CGAlgorithmsDD#intersection(Coordinate, Coordinate, Coordinate, Coordinate)
    */
-  public static Coordinate intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
+  static Coordinate intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
     return CGAlgorithmsDD.intersection(p1, p2, q1, q2);
     //-- this is less robust
     //return intersectionFP(p1, p2, q1, q2);
@@ -133,7 +133,7 @@ public class Intersection {
    * @param seg2 an endpoint of the line segment
    * @return the intersection point, or null if it is not possible to find an intersection
    */
-  public static Coordinate lineSegment(Coordinate line1, Coordinate line2, Coordinate seg1, Coordinate seg2) {
+  static Coordinate lineSegment(Coordinate line1, Coordinate line2, Coordinate seg1, Coordinate seg2) {
     int orientS1 = Orientation.index(line1, line2, seg1);
     if (orientS1 == 0) return seg1.copy();
     

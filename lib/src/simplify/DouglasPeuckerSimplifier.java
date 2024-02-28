@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -44,7 +44,7 @@ import org.locationtech.jts.geom.util.GeometryTransformer;
  * @version 1.7
  * @see TopologyPreservingSimplifier
  */
-public class DouglasPeuckerSimplifier
+class DouglasPeuckerSimplifier
 {
 
   /**
@@ -54,7 +54,7 @@ public class DouglasPeuckerSimplifier
    * @param distanceTolerance the tolerance to use
    * @return a simplified version of the geometry
    */
-  public static Geometry simplify(Geometry geom, double distanceTolerance)
+  static Geometry simplify(Geometry geom, double distanceTolerance)
   {
     DouglasPeuckerSimplifier tss = new DouglasPeuckerSimplifier(geom);
     tss.setDistanceTolerance(distanceTolerance);
@@ -63,14 +63,14 @@ public class DouglasPeuckerSimplifier
 
   private Geometry inputGeom;
   private double distanceTolerance;
-  private boolean isEnsureValidTopology = true;
+  private bool isEnsureValidTopology = true;
   
   /**
    * Creates a simplifier for a given geometry.
    * 
    * @param inputGeom the geometry to simplify
    */
-  public DouglasPeuckerSimplifier(Geometry inputGeom)
+  DouglasPeuckerSimplifier(Geometry inputGeom)
   {
     this.inputGeom = inputGeom;
   }
@@ -83,9 +83,9 @@ public class DouglasPeuckerSimplifier
    *
    * @param distanceTolerance the approximation tolerance to use
    */
-  public void setDistanceTolerance(double distanceTolerance) {
+  void setDistanceTolerance(double distanceTolerance) {
     if (distanceTolerance < 0.0)
-      throw new IllegalArgumentException("Tolerance must be non-negative");
+      throw new ArgumentError("Tolerance must be non-negative");
     this.distanceTolerance = distanceTolerance;
   }
 
@@ -103,7 +103,7 @@ public class DouglasPeuckerSimplifier
    * 
    * @param isEnsureValidTopology
    */
-  public void setEnsureValid(boolean isEnsureValidTopology)
+  void setEnsureValid(bool isEnsureValidTopology)
   {
   	this.isEnsureValidTopology = isEnsureValidTopology;
   }
@@ -113,7 +113,7 @@ public class DouglasPeuckerSimplifier
    * 
    * @return the simplified geometry
    */
-  public Geometry getResultGeometry()
+  Geometry getResultGeometry()
   {
     // empty input produces an empty result
     if (inputGeom.isEmpty()) return inputGeom.copy();
@@ -124,10 +124,10 @@ public class DouglasPeuckerSimplifier
 static class DPTransformer
     extends GeometryTransformer
 {
-  private boolean isEnsureValidTopology = true;
+  private bool isEnsureValidTopology = true;
   private double distanceTolerance;
 
-	public DPTransformer(boolean isEnsureValidTopology, double distanceTolerance)
+	DPTransformer(bool isEnsureValidTopology, double distanceTolerance)
 	{
 		this.isEnsureValidTopology = isEnsureValidTopology;
 		this.distanceTolerance = distanceTolerance;
@@ -135,9 +135,9 @@ static class DPTransformer
 	
   protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
   {
-    boolean isPreserveEndpoint = ! (parent instanceof LinearRing);
-    Coordinate[] inputPts = coords.toCoordinateArray();
-    Coordinate[] newPts = null;
+    bool isPreserveEndpoint = ! (parent instanceof LinearRing);
+    List<Coordinate> inputPts = coords.toCoordinateArray();
+    List<Coordinate> newPts = null;
     if (inputPts.length == 0) {
       newPts = new Coordinate[0];
     }
@@ -171,7 +171,7 @@ static class DPTransformer
   //*
   protected Geometry transformLinearRing(LinearRing geom, Geometry parent) 
   {
-  	boolean removeDegenerateRings = parent instanceof Polygon;
+  	bool removeDegenerateRings = parent instanceof Polygon;
   	Geometry simpResult = super.transformLinearRing(geom, parent);
   	if (removeDegenerateRings && ! (simpResult instanceof LinearRing))
   		return null;
@@ -204,7 +204,7 @@ static class DPTransformer
    */
   private Geometry createValidArea(Geometry rawAreaGeom)
   {
-    boolean isValidArea = rawAreaGeom.getDimension() == 2 && rawAreaGeom.isValid();
+    bool isValidArea = rawAreaGeom.getDimension() == 2 && rawAreaGeom.isValid();
     // if geometry is invalid then make it valid
   	if (isEnsureValidTopology && ! isValidArea)
   		return rawAreaGeom.buffer(0.0);

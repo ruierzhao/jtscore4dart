@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Lineal;
@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.Puntal;
  * @author Martin Davis
  *
  */
-public class PreparedGeometryFactory 
+class PreparedGeometryFactory 
 {
   /**
    * Creates a new {@link PreparedGeometry} appropriate for the argument {@link Geometry}.
@@ -37,12 +37,12 @@ public class PreparedGeometryFactory
    * @param geom the geometry to prepare
    * @return the prepared geometry
    */
-	public static PreparedGeometry prepare(Geometry geom)
+	static PreparedGeometry prepare(Geometry geom)
 	{
 		return (new PreparedGeometryFactory()).create(geom); 
 	}
 
-  public PreparedGeometryFactory() {
+  PreparedGeometryFactory() {
   }
 
   /**
@@ -51,7 +51,7 @@ public class PreparedGeometryFactory
    * @param geom the geometry to prepare
    * @return the prepared geometry
    */
-  public PreparedGeometry create(Geometry geom)
+  PreparedGeometry create(Geometry geom)
   {
     if (geom instanceof Polygonal) 
       return new PreparedPolygon((Polygonal) geom);

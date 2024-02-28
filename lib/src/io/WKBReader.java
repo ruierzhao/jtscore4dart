@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 import java.io.IOException;
 
@@ -75,7 +75,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  * 
  * @see WKBWriter for a formal format specification
  */
-public class WKBReader
+class WKBReader
 {
   /**
    * Converts a hexadecimal string to a byte array.
@@ -84,7 +84,7 @@ public class WKBReader
    * @param hex a string containing hex digits
    * @return an array of bytes with the value of the hex string
    */
-  public static byte[] hexToBytes(String hex)
+  static byte[] hexToBytes(String hex)
   {
     int byteLen = hex.length() / 2;
     byte[] bytes = new byte[byteLen];
@@ -92,7 +92,7 @@ public class WKBReader
     for (int i = 0; i < hex.length() / 2; i++) {
       int i2 = 2 * i;
       if (i2 + 1 > hex.length())
-        throw new IllegalArgumentException("Hex string has odd length");
+        throw new ArgumentError("Hex string has odd length");
 
       int nib1 = hexToInt(hex.charAt(i2));
       int nib0 = hexToInt(hex.charAt(i2 + 1));
@@ -106,7 +106,7 @@ public class WKBReader
   {
     int nib = Character.digit(hex, 16);
     if (nib < 0)
-      throw new IllegalArgumentException("Invalid hex digit: '" + hex + "'");
+      throw new ArgumentError("Invalid hex digit: '" + hex + "'");
     return nib;
   }
 
@@ -128,17 +128,17 @@ public class WKBReader
    * true if structurally invalid input should be reported rather than repaired.
    * At some point this could be made client-controllable.
    */
-  private boolean isStrict = false;
+  private bool isStrict = false;
   private ByteOrderDataInStream dis = new ByteOrderDataInStream();
   private double[] ordValues;
 
   private int maxNumFieldValue;
 
-  public WKBReader() {
+  WKBReader() {
     this(new GeometryFactory());
   }
 
-  public WKBReader(GeometryFactory geometryFactory) {
+  WKBReader(GeometryFactory geometryFactory) {
     this.factory = geometryFactory;
     precisionModel = factory.getPrecisionModel();
     csFactory = factory.getCoordinateSequenceFactory();
@@ -151,7 +151,7 @@ public class WKBReader
    * @return the geometry read
    * @throws ParseException if the WKB is ill-formed
    */
-  public Geometry read(byte[] bytes) throws ParseException
+  Geometry read(byte[] bytes) throws ParseException
   {  
     // possibly reuse the ByteArrayInStream?
     // don't throw IOExceptions, since we are not doing any I/O
@@ -171,7 +171,7 @@ public class WKBReader
    * @throws IOException if the underlying stream creates an error
    * @throws ParseException if the WKB is ill-formed
    */
-  public Geometry read(InStream is)
+  Geometry read(InStream is)
   throws IOException, ParseException
   {
     // can't tell size of InStream, but MAX_VALUE should be safe
@@ -238,15 +238,15 @@ public class WKBReader
     // handle 3D and 4D WKB geometries
     // geometries with Z coordinates have the 0x80 flag (postgis EWKB)
     // or are in the 1000 range (Z) or in the 3000 range (ZM) of geometry type (ISO/OGC 06-103r4)
-    boolean hasZ = ((typeInt & 0x80000000) != 0 || (typeInt & 0xffff)/1000 == 1 || (typeInt & 0xffff)/1000 == 3);
+    bool hasZ = ((typeInt & 0x80000000) != 0 || (typeInt & 0xffff)/1000 == 1 || (typeInt & 0xffff)/1000 == 3);
     // geometries with M coordinates have the 0x40 flag (postgis EWKB)
     // or are in the 1000 range (M) or in the 3000 range (ZM) of geometry type (ISO/OGC 06-103r4)
-    boolean hasM = ((typeInt & 0x40000000) != 0 || (typeInt & 0xffff)/1000 == 2 || (typeInt & 0xffff)/1000 == 3);
+    bool hasM = ((typeInt & 0x40000000) != 0 || (typeInt & 0xffff)/1000 == 2 || (typeInt & 0xffff)/1000 == 3);
     //System.out.println(typeInt + " - " + geometryType + " - hasZ:" + hasZ);
     inputDimension = 2 + (hasZ ? 1 : 0) + (hasM ? 1 : 0);
 
     // determine if SRIDs are present (EWKB only)
-    boolean hasSRID = (typeInt & 0x20000000) != 0;
+    bool hasSRID = (typeInt & 0x20000000) != 0;
     if (hasSRID) {
       SRID = dis.readInt();
     }

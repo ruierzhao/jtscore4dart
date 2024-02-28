@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,29 +78,29 @@ import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
  *
  * @version 1.7
  */
-public class BufferOp
+class BufferOp
 {
   /**
    * Specifies a round line buffer end cap style.
    * @deprecated use BufferParameters
    */
-  public static final int CAP_ROUND = BufferParameters.CAP_ROUND;
+  static final int CAP_ROUND = BufferParameters.CAP_ROUND;
   /**
    * Specifies a butt (or flat) line buffer end cap style.
    * @deprecated use BufferParameters
    */
-  public static final int CAP_BUTT = BufferParameters.CAP_FLAT;
+  static final int CAP_BUTT = BufferParameters.CAP_FLAT;
   
   /**
    * Specifies a butt (or flat) line buffer end cap style.
    * @deprecated use BufferParameters
    */
-  public static final int CAP_FLAT = BufferParameters.CAP_FLAT;
+  static final int CAP_FLAT = BufferParameters.CAP_FLAT;
   /**
    * Specifies a square line buffer end cap style.
    * @deprecated use BufferParameters
    */
-  public static final int CAP_SQUARE = BufferParameters.CAP_SQUARE;
+  static final int CAP_SQUARE = BufferParameters.CAP_SQUARE;
   
   /**
    * A number of digits of precision which leaves some computational "headroom"
@@ -133,10 +133,10 @@ public class BufferOp
   {
     Envelope env = g.getEnvelopeInternal();
     double envMax = MathUtil.max(
-        Math.abs(env.getMaxX()), 
-            Math.abs(env.getMaxY()), 
-                Math.abs(env.getMinX()), 
-                    Math.abs(env.getMinY())
+        (env.getMaxX().abs()), 
+            (env.getMaxY().abs()), 
+                (env.getMinX().abs()), 
+                    (env.getMinY().abs())
             );
     
     double expandByDistance = distance > 0.0 ? distance : 0.0;
@@ -176,7 +176,7 @@ public class BufferOp
    * @param distance the buffer distance
    * @return the buffer of the input geometry
    */
-  public static Geometry bufferOp(Geometry g, double distance)
+  static Geometry bufferOp(Geometry g, double distance)
   {
     BufferOp gBuf = new BufferOp(g);
     Geometry geomBuf = gBuf.getResultGeometry(distance);
@@ -195,7 +195,7 @@ public class BufferOp
    * @return the buffer of the input geometry
    *
    */
-  public static Geometry bufferOp(Geometry g, double distance, BufferParameters params)
+  static Geometry bufferOp(Geometry g, double distance, BufferParameters params)
   {
     BufferOp bufOp = new BufferOp(g, params);
     Geometry geomBuf = bufOp.getResultGeometry(distance);
@@ -212,7 +212,7 @@ public class BufferOp
    * @return the buffer of the input geometry
    *
    */
-  public static Geometry bufferOp(Geometry g, double distance, int quadrantSegments)
+  static Geometry bufferOp(Geometry g, double distance, int quadrantSegments)
   {
     BufferOp bufOp = new BufferOp(g);
     bufOp.setQuadrantSegments(quadrantSegments);
@@ -231,7 +231,7 @@ public class BufferOp
    * @return the buffer of the input geometry
    *
    */
-  public static Geometry bufferOp(Geometry g,
+  static Geometry bufferOp(Geometry g,
                                   double distance,
     int quadrantSegments,
     int endCapStyle)
@@ -260,7 +260,7 @@ public class BufferOp
    * @param isBothOrientations true if both orientations of input rings should be used
    * @return the buffered polygonal geometry
    */
-  public static Geometry bufferByZero(Geometry geom, boolean isBothOrientations) {
+  static Geometry bufferByZero(Geometry geom, bool isBothOrientations) {
     //--- compute buffer using maximum signed-area orientation
     Geometry buf0 = geom.buffer(0);
     if (! isBothOrientations) return buf0;
@@ -308,14 +308,14 @@ public class BufferOp
 
   private Geometry resultGeometry = null;
   private RuntimeException saveException;   // debugging only
-  private boolean isInvertOrientation = false;
+  private bool isInvertOrientation = false;
 
   /**
    * Initializes a buffer computation for the given geometry
    *
    * @param g the geometry to buffer
    */
-  public BufferOp(Geometry g) {
+  BufferOp(Geometry g) {
     argGeom = g;
   }
 
@@ -326,7 +326,7 @@ public class BufferOp
    * @param g the geometry to buffer
    * @param bufParams the buffer parameters to use
    */
-  public BufferOp(Geometry g, BufferParameters bufParams) {
+  BufferOp(Geometry g, BufferParameters bufParams) {
     argGeom = g;
     this.bufParams = bufParams;
   }
@@ -338,7 +338,7 @@ public class BufferOp
    *
    * @param endCapStyle the end cap style to specify
    */
-  public void setEndCapStyle(int endCapStyle)
+  void setEndCapStyle(int endCapStyle)
   {
     bufParams.setEndCapStyle(endCapStyle);
   }
@@ -349,7 +349,7 @@ public class BufferOp
    *
    * @param quadrantSegments the number of segments in a fillet for a quadrant
    */
-  public void setQuadrantSegments(int quadrantSegments)
+  void setQuadrantSegments(int quadrantSegments)
   {
     bufParams.setQuadrantSegments(quadrantSegments);
   }
@@ -360,7 +360,7 @@ public class BufferOp
    * @param distance the buffer distance
    * @return the buffer of the input geometry
    */
-  public Geometry getResultGeometry(double distance)
+  Geometry getResultGeometry(double distance)
   {
     this.distance = distance;
     computeGeometry();

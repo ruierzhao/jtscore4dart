@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * Models an OGC SFS <code>LinearRing</code>.
@@ -22,20 +22,20 @@ package org.locationtech.jts.geom;
  * A ring must have either 0 or 3 or more points.
  * The first and last points must be equal (in 2D).
  * If these conditions are not met, the constructors throw
- * an {@link IllegalArgumentException}.
+ * an {@link ArgumentError}.
  * A ring with 3 points is invalid, because it is collapsed
  * and thus has a self-intersection.  It is allowed to be constructed
  * so that it can be represented, and repaired if needed.
  *
  * @version 1.7
  */
-public class LinearRing extends LineString
+class LinearRing extends LineString
 {
   /**
    * The minimum number of vertices allowed in a valid non-empty ring.
    * Empty rings with 0 vertices are also valid.
    */
-  public static final int MINIMUM_VALID_SIZE = 3;
+  static final int MINIMUM_VALID_SIZE = 3;
 
   private static final long serialVersionUID = -4261142084085851829L;
 
@@ -50,11 +50,11 @@ public class LinearRing extends LineString
    *      for this <code>LinearRing</code>
    *@param  SRID            the ID of the Spatial Reference System used by this
    *      <code>LinearRing</code>
-   * @throws IllegalArgumentException if the ring is not closed, or has too few points
+   * @throws ArgumentError if the ring is not closed, or has too few points
    *
    * @deprecated Use GeometryFactory instead
    */
-  public LinearRing(Coordinate points[], PrecisionModel precisionModel,
+  LinearRing(Coordinate points[], PrecisionModel precisionModel,
                     int SRID) {
     this(points, new GeometryFactory(precisionModel, SRID));
     validateConstruction();
@@ -64,7 +64,7 @@ public class LinearRing extends LineString
    * This method is ONLY used to avoid deprecation warnings.
    * @param points
    * @param factory
-   * @throws IllegalArgumentException if the ring is not closed, or has too few points
+   * @throws ArgumentError if the ring is not closed, or has too few points
    */
   private LinearRing(Coordinate points[], GeometryFactory factory) {
     this(factory.getCoordinateSequenceFactory().create(points), factory);
@@ -78,20 +78,20 @@ public class LinearRing extends LineString
    *@param  points  a sequence points forming a closed and simple linestring, or
    *      <code>null</code> to create the empty geometry.
    *
-   * @throws IllegalArgumentException if the ring is not closed, or has too few points
+   * @throws ArgumentError if the ring is not closed, or has too few points
    *
    */
-  public LinearRing(CoordinateSequence points, GeometryFactory factory) {
+  LinearRing(CoordinateSequence points, GeometryFactory factory) {
     super(points, factory);
     validateConstruction();
   }
 
   private void validateConstruction() {
     if (!isEmpty() && ! super.isClosed()) {
-      throw new IllegalArgumentException("Points of LinearRing do not form a closed linestring");
+      throw new ArgumentError("Points of LinearRing do not form a closed linestring");
     }
     if (getCoordinateSequence().size() >= 1 && getCoordinateSequence().size() < MINIMUM_VALID_SIZE) {
-      throw new IllegalArgumentException("Invalid number of points in LinearRing (found "
+      throw new ArgumentError("Invalid number of points in LinearRing (found "
       		+ getCoordinateSequence().size() + " - must be 0 or >= " + MINIMUM_VALID_SIZE + ")");
     }
   }
@@ -102,7 +102,7 @@ public class LinearRing extends LineString
    *
    * @return Dimension.FALSE
    */
-  public int getBoundaryDimension() {
+  int getBoundaryDimension() {
     return Dimension.FALSE;
   }
 
@@ -112,7 +112,7 @@ public class LinearRing extends LineString
    *
    * @return true if this ring is closed
    */
-  public boolean isClosed() {
+  bool isClosed() {
     if (isEmpty()) {
     	// empty LinearRings are closed by definition
       return true;
@@ -121,7 +121,7 @@ public class LinearRing extends LineString
   }
 
 
-  public String getGeometryType() {
+  String getGeometryType() {
     return Geometry.TYPENAME_LINEARRING;
   }
   
@@ -133,12 +133,12 @@ public class LinearRing extends LineString
     return new LinearRing(points.copy(), factory);
   }
 
-  public LinearRing reverse()
+  LinearRing reverse()
   {
     return (LinearRing) super.reverse();
   }
 
-  public LinearRing reverseInternal() {
+  LinearRing reverseInternal() {
     CoordinateSequence seq = points.copy();
     CoordinateSequences.reverse(seq);
     return getFactory().createLinearRing(seq);

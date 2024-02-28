@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.polygonize;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.planargraph.DirectedEdge;
@@ -41,8 +41,8 @@ class PolygonizeDirectedEdge
    *                  whether this DirectedEdge's direction is the same as or
    *                  opposite to that of the parent Edge (if any)
    */
-  public PolygonizeDirectedEdge(Node from, Node to, Coordinate directionPt,
-      boolean edgeDirection)
+  PolygonizeDirectedEdge(Node from, Node to, Coordinate directionPt,
+      bool edgeDirection)
   {
     super(from, to, directionPt, edgeDirection);
   }
@@ -50,32 +50,32 @@ class PolygonizeDirectedEdge
   /**
    * Returns the identifier attached to this directed edge.
    */
-  public long getLabel() { return label; }
+  long getLabel() { return label; }
   /**
    * Attaches an identifier to this directed edge.
    */
-  public void setLabel(long label) { this.label = label; }
+  void setLabel(long label) { this.label = label; }
   /**
    * Returns the next directed edge in the EdgeRing that this directed edge is a member
    * of.
    */
-  public PolygonizeDirectedEdge getNext()  {    return next;  }
+  PolygonizeDirectedEdge getNext()  {    return next;  }
   /**
    * Sets the next directed edge in the EdgeRing that this directed edge is a member
    * of.
    */
-  public void setNext(PolygonizeDirectedEdge next)  {   this.next = next;  }
+  void setNext(PolygonizeDirectedEdge next)  {   this.next = next;  }
   /**
    * Returns the ring of directed edges that this directed edge is
    * a member of, or null if the ring has not been set.
    * @see #setRing(EdgeRing)
    */
-  public boolean isInRing() { return edgeRing != null; }
+  bool isInRing() { return edgeRing != null; }
   /**
    * Sets the ring of directed edges that this directed edge is
    * a member of.
    */
-  public void setRing(EdgeRing edgeRing)
+  void setRing(EdgeRing edgeRing)
   {
       this.edgeRing = edgeRing;
   }
@@ -84,7 +84,7 @@ class PolygonizeDirectedEdge
    * 
    * @return an edge ring
    */
-  public EdgeRing getRing() 
+  EdgeRing getRing() 
   {
     return this.edgeRing;
   }

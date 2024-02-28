@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.geom.Coordinate;
@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.Coordinate;
  * @author Martin Davis
  * 
  */
-public class AffineTransformationFactory {
+class AffineTransformationFactory {
 	/**
 	 * Creates a transformation from a set of three control vectors. A control
 	 * vector consists of a source point and a destination point, which is the
@@ -37,7 +37,7 @@ public class AffineTransformationFactory {
 	 * @param dest2
 	 * @return the computed transformation
 	 */
-	public static AffineTransformation createFromControlVectors(Coordinate src0,
+	static AffineTransformation createFromControlVectors(Coordinate src0,
 			Coordinate src1, Coordinate src2, Coordinate dest0, Coordinate dest1,
 			Coordinate dest2) {
 		AffineTransformationBuilder builder = new AffineTransformationBuilder(src0,
@@ -59,7 +59,7 @@ public class AffineTransformationFactory {
 	 * @param dest1
 	 * @return the computed transformation, or null if the control vectors do not determine a well-defined transformation
 	 */
-	public static AffineTransformation createFromControlVectors(Coordinate src0,
+	static AffineTransformation createFromControlVectors(Coordinate src0,
 			Coordinate src1, Coordinate dest0, Coordinate dest1) {
 		Coordinate rotPt = new Coordinate(dest1.x - dest0.x, dest1.y - dest0.y);
 
@@ -93,7 +93,7 @@ public class AffineTransformationFactory {
 	 *          the end point of the control vector
 	 * @return the computed transformation
 	 */
-	public static AffineTransformation createFromControlVectors(Coordinate src0,
+	static AffineTransformation createFromControlVectors(Coordinate src0,
 			Coordinate dest0) {
 		double dx = dest0.x - src0.x;
 		double dy = dest0.y - src0.y;
@@ -109,19 +109,19 @@ public class AffineTransformationFactory {
 	 * @param dest
 	 *          the destination points of the vectors
 	 * @return the computed transformation
-	 * @throws IllegalArgumentException
+	 * @throws ArgumentError
 	 *           if the control vector arrays are too short, long or of different
 	 *           lengths
 	 */
-	public static AffineTransformation createFromControlVectors(Coordinate[] src,
-			Coordinate[] dest) {
+	static AffineTransformation createFromControlVectors(List<Coordinate> src,
+			List<Coordinate> dest) {
 		if (src.length != dest.length)
-			throw new IllegalArgumentException(
+			throw new ArgumentError(
 					"Src and Dest arrays are not the same length");
 		if (src.length <= 0)
-			throw new IllegalArgumentException("Too few control points");
+			throw new ArgumentError("Too few control points");
 		if (src.length > 3)
-			throw new IllegalArgumentException("Too many control points");
+			throw new ArgumentError("Too many control points");
 
 		if (src.length == 1)
 			return createFromControlVectors(src[0], dest[0]);
@@ -149,7 +149,7 @@ public class AffineTransformationFactory {
 	 * @param dest1 the end point of the destination baseline
 	 * @return the computed transformation
 	 */
-	public static AffineTransformation createFromBaseLines(
+	static AffineTransformation createFromBaseLines(
 			Coordinate src0, Coordinate src1, 
 			Coordinate dest0, Coordinate dest1) 
 	{

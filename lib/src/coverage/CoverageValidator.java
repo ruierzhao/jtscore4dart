@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import java.util.List;
 
@@ -50,14 +50,14 @@ import org.locationtech.jts.index.strtree.STRtree;
  * @author Martin Davis
  *
  */
-public class CoverageValidator {
+class CoverageValidator {
   /**
    * Tests whether a polygonal coverage is valid.
    * 
    * @param coverage an array of polygons forming a coverage
    * @return true if the coverage is valid
    */
-  public static boolean isValid(Geometry[] coverage) {
+  static bool isValid(Geometry[] coverage) {
     CoverageValidator v = new CoverageValidator(coverage);
     return ! hasInvalidResult(v.validate());     
   }
@@ -69,7 +69,7 @@ public class CoverageValidator {
    * @param validateResult an array produced by a polygonal coverage validation
    * @return true if the result has at least one invalid indicator
    */
-  public static boolean hasInvalidResult(Geometry[] validateResult) {
+  static bool hasInvalidResult(Geometry[] validateResult) {
     for (Geometry geom : validateResult) {
       if (geom != null)
         return true;
@@ -84,7 +84,7 @@ public class CoverageValidator {
    * @param coverage an array of polygons forming a coverage
    * @return an array of linear geometries indicating coverage errors, or nulls
    */
-  public static Geometry[] validate(Geometry[] coverage) {
+  static Geometry[] validate(Geometry[] coverage) {
     CoverageValidator v = new CoverageValidator(coverage);
     return v.validate();
   }
@@ -99,7 +99,7 @@ public class CoverageValidator {
    * @param gapWidth the maximum width of invalid gaps
    * @return an array of linear geometries indicating coverage errors, or nulls
    */
-  public static Geometry[] validate(Geometry coverage[], double gapWidth) {
+  static Geometry[] validate(Geometry coverage[], double gapWidth) {
     CoverageValidator v = new CoverageValidator(coverage);
     v.setGapWidth(gapWidth);
     return v.validate();
@@ -113,7 +113,7 @@ public class CoverageValidator {
    * 
    * @param coverage a array of polygons representing a polygonal coverage
    */
-  public CoverageValidator(Geometry[] coverage) {
+  CoverageValidator(Geometry[] coverage) {
     this.coverage = coverage;
   }
   
@@ -122,7 +122,7 @@ public class CoverageValidator {
    * 
    * @param gapWidth the maximum width of gaps to detect
    */
-  public void setGapWidth(double gapWidth) {
+  void setGapWidth(double gapWidth) {
     this.gapWidth = gapWidth;
   }
   
@@ -136,7 +136,7 @@ public class CoverageValidator {
    * 
    * @return an array of nulls or linear geometries
    */
-  public Geometry[] validate() {
+  Geometry[] validate() {
     STRtree index = new STRtree();
     for (Geometry geom : coverage) {
       index.insert(geom.getEnvelopeInternal(), geom);

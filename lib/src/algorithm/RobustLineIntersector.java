@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 /**
  *@version 1.7
@@ -22,14 +22,14 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @version 1.7
  */
-public class RobustLineIntersector
+class RobustLineIntersector
     extends LineIntersector
 {
 
-  public RobustLineIntersector() {
+  RobustLineIntersector() {
   }
 
-  public void computeIntersection(Coordinate p, Coordinate p1, Coordinate p2) {
+  void computeIntersection(Coordinate p, Coordinate p1, Coordinate p2) {
     isProper = false;
     // do between check first, since it is faster than the orientation test
     if (Envelope.intersects(p1, p2, p)) {
@@ -74,7 +74,7 @@ public class RobustLineIntersector
     /**
      * Intersection is collinear if each endpoint lies on the other line.
      */
-    boolean collinear = Pq1 == 0
+    bool collinear = Pq1 == 0
          && Pq2 == 0
          && Qp1 == 0
          && Qp2 == 0;
@@ -163,10 +163,10 @@ public class RobustLineIntersector
 
   private int computeCollinearIntersection(Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2) {
-    boolean q1inP = Envelope.intersects(p1, p2, q1);
-    boolean q2inP = Envelope.intersects(p1, p2, q2);
-    boolean p1inQ = Envelope.intersects(q1, q2, p1);
-    boolean p2inQ = Envelope.intersects(q1, q2, p2);
+    bool q1inP = Envelope.intersects(p1, p2, q1);
+    bool q2inP = Envelope.intersects(p1, p2, q2);
+    bool p1inQ = Envelope.intersects(q1, q2, p1);
+    bool p2inQ = Envelope.intersects(q1, q2, p2);
 
     if (q1inP && q2inP) {
       intPt[0] = copyWithZInterpolate(q1, p1, p2);
@@ -252,7 +252,7 @@ public class RobustLineIntersector
       Coordinate q2, Coordinate intPt)
   {
     Coordinate intPtDD = CGAlgorithmsDD.intersection(p1, p2, q1, q2);
-    boolean isIn = isInSegmentEnvelopes(intPtDD);
+    bool isIn = isInSegmentEnvelopes(intPtDD);
     Debug.println(   "DD in env = " + isIn + "  --------------------- " + intPtDD);
     if (intPt.distance(intPtDD) > 0.0001) {
       Debug.println("Distance = " + intPt.distance(intPtDD));
@@ -290,7 +290,7 @@ public class RobustLineIntersector
    *
    * @return <code>true</code> if the input point lies within both input segment envelopes
    */
-  private boolean isInSegmentEnvelopes(Coordinate intPt)
+  private bool isInSegmentEnvelopes(Coordinate intPt)
   {
     Envelope env0 = new Envelope(inputLines[0][0], inputLines[0][1]);
     Envelope env1 = new Envelope(inputLines[1][0], inputLines[1][1]);

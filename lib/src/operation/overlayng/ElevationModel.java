@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -54,7 +54,7 @@ class ElevationModel {
    * @param geom2 an input geometry, or null
    * @return the elevation model computed from the geometries
    */
-  public static ElevationModel create(Geometry geom1, Geometry geom2) {
+  static ElevationModel create(Geometry geom1, Geometry geom2) {
     Envelope extent = geom1.getEnvelopeInternal().copy();
     if (geom2 != null) {
       extent.expandToInclude(geom2.getEnvelopeInternal());
@@ -71,8 +71,8 @@ class ElevationModel {
   private double cellSizeX;
   private double cellSizeY;
   private ElevationCell[][] cells;
-  private boolean isInitialized = false;
-  private boolean hasZValue = false;
+  private bool isInitialized = false;
+  private bool hasZValue = false;
   private double averageZ = Double.NaN;
 
   /**
@@ -82,7 +82,7 @@ class ElevationModel {
    * @param numCellX the number of grid cells in the X dimension
    * @param numCellY the number of grid cells in the Y dimension
    */
-  public ElevationModel(Envelope extent, int numCellX, int numCellY) {
+  ElevationModel(Envelope extent, int numCellX, int numCellY) {
     this.extent = extent;
     this.numCellX = numCellX;
     this.numCellY = numCellY;
@@ -103,13 +103,13 @@ class ElevationModel {
    * 
    * @param geom the geometry to scan for Z values
    */
-  public void add(Geometry geom) {
+  void add(Geometry geom) {
     geom.apply(new CoordinateSequenceFilter() {
 
-      private boolean hasZ = true;
+      private bool hasZ = true;
 
       @Override
-      public void filter(CoordinateSequence seq, int i) {
+      void filter(CoordinateSequence seq, int i) {
         if (! seq.hasZ()) {
           hasZ = false;;
           return;
@@ -121,13 +121,13 @@ class ElevationModel {
       }
 
       @Override
-      public boolean isDone() {
+      bool isDone() {
         // no need to scan if no Z present
         return ! hasZ;
       }
 
       @Override
-      public boolean isGeometryChanged() {
+      bool isGeometryChanged() {
         return false;
       }
       
@@ -174,7 +174,7 @@ class ElevationModel {
    * @param y the y ordinate of the location
    * @return the computed model Z value
    */
-  public double getZ(double x, double y) {
+  double getZ(double x, double y) {
     if (! isInitialized) 
       init();
     ElevationCell cell = getCell(x, y, false);
@@ -191,7 +191,7 @@ class ElevationModel {
    * 
    * @param geom the geometry to populate Z values for
    */
-  public void populateZ(Geometry geom) {
+  void populateZ(Geometry geom) {
     // short-circuit if no Zs are present in model
     if (! hasZValue)
       return;
@@ -201,10 +201,10 @@ class ElevationModel {
     
     geom.apply(new CoordinateSequenceFilter() {
 
-      private boolean isDone = false;
+      private bool isDone = false;
 
       @Override
-      public void filter(CoordinateSequence seq, int i) {
+      void filter(CoordinateSequence seq, int i) {
         if (!seq.hasZ()) {
           // if no Z then short-circuit evaluation
           isDone = true;
@@ -219,12 +219,12 @@ class ElevationModel {
       }
 
       @Override
-      public boolean isDone() {
+      bool isDone() {
         return isDone;
       }
 
       @Override
-      public boolean isGeometryChanged() {
+      bool isGeometryChanged() {
         // geometry extent is not changed
         return false;
       }
@@ -232,7 +232,7 @@ class ElevationModel {
     });
   }
   
-  private ElevationCell getCell(double x, double y, boolean isCreateIfMissing) {
+  private ElevationCell getCell(double x, double y, bool isCreateIfMissing) {
     int ix = 0;
     if (numCellX > 1) {
       ix = (int) ((x - extent.getMinX()) / cellSizeX);
@@ -257,18 +257,18 @@ class ElevationModel {
     private double sumZ = 0.0;
     private double avgZ;
 
-    public void add(double z) {
+    void add(double z) {
       numZ++;
       sumZ += z;
     }
     
-    public void compute() {
+    void compute() {
       avgZ = Double.NaN;
       if (numZ > 0) 
         avgZ = sumZ / numZ;
     }
     
-    public double getZ() {
+    double getZ() {
       return avgZ;
     }
   }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 import java.awt.Color;
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Martin Davis
  *
  */
-public class TestBuilderProxy {
+class TestBuilderProxy {
   
   private static final String CLASS_FUNCTIONS_UTIL = "org.locationtech.jtstest.function.FunctionsUtil";
   private static Class<?> tbClass;
@@ -56,7 +56,7 @@ public class TestBuilderProxy {
    * 
    * @return true if the proxy is active
    */
-  public static boolean isActive() {
+  static bool isActive() {
     init();
     return tbClass != null;
   }
@@ -69,7 +69,7 @@ public class TestBuilderProxy {
    * 
    * @param geom the geometry to display
    */
-  public static void showIndicator(Geometry geom) {
+  static void showIndicator(Geometry geom) {
     init();
     if (methodShowIndicator == null) return;
     
@@ -89,7 +89,7 @@ public class TestBuilderProxy {
    * 
    * @param geom the geometry to display
    */
-  public static void showIndicator(Geometry geom, Color lineClr) {
+  static void showIndicator(Geometry geom, Color lineClr) {
     init();
     if (methodShowIndicatorLine == null) return;
     

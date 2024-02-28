@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ import org.locationtech.jts.geom.Polygon;
  * @author Martin Davis
  * @version 1.0
  */
-public class QuadEdgeTriangle 
+class QuadEdgeTriangle 
 {
 	/**
 	 * Creates {@link QuadEdgeTriangle}s for all facets of a 
@@ -54,7 +54,7 @@ public class QuadEdgeTriangle
 	 * 				the QuadEdgeSubdivision to create the triangles on.
 	 * @return a List of the created QuadEdgeTriangles
 	 */
-	public static List createOn(QuadEdgeSubdivision subdiv)
+	static List createOn(QuadEdgeSubdivision subdiv)
 	{
 		QuadEdgeTriangleBuilderVisitor visitor = new QuadEdgeTriangleBuilderVisitor();
 		subdiv.visitTriangles(visitor, false);
@@ -71,8 +71,8 @@ public class QuadEdgeTriangle
 	 *          the point to test
 	 * @return true if the point is contained in the triangle
 	 */
-	public static boolean contains(Vertex[] tri, Coordinate pt) {
-		Coordinate[] ring = new Coordinate[] { tri[0].getCoordinate(),
+	static bool contains(Vertex[] tri, Coordinate pt) {
+		List<Coordinate> ring = new List<Coordinate> { tri[0].getCoordinate(),
 				tri[1].getCoordinate(), tri[2].getCoordinate(), tri[0].getCoordinate() };
 		return PointLocation.isInRing(pt, ring);
 	}
@@ -87,15 +87,15 @@ public class QuadEdgeTriangle
 	 *          the point to test
 	 * @return true if the point is contained in the triangle
 	 */
-	public static boolean contains(QuadEdge[] tri, Coordinate pt) {
-		Coordinate[] ring = new Coordinate[] { tri[0].orig().getCoordinate(),
+	static bool contains(QuadEdge[] tri, Coordinate pt) {
+		List<Coordinate> ring = new List<Coordinate> { tri[0].orig().getCoordinate(),
 				tri[1].orig().getCoordinate(), tri[2].orig().getCoordinate(),
 				tri[0].orig().getCoordinate() };
 		return PointLocation.isInRing(pt, ring);
 	}
 
-	public static Geometry toPolygon(Vertex[] v) {
-		Coordinate[] ringPts = new Coordinate[] { v[0].getCoordinate(),
+	static Geometry toPolygon(Vertex[] v) {
+		List<Coordinate> ringPts = new List<Coordinate> { v[0].getCoordinate(),
 				v[1].getCoordinate(), v[2].getCoordinate(), v[0].getCoordinate() };
 		GeometryFactory fact = new GeometryFactory();
 		LinearRing ring = fact.createLinearRing(ringPts);
@@ -103,8 +103,8 @@ public class QuadEdgeTriangle
 		return tri;
 	}
 
-	public static Geometry toPolygon(QuadEdge[] e) {
-		Coordinate[] ringPts = new Coordinate[] { e[0].orig().getCoordinate(),
+	static Geometry toPolygon(QuadEdge[] e) {
+		List<Coordinate> ringPts = new List<Coordinate> { e[0].orig().getCoordinate(),
 				e[1].orig().getCoordinate(), e[2].orig().getCoordinate(),
 				e[0].orig().getCoordinate() };
 		GeometryFactory fact = new GeometryFactory();
@@ -120,7 +120,7 @@ public class QuadEdgeTriangle
 	 * @param index
 	 * @return the next index
 	 */
-	public static int nextIndex(int index) {
+	static int nextIndex(int index) {
 		return index = (index + 1) % 3;
 	}
 
@@ -132,7 +132,7 @@ public class QuadEdgeTriangle
 	 * 
 	 * @param edge an array of the edges of the triangle in CCW order
 	 */
-	public QuadEdgeTriangle(QuadEdge[] edge) {
+	QuadEdgeTriangle(QuadEdge[] edge) {
 		this.edge = (QuadEdge[]) Arrays.copyOf(edge, edge.length);
 		// link the quadedges back to this triangle
 		for (int i = 0; i < 3; i++) {
@@ -145,7 +145,7 @@ public class QuadEdgeTriangle
    * 
    * @param data an object containing external data
    */
-  public void setData(Object data) {
+  void setData(Object data) {
       this.data = data;
   }
   
@@ -154,27 +154,27 @@ public class QuadEdgeTriangle
    * 
    * @return the data object
    */
-  public Object getData() {
+  Object getData() {
       return data;
   }
 
-	public void kill() {
+	void kill() {
 		edge = null;
 	}
 
-	public boolean isLive() {
+	bool isLive() {
 		return edge != null;
 	}
 
-	public QuadEdge[] getEdges() {
+	QuadEdge[] getEdges() {
 		return edge;
 	}
 
-	public QuadEdge getEdge(int i) {
+	QuadEdge getEdge(int i) {
 		return edge[i];
 	}
 
-	public Vertex getVertex(int i) {
+	Vertex getVertex(int i) {
 		return edge[i].orig();
 	}
 
@@ -183,7 +183,7 @@ public class QuadEdgeTriangle
 	 * 
 	 * @return a new array containing the triangle vertices
 	 */
-	public Vertex[] getVertices() {
+	Vertex[] getVertices() {
 		Vertex[] vert = new Vertex[3];
 		for (int i = 0; i < 3; i++) {
 			vert[i] = getVertex(i);
@@ -191,7 +191,7 @@ public class QuadEdgeTriangle
 		return vert;
 	}
 
-	public Coordinate getCoordinate(int i) {
+	Coordinate getCoordinate(int i) {
 		return edge[i].orig().getCoordinate();
 	}
 
@@ -203,7 +203,7 @@ public class QuadEdgeTriangle
 	 * @return the index of the edge in this triangle
 	 * or -1 if the edge is not an edge of this triangle
 	 */
-	public int getEdgeIndex(QuadEdge e) {
+	int getEdgeIndex(QuadEdge e) {
 		for (int i = 0; i < 3; i++) {
 			if (edge[i] == e)
 				return i;
@@ -219,7 +219,7 @@ public class QuadEdgeTriangle
 	 * @return the index of the edge starting at the vertex
 	 * or -1 if the vertex is not in the triangle
 	 */
-	public int getEdgeIndex(Vertex v) {
+	int getEdgeIndex(Vertex v) {
 		for (int i = 0; i < 3; i++) {
 			if (edge[i].orig() == v)
 				return i;
@@ -227,14 +227,14 @@ public class QuadEdgeTriangle
 		return -1;
 	}
 
-	public void getEdgeSegment(int i, LineSegment seg) {
+	void getEdgeSegment(int i, LineSegment seg) {
 		seg.p0 = edge[i].orig().getCoordinate();
 		int nexti = (i + 1) % 3;
 		seg.p1 = edge[nexti].orig().getCoordinate();
 	}
 
-	public Coordinate[] getCoordinates() {
-		Coordinate[] pts = new Coordinate[4];
+	List<Coordinate> getCoordinates() {
+		List<Coordinate> pts = new Coordinate[4];
 		for (int i = 0; i < 3; i++) {
 			pts[i] = edge[i].orig().getCoordinate();
 		}
@@ -242,18 +242,18 @@ public class QuadEdgeTriangle
 		return pts;
 	}
 
-	public boolean contains(Coordinate pt) {
-		Coordinate[] ring = getCoordinates();
+	bool contains(Coordinate pt) {
+		List<Coordinate> ring = getCoordinates();
 		return PointLocation.isInRing(pt, ring);
 	}
 
-	public Polygon getGeometry(GeometryFactory fact) {
+	Polygon getGeometry(GeometryFactory fact) {
 		LinearRing ring = fact.createLinearRing(getCoordinates());
 		Polygon tri = fact.createPolygon(ring);
 		return tri;
 	}
 
-	public String toString() {
+	String toString() {
 		return getGeometry(new GeometryFactory()).toString();
 	}
 
@@ -262,7 +262,7 @@ public class QuadEdgeTriangle
 	 * 
 	 * @return true if the triangle is adjacent to the subdivision exterior
 	 */
-	public boolean isBorder() {
+	bool isBorder() {
 		for (int i = 0; i < 3; i++) {
 			if (getAdjacentTriangleAcrossEdge(i) == null)
 				return true;
@@ -270,15 +270,15 @@ public class QuadEdgeTriangle
 		return false;
 	}
 
-	public boolean isBorder(int i) {
+	bool isBorder(int i) {
 		return getAdjacentTriangleAcrossEdge(i) == null;
 	}
 
-	public QuadEdgeTriangle getAdjacentTriangleAcrossEdge(int edgeIndex) {
+	QuadEdgeTriangle getAdjacentTriangleAcrossEdge(int edgeIndex) {
 		return (QuadEdgeTriangle) getEdge(edgeIndex).sym().getData();
 	}
 
-	public int getAdjacentTriangleEdgeIndex(int i) {
+	int getAdjacentTriangleEdgeIndex(int i) {
 		return getAdjacentTriangleAcrossEdge(i).getEdgeIndex(getEdge(i).sym());
 	}
 
@@ -289,7 +289,7 @@ public class QuadEdgeTriangle
 	 * @param vertexIndex the vertex to query
 	 * @return a list of the vertex-adjacent triangles
 	 */
-	public List getTrianglesAdjacentToVertex(int vertexIndex) {
+	List getTrianglesAdjacentToVertex(int vertexIndex) {
 		// Assert: isVertex
 		List adjTris = new ArrayList();
 
@@ -313,7 +313,7 @@ public class QuadEdgeTriangle
 	 * 
 	 * @return an array containing the 3 neighbours of this triangle
 	 */
-	public QuadEdgeTriangle[] getNeighbours() {
+	QuadEdgeTriangle[] getNeighbours() {
 		QuadEdgeTriangle[] neigh = new QuadEdgeTriangle[3];
 		for (int i = 0; i < 3; i++) {
 			neigh[i] = (QuadEdgeTriangle) getEdge(i).sym().getData();
@@ -324,14 +324,14 @@ public class QuadEdgeTriangle
 	private static class QuadEdgeTriangleBuilderVisitor implements TriangleVisitor {
 		private List triangles = new ArrayList();
 
-		public QuadEdgeTriangleBuilderVisitor() {
+		QuadEdgeTriangleBuilderVisitor() {
 		}
 
-		public void visit(QuadEdge[] edges) {
+		void visit(QuadEdge[] edges) {
 			triangles.add(new QuadEdgeTriangle(edges));
 		}
 
-		public List getTriangles() {
+		List getTriangles() {
 			return triangles;
 		}
 	}

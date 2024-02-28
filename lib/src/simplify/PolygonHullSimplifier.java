@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.simplify;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,7 @@ import org.locationtech.jts.math.MathUtil;
  * @author Martin Davis
  *
  */
-public class PolygonHullSimplifier {
+class PolygonHullSimplifier {
   
   /**
    * Computes a topology-preserving simplified hull of a polygonal geometry,
@@ -76,9 +76,9 @@ public class PolygonHullSimplifier {
    * @param vertexNumFraction the target fraction of number of input vertices in result
    * @return the hull geometry
    */
-  public static Geometry hull(Geometry geom, boolean isOuter, double vertexNumFraction) {
+  static Geometry hull(Geometry geom, bool isOuter, double vertexNumFraction) {
     PolygonHullSimplifier hull = new PolygonHullSimplifier(geom, isOuter);
-    hull.setVertexNumFraction( Math.abs(vertexNumFraction));
+    hull.setVertexNumFraction( (vertexNumFraction).abs());
     return hull.getResult();
   }
 
@@ -95,14 +95,14 @@ public class PolygonHullSimplifier {
    * @param areaDeltaRatio the target ratio of area difference to original area
    * @return the hull geometry
    */
-  public static Geometry hullByAreaDelta(Geometry geom, boolean isOuter, double areaDeltaRatio) {
+  static Geometry hullByAreaDelta(Geometry geom, bool isOuter, double areaDeltaRatio) {
     PolygonHullSimplifier hull = new PolygonHullSimplifier(geom, isOuter);
-    hull.setAreaDeltaRatio( Math.abs(areaDeltaRatio));
+    hull.setAreaDeltaRatio( (areaDeltaRatio).abs());
     return hull.getResult();
   }
   
   private Geometry inputGeom;
-  private boolean isOuter;
+  private bool isOuter;
   private double vertexNumFraction = -1;
   private double areaDeltaRatio = -1;
   private GeometryFactory geomFactory;
@@ -116,12 +116,12 @@ public class PolygonHullSimplifier {
    * @param inputGeom the polygonal geometry to process
    * @param isOuter indicates whether to compute an outer or inner hull
    */
-  public PolygonHullSimplifier(Geometry inputGeom, boolean isOuter) {
+  PolygonHullSimplifier(Geometry inputGeom, bool isOuter) {
     this.inputGeom = inputGeom; 
     this.geomFactory = inputGeom.getFactory();
     this.isOuter = isOuter;
     if (! (inputGeom instanceof Polygonal)) {
-      throw new IllegalArgumentException("Input geometry must be  polygonal");
+      throw new ArgumentError("Input geometry must be  polygonal");
     }
   }
 
@@ -132,7 +132,7 @@ public class PolygonHullSimplifier {
    * 
    * @param vertexNumFraction a fraction of the number of input vertices 
    */
-  public void setVertexNumFraction(double vertexNumFraction) {
+  void setVertexNumFraction(double vertexNumFraction) {
     double frac = MathUtil.clamp(vertexNumFraction, 0, 1);
     this.vertexNumFraction = frac; 
   }
@@ -143,7 +143,7 @@ public class PolygonHullSimplifier {
    * 
    * @param areaDeltaRatio a ratio of the change in area of the result
    */
-  public void setAreaDeltaRatio(double areaDeltaRatio) {
+  void setAreaDeltaRatio(double areaDeltaRatio) {
     this.areaDeltaRatio = areaDeltaRatio; 
   }
   
@@ -152,7 +152,7 @@ public class PolygonHullSimplifier {
    * 
    * @return the polygonal geometry for the hull
    */
-  public Geometry getResult() {
+  Geometry getResult() {
     //-- handle trivial parameter values
     if (vertexNumFraction == 1 || areaDeltaRatio == 0) {
       return inputGeom.copy();
@@ -166,7 +166,7 @@ public class PolygonHullSimplifier {
        * or hole hulls surrounding them; 
        * hole outer hulls could overlap contained shell hulls.
        */
-      boolean isOverlapPossible = isOuter && inputGeom.getNumGeometries() > 1;
+      bool isOverlapPossible = isOuter && inputGeom.getNumGeometries() > 1;
       if (isOverlapPossible) {
         return computeMultiPolygonAll((MultiPolygon) inputGeom);
       }
@@ -177,7 +177,7 @@ public class PolygonHullSimplifier {
     else if (inputGeom instanceof Polygon) {
       return computePolygon((Polygon) inputGeom);
     }
-    throw new IllegalArgumentException("Input geometry must be polygonal");
+    throw new ArgumentError("Input geometry must be polygonal");
   }
 
   /**
@@ -228,7 +228,7 @@ public class PolygonHullSimplifier {
      * For a single polygon overlaps are only possible for inner hulls
      * and where holes are present.
      */
-    boolean isOverlapPossible = ! isOuter && poly.getNumInteriorRing() > 0;
+    bool isOverlapPossible = ! isOuter && poly.getNumInteriorRing() > 0;
     if (isOverlapPossible) hullIndex = new RingHullIndex();
     List<RingHull> hulls = initPolygon(poly, hullIndex);
     Polygon hull = polygonHull(poly, hulls, hullIndex);
@@ -268,7 +268,7 @@ public class PolygonHullSimplifier {
     return area;
   }
 
-  private RingHull createRingHull(LinearRing ring, boolean isOuter, double areaTotal, RingHullIndex hullIndex) {
+  private RingHull createRingHull(LinearRing ring, bool isOuter, double areaTotal, RingHullIndex hullIndex) {
     RingHull ringHull = new RingHull(ring, isOuter);
     if (vertexNumFraction >= 0) {
       int targetVertexCount = (int) Math.ceil(vertexNumFraction * (ring.getNumPoints() - 1));

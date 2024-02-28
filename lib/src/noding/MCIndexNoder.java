@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +36,7 @@ import org.locationtech.jts.index.hprtree.HPRtree;
  *
  * @version 1.7
  */
-public class MCIndexNoder
+class MCIndexNoder
     extends SinglePassNoder
 {
   private List monoChains = new ArrayList();
@@ -47,11 +47,11 @@ public class MCIndexNoder
   private int nOverlaps = 0;
   private double overlapTolerance = 0;
 
-  public MCIndexNoder()
+  MCIndexNoder()
   {
   }
   
-  public MCIndexNoder(SegmentIntersector si)
+  MCIndexNoder(SegmentIntersector si)
   {
     super(si);
   }
@@ -63,22 +63,22 @@ public class MCIndexNoder
    * @param si the segment intersector
    * @param overlapTolerance the expansion distance for overlap tests
    */
-  public MCIndexNoder(SegmentIntersector si, double overlapTolerance)
+  MCIndexNoder(SegmentIntersector si, double overlapTolerance)
   {
     super(si);
     this.overlapTolerance = overlapTolerance;
   }
 
-  public List getMonotoneChains() { return monoChains; }
+  List getMonotoneChains() { return monoChains; }
 
-  public SpatialIndex getIndex() { return index; }
+  SpatialIndex getIndex() { return index; }
 
-  public Collection getNodedSubstrings()
+  Collection getNodedSubstrings()
   {
     return  NodedSegmentString.getNodedSubstrings(nodedSegStrings);
   }
 
-  public void computeNodes(Collection inputSegStrings)
+  void computeNodes(Collection inputSegStrings)
   {
     this.nodedSegStrings = inputSegStrings;
     for (Iterator i = inputSegStrings.iterator(); i.hasNext(); ) {
@@ -125,17 +125,17 @@ public class MCIndexNoder
     }
   }
 
-  public static class SegmentOverlapAction
+  static class SegmentOverlapAction
       extends MonotoneChainOverlapAction
   {
     private SegmentIntersector si = null;
 
-    public SegmentOverlapAction(SegmentIntersector si)
+    SegmentOverlapAction(SegmentIntersector si)
     {
       this.si = si;
     }
 
-    public void overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
+    void overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
     {
       SegmentString ss1 = (SegmentString) mc1.getContext();
       SegmentString ss2 = (SegmentString) mc2.getContext();

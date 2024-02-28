@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.TopologyException;
@@ -55,7 +55,7 @@ import org.locationtech.jts.noding.SegmentExtractingNoder;
  * @see SegmentExtractingNoder
  *
  */
-public class CoverageUnion 
+class CoverageUnion 
 {
   /**
    * Unions a valid polygonal coverage or linear network.
@@ -65,7 +65,7 @@ public class CoverageUnion
    * 
    * @throws TopologyException in some cases if the coverage is invalid
    */
-  public static Geometry union(Geometry coverage) {
+  static Geometry union(Geometry coverage) {
     Noder noder = new BoundaryChainNoder();
     //-- these are less performant
     //Noder noder = new SegmentExtractingNoder();

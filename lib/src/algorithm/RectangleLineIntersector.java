@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.Envelope;
  * @author Martin Davis
  *
  */
-public class RectangleLineIntersector
+class RectangleLineIntersector
 {
   // for intersection testing, don't need to set precision model
   private LineIntersector li = new RobustLineIntersector();
@@ -48,7 +48,7 @@ public class RectangleLineIntersector
    * 
    * @param rectEnv the query rectangle, specified as an Envelope
    */
-  public RectangleLineIntersector(Envelope rectEnv)
+  RectangleLineIntersector(Envelope rectEnv)
   {
     this.rectEnv = rectEnv;
     
@@ -71,7 +71,7 @@ public class RectangleLineIntersector
    * @param p1 the second endpoint of the segment
    * @return true if the rectangle intersects the segment
    */
-  public boolean intersects(Coordinate p0, Coordinate p1)
+  bool intersects(Coordinate p0, Coordinate p1)
   {
     // TODO: confirm that checking envelopes first is faster
 
@@ -107,7 +107,7 @@ public class RectangleLineIntersector
      * it is sufficient to simply test the Y ordinate.
      * "Upwards" means relative to the left end of the segment.
      */
-    boolean isSegUpwards = false;
+    bool isSegUpwards = false;
     if (p1.y > p0.y)
       isSegUpwards = true;
     

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,12 +38,12 @@ class SubgraphDepthLocater
   private Collection subgraphs;
   private LineSegment seg = new LineSegment();
 
-  public SubgraphDepthLocater(List subgraphs)
+  SubgraphDepthLocater(List subgraphs)
   {
     this.subgraphs = subgraphs;
   }
 
-  public int getDepth(Coordinate p)
+  int getDepth(Coordinate p)
   {
     List stabbedSegments = findStabbedSegments(p);
     // if no segments on stabbing line subgraph must be outside all others.
@@ -113,7 +113,7 @@ class SubgraphDepthLocater
                                    DirectedEdge dirEdge,
                                    List stabbedSegments)
   {
-    Coordinate[] pts = dirEdge.getEdge().getCoordinates();
+    List<Coordinate> pts = dirEdge.getEdge().getCoordinates();
     for (int i = 0; i < pts.length - 1; i++) {
       seg.p0 = pts[i];
       seg.p1 = pts[i + 1];
@@ -160,14 +160,14 @@ class SubgraphDepthLocater
     private LineSegment upwardSeg;
     private int leftDepth;
 
-    public DepthSegment(LineSegment seg, int depth)
+    DepthSegment(LineSegment seg, int depth)
     {
       // Assert: input seg is upward (p0.y <= p1.y)
       upwardSeg = new LineSegment(seg);
       this.leftDepth = depth;
     }
     
-    public boolean isUpward() {
+    bool isUpward() {
       return upwardSeg.p0.y <= upwardSeg.p1.y;
     }
     
@@ -185,7 +185,7 @@ class SubgraphDepthLocater
      * @param obj a DepthSegment
      * @return the comparison value
      */
-    public int compareTo(Object obj)
+    int compareTo(Object obj)
     {
       DepthSegment other = (DepthSegment) obj;
       
@@ -224,7 +224,7 @@ class SubgraphDepthLocater
       return 0;
     }
     
-    public int OLDcompareTo(Object obj)
+    int OLDcompareTo(Object obj)
     {
       DepthSegment other = (DepthSegment) obj;
       
@@ -251,7 +251,7 @@ class SubgraphDepthLocater
       return upwardSeg.compareTo(other.upwardSeg);
     }
 
-    public String toString()
+    String toString()
     {
       return upwardSeg.toString();
     }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ class PreparedPolygonIntersects extends PreparedPolygonPredicate {
    *          a test geometry
    * @return true if the polygon intersects the geometry
    */
-  public static boolean intersects(PreparedPolygon prep, Geometry geom) {
+  static bool intersects(PreparedPolygon prep, Geometry geom) {
     PreparedPolygonIntersects polyInt = new PreparedPolygonIntersects(prep);
     return polyInt.intersects(geom);
   }
@@ -47,7 +47,7 @@ class PreparedPolygonIntersects extends PreparedPolygonPredicate {
    * @param prepPoly
    *          the PreparedPolygon to evaluate
    */
-  public PreparedPolygonIntersects(PreparedPolygon prepPoly) {
+  PreparedPolygonIntersects(PreparedPolygon prepPoly) {
     super(prepPoly);
   }
 
@@ -58,14 +58,14 @@ class PreparedPolygonIntersects extends PreparedPolygonPredicate {
    *          the test geometry
    * @return true if the test geometry intersects
    */
-  public boolean intersects(Geometry geom) {
+  bool intersects(Geometry geom) {
     /**
      * Do point-in-poly tests first, since they are cheaper and may result in a
      * quick positive result.
      * 
      * If a point of any test components lie in target, result is true
      */
-    boolean isInPrepGeomArea = isAnyTestComponentInTarget(geom);
+    bool isInPrepGeomArea = isAnyTestComponentInTarget(geom);
     if (isInPrepGeomArea)
       return true;
     /**
@@ -81,7 +81,7 @@ class PreparedPolygonIntersects extends PreparedPolygonPredicate {
     // only request intersection finder if there are segments 
     // (i.e. NOT for point inputs)
     if (lineSegStr.size() > 0) {
-      boolean segsIntersect = prepPoly.getIntersectionFinder().intersects(
+      bool segsIntersect = prepPoly.getIntersectionFinder().intersects(
           lineSegStr);
       if (segsIntersect)
         return true;
@@ -94,7 +94,7 @@ class PreparedPolygonIntersects extends PreparedPolygonPredicate {
      */
     if (geom.getDimension() == 2) {
       // TODO: generalize this to handle GeometryCollections
-      boolean isPrepGeomInArea = isAnyTargetComponentInAreaTest(geom,
+      bool isPrepGeomInArea = isAnyTargetComponentInAreaTest(geom,
           prepPoly.getRepresentativePoints());
       if (isPrepGeomInArea)
         return true;

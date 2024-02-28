@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.quadtree;
+
 
 /**
  * Provides a test for whether an interval is
@@ -22,7 +22,7 @@ package org.locationtech.jts.index.quadtree;
  *
  * @version 1.7
  */
-public class IntervalSize {
+class IntervalSize {
 
   /**
    * This value is chosen to be a few powers of 2 less than the
@@ -30,7 +30,7 @@ public class IntervalSize {
    * This should allow enough extra precision for simple computations to be correct,
    * at least for comparison purposes.
    */
-  public static final int MIN_BINARY_EXPONENT = -50;
+  static final int MIN_BINARY_EXPONENT = -50;
 
   /**
    * Computes whether the interval [min, max] is effectively zero width.
@@ -38,12 +38,12 @@ public class IntervalSize {
    * location of the interval that the midpoint of the interval cannot be
    * represented precisely.
    */
-  public static boolean isZeroWidth(double min, double max)
+  static bool isZeroWidth(double min, double max)
   {
     double width = max - min;
     if (width == 0.0) return true;
 
-    double maxAbs = Math.max(Math.abs(min), Math.abs(max));
+    double maxAbs = Math.max((min).abs(), (max).abs());
     double scaledInterval = width / maxAbs;
     int level = DoubleBits.exponent(scaledInterval);
     return level <= MIN_BINARY_EXPONENT;

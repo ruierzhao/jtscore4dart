@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import static org.locationtech.jts.operation.overlayng.OverlayNG.UNION;
 
@@ -35,7 +35,7 @@ import org.locationtech.jts.operation.union.UnionStrategy;
  * @see OverlayNGRobust
  *
  */
-public class UnaryUnionNG {
+class UnaryUnionNG {
   
   /**
    * Unions a geometry (which is often a collection)
@@ -45,7 +45,7 @@ public class UnaryUnionNG {
    * @param pm the precision model to use
    * @return the union of the geometry
    */
-  public static Geometry union(Geometry geom, PrecisionModel pm) {
+  static Geometry union(Geometry geom, PrecisionModel pm) {
     UnaryUnionOp op = new UnaryUnionOp(geom);
     op.setUnionFunction( createUnionStrategy(pm) );
     return op.union();
@@ -59,7 +59,7 @@ public class UnaryUnionNG {
    * @param pm the precision model to use
    * @return the union of the geometries
    */
-  public static Geometry union(Collection<Geometry> geoms, PrecisionModel pm) {
+  static Geometry union(Collection<Geometry> geoms, PrecisionModel pm) {
     UnaryUnionOp op = new UnaryUnionOp(geoms);
     op.setUnionFunction( createUnionStrategy(pm) );
     return op.union();
@@ -74,7 +74,7 @@ public class UnaryUnionNG {
    * @param pm the precision model to use
    * @return the union of the geometries
    */
-  public static Geometry union(Collection<Geometry> geoms, GeometryFactory geomFact, PrecisionModel pm) {
+  static Geometry union(Collection<Geometry> geoms, GeometryFactory geomFact, PrecisionModel pm) {
     UnaryUnionOp op = new UnaryUnionOp(geoms, geomFact);
     op.setUnionFunction( createUnionStrategy(pm) );
     return op.union();
@@ -83,12 +83,12 @@ public class UnaryUnionNG {
   private static UnionStrategy createUnionStrategy(PrecisionModel pm) {
     UnionStrategy unionSRFun = new UnionStrategy() {
 
-      public Geometry union(Geometry g0, Geometry g1) {
+      Geometry union(Geometry g0, Geometry g1) {
         return OverlayNG.overlay(g0, g1, UNION, pm);
       }
 
       @Override
-      public boolean isFloatingPrecision() {
+      bool isFloatingPrecision() {
          return OverlayUtil.isFloating(pm);
       }
       

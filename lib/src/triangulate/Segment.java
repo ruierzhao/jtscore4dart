@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineSegment;
@@ -23,7 +23,7 @@ import org.locationtech.jts.geom.LineSegment;
  * @author David Skea
  * @author Martin Davis
  */
-public class Segment 
+class Segment 
 {
     private LineSegment ls;
     private Object data = null;
@@ -31,14 +31,14 @@ public class Segment
     /** 
      * Creates a new instance for the given ordinates.
      */
-    public Segment(double x1, double y1, double z1, double x2, double y2, double z2) {
+    Segment(double x1, double y1, double z1, double x2, double y2, double z2) {
       this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));
     }
 
     /** 
      * Creates a new instance for the given ordinates,  with associated external data. 
      */
-    public Segment(double x1, double y1, double z1, double x2, double y2, double z2, Object data) {
+    Segment(double x1, double y1, double z1, double x2, double y2, double z2, Object data) {
       this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data);
     }
 
@@ -49,7 +49,7 @@ public class Segment
      * @param p1 the end point
      * @param data an external data object
      */
-    public Segment(Coordinate p0, Coordinate p1, Object data) {
+    Segment(Coordinate p0, Coordinate p1, Object data) {
         ls = new LineSegment(p0, p1);
         this.data = data;
     }
@@ -60,7 +60,7 @@ public class Segment
      * @param p0 the start point
      * @param p1 the end point
      */
-    public Segment(Coordinate p0, Coordinate p1) {
+    Segment(Coordinate p0, Coordinate p1) {
         ls = new LineSegment(p0, p1);
     }
 
@@ -69,7 +69,7 @@ public class Segment
      * 
      * @return a Coordinate
      */
-    public Coordinate getStart() {
+    Coordinate getStart() {
         return ls.getCoordinate(0);
     }
 
@@ -78,7 +78,7 @@ public class Segment
      * 
      * @return a Coordinate
      */
-    public Coordinate getEnd() {
+    Coordinate getEnd() {
         return ls.getCoordinate(1);
     }
 
@@ -87,7 +87,7 @@ public class Segment
      * 
      * @return the X ordinate value
      */
-    public double getStartX() {
+    double getStartX() {
         Coordinate p = ls.getCoordinate(0);
         return p.x;
     }
@@ -97,7 +97,7 @@ public class Segment
      * 
      * @return the Y ordinate value
      */
-    public double getStartY() {
+    double getStartY() {
         Coordinate p = ls.getCoordinate(0);
         return p.y;
     }
@@ -107,7 +107,7 @@ public class Segment
      * 
      * @return the Z ordinate value
      */
-    public double getStartZ() {
+    double getStartZ() {
         Coordinate p = ls.getCoordinate(0);
         return p.getZ();
     }
@@ -117,7 +117,7 @@ public class Segment
      * 
      * @return the X ordinate value
      */
-    public double getEndX() {
+    double getEndX() {
         Coordinate p = ls.getCoordinate(1);
         return p.x;
     }
@@ -127,7 +127,7 @@ public class Segment
      * 
      * @return the Y ordinate value
      */
-    public double getEndY() {
+    double getEndY() {
         Coordinate p = ls.getCoordinate(1);
         return p.y;
     }
@@ -137,7 +137,7 @@ public class Segment
      * 
      * @return the Z ordinate value
      */
-    public double getEndZ() {
+    double getEndZ() {
         Coordinate p = ls.getCoordinate(1);
         return p.getZ();
     }
@@ -147,7 +147,7 @@ public class Segment
      * 
      * @return a LineSegment
      */
-    public LineSegment getLineSegment() {
+    LineSegment getLineSegment() {
         return ls;
     }
 
@@ -156,7 +156,7 @@ public class Segment
      * 
      * @return a data object
      */
-    public Object getData() {
+    Object getData() {
         return data;
     }
     
@@ -165,7 +165,7 @@ public class Segment
      * 
      * @param data a data object
      */
-    public void setData(Object data) {
+    void setData(Object data) {
         this.data = data;
     }
 
@@ -176,7 +176,7 @@ public class Segment
      * @param s a segment
      * @return true if the segments are topologically equal
      */
-    public boolean equalsTopo(Segment s) {
+    bool equalsTopo(Segment s) {
         return ls.equalsTopo(s.getLineSegment());
     }
 
@@ -186,7 +186,7 @@ public class Segment
      * @param s a segment
      * @return the intersection point, or <code>null</code> if there is none
      */
-    public Coordinate intersection(Segment s) {
+    Coordinate intersection(Segment s) {
         return ls.intersection(s.getLineSegment());
     }
 
@@ -195,7 +195,7 @@ public class Segment
      * 
      * @return a string
      */
-    public String toString() {
+    String toString() {
         return ls.toString();
     }
 }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import org.locationtech.jts.geom.util.GeometryEditor;
 import org.locationtech.jts.geom.util.GeometryTransformer;
@@ -45,7 +45,7 @@ import org.locationtech.jts.geom.util.GeometryTransformer;
  *@author Martin Davis
  *@version 1.7
  */
-public interface CoordinateSequenceFilter 
+interface CoordinateSequenceFilter 
 {
   /**
    * Performs an operation on a coordinate in a {@link CoordinateSequence}.
@@ -62,7 +62,7 @@ public interface CoordinateSequenceFilter
    * 
    * @return true if the application of this filter can be terminated.
    */
-  boolean isDone();
+  bool isDone();
   
   /**
    * Reports whether the execution of this filter
@@ -75,6 +75,6 @@ public interface CoordinateSequenceFilter
    * 
    * @return true if this filter has changed the coordinates of the geometry
    */
-  boolean isGeometryChanged();
+  bool isGeometryChanged();
 }
 

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineSegment;
@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.LineSegment;
  * 
  * @author Martin Davis
  */
-public class SplitSegment {
+class SplitSegment {
     /**
      * Computes the {@link Coordinate} that lies a given fraction along the line defined by the
      * reverse of the given segment. A fraction of <code>0.0</code> returns the end point of the
@@ -43,20 +43,20 @@ public class SplitSegment {
     private Coordinate  splitPt;
     private double      minimumLen = 0.0;
 
-    public SplitSegment(LineSegment seg) {
+    SplitSegment(LineSegment seg) {
         this.seg = seg;
         segLen = seg.getLength();
     }
 
-    public void setMinimumLength(double minLen) {
+    void setMinimumLength(double minLen) {
         minimumLen = minLen;
     }
 
-    public Coordinate getSplitPoint() {
+    Coordinate getSplitPoint() {
         return splitPt;
     }
 
-    public void splitAt(double length, Coordinate endPt) {
+    void splitAt(double length, Coordinate endPt) {
         double actualLen = getConstrainedLength(length);
         double frac = actualLen / segLen;
         if (endPt.equals2D(seg.p0))
@@ -65,7 +65,7 @@ public class SplitSegment {
             splitPt = pointAlongReverse(seg, frac);
     }
 
-    public void splitAt(Coordinate pt) {
+    void splitAt(Coordinate pt) {
         // check that given pt doesn't violate min length
         double minFrac = minimumLen / segLen;
         if (pt.distance(seg.p0) < minimumLen) {

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate;
+
 
 
 import org.locationtech.jts.geom.Coordinate;
@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.Coordinate;
  * 
  * @author mbdavis
  */
-public interface ConstraintSplitPointFinder {
+interface ConstraintSplitPointFinder {
     /**
      * Finds a point at which to split an encroached segment to allow the original segment to appear
      * as edges in a constrained Delaunay triangulation.

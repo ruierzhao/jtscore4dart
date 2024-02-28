@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import java.util.List;
 
@@ -30,14 +30,14 @@ import org.locationtech.jts.io.WKTWriter;
  */
 class CoverageEdge {
 
-  public static CoverageEdge createEdge(Coordinate[] ring) {
-    Coordinate[] pts = extractEdgePoints(ring, 0, ring.length - 1);
+  static CoverageEdge createEdge(List<Coordinate> ring) {
+    List<Coordinate> pts = extractEdgePoints(ring, 0, ring.length - 1);
     CoverageEdge edge = new CoverageEdge(pts, true);
     return edge;
   }
 
-  public static CoverageEdge createEdge(Coordinate[] ring, int start, int end) {
-    Coordinate[] pts = extractEdgePoints(ring, start, end);
+  static CoverageEdge createEdge(List<Coordinate> ring, int start, int end) {
+    List<Coordinate> pts = extractEdgePoints(ring, start, end);
     CoverageEdge edge = new CoverageEdge(pts, false);
     return edge;
   }
@@ -52,11 +52,11 @@ class CoverageEdge {
     return mls;
   }
   
-  private static Coordinate[] extractEdgePoints(Coordinate[] ring, int start, int end) {
+  private static List<Coordinate> extractEdgePoints(List<Coordinate> ring, int start, int end) {
     int size = start < end 
                   ? end - start + 1 
                   : ring.length - start + end;
-    Coordinate[] pts = new Coordinate[size];
+    List<Coordinate> pts = new Coordinate[size];
     int iring = start;
     for (int i = 0; i < size; i++) {
       pts[i] = ring[iring].copy();
@@ -74,7 +74,7 @@ class CoverageEdge {
    * @param ring a linear ring
    * @return a LineSegment representing the key
    */
-  public static LineSegment key(Coordinate[] ring) {
+  static LineSegment key(List<Coordinate> ring) {
    // find lowest vertex index
     int indexLow = 0;
     for (int i = 1; i < ring.length - 1; i++) {
@@ -97,11 +97,11 @@ class CoverageEdge {
    * @param end end index of the end of the section
    * @return a LineSegment representing the key
    */
-  public static LineSegment key(Coordinate[] ring, int start, int end) {
+  static LineSegment key(List<Coordinate> ring, int start, int end) {
     //-- endpoints are distinct in a line edge
     Coordinate end0 = ring[start];
     Coordinate end1 = ring[end];
-    boolean isForward = 0 > end0.compareTo(end1);
+    bool isForward = 0 > end0.compareTo(end1);
     Coordinate key0, key1;
     if (isForward) {
       key0 = end0;
@@ -114,7 +114,7 @@ class CoverageEdge {
     return new LineSegment(key0, key1);  
   }
 
-  private static Coordinate findDistinctPoint(Coordinate[] pts, int index, boolean isForward, Coordinate pt) {
+  private static Coordinate findDistinctPoint(List<Coordinate> pts, int index, bool isForward, Coordinate pt) {
     int inc = isForward ? 1 : -1;
     int i = index;
     do {
@@ -133,20 +133,20 @@ class CoverageEdge {
     throw new IllegalStateException("Edge does not contain distinct points");
   }
 
-  private Coordinate[] pts;
+  private List<Coordinate> pts;
   private int ringCount = 0;
-  private boolean isFreeRing = true;
+  private bool isFreeRing = true;
 
-  public CoverageEdge(Coordinate[] pts, boolean isFreeRing) {
+  CoverageEdge(List<Coordinate> pts, bool isFreeRing) {
     this.pts = pts;
     this.isFreeRing = isFreeRing;
   }
 
-  public void incRingCount() {
+  void incRingCount() {
     ringCount++;
   }
   
-  public int getRingCount() {
+  int getRingCount() {
     return ringCount;
   }
 
@@ -156,31 +156,31 @@ class CoverageEdge {
    * 
    * @return true if this is a free ring
    */
-  public boolean isFreeRing() {
+  bool isFreeRing() {
     return isFreeRing;
   }
 
-  public void setCoordinates(Coordinate[] pts) {
+  void setCoordinates(List<Coordinate> pts) {
     this.pts = pts;
   }
 
-  public Coordinate[] getCoordinates() {
+  List<Coordinate> getCoordinates() {
     return pts;
   }
 
-  public Coordinate getEndCoordinate() {
+  Coordinate getEndCoordinate() {
     return pts[pts.length - 1];
   }
   
-  public Coordinate getStartCoordinate() {
+  Coordinate getStartCoordinate() {
     return pts[0];
   }
   
-  public LineString toLineString(GeometryFactory geomFactory) {
+  LineString toLineString(GeometryFactory geomFactory) {
     return geomFactory.createLineString(getCoordinates());
   }
   
-  public String toString() {
+  String toString() {
     return WKTWriter.toLineString(pts);
   }
 

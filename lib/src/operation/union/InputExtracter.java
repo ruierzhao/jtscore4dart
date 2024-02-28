@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.union;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +44,7 @@ class InputExtracter implements GeometryFilter
    * @param geoms a collection of geometries
    * @return an extracter over the geometries
    */
-  public static InputExtracter extract(Collection<Geometry> geoms) {
+  static InputExtracter extract(Collection<Geometry> geoms) {
     InputExtracter extracter = new InputExtracter();
     extracter.add(geoms);
     return extracter;
@@ -56,7 +56,7 @@ class InputExtracter implements GeometryFilter
    * @param geoms a geometry to extract from
    * @return an extracter over the geometry
    */
-  public static InputExtracter extract(Geometry geom) {
+  static InputExtracter extract(Geometry geom) {
     InputExtracter extracter = new InputExtracter();
     extracter.add(geom);
     return extracter;
@@ -72,7 +72,7 @@ class InputExtracter implements GeometryFilter
    */
   private int dimension = Dimension.FALSE;
   
-  public InputExtracter() {
+  InputExtracter() {
     
   }
   
@@ -81,7 +81,7 @@ class InputExtracter implements GeometryFilter
    * 
    * @return true if there is a non-empty geometry present
    */
-  public boolean isEmpty() {
+  bool isEmpty() {
     return polygons.isEmpty() 
         && lines.isEmpty()
         && points.isEmpty();
@@ -92,7 +92,7 @@ class InputExtracter implements GeometryFilter
    * 
    * @return the maximum extracted dimension
    */
-  public int getDimension() {
+  int getDimension() {
     return dimension;
   }
   
@@ -103,7 +103,7 @@ class InputExtracter implements GeometryFilter
    * 
    * @return a geometry factory, or null if one could not be determined
    */
-  public GeometryFactory getFactory() {
+  GeometryFactory getFactory() {
     return geomFactory;
   }
   
@@ -113,7 +113,7 @@ class InputExtracter implements GeometryFilter
    * @param dim the dimension of geometry to return
    * @return a list of the extracted geometries of dimension dim.
    */
-  public List getExtract(int dim) {
+  List getExtract(int dim) {
     switch (dim) {
     case 0: return points;
     case 1: return lines;
@@ -137,7 +137,7 @@ class InputExtracter implements GeometryFilter
   }
 
   @Override
-  public void filter(Geometry geom) {
+  void filter(Geometry geom) {
     recordDimension( geom.getDimension() );
     
     if (geom instanceof GeometryCollection) {

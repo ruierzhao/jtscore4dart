@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph.index;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -33,38 +33,38 @@ import org.locationtech.jts.geomgraph.Edge;
  * segment comparisons, producing substantial speed gains.
  * @version 1.7
  */
-public class MonotoneChainEdge {
+class MonotoneChainEdge {
 
   Edge e;
-  Coordinate[] pts; // cache a reference to the coord array, for efficiency
+  List<Coordinate> pts; // cache a reference to the coord array, for efficiency
   // the lists of start/end indexes of the monotone chains.
   // Includes the end point of the edge as a sentinel
   int[] startIndex;
 
-  public MonotoneChainEdge(Edge e) {
+  MonotoneChainEdge(Edge e) {
     this.e = e;
     pts = e.getCoordinates();
     MonotoneChainIndexer mcb = new MonotoneChainIndexer();
     startIndex = mcb.getChainStartIndices(pts);
   }
 
-  public Coordinate[] getCoordinates() { return pts; }
-  public int[] getStartIndexes() { return startIndex; }
+  List<Coordinate> getCoordinates() { return pts; }
+  int[] getStartIndexes() { return startIndex; }
 
-  public double getMinX(int chainIndex)
+  double getMinX(int chainIndex)
   {
     double x1 = pts[startIndex[chainIndex]].x;
     double x2 = pts[startIndex[chainIndex + 1]].x;
     return x1 < x2 ? x1 : x2;
   }
-  public double getMaxX(int chainIndex)
+  double getMaxX(int chainIndex)
   {
     double x1 = pts[startIndex[chainIndex]].x;
     double x2 = pts[startIndex[chainIndex + 1]].x;
     return x1 > x2 ? x1 : x2;
   }
 
-  public void computeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
+  void computeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
   {
     for (int i = 0; i < startIndex.length - 1; i++) {
       for (int j = 0; j < mce.startIndex.length - 1; j++) {
@@ -74,7 +74,7 @@ public class MonotoneChainEdge {
       }
     }
   }
-  public void computeIntersectsForChain(
+  void computeIntersectsForChain(
     int chainIndex0,
     MonotoneChainEdge mce,
     int chainIndex1,
@@ -128,7 +128,7 @@ public class MonotoneChainEdge {
    * @param end1
    * @return true if the section envelopes overlap
    */
-  private boolean overlaps(
+  private bool overlaps(
       int start0, int end0,
       MonotoneChainEdge mce,
       int start1, int end1)

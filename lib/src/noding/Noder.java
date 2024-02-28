@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 
@@ -22,7 +22,7 @@ import java.util.Collection;
  *
  * @version 1.7
  */
-public interface Noder
+interface Noder
 {
 
   /**

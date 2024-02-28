@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,17 +17,17 @@ import java.io.InputStream;
 /**
  * An adapter to allow an {@link InputStream} to be used as an {@link InStream}
  */
-public class InputStreamInStream
+class InputStreamInStream
 	implements InStream
 {
   private InputStream is;
 
-  public InputStreamInStream(InputStream is)
+  InputStreamInStream(InputStream is)
   {
     this.is = is;
   }
 
-  public int read(byte[] buf) throws IOException
+  int read(byte[] buf) throws IOException
   {
     return is.read(buf);
   }

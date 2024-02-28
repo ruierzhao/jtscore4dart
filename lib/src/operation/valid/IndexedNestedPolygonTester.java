@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.valid;
+
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ class IndexedNestedPolygonTester
   private IndexedPointInAreaLocator[] locators;
   private Coordinate nestedPt;
 
-  public IndexedNestedPolygonTester(MultiPolygon multiPoly)
+  IndexedNestedPolygonTester(MultiPolygon multiPoly)
   {
     this.multiPoly = multiPoly;
     loadIndex();
@@ -73,7 +73,7 @@ class IndexedNestedPolygonTester
    * 
    * @return a point on a nested polygon, or null if none are nested
    */
-  public Coordinate getNestedPoint() { return nestedPt; }
+  Coordinate getNestedPoint() { return nestedPt; }
 
   /**
    * Tests if any polygon is improperly nested (contained) within another polygon.
@@ -81,7 +81,7 @@ class IndexedNestedPolygonTester
    * The nested point will be set to reflect this.
    * @return true if some polygon is nested
    */
-  public boolean isNested()
+  bool isNested()
   {
     for (int i = 0; i < multiPoly.getNumGeometries(); i++) {
       Polygon poly = (Polygon) multiPoly.getGeometryN(i);

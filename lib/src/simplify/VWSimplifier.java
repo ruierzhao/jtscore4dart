@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.simplify;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -46,7 +46,7 @@ import org.locationtech.jts.geom.util.GeometryTransformer;
  * 
  * @version 1.7
  */
-public class VWSimplifier
+class VWSimplifier
 {
 
   /**
@@ -56,7 +56,7 @@ public class VWSimplifier
    * @param distanceTolerance the tolerance to use
    * @return a simplified version of the geometry
    */
-  public static Geometry simplify(Geometry geom, double distanceTolerance)
+  static Geometry simplify(Geometry geom, double distanceTolerance)
   {
     VWSimplifier simp = new VWSimplifier(geom);
     simp.setDistanceTolerance(distanceTolerance);
@@ -65,14 +65,14 @@ public class VWSimplifier
 
   private Geometry inputGeom;
   private double distanceTolerance;
-  private boolean isEnsureValidTopology = true;
+  private bool isEnsureValidTopology = true;
 
   /**
    * Creates a simplifier for a given geometry.
    * 
    * @param inputGeom the geometry to simplify
    */
-  public VWSimplifier(Geometry inputGeom)
+  VWSimplifier(Geometry inputGeom)
   {
     this.inputGeom = inputGeom;
   }
@@ -85,10 +85,10 @@ public class VWSimplifier
    * @param distanceTolerance
    *          the approximation tolerance to use
    */
-  public void setDistanceTolerance(double distanceTolerance)
+  void setDistanceTolerance(double distanceTolerance)
   {
     if (distanceTolerance < 0.0)
-      throw new IllegalArgumentException("Tolerance must be non-negative");
+      throw new ArgumentError("Tolerance must be non-negative");
     this.distanceTolerance = distanceTolerance;
   }
 
@@ -106,7 +106,7 @@ public class VWSimplifier
    * 
    * @param isEnsureValidTopology
    */
-  public void setEnsureValid(boolean isEnsureValidTopology)
+  void setEnsureValid(bool isEnsureValidTopology)
   {
     this.isEnsureValidTopology = isEnsureValidTopology;
   }
@@ -116,7 +116,7 @@ public class VWSimplifier
    * 
    * @return the simplified geometry
    */
-  public Geometry getResultGeometry()
+  Geometry getResultGeometry()
   {
     // empty input produces an empty result
     if (inputGeom.isEmpty())
@@ -127,10 +127,10 @@ public class VWSimplifier
 
   static class VWTransformer extends GeometryTransformer
   {
-    private boolean isEnsureValidTopology = true;
+    private bool isEnsureValidTopology = true;
     private double distanceTolerance;
 
-    public VWTransformer(boolean isEnsureValidTopology, double distanceTolerance)
+    VWTransformer(bool isEnsureValidTopology, double distanceTolerance)
     {
       this.isEnsureValidTopology = isEnsureValidTopology;
       this.distanceTolerance = distanceTolerance;
@@ -138,8 +138,8 @@ public class VWSimplifier
 
     protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
     {
-      Coordinate[] inputPts = coords.toCoordinateArray();
-      Coordinate[] newPts = null;
+      List<Coordinate> inputPts = coords.toCoordinateArray();
+      List<Coordinate> newPts = null;
       if (inputPts.length == 0) {
         newPts = new Coordinate[0];
       }
@@ -173,7 +173,7 @@ public class VWSimplifier
      */
     protected Geometry transformLinearRing(LinearRing geom, Geometry parent)
     {
-      boolean removeDegenerateRings = parent instanceof Polygon;
+      bool removeDegenerateRings = parent instanceof Polygon;
       Geometry simpResult = super.transformLinearRing(geom, parent);
       if (removeDegenerateRings && !(simpResult instanceof LinearRing))
         return null;

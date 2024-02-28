@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 
 
@@ -37,11 +37,11 @@ import org.locationtech.jts.geom.Position;
   * where j has the values ON, LEFT, RIGHT
   * @version 1.7
  */
-public class TopologyLocation {
+class TopologyLocation {
 
   int location[];
 
-  public TopologyLocation(int[] location)
+  TopologyLocation(int[] location)
   {
     init(location.length);
   }
@@ -55,18 +55,18 @@ public class TopologyLocation {
    * @param left left position
    * @param right right position
    */
-  public TopologyLocation(int on, int left, int right) {
+  TopologyLocation(int on, int left, int right) {
    init(3);
    location[Position.ON] = on;
    location[Position.LEFT] = left;
    location[Position.RIGHT] = right;
   }
 
-  public TopologyLocation(int on) {
+  TopologyLocation(int on) {
    init(1);
    location[Position.ON] = on;
   }
-  public TopologyLocation(TopologyLocation gl) {
+  TopologyLocation(TopologyLocation gl) {
     init(gl.location.length);
     if (gl != null) {
       for (int i = 0; i < location.length; i++) {
@@ -79,7 +79,7 @@ public class TopologyLocation {
     location = new int[size];
     setAllLocations(Location.NONE);
   }
-  public int get(int posIndex)
+  int get(int posIndex)
   {
     if (posIndex < location.length) return location[posIndex];
     return Location.NONE;
@@ -87,7 +87,7 @@ public class TopologyLocation {
   /**
    * @return true if all locations are NULL
    */
-  public boolean isNull()
+  bool isNull()
   {
     for (int i = 0; i < location.length; i++) {
       if (location[i] != Location.NONE) return false;
@@ -97,21 +97,21 @@ public class TopologyLocation {
   /**
    * @return true if any locations are NULL
    */
-  public boolean isAnyNull()
+  bool isAnyNull()
   {
     for (int i = 0; i < location.length; i++) {
       if (location[i] == Location.NONE) return true;
     }
     return false;
   }
-  public boolean isEqualOnSide(TopologyLocation le, int locIndex)
+  bool isEqualOnSide(TopologyLocation le, int locIndex)
   {
     return location[locIndex] == le.location[locIndex];
   }
-  public boolean isArea() { return location.length > 1; }
-  public boolean isLine() { return location.length == 1; }
+  bool isArea() { return location.length > 1; }
+  bool isLine() { return location.length == 1; }
 
-  public void flip()
+  void flip()
   {
     if (location.length <= 1) return;
     int temp = location[Position.LEFT];
@@ -120,34 +120,34 @@ public class TopologyLocation {
   }
 
 
-  public void setAllLocations(int locValue)
+  void setAllLocations(int locValue)
   {
     for (int i = 0; i < location.length; i++) {
       location[i]     = locValue;
     }
   }
-  public void setAllLocationsIfNull(int locValue)
+  void setAllLocationsIfNull(int locValue)
   {
     for (int i = 0; i < location.length; i++) {
       if (location[i] == Location.NONE) location[i]     = locValue;
     }
   }
 
-  public void setLocation(int locIndex, int locValue)
+  void setLocation(int locIndex, int locValue)
   {
       location[locIndex] = locValue;
   }
-  public void setLocation(int locValue)
+  void setLocation(int locValue)
   {
     setLocation(Position.ON, locValue);
   }
-  public int[] getLocations() { return location; }
-  public void setLocations(int on, int left, int right) {
+  int[] getLocations() { return location; }
+  void setLocations(int on, int left, int right) {
       location[Position.ON] = on;
       location[Position.LEFT] = left;
       location[Position.RIGHT] = right;
   }
-  public boolean allPositionsEqual(int loc)
+  bool allPositionsEqual(int loc)
   {
     for (int i = 0; i < location.length; i++) {
       if (location[i] != loc) return false;
@@ -161,7 +161,7 @@ public class TopologyLocation {
    *
    * @param gl Topology location
    */
-  public void merge(TopologyLocation gl)
+  void merge(TopologyLocation gl)
   {
     // if the src is an Area label & and the dest is not, increase the dest to be an Area
     if (gl.location.length > location.length) {
@@ -177,7 +177,7 @@ public class TopologyLocation {
     }
   }
 
-  public String toString()
+  String toString()
   {
     StringBuffer buf = new StringBuffer();
     if (location.length > 1) buf.append(Location.toLocationSymbol(location[Position.LEFT]));

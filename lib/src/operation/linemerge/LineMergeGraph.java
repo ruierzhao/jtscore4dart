@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.linemerge;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateArrays;
@@ -27,7 +27,7 @@ import org.locationtech.jts.planargraph.PlanarGraph;
  *
  * @version 1.7
  */
-public class LineMergeGraph extends PlanarGraph 
+class LineMergeGraph extends PlanarGraph 
 {
   /**
    * Adds an Edge, DirectedEdges, and Nodes for the given LineString representation
@@ -36,10 +36,10 @@ public class LineMergeGraph extends PlanarGraph
    * 
    * @param lineString the linestring to add to the graph
    */
-  public void addEdge(LineString lineString) {
+  void addEdge(LineString lineString) {
     if (lineString.isEmpty()) { return; }
     
-    Coordinate[] coordinates = CoordinateArrays.removeRepeatedPoints(lineString.getCoordinates());
+    List<Coordinate> coordinates = CoordinateArrays.removeRepeatedPoints(lineString.getCoordinates());
     
     // don't add lines with all coordinates equal
     if (coordinates.length <= 1) return;

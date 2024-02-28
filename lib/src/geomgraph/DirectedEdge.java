@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.io.PrintStream;
 
@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.TopologyException;
 /**
  * @version 1.7
  */
-public class DirectedEdge
+class DirectedEdge
   extends EdgeEnd
 {
 
@@ -34,7 +34,7 @@ public class DirectedEdge
    * @param nextLocation Next location
    * @return change of depth moving from currLocation to nextLocation
    */
-  public static int depthFactor(int currLocation, int nextLocation)
+  static int depthFactor(int currLocation, int nextLocation)
   {
     if (currLocation == Location.EXTERIOR && nextLocation == Location.INTERIOR)
        return 1;
@@ -43,9 +43,9 @@ public class DirectedEdge
     return 0;
   }
 
-  protected boolean isForward;
-  private boolean isInResult = false;
-  private boolean isVisited = false;
+  protected bool isForward;
+  private bool isInResult = false;
+  private bool isVisited = false;
 
   private DirectedEdge sym; // the symmetric edge
   private DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
@@ -58,7 +58,7 @@ public class DirectedEdge
    */
   private int[] depth = { 0, -999, -999 };
 
-  public DirectedEdge(Edge edge, boolean isForward)
+  DirectedEdge(Edge edge, bool isForward)
   {
     super(edge);
     this.isForward = isForward;
@@ -71,16 +71,16 @@ public class DirectedEdge
     }
     computeDirectedLabel();
   }
-  public Edge getEdge() { return edge; }
-  public void setInResult(boolean isInResult) { this.isInResult = isInResult; }
-  public boolean isInResult() { return isInResult; }
-  public boolean isVisited() { return isVisited; }
-  public void setVisited(boolean isVisited) { this.isVisited = isVisited; }
-  public void setEdgeRing(EdgeRing edgeRing) { this.edgeRing = edgeRing; }
-  public EdgeRing getEdgeRing() { return edgeRing; }
-  public void setMinEdgeRing(EdgeRing minEdgeRing) { this.minEdgeRing = minEdgeRing; }
-  public EdgeRing getMinEdgeRing() { return minEdgeRing; }
-  public int getDepth(int position) { return depth[position]; }
+  Edge getEdge() { return edge; }
+  void setInResult(bool isInResult) { this.isInResult = isInResult; }
+  bool isInResult() { return isInResult; }
+  bool isVisited() { return isVisited; }
+  void setVisited(bool isVisited) { this.isVisited = isVisited; }
+  void setEdgeRing(EdgeRing edgeRing) { this.edgeRing = edgeRing; }
+  EdgeRing getEdgeRing() { return edgeRing; }
+  void setMinEdgeRing(EdgeRing minEdgeRing) { this.minEdgeRing = minEdgeRing; }
+  EdgeRing getMinEdgeRing() { return minEdgeRing; }
+  int getDepth(int position) { return depth[position]; }
 
   /**
    * Set depth for a position.
@@ -91,7 +91,7 @@ public class DirectedEdge
    * @param position Position to update
    * @param depthVal Depth at the provided position
    */
-  public void setDepth(int position, int depthVal)
+  void setDepth(int position, int depthVal)
   {
     if (depth[position] != -999) {
 //      if (depth[position] != depthVal) {
@@ -104,7 +104,7 @@ public class DirectedEdge
     depth[position] = depthVal;
   }
 
-  public int getDepthDelta()
+  int getDepthDelta()
   {
     int depthDelta = edge.getDepthDelta();
     if (! isForward) depthDelta = -depthDelta;
@@ -119,7 +119,7 @@ public class DirectedEdge
    *
    * @param isVisited True to mark edge as visited
    */
-  public void setVisitedEdge(boolean isVisited)
+  void setVisitedEdge(bool isVisited)
   {
     setVisited(isVisited);
     sym.setVisited(isVisited);
@@ -129,16 +129,16 @@ public class DirectedEdge
    * directions.
    * @return the DirectedEdge for the same Edge but in the opposite direction
    */
-  public DirectedEdge getSym() { return sym; }
-  public boolean isForward() { return isForward; }
-  public void setSym(DirectedEdge de)
+  DirectedEdge getSym() { return sym; }
+  bool isForward() { return isForward; }
+  void setSym(DirectedEdge de)
   {
     sym = de;
   }
-  public DirectedEdge getNext() { return next; }
-  public void setNext(DirectedEdge next) { this.next = next; }
-  public DirectedEdge getNextMin() { return nextMin; }
-  public void setNextMin(DirectedEdge nextMin) { this.nextMin = nextMin; }
+  DirectedEdge getNext() { return next; }
+  void setNext(DirectedEdge next) { this.next = next; }
+  DirectedEdge getNextMin() { return nextMin; }
+  void setNextMin(DirectedEdge nextMin) { this.nextMin = nextMin; }
 
   /**
    * This edge is a line edge if
@@ -149,12 +149,12 @@ public class DirectedEdge
    *
    * @return If edge is a line edge
    */
-  public boolean isLineEdge()
+  bool isLineEdge()
   {
-    boolean isLine = label.isLine(0) || label.isLine(1);
-    boolean isExteriorIfArea0 =
+    bool isLine = label.isLine(0) || label.isLine(1);
+    bool isExteriorIfArea0 =
       ! label.isArea(0) || label.allPositionsEqual(0, Location.EXTERIOR);
-    boolean isExteriorIfArea1 =
+    bool isExteriorIfArea1 =
       ! label.isArea(1) || label.allPositionsEqual(1, Location.EXTERIOR);
 
     return isLine && isExteriorIfArea0 && isExteriorIfArea1;
@@ -168,9 +168,9 @@ public class DirectedEdge
    *
    * @return true if this is an interior Area edge
    */
-  public boolean isInteriorAreaEdge()
+  bool isInteriorAreaEdge()
   {
-    boolean isInteriorAreaEdge = true;
+    bool isInteriorAreaEdge = true;
     for (int i = 0; i < 2; i++) {
       if (! ( label.isArea(i)
             && label.getLocation(i, Position.LEFT ) == Location.INTERIOR
@@ -198,7 +198,7 @@ public class DirectedEdge
    * @param position Position to update
    * @param depth Depth at the provided position
    */
-  public void setEdgeDepths(int position, int depth)
+  void setEdgeDepths(int position, int depth)
   {
     // get the depth transition delta from R to L for this directed Edge
     int depthDelta = getEdge().getDepthDelta();
@@ -217,7 +217,7 @@ public class DirectedEdge
     setDepth(oppositePos, oppositeDepth);
   }
 
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     super.print(out);
     out.print(" " + depth[Position.LEFT] + "/" + depth[Position.RIGHT]);
@@ -226,7 +226,7 @@ public class DirectedEdge
     //if (next != null) out.print(" next:" + next.hashCode());
     if (isInResult) out.print(" inResult");
   }
-  public void printEdge(PrintStream out)
+  void printEdge(PrintStream out)
   {
     print(out);
     out.print(" ");

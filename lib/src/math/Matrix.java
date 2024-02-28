@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.math;
+
 
 /**
  * Implements some 2D matrix operations 
@@ -18,7 +18,7 @@ package org.locationtech.jts.math;
  * @author Martin Davis
  *
  */
-public class Matrix
+class Matrix
 {
   private static void swapRows(double[][] m, int i, int j)
   {
@@ -49,13 +49,13 @@ public class Matrix
    * @return a vector containing the solution (if any)
    * or null if the system has no or no unique solution
    * 
-   * @throws IllegalArgumentException if the matrix is the wrong size 
+   * @throws ArgumentError if the matrix is the wrong size 
    */
-  public static double[] solve( double[][] a, double[] b )
+  static double[] solve( double[][] a, double[] b )
   {
     int n = b.length;
     if ( a.length != n || a[0].length != n )
-      throw new IllegalArgumentException("Matrix A is incorrectly sized");
+      throw new ArgumentError("Matrix A is incorrectly sized");
     
     // Use Gaussian Elimination with partial pivoting.
     // Iterate over each row
@@ -63,7 +63,7 @@ public class Matrix
       // Find the largest pivot in the rows below the current one.
       int maxElementRow = i;
       for (int j = i + 1; j < n; j++ )
-        if ( Math.abs( a[j][i] ) > Math.abs( a[maxElementRow][i] ) )
+        if ( ( a[j][i] ).abs() > ( a[maxElementRow][i] ).abs() )
           maxElementRow = j;
         
       if ( a[maxElementRow][i] == 0.0 )

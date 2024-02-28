@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.polygonize;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,7 +67,7 @@ class PolygonizeGraph
   /**
    * Deletes all edges at a node
    */
-  public static void deleteAllEdges(Node node)
+  static void deleteAllEdges(Node node)
   {
     List<DirectedEdge> edges = node.getOutEdges().getEdges();
     for (Iterator<DirectedEdge> i = edges.iterator(); i.hasNext(); ) {
@@ -86,7 +86,7 @@ class PolygonizeGraph
   /**
    * Create a new polygonization graph.
    */
-  public PolygonizeGraph(GeometryFactory factory)
+  PolygonizeGraph(GeometryFactory factory)
   {
     this.factory = factory;
   }
@@ -95,10 +95,10 @@ class PolygonizeGraph
    * Add a {@link LineString} forming an edge of the polygon graph.
    * @param line the line to add
    */
-  public void addEdge(LineString line)
+  void addEdge(LineString line)
   {
     if (line.isEmpty()) { return; }
-    Coordinate[] linePts = CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
+    List<Coordinate> linePts = CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
     
     if (linePts.length < 2) { return; }
     
@@ -186,7 +186,7 @@ class PolygonizeGraph
    * Computes the minimal EdgeRings formed by the edges in this graph.
    * @return a list of the {@link EdgeRing}s found by the polygonization process.
    */
-  public List<EdgeRing> getEdgeRings()
+  List<EdgeRing> getEdgeRings()
   {
     // maybe could optimize this, since most of these pointers should be set correctly already
     // by deleteCutEdges()
@@ -241,7 +241,7 @@ class PolygonizeGraph
    * @return a list of the {@link LineString}s forming the removed cut edges
    */
   @SuppressWarnings("unchecked")
-  public List<LineString> deleteCutEdges()
+  List<LineString> deleteCutEdges()
   {
     computeNextCWEdges();
     // label the current set of edgerings
@@ -363,7 +363,7 @@ class PolygonizeGraph
    *
    * @return a List containing the {@link LineString}s that formed dangles
    */
-  public List<LineString> deleteDangles()
+  List<LineString> deleteDangles()
   {
     @SuppressWarnings("unchecked")
     List<Node> nodesToRemove = findNodesOfDegree(1);

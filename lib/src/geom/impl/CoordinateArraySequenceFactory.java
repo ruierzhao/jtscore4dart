@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.impl;
+
 
 import java.io.Serializable;
 
@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
  *
  * @version 1.7
  */
-public final class CoordinateArraySequenceFactory
+final class CoordinateArraySequenceFactory
     implements CoordinateSequenceFactory, Serializable
 {
   private static final long serialVersionUID = -4099577099607551657L;
@@ -39,7 +39,7 @@ public final class CoordinateArraySequenceFactory
   /**
    * Returns the singleton instance of {@link CoordinateArraySequenceFactory}
    */
-  public static CoordinateArraySequenceFactory instance() {
+  static CoordinateArraySequenceFactory instance() {
     return instanceObject;
   }
 
@@ -51,14 +51,14 @@ public final class CoordinateArraySequenceFactory
    *            the coordinates, which may not be null nor contain null
    *            elements
    */
-  public CoordinateSequence create(Coordinate[] coordinates) {
+  CoordinateSequence create(List<Coordinate> coordinates) {
     return new CoordinateArraySequence(coordinates);
   }
 
   /**
    * @see org.locationtech.jts.geom.CoordinateSequenceFactory#create(org.locationtech.jts.geom.CoordinateSequence)
    */
-  public CoordinateSequence create(CoordinateSequence coordSeq) {
+  CoordinateSequence create(CoordinateSequence coordSeq) {
     return new CoordinateArraySequence(coordSeq);
   }
 
@@ -68,10 +68,10 @@ public final class CoordinateArraySequenceFactory
    * @see org.locationtech.jts.geom.CoordinateSequenceFactory#create(int, int)
    *
    */
-  public CoordinateSequence create(int size, int dimension) {
+  CoordinateSequence create(int size, int dimension) {
     if (dimension > 3)
       dimension = 3;
-      //throw new IllegalArgumentException("dimension must be <= 3");
+      //throw new ArgumentError("dimension must be <= 3");
     
     // handle bogus dimension
     if (dimension < 2)
@@ -80,16 +80,16 @@ public final class CoordinateArraySequenceFactory
     return new CoordinateArraySequence(size, dimension);
   }
   
-  public CoordinateSequence create(int size, int dimension, int measures) {
+  CoordinateSequence create(int size, int dimension, int measures) {
     int spatial = dimension - measures;
     
     if (measures > 1) {
       measures = 1; // clip measures
-      //throw new IllegalArgumentException("measures must be <= 1");
+      //throw new ArgumentError("measures must be <= 1");
     }
     if ((spatial) > 3) {
       spatial = 3; // clip spatial dimension
-      //throw new IllegalArgumentException("spatial dimension must be <= 3");
+      //throw new ArgumentError("spatial dimension must be <= 3");
     }
     
     if (spatial < 2)

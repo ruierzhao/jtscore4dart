@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.index.kdtree;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -20,7 +20,7 @@ import org.locationtech.jts.geom.Envelope;
  * 
  * @author dskea
  */
-public class KdNode {
+class KdNode {
 
     private Coordinate p = null;
     private Object     data;
@@ -35,7 +35,7 @@ public class KdNode {
      * @param _y coordinate of point
      * @param data a data objects to associate with this node
      */
-    public KdNode(double _x, double _y, Object data) {
+    KdNode(double _x, double _y, Object data) {
         p = new Coordinate(_x, _y);
         left = null;
         right = null;
@@ -49,7 +49,7 @@ public class KdNode {
      * @param p point location of new node
      * @param data a data objects to associate with this node
      */
-    public KdNode(Coordinate p, Object data) {
+    KdNode(Coordinate p, Object data) {
         this.p = new Coordinate(p);
         left = null;
         right = null;
@@ -62,7 +62,7 @@ public class KdNode {
      * 
      * @return X coordinate of the node
      */
-    public double getX() {
+    double getX() {
         return p.x;
     }
 
@@ -71,7 +71,7 @@ public class KdNode {
      * 
      * @return Y coordinate of the node
      */
-    public double getY() {
+    double getY() {
         return p.y;
     }
 
@@ -85,7 +85,7 @@ public class KdNode {
      * @param isSplitOnX whether the node splits on X or Y
      * @return the splitting value
      */
-    public double splitValue(boolean isSplitOnX) {
+    double splitValue(bool isSplitOnX) {
       if (isSplitOnX) {
         return p.getX();
       }
@@ -97,7 +97,7 @@ public class KdNode {
      * 
      * @return p location of this node
      */
-    public Coordinate getCoordinate() {
+    Coordinate getCoordinate() {
         return p;
     }
 
@@ -105,7 +105,7 @@ public class KdNode {
      * Gets the user data object associated with this node.
      * @return user data
      */
-    public Object getData() {
+    Object getData() {
         return data;
     }
 
@@ -114,7 +114,7 @@ public class KdNode {
      * 
      * @return left node
      */
-    public KdNode getLeft() {
+    KdNode getLeft() {
         return left;
     }
 
@@ -123,7 +123,7 @@ public class KdNode {
      * 
      * @return right node
      */
-    public KdNode getRight() {
+    KdNode getRight() {
         return right;
     }
 
@@ -137,7 +137,7 @@ public class KdNode {
      * 
      * @return number of inserted points that this node represents
      */
-    public int getCount() {
+    int getCount() {
         return count;
     }
 
@@ -146,7 +146,7 @@ public class KdNode {
      * 
      * @return true if more than one point have been inserted with this value
      */
-    public boolean isRepeated() {
+    bool isRepeated() {
         return count > 1;
     }
 
@@ -168,7 +168,7 @@ public class KdNode {
      * @param env the range envelope
      * @return true if the left subtree is in range
      */
-    boolean isRangeOverLeft(boolean isSplitOnX, Envelope env) {
+    bool isRangeOverLeft(bool isSplitOnX, Envelope env) {
       double envMin;
       if ( isSplitOnX ) {
         envMin = env.getMinX();
@@ -176,7 +176,7 @@ public class KdNode {
         envMin = env.getMinY();
       }
       double splitValue = splitValue(isSplitOnX);
-      boolean isInRange = envMin < splitValue;
+      bool isInRange = envMin < splitValue;
       return isInRange;
     }
     
@@ -188,7 +188,7 @@ public class KdNode {
      * @param env the range envelope
      * @return true if the right subtree is in range
      */
-   boolean isRangeOverRight(boolean isSplitOnX, Envelope env) {
+   bool isRangeOverRight(bool isSplitOnX, Envelope env) {
       double envMax;
        if ( isSplitOnX ) {
         envMax = env.getMaxX();
@@ -196,7 +196,7 @@ public class KdNode {
         envMax = env.getMaxY();
       }
       double splitValue = splitValue(isSplitOnX);
-      boolean isInRange = splitValue <= envMax;
+      bool isInRange = splitValue <= envMax;
       return isInRange;
     }
 
@@ -212,9 +212,9 @@ public class KdNode {
     * @param pt the query point
     * @return true if the point is strictly to the left.
     * 
-    * @see #splitValue(boolean)
+    * @see #splitValue(bool)
     */
-   boolean isPointOnLeft(boolean isSplitOnX, Coordinate pt) {
+   bool isPointOnLeft(bool isSplitOnX, Coordinate pt) {
       double ptOrdinate;     
       if (isSplitOnX) {
           ptOrdinate = pt.x;
@@ -223,7 +223,7 @@ public class KdNode {
           ptOrdinate = pt.y;
       }
       double splitValue = splitValue(isSplitOnX);
-      boolean isInRange = (ptOrdinate < splitValue);
+      bool isInRange = (ptOrdinate < splitValue);
       return isInRange;
     }
     

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.linearref;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -32,7 +32,7 @@ class LocationIndexOfLine
   * because it is intended to validate that the subline truly is a subline,
   * and also to use the internal vertex information to unambiguously locate the subline.
   */
- public static LinearLocation[] indicesOf(Geometry linearGeom, Geometry subLine)
+ static LinearLocation[] indicesOf(Geometry linearGeom, Geometry subLine)
   {
     LocationIndexOfLine locater = new LocationIndexOfLine(linearGeom);
     return locater.indicesOf(subLine);
@@ -40,11 +40,11 @@ class LocationIndexOfLine
 
   private Geometry linearGeom;
 
-  public LocationIndexOfLine(Geometry linearGeom) {
+  LocationIndexOfLine(Geometry linearGeom) {
     this.linearGeom = linearGeom;
   }
 
-  public LinearLocation[] indicesOf(Geometry subLine)
+  LinearLocation[] indicesOf(Geometry subLine)
   {
     Coordinate startPt = ((LineString) subLine.getGeometryN(0)).getCoordinateN(0);
     LineString lastLine = (LineString) subLine.getGeometryN(subLine.getNumGeometries() - 1);

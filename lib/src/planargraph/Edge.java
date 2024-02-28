@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.planargraph;
+
 
 /**
  * Represents an undirected edge of a {@link PlanarGraph}. An undirected edge
@@ -21,7 +21,7 @@ package org.locationtech.jts.planargraph;
  *
  * @version 1.7
  */
-public class Edge
+class Edge
     extends GraphComponent
 {
 
@@ -35,7 +35,7 @@ public class Edge
    * Constructs an Edge whose DirectedEdges are not yet set. Be sure to call
    * {@link #setDirectedEdges(DirectedEdge, DirectedEdge)}
    */
-  public Edge()
+  Edge()
   {
   }
 
@@ -44,7 +44,7 @@ public class Edge
    * DirectedEdge: sets the Edge, sets the symmetric DirectedEdge, and adds
    * this Edge to its from-Node.
    */
-  public Edge(DirectedEdge de0, DirectedEdge de1)
+  Edge(DirectedEdge de0, DirectedEdge de1)
   {
     setDirectedEdges(de0, de1);
   }
@@ -53,7 +53,7 @@ public class Edge
    * Initializes this Edge's two DirectedEdges, and for each DirectedEdge: sets the
    * Edge, sets the symmetric DirectedEdge, and adds this Edge to its from-Node.
    */
-  public void setDirectedEdges(DirectedEdge de0, DirectedEdge de1)
+  void setDirectedEdges(DirectedEdge de0, DirectedEdge de1)
   {
     dirEdge = new DirectedEdge[] { de0, de1 };
     de0.setEdge(this);
@@ -68,7 +68,7 @@ public class Edge
    * Returns one of the DirectedEdges associated with this Edge.
    * @param i 0 or 1.  0 returns the forward directed edge, 1 returns the reverse
    */
-  public DirectedEdge getDirEdge(int i)
+  DirectedEdge getDirEdge(int i)
   {
     return dirEdge[i];
   }
@@ -77,7 +77,7 @@ public class Edge
    * Returns the {@link DirectedEdge} that starts from the given node, or null if the
    * node is not one of the two nodes associated with this Edge.
    */
-  public DirectedEdge getDirEdge(Node fromNode)
+  DirectedEdge getDirEdge(Node fromNode)
   {
     if (dirEdge[0].getFromNode() == fromNode) return dirEdge[0];
     if (dirEdge[1].getFromNode() == fromNode) return dirEdge[1];
@@ -90,7 +90,7 @@ public class Edge
    * If <code>node</code> is one of the two nodes associated with this Edge,
    * returns the other node; otherwise returns null.
    */
-  public Node getOppositeNode(Node node)
+  Node getOppositeNode(Node node)
   {
     if (dirEdge[0].getFromNode() == node) return dirEdge[0].getToNode();
     if (dirEdge[1].getFromNode() == node) return dirEdge[1].getToNode();
@@ -111,7 +111,7 @@ public class Edge
    *
    * @return <code>true</code> if this edge is removed
    */
-  public boolean isRemoved()
+  bool isRemoved()
   {
     return dirEdge == null;
   }

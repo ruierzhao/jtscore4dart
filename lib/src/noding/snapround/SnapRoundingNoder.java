@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding.snapround;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +54,7 @@ import org.locationtech.jts.noding.SegmentString;
  * 
  * @version 1.7
  */
-public class SnapRoundingNoder
+class SnapRoundingNoder
     implements Noder
 {
   /**
@@ -68,7 +68,7 @@ public class SnapRoundingNoder
   
   private List<NodedSegmentString> snappedResult;
 
-  public SnapRoundingNoder(PrecisionModel pm) {
+  SnapRoundingNoder(PrecisionModel pm) {
     this.pm = pm;
     pixelIndex = new HotPixelIndex(pm);
   }
@@ -77,7 +77,7 @@ public class SnapRoundingNoder
 	 * @return a Collection of NodedSegmentStrings representing the substrings
 	 * 
 	 */
-  public Collection getNodedSubstrings()
+  Collection getNodedSubstrings()
   {
     return NodedSegmentString.getNodedSubstrings(snappedResult);
   }
@@ -88,7 +88,7 @@ public class SnapRoundingNoder
    * 
    * @param inputSegmentStrings a Collection of NodedSegmentStrings
    */
-  public void computeNodes(Collection inputSegmentStrings)
+  void computeNodes(Collection inputSegmentStrings)
   {
     snappedResult = snapRound(inputSegmentStrings);
   }
@@ -141,7 +141,7 @@ public class SnapRoundingNoder
    */
   private void addVertexPixels(Collection<NodedSegmentString> segStrings) {
     for (SegmentString nss : segStrings) {
-      Coordinate[] pts = nss.getCoordinates();
+      List<Coordinate> pts = nss.getCoordinates();
       pixelIndex.add(pts);
     }
   }
@@ -159,7 +159,7 @@ public class SnapRoundingNoder
    * @param pts the coordinates to round
    * @return array of rounded coordinates
    */
-  private Coordinate[] round(Coordinate[] pts) {
+  private List<Coordinate> round(List<Coordinate> pts) {
     CoordinateList roundPts = new CoordinateList();
     
     for (int i = 0; i < pts.length; i++ ) {
@@ -203,14 +203,14 @@ public class SnapRoundingNoder
    */
   private NodedSegmentString computeSegmentSnaps(NodedSegmentString ss)
   {
-    //Coordinate[] pts = ss.getCoordinates();
+    //List<Coordinate> pts = ss.getCoordinates();
     /**
      * Get edge coordinates, including added intersection nodes.
      * The coordinates are now rounded to the grid,
      * in preparation for snapping to the Hot Pixels
      */
-    Coordinate[] pts = ss.getNodedCoordinates();
-    Coordinate[] ptsRound = round(pts);
+    List<Coordinate> pts = ss.getNodedCoordinates();
+    List<Coordinate> ptsRound = round(pts);
     
     // if complete collapse this edge can be eliminated
     if (ptsRound.length <= 1) 
@@ -257,7 +257,7 @@ public class SnapRoundingNoder
     pixelIndex.query(p0, p1, new KdNodeVisitor() {
 
       @Override
-      public void visit(KdNode node) {
+      void visit(KdNode node) {
         HotPixel hp = (HotPixel) node.getData();
         
         /**
@@ -293,7 +293,7 @@ public class SnapRoundingNoder
    */
   private void addVertexNodeSnaps(NodedSegmentString ss)
   {
-    Coordinate[] pts = ss.getCoordinates();
+    List<Coordinate> pts = ss.getCoordinates();
     for (int i = 1; i < pts.length - 1; i++ ) {
       Coordinate p0 = pts[i];
       snapVertexNode( p0, ss, i);      
@@ -304,7 +304,7 @@ public class SnapRoundingNoder
     pixelIndex.query(p0, p0, new KdNodeVisitor() {
 
       @Override
-      public void visit(KdNode node) {
+      void visit(KdNode node) {
         HotPixel hp = (HotPixel) node.getData();
         /**
          * If vertex pixel is a node, add it.

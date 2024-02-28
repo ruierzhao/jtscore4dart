@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,23 +25,23 @@ class PolygonBuilder {
   private GeometryFactory geometryFactory;
   private List<OverlayEdgeRing> shellList = new ArrayList<OverlayEdgeRing>();
   private List<OverlayEdgeRing> freeHoleList = new ArrayList<OverlayEdgeRing>();
-  private boolean isEnforcePolygonal = true;
+  private bool isEnforcePolygonal = true;
 
-  public PolygonBuilder(List<OverlayEdge> resultAreaEdges, GeometryFactory geomFact) {
+  PolygonBuilder(List<OverlayEdge> resultAreaEdges, GeometryFactory geomFact) {
     this(resultAreaEdges, geomFact, true);
   }
   
-  public PolygonBuilder(List<OverlayEdge> resultAreaEdges, GeometryFactory geomFact, boolean isEnforcePolygonal) {
+  PolygonBuilder(List<OverlayEdge> resultAreaEdges, GeometryFactory geomFact, bool isEnforcePolygonal) {
     this.geometryFactory = geomFact;
     this.isEnforcePolygonal = isEnforcePolygonal;
     buildRings(resultAreaEdges);
   }
 
-  public List<Polygon> getPolygons() {
+  List<Polygon> getPolygons() {
     return computePolygons(shellList);  
   }
 
-  public List<OverlayEdgeRing> getShellRings() {
+  List<OverlayEdgeRing> getShellRings() {
     return shellList;  
   }
 

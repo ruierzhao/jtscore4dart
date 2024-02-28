@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,19 +32,19 @@ import org.locationtech.jts.geom.Coordinate;
  * @author Martin Davis
  *
  */
-public class SegmentExtractingNoder implements Noder {
+class SegmentExtractingNoder implements Noder {
 
   private List segList;
   
   /**
    * Creates a new segment-extracting noder.
    */
-  public SegmentExtractingNoder() {
+  SegmentExtractingNoder() {
     
   }
 
   @Override
-  public void computeNodes(Collection segStrings) {
+  void computeNodes(Collection segStrings) {
     segList = extractSegments(segStrings);
   }
 
@@ -60,13 +60,13 @@ public class SegmentExtractingNoder implements Noder {
     for (int i = 0; i < ss.size() - 1; i++) {
       Coordinate p0 = ss.getCoordinate(i);
       Coordinate p1 = ss.getCoordinate(i + 1);
-      SegmentString seg = new BasicSegmentString(new Coordinate[] { p0, p1 }, ss.getData());
+      SegmentString seg = new BasicSegmentString(new List<Coordinate> { p0, p1 }, ss.getData());
       segList.add(seg);
     }
   }
 
   @Override
-  public Collection getNodedSubstrings() {
+  Collection getNodedSubstrings() {
     return segList;
   }
 

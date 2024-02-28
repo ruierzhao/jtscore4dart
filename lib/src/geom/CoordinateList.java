@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,18 +22,18 @@ import java.util.Iterator;
  *
  * @version 1.7
  */
-public class CoordinateList
+class CoordinateList
   extends ArrayList<Coordinate>
 {
   private static final long serialVersionUID = -1626110935756089896L;
 //With contributions from Markus Schaber [schabios@logi-track.com]
   //[Jon Aquino 2004-03-25]
-  private final static Coordinate[] coordArrayType = new Coordinate[0];
+  private final static List<Coordinate> coordArrayType = new Coordinate[0];
 
   /**
    * Constructs a new list without any coordinates
    */
-  public CoordinateList()
+  CoordinateList()
   {
   }
 
@@ -44,7 +44,7 @@ public class CoordinateList
    * 
    * @param coord the initial coordinates
    */
-  public CoordinateList(Coordinate[] coord)
+  CoordinateList(List<Coordinate> coord)
   {
   	ensureCapacity(coord.length);
     add(coord, true);
@@ -57,13 +57,13 @@ public class CoordinateList
    * @param coord the array of coordinates to load into the list
    * @param allowRepeated if <code>false</code>, repeated points are removed
    */
-  public CoordinateList(Coordinate[] coord, boolean allowRepeated)
+  CoordinateList(List<Coordinate> coord, bool allowRepeated)
   {
   	ensureCapacity(coord.length);
     add(coord, allowRepeated);
   }
 
-  public Coordinate getCoordinate(int i) { return (Coordinate) get(i); }
+  Coordinate getCoordinate(int i) { return (Coordinate) get(i); }
 
 
   /** 
@@ -74,7 +74,7 @@ public class CoordinateList
    * @param end the index to add up to but not including
    * @return true (as by general collection contract)
    */
-  public boolean add(Coordinate[] coord, boolean allowRepeated, int start, int end)
+  bool add(List<Coordinate> coord, bool allowRepeated, int start, int end)
   {
     int inc = 1;
     if (start > end) inc = -1;
@@ -92,7 +92,7 @@ public class CoordinateList
    * @param direction if false, the array is added in reverse order
    * @return true (as by general collection contract)
    */
-  public boolean add(Coordinate[] coord, boolean allowRepeated, boolean direction)
+  bool add(List<Coordinate> coord, bool allowRepeated, bool direction)
   {
     if (direction) {
       for (int i = 0; i < coord.length; i++) {
@@ -114,7 +114,7 @@ public class CoordinateList
    * @param allowRepeated if set to false, repeated coordinates are collapsed
    * @return true (as by general collection contract)
    */
-  public boolean add(Coordinate[] coord, boolean allowRepeated)
+  bool add(List<Coordinate> coord, bool allowRepeated)
   {
     add(coord, allowRepeated, true);
     return true;
@@ -126,7 +126,7 @@ public class CoordinateList
    * @param allowRepeated if set to false, repeated coordinates are collapsed
    * @return true (as by general collection contract)
    */
-  public boolean add(Object obj, boolean allowRepeated)
+  bool add(Object obj, bool allowRepeated)
   {
     add((Coordinate) obj, allowRepeated);
     return true;
@@ -138,7 +138,7 @@ public class CoordinateList
    * @param coord The coordinates
    * @param allowRepeated if set to false, repeated coordinates are collapsed
    */
-  public void add(Coordinate coord, boolean allowRepeated)
+  void add(Coordinate coord, bool allowRepeated)
   {
     // don't add duplicate coordinates
     if (! allowRepeated) {
@@ -157,7 +157,7 @@ public class CoordinateList
    * @param coord the coordinate to insert
    * @param allowRepeated if set to false, repeated coordinates are collapsed
    */
-  public void add(int i, Coordinate coord, boolean allowRepeated)
+  void add(int i, Coordinate coord, bool allowRepeated)
   {
     // don't add duplicate coordinates
     if (! allowRepeated) {
@@ -181,9 +181,9 @@ public class CoordinateList
    * @param allowRepeated if set to false, repeated coordinates are collapsed
    * @return true (as by general collection contract)
    */
-  public boolean addAll(Collection<? extends Coordinate> coll, boolean allowRepeated)
+  bool addAll(Collection<? extends Coordinate> coll, bool allowRepeated)
   {
-    boolean isChanged = false;
+    bool isChanged = false;
     for (Iterator<? extends Coordinate> i = coll.iterator(); i.hasNext(); ) {
       add(i.next(), allowRepeated);
       isChanged = true;
@@ -194,7 +194,7 @@ public class CoordinateList
   /**
    * Ensure this coordList is a ring, by adding the start point if necessary
    */
-  public void closeRing()
+  void closeRing()
   {
     if (size() > 0) {
       Coordinate duplicate = get(0).copy();
@@ -206,9 +206,9 @@ public class CoordinateList
    *
    * @return the coordinates
    */
-  public Coordinate[] toCoordinateArray()
+  List<Coordinate> toCoordinateArray()
   {
-    return (Coordinate[]) toArray(coordArrayType);
+    return (List<Coordinate>) toArray(coordArrayType);
   }
 
   /**
@@ -218,14 +218,14 @@ public class CoordinateList
    * @param isForward true if the direction is forward, false for reverse
    * @return an oriented array of coordinates
    */
-  public Coordinate[] toCoordinateArray(boolean isForward)
+  List<Coordinate> toCoordinateArray(bool isForward)
   {
     if (isForward) {
-      return (Coordinate[]) toArray(coordArrayType);
+      return (List<Coordinate>) toArray(coordArrayType);
     }
     // construct reversed array
     int size = size();
-    Coordinate[] pts = new Coordinate[size];
+    List<Coordinate> pts = new Coordinate[size];
     for (int i = 0; i < size; i++) {
       pts[i] = get(size - i - 1);
     }
@@ -237,7 +237,7 @@ public class CoordinateList
    *
    * @return a clone of this <tt>CoordinateList</tt> instance
    */
-  public Object clone() {
+  Object clone() {
       CoordinateList clone = (CoordinateList) super.clone();
       for (int i = 0; i < this.size(); i++) {	  
           clone.add(i, (Coordinate) this.get(i).clone());

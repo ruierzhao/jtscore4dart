@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.index.kdtree;
+
 
 /**
  * A visitor for {@link KdNode}s in a {@link KdTree} index.
@@ -18,7 +18,7 @@ package org.locationtech.jts.index.kdtree;
  * @version 1.7
  */
 
-public interface KdNodeVisitor
+interface KdNodeVisitor
 {
   /**
    * Visits a node.

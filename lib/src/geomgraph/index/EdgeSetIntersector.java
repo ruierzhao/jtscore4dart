@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph.index;
+
 
 /**
  * @version 1.7
@@ -29,9 +29,9 @@ import java.util.List;
  *
  * @version 1.7
  */
-public abstract class EdgeSetIntersector 
+abstract class EdgeSetIntersector 
 {
-  public EdgeSetIntersector() {
+  EdgeSetIntersector() {
   }
 
   /**
@@ -42,7 +42,7 @@ public abstract class EdgeSetIntersector
    * @param si the SegmentIntersector to use
    * @param testAllSegments true if self-intersections are to be tested as well
    */
-  abstract public void computeIntersections(List edges, SegmentIntersector si, boolean testAllSegments);
+  abstract void computeIntersections(List edges, SegmentIntersector si, bool testAllSegments);
 
   /**
    * Computes all mutual intersections between two sets of edges.
@@ -50,7 +50,7 @@ public abstract class EdgeSetIntersector
    * @param edges1 set of edges
    * @param si segment intersector
    */
-  abstract public void computeIntersections(List edges0, List edges1, SegmentIntersector si);
+  abstract void computeIntersections(List edges0, List edges1, SegmentIntersector si);
 
 
 

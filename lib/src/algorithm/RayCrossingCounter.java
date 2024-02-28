@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -46,7 +46,7 @@ import org.locationtech.jts.geom.Polygonal;
  * @author Martin Davis
  *
  */
-public class RayCrossingCounter 
+class RayCrossingCounter 
 {
 	/**
 	 * Determines the {@link Location} of a point in a ring.
@@ -56,7 +56,7 @@ public class RayCrossingCounter
 	 * @param ring an array of Coordinates forming a ring 
 	 * @return the location of the point in the ring
 	 */
-	public static int locatePointInRing(Coordinate p, Coordinate[] ring) 
+	static int locatePointInRing(Coordinate p, List<Coordinate> ring) 
 	{
 		RayCrossingCounter counter = new RayCrossingCounter(p);
 	
@@ -79,7 +79,7 @@ public class RayCrossingCounter
    *            a coordinate sequence forming a ring
    * @return the location of the point in the ring
    */
-  public static int locatePointInRing(Coordinate p, CoordinateSequence ring) {
+  static int locatePointInRing(Coordinate p, CoordinateSequence ring) {
     RayCrossingCounter counter = new RayCrossingCounter(p);
 
     Coordinate p1 = new Coordinate();
@@ -101,9 +101,9 @@ public class RayCrossingCounter
 	private Coordinate p;
 	private int crossingCount = 0;
 	// true if the test point lies on an input segment
-	private boolean isPointOnSegment = false;
+	private bool isPointOnSegment = false;
 	
-	public RayCrossingCounter(Coordinate p)
+	RayCrossingCounter(Coordinate p)
 	{
 		this.p = p;
 	}
@@ -114,7 +114,7 @@ public class RayCrossingCounter
 	 * @param p1 an endpoint of the segment
 	 * @param p2 another endpoint of the segment
 	 */
-	public void countSegment(Coordinate p1, Coordinate p2) {
+	void countSegment(Coordinate p1, Coordinate p2) {
 		/**
 		 * For each segment, check if it crosses 
 		 * a horizontal ray running from the test point in the positive x direction.
@@ -179,7 +179,7 @@ public class RayCrossingCounter
 	 * 
 	 * @return the crossing count
 	 */
-	public int getCount() {
+	int getCount() {
 	  return crossingCount;
 	}
 	
@@ -192,7 +192,7 @@ public class RayCrossingCounter
    * 
    * @return true if the point lies exactly on a segment
    */
-	public boolean isOnSegment() { return isPointOnSegment; }
+	bool isOnSegment() { return isPointOnSegment; }
 	
 	/**
 	 * Gets the {@link Location} of the point relative to 
@@ -204,7 +204,7 @@ public class RayCrossingCounter
 	 * 
 	 * @return the Location of the point
 	 */
-	public int getLocation() 
+	int getLocation() 
 	{
 		if (isPointOnSegment)
 			return Location.BOUNDARY;
@@ -227,7 +227,7 @@ public class RayCrossingCounter
 	 * 
 	 * @return true if the point lies in or on the supplied polygon
 	 */
-	public boolean isPointInPolygon()
+	bool isPointInPolygon()
 	{
 		return getLocation() != Location.EXTERIOR;
 	}

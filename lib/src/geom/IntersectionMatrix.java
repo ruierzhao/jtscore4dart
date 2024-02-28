@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * Models a <b>Dimensionally Extended Nine-Intersection Model (DE-9IM)</b> matrix. 
@@ -54,7 +54,7 @@ package org.locationtech.jts.geom;
  *
  *@version 1.7
  */
-public class IntersectionMatrix implements Cloneable {
+class IntersectionMatrix implements Cloneable {
   /**
    *  Internal representation of this <code>IntersectionMatrix</code>.
    */
@@ -64,7 +64,7 @@ public class IntersectionMatrix implements Cloneable {
    *  Creates an <code>IntersectionMatrix</code> with <code>FALSE</code>
    *  dimension values.
    */
-  public IntersectionMatrix() {
+  IntersectionMatrix() {
     matrix = new int[3][3];
     setAll(Dimension.FALSE);
   }
@@ -75,7 +75,7 @@ public class IntersectionMatrix implements Cloneable {
    *
    *@param  elements  a String of nine dimension symbols in row major order
    */
-  public IntersectionMatrix(String elements) {
+  IntersectionMatrix(String elements) {
     this();
     set(elements);
   }
@@ -86,7 +86,7 @@ public class IntersectionMatrix implements Cloneable {
    *
    *@param  other  an <code>IntersectionMatrix</code> to copy
    */
-  public IntersectionMatrix(IntersectionMatrix other) {
+  IntersectionMatrix(IntersectionMatrix other) {
     this();
     matrix[Location.INTERIOR][Location.INTERIOR] = other.matrix[Location.INTERIOR][Location.INTERIOR];
     matrix[Location.INTERIOR][Location.BOUNDARY] = other.matrix[Location.INTERIOR][Location.BOUNDARY];
@@ -106,7 +106,7 @@ public class IntersectionMatrix implements Cloneable {
    *
    * @param im the matrix to add
    */
-  public void add(IntersectionMatrix im)
+  void add(IntersectionMatrix im)
   {
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -123,7 +123,7 @@ public class IntersectionMatrix implements Cloneable {
    *      . Possible values are <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>.
    *@return true if the dimension value matches TRUE
    */
-  public static boolean isTrue(int actualDimensionValue) {
+  static bool isTrue(int actualDimensionValue) {
     if (actualDimensionValue >= 0 || actualDimensionValue  == Dimension.TRUE) {
       return true;
     }
@@ -141,7 +141,7 @@ public class IntersectionMatrix implements Cloneable {
    *@return                          true if the dimension symbol matches
    *      the dimension value
    */
-  public static boolean matches(int actualDimensionValue, char requiredDimensionSymbol) {
+  static bool matches(int actualDimensionValue, char requiredDimensionSymbol) {
     if (requiredDimensionSymbol == Dimension.SYM_DONTCARE) {
       return true;
     }
@@ -175,7 +175,7 @@ public class IntersectionMatrix implements Cloneable {
    *@return                           true if each of the required dimension
    *      symbols encompass the corresponding actual dimension symbol
    */
-  public static boolean matches(String actualDimensionSymbols, String requiredDimensionSymbols) {
+  static bool matches(String actualDimensionSymbols, String requiredDimensionSymbols) {
     IntersectionMatrix m = new IntersectionMatrix(actualDimensionSymbols);
     return m.matches(requiredDimensionSymbols);
   }
@@ -190,7 +190,7 @@ public class IntersectionMatrix implements Cloneable {
    *      indicating the interior, boundary or exterior of the second <code>Geometry</code>
    *@param  dimensionValue  the new value of the element
    */
-  public void set(int row, int column, int dimensionValue) {
+  void set(int row, int column, int dimensionValue) {
     matrix[row][column] = dimensionValue;
   }
 
@@ -201,7 +201,7 @@ public class IntersectionMatrix implements Cloneable {
    *@param  dimensionSymbols  nine dimension symbols to which to set this <code>IntersectionMatrix</code>
    *      s elements. Possible values are <code>{T, F, * , 0, 1, 2}</code>
    */
-  public void set(String dimensionSymbols) {
+  void set(String dimensionSymbols) {
     for (int i = 0; i < dimensionSymbols.length(); i++) {
       int row = i / 3;
       int col = i % 3;
@@ -221,7 +221,7 @@ public class IntersectionMatrix implements Cloneable {
    *      element. The order of dimension values from least to greatest is
    *      <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>.
    */
-  public void setAtLeast(int row, int column, int minimumDimensionValue) {
+  void setAtLeast(int row, int column, int minimumDimensionValue) {
     if (matrix[row][column] < minimumDimensionValue) {
       matrix[row][column] = minimumDimensionValue;
     }
@@ -239,7 +239,7 @@ public class IntersectionMatrix implements Cloneable {
    *      element. The order of dimension values from least to greatest is
    *      <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>.
    */
-  public void setAtLeastIfValid(int row, int column, int minimumDimensionValue) {
+  void setAtLeastIfValid(int row, int column, int minimumDimensionValue) {
     if (row >= 0 && column >= 0) {
       setAtLeast(row, column, minimumDimensionValue);
     }
@@ -255,7 +255,7 @@ public class IntersectionMatrix implements Cloneable {
    *      order of dimension values from least to greatest is <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>
    *      .
    */
-  public void setAtLeast(String minimumDimensionSymbols) {
+  void setAtLeast(String minimumDimensionSymbols) {
     for (int i = 0; i < minimumDimensionSymbols.length(); i++) {
       int row = i / 3;
       int col = i % 3;
@@ -271,7 +271,7 @@ public class IntersectionMatrix implements Cloneable {
    *      s elements. Possible values <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>
    *      .
    */
-  public void setAll(int dimensionValue) {
+  void setAll(int dimensionValue) {
     for (int ai = 0; ai < 3; ai++) {
       for (int bi = 0; bi < 3; bi++) {
         matrix[ai][bi] = dimensionValue;
@@ -293,7 +293,7 @@ public class IntersectionMatrix implements Cloneable {
    *      indicating the interior, boundary or exterior of the second <code>Geometry</code>
    *@return         the dimension value at the given matrix position.
    */
-  public int get(int row, int column) {
+  int get(int row, int column) {
     return matrix[row][column];
   }
 
@@ -303,7 +303,7 @@ public class IntersectionMatrix implements Cloneable {
    *@return    <code>true</code> if the two <code>Geometry</code>s related by
    *      this matrix are disjoint
    */
-  public boolean isDisjoint() {
+  bool isDisjoint() {
     return
         matrix[Location.INTERIOR][Location.INTERIOR] == Dimension.FALSE &&
         matrix[Location.INTERIOR][Location.BOUNDARY] == Dimension.FALSE &&
@@ -317,7 +317,7 @@ public class IntersectionMatrix implements Cloneable {
    *@return <code>true</code> if the two <code>Geometry</code>s related by
    *      this matrix intersect
    */
-  public boolean isIntersects() {
+  bool isIntersects() {
     return ! isDisjoint();
   }
 
@@ -331,7 +331,7 @@ public class IntersectionMatrix implements Cloneable {
    *      s related by this matrix touch; Returns false
    *      if both <code>Geometry</code>s are points.
    */
-  public boolean isTouches(int dimensionOfGeometryA, int dimensionOfGeometryB) {
+  bool isTouches(int dimensionOfGeometryA, int dimensionOfGeometryB) {
     if (dimensionOfGeometryA > dimensionOfGeometryB) {
       //no need to get transpose because pattern matrix is symmetrical
       return isTouches(dimensionOfGeometryB, dimensionOfGeometryA);
@@ -374,7 +374,7 @@ public class IntersectionMatrix implements Cloneable {
    *@return                       <code>true</code> if the two <code>Geometry</code>s
    *      related by this matrix cross.
    */
-  public boolean isCrosses(int dimensionOfGeometryA, int dimensionOfGeometryB) {
+  bool isCrosses(int dimensionOfGeometryA, int dimensionOfGeometryB) {
     if ((dimensionOfGeometryA == Dimension.P && dimensionOfGeometryB == Dimension.L) ||
         (dimensionOfGeometryA == Dimension.P && dimensionOfGeometryB == Dimension.A) ||
         (dimensionOfGeometryA == Dimension.L && dimensionOfGeometryB == Dimension.A)) {
@@ -399,7 +399,7 @@ public class IntersectionMatrix implements Cloneable {
    *@return    <code>true</code> if the first <code>Geometry</code> is within
    *      the second
    */
-  public boolean isWithin() {
+  bool isWithin() {
     return isTrue(matrix[Location.INTERIOR][Location.INTERIOR]) &&
         matrix[Location.INTERIOR][Location.EXTERIOR] == Dimension.FALSE &&
         matrix[Location.BOUNDARY][Location.EXTERIOR] == Dimension.FALSE;
@@ -411,7 +411,7 @@ public class IntersectionMatrix implements Cloneable {
    *@return    <code>true</code> if the first <code>Geometry</code> contains the
    *      second
    */
-  public boolean isContains() {
+  bool isContains() {
     return isTrue(matrix[Location.INTERIOR][Location.INTERIOR]) &&
         matrix[Location.EXTERIOR][Location.INTERIOR] == Dimension.FALSE &&
         matrix[Location.EXTERIOR][Location.BOUNDARY] == Dimension.FALSE;
@@ -427,8 +427,8 @@ public class IntersectionMatrix implements Cloneable {
    *@return    <code>true</code> if the first <code>Geometry</code> covers the
    *      second
    */
-  public boolean isCovers() {
-    boolean hasPointInCommon =
+  bool isCovers() {
+    bool hasPointInCommon =
         isTrue(matrix[Location.INTERIOR][Location.INTERIOR])
         || isTrue(matrix[Location.INTERIOR][Location.BOUNDARY])
         || isTrue(matrix[Location.BOUNDARY][Location.INTERIOR])
@@ -449,8 +449,8 @@ public class IntersectionMatrix implements Cloneable {
    *@return    <code>true</code> if the first <code>Geometry</code>
    * is covered by the second
    */
-  public boolean isCoveredBy() {
-    boolean hasPointInCommon =
+  bool isCoveredBy() {
+    bool hasPointInCommon =
         isTrue(matrix[Location.INTERIOR][Location.INTERIOR])
         || isTrue(matrix[Location.INTERIOR][Location.BOUNDARY])
         || isTrue(matrix[Location.BOUNDARY][Location.INTERIOR])
@@ -478,7 +478,7 @@ public class IntersectionMatrix implements Cloneable {
    *      related by this matrix are equal; the
    *      <code>Geometry</code>s must have the same dimension to be equal
    */
-  public boolean isEquals(int dimensionOfGeometryA, int dimensionOfGeometryB) {
+  bool isEquals(int dimensionOfGeometryA, int dimensionOfGeometryB) {
     if (dimensionOfGeometryA != dimensionOfGeometryB) {
       return false;
     }
@@ -503,7 +503,7 @@ public class IntersectionMatrix implements Cloneable {
    *      function to return <code>true</code>, the <code>Geometry</code>s must
    *      be two points, two curves or two surfaces.
    */
-  public boolean isOverlaps(int dimensionOfGeometryA, int dimensionOfGeometryB) {
+  bool isOverlaps(int dimensionOfGeometryA, int dimensionOfGeometryB) {
     if ((dimensionOfGeometryA == Dimension.P && dimensionOfGeometryB == Dimension.P) ||
         (dimensionOfGeometryA == Dimension.A && dimensionOfGeometryB == Dimension.A)) {
       return isTrue(matrix[Location.INTERIOR][Location.INTERIOR]) 
@@ -526,9 +526,9 @@ public class IntersectionMatrix implements Cloneable {
    *      symbol values are <code>{T, F, * , 0, 1, 2}</code>.
    *@return <code>true</code> if this matrix matches the pattern
    */
-  public boolean matches(String pattern) {
+  bool matches(String pattern) {
     if (pattern.length() != 9) {
-      throw new IllegalArgumentException("Should be length 9: " + pattern);
+      throw new ArgumentError("Should be length 9: " + pattern);
     }
     for (int ai = 0; ai < 3; ai++) {
       for (int bi = 0; bi < 3; bi++) {
@@ -546,7 +546,7 @@ public class IntersectionMatrix implements Cloneable {
    *
    *@return    this <code>IntersectionMatrix</code> as a convenience
    */
-  public IntersectionMatrix transpose() {
+  IntersectionMatrix transpose() {
     int temp = matrix[1][0];
     matrix[1][0] = matrix[0][1];
     matrix[0][1] = temp;
@@ -566,7 +566,7 @@ public class IntersectionMatrix implements Cloneable {
    *@return    the nine dimension symbols of this <code>IntersectionMatrix</code>
    *      in row-major order.
    */
-  public String toString() {
+  String toString() {
     StringBuilder builder = new StringBuilder("123456789");
     for (int ai = 0; ai < 3; ai++) {
       for (int bi = 0; bi < 3; bi++) {

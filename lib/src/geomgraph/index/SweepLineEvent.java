@@ -9,12 +9,12 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph.index;
+
 
 /**
  * @version 1.7
  */
-public class SweepLineEvent
+class SweepLineEvent
   implements Comparable
 { 
   private static final int INSERT = 1;
@@ -34,7 +34,7 @@ public class SweepLineEvent
    * @param x the event location
    * @param obj the object being inserted
    */
-  public SweepLineEvent(Object label, double x, Object obj)
+  SweepLineEvent(Object label, double x, Object obj)
   {
     this.eventType = INSERT;
     this.label = label;
@@ -48,22 +48,22 @@ public class SweepLineEvent
    * @param x the event location
    * @param insertEvent the corresponding INSERT event
    */
-  public SweepLineEvent(double x, SweepLineEvent insertEvent)
+  SweepLineEvent(double x, SweepLineEvent insertEvent)
   {
     eventType = DELETE;
     xValue = x;
     this.insertEvent = insertEvent;
   }
 
-  public boolean isInsert() { return eventType == INSERT; }
-  public boolean isDelete() { return eventType == DELETE; }
-  public SweepLineEvent getInsertEvent() { return insertEvent; }
-  public int getDeleteEventIndex() { return deleteEventIndex; }
-  public void setDeleteEventIndex(int deleteEventIndex) { this.deleteEventIndex = deleteEventIndex; }
+  bool isInsert() { return eventType == INSERT; }
+  bool isDelete() { return eventType == DELETE; }
+  SweepLineEvent getInsertEvent() { return insertEvent; }
+  int getDeleteEventIndex() { return deleteEventIndex; }
+  void setDeleteEventIndex(int deleteEventIndex) { this.deleteEventIndex = deleteEventIndex; }
 
-  public Object getObject() { return obj; }
+  Object getObject() { return obj; }
 
-  public boolean isSameLabel(SweepLineEvent ev)
+  bool isSameLabel(SweepLineEvent ev)
   {
     // no label set indicates single group
     if (label == null) return false;
@@ -75,7 +75,7 @@ public class SweepLineEvent
    * items whose Insert and Delete events occur at the same x-value will be
    * correctly handled.
    */
-  public int compareTo(Object o) {
+  int compareTo(Object o) {
     SweepLineEvent pe = (SweepLineEvent) o;
     if (xValue < pe.xValue) return  -1;
     if (xValue > pe.xValue) return   1;

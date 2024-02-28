@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer.validate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -32,9 +32,9 @@ import org.locationtech.jts.util.Debug;
  *
  * @author Martin Davis
  */
-public class BufferResultValidator 
+class BufferResultValidator 
 {
-  private static boolean VERBOSE = false;
+  private static bool VERBOSE = false;
   
 	/**
 	 * Maximum allowable fraction of buffer distance the 
@@ -43,7 +43,7 @@ public class BufferResultValidator
 	 */
 	private static final double MAX_ENV_DIFF_FRAC = .012;
 
-  public static boolean isValid(Geometry g, double distance, Geometry result)
+  static bool isValid(Geometry g, double distance, Geometry result)
   {
   	BufferResultValidator validator = new BufferResultValidator(g, distance, result);
     if (validator.isValid())
@@ -61,7 +61,7 @@ public class BufferResultValidator
    * @return an appropriate error message
    * or null if the buffer is valid
    */
-  public static String isValidMsg(Geometry g, double distance, Geometry result)
+  static String isValidMsg(Geometry g, double distance, Geometry result)
   {
   	BufferResultValidator validator = new BufferResultValidator(g, distance, result);
     if (! validator.isValid())
@@ -72,19 +72,19 @@ public class BufferResultValidator
   private Geometry input;
   private double distance;
   private Geometry result;
-  private boolean isValid = true;
+  private bool isValid = true;
   private String errorMsg = null;
   private Coordinate errorLocation = null;
   private Geometry errorIndicator = null;
   
-  public BufferResultValidator(Geometry input, double distance, Geometry result)
+  BufferResultValidator(Geometry input, double distance, Geometry result)
   {
   	this.input = input;
   	this.distance = distance;
   	this.result = result;
   }
   
-  public boolean isValid()
+  bool isValid()
   {
   	checkPolygonal();
   	if (! isValid) return isValid;
@@ -98,12 +98,12 @@ public class BufferResultValidator
   	return isValid;
   }
   
-  public String getErrorMessage()
+  String getErrorMessage()
   {
   	return errorMsg;
   }
   
-  public Coordinate getErrorLocation()
+  Coordinate getErrorLocation()
   {
   	return errorLocation;
   }
@@ -118,7 +118,7 @@ public class BufferResultValidator
    * @return a geometric error indicator
    * or null if no error was found
    */
-  public Geometry getErrorIndicator()
+  Geometry getErrorIndicator()
   {
     return errorIndicator;
   }

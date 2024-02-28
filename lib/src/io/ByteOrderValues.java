@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 /**
  * Methods to read and write primitive Java datatypes from/to byte
@@ -17,12 +17,12 @@ package org.locationtech.jts.io;
  * <p>
  * Similar to the standard Java <code>ByteBuffer</code> class.
  */
-public class ByteOrderValues
+class ByteOrderValues
 {
-  public static final int BIG_ENDIAN = 1;
-  public static final int LITTLE_ENDIAN = 2;
+  static final int BIG_ENDIAN = 1;
+  static final int LITTLE_ENDIAN = 2;
 
-  public static int getInt(byte[] buf, int byteOrder)
+  static int getInt(byte[] buf, int byteOrder)
   {
     if (byteOrder == BIG_ENDIAN) {
       return  ( (buf[0] & 0xff) << 24)
@@ -38,7 +38,7 @@ public class ByteOrderValues
     }
   }
 
-  public static void putInt(int intValue, byte[] buf, int byteOrder)
+  static void putInt(int intValue, byte[] buf, int byteOrder)
   {
     if (byteOrder == BIG_ENDIAN) {
       buf[0] = (byte)(intValue >> 24);
@@ -53,7 +53,7 @@ public class ByteOrderValues
       buf[3] = (byte)(intValue >> 24);
     }
   }
-  public static long getLong(byte[] buf, int byteOrder)
+  static long getLong(byte[] buf, int byteOrder)
   {
     if (byteOrder == BIG_ENDIAN) {
       return
@@ -79,7 +79,7 @@ public class ByteOrderValues
     }
   }
 
-  public static void putLong(long longValue, byte[] buf, int byteOrder)
+  static void putLong(long longValue, byte[] buf, int byteOrder)
   {
     if (byteOrder == BIG_ENDIAN) {
       buf[0] = (byte)(longValue >> 56);
@@ -103,13 +103,13 @@ public class ByteOrderValues
     }
   }
 
-  public static double getDouble(byte[] buf, int byteOrder)
+  static double getDouble(byte[] buf, int byteOrder)
   {
     long longVal = getLong(buf, byteOrder);
     return Double.longBitsToDouble(longVal);
   }
 
-  public static void putDouble(double doubleValue, byte[] buf, int byteOrder)
+  static void putDouble(double doubleValue, byte[] buf, int byteOrder)
   {
     long longVal = Double.doubleToLongBits(doubleValue);
     putLong(longVal, buf, byteOrder);

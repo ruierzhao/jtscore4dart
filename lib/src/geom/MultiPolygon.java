@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  *
  *@version 1.7
  */
-public class MultiPolygon
+class MultiPolygon
 	extends GeometryCollection
 	implements Polygonal
 {
@@ -45,7 +45,7 @@ public class MultiPolygon
    *      <code>MultiPolygon</code>
    * @deprecated Use GeometryFactory instead
    */
-  public MultiPolygon(Polygon[] polygons, PrecisionModel precisionModel, int SRID) {
+  MultiPolygon(Polygon[] polygons, PrecisionModel precisionModel, int SRID) {
     this(polygons, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -60,28 +60,28 @@ public class MultiPolygon
    *            HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple
    *            Features Specification for SQL</A>.
    */
-  public MultiPolygon(Polygon[] polygons, GeometryFactory factory) {
+  MultiPolygon(Polygon[] polygons, GeometryFactory factory) {
     super(polygons, factory);
   }
 
-  public int getDimension() {
+  int getDimension() {
     return 2;
   }
 
-  public boolean hasDimension(int dim) {
+  bool hasDimension(int dim) {
     return dim == 2;
   }
   
-  public int getBoundaryDimension() {
+  int getBoundaryDimension() {
     return 1;
   }
 
-  public String getGeometryType() {
+  String getGeometryType() {
     return Geometry.TYPENAME_MULTIPOLYGON;
   }
 
   /*
-  public boolean isSimple() {
+  bool isSimple() {
     return true;
   }
 */
@@ -92,7 +92,7 @@ public class MultiPolygon
    * @return a lineal geometry (which may be empty)
    * @see Geometry#getBoundary
    */
-  public Geometry getBoundary() {
+  Geometry getBoundary() {
     if (isEmpty()) {
       return getFactory().createMultiLineString();
     }
@@ -108,7 +108,7 @@ public class MultiPolygon
     return getFactory().createMultiLineString((LineString[]) allRings.toArray(allRingsArray));
   }
 
-  public boolean equalsExact(Geometry other, double tolerance) {
+  bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
@@ -122,7 +122,7 @@ public class MultiPolygon
    *
    * @return a MultiPolygon in the reverse order
    */
-  public MultiPolygon reverse() {
+  MultiPolygon reverse() {
     return (MultiPolygon) super.reverse();
   }
 

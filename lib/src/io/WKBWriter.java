@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -170,7 +170,7 @@ import org.locationtech.jts.util.Assert;
  * </pre></blockquote> 
  * @see WKBReader
  */
-public class WKBWriter
+class WKBWriter
 {
   /**
    * Converts a byte array to a hexadecimal string.
@@ -180,7 +180,7 @@ public class WKBWriter
    * 
    * @deprecated
    */
-  public static String bytesToHex(byte[] bytes)
+  static String bytesToHex(byte[] bytes)
   {
     return toHex(bytes);
   }
@@ -191,7 +191,7 @@ public class WKBWriter
    * @param bytes a byte array
    * @return a string of hexadecimal digits
    */
-  public static String toHex(byte[] bytes)
+  static String toHex(byte[] bytes)
   {
     StringBuffer buf = new StringBuffer();
     for (int i = 0; i < bytes.length; i++) {
@@ -205,7 +205,7 @@ public class WKBWriter
   private static char toHexDigit(int n)
   {
     if (n < 0 || n > 15)
-      throw new IllegalArgumentException("Nibble value out of range: " + n);
+      throw new ArgumentError("Nibble value out of range: " + n);
     if (n <= 9)
       return (char) ('0' + n);
     return (char) ('A' + (n - 10));
@@ -213,7 +213,7 @@ public class WKBWriter
 
   private int outputDimension = 2;
   private int byteOrder;
-  private boolean includeSRID = false;
+  private bool includeSRID = false;
   private ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
   private OutStream byteArrayOutStream = new OutputStreamOutStream(byteArrayOS);
   // holds output data values
@@ -223,7 +223,7 @@ public class WKBWriter
    * Creates a writer that writes {@link Geometry}s with
    * output dimension = 2 and BIG_ENDIAN byte order
    */
-  public WKBWriter() {
+  WKBWriter() {
     this(2, ByteOrderValues.BIG_ENDIAN);
   }
 
@@ -236,7 +236,7 @@ public class WKBWriter
    *
    * @param outputDimension the coordinate dimension to output (2 or 3)
    */
-  public WKBWriter(int outputDimension) {
+  WKBWriter(int outputDimension) {
     this(outputDimension, ByteOrderValues.BIG_ENDIAN);
   }
 
@@ -252,7 +252,7 @@ public class WKBWriter
    * @param outputDimension the coordinate dimension to output (2 or 3)
    * @param includeSRID indicates whether SRID should be written
    */
-  public WKBWriter(int outputDimension, boolean includeSRID) {
+  WKBWriter(int outputDimension, bool includeSRID) {
     this(outputDimension, ByteOrderValues.BIG_ENDIAN, includeSRID);
   }
   
@@ -266,7 +266,7 @@ public class WKBWriter
    * @param outputDimension the coordinate dimension to output (2 or 3)
    * @param byteOrder the byte ordering to use
    */
-  public WKBWriter(int outputDimension, int byteOrder) {
+  WKBWriter(int outputDimension, int byteOrder) {
       this(outputDimension, byteOrder, false);
   }
   
@@ -282,13 +282,13 @@ public class WKBWriter
    * @param byteOrder the byte ordering to use
    * @param includeSRID indicates whether SRID should be written
    */
-  public WKBWriter(int outputDimension, int byteOrder, boolean includeSRID) {
+  WKBWriter(int outputDimension, int byteOrder, bool includeSRID) {
       this.outputDimension = outputDimension;
       this.byteOrder = byteOrder;
       this.includeSRID = includeSRID;
       
       if (outputDimension < 2 || outputDimension > 3)
-        throw new IllegalArgumentException("Output dimension must be 2 or 3");
+        throw new ArgumentError("Output dimension must be 2 or 3");
   }
   
   /**
@@ -297,7 +297,7 @@ public class WKBWriter
    * @param geom the geometry to write
    * @return the byte array containing the WKB
    */
-  public byte[] write(Geometry geom)
+  byte[] write(Geometry geom)
   {
     try {
       byteArrayOS.reset();
@@ -316,7 +316,7 @@ public class WKBWriter
    * @param os the out stream to write to
    * @throws IOException if an I/O error occurs
    */
-  public void write(Geometry geom, OutStream os) throws IOException
+  void write(Geometry geom, OutStream os) throws IOException
   {
     if (geom instanceof Point)
       writePoint((Point) geom, os);
@@ -385,7 +385,7 @@ public class WKBWriter
     writeByteOrder(os);
     writeGeometryType(geometryType, gc, os);
     writeInt(gc.getNumGeometries(), os);
-    boolean originalIncludeSRID = this.includeSRID;
+    bool originalIncludeSRID = this.includeSRID;
     this.includeSRID = false;
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       write(gc.getGeometryN(i), os);
@@ -420,7 +420,7 @@ public class WKBWriter
     os.write(buf, 4);
   }
 
-  private void writeCoordinateSequence(CoordinateSequence seq, boolean writeSize, OutStream os)
+  private void writeCoordinateSequence(CoordinateSequence seq, bool writeSize, OutStream os)
       throws IOException
   {
     if (writeSize)

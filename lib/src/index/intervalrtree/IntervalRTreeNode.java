@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.intervalrtree;
+
 
 import java.util.Comparator;
 
@@ -18,17 +18,17 @@ import org.locationtech.jts.index.ItemVisitor;
 import org.locationtech.jts.io.WKTWriter;
 
 
-public abstract class IntervalRTreeNode 
+abstract class IntervalRTreeNode 
 {
 	protected double min = Double.POSITIVE_INFINITY;
 	protected double max = Double.NEGATIVE_INFINITY;
 
-	public double getMin() { return min; }
-	public double getMax() { return max; }
+	double getMin() { return min; }
+	double getMax() { return max; }
 	
-	public abstract void query(double queryMin, double queryMax, ItemVisitor visitor);
+	abstract void query(double queryMin, double queryMax, ItemVisitor visitor);
 	
-	protected boolean intersects(double queryMin, double queryMax)
+	protected bool intersects(double queryMin, double queryMax)
 	{
 		if (min > queryMax 
 				|| max < queryMin)
@@ -36,14 +36,14 @@ public abstract class IntervalRTreeNode
 		return true;
 	}
 
-	public String toString()
+	String toString()
 	{
 		return WKTWriter.toLineString(new Coordinate(min, 0), new Coordinate(max, 0));
 	}
   
-  public static class NodeComparator implements Comparator
+  static class NodeComparator implements Comparator
   {
-    public int compare(Object o1, Object o2)
+    int compare(Object o1, Object o2)
     {
       IntervalRTreeNode n1 = (IntervalRTreeNode) o1;
       IntervalRTreeNode n2 = (IntervalRTreeNode) o2;

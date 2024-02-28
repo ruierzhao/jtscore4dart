@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.planargraph;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,7 +27,7 @@ import java.util.Set;
  * No new objects are created when edges are added -
  * all associated components must already exist in the parent graph.
  */
-public class Subgraph
+class Subgraph
 {
   protected PlanarGraph parentGraph;
   protected Set edges = new HashSet();
@@ -39,7 +39,7 @@ public class Subgraph
    *
    * @param parentGraph the parent graph
    */
-  public Subgraph(PlanarGraph parentGraph) {
+  Subgraph(PlanarGraph parentGraph) {
     this.parentGraph = parentGraph;
   }
 
@@ -49,7 +49,7 @@ public class Subgraph
    *
    * @return the parent PlanarGraph
    */
-  public PlanarGraph getParent()
+  PlanarGraph getParent()
   {
     return parentGraph;
   }
@@ -60,7 +60,7 @@ public class Subgraph
    *
    * @param e the edge to add
    */
-  public void add(Edge e)
+  void add(Edge e)
   {
     if (edges.contains(e)) return;
 
@@ -79,7 +79,7 @@ public class Subgraph
    *
    * @see #add(Edge)
    */
-  public Iterator dirEdgeIterator()  {    return dirEdges.iterator();  }
+  Iterator dirEdgeIterator()  {    return dirEdges.iterator();  }
 
   /**
    * Returns an {@link Iterator} over the {@link Edge}s in this graph,
@@ -89,19 +89,19 @@ public class Subgraph
    *
    * @see #add(Edge)
    */
-  public Iterator edgeIterator()  {    return edges.iterator();  }
+  Iterator edgeIterator()  {    return edges.iterator();  }
 
   /**
    * Returns an {@link Iterator} over the {@link Node}s in this graph.
    * @return an iterator over the nodes
    */
-  public Iterator nodeIterator()  {    return nodeMap.iterator();  }
+  Iterator nodeIterator()  {    return nodeMap.iterator();  }
 
   /**
    * Tests whether an {@link Edge} is contained in this subgraph
    * @param e the edge to test
    * @return <code>true</code> if the edge is contained in this subgraph
    */
-  public boolean contains(Edge e) { return edges.contains(e); }
+  bool contains(Edge e) { return edges.contains(e); }
 
 }

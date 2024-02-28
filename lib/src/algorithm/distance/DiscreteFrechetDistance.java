@@ -9,10 +9,10 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.distance;
+
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -48,7 +48,7 @@ import org.locationtech.jts.geom.Geometry;
  * @see <a href="https://towardsdatascience.com/fast-discrete-fr%C3%A9chet-distance-d6b422a8fb77">
  *   Fast Discrete Fréchet Distance</a>
  */
-public class DiscreteFrechetDistance {
+class DiscreteFrechetDistance {
 
   /**
    * Computes the Discrete Fréchet Distance between two {@link Geometry}s
@@ -58,7 +58,7 @@ public class DiscreteFrechetDistance {
    * @param g1 the 2nd geometry
    * @return the cartesian distance between {#g0} and {#g1}
    */
-  public static double distance(Geometry g0, Geometry g1) {
+  static double distance(Geometry g0, Geometry g1) {
 
     DiscreteFrechetDistance dist = new DiscreteFrechetDistance(g0, g1);
     return dist.distance();
@@ -74,7 +74,7 @@ public class DiscreteFrechetDistance {
    * @param g0 a geometry
    * @param g1 a geometry
    */
-  public DiscreteFrechetDistance(Geometry g0, Geometry g1) {
+  DiscreteFrechetDistance(Geometry g0, Geometry g1) {
     this.g0 = g0;
     this.g1 = g1;
   }
@@ -85,13 +85,13 @@ public class DiscreteFrechetDistance {
    * @return the Discrete Fréchet Distance
    */
   private double distance() {
-    Coordinate[] coords0 = g0.getCoordinates();
-    Coordinate[] coords1 = g1.getCoordinates();
+    List<Coordinate> coords0 = g0.getCoordinates();
+    List<Coordinate> coords1 = g1.getCoordinates();
 
     MatrixStorage distances = createMatrixStorage(coords0.length, coords1.length);
     int[] diagonal = bresenhamDiagonal(coords0.length, coords1.length);
 
-    HashMap<Double, int[]> distanceToPair = new HashMap<>();
+    Map<Double, int[]> distanceToPair = new Map<>();
     computeCoordinateDistances(coords0, coords1, diagonal, distances, distanceToPair);
     ptDist = computeFrechet(coords0, coords1, diagonal, distances, distanceToPair);
 
@@ -120,7 +120,7 @@ public class DiscreteFrechetDistance {
    *
    * @return the pair of Coordinates at which the distance is obtained
    */
-  public Coordinate[] getCoordinates() {
+  List<Coordinate> getCoordinates() {
     if (ptDist == null)
       distance();
 
@@ -137,8 +137,8 @@ public class DiscreteFrechetDistance {
    * @param distanceToPair a lookup for coordinate pairs based on a distance
    *
    */
-  private static PointPairDistance computeFrechet(Coordinate[] coords0, Coordinate[] coords1, int[] diagonal,
-                                                  MatrixStorage distances, HashMap<Double, int[]> distanceToPair) {
+  private static PointPairDistance computeFrechet(List<Coordinate> coords0, List<Coordinate> coords1, int[] diagonal,
+                                                  MatrixStorage distances, Map<Double, int[]> distanceToPair) {
     for (int d = 0; d < diagonal.length; d += 2) {
       int i0 = diagonal[d];
       int j0 = diagonal[d + 1];
@@ -210,8 +210,8 @@ public class DiscreteFrechetDistance {
    * @param distances the distance matrix
    * @param distanceToPair a lookup for coordinate pairs based on a distance
    */
-  private void computeCoordinateDistances(Coordinate[] coords0, Coordinate[] coords1, int[] diagonal,
-                                          MatrixStorage distances, HashMap<Double, int[]> distanceToPair) {
+  private void computeCoordinateDistances(List<Coordinate> coords0, List<Coordinate> coords1, int[] diagonal,
+                                          MatrixStorage distances, Map<Double, int[]> distanceToPair) {
     int numDiag = diagonal.length;
     double maxDistOnDiag = 0d;
     int imin = 0, jmin = 0;
@@ -339,7 +339,7 @@ public class DiscreteFrechetDistance {
      * @param numCols the number of columns
      * @param defaultValue A default value
      */
-    public MatrixStorage(int numRows, int numCols, double defaultValue)
+    MatrixStorage(int numRows, int numCols, double defaultValue)
     {
       this.numRows = numRows;
       this.numCols = numCols;
@@ -352,7 +352,7 @@ public class DiscreteFrechetDistance {
      * @param j the column index
      * @return The matrix value at i, j
      */
-    public abstract double get(int i, int j);
+    abstract double get(int i, int j);
 
     /**
      * Sets the matrix value at i, j
@@ -360,7 +360,7 @@ public class DiscreteFrechetDistance {
      * @param j the column index
      * @param value The matrix value to set at i, j
      */
-    public abstract void set(int i, int j, double value);
+    abstract void set(int i, int j, double value);
 
     /**
      * Gets a flag indicating if the matrix has a set value, e.g. one that is different
@@ -369,11 +369,11 @@ public class DiscreteFrechetDistance {
      * @param j the column index
      * @return a flag indicating if the matrix has a set value
      */
-    public abstract boolean isValueSet(int i, int j);
+    abstract bool isValueSet(int i, int j);
 
     /* For debugging purposes only
     @Override
-    public String toString() {
+    String toString() {
       StringBuilder sb = new StringBuilder("[");
       for (int i = 0; i < this.numRows; i++)
       {
@@ -408,20 +408,20 @@ public class DiscreteFrechetDistance {
      * @param numCols the number of columns
      * @param defaultValue A default value
      */
-    public RectMatrix(int numRows, int numCols, double defaultValue)
+    RectMatrix(int numRows, int numCols, double defaultValue)
     {
       super(numRows, numCols, defaultValue);
       this.matrix = new double[numRows * numCols];
       Arrays.fill(this.matrix, defaultValue);
     }
 
-    public double get(int i, int j) { return this.matrix[i * numCols + j]; }
+    double get(int i, int j) { return this.matrix[i * numCols + j]; }
 
-    public void set(int i, int j, double value) {
+    void set(int i, int j, double value) {
       this.matrix[i * numCols + j] = value;
     }
 
-    public boolean isValueSet(int i, int j) {
+    bool isValueSet(int i, int j) {
       return Double.doubleToLongBits(get(i, j)) != Double.doubleToLongBits(this.defaultValue);
     }
   }
@@ -438,10 +438,10 @@ public class DiscreteFrechetDistance {
     private final int[] ri;
     private int[] ci;
 
-    public CsrMatrix(int numRows, int numCols, double defaultValue) {
+    CsrMatrix(int numRows, int numCols, double defaultValue) {
       this(numRows, numCols, defaultValue, expectedValuesHeuristic(numRows, numCols));
     }
-    public CsrMatrix(int numRows, int numCols, double defaultValue, int expectedValues) {
+    CsrMatrix(int numRows, int numCols, double defaultValue, int expectedValues) {
       super(numRows, numCols, defaultValue);
       this.v = new double[expectedValues];
       this.ci = new int[expectedValues];
@@ -468,7 +468,7 @@ public class DiscreteFrechetDistance {
     }
 
     @Override
-    public double get(int i, int j) {
+    double get(int i, int j) {
 
       // get the index in the vector
       int vi = indexOf(i, j);
@@ -481,7 +481,7 @@ public class DiscreteFrechetDistance {
     }
 
     @Override
-    public void set(int i, int j, double value) {
+    void set(int i, int j, double value) {
 
       // get the index in the vector
       int vi = indexOf(i, j);
@@ -513,7 +513,7 @@ public class DiscreteFrechetDistance {
     }
 
     @Override
-    public boolean isValueSet(int i, int j) {
+    bool isValueSet(int i, int j) {
       return indexOf(i, j) >= 0;
     }
 
@@ -533,11 +533,11 @@ public class DiscreteFrechetDistance {
   }
 
   /**
-   * A sparse matrix based on java's {@link HashMap}.
+   * A sparse matrix based on java's {@link Map}.
    */
-  final static class HashMapMatrix extends MatrixStorage {
+  final static class MapMatrix extends MatrixStorage {
 
-    private final HashMap<Long, Double> matrix;
+    private final Map<Long, Double> matrix;
 
     /**
      * Creates an instance of this class
@@ -545,22 +545,22 @@ public class DiscreteFrechetDistance {
      * @param numCols the number of columns
      * @param defaultValue a default value
      */
-    public HashMapMatrix(int numRows, int numCols, double defaultValue) {
+    MapMatrix(int numRows, int numCols, double defaultValue) {
       super(numRows, numCols, defaultValue);
-      this.matrix = new HashMap<>();
+      this.matrix = new Map<>();
     }
 
-    public double get(int i, int j) {
+    double get(int i, int j) {
       long key = (long)i << 32 | j;
       return matrix.getOrDefault(key, this.defaultValue);
     }
 
-    public void set(int i, int j, double value) {
+    void set(int i, int j, double value) {
       long key = (long)i << 32 | j;
       matrix.put(key, value);
     }
 
-    public boolean isValueSet(int i, int j) {
+    bool isValueSet(int i, int j) {
       long key = (long)i << 32 | j;
       return matrix.containsKey(key);
     }

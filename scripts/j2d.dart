@@ -277,7 +277,6 @@ typedef ReadDirCallback = void Function(
 // 修改代码源文件
 /// [i] 处理第i个文件。debug 参数
 void editFile(String filename, bool needRename, Editor editor, {int? i}) {
-  print(">> editor: $editor");
   if (editor.getFile() != filename) {
     print(">>>> 编辑的文件不一致。。");
     return;
@@ -309,16 +308,18 @@ void readDirAndEditFile(
   List<FileSystemEntity> dirlist = dir.listSync(recursive: true);
   // print('==============${dirlist.length}====================='); // 649
 
-  // editor ??= Editor(); // 初始化编辑器 // 异步函数不能起作用
-
   int i = 0;
   for (var path in dirlist) {
     i++;
     var filestat = path.statSync();
 
     var srcName = path.path;
+    // editor ??= Editor(); // 初始化编辑器 // 异步函数不能起作用
     // editor.setFile(srcName);
-    if (FileSystemEntityType.file == filestat.type) {
+    if (FileSystemEntityType.file == filestat.type &&
+            (srcName.endsWith(".java") ||
+                srcName.endsWith(".dart")) /** 粗略判断文件类型 */
+        ) {
       callbackHandler(srcName, needRename, Editor.fromFileName(srcName), i: i);
     } else {
       print('======dir:${path.path}');
@@ -329,7 +330,9 @@ void readDirAndEditFile(
 }
 
 // 只修改文件名
-void renameJava2Dart(String dir,) {
+void renameJava2Dart(
+  String dir,
+) {
 // 递归读取当前文件夹下的文件及目录
   ((
     String currDir, {

@@ -9,12 +9,12 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 /**
  * Constant values used by the WKB format
  */
-public interface WKBConstants {
+interface WKBConstants {
   int wkbXDR = 0;
   int wkbNDR = 1;
 

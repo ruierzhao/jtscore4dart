@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.densify;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -34,14 +34,14 @@ import org.locationtech.jts.geom.util.GeometryTransformer;
  * <p>
  * By default polygonal results are processed to ensure they are valid.
  * This processing is costly, and it is very rare for results to be invalid.
- * Validation processing can be disabled by calling the {@link #setValidate(boolean)} method.
+ * Validation processing can be disabled by calling the {@link #setValidate(bool)} method.
  * <p>
  * <b>Note:</b> At some future point this class will
  * offer a variety of densification strategies.
  * 
  * @author Martin Davis
  */
-public class Densifier {
+class Densifier {
 	/**
 	 * Densifies a geometry using a given distance tolerance,
    * and respecting the input geometry's {@link PrecisionModel}.
@@ -50,7 +50,7 @@ public class Densifier {
 	 * @param distanceTolerance the distance tolerance to densify
 	 * @return the densified geometry
 	 */
-	public static Geometry densify(Geometry geom, double distanceTolerance) {
+	static Geometry densify(Geometry geom, double distanceTolerance) {
 		Densifier densifier = new Densifier(geom);
 		densifier.setDistanceTolerance(distanceTolerance);
 		return densifier.getResultGeometry();
@@ -63,7 +63,7 @@ public class Densifier {
 	 * @param distanceTolerance the densify tolerance
 	 * @return the densified coordinate sequence
 	 */
-	private static Coordinate[] densifyPoints(Coordinate[] pts,
+	private static List<Coordinate> densifyPoints(List<Coordinate> pts,
 			double distanceTolerance, PrecisionModel precModel) {
 		LineSegment seg = new LineSegment();
 		CoordinateList coordList = new CoordinateList();
@@ -103,14 +103,14 @@ public class Densifier {
 	/**
 	 * Indicates whether areas should be topologically validated.
 	 */
-  private boolean isValidated = true;
+  private bool isValidated = true;
 
 	/**
 	 * Creates a new densifier instance.
 	 * 
 	 * @param inputGeom
 	 */
-	public Densifier(Geometry inputGeom) {
+	Densifier(Geometry inputGeom) {
 		this.inputGeom = inputGeom;
 	}
 
@@ -122,9 +122,9 @@ public class Densifier {
 	 * @param distanceTolerance
 	 *          the densification tolerance to use
 	 */
-	public void setDistanceTolerance(double distanceTolerance) {
+	void setDistanceTolerance(double distanceTolerance) {
 		if (distanceTolerance <= 0.0)
-			throw new IllegalArgumentException("Tolerance must be positive");
+			throw new ArgumentError("Tolerance must be positive");
 		this.distanceTolerance = distanceTolerance;
 	}
 
@@ -133,7 +133,7 @@ public class Densifier {
 	 * 
 	 * @param isValidated true if the results should be validated
 	 */
-	public void setValidate(boolean isValidated) {
+	void setValidate(bool isValidated) {
 	  this.isValidated  = isValidated;
 	}
 	
@@ -142,23 +142,23 @@ public class Densifier {
 	 * 
 	 * @return the densified geometry
 	 */
-	public Geometry getResultGeometry() {
+	Geometry getResultGeometry() {
 		return (new DensifyTransformer(distanceTolerance, isValidated)).transform(inputGeom);
 	}
 
 	static class DensifyTransformer extends GeometryTransformer {
 	  double distanceTolerance;
-    private boolean isValidated;
+    private bool isValidated;
 	  
-	  DensifyTransformer(double distanceTolerance, boolean isValidated) {
+	  DensifyTransformer(double distanceTolerance, bool isValidated) {
 	    this.distanceTolerance = distanceTolerance;
 	    this.isValidated = isValidated;
     }
 	  
 		protected CoordinateSequence transformCoordinates(
 				CoordinateSequence coords, Geometry parent) {
-			Coordinate[] inputPts = coords.toCoordinateArray();
-			Coordinate[] newPts = Densifier
+			List<Coordinate> inputPts = coords.toCoordinateArray();
+			List<Coordinate> newPts = Densifier
 					.densifyPoints(inputPts, distanceTolerance, parent.getPrecisionModel());
 			// prevent creation of invalid linestrings
 			if (parent instanceof LineString && newPts.length == 1) {

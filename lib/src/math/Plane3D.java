@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.math;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -20,19 +20,19 @@ import org.locationtech.jts.geom.Coordinate;
  * @author mdavis
  *
  */
-public class Plane3D {
+class Plane3D {
 	
 	/**
 	 * Enums for the 3 coordinate planes
 	 */
-	public static final int XY_PLANE = 1;
-	public static final int YZ_PLANE = 2;
-	public static final int XZ_PLANE = 3;
+	static final int XY_PLANE = 1;
+	static final int YZ_PLANE = 2;
+	static final int XZ_PLANE = 3;
 	
 	private Vector3D normal;
 	private Coordinate basePt;
 
-	public Plane3D(Vector3D normal, Coordinate basePt)
+	Plane3D(Vector3D normal, Coordinate basePt)
 	{
 		this.normal = normal;
 		this.basePt = basePt;
@@ -50,11 +50,11 @@ public class Plane3D {
 	 * @param p the point to compute the distance for
 	 * @return the oriented distance to the plane
 	 */
-	public double orientedDistance(Coordinate p) {
+	double orientedDistance(Coordinate p) {
 		Vector3D pb = new Vector3D(p, basePt);
 		double pbdDotNormal = pb.dot(normal);
 		if (Double.isNaN(pbdDotNormal)) 
-			throw new IllegalArgumentException("3D Coordinate has NaN ordinate");
+			throw new ArgumentError("3D Coordinate has NaN ordinate");
 		double d = pbdDotNormal / normal.length();
 		return d;
 	}
@@ -70,10 +70,10 @@ public class Plane3D {
 	 *  
 	 * @return the index of the closest axis plane.
 	 */
-	public int closestAxisPlane() {
-		double xmag = Math.abs(normal.getX());
-		double ymag = Math.abs(normal.getY());
-		double zmag = Math.abs(normal.getZ());
+	int closestAxisPlane() {
+		double xmag = (normal.getX().abs());
+		double ymag = (normal.getY().abs());
+		double zmag = (normal.getZ().abs());
 		if (xmag > ymag) {
 			if (xmag > zmag)
 				return YZ_PLANE;

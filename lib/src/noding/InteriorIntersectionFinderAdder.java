@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.Coordinate;
  * @version 1.7
  * @see IntersectionAdder
  */
-public class InteriorIntersectionFinderAdder
+class InteriorIntersectionFinderAdder
     implements SegmentIntersector
 {
   private LineIntersector li;
@@ -40,13 +40,13 @@ public class InteriorIntersectionFinderAdder
    *
    * @param li the LineIntersector to use
    */
-  public InteriorIntersectionFinderAdder(LineIntersector li)
+  InteriorIntersectionFinderAdder(LineIntersector li)
   {
     this.li = li;
     interiorIntersections = new ArrayList();
   }
 
-  public List getInteriorIntersections()  {    return interiorIntersections;  }
+  List getInteriorIntersections()  {    return interiorIntersections;  }
 
   /**
    * This method is called by clients
@@ -56,7 +56,7 @@ public class InteriorIntersectionFinderAdder
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
-  public void processIntersections(
+  void processIntersections(
       SegmentString e0,  int segIndex0,
       SegmentString e1,  int segIndex1
       )
@@ -88,6 +88,6 @@ public class InteriorIntersectionFinderAdder
    * 
    * @return false always
    */
-  public boolean isDone() { return false; }
+  bool isDone() { return false; }
 
 }

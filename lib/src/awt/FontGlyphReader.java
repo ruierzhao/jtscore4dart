@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.awt;
+
 
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
@@ -36,31 +36,31 @@ import org.locationtech.jts.geom.util.AffineTransformation;
  * @author Martin Davis
  *
  */
-public class FontGlyphReader 
+class FontGlyphReader 
 {
   /**
    * The font name of the Java logical font Serif.
    */
-  public static final String FONT_SERIF = "Serif";
+  static final String FONT_SERIF = "Serif";
   
   /**
    * The font name of the Java logical font SansSerif.
    * <p>
    * DEPRECATED - use FONT_SANSSERIF
    */
-  public static final String FONT_SANSERIF = "SansSerif";
+  static final String FONT_SANSERIF = "SansSerif";
   
   
   /**
    * The font name of the Java logical font SansSerif.
    */
-  public static final String FONT_SANSSERIF = "SansSerif";
+  static final String FONT_SANSSERIF = "SansSerif";
   
   /**
    * The font name of the Java logical font Monospaced.
    */
 
-  public static final String FONT_MONOSPACED = "Monospaced";
+  static final String FONT_MONOSPACED = "Monospaced";
 	
   // a flatness factor empirically determined to provide good results
   private static final double FLATNESS_FACTOR = 400;
@@ -77,7 +77,7 @@ public class FontGlyphReader
    * @param geomFact the geometryFactory to use to create the result
    * @return a polygonal geometry representing the rendered text
    */
-  public static Geometry read(String text, String fontName, int pointSize, GeometryFactory geomFact)
+  static Geometry read(String text, String fontName, int pointSize, GeometryFactory geomFact)
   {
     return read(text, new Font(fontName, Font.PLAIN, pointSize), geomFact);
   }
@@ -91,7 +91,7 @@ public class FontGlyphReader
    * @param geomFact the geometryFactory to use to create the result
    * @return a polygonal geometry representing the rendered text
    */
-  public static Geometry read(String text, Font font, GeometryFactory geomFact)
+  static Geometry read(String text, Font font, GeometryFactory geomFact)
   {
     double flatness = font.getSize() / FLATNESS_FACTOR;
     return read(text, font, flatness, geomFact);
@@ -106,7 +106,7 @@ public class FontGlyphReader
    * @param geomFact the geometryFactory to use to create the result
    * @return a polygonal geometry representing the rendered text
    */
-  public static Geometry read(String text, Font font, double flatness, GeometryFactory geomFact)
+  static Geometry read(String text, Font font, double flatness, GeometryFactory geomFact)
   {
     char[] chs = text.toCharArray();
     FontRenderContext fontContext = new FontRenderContext(null, false, true);

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -38,7 +38,7 @@ import org.locationtech.jts.geom.util.GeometryEditor;
  * 
  * @deprecated use GeometryPrecisionReducer
  */
-public class SimpleGeometryPrecisionReducer
+class SimpleGeometryPrecisionReducer
 {
 	/**
 	 * Convenience method for doing precision reduction on a single geometry,
@@ -48,17 +48,17 @@ public class SimpleGeometryPrecisionReducer
 	 * @param precModel
 	 * @return the reduced geometry
 	 */
-	public static Geometry reduce(Geometry g, PrecisionModel precModel)
+	static Geometry reduce(Geometry g, PrecisionModel precModel)
 	{
 		SimpleGeometryPrecisionReducer reducer = new SimpleGeometryPrecisionReducer(precModel);
 		return reducer.reduce(g);
 	}
 	
   private PrecisionModel newPrecisionModel;
-  private boolean removeCollapsed = true;
-  private boolean changePrecisionModel = false;
+  private bool removeCollapsed = true;
+  private bool changePrecisionModel = false;
 
-  public SimpleGeometryPrecisionReducer(PrecisionModel pm)
+  SimpleGeometryPrecisionReducer(PrecisionModel pm)
   {
     newPrecisionModel = pm;
   }
@@ -71,7 +71,7 @@ public class SimpleGeometryPrecisionReducer
    *
    * @param removeCollapsed if <code>true</code> collapsed components will be removed
    */
-  public void setRemoveCollapsedComponents(boolean removeCollapsed)
+  void setRemoveCollapsedComponents(bool removeCollapsed)
   {
     this.removeCollapsed = removeCollapsed;
   }
@@ -86,12 +86,12 @@ public class SimpleGeometryPrecisionReducer
    * @param changePrecisionModel if <code>true</code> the precision model of the created Geometry will be the
    * the precisionModel supplied in the constructor.
    */
-  public void setChangePrecisionModel(boolean changePrecisionModel)
+  void setChangePrecisionModel(bool changePrecisionModel)
   {
     this.changePrecisionModel = changePrecisionModel;
   }
 
-  public Geometry reduce(Geometry geom)
+  Geometry reduce(Geometry geom)
   {
     GeometryEditor geomEdit;
     if (changePrecisionModel) {
@@ -108,11 +108,11 @@ public class SimpleGeometryPrecisionReducer
   private class PrecisionReducerCoordinateOperation
       extends GeometryEditor.CoordinateOperation
   {
-    public Coordinate[] edit(Coordinate[] coordinates, Geometry geom)
+    List<Coordinate> edit(List<Coordinate> coordinates, Geometry geom)
     {
       if (coordinates.length == 0) return null;
 
-      Coordinate[] reducedCoords = new Coordinate[coordinates.length];
+      List<Coordinate> reducedCoords = new Coordinate[coordinates.length];
       // copy coordinates and reduce
       for (int i = 0; i < coordinates.length; i++) {
         Coordinate coord = new Coordinate(coordinates[i]);
@@ -121,7 +121,7 @@ public class SimpleGeometryPrecisionReducer
       }
       // remove repeated points, to simplify returned geometry as much as possible
       CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
-      Coordinate[] noRepeatedCoords = noRepeatedCoordList.toCoordinateArray();
+      List<Coordinate> noRepeatedCoords = noRepeatedCoordList.toCoordinateArray();
 
       /**
        * Check to see if the removal of repeated points
@@ -137,7 +137,7 @@ public class SimpleGeometryPrecisionReducer
       if (geom instanceof LineString) minLength = 2;
       if (geom instanceof LinearRing) minLength = 4;
 
-      Coordinate[] collapsedCoords = reducedCoords;
+      List<Coordinate> collapsedCoords = reducedCoords;
       if (removeCollapsed) collapsedCoords = null;
 
       // return null or orignal length coordinate array

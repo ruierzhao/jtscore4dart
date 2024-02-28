@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.polygon;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import org.locationtech.jts.triangulate.tri.TriangulationBuilder;
  * <p>
  * Holes are supported.
  */
-public class ConstrainedDelaunayTriangulator {
+class ConstrainedDelaunayTriangulator {
   
   /**
    * Computes the Constrained Delaunay Triangulation of each polygon element in a geometry.
@@ -39,7 +39,7 @@ public class ConstrainedDelaunayTriangulator {
    * @param geom the input geometry
    * @return a GeometryCollection of the computed triangle polygons
    */
-  public static Geometry triangulate(Geometry geom) {
+  static Geometry triangulate(Geometry geom) {
     ConstrainedDelaunayTriangulator cdt = new ConstrainedDelaunayTriangulator(geom);
     return cdt.getResult();
   }
@@ -53,7 +53,7 @@ public class ConstrainedDelaunayTriangulator {
    * 
    * @param inputGeom the input geometry
    */
-  public ConstrainedDelaunayTriangulator(Geometry inputGeom) {
+  ConstrainedDelaunayTriangulator(Geometry inputGeom) {
     geomFact = inputGeom.getFactory();
     this.inputGeom = inputGeom;
   }
@@ -63,7 +63,7 @@ public class ConstrainedDelaunayTriangulator {
    * 
    * @return a collection of the result triangle polygons
    */
-  public Geometry getResult() {
+  Geometry getResult() {
     compute();
     return Tri.toGeometry(triList, geomFact);
   }
@@ -73,7 +73,7 @@ public class ConstrainedDelaunayTriangulator {
    * 
    * @return the list of Tris in the triangulation
    */
-  public List<Tri> getTriangles() {
+  List<Tri> getTriangles() {
     compute();
     return triList;
   }
@@ -97,7 +97,7 @@ public class ConstrainedDelaunayTriangulator {
    * @return list of Tris forming the triangulation
    */
   List<Tri> triangulatePolygon(Polygon poly) {
-    Coordinate[] polyShell = PolygonHoleJoiner.join(poly);
+    List<Coordinate> polyShell = PolygonHoleJoiner.join(poly);
     List<Tri> triList = PolygonEarClipper.triangulate(polyShell);
     
     //long start = System.currentTimeMillis();

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  * @author mbdavis
  *
  */
-public class CoordinatePrecisionReducerFilter
+class CoordinatePrecisionReducerFilter
 	implements CoordinateSequenceFilter
 {
 	private PrecisionModel precModel;
@@ -38,7 +38,7 @@ public class CoordinatePrecisionReducerFilter
 	 * 
 	 * @param precModel the PrecisionModel to use 
 	 */
-	public CoordinatePrecisionReducerFilter(PrecisionModel precModel)
+	CoordinatePrecisionReducerFilter(PrecisionModel precModel)
 	{
 		this.precModel = precModel;
 	}
@@ -46,7 +46,7 @@ public class CoordinatePrecisionReducerFilter
 	/**
 	 * Rounds the Coordinates in the sequence to match the PrecisionModel
 	 */
-	public void filter(CoordinateSequence seq, int i)
+	void filter(CoordinateSequence seq, int i)
 	{
 		seq.setOrdinate(i, 0, precModel.makePrecise(seq.getOrdinate(i, 0)));
 		seq.setOrdinate(i, 1, precModel.makePrecise(seq.getOrdinate(i, 1)));
@@ -57,12 +57,12 @@ public class CoordinatePrecisionReducerFilter
 	 *  
 	 * @return false
 	 */
-  public boolean isDone()  {  	return false;  }
+  bool isDone()  {  	return false;  }
   
   /**
    * Always reports that the geometry has changed
    * 
    * @return true
    */
-  public boolean isGeometryChanged() { return true;   }
+  bool isGeometryChanged() { return true;   }
 }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.awt;
+
 
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -31,7 +31,7 @@ import org.locationtech.jts.geom.Coordinate;
  * @author Martin Davis
  *
  */
-public class PolygonShape implements Shape 
+class PolygonShape implements Shape 
 {
   // use a GeneralPath with a winding rule, since it supports floating point coordinates
     private GeneralPath polygonPath;
@@ -41,20 +41,20 @@ public class PolygonShape implements Shape
      * Creates a new polygon {@link Shape}.
      * 
      * @param shellVertices the vertices of the shell 
-     * @param holeVerticesCollection a collection of Coordinate[] for each hole
+     * @param holeVerticesCollection a collection of List<Coordinate> for each hole
      */
-    public PolygonShape(Coordinate[] shellVertices,
+    PolygonShape(List<Coordinate> shellVertices,
         Collection holeVerticesCollection) 
     {
         polygonPath = toPath(shellVertices);
 
         for (Iterator i = holeVerticesCollection.iterator(); i.hasNext();) {
-            Coordinate[] holeVertices = (Coordinate[]) i.next();
+            List<Coordinate> holeVertices = (List<Coordinate>) i.next();
             polygonPath.append(toPath(holeVertices), false);
         }
     }
 
-    public PolygonShape() 
+    PolygonShape() 
     {
     }
 
@@ -89,7 +89,7 @@ public class PolygonShape implements Shape
      * @param coordinates a coordinate sequence
      * @return the path for the coordinate sequence
      */
-    private GeneralPath toPath(Coordinate[] coordinates) {
+    private GeneralPath toPath(List<Coordinate> coordinates) {
       GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, coordinates.length);
 
       if (coordinates.length > 0) {
@@ -101,43 +101,43 @@ public class PolygonShape implements Shape
       return path;
   }
 
-    public Rectangle getBounds() {
+    Rectangle getBounds() {
       return polygonPath.getBounds();
     }
 
-    public Rectangle2D getBounds2D() {
+    Rectangle2D getBounds2D() {
         return polygonPath.getBounds2D();
     }
 
-    public boolean contains(double x, double y) {
+    bool contains(double x, double y) {
       return polygonPath.contains(x, y);
     }
 
-    public boolean contains(Point2D p) {
+    bool contains(Point2D p) {
       return polygonPath.contains(p);
     }
 
-    public boolean intersects(double x, double y, double w, double h) {
+    bool intersects(double x, double y, double w, double h) {
       return polygonPath.intersects(x, y, w, h);
     }
 
-    public boolean intersects(Rectangle2D r) {
+    bool intersects(Rectangle2D r) {
       return polygonPath.intersects(r);
     }
 
-    public boolean contains(double x, double y, double w, double h) {
+    bool contains(double x, double y, double w, double h) {
       return polygonPath.contains(x, y, w, h);
     }
 
-    public boolean contains(Rectangle2D r) {
+    bool contains(Rectangle2D r) {
       return polygonPath.contains(r);
     }
 
-    public PathIterator getPathIterator(AffineTransform at) {
+    PathIterator getPathIterator(AffineTransform at) {
         return polygonPath.getPathIterator(at);
     }
 
-    public PathIterator getPathIterator(AffineTransform at, double flatness) {
+    PathIterator getPathIterator(AffineTransform at, double flatness) {
     	return polygonPath.getPathIterator(at, flatness);
     }
 }

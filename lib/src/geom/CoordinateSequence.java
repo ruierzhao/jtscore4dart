@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
@@ -40,7 +40,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
  *
  * @version 1.7
  */
-public interface CoordinateSequence
+interface CoordinateSequence
     extends Cloneable
 {
   /** Standard ordinate index value for, where X is 0 */
@@ -100,7 +100,7 @@ public interface CoordinateSequence
    * 
    * @return true if {@link #getZ(int)} is supported.
    */
-  default boolean hasZ() {
+  default bool hasZ() {
       return (getDimension()-getMeasures()) > 2;
   }
 
@@ -114,7 +114,7 @@ public interface CoordinateSequence
    * @see #getMeasures()
    * @see #getM(int)
    */
-  default boolean hasM() {
+  default bool hasM() {
       return getMeasures() > 0;
   }
 
@@ -252,7 +252,7 @@ public interface CoordinateSequence
    *
    * @return a array of coordinates containing the point values in this sequence
    */
-  Coordinate[] toCoordinateArray();
+  List<Coordinate> toCoordinateArray();
 
   /**
    * Expands the given {@link Envelope} to include the coordinates in the sequence.

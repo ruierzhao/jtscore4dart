@@ -9,19 +9,19 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.hprtree;
+
 
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.shape.fractal.HilbertCode;
 
-public class HilbertEncoder {
+class HilbertEncoder {
   private int level;
   private double minx;
   private double miny;
   private double strideX;
   private double strideY;
 
-  public HilbertEncoder(int level, Envelope extent) {
+  HilbertEncoder(int level, Envelope extent) {
     this.level = level;
     int hside = (int) Math.pow(2, level) - 1;
     
@@ -32,7 +32,7 @@ public class HilbertEncoder {
     strideY = extent.getHeight() / hside;
   }
 
-  public int encode(Envelope env) {
+  int encode(Envelope env) {
     double midx = env.getWidth()/2 + env.getMinX();
     int x = (int) ((midx - minx) / strideX);
 

@@ -9,11 +9,11 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Map;
 
@@ -33,12 +33,12 @@ import org.locationtech.jts.geom.Coordinate;
 class OverlayGraph {
   
   private List<OverlayEdge> edges = new ArrayList<OverlayEdge>();
-  private Map<Coordinate, OverlayEdge> nodeMap = new HashMap<Coordinate, OverlayEdge>();
+  private Map<Coordinate, OverlayEdge> nodeMap = new Map<Coordinate, OverlayEdge>();
   
   /**
    * Creates an empty graph.
    */
-  public OverlayGraph() {
+  OverlayGraph() {
   }
 
   /**
@@ -48,7 +48,7 @@ class OverlayGraph {
    * 
    * @return the collection of representative edges in this graph
    */
-  public Collection<OverlayEdge> getEdges() 
+  Collection<OverlayEdge> getEdges() 
   {
     return edges;
   }
@@ -61,7 +61,7 @@ class OverlayGraph {
    * 
    * @return the collection of representative node edges
    */
-  public Collection<OverlayEdge> getNodeEdges()
+  Collection<OverlayEdge> getNodeEdges()
   {
     return nodeMap.values();
   }
@@ -72,7 +72,7 @@ class OverlayGraph {
    * @param nodePt the node coordinate to query
    * @return an edge originating at the point, or null if none exists
    */
-  public OverlayEdge getNodeEdge(Coordinate nodePt) {
+  OverlayEdge getNodeEdge(Coordinate nodePt) {
     return nodeMap.get(nodePt);
   }
   
@@ -81,7 +81,7 @@ class OverlayGraph {
    * 
    * @return the result area edges
    */
-  public List<OverlayEdge> getResultAreaEdges() {
+  List<OverlayEdge> getResultAreaEdges() {
     List<OverlayEdge> resultEdges = new ArrayList<OverlayEdge>();
     for (OverlayEdge edge : getEdges()) {
       if (edge.isInResultArea()) {
@@ -100,7 +100,7 @@ class OverlayGraph {
    * @param label the edge topology information
    * @return the created graph edge with same orientation as the linework
    */
-  public OverlayEdge addEdge(Coordinate[] pts, OverlayLabel label) {
+  OverlayEdge addEdge(List<Coordinate> pts, OverlayLabel label) {
     //if (! isValidEdge(orig, dest)) return null;
     OverlayEdge e = OverlayEdge.createEdgePair(pts, label);
     //Debug.println("added edge: " + e);

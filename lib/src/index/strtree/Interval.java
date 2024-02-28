@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 import org.locationtech.jts.util.Assert;
 
@@ -19,13 +19,13 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class Interval {
+class Interval {
 
-  public Interval(Interval other) {
+  Interval(Interval other) {
     this(other.min, other.max);
   }
 
-  public Interval(double min, double max) {
+  Interval(double min, double max) {
     Assert.isTrue(min <= max);
     this.min = min;
     this.max = max;
@@ -34,22 +34,22 @@ public class Interval {
   private double min;
   private double max;
 
-  public double getCentre() { return (min+max)/2; }
+  double getCentre() { return (min+max)/2; }
 
   /**
    * @return this
    */
-  public Interval expandToInclude(Interval other) {
+  Interval expandToInclude(Interval other) {
     max = Math.max(max, other.max);
     min = Math.min(min, other.min);
     return this;
   }
 
-  public boolean intersects(Interval other) {
+  bool intersects(Interval other) {
     return !(other.min > max || other.max < min);
   }
   
-  public boolean equals(Object o) {
+  bool equals(Object o) {
     if (! (o instanceof Interval)) { return false; }
     Interval other = (Interval) o;
     return min == other.min && max == other.max;
@@ -59,7 +59,7 @@ public class Interval {
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  int hashCode() {
     final int prime = 31;
     int result = 1;
     long temp;

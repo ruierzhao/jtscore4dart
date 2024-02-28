@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * Coordinate subclass supporting XYZM ordinates.
@@ -18,11 +18,11 @@ package org.locationtech.jts.geom;
  *
  * @since 1.16
  */
-public class CoordinateXYZM extends Coordinate {
+class CoordinateXYZM extends Coordinate {
   private static final long serialVersionUID = -8763329985881823442L;
 
   /** Default constructor */
-  public CoordinateXYZM() {
+  CoordinateXYZM() {
     super();
     this.m = 0.0;
   }
@@ -35,7 +35,7 @@ public class CoordinateXYZM extends Coordinate {
    * @param z the Z ordinate
    * @param m the M measure value
    */
-  public CoordinateXYZM(double x, double y, double z, double m) {
+  CoordinateXYZM(double x, double y, double z, double m) {
     super(x, y, z);
     this.m = m;
   }
@@ -45,7 +45,7 @@ public class CoordinateXYZM extends Coordinate {
    * 
    * @param coord the coordinate providing the ordinates
    */
-  public CoordinateXYZM(Coordinate coord) {
+  CoordinateXYZM(Coordinate coord) {
     super(coord);
     m = getM();
   }
@@ -55,7 +55,7 @@ public class CoordinateXYZM extends Coordinate {
    * 
    * @param coord the coordinate providing the ordinates
    */
-  public CoordinateXYZM(CoordinateXYZM coord) {
+  CoordinateXYZM(CoordinateXYZM coord) {
     super(coord);
     m = coord.m;
   }
@@ -65,7 +65,7 @@ public class CoordinateXYZM extends Coordinate {
    * 
    * @return a copy of this CoordinateXYZM
    */
-  public CoordinateXYZM copy() {
+  CoordinateXYZM copy() {
     return new CoordinateXYZM(this);
   }
   
@@ -75,7 +75,7 @@ public class CoordinateXYZM extends Coordinate {
    * @return a new Coordinate
    */
   @Override
-  public Coordinate create() {
+  Coordinate create() {
       return new CoordinateXYZM();
   }
 
@@ -83,15 +83,15 @@ public class CoordinateXYZM extends Coordinate {
   private double m;
 
   /** The m-measure, if available. */
-  public double getM() {
+  double getM() {
     return m;
   }
 
-  public void setM(double m) {
+  void setM(double m) {
     this.m = m;
   }
 
-  public double getOrdinate(int ordinateIndex)
+  double getOrdinate(int ordinateIndex)
   {
     switch (ordinateIndex) {
     case X: return x;
@@ -99,11 +99,11 @@ public class CoordinateXYZM extends Coordinate {
     case Z: return getZ(); // sure to delegate to subclass rather than offer direct field access
     case M: return getM(); // sure to delegate to subclass rather than offer direct field access
     }
-    throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+    throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
   }
   
   @Override
-  public void setCoordinate(Coordinate other)
+  void setCoordinate(Coordinate other)
   {
     x = other.x;
     y = other.y;
@@ -112,7 +112,7 @@ public class CoordinateXYZM extends Coordinate {
   }
   
   @Override
-  public void setOrdinate(int ordinateIndex, double value) {
+  void setOrdinate(int ordinateIndex, double value) {
       switch (ordinateIndex) {
       case X:
         x = value;
@@ -127,11 +127,11 @@ public class CoordinateXYZM extends Coordinate {
         m = value;
         break;
       default:
-        throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+        throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
     }
   }
   
-  public String toString() {
+  String toString() {
     return "(" + x + ", " + y + ", " + getZ() + " m="+getM()+")";
   }
 }

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.overlay;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,15 +33,15 @@ import org.locationtech.jts.geomgraph.PlanarGraph;
  * @author Martin Davis
  * @version 1.7
  */
-public class ConsistentPolygonRingChecker
+class ConsistentPolygonRingChecker
 {
   private PlanarGraph graph;
 
-  public ConsistentPolygonRingChecker(PlanarGraph graph) {
+  ConsistentPolygonRingChecker(PlanarGraph graph) {
     this.graph = graph;
   }
 
-  public void checkAll()
+  void checkAll()
   {
     check(OverlayOp.INTERSECTION);
     check(OverlayOp.DIFFERENCE);
@@ -54,7 +54,7 @@ public class ConsistentPolygonRingChecker
    *
    * @throws TopologyException if inconsistent topology is found
    */
-  public void check(int opCode)
+  void check(int opCode)
   {
     for (Iterator nodeit = graph.getNodeIterator(); nodeit.hasNext(); ) {
       Node node = (Node) nodeit.next();
@@ -74,7 +74,7 @@ public class ConsistentPolygonRingChecker
     return resultAreaEdgeList;
   }
 
-  private boolean isPotentialResultAreaEdge(DirectedEdge de, int opCode)
+  private bool isPotentialResultAreaEdge(DirectedEdge de, int opCode)
   {
     // mark all dirEdges with the appropriate label
     Label label = de.getLabel();

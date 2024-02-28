@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.polygon;
+
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ class TriDelaunayImprover {
    * 
    * @param triList the list of Tris to flip.
    */
-  public static void improve(List<Tri> triList) {
+  static void improve(List<Tri> triList) {
     TriDelaunayImprover improver = new TriDelaunayImprover(triList);
     improver.improve();
   }
@@ -90,7 +90,7 @@ class TriDelaunayImprover {
    * @param tri1 a Tri
    * @return true if the triangles were flipped
    */
-  private boolean improveNonDelaunay(Tri tri, int index) {
+  private bool improveNonDelaunay(Tri tri, int index) {
     if ( tri == null ) {
       return false;
     }
@@ -144,10 +144,10 @@ class TriDelaunayImprover {
    * @param opp1 corner vertex of triangle 1
    * @return true if the quadrilateral is convex
    */
-  private static boolean isConvex(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
+  private static bool isConvex(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
     int dir0 = Orientation.index(opp0, adj0, opp1);
     int dir1 = Orientation.index(opp1, adj1, opp0);
-    boolean isConvex = dir0 == dir1;
+    bool isConvex = dir0 == dir1;
     return isConvex;
   }  
 
@@ -163,7 +163,7 @@ class TriDelaunayImprover {
    * @param opp1 corner vertex of triangle 1
    * @return true if the triangles are Delaunay
    */
-  private static boolean isDelaunay(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
+  private static bool isDelaunay(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
     if (isInCircle(adj0, adj1, opp0, opp1)) return false; 
     if (isInCircle(adj1, adj0, opp1, opp0)) return false;
     return true;
@@ -179,7 +179,7 @@ class TriDelaunayImprover {
    * 
    * @return true if the point is in the circumcircle
    */
-  private static boolean isInCircle(Coordinate a, Coordinate b, Coordinate c, Coordinate p) {
+  private static bool isInCircle(Coordinate a, Coordinate b, Coordinate c, Coordinate p) {
     return TrianglePredicate.isInCircleRobust(a, c, b, p);
   }
 

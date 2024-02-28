@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,7 +27,7 @@ import org.locationtech.jts.geom.CoordinateFilter;
  *
  *@version 1.7
  */
-public class UniqueCoordinateArrayFilter implements CoordinateFilter 
+class UniqueCoordinateArrayFilter implements CoordinateFilter 
 {
   /**
    * Convenience method which allows running the filter over an array of {@link Coordinate}s.
@@ -35,7 +35,7 @@ public class UniqueCoordinateArrayFilter implements CoordinateFilter
    * @param coords an array of coordinates
    * @return an array of the unique coordinates
    */
-  public static Coordinate[] filterCoordinates(Coordinate[] coords)
+  static List<Coordinate> filterCoordinates(List<Coordinate> coords)
   {
     UniqueCoordinateArrayFilter filter = new UniqueCoordinateArrayFilter();
     for (int i = 0; i < coords.length; i++) {
@@ -48,22 +48,22 @@ public class UniqueCoordinateArrayFilter implements CoordinateFilter
   // Use an auxiliary list as well in order to preserve coordinate order
   private List<Coordinate> list = new ArrayList<Coordinate>();
 
-  public UniqueCoordinateArrayFilter() { }
+  UniqueCoordinateArrayFilter() { }
 
   /**
    *  Returns the gathered <code>Coordinate</code>s.
    *
    *@return    the <code>Coordinate</code>s collected by this <code>CoordinateArrayFilter</code>
    */
-  public Coordinate[] getCoordinates() {
-    Coordinate[] coordinates = new Coordinate[list.size()];
-    return (Coordinate[]) list.toArray(coordinates);
+  List<Coordinate> getCoordinates() {
+    List<Coordinate> coordinates = new Coordinate[list.size()];
+    return (List<Coordinate>) list.toArray(coordinates);
   }
 
   /**
    * @see CoordinateFilter#filter(Coordinate)
    */
-  public void filter(Coordinate coord) {
+  void filter(Coordinate coord) {
     if (coordSet.add(coord)) {
       list.add(coord);
     }

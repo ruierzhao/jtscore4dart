@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -35,7 +35,7 @@ import org.locationtech.jts.operation.overlay.OverlayOp;
  * using an explicit precision model to allow robust computation.
  * <p>
  * The overlay can be used to determine any of the 
- * following set-theoretic operations (boolean combinations) of the geometries:</p>
+ * following set-theoretic operations (bool combinations) of the geometries:</p>
  * <ul>
  * <li>{@link #INTERSECTION} - all points which lie in both geometries</li>
  * <li>{@link #UNION} - all points which lie in at least one geometry</li>
@@ -74,7 +74,7 @@ import org.locationtech.jts.operation.overlay.OverlayOp;
  * interact with the snapping to alter the result.</p>
  * <p>
  * Optionally the overlay computation can process using strict mode
- * (via {@link #setStrictMode(boolean)}.
+ * (via {@link #setStrictMode(bool)}.
  * In strict mode result semantics are:</p>
  * <ul>
  * <li>Lines and Points resulting from topology collapses are not included in the result</li>
@@ -104,27 +104,27 @@ import org.locationtech.jts.operation.overlay.OverlayOp;
  * @see OverlayNGRobust
  *
  */
-public class OverlayNG 
+class OverlayNG 
 {
   /**
    * The code for the Intersection overlay operation.
    */
-  public static final int INTERSECTION  = OverlayOp.INTERSECTION;
+  static final int INTERSECTION  = OverlayOp.INTERSECTION;
   
   /**
    * The code for the Union overlay operation.
    */
-  public static final int UNION         = OverlayOp.UNION;
+  static final int UNION         = OverlayOp.UNION;
   
   /**
    *  The code for the Difference overlay operation.
    */
-  public static final int DIFFERENCE    = OverlayOp.DIFFERENCE;
+  static final int DIFFERENCE    = OverlayOp.DIFFERENCE;
   
   /**
    *  The code for the Symmetric Difference overlay operation.
    */
-  public static final int SYMDIFFERENCE = OverlayOp.SYMDIFFERENCE;
+  static final int SYMDIFFERENCE = OverlayOp.SYMDIFFERENCE;
 
   /**
    * The default setting for Strict Mode.
@@ -135,7 +135,7 @@ public class OverlayNG
    *   due to inclusion of intersection components of all dimensions
    * - Results can include lines caused by Area topology collapse
    */
-  static final boolean STRICT_MODE_DEFAULT = false;
+  static final bool STRICT_MODE_DEFAULT = false;
 
   /**
    * Tests whether a point with a given topological {@link Label}
@@ -149,7 +149,7 @@ public class OverlayNG
    * @param opCode the code for the overlay operation to test
    * @return true if the label locations correspond to the overlayOpCode
    */
-  static boolean isResultOfOpPoint(OverlayLabel label, int opCode)
+  static bool isResultOfOpPoint(OverlayLabel label, int opCode)
   {
     int loc0 = label.getLocation(0);
     int loc1 = label.getLocation(1);
@@ -173,7 +173,7 @@ public class OverlayNG
    *
    * @return true if a point with given locations is in the result of the overlay operation
    */
-  static boolean isResultOfOp(int overlayOpCode, int loc0, int loc1)
+  static bool isResultOfOp(int overlayOpCode, int loc0, int loc1)
   {
     if (loc0 == Location.BOUNDARY) loc0 = Location.INTERIOR;
     if (loc1 == Location.BOUNDARY) loc1 = Location.INTERIOR;
@@ -205,7 +205,7 @@ public class OverlayNG
    * @param pm the precision model to use
    * @return the result of the overlay operation
    */
-  public static Geometry overlay(Geometry geom0, Geometry geom1, 
+  static Geometry overlay(Geometry geom0, Geometry geom1, 
       int opCode, PrecisionModel pm)
   {
     OverlayNG ov = new OverlayNG(geom0, geom1, pm, opCode);
@@ -224,7 +224,7 @@ public class OverlayNG
    * @param noder the noder to use
    * @return the result of the overlay operation
    */
-  public static Geometry overlay(Geometry geom0, Geometry geom1, 
+  static Geometry overlay(Geometry geom0, Geometry geom1, 
       int opCode, PrecisionModel pm, Noder noder)
   {
     OverlayNG ov = new OverlayNG(geom0, geom1, pm, opCode);
@@ -243,7 +243,7 @@ public class OverlayNG
    * @param noder the noder to use
    * @return the result of the overlay operation
    */
-  public static Geometry overlay(Geometry geom0, Geometry geom1, 
+  static Geometry overlay(Geometry geom0, Geometry geom1, 
       int opCode, Noder noder)
   {
     OverlayNG ov = new OverlayNG(geom0, geom1, null, opCode);
@@ -274,7 +274,7 @@ public class OverlayNG
    * @param opCode the code for the desired overlay operation
    * @return the result of the overlay operation
    */
-  public static Geometry overlay(Geometry geom0, Geometry geom1, int opCode)
+  static Geometry overlay(Geometry geom0, Geometry geom1, int opCode)
   {
     OverlayNG ov = new OverlayNG(geom0, geom1, opCode);
     return ov.getResult();
@@ -331,12 +331,12 @@ public class OverlayNG
   private GeometryFactory geomFact;
   private PrecisionModel pm;
   private Noder noder;
-  private boolean isStrictMode = STRICT_MODE_DEFAULT;
-  private boolean isOptimized = true;
-  private boolean isAreaResultOnly = false;
-  private boolean isOutputEdges = false;
-  private boolean isOutputResultEdges = false;
-  private boolean isOutputNodedEdges = false;
+  private bool isStrictMode = STRICT_MODE_DEFAULT;
+  private bool isOptimized = true;
+  private bool isAreaResultOnly = false;
+  private bool isOutputEdges = false;
+  private bool isOutputResultEdges = false;
+  private bool isOutputNodedEdges = false;
 
   /**
    * Creates an overlay operation on the given geometries,
@@ -348,7 +348,7 @@ public class OverlayNG
    * @param pm the precision model to use
    * @param opCode the overlay opcode
    */
-  public OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, int opCode) {
+  OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, int opCode) {
     this.pm = pm;
     this.opCode = opCode;
     geomFact = geom0.getFactory();
@@ -373,7 +373,7 @@ public class OverlayNG
    * @param geom1 the B operand geometry (may be null)
    * @param opCode the overlay opcode
    */
-  public OverlayNG(Geometry geom0, Geometry geom1, int opCode) {
+  OverlayNG(Geometry geom0, Geometry geom1, int opCode) {
     this(geom0, geom1, geom0.getFactory().getPrecisionModel(), opCode);
   }  
   
@@ -401,7 +401,7 @@ public class OverlayNG
    * 
    * @param isStrictMode true if strict mode is to be used
    */
-  public void setStrictMode(boolean isStrictMode) {
+  void setStrictMode(bool isStrictMode) {
     this.isStrictMode = isStrictMode;
   }
   
@@ -413,7 +413,7 @@ public class OverlayNG
    * 
    * @param isOptimized whether to optimize processing
    */
-  public void setOptimized(boolean isOptimized) {
+  void setOptimized(bool isOptimized) {
     this.isOptimized = isOptimized;
   }
   
@@ -423,7 +423,7 @@ public class OverlayNG
    * 
    * @param isAreaResultOnly true if the result should contain only area components
    */
-  void setAreaResultOnly(boolean isAreaResultOnly) {
+  void setAreaResultOnly(bool isAreaResultOnly) {
     this.isAreaResultOnly = isAreaResultOnly;
   }
   
@@ -433,16 +433,16 @@ public class OverlayNG
    * 
    * @param isOutputEdges
    */
-  public void setOutputEdges(boolean isOutputEdges ) {
+  void setOutputEdges(bool isOutputEdges ) {
     this.isOutputEdges = isOutputEdges;
   }
   
-  public void setOutputNodedEdges(boolean isOutputNodedEdges ) {
+  void setOutputNodedEdges(bool isOutputNodedEdges ) {
     this.isOutputEdges = true;
     this.isOutputNodedEdges = isOutputNodedEdges;
   }
   
-  public void setOutputResultEdges(boolean isOutputResultEdges ) {
+  void setOutputResultEdges(bool isOutputResultEdges ) {
     this.isOutputResultEdges = isOutputResultEdges;
   }
   //---------------------------------
@@ -456,10 +456,10 @@ public class OverlayNG
    * 
    * @return the result of the overlay operation.
    * 
-   * @throws IllegalArgumentException if the input is not supported (e.g. a mixed-dimension geometry)
+   * @throws ArgumentError if the input is not supported (e.g. a mixed-dimension geometry)
    * @throws TopologyException if a robustness error occurs
    */
-  public Geometry getResult() {
+  Geometry getResult() {
     // handle empty inputs which determine result
     if (OverlayUtil.isEmptyResult(opCode, 
         inputGeom.getGeometry(0), 
@@ -518,7 +518,7 @@ public class OverlayNG
      * and make topology graph area "invert".
      */
     if (OverlayUtil.isFloating(pm)) {
-      boolean isAreaConsistent = OverlayUtil.isResultAreaConsistent(inputGeom.getGeometry(0), inputGeom.getGeometry(1), opCode, result);
+      bool isAreaConsistent = OverlayUtil.isResultAreaConsistent(inputGeom.getGeometry(0), inputGeom.getGeometry(1), opCode, result);
       if (! isAreaConsistent)
         throw new TopologyException("Result area inconsistent with overlay operation");    
     }
@@ -590,20 +590,20 @@ public class OverlayNG
    * @return the result geometry
    */
   private Geometry extractResult(int opCode, OverlayGraph graph) {
-    boolean isAllowMixedIntResult = ! isStrictMode;
+    bool isAllowMixedIntResult = ! isStrictMode;
     
     //--- Build polygons
     List<OverlayEdge> resultAreaEdges = graph.getResultAreaEdges();
     PolygonBuilder polyBuilder = new PolygonBuilder(resultAreaEdges, geomFact);
     List<Polygon> resultPolyList = polyBuilder.getPolygons();
-    boolean hasResultAreaComponents = resultPolyList.size() > 0;
+    bool hasResultAreaComponents = resultPolyList.size() > 0;
     
     List<LineString> resultLineList = null;
     List<Point> resultPointList = null;
     
     if (! isAreaResultOnly) {
       //--- Build lines
-      boolean allowResultLines = ! hasResultAreaComponents 
+      bool allowResultLines = ! hasResultAreaComponents 
           || isAllowMixedIntResult
           || opCode == SYMDIFFERENCE
           || opCode == UNION;
@@ -617,8 +617,8 @@ public class OverlayNG
        * Only an Intersection op can produce point results
        * from non-point inputs. 
        */
-      boolean hasResultComponents = hasResultAreaComponents || resultLineList.size() > 0;
-      boolean allowResultPoints = ! hasResultComponents || isAllowMixedIntResult;
+      bool hasResultComponents = hasResultAreaComponents || resultLineList.size() > 0;
+      bool allowResultPoints = ! hasResultComponents || isAllowMixedIntResult;
       if ( opCode == INTERSECTION && allowResultPoints ) {
         IntersectionPointBuilder pointBuilder = new IntersectionPointBuilder(graph, geomFact);
         pointBuilder.setStrictMode(isStrictMode);
@@ -635,7 +635,7 @@ public class OverlayNG
     return resultGeom;
   }
 
-  private static boolean isEmpty(List list) {
+  private static bool isEmpty(List list) {
     return list == null || list.size() == 0;
   }
   

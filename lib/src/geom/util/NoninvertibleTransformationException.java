@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 /**
  * Indicates that an {@link AffineTransformation}
@@ -18,14 +18,14 @@ package org.locationtech.jts.geom.util;
  * 
  * @author Martin Davis
  */
-public class NoninvertibleTransformationException
+class NoninvertibleTransformationException
 	extends Exception
 {
-  public NoninvertibleTransformationException()
+  NoninvertibleTransformationException()
   {
     super();
   }
-  public NoninvertibleTransformationException(String msg)
+  NoninvertibleTransformationException(String msg)
   {
     super(msg);
   }

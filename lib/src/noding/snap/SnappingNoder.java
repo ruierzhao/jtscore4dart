@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding.snap;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +47,7 @@ import org.locationtech.jts.noding.SegmentString;
  * 
  * @version 1.17
  */
-public class SnappingNoder
+class SnappingNoder
     implements Noder
 {
   private SnappingPointIndex snapIndex;
@@ -59,7 +59,7 @@ public class SnappingNoder
    * 
    * @param snapTolerance points are snapped if within this distance
    */
-  public SnappingNoder(double snapTolerance) {
+  SnappingNoder(double snapTolerance) {
     this.snapTolerance = snapTolerance;
     snapIndex = new SnappingPointIndex(snapTolerance);
   }
@@ -69,7 +69,7 @@ public class SnappingNoder
    * 
 	 * @return a Collection of NodedSegmentStrings representing the substrings
 	 */
-  public Collection getNodedSubstrings()
+  Collection getNodedSubstrings()
   {
     return nodedResult;
   }
@@ -79,7 +79,7 @@ public class SnappingNoder
    * 
    * @param inputSegStrings a Collection of SegmentStrings
    */
-  public void computeNodes(Collection inputSegStrings)
+  void computeNodes(Collection inputSegStrings)
   {
     List<NodedSegmentString> snappedSS = snapVertices(inputSegStrings);
     nodedResult = (List<NodedSegmentString>) snapIntersections(snappedSS);
@@ -110,7 +110,7 @@ public class SnappingNoder
     final int SEED_SIZE_FACTOR = 100;
       
     for (SegmentString ss : segStrings) {
-      Coordinate[] pts = ss.getCoordinates();
+      List<Coordinate> pts = ss.getCoordinates();
       int numPtsToLoad = pts.length / SEED_SIZE_FACTOR;
       double rand = 0.0;
       for (int i = 0; i < numPtsToLoad; i++) {
@@ -122,11 +122,11 @@ public class SnappingNoder
   }
   
   private NodedSegmentString snapVertices(SegmentString ss) {
-    Coordinate[] snapCoords = snap(ss.getCoordinates());
+    List<Coordinate> snapCoords = snap(ss.getCoordinates());
     return new NodedSegmentString(snapCoords, ss.getData());
   }
   
-  private Coordinate[] snap(Coordinate[] coords) {
+  private List<Coordinate> snap(List<Coordinate> coords) {
     CoordinateList snapCoords = new CoordinateList();
     for (int i = 0 ; i < coords.length; i++) {
       Coordinate pt = snapIndex.snap(coords[i]);

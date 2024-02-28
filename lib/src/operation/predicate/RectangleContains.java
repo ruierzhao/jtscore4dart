@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.predicate;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -34,7 +34,7 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @version 1.7
  */
-public class RectangleContains {
+class RectangleContains {
 
   /**
    * Tests whether a rectangle contains a given geometry.
@@ -43,7 +43,7 @@ public class RectangleContains {
    * @param b a Geometry of any type
    * @return true if the geometries intersect
    */
-  public static boolean contains(Polygon rectangle, Geometry b)
+  static bool contains(Polygon rectangle, Geometry b)
   {
     RectangleContains rc = new RectangleContains(rectangle);
     return rc.contains(b);
@@ -56,11 +56,11 @@ public class RectangleContains {
    *
    * @param rectangle a rectangular geometry
    */
-  public RectangleContains(Polygon rectangle) {
+  RectangleContains(Polygon rectangle) {
     rectEnv = rectangle.getEnvelopeInternal();
   }
 
-  public boolean contains(Geometry geom)
+  bool contains(Geometry geom)
   {
     // the test geometry must be wholly contained in the rectangle envelope
     if (! rectEnv.contains(geom.getEnvelopeInternal()))
@@ -76,7 +76,7 @@ public class RectangleContains {
     return true;
   }
 
-  private boolean isContainedInBoundary(Geometry geom)
+  private bool isContainedInBoundary(Geometry geom)
   {
     // polygons can never be wholely contained in the boundary
     if (geom instanceof Polygon) return false;
@@ -91,7 +91,7 @@ public class RectangleContains {
     return true;
   }
 
-  private boolean isPointContainedInBoundary(Point point)
+  private bool isPointContainedInBoundary(Point point)
   {
     return isPointContainedInBoundary(point.getCoordinate());
   }
@@ -102,7 +102,7 @@ public class RectangleContains {
    * @param pt the point to test
    * @return true if the point is contained in the boundary
    */
-  private boolean isPointContainedInBoundary(Coordinate pt)
+  private bool isPointContainedInBoundary(Coordinate pt)
   {
     /**
      * contains = false if the point is properly contained in the rectangle.
@@ -120,7 +120,7 @@ public class RectangleContains {
    * @param line the linestring to test
    * @return true if the linestring is contained in the boundary
    */
-  private boolean isLineStringContainedInBoundary(LineString line)
+  private bool isLineStringContainedInBoundary(LineString line)
   {
     CoordinateSequence seq = line.getCoordinateSequence();
     Coordinate p0 = new Coordinate();
@@ -141,7 +141,7 @@ public class RectangleContains {
    * @param p1 an endpoint of the segment
    * @return true if the line segment is contained in the boundary
    */
-  private boolean isLineSegmentContainedInBoundary(Coordinate p0, Coordinate p1)
+  private bool isLineSegmentContainedInBoundary(Coordinate p0, Coordinate p1)
   {
     if (p0.equals(p1))
       return isPointContainedInBoundary(p0);

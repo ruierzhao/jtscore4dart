@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.bintree;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,13 +22,13 @@ import java.util.List;
  *
  * @version 1.7
  */
-public abstract class NodeBase {
+abstract class NodeBase {
 
   /**
    * Returns the index of the subnode that wholely contains the given interval.
    * If none does, returns -1.
    */
-  public static int getSubnodeIndex(Interval interval, double centre)
+  static int getSubnodeIndex(Interval interval, double centre)
   {
     int subnodeIndex = -1;
     if (interval.min >= centre) subnodeIndex = 1;
@@ -45,16 +45,16 @@ public abstract class NodeBase {
    */
   protected Node[] subnode = new Node[2];
 
-  public NodeBase() {
+  NodeBase() {
   }
 
-  public List getItems() { return items; }
+  List getItems() { return items; }
 
-  public void add(Object item)
+  void add(Object item)
   {
     items.add(item);
   }
-  public List addAllItems(List items)
+  List addAllItems(List items)
   {
     items.addAll(this.items);
     for (int i = 0; i < 2; i++) {
@@ -64,7 +64,7 @@ public abstract class NodeBase {
     }
     return items;
   }
-  protected abstract boolean isSearchMatch(Interval interval);
+  protected abstract bool isSearchMatch(Interval interval);
 
   /**
    * Adds items in the tree which potentially overlap the query interval
@@ -74,7 +74,7 @@ public abstract class NodeBase {
    * @param interval a query interval, or null
    * @param resultItems the candidate items found
    */
-  public void addAllItemsFromOverlapping(Interval interval, Collection resultItems)
+  void addAllItemsFromOverlapping(Interval interval, Collection resultItems)
   {
     if (interval != null && ! isSearchMatch(interval))
       return;
@@ -93,13 +93,13 @@ public abstract class NodeBase {
    * @param item the item to remove
    * @return <code>true</code> if the item was found and removed
    */
-  public boolean remove(Interval itemInterval, Object item)
+  bool remove(Interval itemInterval, Object item)
   {
     // use interval to restrict nodes scanned
     if (! isSearchMatch(itemInterval))
       return false;
 
-    boolean found = false;
+    bool found = false;
     for (int i = 0; i < 2; i++) {
       if (subnode[i] != null) {
         found = subnode[i].remove(itemInterval, item);
@@ -118,12 +118,12 @@ public abstract class NodeBase {
     return found;
   }
 
-  public boolean isPrunable()
+  bool isPrunable()
   {
     return ! (hasChildren() || hasItems());
   }
 
-  public boolean hasChildren()
+  bool hasChildren()
   {
     for (int i = 0; i < 2; i++) {
       if (subnode[i] != null)
@@ -132,7 +132,7 @@ public abstract class NodeBase {
     return false;
   }
 
-  public boolean hasItems() { return ! items.isEmpty(); }
+  bool hasItems() { return ! items.isEmpty(); }
 
   int depth()
   {

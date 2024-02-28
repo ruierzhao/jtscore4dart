@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 /**
  * @version 1.7
@@ -82,7 +82,7 @@ class BufferBuilder
   private PlanarGraph graph;
   private EdgeList edgeList     = new EdgeList();
 
-  private boolean isInvertOrientation = false;
+  private bool isInvertOrientation = false;
 
   /**
    * Creates a new BufferBuilder,
@@ -90,7 +90,7 @@ class BufferBuilder
    * 
    * @param bufParams the buffer parameters to use
    */
-  public BufferBuilder(BufferParameters bufParams)
+  BufferBuilder(BufferParameters bufParams)
   {
     this.bufParams = bufParams;
   }
@@ -103,7 +103,7 @@ class BufferBuilder
    *
    * @param pm the precision model to use
    */
-  public void setWorkingPrecisionModel(PrecisionModel pm)
+  void setWorkingPrecisionModel(PrecisionModel pm)
   {
     workingPrecisionModel = pm;
   }
@@ -115,7 +115,7 @@ class BufferBuilder
    *
    * @param noder the noder to use
    */
-  public void setNoder(Noder noder) { workingNoder = noder; }
+  void setNoder(Noder noder) { workingNoder = noder; }
 
   /**
    * Sets whether the offset curve is generated 
@@ -125,11 +125,11 @@ class BufferBuilder
    * 
    * @param isInvertOrientation true if input ring orientation should be inverted
    */
-  void setInvertOrientation(boolean isInvertOrientation) {
+  void setInvertOrientation(bool isInvertOrientation) {
     this.isInvertOrientation = isInvertOrientation;
   }
 
-  public Geometry buffer(Geometry g, double distance)
+  Geometry buffer(Geometry g, double distance)
   {
     PrecisionModel precisionModel = workingPrecisionModel;
     if (precisionModel == null)
@@ -164,7 +164,7 @@ class BufferBuilder
      * This fixes some noding failure cases found via GeometryFixer
      * (see JTS-852).
      */
-    boolean isNodingValidated = distance == 0.0;
+    bool isNodingValidated = distance == 0.0;
     computeNodedEdges(bufferSegStrList, precisionModel, isNodingValidated);
     
     graph = new PlanarGraph(new OverlayNodeFactory());
@@ -201,7 +201,7 @@ class BufferBuilder
 //                                  precisionModel.getScale());
   }
 
-  private void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel, boolean isNodingValidated)
+  private void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
   {
     Noder noder = getNoder(precisionModel);
     noder.computeNodes(bufferSegStrList);
@@ -222,7 +222,7 @@ class BufferBuilder
        * Discard edges which have zero length, 
        * since they carry no information and cause problems with topology building
        */
-      Coordinate[] pts = segStr.getCoordinates();
+      List<Coordinate> pts = segStr.getCoordinates();
       if (pts.length == 2 && pts[0].equals2D(pts[1]))
         continue;
 

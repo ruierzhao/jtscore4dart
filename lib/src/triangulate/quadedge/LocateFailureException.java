@@ -9,11 +9,11 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.quadedge;
+
 
 import org.locationtech.jts.geom.LineSegment;
 
-public class LocateFailureException 
+class LocateFailureException 
 	extends RuntimeException 
 {
 	private static String msgWithSpatial(String msg, LineSegment seg) {
@@ -24,16 +24,16 @@ public class LocateFailureException
 
 	private LineSegment seg = null;
 
-	public LocateFailureException(String msg) {
+	LocateFailureException(String msg) {
 		super(msg);
 	}
 
-	public LocateFailureException(String msg, LineSegment seg) {
+	LocateFailureException(String msg, LineSegment seg) {
 		super(msgWithSpatial(msg, seg));
 		this.seg = new LineSegment(seg);
 	}
 
-	public LocateFailureException(LineSegment seg) {
+	LocateFailureException(LineSegment seg) {
 		super(
 				"Locate failed to converge (at edge: "
 						+ seg
@@ -41,7 +41,7 @@ public class LocateFailureException
 		this.seg = new LineSegment(seg);
 	}
 
-	public LineSegment getSegment() {
+	LineSegment getSegment() {
 		return seg;
 	}
 

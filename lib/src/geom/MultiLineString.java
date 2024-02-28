@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import org.locationtech.jts.operation.BoundaryOp;
 
@@ -20,7 +20,7 @@ import org.locationtech.jts.operation.BoundaryOp;
  *
  *@version 1.7
  */
-public class MultiLineString
+class MultiLineString
 	extends GeometryCollection
 	implements Lineal
 	{
@@ -38,7 +38,7 @@ public class MultiLineString
    *      <code>MultiLineString</code>
    * @deprecated Use GeometryFactory instead
    */
-  public MultiLineString(LineString[] lineStrings, PrecisionModel precisionModel, int SRID) {
+  MultiLineString(LineString[] lineStrings, PrecisionModel precisionModel, int SRID) {
     super(lineStrings, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -51,30 +51,30 @@ public class MultiLineString
    *            geometry. Elements may be empty <code>LineString</code>s,
    *            but not <code>null</code>s.
    */
-  public MultiLineString(LineString[] lineStrings, GeometryFactory factory) {
+  MultiLineString(LineString[] lineStrings, GeometryFactory factory) {
     super(lineStrings, factory);
   }
 
-  public int getDimension() {
+  int getDimension() {
     return 1;
   }
 
-  public boolean hasDimension(int dim) {
+  bool hasDimension(int dim) {
     return dim == 1;
   }
   
-  public int getBoundaryDimension() {
+  int getBoundaryDimension() {
     if (isClosed()) {
       return Dimension.FALSE;
     }
     return 0;
   }
 
-  public String getGeometryType() {
+  String getGeometryType() {
     return Geometry.TYPENAME_MULTILINESTRING;
   }
 
-  public boolean isClosed() {
+  bool isClosed() {
     if (isEmpty()) {
       return false;
     }
@@ -93,7 +93,7 @@ public class MultiLineString
    * @return the boundary geometry
    * @see Geometry#getBoundary
    */
-  public Geometry getBoundary()
+  Geometry getBoundary()
   {
     return (new BoundaryOp(this)).getBoundary();
   }
@@ -107,7 +107,7 @@ public class MultiLineString
    *
    * @return a {@link MultiLineString} in the reverse order
    */
-  public MultiLineString reverse() {
+  MultiLineString reverse() {
     return (MultiLineString) super.reverse();
   }
 
@@ -127,7 +127,7 @@ public class MultiLineString
     return new MultiLineString(lineStrings, factory);
   }
 
-  public boolean equalsExact(Geometry other, double tolerance) {
+  bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }

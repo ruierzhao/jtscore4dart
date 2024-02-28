@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate;
+
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -30,11 +30,11 @@ import org.locationtech.jts.triangulate.quadedge.Vertex;
  * @author Martin Davis
  * @version 1.0
  */
-public class IncrementalDelaunayTriangulator 
+class IncrementalDelaunayTriangulator 
 {
 	private QuadEdgeSubdivision subdiv;
-	private boolean isUsingTolerance = false;
-  private boolean isForceConvex = true;
+	private bool isUsingTolerance = false;
+  private bool isForceConvex = true;
 
 	/**
 	 * Creates a new triangulator using the given {@link QuadEdgeSubdivision}.
@@ -43,7 +43,7 @@ public class IncrementalDelaunayTriangulator
 	 * @param subdiv
 	 *          a subdivision in which to build the TIN
 	 */
-	public IncrementalDelaunayTriangulator(QuadEdgeSubdivision subdiv) {
+	IncrementalDelaunayTriangulator(QuadEdgeSubdivision subdiv) {
 		this.subdiv = subdiv;
 		isUsingTolerance = subdiv.getTolerance() > 0.0;
 		
@@ -61,7 +61,7 @@ public class IncrementalDelaunayTriangulator
    * @param isForceConvex true if the triangulation boundary is forced to be
    *                      convex
    */
-  public void forceConvex(boolean isForceConvex) {
+  void forceConvex(bool isForceConvex) {
     this.isForceConvex = isForceConvex;
   }
   
@@ -75,7 +75,7 @@ public class IncrementalDelaunayTriangulator
 	 * 
    * @throws LocateFailureException if the location algorithm fails to converge in a reasonable number of iterations
 	 */
-	public void insertSites(Collection vertices) {
+	void insertSites(Collection vertices) {
 		for (Iterator i = vertices.iterator(); i.hasNext();) {
 			Vertex v = (Vertex) i.next();
 			insertSite(v);
@@ -90,7 +90,7 @@ public class IncrementalDelaunayTriangulator
 	 * 
 	 * @return a quadedge containing the inserted vertex
 	 */
-	public QuadEdge insertSite(Vertex v) {
+	QuadEdge insertSite(Vertex v) {
 
 		/**
 		 * This code is based on Guibas and Stolfi (1985), with minor modifications
@@ -135,7 +135,7 @@ public class IncrementalDelaunayTriangulator
 		do {
        //-- general case - flip if vertex is in circumcircle
       QuadEdge t = e.oPrev();
-      boolean doFlip = t.dest().rightOf(e) && v.isInCircle(e.orig(), t.dest(), e.dest());
+      bool doFlip = t.dest().rightOf(e) && v.isInCircle(e.orig(), t.dest(), e.dest());
       
       if (isForceConvex) {
         //-- special cases to ensure triangulation boundary is convex
@@ -171,7 +171,7 @@ public class IncrementalDelaunayTriangulator
 	 * @param e the edge to test
 	 * @return true if the triangulation boundary is concave at the edge
 	 */
-  private boolean isConcaveBoundary(QuadEdge e) {
+  private bool isConcaveBoundary(QuadEdge e) {
     if (subdiv.isFrameVertex(e.dest())) {
       return isConcaveAtOrigin(e);
     }
@@ -187,11 +187,11 @@ public class IncrementalDelaunayTriangulator
    * @param e
    * @return
    */
-  private static boolean isConcaveAtOrigin(QuadEdge e) {
+  private static bool isConcaveAtOrigin(QuadEdge e) {
     Coordinate p = e.orig().getCoordinate();
     Coordinate pp = e.oPrev().dest().getCoordinate();
     Coordinate pn = e.oNext().dest().getCoordinate();
-    boolean isConcave = Orientation.COUNTERCLOCKWISE == Orientation.index(pp, pn, p);
+    bool isConcave = Orientation.COUNTERCLOCKWISE == Orientation.index(pp, pn, p);
     return isConcave;
   }
 
@@ -203,7 +203,7 @@ public class IncrementalDelaunayTriangulator
    * @param vInsert the inserted vertex
    * @return true if the edge is between the frame and inserted vertex
    */
-  private boolean isBetweenFrameAndInserted(QuadEdge e, Vertex vInsert) {
+  private bool isBetweenFrameAndInserted(QuadEdge e, Vertex vInsert) {
     Vertex v1 = e.oNext().dest();
     Vertex v2 = e.oPrev().dest();
     return (v1 == vInsert && subdiv.isFrameVertex(v2))

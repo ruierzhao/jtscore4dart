@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.io.PrintStream;
 
@@ -25,18 +25,18 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class EdgeIntersection
+class EdgeIntersection
     implements Comparable
 {
 
   /** Point of intersection */
-  public Coordinate coord;
+  Coordinate coord;
 
   /** Index of the containing line segment in the parent edge */
-  public int segmentIndex;
+  int segmentIndex;
 
   /** Edge distance of this point along the containing line segment */
-  public double dist;
+  double dist;
 
   /**
    * EdgeIntersection.
@@ -45,19 +45,19 @@ public class EdgeIntersection
    * @param segmentIndex Index of the containing line segment in the parent edge
    * @param dist Edge distance of this point along the containing line segment
    */
-  public EdgeIntersection(Coordinate coord, int segmentIndex, double dist) {
+  EdgeIntersection(Coordinate coord, int segmentIndex, double dist) {
     this.coord = new Coordinate(coord);
     this.segmentIndex = segmentIndex;
     this.dist = dist;
   }
 
-  public Coordinate getCoordinate() { return coord; }
+  Coordinate getCoordinate() { return coord; }
 
-  public int getSegmentIndex() { return segmentIndex; }
+  int getSegmentIndex() { return segmentIndex; }
 
-  public double getDistance() { return dist; }
+  double getDistance() { return dist; }
 
-  public int compareTo(Object obj)
+  int compareTo(Object obj)
   {
     EdgeIntersection other = (EdgeIntersection) obj;
     return compare(other.segmentIndex, other.dist);
@@ -71,7 +71,7 @@ public class EdgeIntersection
    *         {@code 0} this EdgeIntersection is at the argument location,
    *         {@code 1} this EdgeIntersection is located after the argument location
    */
-  public int compare(int segmentIndex, double dist)
+  int compare(int segmentIndex, double dist)
   {
     if (this.segmentIndex < segmentIndex) return -1;
     if (this.segmentIndex > segmentIndex) return 1;
@@ -80,20 +80,20 @@ public class EdgeIntersection
     return 0;
   }
 
-  public boolean isEndPoint(int maxSegmentIndex)
+  bool isEndPoint(int maxSegmentIndex)
   {
     if (segmentIndex == 0 && dist == 0.0) return true;
     if (segmentIndex == maxSegmentIndex) return true;
     return false;
   }
 
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     out.print(coord);
     out.print(" seg # = " + segmentIndex);
     out.println(" dist = " + dist);
   }
-  public String toString()
+  String toString()
   {
     return coord + " seg # = " + segmentIndex + " dist = " + dist;
   }

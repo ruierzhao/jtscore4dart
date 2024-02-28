@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.planargraph.algorithm;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,16 +30,16 @@ import org.locationtech.jts.planargraph.Subgraph;
  * <p>
  * <b>Note:</b> uses the <code>isVisited</code> flag on the nodes.
  */
-public class ConnectedSubgraphFinder
+class ConnectedSubgraphFinder
 {
 
   private PlanarGraph graph;
 
-  public ConnectedSubgraphFinder(PlanarGraph graph) {
+  ConnectedSubgraphFinder(PlanarGraph graph) {
     this.graph = graph;
   }
 
-  public List getConnectedSubgraphs()
+  List getConnectedSubgraphs()
   {
     List subgraphs = new ArrayList();
 

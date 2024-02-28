@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.locationtech.jts.geom.Polygon;
  * @author Martin Davis
  *
  */
-public class VariableBuffer {
+class VariableBuffer {
 
   /**
    * Creates a buffer polygon along a line with the buffer distance interpolated
@@ -47,7 +47,7 @@ public class VariableBuffer {
    * @param endDistance the buffer width at the end of the line
    * @return the variable-distance buffer polygon
    */
-  public static Geometry buffer(Geometry line, double startDistance,
+  static Geometry buffer(Geometry line, double startDistance,
       double endDistance) {
     double[] distance = interpolate((LineString) line,
         startDistance, endDistance);
@@ -69,7 +69,7 @@ public class VariableBuffer {
    * @param endDistance the buffer width at the end of the line
    * @return the variable-distance buffer polygon
    */
-  public static Geometry buffer(Geometry line, double startDistance,
+  static Geometry buffer(Geometry line, double startDistance,
       double midDistance,
       double endDistance) {
     double[] distance = interpolate((LineString) line,
@@ -86,7 +86,7 @@ public class VariableBuffer {
    * @param distance the buffer distance for each vertex of the line
    * @return the variable-distance buffer polygon
    */
-  public static Geometry buffer(Geometry line, double[] distance) {
+  static Geometry buffer(Geometry line, double[] distance) {
     VariableBuffer vb = new VariableBuffer(line, distance);
     return vb.getResult();
   }
@@ -106,14 +106,14 @@ public class VariableBuffer {
   private static double[] interpolate(LineString line, 
       double startValue,
       double endValue) {
-    startValue = Math.abs(startValue);
-    endValue = Math.abs(endValue);
+    startValue = (startValue).abs();
+    endValue = (endValue).abs();
     double[] values = new double[line.getNumPoints()];
     values[0] = startValue;
     values[values.length - 1] = endValue;
 
     double totalLen = line.getLength();
-    Coordinate[] pts = line.getCoordinates();
+    List<Coordinate> pts = line.getCoordinates();
     double currLen = 0;
     for (int i = 1; i < values.length - 1; i++) {
       double segLen = pts[i].distance(pts[i - 1]);
@@ -145,15 +145,15 @@ public class VariableBuffer {
       double midValue,
       double endValue) 
   {
-    startValue = Math.abs(startValue);
-    midValue = Math.abs(midValue);
-    endValue = Math.abs(endValue);
+    startValue = (startValue).abs();
+    midValue = (midValue).abs();
+    endValue = (endValue).abs();
     
     double[] values = new double[line.getNumPoints()];
     values[0] = startValue;
     values[values.length - 1] = endValue;
 
-    Coordinate[] pts = line.getCoordinates();
+    List<Coordinate> pts = line.getCoordinates();
     double lineLen = line.getLength();
     int midIndex = indexAtLength(pts, lineLen / 2 );
     
@@ -182,7 +182,7 @@ public class VariableBuffer {
     return values;
   }
   
-  private static int indexAtLength(Coordinate[] pts, double targetLen) {
+  private static int indexAtLength(List<Coordinate> pts, double targetLen) {
     double len  = 0;
     for (int i = 1; i < pts.length; i++) {
       len += pts[i].distance(pts[i-1]);
@@ -192,7 +192,7 @@ public class VariableBuffer {
     return pts.length - 1;
   }
 
-  private static double length(Coordinate[] pts, int i1, int i2) {
+  private static double length(List<Coordinate> pts, int i1, int i2) {
     double len = 0;
     for (int i = i1 + 1; i <= i2; i++) {
       len += pts[i].distance(pts[i-1]);
@@ -211,13 +211,13 @@ public class VariableBuffer {
    * @param line the linestring to buffer
    * @param distance the buffer distance for each vertex of the line
    */
-  public VariableBuffer(Geometry line, double[] distance) {
+  VariableBuffer(Geometry line, double[] distance) {
     this.line = (LineString) line;
     this.distance = distance;
     geomFactory = line.getFactory();
     
     if (distance.length != this.line.getNumPoints()) {
-      throw new IllegalArgumentException("Number of distances is not equal to number of vertices");
+      throw new ArgumentError("Number of distances is not equal to number of vertices");
     }
   }
 
@@ -226,10 +226,10 @@ public class VariableBuffer {
    * 
    * @return a buffer polygon
    */
-  public Geometry getResult() {
+  Geometry getResult() {
     List<Geometry> parts = new ArrayList<Geometry>();
 
-    Coordinate[] pts = line.getCoordinates();
+    List<Coordinate> pts = line.getCoordinates();
     // construct segment buffers
     for (int i = 1; i < pts.length; i++) {
       double dist0 = distance[i - 1];
@@ -323,7 +323,7 @@ public class VariableBuffer {
     // close
     coords.add(t0, false);
     
-    Coordinate[] pts = coords.toCoordinateArray();
+    List<Coordinate> pts = coords.toCoordinateArray();
     Polygon polygon = geomFactory.createPolygon(pts);
     return polygon;
   }
@@ -339,7 +339,7 @@ public class VariableBuffer {
     if (radius <= 0) 
       return null;
     int nPts = 4 * quadrantSegs; 
-    Coordinate[] pts = new Coordinate[nPts + 1];
+    List<Coordinate> pts = new Coordinate[nPts + 1];
     double angInc = Math.PI / 2 / quadrantSegs;
     for (int i = 0; i < nPts; i++) {
       pts[i] = projectPolar(center, radius, i * angInc);
@@ -475,7 +475,7 @@ public class VariableBuffer {
   private static double snapTrig(double x) {
     if (x > (1 - SNAP_TRIG_TOL)) return 1;
     if (x < (-1 + SNAP_TRIG_TOL)) return -1;
-    if (Math.abs(x) < SNAP_TRIG_TOL) return 0;
+    if ((x).abs() < SNAP_TRIG_TOL) return 0;
     return x;
   }
 }

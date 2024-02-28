@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.math.Matrix;
@@ -40,7 +40,7 @@ import org.locationtech.jts.math.Matrix;
  *
  * @author Martin Davis
  */
-public class AffineTransformationBuilder
+class AffineTransformationBuilder
 {
   private Coordinate src0;
   private Coordinate src1;
@@ -65,7 +65,7 @@ public class AffineTransformationBuilder
    * @param dest1 the image of control point 1 under the required transformation
    * @param dest2 the image of control point 2 under the required transformation
    */
-  public AffineTransformationBuilder(Coordinate src0,
+  AffineTransformationBuilder(Coordinate src0,
       Coordinate src1,
       Coordinate src2,
       Coordinate dest0,
@@ -87,10 +87,10 @@ public class AffineTransformationBuilder
    * 
    * @return an affine transformation, or null if the control vectors do not determine a well-defined transformation
    */
-  public AffineTransformation getTransformation()
+  AffineTransformation getTransformation()
   {
   	// compute full 3-point transformation
-    boolean isSolvable = compute();
+    bool isSolvable = compute();
     if (isSolvable)
       return new AffineTransformation(m00, m01, m02, m10, m11, m12);
     return null;
@@ -104,7 +104,7 @@ public class AffineTransformationBuilder
    * 
    * @return true if the transformation matrix is solvable
    */
-  private boolean compute()
+  private bool compute()
   {
     double[] bx = new double[] { dest0.x, dest1.x, dest2.x };
     double[] row0 = solve(bx);

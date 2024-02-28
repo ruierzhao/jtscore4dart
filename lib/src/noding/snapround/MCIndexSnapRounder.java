@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding.snapround;
+
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -46,7 +46,7 @@ import org.locationtech.jts.noding.SegmentString;
  * @version 1.7
  */
 @Deprecated
-public class MCIndexSnapRounder
+class MCIndexSnapRounder
     implements Noder
 {
   private final PrecisionModel pm;
@@ -56,19 +56,19 @@ public class MCIndexSnapRounder
   private MCIndexPointSnapper pointSnapper;
   private Collection nodedSegStrings;
 
-  public MCIndexSnapRounder(PrecisionModel pm) {
+  MCIndexSnapRounder(PrecisionModel pm) {
     this.pm = pm;
     li = new RobustLineIntersector();
     li.setPrecisionModel(pm);
     scaleFactor = pm.getScale();
   }
 
-  public Collection getNodedSubstrings()
+  Collection getNodedSubstrings()
   {
     return  NodedSegmentString.getNodedSubstrings(nodedSegStrings);
   }
 
-  public void computeNodes(Collection inputSegmentStrings)
+  void computeNodes(Collection inputSegmentStrings)
   {
     this.nodedSegStrings = inputSegmentStrings;
     noder = new MCIndexNoder();
@@ -132,7 +132,7 @@ public class MCIndexSnapRounder
    *
    * @param edges the list of segment strings to snap together
    */
-  public void computeVertexSnaps(Collection edges)
+  void computeVertexSnaps(Collection edges)
   {
     for (Iterator i0 = edges.iterator(); i0.hasNext(); ) {
       NodedSegmentString edge0 = (NodedSegmentString) i0.next();
@@ -145,10 +145,10 @@ public class MCIndexSnapRounder
    */
   private void computeVertexSnaps(NodedSegmentString e)
   {
-    Coordinate[] pts0 = e.getCoordinates();
+    List<Coordinate> pts0 = e.getCoordinates();
     for (int i = 0; i < pts0.length ; i++) {
       HotPixel hotPixel = new HotPixel(pts0[i], scaleFactor);
-      boolean isNodeAdded = pointSnapper.snap(hotPixel, e, i);
+      bool isNodeAdded = pointSnapper.snap(hotPixel, e, i);
       // if a node is created for a vertex, that vertex must be noded too
       if (isNodeAdded) {
         e.addIntersection(pts0[i], i);

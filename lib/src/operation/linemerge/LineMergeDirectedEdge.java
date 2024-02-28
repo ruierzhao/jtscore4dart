@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.linemerge;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.planargraph.DirectedEdge;
@@ -22,7 +22,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class LineMergeDirectedEdge extends DirectedEdge {
+class LineMergeDirectedEdge extends DirectedEdge {
   /**
    * Constructs a LineMergeDirectedEdge connecting the <code>from</code> node to the
    * <code>to</code> node.
@@ -34,8 +34,8 @@ public class LineMergeDirectedEdge extends DirectedEdge {
    *                  whether this DirectedEdge's direction is the same as or
    *                  opposite to that of the parent Edge (if any)
    */  
-  public LineMergeDirectedEdge(Node from, Node to, Coordinate directionPt,
-    boolean edgeDirection) {
+  LineMergeDirectedEdge(Node from, Node to, Coordinate directionPt,
+    bool edgeDirection) {
     super(from, to, directionPt, edgeDirection);
   }
 
@@ -44,7 +44,7 @@ public class LineMergeDirectedEdge extends DirectedEdge {
    * if there are zero or multiple directed edges starting there.  
    * @return the directed edge
    */
-  public LineMergeDirectedEdge getNext() {
+  LineMergeDirectedEdge getNext() {
     if (getToNode().getDegree() != 2) {
       return null;
     }

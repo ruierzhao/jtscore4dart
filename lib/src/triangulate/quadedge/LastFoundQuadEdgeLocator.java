@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate.quadedge;
+
 
 import java.util.Collection;
 
@@ -21,11 +21,11 @@ import java.util.Collection;
  * 
  * @author Martin Davis
  */
-public class LastFoundQuadEdgeLocator implements QuadEdgeLocator {
+class LastFoundQuadEdgeLocator implements QuadEdgeLocator {
     private QuadEdgeSubdivision subdiv;
     private QuadEdge            lastEdge = null;
 
-    public LastFoundQuadEdgeLocator(QuadEdgeSubdivision subdiv) {
+    LastFoundQuadEdgeLocator(QuadEdgeSubdivision subdiv) {
         this.subdiv = subdiv;
         init();
     }
@@ -44,7 +44,7 @@ public class LastFoundQuadEdgeLocator implements QuadEdgeLocator {
      * Locates an edge e, such that either v is on e, or e is an edge of a triangle containing v.
      * The search starts from the last located edge and proceeds on the general direction of v.
      */
-    public QuadEdge locate(Vertex v) {
+    QuadEdge locate(Vertex v) {
         if (! lastEdge.isLive()) {
             init();
         }

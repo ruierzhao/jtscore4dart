@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.overlay.snap;
+
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -43,7 +43,7 @@ import org.locationtech.jts.geom.util.GeometryTransformer;
  * @author Martin Davis
  * @version 1.7
  */
-public class GeometrySnapper
+class GeometrySnapper
 {
   private static final double SNAP_PRECISION_FACTOR = 1e-9;
 
@@ -53,7 +53,7 @@ public class GeometrySnapper
    * @param g a Geometry
    * @return the estimated snap tolerance
    */
-  public static double computeOverlaySnapTolerance(Geometry g)
+  static double computeOverlaySnapTolerance(Geometry g)
   {
 		double snapTolerance = computeSizeBasedSnapTolerance(g);
 		
@@ -75,7 +75,7 @@ public class GeometrySnapper
 		return snapTolerance;
   }
 
-  public static double computeSizeBasedSnapTolerance(Geometry g)
+  static double computeSizeBasedSnapTolerance(Geometry g)
   {
     Envelope env = g.getEnvelopeInternal();
     double minDimension = Math.min(env.getHeight(), env.getWidth());
@@ -83,7 +83,7 @@ public class GeometrySnapper
     return snapTol;
   }
 
-  public static double computeOverlaySnapTolerance(Geometry g0, Geometry g1)
+  static double computeOverlaySnapTolerance(Geometry g0, Geometry g1)
   {
     return Math.min(computeOverlaySnapTolerance(g0), computeOverlaySnapTolerance(g1));
   }
@@ -96,7 +96,7 @@ public class GeometrySnapper
    * @param snapTolerance the tolerance to use
    * @return the snapped geometries
    */
-  public static Geometry[] snap(Geometry g0, Geometry g1, double snapTolerance)
+  static Geometry[] snap(Geometry g0, Geometry g1, double snapTolerance)
   {
     Geometry[] snapGeom = new Geometry[2];
     GeometrySnapper snapper0 = new GeometrySnapper(g0);
@@ -126,7 +126,7 @@ public class GeometrySnapper
    *@param cleanResult whether the result should be made valid
    * @return a new snapped Geometry
    */
-  public static Geometry snapToSelf(Geometry geom, double snapTolerance, boolean cleanResult)
+  static Geometry snapToSelf(Geometry geom, double snapTolerance, bool cleanResult)
   {
     GeometrySnapper snapper0 = new GeometrySnapper(geom);
     return snapper0.snapToSelf(snapTolerance, cleanResult);
@@ -139,7 +139,7 @@ public class GeometrySnapper
    * 
    * @param srcGeom the geometry to snap
    */
-  public GeometrySnapper(Geometry srcGeom)
+  GeometrySnapper(Geometry srcGeom)
   {
     this.srcGeom = srcGeom;
   }
@@ -153,9 +153,9 @@ public class GeometrySnapper
    * @param snapGeom a geometry to snap the source to
    * @return a new snapped Geometry
    */
-  public Geometry snapTo(Geometry snapGeom, double snapTolerance)
+  Geometry snapTo(Geometry snapGeom, double snapTolerance)
   {
-    Coordinate[] snapPts = extractTargetCoordinates(snapGeom);
+    List<Coordinate> snapPts = extractTargetCoordinates(snapGeom);
 
     SnapTransformer snapTrans = new SnapTransformer(snapTolerance, snapPts);
     return snapTrans.transform(srcGeom);
@@ -173,9 +173,9 @@ public class GeometrySnapper
    *@param cleanResult whether the result should be made valid
    * @return a new snapped Geometry
    */
-  public Geometry snapToSelf(double snapTolerance, boolean cleanResult)
+  Geometry snapToSelf(double snapTolerance, bool cleanResult)
   {
-    Coordinate[] snapPts = extractTargetCoordinates(srcGeom);
+    List<Coordinate> snapPts = extractTargetCoordinates(srcGeom);
 
     SnapTransformer snapTrans = new SnapTransformer(snapTolerance, snapPts, true);
     Geometry snappedGeom = snapTrans.transform(srcGeom);
@@ -187,15 +187,15 @@ public class GeometrySnapper
     return result;
   }
 
-  private Coordinate[] extractTargetCoordinates(Geometry g)
+  private List<Coordinate> extractTargetCoordinates(Geometry g)
   {
     // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
     Set ptSet = new TreeSet();
-    Coordinate[] pts = g.getCoordinates();
+    List<Coordinate> pts = g.getCoordinates();
     for (int i = 0; i < pts.length; i++) {
       ptSet.add(pts[i]);
     }
-    return (Coordinate[]) ptSet.toArray(new Coordinate[0]);
+    return (List<Coordinate>) ptSet.toArray(new Coordinate[0]);
   }
   
   /**
@@ -204,7 +204,7 @@ public class GeometrySnapper
    * @param ringPts
    * @return
    */
-  private double computeSnapTolerance(Coordinate[] ringPts)
+  private double computeSnapTolerance(List<Coordinate> ringPts)
   {
     double minSegLen = computeMinimumSegmentLength(ringPts);
     // use a small percentage of this to be safe
@@ -212,7 +212,7 @@ public class GeometrySnapper
     return snapTol;
   }
 
-  private double computeMinimumSegmentLength(Coordinate[] pts)
+  private double computeMinimumSegmentLength(List<Coordinate> pts)
   {
     double minSegLen = Double.MAX_VALUE;
     for (int i = 0; i < pts.length - 1; i++) {
@@ -229,16 +229,16 @@ class SnapTransformer
     extends GeometryTransformer
 {
   private double snapTolerance;
-  private Coordinate[] snapPts;
-  private boolean isSelfSnap = false;
+  private List<Coordinate> snapPts;
+  private bool isSelfSnap = false;
 
-  SnapTransformer(double snapTolerance, Coordinate[] snapPts)
+  SnapTransformer(double snapTolerance, List<Coordinate> snapPts)
   {
     this.snapTolerance = snapTolerance;
     this.snapPts = snapPts;
   }
 
-  SnapTransformer(double snapTolerance, Coordinate[] snapPts, boolean isSelfSnap)
+  SnapTransformer(double snapTolerance, List<Coordinate> snapPts, bool isSelfSnap)
   {
     this.snapTolerance = snapTolerance;
     this.snapPts = snapPts;
@@ -247,12 +247,12 @@ class SnapTransformer
 
   protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
   {
-    Coordinate[] srcPts = coords.toCoordinateArray();
-    Coordinate[] newPts = snapLine(srcPts, snapPts);
+    List<Coordinate> srcPts = coords.toCoordinateArray();
+    List<Coordinate> newPts = snapLine(srcPts, snapPts);
     return factory.getCoordinateSequenceFactory().create(newPts);
   }
 
-  private Coordinate[] snapLine(Coordinate[] srcPts, Coordinate[] snapPts)
+  private List<Coordinate> snapLine(List<Coordinate> srcPts, List<Coordinate> snapPts)
   {
     LineStringSnapper snapper = new LineStringSnapper(srcPts, snapTolerance);
     snapper.setAllowSnappingToSourceVertices(isSelfSnap);

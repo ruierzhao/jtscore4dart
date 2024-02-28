@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.io.PrintStream;
 
@@ -24,7 +24,7 @@ import org.locationtech.jts.geomgraph.index.MonotoneChainEdge;
 /**
  * @version 1.7
  */
-public class Edge
+class Edge
   extends GraphComponent
 {
 
@@ -34,7 +34,7 @@ public class Edge
    * @param label Label defining position
    * @param im intersection matrix
    */
-  public static void updateIM(Label label, IntersectionMatrix im)
+  static void updateIM(Label label, IntersectionMatrix im)
   {
     im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1);
     if (label.isArea()) {
@@ -43,38 +43,38 @@ public class Edge
     }
   }
 
-  Coordinate[] pts;
+  List<Coordinate> pts;
   private Envelope env;
   EdgeIntersectionList eiList = new EdgeIntersectionList(this);
   private String name;
   private MonotoneChainEdge mce;
-  private boolean isIsolated = true;
+  private bool isIsolated = true;
   private Depth depth = new Depth();
   private int depthDelta = 0;   // the change in area depth from the R to L side of this edge
 
-  public Edge(Coordinate[] pts, Label label)
+  Edge(List<Coordinate> pts, Label label)
   {
     this.pts = pts;
     this.label = label;
   }
-  public Edge(Coordinate[] pts)
+  Edge(List<Coordinate> pts)
   {
     this(pts, null);
   }
 
-  public int getNumPoints() { return pts.length; }
-  public void setName(String name) { this.name = name; }
-  public Coordinate[] getCoordinates()  {    return pts;  }
-  public Coordinate getCoordinate(int i)
+  int getNumPoints() { return pts.length; }
+  void setName(String name) { this.name = name; }
+  List<Coordinate> getCoordinates()  {    return pts;  }
+  Coordinate getCoordinate(int i)
   {
     return pts[i];
   }
-  public Coordinate getCoordinate()
+  Coordinate getCoordinate()
   {
     if (pts.length > 0) return pts[0];
     return null;
   }
-  public Envelope getEnvelope()
+  Envelope getEnvelope()
   {
     // compute envelope lazily
     if (env == null) {
@@ -86,28 +86,28 @@ public class Edge
     return env;
   }
 
-  public Depth getDepth() { return depth; }
+  Depth getDepth() { return depth; }
 
   /**
    * The depthDelta is the change in depth as an edge is crossed from R to L
    * @return the change in depth as the edge is crossed from R to L
    */
-  public int getDepthDelta()  { return depthDelta;  }
-  public void setDepthDelta(int depthDelta)  { this.depthDelta = depthDelta;  }
+  int getDepthDelta()  { return depthDelta;  }
+  void setDepthDelta(int depthDelta)  { this.depthDelta = depthDelta;  }
 
-  public int getMaximumSegmentIndex()
+  int getMaximumSegmentIndex()
   {
     return pts.length - 1;
   }
-  public EdgeIntersectionList getEdgeIntersectionList() { return eiList; }
+  EdgeIntersectionList getEdgeIntersectionList() { return eiList; }
 
-  public MonotoneChainEdge getMonotoneChainEdge()
+  MonotoneChainEdge getMonotoneChainEdge()
   {
     if (mce == null) mce = new MonotoneChainEdge(this);
     return mce;
   }
 
-  public boolean isClosed()
+  bool isClosed()
   {
     return pts[0].equals(pts[pts.length - 1]);
   }
@@ -117,14 +117,14 @@ public class Edge
    *
    * @return zero-width V area edge, consisting of two segments which are equal and of oppose orientation
    */
-  public boolean isCollapsed()
+  bool isCollapsed()
   {
     if (! label.isArea()) return false;
     if (pts.length != 3) return false;
     if (pts[0].equals(pts[2]) ) return true;
     return false;
   }
-  public Edge getCollapsedEdge()
+  Edge getCollapsedEdge()
   {
     Coordinate newPts[] = new Coordinate[2];
     newPts[0] = pts[0];
@@ -133,11 +133,11 @@ public class Edge
     return newe;
   }
 
-  public void setIsolated(boolean isIsolated)
+  void setIsolated(bool isIsolated)
   {
     this.isIsolated = isIsolated;
   }
-  public boolean isIsolated()
+  bool isIsolated()
   {
     return isIsolated;
   }
@@ -149,7 +149,7 @@ public class Edge
    * @param segmentIndex Segment index to add
    * @param geomIndex Geometry index to add
    */
-  public void addIntersections(LineIntersector li, int segmentIndex, int geomIndex)
+  void addIntersections(LineIntersector li, int segmentIndex, int geomIndex)
   {
     for (int i = 0; i < li.getIntersectionNum(); i++) {
       addIntersection(li, segmentIndex, geomIndex, i);
@@ -165,7 +165,7 @@ public class Edge
    * @param geomIndex Geometry index to add
    * @param intIndex intIndex is 0 or 1
    */
-  public void addIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
+  void addIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
   {
       Coordinate intPt = new Coordinate(li.getIntersection(intIndex));
       int normalizedSegmentIndex = segmentIndex;
@@ -197,7 +197,7 @@ public class Edge
    * Update the IM with the contribution for this component.
    * A component only contributes if it has a labelling for both parent geometries
    */
-  public void computeIM(IntersectionMatrix im)
+  void computeIM(IntersectionMatrix im)
   {
     updateIM(label, im);
   }
@@ -209,15 +209,15 @@ public class Edge
    * <b>iff</b>
    * the coordinates of e1 are the same or the reverse of the coordinates in e2
    */
-  public boolean equals(Object o)
+  bool equals(Object o)
   {
     if (! (o instanceof Edge)) return false;
     Edge e = (Edge) o;
 
     if (pts.length != e.pts.length) return false;
 
-    boolean isEqualForward = true;
-    boolean isEqualReverse = true;
+    bool isEqualForward = true;
+    bool isEqualReverse = true;
     int iRev = pts.length;
     for (int i = 0; i < pts.length; i++) {
       if (! pts[i].equals2D(e.pts[i])) {
@@ -235,7 +235,7 @@ public class Edge
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + pts.length;
@@ -258,7 +258,7 @@ public class Edge
    * @param e Edge
    * @return true if the coordinate sequences of the Edges are identical
    */
-  public boolean isPointwiseEqual(Edge e)
+  bool isPointwiseEqual(Edge e)
   {
     if (pts.length != e.pts.length) return false;
 
@@ -270,7 +270,7 @@ public class Edge
     return true;
   }
 
-  public String toString()
+  String toString()
   {
     StringBuilder builder = new StringBuilder();
     builder.append("edge " + name + ": ");
@@ -282,7 +282,7 @@ public class Edge
     builder.append(")  " + label + " " + depthDelta);
     return builder.toString();
   }
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     out.print("edge " + name + ": ");
     out.print("LINESTRING (");
@@ -292,7 +292,7 @@ public class Edge
     }
     out.print(")  " + label + " " + depthDelta);
   }
-  public void printReverse(PrintStream out)
+  void printReverse(PrintStream out)
   {
     out.print("edge " + name + ": ");
     for (int i = pts.length - 1; i >= 0; i--) {

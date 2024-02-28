@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.index.strtree;
+
 
 import org.locationtech.jts.geom.Geometry;
 
@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Martin Davis
  *
  */
-public class GeometryItemDistance
+class GeometryItemDistance
 implements ItemDistance
 {
   /**
@@ -40,7 +40,7 @@ implements ItemDistance
    * @return the distance between the geometries
    * @throws ClassCastException if either item is not a Geometry
    */
-  public double distance(ItemBoundable item1, ItemBoundable item2) {
+  double distance(ItemBoundable item1, ItemBoundable item2) {
     if (item1 == item2) return Double.MAX_VALUE;
     Geometry g1 = (Geometry) item1.getItem();
     Geometry g2 = (Geometry) item2.getItem();

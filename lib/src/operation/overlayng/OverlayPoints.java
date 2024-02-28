@@ -9,10 +9,10 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -51,7 +51,7 @@ class OverlayPoints {
    * @param pm the precision model to use
    * @return the result of the overlay operation
    */
-  public static Geometry overlay(int opCode, Geometry geom0, Geometry geom1, PrecisionModel pm) {
+  static Geometry overlay(int opCode, Geometry geom0, Geometry geom1, PrecisionModel pm) {
     OverlayPoints overlay = new OverlayPoints(opCode, geom0, geom1, pm);
     return overlay.getResult();
   }
@@ -71,7 +71,7 @@ class OverlayPoints {
    * @param opCode the code for the desired overlay operation
    * @param pm the precision model to use
    */
-  public OverlayPoints(int opCode, Geometry geom0, Geometry geom1, PrecisionModel pm) {
+  OverlayPoints(int opCode, Geometry geom0, Geometry geom1, PrecisionModel pm) {
     this.opCode = opCode;
     this.geom0 = geom0;
     this.geom1 = geom1;
@@ -84,7 +84,7 @@ class OverlayPoints {
    * 
    * @return the overlay result
    */
-  public Geometry getResult() {
+  Geometry getResult() {
     Map<Coordinate, Point> map0 = buildPointMap(geom0);
     Map<Coordinate, Point> map1 = buildPointMap(geom1);
     
@@ -156,12 +156,12 @@ class OverlayPoints {
     return geometryFactory.createPoint(seq2);
   }
 
-  private HashMap<Coordinate, Point> buildPointMap(Geometry geoms) {
-    HashMap<Coordinate, Point> map = new HashMap<Coordinate, Point>();
+  private Map<Coordinate, Point> buildPointMap(Geometry geoms) {
+    Map<Coordinate, Point> map = new Map<Coordinate, Point>();
     geoms.apply(new GeometryComponentFilter() {
 
       @Override
-      public void filter(Geometry geom) {
+      void filter(Geometry geom) {
         if (! (geom instanceof Point))
           return;
         if (geom.isEmpty())

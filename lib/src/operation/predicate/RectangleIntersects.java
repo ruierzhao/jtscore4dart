@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.predicate;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +41,7 @@ import org.locationtech.jts.geom.util.ShortCircuitedGeometryVisitor;
  * 
  * @version 1.7
  */
-public class RectangleIntersects
+class RectangleIntersects
 {
   /**
    * Tests whether a rectangle intersects a given geometry.
@@ -52,7 +52,7 @@ public class RectangleIntersects
    *          a Geometry of any type
    * @return true if the geometries intersect
    */
-  public static boolean intersects(Polygon rectangle, Geometry b)
+  static bool intersects(Polygon rectangle, Geometry b)
   {
     RectangleIntersects rp = new RectangleIntersects(rectangle);
     return rp.intersects(b);
@@ -68,7 +68,7 @@ public class RectangleIntersects
    * @param rectangle
    *          a rectangular Polygon
    */
-  public RectangleIntersects(Polygon rectangle)
+  RectangleIntersects(Polygon rectangle)
   {
     this.rectangle = rectangle;
     rectEnv = rectangle.getEnvelopeInternal();
@@ -81,7 +81,7 @@ public class RectangleIntersects
    * @param geom the Geometry to test (may be of any type)
    * @return true if the geometry intersects the query rectangle
    */
-  public boolean intersects(Geometry geom)
+  bool intersects(Geometry geom)
   {
     if (!rectEnv.intersects(geom.getEnvelopeInternal()))
       return false;
@@ -126,9 +126,9 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
 {
   private Envelope rectEnv;
 
-  private boolean intersects = false;
+  private bool intersects = false;
 
-  public EnvelopeIntersectsVisitor(Envelope rectEnv)
+  EnvelopeIntersectsVisitor(Envelope rectEnv)
   {
     this.rectEnv = rectEnv;
   }
@@ -140,7 +140,7 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
    * @return true if an intersection must occur 
    * or false if no conclusion about intersection can be made
    */
-  public boolean intersects()
+  bool intersects()
   {
     return intersects;
   }
@@ -179,7 +179,7 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
     }
   }
 
-  protected boolean isDone()
+  protected bool isDone()
   {
     return intersects;
   }
@@ -199,9 +199,9 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
 
   private Envelope rectEnv;
 
-  private boolean containsPoint = false;
+  private bool containsPoint = false;
 
-  public GeometryContainsPointVisitor(Polygon rectangle)
+  GeometryContainsPointVisitor(Polygon rectangle)
   {
     this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
     rectEnv = rectangle.getEnvelopeInternal();
@@ -214,7 +214,7 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
    * @return true if a corner point is contained 
    * or false if no conclusion about intersection can be made
    */
-  public boolean containsPoint()
+  bool containsPoint()
   {
     return containsPoint;
   }
@@ -246,7 +246,7 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
     }
   }
 
-  protected boolean isDone()
+  protected bool isDone()
   {
     return containsPoint;
   }
@@ -265,7 +265,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
   private Envelope rectEnv;
   private RectangleLineIntersector rectIntersector;
 
-  private boolean hasIntersection = false;
+  private bool hasIntersection = false;
 
   /**
    * Creates a visitor for checking rectangle intersection
@@ -273,7 +273,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
    * 
    * @param rectangle the query rectangle 
    */
-  public RectangleIntersectsSegmentVisitor(Polygon rectangle)
+  RectangleIntersectsSegmentVisitor(Polygon rectangle)
   {
     rectEnv = rectangle.getEnvelopeInternal();
     rectIntersector = new RectangleLineIntersector(rectEnv);
@@ -285,7 +285,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
    * @return true if a segment intersection exists
    * or false if no segment intersection exists
    */
-  public boolean intersects()
+  bool intersects()
   {
     return hasIntersection;
   }
@@ -334,7 +334,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
     }
   }
 
-  protected boolean isDone()
+  protected bool isDone()
   {
     return hasIntersection;
   }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * Coordinate subclass supporting XY ordinates.
@@ -20,23 +20,23 @@ package org.locationtech.jts.geom;
  *
  * @since 1.16
  */
-public class CoordinateXY extends Coordinate {
+class CoordinateXY extends Coordinate {
   private static final long serialVersionUID = 3532307803472313082L;
 
   /** Standard ordinate index value for X */
-  public static final int X = 0;
+  static final int X = 0;
 
   /** Standard ordinate index value for Y */
-  public static final int Y = 1;
+  static final int Y = 1;
 
   /** CoordinateXY does not support Z values. */
-  public static final int Z = -1;
+  static final int Z = -1;
 
   /** CoordinateXY does not support M measures. */
-  public static final int M = -1;
+  static final int M = -1;
 
   /** Default constructor */
-  public CoordinateXY() {
+  CoordinateXY() {
     super();
   }
 
@@ -46,7 +46,7 @@ public class CoordinateXY extends Coordinate {
    * @param x the X ordinate
    * @param y the Y ordinate
    */
-  public CoordinateXY(double x, double y) {
+  CoordinateXY(double x, double y) {
     super(x, y, Coordinate.NULL_ORDINATE);
   }
 
@@ -55,7 +55,7 @@ public class CoordinateXY extends Coordinate {
    * 
    * @param coord the Coordinate providing the ordinates
    */
-  public CoordinateXY(Coordinate coord) {
+  CoordinateXY(Coordinate coord) {
     super(coord.x,coord.y);
   }
 
@@ -64,7 +64,7 @@ public class CoordinateXY extends Coordinate {
    * 
    * @param coord the CoordinateXY providing the ordinates
    */
-  public CoordinateXY(CoordinateXY coord) {
+  CoordinateXY(CoordinateXY coord) {
     super(coord.x,coord.y);  
   }
 
@@ -73,7 +73,7 @@ public class CoordinateXY extends Coordinate {
    * 
    * @return a copy of this CoordinateXY
    */
-  public CoordinateXY copy() {
+  CoordinateXY copy() {
     return new CoordinateXY(this);
   }
   
@@ -83,24 +83,24 @@ public class CoordinateXY extends Coordinate {
    * @return a new Coordinate
    */
   @Override
-  public Coordinate create() {
+  Coordinate create() {
       return new CoordinateXY();
   }
 
   /** The z-ordinate is not supported */
   @Override
-  public double getZ() {
+  double getZ() {
       return NULL_ORDINATE;
   }
 
   /** The z-ordinate is not supported */
   @Override
-  public void setZ(double z) {
-      throw new IllegalArgumentException("CoordinateXY dimension 2 does not support z-ordinate");
+  void setZ(double z) {
+      throw new ArgumentError("CoordinateXY dimension 2 does not support z-ordinate");
   }  
   
   @Override
-  public void setCoordinate(Coordinate other)
+  void setCoordinate(Coordinate other)
   {
     x = other.x;
     y = other.y;
@@ -108,18 +108,18 @@ public class CoordinateXY extends Coordinate {
   }
   
   @Override
-  public double getOrdinate(int ordinateIndex) {
+  double getOrdinate(int ordinateIndex) {
       switch (ordinateIndex) {
       case X: return x;
       case Y: return y;
       }
       return Double.NaN;
       // disable for now to avoid regression issues
-      //throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+      //throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
   }
   
   @Override
-  public void setOrdinate(int ordinateIndex, double value) {
+  void setOrdinate(int ordinateIndex, double value) {
       switch (ordinateIndex) {
       case X:
         x = value;
@@ -128,11 +128,11 @@ public class CoordinateXY extends Coordinate {
         y = value;
         break;
       default:
-        throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
+        throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
     }
   }
   
-  public String toString() {
+  String toString() {
     return "(" + x + ", " + y + ")";
   }
 }

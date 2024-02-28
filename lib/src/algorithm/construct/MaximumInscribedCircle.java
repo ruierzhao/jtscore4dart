@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm.construct;
+
 
 import java.util.PriorityQueue;
 
@@ -62,7 +62,7 @@ import org.locationtech.jts.operation.distance.IndexedFacetDistance;
  * @see Centroid
  *
  */
-public class MaximumInscribedCircle {
+class MaximumInscribedCircle {
 
   /**
    * Computes the center point of the Maximum Inscribed Circle
@@ -72,7 +72,7 @@ public class MaximumInscribedCircle {
    * @param tolerance the distance tolerance for computing the center point
    * @return the center point of the maximum inscribed circle
    */
-  public static Point getCenter(Geometry polygonal, double tolerance) {
+  static Point getCenter(Geometry polygonal, double tolerance) {
     MaximumInscribedCircle mic = new MaximumInscribedCircle(polygonal, tolerance);
     return mic.getCenter();
   }
@@ -85,7 +85,7 @@ public class MaximumInscribedCircle {
    * @param tolerance the distance tolerance for computing the center point
    * @return a line from the center to a point on the circle
    */
-  public static LineString getRadiusLine(Geometry polygonal, double tolerance) {
+  static LineString getRadiusLine(Geometry polygonal, double tolerance) {
     MaximumInscribedCircle mic = new MaximumInscribedCircle(polygonal, tolerance);
     return mic.getRadiusLine();
   }
@@ -128,17 +128,17 @@ public class MaximumInscribedCircle {
    * 
    * @param polygonal an areal geometry
    * @param tolerance the distance tolerance for computing the centre point (must be positive)
-   * @throws IllegalArgumentException if the tolerance is non-positive, or the input geometry is non-polygonal or empty.
+   * @throws ArgumentError if the tolerance is non-positive, or the input geometry is non-polygonal or empty.
    */
-  public MaximumInscribedCircle(Geometry polygonal, double tolerance) {
+  MaximumInscribedCircle(Geometry polygonal, double tolerance) {
     if (tolerance <= 0) {
-      throw new IllegalArgumentException("Tolerance must be positive");
+      throw new ArgumentError("Tolerance must be positive");
     }
     if (! (polygonal instanceof Polygon || polygonal instanceof MultiPolygon)) {
-      throw new IllegalArgumentException("Input geometry must be a Polygon or MultiPolygon");
+      throw new ArgumentError("Input geometry must be a Polygon or MultiPolygon");
     }
     if (polygonal.isEmpty()) {
-      throw new IllegalArgumentException("Empty input geometry is not supported");
+      throw new ArgumentError("Empty input geometry is not supported");
     }
     
     this.inputGeom = polygonal;
@@ -154,7 +154,7 @@ public class MaximumInscribedCircle {
    * 
    * @return the center point of the maximum inscribed circle
    */
-  public Point getCenter() {
+  Point getCenter() {
     compute();
     return centerPoint;
   }
@@ -169,7 +169,7 @@ public class MaximumInscribedCircle {
    * 
    * @return a point defining the radius of the Maximum Inscribed Circle
    */
-  public Point getRadiusPoint() {
+  Point getRadiusPoint() {
     compute();
     return radiusPoint;
   }
@@ -179,10 +179,10 @@ public class MaximumInscribedCircle {
    * 
    * @return a line from the center of the circle to a point on the edge
    */
-  public LineString getRadiusLine() {
+  LineString getRadiusLine() {
     compute();
     LineString radiusLine = factory.createLineString(
-        new Coordinate[] { centerPt.copy(), radiusPt.copy() });
+        new List<Coordinate> { centerPt.copy(), radiusPt.copy() });
     return radiusLine;
   }
   
@@ -197,7 +197,7 @@ public class MaximumInscribedCircle {
    */
   private double distanceToBoundary(Point p) {
     double dist = indexedDistance.distance(p);
-    boolean isOutide = Location.EXTERIOR == ptLocater.locate(p.getCoordinate());
+    bool isOutide = Location.EXTERIOR == ptLocater.locate(p.getCoordinate());
     if (isOutide) return -dist;
     return dist;
   }
@@ -267,7 +267,7 @@ public class MaximumInscribedCircle {
     centerPt = new Coordinate(centerCell.getX(), centerCell.getY());
     centerPoint = factory.createPoint(centerPt);
     // compute radius point
-    Coordinate[] nearestPts = indexedDistance.nearestPoints(centerPoint);
+    List<Coordinate> nearestPts = indexedDistance.nearestPoints(centerPoint);
     radiusPt = nearestPts[0].copy();
     radiusPoint = factory.createPoint(radiusPt);
   }
@@ -333,27 +333,27 @@ public class MaximumInscribedCircle {
       this.maxDist = distance + hSide * SQRT2;
     }
 
-    public Envelope getEnvelope() {
+    Envelope getEnvelope() {
       return new Envelope(x - hSide, x + hSide, y - hSide, y + hSide);
     }
     
-    public double getMaxDistance() {
+    double getMaxDistance() {
       return maxDist;
     }
 
-    public double getDistance() {
+    double getDistance() {
       return distance;
     }
 
-    public double getHSide() {
+    double getHSide() {
       return hSide;
     }
 
-    public double getX() {
+    double getX() {
       return x;
     }
 
-    public double getY() {
+    double getY() {
       return y;
     }
     
@@ -361,7 +361,7 @@ public class MaximumInscribedCircle {
      * For maximum efficieny sort the PriorityQueue with largest maxDistance at front.
      * Since Java PQ sorts least-first, need to invert the comparison
      */
-    public int compareTo(Cell o) {
+    int compareTo(Cell o) {
       return -Double.compare(maxDist, o.maxDist);
     }
     

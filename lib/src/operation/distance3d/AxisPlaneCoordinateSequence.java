@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.distance3d;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -27,7 +27,7 @@ import org.locationtech.jts.geom.Envelope;
  * @author mdavis
  *
  */
-public class AxisPlaneCoordinateSequence implements CoordinateSequence {
+class AxisPlaneCoordinateSequence implements CoordinateSequence {
 
 	/**
 	 * Creates a wrapper projecting to the XY plane.
@@ -35,7 +35,7 @@ public class AxisPlaneCoordinateSequence implements CoordinateSequence {
 	 * @param seq the sequence to be projected
 	 * @return a sequence which projects coordinates
 	 */
-	public static CoordinateSequence projectToXY(CoordinateSequence seq)
+	static CoordinateSequence projectToXY(CoordinateSequence seq)
 	{
 		/**
 		 * This is just a no-op, but return a wrapper
@@ -50,7 +50,7 @@ public class AxisPlaneCoordinateSequence implements CoordinateSequence {
 	 * @param seq the sequence to be projected
 	 * @return a sequence which projects coordinates
 	 */
-	public static CoordinateSequence projectToXZ(CoordinateSequence seq)
+	static CoordinateSequence projectToXZ(CoordinateSequence seq)
 	{
 		return new AxisPlaneCoordinateSequence(seq, XZ_INDEX);
 	}
@@ -61,7 +61,7 @@ public class AxisPlaneCoordinateSequence implements CoordinateSequence {
 	 * @param seq the sequence to be projected
 	 * @return a sequence which projects coordinates
 	 */
-	public static CoordinateSequence projectToYZ(CoordinateSequence seq)
+	static CoordinateSequence projectToYZ(CoordinateSequence seq)
 	{
 		return new AxisPlaneCoordinateSequence(seq, YZ_INDEX);
 	}
@@ -78,64 +78,64 @@ public class AxisPlaneCoordinateSequence implements CoordinateSequence {
 		this.indexMap = indexMap;
 	}
 
-	public int getDimension() {
+	int getDimension() {
 		return 2;
 	}
 
-	public Coordinate getCoordinate(int i) {
+	Coordinate getCoordinate(int i) {
 		return getCoordinateCopy(i);
 	}
 
-	public Coordinate getCoordinateCopy(int i) {
+	Coordinate getCoordinateCopy(int i) {
 		return new Coordinate(getX(i), getY(i), getZ(i));
 	}
 
-	public void getCoordinate(int index, Coordinate coord) {
+	void getCoordinate(int index, Coordinate coord) {
 		coord.x = getOrdinate(index, X);
 		coord.y = getOrdinate(index, Y);
 		coord.setZ(getOrdinate(index, Z));
 	}
 
-	public double getX(int index) {
+	double getX(int index) {
 		return getOrdinate(index, X);
 	}
 
-	public double getY(int index) {
+	double getY(int index) {
 		return getOrdinate(index, Y);
 	}
 
-	public double getZ(int index) {
+	double getZ(int index) {
 		return getOrdinate(index, Z);
 	}
 
-	public double getOrdinate(int index, int ordinateIndex) {
+	double getOrdinate(int index, int ordinateIndex) {
 		// Z ord is always 0
 		if (ordinateIndex > 1) return 0;
 		return seq.getOrdinate(index, indexMap[ordinateIndex]);
 	}
 
-	public int size() {
+	int size() {
 		return seq.size();
 	}
 
-	public void setOrdinate(int index, int ordinateIndex, double value) {
+	void setOrdinate(int index, int ordinateIndex, double value) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Coordinate[] toCoordinateArray() {
+	List<Coordinate> toCoordinateArray() {
 		throw new UnsupportedOperationException();
 	}
 
-	public Envelope expandEnvelope(Envelope env) {
+	Envelope expandEnvelope(Envelope env) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object clone()
+	Object clone()
 	{
 		throw new UnsupportedOperationException();		
 	}
 	
-	public AxisPlaneCoordinateSequence copy()
+	AxisPlaneCoordinateSequence copy()
 	{
 		throw new UnsupportedOperationException();		
 	}

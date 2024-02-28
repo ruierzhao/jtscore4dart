@@ -9,17 +9,17 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.intervalrtree;
+
 
 import org.locationtech.jts.index.ItemVisitor;
 
-public class IntervalRTreeBranchNode 
+class IntervalRTreeBranchNode 
 extends IntervalRTreeNode
 {
 	private IntervalRTreeNode node1;
 	private IntervalRTreeNode node2;
 	
-	public IntervalRTreeBranchNode(IntervalRTreeNode n1, IntervalRTreeNode n2)
+	IntervalRTreeBranchNode(IntervalRTreeNode n1, IntervalRTreeNode n2)
 	{
 		node1 = n1;
 		node2 = n2;
@@ -32,7 +32,7 @@ extends IntervalRTreeNode
 		max = Math.max(n1.max, n2.max);
 	}
 	
-	public void query(double queryMin, double queryMax, ItemVisitor visitor)
+	void query(double queryMin, double queryMax, ItemVisitor visitor)
 	{
 		if (! intersects(queryMin, queryMax)) {
 //			System.out.println("Does NOT Overlap branch: " + this);

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 
@@ -22,16 +22,16 @@ import java.util.Collection;
  *
  * @version 1.7
  */
-public abstract class SinglePassNoder
+abstract class SinglePassNoder
     implements Noder
 {
 
   protected SegmentIntersector segInt;
 
-  public SinglePassNoder() {
+  SinglePassNoder() {
   }
 
-  public SinglePassNoder(SegmentIntersector segInt) {
+  SinglePassNoder(SegmentIntersector segInt) {
     setSegmentIntersector(segInt);
   }
 
@@ -44,7 +44,7 @@ public abstract class SinglePassNoder
    *
    * @param segInt
    */
-  public void setSegmentIntersector(SegmentIntersector segInt)
+  void setSegmentIntersector(SegmentIntersector segInt)
   {
     this.segInt = segInt;
   }
@@ -56,7 +56,7 @@ public abstract class SinglePassNoder
    *
    * @param segStrings a collection of {@link SegmentString}s to node
    */
-  public abstract void computeNodes(Collection segStrings);
+  abstract void computeNodes(Collection segStrings);
 
   /**
    * Returns a {@link Collection} of fully noded {@link SegmentString}s.
@@ -64,6 +64,6 @@ public abstract class SinglePassNoder
    *
    * @return a Collection of SegmentStrings
    */
-  public abstract Collection getNodedSubstrings();
+  abstract Collection getNodedSubstrings();
 
 }

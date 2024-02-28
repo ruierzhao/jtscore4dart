@@ -9,29 +9,29 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.hprtree;
+
 
 import org.locationtech.jts.geom.Envelope;
 
-public class Item {
+class Item {
 
   private Envelope env;
   private Object item;
 
-  public Item(Envelope env, Object item) {
+  Item(Envelope env, Object item) {
     this.env = env;
     this.item = item;
   }
 
-  public Envelope getEnvelope() {
+  Envelope getEnvelope() {
     return env;
   }
   
-  public Object getItem() {
+  Object getItem() {
     return item;
   }
   
-  public String toString() {
+  String toString() {
     return "Item: " + env.toString();
   }
 }

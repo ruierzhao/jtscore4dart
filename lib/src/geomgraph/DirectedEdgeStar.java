@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class DirectedEdgeStar
+class DirectedEdgeStar
   extends EdgeEndStar
 {
 
@@ -39,20 +39,20 @@ public class DirectedEdgeStar
   private List resultAreaEdgeList;
   private Label label;
 
-  public DirectedEdgeStar() {
+  DirectedEdgeStar() {
   }
   /**
    * Insert a directed edge in the list
    */
-  public void insert(EdgeEnd ee)
+  void insert(EdgeEnd ee)
   {
     DirectedEdge de = (DirectedEdge) ee;
     insertEdgeEnd(de, de);
   }
 
-  public Label getLabel() { return label; }
+  Label getLabel() { return label; }
 
-  public int getOutgoingDegree()
+  int getOutgoingDegree()
   {
     int degree = 0;
     for (Iterator it = iterator(); it.hasNext(); ) {
@@ -61,7 +61,7 @@ public class DirectedEdgeStar
     }
     return degree;
   }
-  public int getOutgoingDegree(EdgeRing er)
+  int getOutgoingDegree(EdgeRing er)
   {
     int degree = 0;
     for (Iterator it = iterator(); it.hasNext(); ) {
@@ -71,7 +71,7 @@ public class DirectedEdgeStar
     return degree;
   }
 
-  public DirectedEdge getRightmostEdge()
+  DirectedEdge getRightmostEdge()
   {
     List edges = getEdges();
     int size = edges.size();
@@ -103,7 +103,7 @@ public class DirectedEdgeStar
    * Compute the labelling for all dirEdges in this star, as well
    * as the overall labelling
    */
-  public void computeLabelling(GeometryGraph[] geom)
+  void computeLabelling(GeometryGraph[] geom)
   {
 //Debug.print(this);
     super.computeLabelling(geom);
@@ -128,7 +128,7 @@ public class DirectedEdgeStar
    * For each dirEdge in the star,
    * merge the label from the sym dirEdge into the label
    */
-  public void mergeSymLabels()
+  void mergeSymLabels()
   {
     for (Iterator it = iterator(); it.hasNext(); ) {
       DirectedEdge de = (DirectedEdge) it.next();
@@ -142,7 +142,7 @@ public class DirectedEdgeStar
    *
    * @param nodeLabel Label to apply
    */
-  public void updateLabelling(Label nodeLabel)
+  void updateLabelling(Label nodeLabel)
   {
     for (Iterator it = iterator(); it.hasNext(); ) {
       DirectedEdge de = (DirectedEdge) it.next();
@@ -185,7 +185,7 @@ public class DirectedEdgeStar
    * <p>
    * PRECONDITION: No pair of dirEdges are both marked as being in the result
    */
-  public void linkResultDirectedEdges()
+  void linkResultDirectedEdges()
   {
     // make sure edges are copied to resultAreaEdges list
     getResultAreaEdges();
@@ -228,7 +228,7 @@ public class DirectedEdgeStar
       incoming.setNext(firstOut);
     }
   }
-  public void linkMinimalDirectedEdges(EdgeRing er)
+  void linkMinimalDirectedEdges(EdgeRing er)
   {
     // find first area edge (if any) to start linking at
     DirectedEdge firstOut = null;
@@ -262,7 +262,7 @@ public class DirectedEdgeStar
       incoming.setNextMin(firstOut);
     }
   }
-  public void linkAllDirectedEdges()
+  void linkAllDirectedEdges()
   {
     getEdges();
     // find first area edge (if any) to start linking at
@@ -286,7 +286,7 @@ public class DirectedEdgeStar
    * area at this node (if any).
    * If any L edges are found in the interior of the result, mark them as covered.
    */
-  public void findCoveredLineEdges()
+  void findCoveredLineEdges()
   {
 //Debug.print("findCoveredLineEdges");
 //Debug.print(this);
@@ -340,7 +340,7 @@ public class DirectedEdgeStar
     }
   }
 
-  public void computeDepths(DirectedEdge de)
+  void computeDepths(DirectedEdge de)
   {
     int edgeIndex = findIndex(de);
     int startDepth = de.getDepth(Position.LEFT);
@@ -372,7 +372,7 @@ public class DirectedEdgeStar
     return currDepth;
   }
 
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     out.println("DirectedEdgeStar: " + getCoordinate());
     for (Iterator it = iterator(); it.hasNext(); ) {

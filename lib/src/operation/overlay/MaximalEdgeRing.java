@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlay;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,19 +38,19 @@ import org.locationtech.jts.geomgraph.Node;
  * @version 1.7
  * @see org.locationtech.jts.operation.overlay.MinimalEdgeRing
  */
-public class MaximalEdgeRing
+class MaximalEdgeRing
   extends EdgeRing
 {
 
-  public MaximalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory) {
+  MaximalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory) {
     super(start, geometryFactory);
   }
 
-  public DirectedEdge getNext(DirectedEdge de)
+  DirectedEdge getNext(DirectedEdge de)
   {
     return de.getNext();
   }
-  public void setEdgeRing(DirectedEdge de, EdgeRing er)
+  void setEdgeRing(DirectedEdge de, EdgeRing er)
   {
     de.setEdgeRing(er);
   }
@@ -59,7 +59,7 @@ public class MaximalEdgeRing
    * For all nodes in this EdgeRing,
    * link the DirectedEdges at the node to form minimalEdgeRings
    */
-  public void linkDirectedEdgesForMinimalEdgeRings()
+  void linkDirectedEdgesForMinimalEdgeRings()
   {
     DirectedEdge de = startDe;
     do {
@@ -69,7 +69,7 @@ public class MaximalEdgeRing
     } while (de != startDe);
   }
 
-  public List buildMinimalRings()
+  List buildMinimalRings()
   {
     List minEdgeRings = new ArrayList();
     DirectedEdge de = startDe;

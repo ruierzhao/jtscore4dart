@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.shape.fractal;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -20,28 +20,28 @@ import org.locationtech.jts.geom.LineSegment;
 import org.locationtech.jts.math.Vector2D;
 import org.locationtech.jts.shape.GeometricShapeBuilder;
 
-public class KochSnowflakeBuilder 
+class KochSnowflakeBuilder 
 extends GeometricShapeBuilder
 {
 	private CoordinateList coordList = new CoordinateList();
 	
-	public KochSnowflakeBuilder(GeometryFactory geomFactory)
+	KochSnowflakeBuilder(GeometryFactory geomFactory)
 	{
 		super(geomFactory);
 	}
 	
-	public static int recursionLevelForSize(int numPts)
+	static int recursionLevelForSize(int numPts)
 	{
 		double pow4 = numPts / 3;
 		double exp = Math.log(pow4)/Math.log(4);
 		return (int) exp;
 	}
 	
-	public Geometry getGeometry()
+	Geometry getGeometry()
 	{
 		int level = recursionLevelForSize(numPts);
 		LineSegment baseLine = getSquareBaseLine();
-		Coordinate[] pts = getBoundary(level, baseLine.getCoordinate(0), baseLine.getLength());
+		List<Coordinate> pts = getBoundary(level, baseLine.getCoordinate(0), baseLine.getLength());
 		return geomFactory.createPolygon(
 				geomFactory.createLinearRing(pts), null);
 	}
@@ -54,7 +54,7 @@ extends GeometricShapeBuilder
 	private static final double THIRD_HEIGHT = HEIGHT_FACTOR/3.0;
 	private static final double TWO_THIRDS = 2.0/3.0;
 	
-	private Coordinate[] getBoundary(int level, Coordinate origin, double width) 
+	private List<Coordinate> getBoundary(int level, Coordinate origin, double width) 
 	{
 		double y = origin.y;
 		// for all levels beyond 0 need to vertically shift shape by height of one "arm" to centre it
@@ -72,7 +72,7 @@ extends GeometricShapeBuilder
 		return coordList.toCoordinateArray();
 	}
 
-	public void addSide(int level, Coordinate p0, Coordinate p1) {
+	void addSide(int level, Coordinate p0, Coordinate p1) {
 		if (level == 0)
 			addSegment(p0, p1);
 		else {

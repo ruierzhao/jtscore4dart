@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.shape;
+
 
 import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.geom.Coordinate;
@@ -36,7 +36,7 @@ import org.locationtech.jts.io.WKTWriter;
  * The result is not guaranteed to be valid, since large alpha values
  * may cause self-intersections.
  */
-public class CubicBezierCurve {
+class CubicBezierCurve {
 
   /**
    * Creates a geometry of linearized Cubic Bezier Curves
@@ -47,7 +47,7 @@ public class CubicBezierCurve {
    * @param alpha curvedness parameter (0 is linear, 1 is round, >1 is increasingly curved)
    * @return the linearized curved geometry
    */
-  public static Geometry bezierCurve(Geometry geom, double alpha) {
+  static Geometry bezierCurve(Geometry geom, double alpha) {
     CubicBezierCurve curve = new CubicBezierCurve(geom, alpha);
     return curve.getResult();
   }
@@ -63,7 +63,7 @@ public class CubicBezierCurve {
    * @param skew the skew parameter (0 is none, positive skews towards longer side, negative towards shorter
    * @return the linearized curved geometry
    */
-  public static Geometry bezierCurve(Geometry geom, double alpha, double skew) {
+  static Geometry bezierCurve(Geometry geom, double alpha, double skew) {
     CubicBezierCurve curve = new CubicBezierCurve(geom, alpha, skew);
     return curve.getResult();
   }
@@ -83,7 +83,7 @@ public class CubicBezierCurve {
    * @param controlPoints a geometry containing the control point elements.
    * @return the linearized curved geometry
    */
-  public static Geometry bezierCurve(Geometry geom, Geometry controlPoints) {
+  static Geometry bezierCurve(Geometry geom, Geometry controlPoints) {
     CubicBezierCurve curve = new CubicBezierCurve(geom, controlPoints);
     return curve.getResult();
   }
@@ -97,7 +97,7 @@ public class CubicBezierCurve {
   private Geometry controlPoints = null;
   private final GeometryFactory geomFactory;
   
-  private Coordinate[] bezierCurvePts;
+  private List<Coordinate> bezierCurvePts;
   private double[][] interpolationParam;
   private int controlPointIndex = 0;
 
@@ -155,14 +155,14 @@ public class CubicBezierCurve {
    * 
    * @return a linearized curved geometry
    */
-  public Geometry getResult() {
+  Geometry getResult() {
     bezierCurvePts = new Coordinate[numVerticesPerSegment];
     interpolationParam = computeIterpolationParameters(numVerticesPerSegment);
 
     return GeometryMapper.flatMap(inputGeom, 1, new GeometryMapper.MapOp() {
       
       @Override
-      public Geometry map(Geometry geom) {
+      Geometry map(Geometry geom) {
         if (geom instanceof LineString) {
           return bezierLine((LineString) geom);
         }
@@ -176,14 +176,14 @@ public class CubicBezierCurve {
   }
   
   private LineString bezierLine(LineString ls) {
-    Coordinate[] coords = ls.getCoordinates();
+    List<Coordinate> coords = ls.getCoordinates();
     CoordinateList curvePts = bezierCurve(coords, false);
     curvePts.add(coords[coords.length - 1].copy(), false);
     return geomFactory.createLineString(curvePts.toCoordinateArray());
   }
 
   private LinearRing bezierRing(LinearRing ring) {
-    Coordinate[] coords = ring.getCoordinates();
+    List<Coordinate> coords = ring.getCoordinates();
     CoordinateList curvePts = bezierCurve(coords, true);
     curvePts.closeRing();
     return geomFactory.createLinearRing(curvePts.toCoordinateArray());
@@ -201,8 +201,8 @@ public class CubicBezierCurve {
     return geomFactory.createPolygon(shell, holes);
   }
   
-  private CoordinateList bezierCurve(Coordinate[] coords, boolean isRing) {
-    Coordinate[] control = controlPoints(coords, isRing);
+  private CoordinateList bezierCurve(List<Coordinate> coords, bool isRing) {
+    List<Coordinate> control = controlPoints(coords, isRing);
     CoordinateList curvePts = new CoordinateList();
     for (int i = 0; i < coords.length - 1; i++) {
       int ctrlIndex = 2 * i;
@@ -211,18 +211,18 @@ public class CubicBezierCurve {
     return curvePts;
   }
   
-  private Coordinate[] controlPoints(Coordinate[] coords, boolean isRing) {
+  private List<Coordinate> controlPoints(List<Coordinate> coords, bool isRing) {
     if (controlPoints != null) {
       if (controlPointIndex >= controlPoints.getNumGeometries()) {
-        throw new IllegalArgumentException("Too few control point elements");
+        throw new ArgumentError("Too few control point elements");
       }
       Geometry ctrlPtsGeom = controlPoints.getGeometryN(controlPointIndex++);
-      Coordinate[] ctrlPts = ctrlPtsGeom.getCoordinates();
+      List<Coordinate> ctrlPts = ctrlPtsGeom.getCoordinates();
       
       int expectedNum1 = 2 * coords.length - 2;
       int expectedNum2 = isRing ? coords.length - 1 : coords.length;
       if (expectedNum1 != ctrlPts.length && expectedNum2 != ctrlPts.length) {
-        throw new IllegalArgumentException(
+        throw new ArgumentError(
             String.format("Wrong number of control points for element %d - expected %d or %d, found %d",
                 controlPointIndex-1, expectedNum1, expectedNum2, ctrlPts.length
                   ));
@@ -271,7 +271,7 @@ public class CubicBezierCurve {
    * @param alpha determines the curviness
    * @return the control point array
    */
-  private Coordinate[] controlPoints(Coordinate[] coords, boolean isRing, double alpha, double skew) {
+  private List<Coordinate> controlPoints(List<Coordinate> coords, bool isRing, double alpha, double skew) {
     int N = coords.length;
     int start = 1; 
     int end = N - 1;
@@ -282,7 +282,7 @@ public class CubicBezierCurve {
     }
     
     int nControl = 2 * coords.length - 2;
-    Coordinate[] ctrl = new Coordinate[nControl];
+    List<Coordinate> ctrl = new Coordinate[nControl];
     for (int i = start; i < end; i++) {
       int iprev = i == 0 ? N - 1 : i - 1;
       Coordinate v0 = coords[iprev];
@@ -299,7 +299,7 @@ public class CubicBezierCurve {
       double dist1 = v1.distance(v2);
       double lenBase = Math.min(dist0, dist1);
       
-      double intAngAbs = Math.abs(interiorAng);
+      double intAngAbs = (interiorAng).abs();
       
       //-- make acute corners sharper by shortening tangent vectors
       double sharpnessFactor = intAngAbs >= Angle.PI_OVER_2 ? 1 : intAngAbs / Angle.PI_OVER_2;
@@ -308,14 +308,14 @@ public class CubicBezierCurve {
       double stretch0 = 1;
       double stretch1 = 1;
       if (skew != 0) {
-        double stretch = Math.abs(dist0 - dist1) / Math.max(dist0, dist1);
+        double stretch = (dist0 - dist1).abs() / Math.max(dist0, dist1);
         int skewIndex = dist0 > dist1 ? 0 : 1;
         if (skew < 0) skewIndex = 1 - skewIndex;
         if (skewIndex == 0) {
-          stretch0 += Math.abs(skew) * stretch; 
+          stretch0 += (skew).abs() * stretch; 
         }
         else {
-          stretch1 += Math.abs(skew) * stretch; 
+          stretch1 += (skew).abs() * stretch; 
         }
       }
       Coordinate ctl0 = Angle.project(v1, ang0, stretch0 * len);
@@ -344,7 +344,7 @@ public class CubicBezierCurve {
    * @param coords
    * @param ctrl
    */
-  private void setLineEndControlPoints(Coordinate[] coords, Coordinate[] ctrl) {
+  private void setLineEndControlPoints(List<Coordinate> coords, List<Coordinate> ctrl) {
     int N = ctrl.length;
     ctrl[0] = mirrorControlPoint(ctrl[1], coords[1], coords[0]);
     ctrl[N - 1] = mirrorControlPoint(ctrl[N - 2], 
@@ -404,7 +404,7 @@ public class CubicBezierCurve {
   private void cubicBezier(final Coordinate p0, 
       final Coordinate p1, final Coordinate ctrl1, 
       final Coordinate ctrl2, double[][] param, 
-      Coordinate[] curve) {
+      List<Coordinate> curve) {
 
     int n = curve.length;
     curve[0] = new Coordinate(p0);

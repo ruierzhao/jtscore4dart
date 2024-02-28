@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.io.PrintStream;
 
@@ -29,7 +29,7 @@ import org.locationtech.jts.util.Assert;
  * This ordering is used to sort EdgeEnds around a node.
  * @version 1.7
  */
-public class EdgeEnd
+class EdgeEnd
   implements Comparable
 {
   protected Edge edge;  // the parent edge of this edge end
@@ -44,10 +44,10 @@ public class EdgeEnd
   {
     this.edge = edge;
   }
-  public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1) {
+  EdgeEnd(Edge edge, Coordinate p0, Coordinate p1) {
     this(edge, p0, p1, null);
   }
-  public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1, Label label) {
+  EdgeEnd(Edge edge, Coordinate p0, Coordinate p1, Label label) {
     this(edge);
     init(p0, p1);
     this.label = label;
@@ -63,18 +63,18 @@ public class EdgeEnd
     Assert.isTrue(! (dx == 0 && dy == 0), "EdgeEnd with identical endpoints found");
   }
 
-  public Edge getEdge() { return edge; }
-  public Label getLabel() { return label; }
-  public Coordinate getCoordinate() { return p0; }
-  public Coordinate getDirectedCoordinate() { return p1; }
-  public int getQuadrant() { return quadrant; }
-  public double getDx() { return dx; }
-  public double getDy() { return dy; }
+  Edge getEdge() { return edge; }
+  Label getLabel() { return label; }
+  Coordinate getCoordinate() { return p0; }
+  Coordinate getDirectedCoordinate() { return p1; }
+  int getQuadrant() { return quadrant; }
+  double getDx() { return dx; }
+  double getDy() { return dy; }
 
-  public void setNode(Node node) { this.node = node; }
-  public Node getNode() { return node; }
+  void setNode(Node node) { this.node = node; }
+  Node getNode() { return node; }
 
-  public int compareTo(Object obj)
+  int compareTo(Object obj)
   {
       EdgeEnd e = (EdgeEnd) obj;
       return compareDirection(e);
@@ -95,7 +95,7 @@ public class EdgeEnd
    * @param e EdgeEnd
    * @return direction comparison
    */
-  public int compareDirection(EdgeEnd e)
+  int compareDirection(EdgeEnd e)
   {
     if (dx == e.dx && dy == e.dy)
       return 0;
@@ -107,11 +107,11 @@ public class EdgeEnd
     return Orientation.index(e.p0, e.p1, p1);
   }
 
-  public void computeLabel(BoundaryNodeRule boundaryNodeRule)
+  void computeLabel(BoundaryNodeRule boundaryNodeRule)
   {
     // subclasses should override this if they are using labels
   }
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     double angle = Math.atan2(dy, dx);
     String className = getClass().getName();
@@ -119,7 +119,7 @@ public class EdgeEnd
     String name = className.substring(lastDotPos + 1);
     out.print("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle + "   " + label);
   }
-  public String toString()
+  String toString()
   {
     double angle = Math.atan2(dy, dx);
     String className = getClass().getName();

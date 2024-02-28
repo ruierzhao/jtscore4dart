@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.prep;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +40,7 @@ abstract class PreparedPolygonPredicate
    * 
    * @param prepPoly the PreparedPolygon to evaluate
    */
-	public PreparedPolygonPredicate(PreparedPolygon prepPoly)
+	PreparedPolygonPredicate(PreparedPolygon prepPoly)
 	{
 		this.prepPoly = prepPoly;
     targetPointLocator = prepPoly.getPointLocator();
@@ -54,7 +54,7 @@ abstract class PreparedPolygonPredicate
    * @param geom a geometry to test
    * @return true if all components of the argument are contained in the target geometry
    */
-	protected boolean isAllTestComponentsInTarget(Geometry testGeom)
+	protected bool isAllTestComponentsInTarget(Geometry testGeom)
 	{
     List coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
     for (Iterator i = coords.iterator(); i.hasNext(); ) {
@@ -74,7 +74,7 @@ abstract class PreparedPolygonPredicate
    * @param geom a geometry to test
    * @return true if all components of the argument are contained in the target geometry interior
    */
-	protected boolean isAllTestComponentsInTargetInterior(Geometry testGeom)
+	protected bool isAllTestComponentsInTargetInterior(Geometry testGeom)
 	{
     List coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
     for (Iterator i = coords.iterator(); i.hasNext(); ) {
@@ -94,7 +94,7 @@ abstract class PreparedPolygonPredicate
    * @param geom a geometry to test
    * @return true if any component of the argument intersects the prepared area geometry
    */
-	protected boolean isAnyTestComponentInTarget(Geometry testGeom)
+	protected bool isAnyTestComponentInTarget(Geometry testGeom)
 	{
     List coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
     for (Iterator i = coords.iterator(); i.hasNext(); ) {
@@ -113,7 +113,7 @@ abstract class PreparedPolygonPredicate
    * @param geom a Pointal geometry to test
    * @return true if all points of the argument are contained in the target geometry
    */
-  protected boolean isAllTestPointsInTarget(Geometry testGeom)
+  protected bool isAllTestPointsInTarget(Geometry testGeom)
   {
     for (int i = 0; i < testGeom.getNumGeometries(); i++) {
       Point pt = (Point) testGeom.getGeometryN(i);
@@ -132,7 +132,7 @@ abstract class PreparedPolygonPredicate
    * @param geom a geometry to test
    * @return true if any point of the argument intersects the prepared area geometry interior
    */
-	protected boolean isAnyTestPointInTargetInterior(Geometry testGeom)
+	protected bool isAnyTestPointInTargetInterior(Geometry testGeom)
 	{
     for (int i = 0; i < testGeom.getNumGeometries(); i++) {
       Point pt = (Point) testGeom.getGeometryN(i);
@@ -152,7 +152,7 @@ abstract class PreparedPolygonPredicate
 	 * @param repPts the representative points of the target geometry
 	 * @return true if any component intersects the areal test geometry
 	 */
-	protected boolean isAnyTargetComponentInAreaTest(Geometry testGeom, List targetRepPts)
+	protected bool isAnyTargetComponentInAreaTest(Geometry testGeom, List targetRepPts)
 	{
 		PointOnGeometryLocator piaLoc = new SimplePointInAreaLocator(testGeom);
     for (Iterator i = targetRepPts.iterator(); i.hasNext(); ) {

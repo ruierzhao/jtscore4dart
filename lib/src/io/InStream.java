@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * but with a narrower interface to make it easier to implement.
  *
  */
-public interface InStream
+interface InStream
 {
   /**
    * Reads <code>buf.length</code> bytes from the input stream

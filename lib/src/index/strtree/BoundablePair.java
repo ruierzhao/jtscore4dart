@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.strtree;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +40,7 @@ class BoundablePair
   private ItemDistance itemDistance;
   //private double maxDistance = -1.0;
   
-  public BoundablePair(Boundable boundable1, Boundable boundable2, ItemDistance itemDistance)
+  BoundablePair(Boundable boundable1, Boundable boundable2, ItemDistance itemDistance)
   {
     this.boundable1 = boundable1;
     this.boundable2 = boundable2;
@@ -55,7 +55,7 @@ class BoundablePair
    * @param i the index of the member to return (0 or 1)
    * @return the chosen member
    */
-  public Boundable getBoundable(int i)
+  Boundable getBoundable(int i)
   {
     if (i == 0) return boundable1;
     return boundable2;
@@ -67,7 +67,7 @@ class BoundablePair
    * 
    * @return the maximum distance between items in the pair
    */
-  public double maximumDistance()
+  double maximumDistance()
   {
     return EnvelopeDistance.maximumDistance( 
         (Envelope) boundable1.getBounds(),
@@ -105,12 +105,12 @@ class BoundablePair
    * 
    * @return the exact or lower bound distance for this pair
    */
-  public double getDistance() { return distance; }
+  double getDistance() { return distance; }
   
   /**
    * Compares two pairs based on their minimum distances
    */
-  public int compareTo(Object o)
+  int compareTo(Object o)
   {
     BoundablePair nd = (BoundablePair) o;
     if (distance < nd.distance) return -1;
@@ -123,12 +123,12 @@ class BoundablePair
    * 
    * @return true if both pair elements are leaf nodes
    */
-  public boolean isLeaves()
+  bool isLeaves()
   {
     return ! (isComposite(boundable1) || isComposite(boundable2));
   }
   
-  public static boolean isComposite(Object item)
+  static bool isComposite(Object item)
   {
     return (item instanceof AbstractNode); 
   }
@@ -156,10 +156,10 @@ class BoundablePair
    * @param minDistance the limit on the distance between added pairs
    * 
    */
-  public void expandToQueue(PriorityQueue priQ, double minDistance)
+  void expandToQueue(PriorityQueue priQ, double minDistance)
   {
-    boolean isComp1 = isComposite(boundable1);
-    boolean isComp2 = isComposite(boundable2);
+    bool isComp1 = isComposite(boundable1);
+    bool isComp2 = isComposite(boundable2);
     
     /**
      * HEURISTIC: If both boundable are composite,
@@ -185,10 +185,10 @@ class BoundablePair
       return;
     }
     
-    throw new IllegalArgumentException("neither boundable is composite");
+    throw new ArgumentError("neither boundable is composite");
   }
   
-  private void expand(Boundable bndComposite, Boundable bndOther, boolean isFlipped,
+  private void expand(Boundable bndComposite, Boundable bndOther, bool isFlipped,
       PriorityQueue priQ, double minDistance)
   {
     List children = ((AbstractNode) bndComposite).getChildBoundables();

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.distance3d;
+
 
 import org.locationtech.jts.algorithm.RayCrossingCounter;
 import org.locationtech.jts.geom.Coordinate;
@@ -33,13 +33,13 @@ import org.locationtech.jts.math.Vector3D;
  * @author mdavis
  *
  */
-public class PlanarPolygon3D {
+class PlanarPolygon3D {
 
 	private Plane3D plane;
 	private Polygon poly;
 	private int facingPlane = -1;
 
-	public PlanarPolygon3D(Polygon poly) {
+	PlanarPolygon3D(Polygon poly) {
 		this.poly = poly;
 		plane = findBestFitPlane(poly);
 		facingPlane = plane.closestAxisPlane();
@@ -118,15 +118,15 @@ public class PlanarPolygon3D {
 		return a;
 	}
 
-	public Plane3D getPlane() {
+	Plane3D getPlane() {
 		return plane;
 	}
 
-	public Polygon getPolygon() {
+	Polygon getPolygon() {
 		return poly;
 	}
 
-	public boolean intersects(Coordinate intPt) {
+	bool intersects(Coordinate intPt) {
 		if (Location.EXTERIOR == locate(intPt, poly.getExteriorRing()))
 			return false;
 		
@@ -144,7 +144,7 @@ public class PlanarPolygon3D {
 		return RayCrossingCounter.locatePointInRing(ptProj, seqProj);
 	}
 	
-	public boolean intersects(Coordinate pt, LineString ring) {
+	bool intersects(Coordinate pt, LineString ring) {
 		CoordinateSequence seq = ring.getCoordinateSequence();
 		CoordinateSequence seqProj = project(seq, facingPlane);
 		Coordinate ptProj = project(pt, facingPlane);

@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom;
+
 
 /**
  * Identifies {@link Geometry} subclasses which
@@ -19,6 +19,6 @@ package org.locationtech.jts.geom;
  * @author Martin Davis
  *
  */
-public interface Puntal {
+interface Puntal {
 
 }

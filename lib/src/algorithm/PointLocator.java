@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import java.util.Iterator;
 
@@ -41,23 +41,23 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @version 1.7
  */
-public class PointLocator
+class PointLocator
 {
   // default is to use OGC SFS rule
   private BoundaryNodeRule boundaryRule = 
   	//BoundaryNodeRule.ENDPOINT_BOUNDARY_RULE; 
   	BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
 
-  private boolean isIn;         // true if the point lies in or on any Geometry element
+  private bool isIn;         // true if the point lies in or on any Geometry element
   private int numBoundaries;    // the number of sub-elements whose boundaries the point lies in
 
-  public PointLocator() {
+  PointLocator() {
   }
 
-  public PointLocator(BoundaryNodeRule boundaryRule)
+  PointLocator(BoundaryNodeRule boundaryRule)
   {
     if (boundaryRule == null)
-      throw new IllegalArgumentException("Rule must be non-null");
+      throw new ArgumentError("Rule must be non-null");
     this.boundaryRule = boundaryRule;
   }
 
@@ -68,7 +68,7 @@ public class PointLocator
    * @param geom the Geometry to test
    * @return <code>true</code> if the point is in the interior or boundary of the Geometry
    */
-  public boolean intersects(Coordinate p, Geometry geom)
+  bool intersects(Coordinate p, Geometry geom)
   {
     return locate(p, geom) != Location.EXTERIOR;
   }
@@ -83,7 +83,7 @@ public class PointLocator
    *
    * @return the {@link Location} of the point relative to the input Geometry
    */
-  public int locate(Coordinate p, Geometry geom)
+  int locate(Coordinate p, Geometry geom)
   {
     if (geom.isEmpty()) return Location.EXTERIOR;
 

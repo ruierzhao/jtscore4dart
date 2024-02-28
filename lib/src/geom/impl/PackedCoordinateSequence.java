@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.impl;
+
 
 
 import java.io.ObjectStreamException;
@@ -38,7 +38,7 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @version 1.7
  */
-public abstract class PackedCoordinateSequence
+abstract class PackedCoordinateSequence
     implements CoordinateSequence, Serializable
 {
   private static final long serialVersionUID = -3151899011275603L;
@@ -59,22 +59,22 @@ public abstract class PackedCoordinateSequence
    */
   protected PackedCoordinateSequence(int dimension, int measures ) {
       if (dimension - measures < 2) {
-         throw new IllegalArgumentException("Must have at least 2 spatial dimensions");
+         throw new ArgumentError("Must have at least 2 spatial dimensions");
       }
       this.dimension = dimension;
       this.measures = measures;
   }
   
   /**
-   * A soft reference to the Coordinate[] representation of this sequence.
+   * A soft reference to the List<Coordinate> representation of this sequence.
    * Makes repeated coordinate array accesses more efficient.
    */
-  protected transient SoftReference<Coordinate[]> coordRef;
+  protected transient SoftReference<List<Coordinate>> coordRef;
 
   /**
    * @see CoordinateSequence#getDimension()
    */
-  public int getDimension() {
+  int getDimension() {
     return this.dimension;
   }
 
@@ -82,15 +82,15 @@ public abstract class PackedCoordinateSequence
    * @see CoordinateSequence#getMeasures()
    */
   @Override
-  public int getMeasures() {
+  int getMeasures() {
     return this.measures;
   }
 
   /**
    * @see CoordinateSequence#getCoordinate(int)
    */
-  public Coordinate getCoordinate(int i) {
-    Coordinate[] coords = getCachedCoords();
+  Coordinate getCoordinate(int i) {
+    List<Coordinate> coords = getCachedCoords();
     if(coords != null)
       return coords[i];
     else
@@ -99,14 +99,14 @@ public abstract class PackedCoordinateSequence
   /**
    * @see CoordinateSequence#getCoordinate(int)
    */
-  public Coordinate getCoordinateCopy(int i) {
+  Coordinate getCoordinateCopy(int i) {
     return getCoordinateInternal(i);
   }
 
   /**
    * @see CoordinateSequence#getCoordinate(int)
    */
-  public void getCoordinate(int i, Coordinate coord) {
+  void getCoordinate(int i, Coordinate coord) {
     coord.x = getOrdinate(i, 0);
     coord.y = getOrdinate(i, 1);
     if (hasZ()) {
@@ -120,8 +120,8 @@ public abstract class PackedCoordinateSequence
   /**
    * @see CoordinateSequence#toCoordinateArray()
    */
-  public Coordinate[] toCoordinateArray() {
-    Coordinate[] coords = getCachedCoords();
+  List<Coordinate> toCoordinateArray() {
+    List<Coordinate> coords = getCachedCoords();
 // testing - never cache
     if (coords != null)
       return coords;
@@ -130,14 +130,14 @@ public abstract class PackedCoordinateSequence
     for (int i = 0; i < coords.length; i++) {
       coords[i] = getCoordinateInternal(i);
     }
-    coordRef = new SoftReference<Coordinate[]>(coords);
+    coordRef = new SoftReference<List<Coordinate>>(coords);
 
     return coords;
   }
 
-  private Coordinate[] getCachedCoords() {
+  private List<Coordinate> getCachedCoords() {
     if (coordRef != null) {
-      Coordinate[] coords = (Coordinate[]) coordRef.get();
+      List<Coordinate> coords = (List<Coordinate>) coordRef.get();
       if (coords != null) {
         return coords;
       } else {
@@ -155,21 +155,21 @@ public abstract class PackedCoordinateSequence
   /**
    * @see CoordinateSequence#getX(int)
    */
-  public double getX(int index) {
+  double getX(int index) {
     return getOrdinate(index, 0);
   }
 
   /**
    * @see CoordinateSequence#getY(int)
    */
-  public double getY(int index) {
+  double getY(int index) {
     return getOrdinate(index, 1);
   }
 
   /**
    * @see CoordinateSequence#getOrdinate(int, int)
    */
-  public abstract double getOrdinate(int index, int ordinateIndex);
+  abstract double getOrdinate(int index, int ordinateIndex);
 
   /**
    * Sets the first ordinate of a coordinate in this sequence.
@@ -177,7 +177,7 @@ public abstract class PackedCoordinateSequence
    * @param index  the coordinate index
    * @param value  the new ordinate value
    */
-  public void setX(int index, double value) {
+  void setX(int index, double value) {
     coordRef = null;
     setOrdinate(index, 0, value);
   }
@@ -188,12 +188,12 @@ public abstract class PackedCoordinateSequence
    * @param index  the coordinate index
    * @param value  the new ordinate value
    */
-  public void setY(int index, double value) {
+  void setY(int index, double value) {
     coordRef = null;
     setOrdinate(index, 1, value);
   }
 
-  public String toString()
+  String toString()
   {
     return CoordinateSequences.toString(this);
   }
@@ -217,9 +217,9 @@ public abstract class PackedCoordinateSequence
    * @see CoordinateSequence#clone()
    * @deprecated
    */
-  public abstract Object clone();
+  abstract Object clone();
   
-  public abstract PackedCoordinateSequence copy();
+  abstract PackedCoordinateSequence copy();
 
   /**
    * Sets the ordinate of a coordinate in this sequence.
@@ -235,12 +235,12 @@ public abstract class PackedCoordinateSequence
    * @param value
    *          the new ordinate value
    */
-  public abstract void setOrdinate(int index, int ordinate, double value);
+  abstract void setOrdinate(int index, int ordinate, double value);
 
   /**
    * Packed coordinate sequence implementation based on doubles
    */
-  public static class Double extends PackedCoordinateSequence {
+  static class Double extends PackedCoordinateSequence {
     private static final long serialVersionUID = 5777450686367912719L;
     /**
      * The packed coordinate array
@@ -254,10 +254,10 @@ public abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
      */
-    public Double(double[] coords, int dimension, int measures) {
+    Double(double[] coords, int dimension, int measures) {
       super(dimension,measures);
       if (coords.length % dimension != 0) {
-        throw new IllegalArgumentException("Packed array does not contain "
+        throw new ArgumentError("Packed array does not contain "
             + "an integral number of coordinates");
       }
       this.coords = coords;
@@ -270,7 +270,7 @@ public abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
      */
-    public Double(float[] coords, int dimension, int measures) {
+    Double(float[] coords, int dimension, int measures) {
       super(dimension,measures);
       this.coords = new double[coords.length];
       for (int i = 0; i < coords.length; i++) {
@@ -284,7 +284,7 @@ public abstract class PackedCoordinateSequence
      * @param coordinates an array of {@link Coordinate}s
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      */
-    public Double(Coordinate[] coordinates, int dimension) {
+    Double(List<Coordinate> coordinates, int dimension) {
       this( coordinates, dimension,  Math.max(0,dimension-3));
     }
     /**
@@ -294,7 +294,7 @@ public abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
      */
-    public Double(Coordinate[] coordinates, int dimension, int measures) {
+    Double(List<Coordinate> coordinates, int dimension, int measures) {
       super(dimension,measures);
       if (coordinates == null)
         coordinates = new Coordinate[0];
@@ -315,7 +315,7 @@ public abstract class PackedCoordinateSequence
      *
      * @param coordinates an array of {@link Coordinate}s
      */
-    public Double(Coordinate[] coordinates) {
+    Double(List<Coordinate> coordinates) {
       this(coordinates, 3, 0);
     }
 
@@ -326,7 +326,7 @@ public abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
      */
-    public Double(int size, int dimension, int measures) {
+    Double(int size, int dimension, int measures) {
       super(dimension,measures);  
       coords = new double[size * this.dimension];
     }
@@ -334,7 +334,7 @@ public abstract class PackedCoordinateSequence
     /**
      * @see PackedCoordinateSequence#getCoordinate(int)
      */
-    public Coordinate getCoordinateInternal(int i) {
+    Coordinate getCoordinateInternal(int i) {
       double x = coords[i * dimension];
       double y = coords[i * dimension + 1];
       if( dimension == 2 && measures == 0 ) {
@@ -361,7 +361,7 @@ public abstract class PackedCoordinateSequence
      * 
      * @return the array of coordinate values
      */
-    public double[] getRawCoordinates()
+    double[] getRawCoordinates()
     {
       return coords;
     }
@@ -369,7 +369,7 @@ public abstract class PackedCoordinateSequence
     /**
      * @see CoordinateSequence#size()
      */
-    public int size() {
+    int size() {
       return coords.length / dimension;
     }
 
@@ -378,14 +378,14 @@ public abstract class PackedCoordinateSequence
      * @see PackedCoordinateSequence#clone()
      * @deprecated
      */
-    public Object clone() {
+    Object clone() {
       return copy();
     }
 
     /**
      * @see PackedCoordinateSequence#size()
      */
-    public Double copy() {
+    Double copy() {
       double[] clone = Arrays.copyOf(coords, coords.length);
       return new Double(clone, dimension, measures);
     }
@@ -396,14 +396,14 @@ public abstract class PackedCoordinateSequence
      *      it's over dimensions you may not get an exception but a meaningless
      *      value.
      */
-    public double getOrdinate(int index, int ordinate) {
+    double getOrdinate(int index, int ordinate) {
       return coords[index * dimension + ordinate];
     }
 
     /**
      * @see PackedCoordinateSequence#setOrdinate(int, int, double)
      */
-    public void setOrdinate(int index, int ordinate, double value) {
+    void setOrdinate(int index, int ordinate, double value) {
       coordRef = null;
       coords[index * dimension + ordinate] = value;
     }
@@ -411,7 +411,7 @@ public abstract class PackedCoordinateSequence
     /**
      * @see CoordinateSequence#expandEnvelope(Envelope)
      */
-    public Envelope expandEnvelope(Envelope env)
+    Envelope expandEnvelope(Envelope env)
     {
       for (int i = 0; i < coords.length; i += dimension ) {
         // added to make static code analysis happy
@@ -426,7 +426,7 @@ public abstract class PackedCoordinateSequence
   /**
    * Packed coordinate sequence implementation based on floats
    */
-  public static class Float extends PackedCoordinateSequence {
+  static class Float extends PackedCoordinateSequence {
     private static final long serialVersionUID = -2902252401427938986L;
     /**
      * The packed coordinate array
@@ -440,10 +440,10 @@ public abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
      */
-    public Float(float[] coords, int dimension, int measures) {
+    Float(float[] coords, int dimension, int measures) {
       super(dimension,measures);
       if (coords.length % dimension != 0) {
-        throw new IllegalArgumentException("Packed array does not contain "
+        throw new ArgumentError("Packed array does not contain "
             + "an integral number of coordinates");
       }
       this.coords = coords;
@@ -456,7 +456,7 @@ public abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
      */
-    public Float(double[] coords, int dimension, int measures) {
+    Float(double[] coords, int dimension, int measures) {
       super(dimension,measures);
       this.coords = new float[coords.length];
       
@@ -471,7 +471,7 @@ public abstract class PackedCoordinateSequence
      * @param coordinates an array of {@link Coordinate}s
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      */
-    public Float(Coordinate[] coordinates, int dimension) {
+    Float(List<Coordinate> coordinates, int dimension) {
       this( coordinates, dimension, Math.max(0,dimension-3));
     }
     
@@ -482,7 +482,7 @@ public abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
      */
-    public Float(Coordinate[] coordinates, int dimension, int measures) {
+    Float(List<Coordinate> coordinates, int dimension, int measures) {
       super(dimension,measures);
       if (coordinates == null)
         coordinates = new Coordinate[0];
@@ -506,7 +506,7 @@ public abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
      */
-    public Float(int size, int dimension,int measures) {
+    Float(int size, int dimension,int measures) {
       super(dimension,measures);
       coords = new float[size * this.dimension];
     }
@@ -514,7 +514,7 @@ public abstract class PackedCoordinateSequence
     /**
      * @see PackedCoordinateSequence#getCoordinate(int)
      */
-    public Coordinate getCoordinateInternal(int i) {
+    Coordinate getCoordinateInternal(int i) {
       double x = coords[i * dimension];
       double y = coords[i * dimension + 1];
       if( dimension == 2 && measures == 0 ) {
@@ -541,7 +541,7 @@ public abstract class PackedCoordinateSequence
      * 
      * @return the array of coordinate values
      */
-    public float[] getRawCoordinates()
+    float[] getRawCoordinates()
     {
       return coords;
     }
@@ -549,7 +549,7 @@ public abstract class PackedCoordinateSequence
     /**
      * @see CoordinateSequence#size()
      */
-    public int size() {
+    int size() {
       return coords.length / dimension;
     }
 
@@ -558,14 +558,14 @@ public abstract class PackedCoordinateSequence
      * @see PackedCoordinateSequence#clone()
      * @deprecated
      */
-    public Object clone() {
+    Object clone() {
       return copy();
     }
 
     /**
      * @see PackedCoordinateSequence#copy()
      */
-    public Float copy() {
+    Float copy() {
       float[] clone = Arrays.copyOf(coords, coords.length);
       return new Float(clone, dimension,measures);
     }
@@ -576,14 +576,14 @@ public abstract class PackedCoordinateSequence
      *      If it is larger than the dimension a meaningless
      *      value may be returned.
      */
-    public double getOrdinate(int index, int ordinate) {
+    double getOrdinate(int index, int ordinate) {
       return coords[index * dimension + ordinate];
     }
 
     /**
      * @see PackedCoordinateSequence#setOrdinate(int, int, double)
      */
-    public void setOrdinate(int index, int ordinate, double value) {
+    void setOrdinate(int index, int ordinate, double value) {
       coordRef = null;
       coords[index * dimension + ordinate] = (float) value;
     }
@@ -591,7 +591,7 @@ public abstract class PackedCoordinateSequence
     /**
      * @see CoordinateSequence#expandEnvelope(Envelope)
      */
-    public Envelope expandEnvelope(Envelope env)
+    Envelope expandEnvelope(Envelope env)
     {
       for (int i = 0; i < coords.length; i += dimension ) {
         // added to make static code analysis happy

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 /**
  * Processes possible intersections detected by a {@link Noder}.
@@ -24,7 +24,7 @@ package org.locationtech.jts.noding;
  *
  * @version 1.7
  */
-public interface SegmentIntersector
+interface SegmentIntersector
 {
   /**
    * This method is called by clients
@@ -42,5 +42,5 @@ public interface SegmentIntersector
    * 
    * @return true if there is no need to continue testing segments
    */
-  boolean isDone();
+  bool isDone();
 }

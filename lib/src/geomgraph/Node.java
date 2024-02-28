@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geomgraph;
+
 
 import java.io.PrintStream;
 import java.util.Iterator;
@@ -22,21 +22,21 @@ import org.locationtech.jts.geom.Location;
 /**
  * @version 1.7
  */
-public class Node
+class Node
   extends GraphComponent
 {
   protected Coordinate coord; // only non-null if this node is precise
   protected EdgeEndStar edges;
 
-  public Node(Coordinate coord, EdgeEndStar edges)
+  Node(Coordinate coord, EdgeEndStar edges)
   {
     this.coord = coord;
     this.edges = edges;
     label = new Label(0, Location.NONE);
   }
 
-  public Coordinate getCoordinate() { return coord; }
-  public EdgeEndStar getEdges() { return edges; }
+  Coordinate getCoordinate() { return coord; }
+  EdgeEndStar getEdges() { return edges; }
 
   /**
    * Tests whether any incident edge is flagged as
@@ -46,7 +46,7 @@ public class Node
    *
    * @return <code>true</code> if any incident edge in the in the result
    */
-  public boolean isIncidentEdgeInResult()
+  bool isIncidentEdgeInResult()
   {
     for (Iterator it = getEdges().getEdges().iterator(); it.hasNext(); ) {
       DirectedEdge de = (DirectedEdge) it.next();
@@ -56,7 +56,7 @@ public class Node
     return false;
   }
 
-  public boolean isIsolated()
+  bool isIsolated()
   {
     return (label.getGeometryCount() == 1);
   }
@@ -69,14 +69,14 @@ public class Node
    *
    * @param e EdgeEnd
    */
-  public void add(EdgeEnd e)
+  void add(EdgeEnd e)
   {
     // Assert: start pt of e is equal to node point
     edges.insert(e);
     e.setNode(this);
   }
 
-  public void mergeLabel(Node n)
+  void mergeLabel(Node n)
   {
     mergeLabel(n.label);
   }
@@ -89,7 +89,7 @@ public class Node
    *
    * @param label2 Label to merge
    */
-  public void mergeLabel(Label label2)
+  void mergeLabel(Label label2)
   {
     for (int i = 0; i < 2; i++) {
       int loc = computeMergedLocation(label2, i);
@@ -98,7 +98,7 @@ public class Node
     }
   }
 
-  public void setLabel(int argIndex, int onLocation)
+  void setLabel(int argIndex, int onLocation)
   {
     if (label == null) {
       label = new Label(argIndex, onLocation);
@@ -112,7 +112,7 @@ public class Node
    * obeying the mod-2 boundaryDetermination rule.
    * @param argIndex location index
    */
-  public void setLabelBoundary(int argIndex)
+  void setLabelBoundary(int argIndex)
   {
     if (label == null) return;
 
@@ -148,12 +148,12 @@ public class Node
     return loc;
   }
 
-  public void print(PrintStream out)
+  void print(PrintStream out)
   {
     out.println("node " + coord + " lbl: " + label);
   }
   
-  public String toString() {
+  String toString() {
     return "Node(" + coord.x + ", " + coord.y + ")";
   }
   

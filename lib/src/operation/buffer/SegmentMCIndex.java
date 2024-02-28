@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer;
+
 
 import java.util.List;
 
@@ -31,11 +31,11 @@ import org.locationtech.jts.index.strtree.STRtree;
 class SegmentMCIndex {
   private STRtree index;
   
-  public SegmentMCIndex(Coordinate[] segs) {
+  SegmentMCIndex(List<Coordinate> segs) {
     index = buildIndex(segs);
   }
   
-  private STRtree buildIndex(Coordinate[] segs) {
+  private STRtree buildIndex(List<Coordinate> segs) {
     STRtree index = new STRtree();
     List<MonotoneChain> segChains = MonotoneChainBuilder.getChains(segs, segs);
     for (MonotoneChain mc : segChains ) {
@@ -44,9 +44,9 @@ class SegmentMCIndex {
     return index;
   }
 
-  public void query(Envelope env, MonotoneChainSelectAction action) {
+  void query(Envelope env, MonotoneChainSelectAction action) {
     index.query(env, new ItemVisitor() {
-      public void visitItem(Object item) {
+      void visitItem(Object item) {
         MonotoneChain testChain = (MonotoneChain) item;
         testChain.select(env, action);
       }

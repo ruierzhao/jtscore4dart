@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -48,7 +48,7 @@ import org.locationtech.jts.geom.Polygon;
  *  
  * @version 1.7
  */
-public class Centroid
+class Centroid
 {
   /**
    * Computes the centroid point of a geometry.
@@ -56,7 +56,7 @@ public class Centroid
    * @param geom the geometry to use
    * @return the centroid point, or null if the geometry is empty
    */
-  public static Coordinate getCentroid(Geometry geom)
+  static Coordinate getCentroid(Geometry geom)
   {
     Centroid cent = new Centroid(geom);
     return cent.getCentroid();
@@ -77,7 +77,7 @@ public class Centroid
   /**
    * Creates a new instance for computing the centroid of a geometry
    */
-  public Centroid(Geometry geom)
+  Centroid(Geometry geom)
   {
     areaBasePt = null;
     add(geom);
@@ -115,7 +115,7 @@ public class Centroid
    * 
    * @return the computed centroid, or null if the input is empty
    */
-  public Coordinate getCentroid()
+  Coordinate getCentroid()
   {
     /*
      * The centroid is computed from the highest dimension components present in the input.
@@ -124,7 +124,7 @@ public class Centroid
      * (e.g. areas may degenerate to lines or points)
      */
     Coordinate cent = new Coordinate();
-    if (Math.abs(areasum2) > 0.0) {
+    if ((areasum2).abs() > 0.0) {
       /*
        * Input contains areal geometry
        */
@@ -164,26 +164,26 @@ public class Centroid
     }
   }
 
-  private void addShell(Coordinate[] pts)
+  private void addShell(List<Coordinate> pts)
   {
     if (pts.length > 0) 
       setAreaBasePoint(pts[0]);
-    boolean isPositiveArea = ! Orientation.isCCW(pts);
+    bool isPositiveArea = ! Orientation.isCCW(pts);
     for (int i = 0; i < pts.length - 1; i++) {
       addTriangle(areaBasePt, pts[i], pts[i+1], isPositiveArea);
     }
     addLineSegments(pts);
   }
   
-  private void addHole(Coordinate[] pts)
+  private void addHole(List<Coordinate> pts)
   {
-    boolean isPositiveArea = Orientation.isCCW(pts);
+    bool isPositiveArea = Orientation.isCCW(pts);
     for (int i = 0; i < pts.length - 1; i++) {
       addTriangle(areaBasePt, pts[i], pts[i+1], isPositiveArea);
     }
     addLineSegments(pts);
   }
-  private void addTriangle(Coordinate p0, Coordinate p1, Coordinate p2, boolean isPositiveArea)
+  private void addTriangle(Coordinate p0, Coordinate p1, Coordinate p2, bool isPositiveArea)
   {
     double sign = (isPositiveArea) ? 1.0 : -1.0;
     centroid3( p0, p1, p2, triangleCent3 );
@@ -221,7 +221,7 @@ public class Centroid
    * 
    * @param pts an array of {@link Coordinate}s
    */
-  private void addLineSegments(Coordinate[] pts)
+  private void addLineSegments(List<Coordinate> pts)
   {
     double lineLen = 0.0;
     for (int i = 0; i < pts.length - 1; i++) {

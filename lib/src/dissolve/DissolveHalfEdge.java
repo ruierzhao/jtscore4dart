@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.dissolve;
+
 
 import org.locationtech.jts.edgegraph.MarkHalfEdge;
 import org.locationtech.jts.geom.Coordinate;
@@ -25,9 +25,9 @@ import org.locationtech.jts.geom.Coordinate;
  */
 class DissolveHalfEdge extends MarkHalfEdge
 {
-  private boolean isStart = false;
+  private bool isStart = false;
   
-  public DissolveHalfEdge(Coordinate orig) {
+  DissolveHalfEdge(Coordinate orig) {
     super(orig);
   }
 
@@ -37,7 +37,7 @@ class DissolveHalfEdge extends MarkHalfEdge
    * 
    * @return true if this edge is a start segment
    */
-  public boolean isStart()
+  bool isStart()
   {
     return isStart;
   }
@@ -45,7 +45,7 @@ class DissolveHalfEdge extends MarkHalfEdge
   /**
    * Sets this edge to be the start segment of an input LineString.
    */
-  public void setStart()
+  void setStart()
   {
     isStart = true;
   }

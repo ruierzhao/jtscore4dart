@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.linemerge;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,9 +76,9 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class LineSequencer
+class LineSequencer
 {
-	public static Geometry sequence(Geometry geom)
+	static Geometry sequence(Geometry geom)
 	{
 		LineSequencer sequencer = new LineSequencer();
 		sequencer.add(geom);
@@ -95,7 +95,7 @@ public class LineSequencer
    * @param geom the geometry to test
    * @return <code>true</code> if the geometry is sequenced or is not lineal
    */
-  public static boolean isSequenced(Geometry geom)
+  static bool isSequenced(Geometry geom)
   {
     if (! (geom instanceof MultiLineString)) {
       return true;
@@ -137,9 +137,9 @@ public class LineSequencer
   private GeometryFactory factory = new GeometryFactory();
   private int lineCount = 0;
 
-  private boolean isRun = false;
+  private bool isRun = false;
   private Geometry sequencedGeometry = null;
-  private boolean isSequenceable = false;
+  private bool isSequenceable = false;
 
   /**
    * Adds a {@link Collection} of {@link Geometry}s to be sequenced.
@@ -149,7 +149,7 @@ public class LineSequencer
    *
    * @param geometries a Collection of geometries to add
    */
-  public void add(Collection geometries) {
+  void add(Collection geometries) {
     for (Iterator i = geometries.iterator(); i.hasNext(); ) {
       Geometry geometry = (Geometry) i.next();
       add(geometry);
@@ -163,9 +163,9 @@ public class LineSequencer
    *
    * @param geometry the geometry to add
    */
-  public void add(Geometry geometry) {
+  void add(Geometry geometry) {
     geometry.apply(new GeometryComponentFilter() {
-      public void filter(Geometry component) {
+      void filter(Geometry component) {
         if (component instanceof LineString) {
           addLine((LineString)component);
         }
@@ -187,7 +187,7 @@ public class LineSequencer
    *
    * @return <code>true</code> if a valid sequence exists.
    */
-  public boolean isSequenceable()
+  bool isSequenceable()
   {
     computeSequence();
     return isSequenceable;
@@ -199,7 +199,7 @@ public class LineSequencer
    * @return the sequenced linestrings,
    * or <code>null</code> if a valid sequence does not exist
    */
-  public Geometry getSequencedLineStrings() {
+  Geometry getSequencedLineStrings() {
     computeSequence();
     return sequencedGeometry;
   }
@@ -248,7 +248,7 @@ public class LineSequencer
    * @param graph the subgraph containing the edges
    * @return <code>true</code> if a sequence exists
    */
-  private boolean hasSequence(Subgraph graph)
+  private bool hasSequence(Subgraph graph)
   {
     int oddDegreeCount = 0;
     for (Iterator i = graph.nodeIterator(); i.hasNext(); ) {
@@ -310,7 +310,7 @@ public class LineSequencer
     return unvisitedDE;
   }
 
-  private void addReverseSubpath(DirectedEdge de, ListIterator lit, boolean expectedClosed)
+  private void addReverseSubpath(DirectedEdge de, ListIterator lit, bool expectedClosed)
   {
     // trace an unvisited path *backwards* from this de
     Node endNode = de.getToNode();
@@ -371,12 +371,12 @@ public class LineSequencer
     Node startNode = startEdge.getFromNode();
     Node endNode = endEdge.getToNode();
 
-    boolean flipSeq = false;
-    boolean hasDegree1Node = startNode.getDegree() == 1
+    bool flipSeq = false;
+    bool hasDegree1Node = startNode.getDegree() == 1
                            || endNode.getDegree() == 1;
 
     if (hasDegree1Node) {
-      boolean hasObviousStartNode = false;
+      bool hasObviousStartNode = false;
 
       // test end edge before start edge, to make result stable
       // (ie. if both are good starts, pick the actual start
@@ -459,8 +459,8 @@ public class LineSequencer
 
   private static LineString reverse(LineString line)
   {
-    Coordinate[] pts = line.getCoordinates();
-    Coordinate[] revPts = new Coordinate[pts.length];
+    List<Coordinate> pts = line.getCoordinates();
+    List<Coordinate> revPts = new Coordinate[pts.length];
     int len = pts.length;
     for (int i = 0; i < len; i++) {
       revPts[len - 1 - i] = new Coordinate(pts[i]);

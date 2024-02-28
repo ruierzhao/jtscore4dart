@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate;
+
 
 
 import org.locationtech.jts.geom.Coordinate;
@@ -22,9 +22,9 @@ import org.locationtech.jts.geom.LineSegment;
  * 
  * @author Martin Davis
  */
-public class NonEncroachingSplitPointFinder implements ConstraintSplitPointFinder {
+class NonEncroachingSplitPointFinder implements ConstraintSplitPointFinder {
 
-    public NonEncroachingSplitPointFinder() {}
+    NonEncroachingSplitPointFinder() {}
 
     /**
      * A basic strategy for finding split points when nothing extra is known about the geometry of
@@ -34,7 +34,7 @@ public class NonEncroachingSplitPointFinder implements ConstraintSplitPointFinde
      * @param encroachPt the encroaching point
      * @return the point at which to split the encroached segment
      */
-    public Coordinate findSplitPoint(Segment seg, Coordinate encroachPt) {
+    Coordinate findSplitPoint(Segment seg, Coordinate encroachPt) {
         LineSegment lineSeg = seg.getLineSegment();
         double segLen = lineSeg.getLength();
         double midPtLen = segLen / 2;
@@ -65,7 +65,7 @@ public class NonEncroachingSplitPointFinder implements ConstraintSplitPointFinde
      * @param encroachPt
      * @return a split point on the segment
      */
-    public static Coordinate projectedSplitPoint(Segment seg, Coordinate encroachPt) {
+    static Coordinate projectedSplitPoint(Segment seg, Coordinate encroachPt) {
         LineSegment lineSeg = seg.getLineSegment();
         Coordinate projPt = lineSeg.project(encroachPt);
         return projPt;

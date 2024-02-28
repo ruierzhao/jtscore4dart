@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -21,8 +21,8 @@ import org.locationtech.jts.geom.Geometry;
  *
  *@version 1.7
  */
-public class CoordinateArrayFilter implements CoordinateFilter {
-  Coordinate[] pts = null;
+class CoordinateArrayFilter implements CoordinateFilter {
+  List<Coordinate> pts = null;
   int n = 0;
 
   /**
@@ -31,7 +31,7 @@ public class CoordinateArrayFilter implements CoordinateFilter {
    *@param  size  the number of points that the <code>CoordinateArrayFilter</code>
    *      will collect
    */
-  public CoordinateArrayFilter(int size) {
+  CoordinateArrayFilter(int size) {
     pts = new Coordinate[size];
   }
 
@@ -40,11 +40,11 @@ public class CoordinateArrayFilter implements CoordinateFilter {
    *
    *@return    the <code>Coordinate</code>s collected by this <code>CoordinateArrayFilter</code>
    */
-  public Coordinate[] getCoordinates() {
+  List<Coordinate> getCoordinates() {
     return pts;
   }
 
-  public void filter(Coordinate coord) {
+  void filter(Coordinate coord) {
     pts[n++] = coord;
   }
 }

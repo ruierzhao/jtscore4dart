@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.quadtree;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -21,21 +21,21 @@ import org.locationtech.jts.util.Assert;
  *
  * @version 1.7
  */
-public class Root
+class Root
   extends NodeBase
 {
 
   // the singleton root quad is centred at the origin.
   private static final Coordinate origin = new Coordinate(0.0, 0.0);
 
-  public Root()
+  Root()
   {
   }
 
   /**
    * Insert an item into the quadtree this is the root of.
    */
-  public void insert(Envelope itemEnv, Object item)
+  void insert(Envelope itemEnv, Object item)
   {
     int index = getSubnodeIndex(itemEnv, origin.x, origin.y);
     // if index is -1, itemEnv must cross the X or Y axis.
@@ -79,8 +79,8 @@ public class Root
     * to infinite recursion. Instead, use a heuristic of simply returning
     * the smallest existing quad containing the query
     */
-    boolean isZeroX = IntervalSize.isZeroWidth(itemEnv.getMinX(), itemEnv.getMaxX());
-    boolean isZeroY = IntervalSize.isZeroWidth(itemEnv.getMinY(), itemEnv.getMaxY());
+    bool isZeroX = IntervalSize.isZeroWidth(itemEnv.getMinX(), itemEnv.getMaxX());
+    bool isZeroY = IntervalSize.isZeroWidth(itemEnv.getMinY(), itemEnv.getMaxY());
     NodeBase node;
     if (isZeroX || isZeroY)
       node = tree.find(itemEnv);
@@ -89,7 +89,7 @@ public class Root
     node.add(item);
   }
 
-  protected boolean isSearchMatch(Envelope searchEnv)
+  protected bool isSearchMatch(Envelope searchEnv)
   {
     return true;
   }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.awt;
+
 
 import java.awt.geom.Point2D;
 
@@ -21,10 +21,10 @@ import org.locationtech.jts.geom.Coordinate;
  * @author Martin Davis
  *
  */
-public class IdentityPointTransformation
+class IdentityPointTransformation
 implements PointTransformation
 {
-	public void transform(Coordinate model, Point2D view)
+	void transform(Coordinate model, Point2D view)
 	{
 		view.setLocation(model.x, model.y);
 	}

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,19 +32,19 @@ import org.locationtech.jts.geom.LineSegment;
  * @author Martin Davis
  *
  */
-public class BoundarySegmentNoder implements Noder {
+class BoundarySegmentNoder implements Noder {
 
   private List<SegmentString> segList;
   
   /**
    * Creates a new segment-dissolving noder.
    */
-  public BoundarySegmentNoder() {
+  BoundarySegmentNoder() {
     
   }
 
   @Override
-  public void computeNodes(Collection segStrings) {
+  void computeNodes(Collection segStrings) {
     HashSet<Segment> segSet = new HashSet<Segment>() ;
     addSegments(segStrings, segSet);
     segList = extractSegments(segSet);
@@ -77,14 +77,14 @@ public class BoundarySegmentNoder implements Noder {
       int i = seg.getIndex();
       Coordinate p0 = ss.getCoordinate(i);
       Coordinate p1 = ss.getCoordinate(i + 1);
-      SegmentString segStr = new BasicSegmentString(new Coordinate[] { p0, p1 }, ss.getData());
+      SegmentString segStr = new BasicSegmentString(new List<Coordinate> { p0, p1 }, ss.getData());
       segList.add(segStr);
     }
     return segList;
   }
 
   @Override
-  public Collection getNodedSubstrings() {
+  Collection getNodedSubstrings() {
     return segList;
   }
 
@@ -92,7 +92,7 @@ public class BoundarySegmentNoder implements Noder {
     private SegmentString segStr;
     private int index;
 
-    public Segment(Coordinate p0, Coordinate p1, 
+    Segment(Coordinate p0, Coordinate p1, 
         SegmentString segStr, int index) {
       super(p0, p1);
       this.segStr = segStr;
@@ -100,11 +100,11 @@ public class BoundarySegmentNoder implements Noder {
       normalize();
     }
     
-    public SegmentString getSegmentString() {
+    SegmentString getSegmentString() {
       return segStr;
     }
     
-    public int getIndex() {
+    int getIndex() {
       return index;
     }
   }

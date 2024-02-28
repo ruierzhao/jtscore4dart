@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.coverage;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -23,14 +23,14 @@ import org.locationtech.jts.geom.GeometryFactory;
  * @author Martin Davis
  *
  */
-public class CoverageUnion {
+class CoverageUnion {
   /**
    * Unions a polygonal coverage.
    * 
    * @param coverage the polygons in the coverage
    * @return the union of the coverage polygons
    */
-  public static Geometry union(Geometry[] coverage) {
+  static Geometry union(Geometry[] coverage) {
     // union of an empty coverage is null, since no factory is available
     if (coverage.length == 0)
       return null;

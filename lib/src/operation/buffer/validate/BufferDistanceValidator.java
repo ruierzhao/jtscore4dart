@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.buffer.validate;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,9 +41,9 @@ import org.locationtech.jts.util.Debug;
  * @author mbdavis
  *
  */
-public class BufferDistanceValidator 
+class BufferDistanceValidator 
 {
-  private static boolean VERBOSE = false;
+  private static bool VERBOSE = false;
 	/**
 	 * Maximum allowable fraction of buffer distance the 
 	 * actual distance can differ by.
@@ -61,21 +61,21 @@ public class BufferDistanceValidator
   private double minDistanceFound;
   private double maxDistanceFound;
   
-  private boolean isValid = true;
+  private bool isValid = true;
   private String errMsg = null;
   private Coordinate errorLocation = null;
   private Geometry errorIndicator = null;
   
-  public BufferDistanceValidator(Geometry input, double bufDistance, Geometry result)
+  BufferDistanceValidator(Geometry input, double bufDistance, Geometry result)
   {
   	this.input = input;
   	this.bufDistance = bufDistance;
   	this.result = result;
   }
   
-  public boolean isValid()
+  bool isValid()
   {
-  	double posDistance = Math.abs(bufDistance);
+  	double posDistance = (bufDistance).abs();
   	double distDelta = MAX_DISTANCE_DIFF_FRAC * posDistance;
   	minValidDistance = posDistance - distDelta;
   	maxValidDistance = posDistance + distDelta;
@@ -100,12 +100,12 @@ public class BufferDistanceValidator
   	return isValid;
   }
   
-  public String getErrorMessage()
+  String getErrorMessage()
   { 
   	return errMsg;
   }
   
-  public Coordinate getErrorLocation()
+  Coordinate getErrorLocation()
   {
     return errorLocation;
   }
@@ -119,7 +119,7 @@ public class BufferDistanceValidator
    * @return a geometric error indicator
    * or null if no error was found
    */
-  public Geometry getErrorIndicator()
+  Geometry getErrorIndicator()
   {
     return errorIndicator;
   }
@@ -178,7 +178,7 @@ public class BufferDistanceValidator
     
   	if (minDistanceFound < minDist) {
   		isValid = false;
-  		Coordinate[] pts = distOp.nearestPoints();
+  		List<Coordinate> pts = distOp.nearestPoints();
   		errorLocation = distOp.nearestPoints()[1];
   		errorIndicator = g1.getFactory().createLineString(pts);
   		errMsg = "Distance between buffer curve and input is too small "
@@ -209,7 +209,7 @@ public class BufferDistanceValidator
     
     if (maxDistanceFound > maxDist) {
       isValid = false;
-      Coordinate[] pts = haus.getCoordinates();
+      List<Coordinate> pts = haus.getCoordinates();
       errorLocation = pts[1];
       errorIndicator = input.getFactory().createLineString(pts);
       errMsg = "Distance between buffer curve and input is too large "

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class SimpleSegmentSetMutualIntersector implements SegmentSetMutualIntersector
+class SimpleSegmentSetMutualIntersector implements SegmentSetMutualIntersector
 {
   private final Collection baseSegStrings;
 
@@ -33,7 +33,7 @@ public class SimpleSegmentSetMutualIntersector implements SegmentSetMutualInters
    * 
    * @param segStrings the base segment strings to intersect
    */
-  public SimpleSegmentSetMutualIntersector(Collection segStrings)
+  SimpleSegmentSetMutualIntersector(Collection segStrings)
   {
 	  this.baseSegStrings = segStrings;
   }
@@ -46,7 +46,7 @@ public class SimpleSegmentSetMutualIntersector implements SegmentSetMutualInters
    * @param segStrings set of segments to intersect
    * @param segInt segment intersector to use
    */
-  public void process(Collection segStrings, SegmentIntersector segInt) {
+  void process(Collection segStrings, SegmentIntersector segInt) {
     for (Iterator i = baseSegStrings.iterator(); i.hasNext(); ) {
     	SegmentString baseSS = (SegmentString) i.next();
     	for (Iterator j = segStrings.iterator(); j.hasNext(); ) {
@@ -68,8 +68,8 @@ public class SimpleSegmentSetMutualIntersector implements SegmentSetMutualInters
    */
   private void intersect(SegmentString ss0, SegmentString ss1, SegmentIntersector segInt)
   {
-    Coordinate[] pts0 = ss0.getCoordinates();
-    Coordinate[] pts1 = ss1.getCoordinates();
+    List<Coordinate> pts0 = ss0.getCoordinates();
+    List<Coordinate> pts1 = ss1.getCoordinates();
     for (int i0 = 0; i0 < pts0.length - 1; i0++) {
       for (int i1 = 0; i1 < pts1.length - 1; i1++) {
         segInt.processIntersections(ss0, i0, ss1, i1);

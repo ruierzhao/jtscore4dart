@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.relate;
+
 
 /**
  * @version 1.7
@@ -45,16 +45,16 @@ import org.locationtech.jts.geomgraph.NodeMap;
  *
  * @version 1.7
  */
-public class RelateNodeGraph {
+class RelateNodeGraph {
 
   private NodeMap nodes = new NodeMap(new RelateNodeFactory());
 
-  public RelateNodeGraph() {
+  RelateNodeGraph() {
   }
 
-  public Iterator getNodeIterator() { return nodes.iterator(); }
+  Iterator getNodeIterator() { return nodes.iterator(); }
 
-  public void build(GeometryGraph geomGraph)
+  void build(GeometryGraph geomGraph)
   {
       // compute nodes for intersections between previously noded edges
     computeIntersectionNodes(geomGraph, 0);
@@ -84,7 +84,7 @@ public class RelateNodeGraph {
    * <p>
    * Precondition: edge intersections have been computed.
    */
-  public void computeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
+  void computeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
   {
     for (Iterator edgeIt = geomGraph.getEdgeIterator(); edgeIt.hasNext(); ) {
       Edge e = (Edge) edgeIt.next();
@@ -112,7 +112,7 @@ public class RelateNodeGraph {
      * but in the original arg Geometry it is actually
      * in the interior due to the Boundary Determination Rule)
      */
-  public void copyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
+  void copyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
   {
     for (Iterator nodeIt = geomGraph.getNodeIterator(); nodeIt.hasNext(); ) {
       Node graphNode = (Node) nodeIt.next();
@@ -122,7 +122,7 @@ public class RelateNodeGraph {
     }
   }
 
-  public void insertEdgeEnds(List ee)
+  void insertEdgeEnds(List ee)
   {
     for (Iterator i = ee.iterator(); i.hasNext(); ) {
       EdgeEnd e = (EdgeEnd) i.next();

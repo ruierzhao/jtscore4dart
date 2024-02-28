@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -34,7 +34,7 @@ import org.locationtech.jts.math.MathUtil;
  * @author Martin Davis
  *
  */
-public class PrecisionUtil 
+class PrecisionUtil 
 {  
   /**
    * A number of digits of precision which leaves some computational "headroom"
@@ -42,7 +42,7 @@ public class PrecisionUtil
    * 
    * This value should be less than the maximum decimal precision of double-precision values (16).
    */
-  public static int MAX_ROBUST_DP_DIGITS = 14;
+  static int MAX_ROBUST_DP_DIGITS = 14;
   
   /**
    * Determines a precision model to 
@@ -59,7 +59,7 @@ public class PrecisionUtil
    * @param b a geometry
    * @return a suitable precision model for overlay
    */
-  public static PrecisionModel robustPM(Geometry a, Geometry b) {
+  static PrecisionModel robustPM(Geometry a, Geometry b) {
     double scale = PrecisionUtil.robustScale(a, b);
     return new PrecisionModel( scale );
   }
@@ -74,7 +74,7 @@ public class PrecisionUtil
    * @param value a numeric value
    * @return a safe scale factor for the value
    */
-  public static double safeScale(double value)
+  static double safeScale(double value)
   {
     return precisionScale(value, MAX_ROBUST_DP_DIGITS);
   }
@@ -88,7 +88,7 @@ public class PrecisionUtil
    * @param geom a geometry
    * @return a safe scale factor for the geometry ordinates
    */
-  public static double safeScale(Geometry geom)
+  static double safeScale(Geometry geom)
   {
     return safeScale( maxBoundMagnitude( geom.getEnvelopeInternal() ));
   }
@@ -103,7 +103,7 @@ public class PrecisionUtil
    * @param b a geometry (which may be null)
    * @return a safe scale factor for the geometry ordinates
    */
-  public static double safeScale(Geometry a, Geometry b) {
+  static double safeScale(Geometry a, Geometry b) {
     double maxBnd = maxBoundMagnitude( a.getEnvelopeInternal());
     if (b != null) {
       double maxBndB = maxBoundMagnitude( b.getEnvelopeInternal());
@@ -124,10 +124,10 @@ public class PrecisionUtil
    */
   private static double maxBoundMagnitude(Envelope env) {
     return MathUtil.max(
-        Math.abs(env.getMaxX()), 
-        Math.abs(env.getMaxY()), 
-        Math.abs(env.getMinX()), 
-        Math.abs(env.getMinY())
+        (env.getMaxX().abs()), 
+        (env.getMaxY().abs()), 
+        (env.getMinX().abs()), 
+        (env.getMinY().abs())
         );
   }
   
@@ -176,7 +176,7 @@ public class PrecisionUtil
    * @param value a number
    * @return the inherent scale factor of the number
    */
-  public static double inherentScale(double value) {
+  static double inherentScale(double value) {
     int numDec = numberOfDecimals(value);
     double scaleFactor = Math.pow(10.0, numDec);
     return scaleFactor;
@@ -197,7 +197,7 @@ public class PrecisionUtil
    * @param geom geometry
    * @return inherent scale of a geometry
    */
-  public static double inherentScale(Geometry geom) { 
+  static double inherentScale(Geometry geom) { 
     InherentScaleFilter scaleFilter = new InherentScaleFilter();
     geom.apply(scaleFilter);
     return scaleFilter.getScale();
@@ -219,7 +219,7 @@ public class PrecisionUtil
    * @param b a geometry
    * @return the inherent scale factor of the two geometries
    */
-  public static double inherentScale(Geometry a, Geometry b) {
+  static double inherentScale(Geometry a, Geometry b) {
     double scale = PrecisionUtil.inherentScale(a);
     if (b != null) {
       double scaleB = PrecisionUtil.inherentScale(b);
@@ -231,7 +231,7 @@ public class PrecisionUtil
   /*
   // this doesn't work
   private static int BADnumDecimals(double value) {
-    double val = Math.abs(value);
+    double val = (value).abs();
     double frac = val - Math.floor(val);
     int numDec = 0;
     while (frac > 0 && numDec < MAX_PRECISION_DIGITS) {
@@ -283,12 +283,12 @@ public class PrecisionUtil
     
     private double scale  = 0;
 
-    public double getScale() {
+    double getScale() {
       return scale;
     }
     
     @Override
-    public void filter(Coordinate coord) {
+    void filter(Coordinate coord) {
       updateScaleMax(coord.getX());
       updateScaleMax(coord.getY());
     }
@@ -316,7 +316,7 @@ public class PrecisionUtil
    * @param a a geometry
    * @return a suitable precision model for overlay
    */
-  public static PrecisionModel robustPM(Geometry a) {
+  static PrecisionModel robustPM(Geometry a) {
     double scale = PrecisionUtil.robustScale(a);
     return new PrecisionModel( scale );
   }
@@ -334,7 +334,7 @@ public class PrecisionUtil
    * @param b a geometry
    * @return a scale factor for use in overlay operations
    */
-  public static double robustScale(Geometry a, Geometry b) {
+  static double robustScale(Geometry a, Geometry b) {
     double inherentScale = inherentScale(a, b);
     double safeScale = safeScale(a, b);
     return robustScale(inherentScale, safeScale);
@@ -350,7 +350,7 @@ public class PrecisionUtil
    * @param a a geometry 
    * @return a scale factor for use in overlay operations
    */
-  public static double robustScale(Geometry a) {
+  static double robustScale(Geometry a) {
     double inherentScale = inherentScale(a);
     double safeScale = safeScale(a);
     return robustScale(inherentScale, safeScale);

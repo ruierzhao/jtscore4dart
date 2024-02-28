@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import org.locationtech.jts.algorithm.Length;
 import org.locationtech.jts.operation.BoundaryOp;
@@ -27,11 +27,11 @@ import org.locationtech.jts.operation.BoundaryOp;
  *  <p>
  * A linestring must have either 0 or 2 or more points.
  * If these conditions are not met, the constructors throw
- * an {@link IllegalArgumentException}
+ * an {@link ArgumentError}
  *
  *@version 1.7
  */
-public class LineString
+class LineString
 	extends Geometry
 	implements Lineal
 {
@@ -41,7 +41,7 @@ public class LineString
    * The minimum number of vertices allowed in a valid non-empty linestring.
    * Empty linestrings with 0 vertices are also valid.
    */
-  public static final int MINIMUM_VALID_SIZE = 2;
+  static final int MINIMUM_VALID_SIZE = 2;
   
   /**
    *  The points of this <code>LineString</code>.
@@ -58,10 +58,10 @@ public class LineString
    *      for this <code>LineString</code>
    *@param  SRID            the ID of the Spatial Reference System used by this
    *      <code>LineString</code>
-   * @throws IllegalArgumentException if too few points are provided
+   * @throws ArgumentError if too few points are provided
    */
   /** @deprecated Use GeometryFactory instead */
-  public LineString(Coordinate points[], PrecisionModel precisionModel, int SRID)
+  LineString(Coordinate points[], PrecisionModel precisionModel, int SRID)
   {
     super(new GeometryFactory(precisionModel, SRID));
     init(getFactory().getCoordinateSequenceFactory().create(points));
@@ -72,9 +72,9 @@ public class LineString
    *
    *@param  points the points of the linestring, or <code>null</code>
    *      to create the empty geometry.
-   * @throws IllegalArgumentException if too few points are provided
+   * @throws ArgumentError if too few points are provided
    */
-  public LineString(CoordinateSequence points, GeometryFactory factory) {
+  LineString(CoordinateSequence points, GeometryFactory factory) {
     super(factory);
     init(points);
   }
@@ -82,82 +82,82 @@ public class LineString
   private void init(CoordinateSequence points)
   {
     if (points == null) {
-      points = getFactory().getCoordinateSequenceFactory().create(new Coordinate[]{});
+      points = getFactory().getCoordinateSequenceFactory().create(new List<Coordinate>{});
     }
     if (points.size() > 0 && points.size() < MINIMUM_VALID_SIZE) {
-      throw new IllegalArgumentException("Invalid number of points in LineString (found "
+      throw new ArgumentError("Invalid number of points in LineString (found "
       		+ points.size() + " - must be 0 or >= " + MINIMUM_VALID_SIZE + ")");
     }
     this.points = points;
   }
   
-  public Coordinate[] getCoordinates() {
+  List<Coordinate> getCoordinates() {
     return points.toCoordinateArray();
   }
 
-  public CoordinateSequence getCoordinateSequence() {
+  CoordinateSequence getCoordinateSequence() {
       return points;
   }
 
-  public Coordinate getCoordinateN(int n) {
+  Coordinate getCoordinateN(int n) {
       return points.getCoordinate(n);
   }
 
-  public Coordinate getCoordinate()
+  Coordinate getCoordinate()
   {
     if (isEmpty()) return null;
     return points.getCoordinate(0);
   }
 
-  public int getDimension() {
+  int getDimension() {
     return 1;
   }
 
-  public int getBoundaryDimension() {
+  int getBoundaryDimension() {
     if (isClosed()) {
       return Dimension.FALSE;
     }
     return 0;
   }
 
-  public boolean isEmpty() {
+  bool isEmpty() {
       return points.size() == 0;
   }
 
-  public int getNumPoints() {
+  int getNumPoints() {
       return points.size();
   }
 
-  public Point getPointN(int n) {
+  Point getPointN(int n) {
       return getFactory().createPoint(points.getCoordinate(n));
   }
 
-  public Point getStartPoint() {
+  Point getStartPoint() {
     if (isEmpty()) {
       return null;
     }
     return getPointN(0);
   }
 
-  public Point getEndPoint() {
+  Point getEndPoint() {
     if (isEmpty()) {
       return null;
     }
     return getPointN(getNumPoints() - 1);
   }
 
-  public boolean isClosed() {
+  bool isClosed() {
     if (isEmpty()) {
       return false;
     }
     return getCoordinateN(0).equals2D(getCoordinateN(getNumPoints() - 1));
   }
 
-  public boolean isRing() {
+  bool isRing() {
     return isClosed() && isSimple();
   }
 
-  public String getGeometryType() {
+  String getGeometryType() {
     return Geometry.TYPENAME_LINESTRING;
   }
 
@@ -166,7 +166,7 @@ public class LineString
    *
    *@return the length of the linestring
    */
-  public double getLength()
+  double getLength()
   {
    return Length.ofLine(points);
   }
@@ -178,7 +178,7 @@ public class LineString
    * @return the boundary geometry
    * @see Geometry#getBoundary
    */
-  public Geometry getBoundary() {
+  Geometry getBoundary() {
     return (new BoundaryOp(this)).getBoundary();
   }
 
@@ -188,7 +188,7 @@ public class LineString
    *
    * @return a {@link LineString} with coordinates in the reverse order
    */
-  public LineString reverse() {
+  LineString reverse() {
     return (LineString) super.reverse();
   }
 
@@ -206,7 +206,7 @@ public class LineString
    *@return     <code>true</code> if <code>pt</code> is one of this <code>LineString</code>
    *      's vertices
    */
-  public boolean isCoordinate(Coordinate pt) {
+  bool isCoordinate(Coordinate pt) {
       for (int i = 0; i < points.size(); i++) {
         if (points.getCoordinate(i).equals(pt)) {
           return true;
@@ -222,7 +222,7 @@ public class LineString
     return points.expandEnvelope(new Envelope());
   }
 
-  public boolean equalsExact(Geometry other, double tolerance) {
+  bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
@@ -238,13 +238,13 @@ public class LineString
     return true;
   }
 
-  public void apply(CoordinateFilter filter) {
+  void apply(CoordinateFilter filter) {
       for (int i = 0; i < points.size(); i++) {
         filter.filter(points.getCoordinate(i));
       }
   }
 
-  public void apply(CoordinateSequenceFilter filter)
+  void apply(CoordinateSequenceFilter filter)
   {
     if (points.size() == 0)
       return;
@@ -257,11 +257,11 @@ public class LineString
       geometryChanged();
   }
 
-  public void apply(GeometryFilter filter) {
+  void apply(GeometryFilter filter) {
     filter.filter(this);
   }
 
-  public void apply(GeometryComponentFilter filter) {
+  void apply(GeometryComponentFilter filter) {
     filter.filter(this);
   }
 
@@ -272,7 +272,7 @@ public class LineString
    * @return a clone of this instance
    * @deprecated
    */
-  public Object clone() {
+  Object clone() {
     return copy();
   }
 
@@ -285,7 +285,7 @@ public class LineString
    * has the first point which is not equal to it's reflected point
    * less than the reflected point.
    */
-  public void normalize()
+  void normalize()
   {
       for (int i = 0; i < points.size() / 2; i++) {
         int j = points.size() - 1 - i;
@@ -301,7 +301,7 @@ public class LineString
       }
   }
 
-  protected boolean isEquivalentClass(Geometry other) {
+  protected bool isEquivalentClass(Geometry other) {
     return other instanceof LineString;
   }
 

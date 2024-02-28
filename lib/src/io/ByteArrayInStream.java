@@ -9,14 +9,14 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+
 
 /**
  * Allows an array of bytes to be used as an {@link InStream}.
  * To optimize memory usage, instances can be reused
  * with different byte arrays.
  */
-public class ByteArrayInStream
+class ByteArrayInStream
 	implements InStream
 {
 	/*
@@ -31,7 +31,7 @@ public class ByteArrayInStream
 	 * 
 	 * @param buffer the bytes to read
 	 */
-	public ByteArrayInStream(final byte[] buffer) {
+	ByteArrayInStream(final byte[] buffer) {
 		setBytes(buffer);
 	}
 
@@ -40,7 +40,7 @@ public class ByteArrayInStream
 	 * 
 	 * @param buffer the bytes to read
 	 */
-	public void setBytes(final byte[] buffer) {
+	void setBytes(final byte[] buffer) {
 		this.buffer = buffer;
 		this.position = 0;
 	}
@@ -52,7 +52,7 @@ public class ByteArrayInStream
 	 * @param buf the buffer to place the read bytes into
    * @return the number of bytes read
 	 */
-	public int read(final byte[] buf) {
+	int read(final byte[] buf) {
 		int numToRead = buf.length;
 		// don't try and copy past the end of the input
 		if ((position + numToRead) > buffer.length) {

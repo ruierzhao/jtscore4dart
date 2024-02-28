@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.union;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,14 +47,14 @@ import org.locationtech.jts.util.Debug;
  * @author Martin Davis
  *
  */
-public class CascadedPolygonUnion
+class CascadedPolygonUnion
 {
   /**
    * A union strategy that uses the classic JTS {@link SnapIfNeededOverlayOp},
    * with a robustness fallback to OverlayNG.
    */
   final static  UnionStrategy CLASSIC_UNION = new UnionStrategy() {
-    public Geometry union(Geometry g0, Geometry g1) {
+    Geometry union(Geometry g0, Geometry g1) {
       try {
         return SnapIfNeededOverlayOp.union(g0, g1);
       }
@@ -64,7 +64,7 @@ public class CascadedPolygonUnion
     }
 
     @Override
-    public boolean isFloatingPrecision() {
+    bool isFloatingPrecision() {
       return true;
     }
   };
@@ -76,7 +76,7 @@ public class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  public static Geometry union(Collection polys)
+  static Geometry union(Collection polys)
   {
     CascadedPolygonUnion op = new CascadedPolygonUnion(polys);
     return op.union();
@@ -88,7 +88,7 @@ public class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  public static Geometry union(Collection polys, UnionStrategy unionFun)
+  static Geometry union(Collection polys, UnionStrategy unionFun)
   {
     CascadedPolygonUnion op = new CascadedPolygonUnion(polys, unionFun);
     return op.union();
@@ -107,7 +107,7 @@ public class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  public CascadedPolygonUnion(Collection polys)
+  CascadedPolygonUnion(Collection polys)
   {
     this(polys, CLASSIC_UNION );
   }
@@ -118,7 +118,7 @@ public class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  public CascadedPolygonUnion(Collection polys, UnionStrategy unionFun)
+  CascadedPolygonUnion(Collection polys, UnionStrategy unionFun)
   {
     this.inputPolys = polys;
     this.unionFun = unionFun;
@@ -151,7 +151,7 @@ public class CascadedPolygonUnion
 	 * or null if no input geometries were provided
 	 * @throws IllegalStateException if this method is called more than once
 	 */
-	public Geometry union()
+	Geometry union()
 	{
 	  if (inputPolys == null)
 	    throw new IllegalStateException("union() method cannot be called twice");

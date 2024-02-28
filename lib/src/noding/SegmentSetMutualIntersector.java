@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.Collection;
 
@@ -35,7 +35,7 @@ import java.util.Collection;
  * @author Martin Davis
  * @version 1.10
  */
-public interface SegmentSetMutualIntersector
+interface SegmentSetMutualIntersector
 {  
   /**
    * Computes the intersections with a given set of {@link SegmentString}s,

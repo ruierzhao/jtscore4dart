@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlay;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,21 +28,21 @@ import org.locationtech.jts.geomgraph.index.SimpleMCSweepLineIntersector;
  * noding the input edges together
  * @version 1.7
  */
-public class EdgeSetNoder {
+class EdgeSetNoder {
 
   private LineIntersector li;
   private List inputEdges = new ArrayList();
 
-  public EdgeSetNoder(LineIntersector li) {
+  EdgeSetNoder(LineIntersector li) {
     this.li = li;
   }
 
-  public void addEdges(List edges)
+  void addEdges(List edges)
   {
     inputEdges.addAll(edges);
   }
 
-  public List getNodedEdges()
+  List getNodedEdges()
   {
     EdgeSetIntersector esi = new SimpleMCSweepLineIntersector();
     SegmentIntersector si = new SegmentIntersector(li, true, false);

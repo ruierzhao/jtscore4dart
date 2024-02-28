@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.simplify;
+
 
 import java.util.Collection;
 
@@ -30,7 +30,7 @@ class ComponentJumpChecker {
   //TODO: use a spatial index?
   private Collection<TaggedLineString> components;
 
-  public ComponentJumpChecker(Collection<TaggedLineString> taggedLines) {
+  ComponentJumpChecker(Collection<TaggedLineString> taggedLines) {
     components = taggedLines;
   }
 
@@ -45,7 +45,7 @@ class ComponentJumpChecker {
    * @param seg the flattening segment
    * @return true if the flattened section jumps a component
    */
-  public boolean hasJump(TaggedLineString line, int start, int end, LineSegment seg) {
+  bool hasJump(TaggedLineString line, int start, int end, LineSegment seg) {
     Envelope sectionEnv = computeEnvelope(line, start, end);
     for (TaggedLineString comp : components) {
       //-- don't test component against itself
@@ -74,7 +74,7 @@ class ComponentJumpChecker {
    * @param seg the flattening segment
    * @return true if the flattened segment jumps a component
    */
-  public boolean hasJump(TaggedLineString line, LineSegment seg1, LineSegment seg2, LineSegment seg) {
+  bool hasJump(TaggedLineString line, LineSegment seg1, LineSegment seg2, LineSegment seg) {
     Envelope sectionEnv = computeEnvelope(seg1, seg2);
     for (TaggedLineString comp : components) {
       //-- don't test component against itself
@@ -91,17 +91,17 @@ class ComponentJumpChecker {
     return false;
   }
 
-  private static boolean hasJumpAtComponent(Coordinate compPt, TaggedLineString line, int start, int end, LineSegment seg) {
+  private static bool hasJumpAtComponent(Coordinate compPt, TaggedLineString line, int start, int end, LineSegment seg) {
     int sectionCount = crossingCount(compPt, line, start, end);
     int segCount = crossingCount(compPt, seg);
-    boolean hasJump = sectionCount % 2 != segCount % 2;
+    bool hasJump = sectionCount % 2 != segCount % 2;
     return hasJump;
   }
   
-  private static boolean hasJumpAtComponent(Coordinate compPt, LineSegment seg1, LineSegment seg2, LineSegment seg) {
+  private static bool hasJumpAtComponent(Coordinate compPt, LineSegment seg1, LineSegment seg2, LineSegment seg) {
     int sectionCount = crossingCount(compPt, seg1, seg2);
     int segCount = crossingCount(compPt, seg);
-    boolean hasJump = sectionCount % 2 != segCount % 2;
+    bool hasJump = sectionCount % 2 != segCount % 2;
     return hasJump;
   }
 

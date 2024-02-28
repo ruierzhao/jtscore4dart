@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.geom.util;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -72,7 +72,7 @@ import org.locationtech.jts.util.Assert;
  * @author Martin Davis
  *
  */
-public class AffineTransformation
+class AffineTransformation
 	implements Cloneable, CoordinateSequenceFilter
 {
   
@@ -86,7 +86,7 @@ public class AffineTransformation
    * @param y1 the y-ordinate of a another point on the reflection line
    * @return a transformation for the reflection
    */
-  public static AffineTransformation reflectionInstance(double x0, double y0, double x1, double y1)
+  static AffineTransformation reflectionInstance(double x0, double y0, double x1, double y1)
   {
     AffineTransformation trans = new AffineTransformation();
     trans.setToReflection(x0, y0, x1, y1);
@@ -101,7 +101,7 @@ public class AffineTransformation
    * @param y the y-ordinate of a point on the reflection line
    * @return a transformation for the reflection
    */
-  public static AffineTransformation reflectionInstance(double x, double y)
+  static AffineTransformation reflectionInstance(double x, double y)
   {
     AffineTransformation trans = new AffineTransformation();
     trans.setToReflection(x, y);
@@ -118,7 +118,7 @@ public class AffineTransformation
    * @param theta the rotation angle, in radians
    * @return a transformation for the rotation
    */
-  public static AffineTransformation rotationInstance(double theta)
+  static AffineTransformation rotationInstance(double theta)
   {
     return rotationInstance(Math.sin(theta), Math.cos(theta));
   }
@@ -134,7 +134,7 @@ public class AffineTransformation
    * @param cosTheta the cosine of the rotation angle
    * @return a transformation for the rotation
    */
-  public static AffineTransformation rotationInstance(double sinTheta, double cosTheta)
+  static AffineTransformation rotationInstance(double sinTheta, double cosTheta)
   {
     AffineTransformation trans = new AffineTransformation();
     trans.setToRotation(sinTheta, cosTheta);
@@ -152,7 +152,7 @@ public class AffineTransformation
    * @param y the y-ordinate of the rotation point
    * @return a transformation for the rotation
    */
-  public static AffineTransformation rotationInstance(double theta, double x, double y)
+  static AffineTransformation rotationInstance(double theta, double x, double y)
   {
     return rotationInstance(Math.sin(theta), Math.cos(theta), x, y);
   }
@@ -170,7 +170,7 @@ public class AffineTransformation
    * @param y the y-ordinate of the rotation point
    * @return a transformation for the rotation
    */
-  public static AffineTransformation rotationInstance(double sinTheta, double cosTheta, double x, double y)
+  static AffineTransformation rotationInstance(double sinTheta, double cosTheta, double x, double y)
   {
     AffineTransformation trans = new AffineTransformation();
     trans.setToRotation(sinTheta, cosTheta, x, y);
@@ -184,7 +184,7 @@ public class AffineTransformation
    * @param yScale the value to scale by in the y direction
    * @return a transformation for the scaling
    */
-  public static AffineTransformation scaleInstance(double xScale, double yScale)
+  static AffineTransformation scaleInstance(double xScale, double yScale)
   {
     AffineTransformation trans = new AffineTransformation();
     trans.setToScale(xScale, yScale);
@@ -200,7 +200,7 @@ public class AffineTransformation
    * @param y the y-ordinate of the point to scale around
    * @return a transformation for the scaling
    */
-  public static AffineTransformation scaleInstance(double xScale, double yScale, double x, double y)
+  static AffineTransformation scaleInstance(double xScale, double yScale, double x, double y)
   {
     AffineTransformation trans = new AffineTransformation();
     trans.translate(-x, -y);
@@ -217,7 +217,7 @@ public class AffineTransformation
    * @param yShear the value to shear by in the y direction
    * @return a transformation for the shear
    */
-  public static AffineTransformation shearInstance(double xShear, double yShear)
+  static AffineTransformation shearInstance(double xShear, double yShear)
   {
     AffineTransformation trans = new AffineTransformation();
     trans.setToShear(xShear, yShear);
@@ -231,7 +231,7 @@ public class AffineTransformation
    * @param y the value to translate by in the y direction
    * @return a transformation for the translation
    */  
-  public static AffineTransformation translationInstance(double x, double y)
+  static AffineTransformation translationInstance(double x, double y)
   {
     AffineTransformation trans = new AffineTransformation();
     trans.setToTranslation(x, y);
@@ -250,7 +250,7 @@ public class AffineTransformation
   /**
    * Constructs a new identity transformation
    */
-  public AffineTransformation()
+  AffineTransformation()
   {
     setToIdentity();
   }
@@ -263,7 +263,7 @@ public class AffineTransformation
    * @throws NullPointerException if matrix is null
    * @throws ArrayIndexOutOfBoundsException if matrix is too small 
    */
-  public AffineTransformation(double[] matrix)
+  AffineTransformation(double[] matrix)
   {
     m00 = matrix[0];
     m01 = matrix[1];
@@ -284,7 +284,7 @@ public class AffineTransformation
    * @param m11 the entry for the [1, 1] element in the transformation matrix
    * @param m12 the entry for the [1, 2] element in the transformation matrix
    */
-  public AffineTransformation(double m00,
+  AffineTransformation(double m00,
       double m01,
       double m02,
       double m10,
@@ -300,7 +300,7 @@ public class AffineTransformation
    * 
    * @param trans the transformation to copy
    */
-  public AffineTransformation(AffineTransformation trans)
+  AffineTransformation(AffineTransformation trans)
   {
     setTransformation(trans);
   }
@@ -319,7 +319,7 @@ public class AffineTransformation
    * 
    * @deprecated use AffineTransformationFactory
    */
-  public AffineTransformation(Coordinate src0,
+  AffineTransformation(Coordinate src0,
       Coordinate src1,
       Coordinate src2,
       Coordinate dest0,
@@ -339,7 +339,7 @@ public class AffineTransformation
    * </pre></blockquote>
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToIdentity()
+  AffineTransformation setToIdentity()
   {
     m00 = 1.0;    m01 = 0.0;  m02 = 0.0;
     m10 = 0.0;    m11 = 1.0;  m12 = 0.0;
@@ -357,7 +357,7 @@ public class AffineTransformation
    * @param m12 the entry for the [1, 2] element in the transformation matrix
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setTransformation(double m00,
+  AffineTransformation setTransformation(double m00,
       double m01,
       double m02,
       double m10,
@@ -379,7 +379,7 @@ public class AffineTransformation
    * @param trans a transformation to copy
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setTransformation(AffineTransformation trans)
+  AffineTransformation setTransformation(AffineTransformation trans)
   {
     m00 = trans.m00;    m01 = trans.m01;  m02 = trans.m02;
     m10 = trans.m10;    m11 = trans.m11;  m12 = trans.m12; 
@@ -397,7 +397,7 @@ public class AffineTransformation
    * 
    * @return an array of length 6
    */
-  public double[] getMatrixEntries()
+  double[] getMatrixEntries()
   {
     return new double[] { m00, m01, m02, m10, m11, m12 };
   }
@@ -418,7 +418,7 @@ public class AffineTransformation
   * @return the determinant of the transformation
   * @see #getInverse()
   */
-  public double getDeterminant()
+  double getDeterminant()
   {
     return m00 * m11 - m01 * m10;
   }
@@ -462,7 +462,7 @@ public class AffineTransformation
    * @throws NoninvertibleTransformationException
    * @see #getDeterminant()
    */
-  public AffineTransformation getInverse()
+  AffineTransformation getInverse()
   	  throws NoninvertibleTransformationException
   {
     double det = getDeterminant();
@@ -487,10 +487,10 @@ public class AffineTransformation
    * @param y1 the Y ordinate of another point on the reflection line
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToReflectionBasic(double x0, double y0, double x1, double y1)
+  AffineTransformation setToReflectionBasic(double x0, double y0, double x1, double y1)
   {
     if (x0 == x1 && y0 == y1) {
-      throw new IllegalArgumentException("Reflection line points must be distinct");
+      throw new ArgumentError("Reflection line points must be distinct");
     }
     double dx = x1 - x0;
     double dy = y1 - y0;
@@ -514,10 +514,10 @@ public class AffineTransformation
    * @param y1 the Y ordinate of another point on the reflection line
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToReflection(double x0, double y0, double x1, double y1)
+  AffineTransformation setToReflection(double x0, double y0, double x1, double y1)
   {
     if (x0 == x1 && y0 == y1) {
-      throw new IllegalArgumentException("Reflection line points must be distinct");
+      throw new ArgumentError("Reflection line points must be distinct");
     }
     // translate line vector to origin
     setToTranslation(-x0, -y0);
@@ -555,10 +555,10 @@ public class AffineTransformation
    * @param y the y-component of the reflection line vector
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToReflection(double x, double y)
+  AffineTransformation setToReflection(double x, double y)
   {
     if (x == 0.0 && y == 0.0) {
-      throw new IllegalArgumentException("Reflection vector must be non-zero");
+      throw new ArgumentError("Reflection vector must be non-zero");
     }
     
     /**
@@ -603,7 +603,7 @@ public class AffineTransformation
    * @param theta the rotation angle, in radians
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToRotation(double theta)
+  AffineTransformation setToRotation(double theta)
   {
     setToRotation(Math.sin(theta), Math.cos(theta));
     return this;
@@ -624,7 +624,7 @@ public class AffineTransformation
    * @param cosTheta the cosine of the rotation angle
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToRotation(double sinTheta, double cosTheta)
+  AffineTransformation setToRotation(double sinTheta, double cosTheta)
   {
     m00 = cosTheta;    m01 = -sinTheta;  m02 = 0.0;
     m10 = sinTheta;    m11 = cosTheta;   m12 = 0.0;
@@ -650,7 +650,7 @@ public class AffineTransformation
    * @param y the y-ordinate of the rotation point
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToRotation(double theta, double x, double y)
+  AffineTransformation setToRotation(double theta, double x, double y)
   {
     setToRotation(Math.sin(theta), Math.cos(theta), x, y);
     return this;
@@ -675,7 +675,7 @@ public class AffineTransformation
    * @param y the y-ordinate of the rotation point
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToRotation(double sinTheta, double cosTheta, double x, double y)
+  AffineTransformation setToRotation(double sinTheta, double cosTheta, double x, double y)
   {
     m00 = cosTheta;    m01 = -sinTheta;  m02 = x - x * cosTheta + y * sinTheta;
     m10 = sinTheta;    m11 = cosTheta;   m12 = y - x * sinTheta - y * cosTheta;
@@ -696,7 +696,7 @@ public class AffineTransformation
    * @param yScale the amount to scale y-ordinates by
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToScale(double xScale, double yScale)
+  AffineTransformation setToScale(double xScale, double yScale)
   {
     m00 = xScale;   m01 = 0.0;      m02 = 0.0;
     m10 = 0.0;      m11 = yScale;   m12 = 0.0;
@@ -721,7 +721,7 @@ public class AffineTransformation
    * @param yShear the y component to shear by
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToShear(double xShear, double yShear)
+  AffineTransformation setToShear(double xShear, double yShear)
   {
     m00 = 1.0;      m01 = xShear;      m02 = 0.0;
     m10 = yShear;   m11 = 1.0;         m12 = 0.0;
@@ -741,7 +741,7 @@ public class AffineTransformation
    * @param dy the y component to translate by
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation setToTranslation(double dx, double dy)
+  AffineTransformation setToTranslation(double dx, double dy)
   {
     m00 = 1.0;  m01 = 0.0; m02 = dx;
     m10 = 0.0;  m11 = 1.0; m12 = dy;
@@ -759,7 +759,7 @@ public class AffineTransformation
    * @param y1 the y-ordinate of a point on the line to reflect around
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation reflect(double x0, double y0, double x1, double y1)
+  AffineTransformation reflect(double x0, double y0, double x1, double y1)
   {
     compose(reflectionInstance(x0, y0, x1, y1));
     return this;
@@ -774,7 +774,7 @@ public class AffineTransformation
    * @param y the y-ordinate of the line to reflect around
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation reflect(double x, double y)
+  AffineTransformation reflect(double x, double y)
   {
     compose(reflectionInstance(x, y));
     return this;
@@ -790,7 +790,7 @@ public class AffineTransformation
    * @param theta the angle to rotate by, in radians
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation rotate(double theta)
+  AffineTransformation rotate(double theta)
   {
     compose(rotationInstance(theta));
     return this;
@@ -806,7 +806,7 @@ public class AffineTransformation
    * @param cosTheta the cosine of the angle to rotate by
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation rotate(double sinTheta, double cosTheta)
+  AffineTransformation rotate(double sinTheta, double cosTheta)
   {
     compose(rotationInstance(sinTheta, cosTheta));
     return this;
@@ -824,7 +824,7 @@ public class AffineTransformation
    * @param y the y-ordinate of the rotation point
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation rotate(double theta, double x, double y)
+  AffineTransformation rotate(double theta, double x, double y)
   {
     compose(rotationInstance(theta, x, y));
     return this;
@@ -842,7 +842,7 @@ public class AffineTransformation
    * @param y the y-ordinate of the rotation point
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation rotate(double sinTheta, double cosTheta, double x, double y)
+  AffineTransformation rotate(double sinTheta, double cosTheta, double x, double y)
   {
     compose(rotationInstance(sinTheta, cosTheta, x, y));
     return this;
@@ -857,7 +857,7 @@ public class AffineTransformation
    * @param yScale the value to scale by in the y direction
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation scale(double xScale, double yScale)
+  AffineTransformation scale(double xScale, double yScale)
   {
     compose(scaleInstance(xScale, yScale));
     return this;
@@ -872,7 +872,7 @@ public class AffineTransformation
    * @param yShear the value to shear by in the y direction
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation shear(double xShear, double yShear)
+  AffineTransformation shear(double xShear, double yShear)
   {
     compose(shearInstance(xShear, yShear));
     return this;
@@ -887,7 +887,7 @@ public class AffineTransformation
    * @param y the value to translate by in the y direction
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation translate(double x, double y)
+  AffineTransformation translate(double x, double y)
   {
     compose(translationInstance(x, y));
     return this;
@@ -908,7 +908,7 @@ public class AffineTransformation
    * @param trans an affine transformation
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation compose(AffineTransformation trans)
+  AffineTransformation compose(AffineTransformation trans)
   {
     double mp00 = trans.m00 * m00 + trans.m01 * m10;
     double mp01 = trans.m00 * m01 + trans.m01 * m11;
@@ -939,7 +939,7 @@ public class AffineTransformation
    * @param trans an affine transformation
    * @return this transformation, with an updated matrix
    */
-  public AffineTransformation composeBefore(AffineTransformation trans)
+  AffineTransformation composeBefore(AffineTransformation trans)
   {
     double mp00 = m00 * trans.m00 + m01 * trans.m10;
     double mp01 = m00 * trans.m01 + m01 * trans.m11;
@@ -965,7 +965,7 @@ public class AffineTransformation
    * @param dest the coordinate to accept the results 
    * @return the <tt>dest</tt> coordinate
    */
-  public Coordinate transform(Coordinate src, Coordinate dest)
+  Coordinate transform(Coordinate src, Coordinate dest)
   {
     double xp = m00 * src.x + m01 * src.y + m02;
     double yp = m10 * src.x + m11 * src.y + m12;
@@ -981,7 +981,7 @@ public class AffineTransformation
    *@param g  a <code>Geometry</code>
    *@return a transformed Geometry
    */
-  public Geometry transform(Geometry g)
+  Geometry transform(Geometry g)
   {
     Geometry g2 = g.copy();
     g2.apply(this);
@@ -995,7 +995,7 @@ public class AffineTransformation
    *@param seq  a <code>CoordinateSequence</code>
    *@param i the index of the coordinate to transform
    */
-  public void transform(CoordinateSequence seq, int i)
+  void transform(CoordinateSequence seq, int i)
   {
     double xp = m00 * seq.getOrdinate(i, 0) + m01 * seq.getOrdinate(i, 1) + m02;
     double yp = m10 * seq.getOrdinate(i, 0) + m11 * seq.getOrdinate(i, 1) + m12;
@@ -1009,12 +1009,12 @@ public class AffineTransformation
    *@param seq  a <code>CoordinateSequence</code>
    *@param i the index of the coordinate to transform
    */
-  public void filter(CoordinateSequence seq, int i)
+  void filter(CoordinateSequence seq, int i)
   {
     transform(seq, i);
   }
   
-  public boolean isGeometryChanged()
+  bool isGeometryChanged()
   {
     return true;
   }
@@ -1025,7 +1025,7 @@ public class AffineTransformation
    * 
    * @return false
    */
-  public boolean isDone() 
+  bool isDone() 
   {
     return false;
   }
@@ -1035,7 +1035,7 @@ public class AffineTransformation
   *
   * @return true if this is the identity transformation
   */
-  public boolean isIdentity()
+  bool isIdentity()
   {
     return (m00 == 1 && m01 == 0 && m02 == 0
           && m10 == 0 && m11 == 1 && m12 == 0);
@@ -1050,7 +1050,7 @@ public class AffineTransformation
   * @param obj an object to test
   * @return true if the given object is equal to this object
   */
-  public boolean equals(Object obj)
+  bool equals(Object obj)
   {
     if (obj == null) return false;
     if (! (obj instanceof AffineTransformation))
@@ -1069,7 +1069,7 @@ public class AffineTransformation
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  int hashCode() {
     final int prime = 31;
     int result = 1;
     long temp;
@@ -1098,7 +1098,7 @@ public class AffineTransformation
    * @return a string representing this transformation
    * 
    */
-  public String toString()
+  String toString()
   {
     return "AffineTransformation[[" + m00 + ", " + m01 + ", " + m02 
     + "], ["
@@ -1110,7 +1110,7 @@ public class AffineTransformation
    * 
    * @return a copy of this transformation
    */
-  public Object clone()
+  Object clone()
   {
   	try {
   		return super.clone();

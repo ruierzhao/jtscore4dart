@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.triangulate.tri;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -37,7 +37,7 @@ import org.locationtech.jts.util.Assert;
  * @author Martin Davis
  *
  */
-public class Tri {
+class Tri {
   
   private static final String INVALID_TRI_INDEX = "Invalid Tri index";
 
@@ -49,7 +49,7 @@ public class Tri {
    * @param geomFact the GeometryFactory to use
    * @return the polygons for the triangles
    */
-  public static Geometry toGeometry(Collection<Tri> tris, GeometryFactory geomFact) {
+  static Geometry toGeometry(Collection<Tri> tris, GeometryFactory geomFact) {
     Geometry[] geoms = new Geometry[tris.size()];
     int i = 0;
     for (Tri tri : tris) {
@@ -64,7 +64,7 @@ public class Tri {
    * @param triList a set of Tris
    * @return the total area of the triangles
    */
-  public static double area(List<? extends Tri> triList) {
+  static double area(List<? extends Tri> triList) {
     double area = 0;
     for (Tri tri : triList) {
       area += tri.getArea();
@@ -77,7 +77,7 @@ public class Tri {
    * 
    * @param triList the tris to validate
    */
-  public static void validate(List<Tri> triList) {
+  static void validate(List<Tri> triList) {
     for (Tri tri : triList) {
       tri.validate();
     }
@@ -92,7 +92,7 @@ public class Tri {
    * @param p2 the third triangle vertex
    * @return the created triangle
    */
-  public static Tri create(Coordinate p0, Coordinate p1, Coordinate p2) {
+  static Tri create(Coordinate p0, Coordinate p1, Coordinate p2) {
     return new Tri(p0, p1, p2);
   }
   
@@ -103,7 +103,7 @@ public class Tri {
    * @param pts the array of vertex coordinates
    * @return the created triangle
    */
-  public static Tri create(Coordinate[] pts) {
+  static Tri create(List<Coordinate> pts) {
     return new Tri(pts[0], pts[1], pts[2]);
   }
   
@@ -127,7 +127,7 @@ public class Tri {
    * @param p1 the second triangle vertex
    * @param p2 the third triangle vertex
    */
-  public Tri(Coordinate p0, Coordinate p1, Coordinate p2) {
+  Tri(Coordinate p0, Coordinate p1, Coordinate p2) {
     this.p0 = p0;
     this.p1 = p1;
     this.p2 = p2;
@@ -143,7 +143,7 @@ public class Tri {
    * @param tri1 the triangle adjacent to edge 1
    * @param tri2 the triangle adjacent to edge 2
    */
-  public void setAdjacent(Tri tri0, Tri tri1, Tri tri2) {
+  void setAdjacent(Tri tri0, Tri tri1, Tri tri2) {
     this.tri0 = tri0;
     this.tri1 = tri1;
     this.tri2 = tri2;
@@ -158,7 +158,7 @@ public class Tri {
    * @param pt the edge start point
    * @param tri the adjacent triangle
    */
-  public void setAdjacent(Coordinate pt, Tri tri) {
+  void setAdjacent(Coordinate pt, Tri tri) {
     int index = getIndex(pt);
     setTri(index, tri);
     // TODO: validate that tri is adjacent at the edge specified
@@ -172,13 +172,13 @@ public class Tri {
    * @param edgeIndex the edge triangle is adjacent to
    * @param tri the adjacent triangle
    */
-  public void setTri(int edgeIndex, Tri tri) {
+  void setTri(int edgeIndex, Tri tri) {
     switch (edgeIndex) {
     case 0: tri0 = tri; return;
     case 1: tri1 = tri; return;
     case 2: tri2 = tri; return;
     }
-    throw new IllegalArgumentException(INVALID_TRI_INDEX);
+    throw new ArgumentError(INVALID_TRI_INDEX);
   }
 
   private void setCoordinates(Coordinate p0, Coordinate p1, Coordinate p2) {
@@ -197,7 +197,7 @@ public class Tri {
    * @param p the point to insert
    * @return the new triangle whose 0'th vertex is p
    */
-  public Tri split(Coordinate p) {
+  Tri split(Coordinate p) {
     Tri tt0 = new Tri(p, p0, p1);
     Tri tt1 = new Tri(p, p1, p2);
     Tri tt2 = new Tri(p, p2, p0);
@@ -215,7 +215,7 @@ public class Tri {
    * 
    * @param index the index of the adjacent tri to flip with
    */
-  public void flip(int index) {
+  void flip(int index) {
     Tri tri = getAdjacent(index);
     int index1 = tri.getIndex(this);
 
@@ -278,7 +278,7 @@ public class Tri {
    * @param triList the triangulation
    * @return the degree of the vertex
    */
-  public int degree(int index, List<? extends Tri> triList) {
+  int degree(int index, List<? extends Tri> triList) {
     Coordinate v = getCoordinate(index);
     int degree = 0;
     for (Tri tri : triList) {
@@ -296,7 +296,7 @@ public class Tri {
    * 
    * @param triList the triangulation
    */
-  public void remove(List<? extends Tri> triList) {
+  void remove(List<? extends Tri> triList) {
     remove();
     triList.remove(this);
   }
@@ -306,7 +306,7 @@ public class Tri {
    * All adjacent references and the references to this
    * Tri in the adjacent Tris are set to <code>null</code.
    */
-  public void remove() {
+  void remove() {
     remove(0);
     remove(1);
     remove(2);
@@ -345,11 +345,11 @@ public class Tri {
    * Validates that a tri is correct.
    * Currently just checks that orientation is CW.
    * 
-   * @throw IllegalArgumentException if tri is not valid
+   * @throw ArgumentError if tri is not valid
    */
-  public void validate() {
+  void validate() {
     if ( Orientation.CLOCKWISE != Orientation.index(p0, p1, p2) ) {
-      throw new IllegalArgumentException("Tri is not oriented correctly");
+      throw new ArgumentError("Tri is not oriented correctly");
     }
 
     validateAdjacent(0);
@@ -362,7 +362,7 @@ public class Tri {
    * 
    * @param index the index of the adjacent triangle
    */
-  public void validateAdjacent(int index) {
+  void validateAdjacent(int index) {
     Tri tri = getAdjacent(index);
     if (tri == null) return;
     
@@ -399,7 +399,7 @@ public class Tri {
    */
   /*
   //TODO: define when needed 
-  public Coordinate[] getEdge(Tri neighbor) {
+  List<Coordinate> getEdge(Tri neighbor) {
     int index = getIndex(neighbor);
     int next = next(index);
 
@@ -411,18 +411,18 @@ public class Tri {
     int iNPrev = prev(iN);
     assert (neighbor.getIndex(e1) == iNPrev);
 
-    return new Coordinate[] { getCoordinate(index), getCoordinate(next) };
+    return new List<Coordinate> { getCoordinate(index), getCoordinate(next) };
   }
 
-  public Coordinate getEdgeStart(int i) {
+  Coordinate getEdgeStart(int i) {
     return getCoordinate(i);
   }
   
-  public Coordinate getEdgeEnd(int i) {
+  Coordinate getEdgeEnd(int i) {
     return getCoordinate(next(i));
   }
   
-  public boolean hasCoordinate(Coordinate v) {
+  bool hasCoordinate(Coordinate v) {
     if ( p0.equals(v) || p1.equals(v) || p2.equals(v) ) {
       return true;
     }
@@ -437,13 +437,13 @@ public class Tri {
    * @param index the vertex (edge) index
    * @return the vertex coordinate
    */
-  public Coordinate getCoordinate(int index) {
+  Coordinate getCoordinate(int index) {
     switch(index) {
     case 0: return p0;
     case 1: return p1;
     case 2: return p2;
     }
-    throw new IllegalArgumentException(INVALID_TRI_INDEX);
+    throw new ArgumentError(INVALID_TRI_INDEX);
   }
 
   /**
@@ -453,7 +453,7 @@ public class Tri {
    * @param p the coordinate to find
    * @return the vertex index, or -1 if it is not in the triangle
    */
-  public int getIndex(Coordinate p) {
+  int getIndex(Coordinate p) {
     if ( p0.equals2D(p) )
       return 0;
     if ( p1.equals2D(p) )
@@ -470,7 +470,7 @@ public class Tri {
    * @param tri the tri to find
    * @return the index of the edge adjacent to the triangle, or -1 if not found
    */
-  public int getIndex(Tri tri) {
+  int getIndex(Tri tri) {
     if ( tri0 == tri )
       return 0;
     if ( tri1 == tri )
@@ -486,13 +486,13 @@ public class Tri {
    * @param index the edge index
    * @return the adjacent triangle (may be null)
    */
-  public Tri getAdjacent(int index) {
+  Tri getAdjacent(int index) {
     switch(index) {
     case 0: return tri0;
     case 1: return tri1;
     case 2: return tri2;
     }
-    throw new IllegalArgumentException(INVALID_TRI_INDEX);
+    throw new ArgumentError(INVALID_TRI_INDEX);
   }
 
   /**
@@ -500,7 +500,7 @@ public class Tri {
    * 
    * @return true if there is at least one adjacent tri
    */
-  public boolean hasAdjacent() {
+  bool hasAdjacent() {
     return hasAdjacent(0) 
         || hasAdjacent(1) || hasAdjacent(2);
   }
@@ -511,7 +511,7 @@ public class Tri {
    * @param index the edge index
    * @return true if there is a triangle adjacent to edge
    */
-  public boolean hasAdjacent(int index) {
+  bool hasAdjacent(int index) {
     return null != getAdjacent(index);
   }
 
@@ -522,7 +522,7 @@ public class Tri {
    * @return true if the triangle is adjacent
    * @see getIndex(Tri)
    */
-  public boolean isAdjacent(Tri tri) {
+  bool isAdjacent(Tri tri) {
     return getIndex(tri) >= 0;
   }
 
@@ -532,7 +532,7 @@ public class Tri {
    * 
    * @return the number of adjacent triangles
    */
-  public int numAdjacent() {
+  int numAdjacent() {
     int num = 0;
     if ( tri0 != null )
       num++;
@@ -551,7 +551,7 @@ public class Tri {
    * @param index the vertex index
    * @return true if the vertex is interior
    */
-  public boolean isInteriorVertex(int index) {
+  bool isInteriorVertex(int index) {
     Tri curr = this;
     int currIndex = index;
     do {
@@ -574,7 +574,7 @@ public class Tri {
    * 
    * @return true if the tri is on the border of the triangulation
    */
-  public boolean isBorder() {
+  bool isBorder() {
     return isBoundary(0) || isBoundary(1) || isBoundary(2);
   }
   
@@ -584,7 +584,7 @@ public class Tri {
    * @param index index of an edge
    * @return true if the edge is on the boundary
    */
-  public boolean isBoundary(int index) {
+  bool isBoundary(int index) {
     return ! hasAdjacent(index);
   }
   
@@ -595,7 +595,7 @@ public class Tri {
    * @param index the index
    * @return the next index value
    */
-  public static int next(int index) {
+  static int next(int index) {
     switch (index) {
     case 0: return 1;
     case 1: return 2;
@@ -611,7 +611,7 @@ public class Tri {
    * @param index the index
    * @return the previous index value
    */
-  public static int prev(int index) {
+  static int prev(int index) {
     switch (index) {
     case 0: return 2;
     case 1: return 0;
@@ -626,7 +626,7 @@ public class Tri {
    * @param edgeIndex the edge index
    * @return the index of the opposite vertex
    */
-  public static int oppVertex(int edgeIndex) {
+  static int oppVertex(int edgeIndex) {
     return prev(edgeIndex);
   }
 
@@ -636,7 +636,7 @@ public class Tri {
    * @param vertexIndex the index of the vertex
    * @return the index of the opposite edge
    */
-  public static int oppEdge(int vertexIndex) {
+  static int oppEdge(int vertexIndex) {
     return next(vertexIndex);
   }
 
@@ -646,7 +646,7 @@ public class Tri {
    * @param edgeIndex the edge index
    * @return the midpoint of the triangle edge
    */
-  public Coordinate midpoint(int edgeIndex) {
+  Coordinate midpoint(int edgeIndex) {
     Coordinate p0 = getCoordinate(edgeIndex);
     Coordinate p1 = getCoordinate(next(edgeIndex));
     double midX = (p0.getX() + p1.getX()) / 2;
@@ -659,7 +659,7 @@ public class Tri {
    * 
    * @return the area of the triangle
    */
-  public double getArea() {
+  double getArea() {
     return Triangle.area(p0, p1, p2);
   }
   
@@ -668,7 +668,7 @@ public class Tri {
    * 
    * @return the perimeter length
    */
-  public double getLength() {
+  double getLength() {
     return Triangle.length(p0, p1, p2);
   }
   
@@ -678,7 +678,7 @@ public class Tri {
    * @param edgeIndex the edge index
    * @return the edge length
    */
-  public double getLength(int edgeIndex) {
+  double getLength(int edgeIndex) {
     return getCoordinate(edgeIndex).distance(getCoordinate(next(edgeIndex)));
   }
   
@@ -688,13 +688,13 @@ public class Tri {
    * @param geomFact the geometry factory
    * @return a polygon
    */
-  public Polygon toPolygon(GeometryFactory geomFact) {
+  Polygon toPolygon(GeometryFactory geomFact) {
     return geomFact.createPolygon(
-        geomFact.createLinearRing(new Coordinate[] { p0.copy(), p1.copy(), p2.copy(), p0.copy() }), null);
+        geomFact.createLinearRing(new List<Coordinate> { p0.copy(), p1.copy(), p2.copy(), p0.copy() }), null);
   }
 
   @Override
-  public String toString() {
+  String toString() {
     return String.format("POLYGON ((%s, %s, %s, %s))", 
         WKTWriter.format(p0), WKTWriter.format(p1), WKTWriter.format(p2),
         WKTWriter.format(p0));

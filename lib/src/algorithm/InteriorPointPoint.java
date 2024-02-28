@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -23,7 +23,7 @@ import org.locationtech.jts.geom.Point;
  *
  * @version 1.7
  */
-public class InteriorPointPoint {
+class InteriorPointPoint {
 
   /**
    * Computes an interior point for the
@@ -33,7 +33,7 @@ public class InteriorPointPoint {
    * @return the computed interior point,
    * or <code>null</code> if the geometry has no puntal components
    */
-  public static Coordinate getInteriorPoint(Geometry geom) {
+  static Coordinate getInteriorPoint(Geometry geom) {
     InteriorPointPoint intPt = new InteriorPointPoint(geom);
     return intPt.getInteriorPoint();
   }
@@ -43,7 +43,7 @@ public class InteriorPointPoint {
 
   private Coordinate interiorPoint = null;
 
-  public InteriorPointPoint(Geometry g)
+  InteriorPointPoint(Geometry g)
   {
     centroid = g.getCentroid().getCoordinate();
     add(g);
@@ -78,7 +78,7 @@ public class InteriorPointPoint {
     }
   }
 
-  public Coordinate getInteriorPoint()
+  Coordinate getInteriorPoint()
   {
     return interiorPoint;
   }

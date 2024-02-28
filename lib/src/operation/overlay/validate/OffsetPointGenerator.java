@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.operation.overlay.validate;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,19 +29,19 @@ import org.locationtech.jts.geom.util.LinearComponentExtracter;
  * determining whether a polygonal overlay result
  * is incorrect.
  * The input geometry may have any orientation for its rings,
- * but {@link #setSidesToGenerate(boolean, boolean)} is
+ * but {@link #setSidesToGenerate(bool, bool)} is
  * only meaningful if the orientation is known.
  *
  * @author Martin Davis
  * @version 1.7
  */
-public class OffsetPointGenerator
+class OffsetPointGenerator
 {
   private Geometry g;
-  private boolean doLeft = true; 
-  private boolean doRight = true;
+  private bool doLeft = true; 
+  private bool doRight = true;
   
-  public OffsetPointGenerator(Geometry g)
+  OffsetPointGenerator(Geometry g)
   {
     this.g = g;
   }
@@ -52,7 +52,7 @@ public class OffsetPointGenerator
    * @param doLeft
    * @param doRight
    */
-  public void setSidesToGenerate(boolean doLeft, boolean doRight)
+  void setSidesToGenerate(bool doLeft, bool doRight)
   {
     this.doLeft = doLeft;
     this.doRight = doRight;
@@ -63,7 +63,7 @@ public class OffsetPointGenerator
    *
    * @return List&lt;Coordinate&gt;
    */
-  public List getPoints(double offsetDistance)
+  List getPoints(double offsetDistance)
   {
     List offsetPts = new ArrayList();
     List lines = LinearComponentExtracter.getLines(g);
@@ -77,7 +77,7 @@ public class OffsetPointGenerator
 
   private void extractPoints(LineString line, double offsetDistance, List offsetPts)
   {
-    Coordinate[] pts = line.getCoordinates();
+    List<Coordinate> pts = line.getCoordinates();
     for (int i = 0; i < pts.length - 1; i++) {
     	computeOffsetPoints(pts[i], pts[i + 1], offsetDistance, offsetPts);
     }

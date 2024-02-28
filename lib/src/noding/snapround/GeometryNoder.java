@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding.snapround;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,11 +41,11 @@ import org.locationtech.jts.noding.SegmentString;
  * to do this (although this is an inefficient approach).
  * 
  */
-public class GeometryNoder
+class GeometryNoder
 {
   private GeometryFactory geomFact;
   private PrecisionModel pm;
-  private boolean isValidityChecked = false;
+  private bool isValidityChecked = false;
 
   /**
    * Creates a new noder which snap-rounds to a grid specified
@@ -53,7 +53,7 @@ public class GeometryNoder
    * 
    * @param pm the precision model for the grid to snap-round to
    */
-  public GeometryNoder(PrecisionModel pm) {
+  GeometryNoder(PrecisionModel pm) {
     this.pm = pm;
   }
 
@@ -62,7 +62,7 @@ public class GeometryNoder
    * 
    * @param isValidityChecked
    */
-  public void setValidate(boolean isValidityChecked)
+  void setValidate(bool isValidityChecked)
   {
   	this.isValidityChecked = isValidityChecked;
   }
@@ -73,7 +73,7 @@ public class GeometryNoder
    * @param geoms a Collection of Geometrys of any type
    * @return a List of LineStrings representing the noded linework of the input
    */
-  public List node(Collection geoms)
+  List node(Collection geoms)
   {
     // get geometry factory
     Geometry geom0 = (Geometry) geoms.iterator().next();

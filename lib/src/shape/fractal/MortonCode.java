@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.shape.fractal;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -48,12 +48,12 @@ import org.locationtech.jts.geom.Coordinate;
  * @see MortonCurveBuilder
  * @see HilbertCode
  */
-public class MortonCode
+class MortonCode
 {
   /**
    * The maximum curve level that can be represented.
    */
-  public static final int MAX_LEVEL = 16;
+  static final int MAX_LEVEL = 16;
   
   /**
    * The number of points in the curve for the given level.
@@ -62,7 +62,7 @@ public class MortonCode
    * @param level the level of the curve
    * @return the number of points
    */
-  public static int size(int level) {
+  static int size(int level) {
     checkLevel(level);
     return (int) Math.pow(2, 2 *level);
   }
@@ -75,7 +75,7 @@ public class MortonCode
    * @param level the level of the curve
    * @return the maximum ordinate value
    */
-  public static int maxOrdinate(int level) {
+  static int maxOrdinate(int level) {
     checkLevel(level);
     return (int) Math.pow(2, level) - 1;
   }
@@ -87,7 +87,7 @@ public class MortonCode
    * @param numPoints the number of points required
    * @return the level of the curve
    */
-  public static int level(int numPoints) {
+  static int level(int numPoints) {
     int pow2 = (int) ( (Math.log(numPoints)/Math.log(2)));
     int level = pow2 / 2;
     int size = size(level);
@@ -97,7 +97,7 @@ public class MortonCode
   
   private static void checkLevel(int level) {
     if (level > MAX_LEVEL) {
-      throw new IllegalArgumentException("Level must be in range 0 to " + MAX_LEVEL);
+      throw new ArgumentError("Level must be in range 0 to " + MAX_LEVEL);
     }
   }
   /**
@@ -108,7 +108,7 @@ public class MortonCode
    * @param y the y ordinate of the point
    * @return the index of the point along the Morton curve
    */
-  public static int encode(int x, int y) {
+  static int encode(int x, int y) {
     return (interleave(y) << 1) + interleave(x);
   }
   
@@ -128,7 +128,7 @@ public class MortonCode
    * @param index the index of the point on the curve
    * @return the point on the curve
    */
-  public static Coordinate decode(int index) {
+  static Coordinate decode(int index) {
     long x = deinterleave(index);
     long y = deinterleave(index >> 1);
     return new Coordinate(x, y);

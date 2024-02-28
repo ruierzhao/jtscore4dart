@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Lineal;
@@ -55,7 +55,7 @@ import org.locationtech.jts.operation.relate.RelateOp;
  * @see IsSimpleOp
  * @see PointLocator
  */
-public interface BoundaryNodeRule
+interface BoundaryNodeRule
 {
 
 	/**
@@ -66,38 +66,38 @@ public interface BoundaryNodeRule
 	 * @param boundaryCount the number of component boundaries that this point occurs in
 	 * @return true if points in this number of boundaries lie in the parent boundary
 	 */
-  boolean isInBoundary(int boundaryCount);
+  bool isInBoundary(int boundaryCount);
 
   /**
    * The Mod-2 Boundary Node Rule (which is the rule specified in the OGC SFS).
    * @see Mod2BoundaryNodeRule
    */
-  public static final BoundaryNodeRule MOD2_BOUNDARY_RULE = new Mod2BoundaryNodeRule();
+  static final BoundaryNodeRule MOD2_BOUNDARY_RULE = new Mod2BoundaryNodeRule();
 
   /**
    * The Endpoint Boundary Node Rule.
    * @see EndPointBoundaryNodeRule
    */
-  public static final BoundaryNodeRule ENDPOINT_BOUNDARY_RULE = new EndPointBoundaryNodeRule();
+  static final BoundaryNodeRule ENDPOINT_BOUNDARY_RULE = new EndPointBoundaryNodeRule();
 
   /**
    * The MultiValent Endpoint Boundary Node Rule.
    * @see MultiValentEndPointBoundaryNodeRule
    */
-  public static final BoundaryNodeRule MULTIVALENT_ENDPOINT_BOUNDARY_RULE = new MultiValentEndPointBoundaryNodeRule();
+  static final BoundaryNodeRule MULTIVALENT_ENDPOINT_BOUNDARY_RULE = new MultiValentEndPointBoundaryNodeRule();
 
   /**
    * The Monovalent Endpoint Boundary Node Rule.
    * @see MonoValentEndPointBoundaryNodeRule
    */
-  public static final BoundaryNodeRule MONOVALENT_ENDPOINT_BOUNDARY_RULE = new MonoValentEndPointBoundaryNodeRule();
+  static final BoundaryNodeRule MONOVALENT_ENDPOINT_BOUNDARY_RULE = new MonoValentEndPointBoundaryNodeRule();
 
   /**
    * The Boundary Node Rule specified by the OGC Simple Features Specification,
    * which is the same as the Mod-2 rule.
    * @see Mod2BoundaryNodeRule
    */
-  public static final BoundaryNodeRule OGC_SFS_BOUNDARY_RULE = MOD2_BOUNDARY_RULE;
+  static final BoundaryNodeRule OGC_SFS_BOUNDARY_RULE = MOD2_BOUNDARY_RULE;
 
   /**
    * A {@link BoundaryNodeRule} specifies that points are in the
@@ -113,16 +113,16 @@ public interface BoundaryNodeRule
    * @author Martin Davis
    * @version 1.7
    */
-  public static class Mod2BoundaryNodeRule
+  static class Mod2BoundaryNodeRule
       implements BoundaryNodeRule
   {
-    public boolean isInBoundary(int boundaryCount)
+    bool isInBoundary(int boundaryCount)
     {
       // the "Mod-2 Rule"
       return boundaryCount % 2 == 1;
     }
     
-    public String toString() {
+    String toString() {
       return "Mod2 Boundary Node Rule";
     }
   }
@@ -149,15 +149,15 @@ public interface BoundaryNodeRule
    * @author Martin Davis
    * @version 1.7
    */
-  public static class EndPointBoundaryNodeRule
+  static class EndPointBoundaryNodeRule
       implements BoundaryNodeRule
   {
-    public boolean isInBoundary(int boundaryCount)
+    bool isInBoundary(int boundaryCount)
     {
       return boundaryCount > 0;
     }
     
-    public String toString() {
+    String toString() {
       return "EndPoint Boundary Node Rule";
     }  
   }
@@ -172,15 +172,15 @@ public interface BoundaryNodeRule
    * @author Martin Davis
    * @version 1.7
    */
-  public static class MultiValentEndPointBoundaryNodeRule
+  static class MultiValentEndPointBoundaryNodeRule
       implements BoundaryNodeRule
   {
-    public boolean isInBoundary(int boundaryCount)
+    bool isInBoundary(int boundaryCount)
     {
       return boundaryCount > 1;
     }
     
-    public String toString() {
+    String toString() {
       return "MultiValent EndPoint Boundary Node Rule";
     }  
   }
@@ -194,15 +194,15 @@ public interface BoundaryNodeRule
    * @author Martin Davis
    * @version 1.7
    */
-  public static class MonoValentEndPointBoundaryNodeRule
+  static class MonoValentEndPointBoundaryNodeRule
       implements BoundaryNodeRule
   {
-    public boolean isInBoundary(int boundaryCount)
+    bool isInBoundary(int boundaryCount)
     {
       return boundaryCount == 1;
     }
     
-    public String toString() {
+    String toString() {
       return "MonoValent EndPoint Boundary Node Rule";
     }  
   }

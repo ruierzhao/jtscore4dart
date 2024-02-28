@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.valid;
+
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ class IndexedNestedHoleTester
   private SpatialIndex index;
   private Coordinate nestedPt;
 
-  public IndexedNestedHoleTester(Polygon poly)
+  IndexedNestedHoleTester(Polygon poly)
   {
     this.polygon = poly;
     loadIndex();
@@ -64,7 +64,7 @@ class IndexedNestedHoleTester
    * 
    * @return a point on a nested hole, or null if none are nested
    */
-  public Coordinate getNestedPoint() { return nestedPt; }
+  Coordinate getNestedPoint() { return nestedPt; }
 
   /**
    * Tests if any hole is nested (contained) within another hole.
@@ -72,7 +72,7 @@ class IndexedNestedHoleTester
    * The nested point will be set to reflect this.
    * @return true if some hole is nested
    */
-  public boolean isNested()
+  bool isNested()
   {
     for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
       LinearRing hole = (LinearRing) polygon.getInteriorRingN(i);

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -46,12 +46,12 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @version 1.7
  */
-public class CommonBitsRemover
+class CommonBitsRemover
 {
   private Coordinate commonCoord;
   private CommonCoordinateFilter ccFilter = new CommonCoordinateFilter();
 
-  public CommonBitsRemover()
+  CommonBitsRemover()
   {
   }
 
@@ -63,7 +63,7 @@ public class CommonBitsRemover
    *
    * @param geom a Geometry to test for common bits
    */
-  public void add(Geometry geom)
+  void add(Geometry geom)
   {
     geom.apply(ccFilter);
     commonCoord = ccFilter.getCommonCoordinate();
@@ -72,7 +72,7 @@ public class CommonBitsRemover
   /**
    * The common bits of the Coordinates in the supplied Geometries.
    */
-  public Coordinate getCommonCoordinate() { return commonCoord; }
+  Coordinate getCommonCoordinate() { return commonCoord; }
 
   /**
    * Removes the common coordinate bits from a Geometry.
@@ -81,7 +81,7 @@ public class CommonBitsRemover
    * @param geom the Geometry from which to remove the common coordinate bits
    * @return the shifted Geometry
    */
-  public Geometry removeCommonBits(Geometry geom)
+  Geometry removeCommonBits(Geometry geom)
   {
     if (commonCoord.x == 0.0 && commonCoord.y == 0.0)
       return geom;
@@ -100,7 +100,7 @@ public class CommonBitsRemover
    *
    * @param geom the Geometry to which to add the common coordinate bits
    */
-  public void addCommonBits(Geometry geom)
+  void addCommonBits(Geometry geom)
   {
     Translater trans = new Translater(commonCoord);
     geom.apply(trans);
@@ -113,13 +113,13 @@ public class CommonBitsRemover
     private CommonBits commonBitsX = new CommonBits();
     private CommonBits commonBitsY = new CommonBits();
 
-    public void filter(Coordinate coord)
+    void filter(Coordinate coord)
     {
       commonBitsX.add(coord.x);
       commonBitsY.add(coord.y);
     }
 
-    public Coordinate getCommonCoordinate()
+    Coordinate getCommonCoordinate()
     {
       return new Coordinate(
           commonBitsX.getCommon(),
@@ -132,23 +132,23 @@ public class CommonBitsRemover
   {
     Coordinate trans = null;
 
-    public Translater(Coordinate trans)
+    Translater(Coordinate trans)
     {
       this.trans = trans;
     }
 
-    public void filter(CoordinateSequence seq, int i) {
+    void filter(CoordinateSequence seq, int i) {
       double xp = seq.getOrdinate(i, 0) + trans.x;
       double yp = seq.getOrdinate(i, 1) + trans.y;
       seq.setOrdinate(i, 0, xp);
       seq.setOrdinate(i, 1, yp);  
     }
 
-    public boolean isDone() {
+    bool isDone() {
      return false;
     }
 
-    public boolean isGeometryChanged() {
+    bool isGeometryChanged() {
       return true;
     }
 

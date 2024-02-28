@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.valid;
+
 
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.algorithm.PolygonNodeTopology;
@@ -34,13 +34,13 @@ implements SegmentIntersector
 {
   private static final int NO_INVALID_INTERSECTION = -1;
   
-  private boolean isInvertedRingValid;
+  private bool isInvertedRingValid;
   
   private LineIntersector li = new RobustLineIntersector();
   private int invalidCode = NO_INVALID_INTERSECTION;
   private Coordinate invalidLocation = null;
   
-  private boolean hasDoubleTouch = false;
+  private bool hasDoubleTouch = false;
   private Coordinate doubleTouchLocation;
 
   /**
@@ -48,40 +48,40 @@ implements SegmentIntersector
    * 
    * @param isInvertedRingValid true if inverted rings are valid.
    */
-  PolygonIntersectionAnalyzer(boolean isInvertedRingValid) {
+  PolygonIntersectionAnalyzer(bool isInvertedRingValid) {
     this.isInvertedRingValid = isInvertedRingValid;
   }
   
   @Override
-  public boolean isDone() {
+  bool isDone() {
     return isInvalid() || hasDoubleTouch;
   }
   
-  public boolean isInvalid() {
+  bool isInvalid() {
     return invalidCode >= 0;
   }
   
-  public int getInvalidCode() {
+  int getInvalidCode() {
     return invalidCode;
   }
   
-  public Coordinate getInvalidLocation() {
+  Coordinate getInvalidLocation() {
     return invalidLocation;
   }
 
-  public boolean hasDoubleTouch() {
+  bool hasDoubleTouch() {
     return hasDoubleTouch;
   }
   
-  public Coordinate getDoubleTouchLocation() {
+  Coordinate getDoubleTouchLocation() {
     return doubleTouchLocation;
   }
 
   @Override
-  public void processIntersections(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
+  void processIntersections(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
     // don't test a segment with itself
-    boolean isSameSegString = ss0 == ss1;
-    boolean isSameSegment = isSameSegString && segIndex0 == segIndex1;
+    bool isSameSegString = ss0 == ss1;
+    bool isSameSegment = isSameSegString && segIndex0 == segIndex1;
     if (isSameSegment) return;
     
     int code = findInvalidIntersection(ss0, segIndex0, ss1, segIndex1); 
@@ -109,7 +109,7 @@ implements SegmentIntersector
       return NO_INVALID_INTERSECTION;
     }
     
-    boolean isSameSegString = ss0 == ss1;
+    bool isSameSegString = ss0 == ss1;
     
     /**
      * Check for an intersection in the interior of both segments.
@@ -130,7 +130,7 @@ implements SegmentIntersector
      * (since they are not collinear).
      * This is valid.
      */
-    boolean isAdjacentSegments = isSameSegString && isAdjacentInRing(ss0, segIndex0, segIndex1);
+    bool isAdjacentSegments = isSameSegString && isAdjacentInRing(ss0, segIndex0, segIndex1);
     // Assert: intersection is an endpoint of both segs
     if (isAdjacentSegments) return NO_INVALID_INTERSECTION;      
 
@@ -169,7 +169,7 @@ implements SegmentIntersector
       e10 = prevCoordinateInRing(ss1, segIndex1);
       e11 = p11;
     }
-    boolean hasCrossing = PolygonNodeTopology.isCrossing(intPt, e00, e01, e10, e11); 
+    bool hasCrossing = PolygonNodeTopology.isCrossing(intPt, e00, e01, e10, e11); 
     if (hasCrossing) {
       return TopologyValidationError.SELF_INTERSECTION;
     }
@@ -189,7 +189,7 @@ implements SegmentIntersector
      * Also check for an invalid double-touch situation,
      * if the rings are different.
      */
-    boolean isDoubleTouch = addDoubleTouch(ss0, ss1, intPt);
+    bool isDoubleTouch = addDoubleTouch(ss0, ss1, intPt);
     if (isDoubleTouch && ! isSameSegString) {
       hasDoubleTouch = true;
       doubleTouchLocation = intPt;
@@ -199,7 +199,7 @@ implements SegmentIntersector
     return NO_INVALID_INTERSECTION;
   }
 
-  private boolean addDoubleTouch(SegmentString ss0, SegmentString ss1, Coordinate intPt) {
+  private bool addDoubleTouch(SegmentString ss0, SegmentString ss1, Coordinate intPt) {
     return PolygonRing.addTouch((PolygonRing) ss0.getData(), (PolygonRing) ss1.getData(), intPt);
   }
 
@@ -237,8 +237,8 @@ implements SegmentIntersector
    * @param segIndex1 a segment index
    * @return true if the segments are adjacent
    */
-  private static boolean isAdjacentInRing(SegmentString ringSS, int segIndex0, int segIndex1) {
-    int delta = Math.abs(segIndex1 - segIndex0);
+  private static bool isAdjacentInRing(SegmentString ringSS, int segIndex0, int segIndex1) {
+    int delta = (segIndex1 - segIndex0).abs();
     if (delta <= 1) return true;
     /**
      * A string with N vertices has maximum segment index of N-2.

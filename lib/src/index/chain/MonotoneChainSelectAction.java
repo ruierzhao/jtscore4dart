@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.chain;
+
 
 import org.locationtech.jts.geom.LineSegment;
 /**
@@ -18,7 +18,7 @@ import org.locationtech.jts.geom.LineSegment;
  *
  * @version 1.7
  */
-public class MonotoneChainSelectAction
+class MonotoneChainSelectAction
 {
   // these envelopes are used during the MonotoneChain search process
   //Envelope tempEnv1 = new Envelope();
@@ -33,7 +33,7 @@ public class MonotoneChainSelectAction
    * @param mc the parent chain
    * @param startIndex the index of the start vertex of the segment being processed
    */
-  public void select(MonotoneChain mc, int startIndex)
+  void select(MonotoneChain mc, int startIndex)
   {
     mc.getLineSegment(startIndex, selectedSegment);
     // call this routine in case select(segmenet) was overridden
@@ -46,7 +46,7 @@ public class MonotoneChainSelectAction
    * 
    * @param seg
    */
-  public void select(LineSegment seg)
+  void select(LineSegment seg)
   {
   }
 }

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.geom.Coordinate;
@@ -21,49 +21,49 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class IntersectionAdder
+class IntersectionAdder
     implements SegmentIntersector
 {
-  public static boolean isAdjacentSegments(int i1, int i2)
+  static bool isAdjacentSegments(int i1, int i2)
   {
-    return Math.abs(i1 - i2) == 1;
+    return (i1 - i2).abs() == 1;
   }
 
   /**
    * These variables keep track of what types of intersections were
    * found during ALL edges that have been intersected.
    */
-  private boolean hasIntersection = false;
-  private boolean hasProper = false;
-  private boolean hasProperInterior = false;
-  private boolean hasInterior = false;
+  private bool hasIntersection = false;
+  private bool hasProper = false;
+  private bool hasProperInterior = false;
+  private bool hasInterior = false;
 
   // the proper intersection point found
   private Coordinate properIntersectionPoint = null;
 
   private LineIntersector li;
-  private boolean isSelfIntersection;
-  //private boolean intersectionFound;
-  public int numIntersections = 0;
-  public int numInteriorIntersections = 0;
-  public int numProperIntersections = 0;
+  private bool isSelfIntersection;
+  //private bool intersectionFound;
+  int numIntersections = 0;
+  int numInteriorIntersections = 0;
+  int numProperIntersections = 0;
 
   // testing only
-  public int numTests = 0;
+  int numTests = 0;
 
-  public IntersectionAdder(LineIntersector li)
+  IntersectionAdder(LineIntersector li)
   {
     this.li = li;
   }
 
-  public LineIntersector getLineIntersector() { return li; }
+  LineIntersector getLineIntersector() { return li; }
 
   /**
    * @return the proper intersection point, or <code>null</code> if none was found
    */
-  public Coordinate getProperIntersectionPoint()  {    return properIntersectionPoint;  }
+  Coordinate getProperIntersectionPoint()  {    return properIntersectionPoint;  }
 
-  public boolean hasIntersection() { return hasIntersection; }
+  bool hasIntersection() { return hasIntersection; }
   /**
    * A proper intersection is an intersection which is interior to at least two
    * line segments.  Note that a proper intersection is not necessarily
@@ -71,17 +71,17 @@ public class IntersectionAdder
    * an endpoint equal to the intersection, which according to SFS semantics
    * can result in the point being on the Boundary of the Geometry.
    */
-  public boolean hasProperIntersection() { return hasProper; }
+  bool hasProperIntersection() { return hasProper; }
   /**
    * A proper interior intersection is a proper intersection which is <b>not</b>
    * contained in the set of boundary nodes set for this SegmentIntersector.
    */
-  public boolean hasProperInteriorIntersection() { return hasProperInterior; }
+  bool hasProperInteriorIntersection() { return hasProperInterior; }
   /**
    * An interior intersection is an intersection which is
    * in the interior of some segment.
    */
-  public boolean hasInteriorIntersection() { return hasInterior; }
+  bool hasInteriorIntersection() { return hasInterior; }
 
   /**
    * A trivial intersection is an apparent self-intersection which in fact
@@ -89,7 +89,7 @@ public class IntersectionAdder
    * Note that closed edges require a special check for the point shared by the beginning
    * and end segments.
    */
-  private boolean isTrivialIntersection(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
+  private bool isTrivialIntersection(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
   {
     if (e0 == e1) {
       if (li.getIntersectionNum() == 1) {
@@ -115,7 +115,7 @@ public class IntersectionAdder
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
-  public void processIntersections(
+  void processIntersections(
     SegmentString e0,  int segIndex0,
     SegmentString e1,  int segIndex1
      )
@@ -160,5 +160,5 @@ public class IntersectionAdder
    * 
    * @return false always
    */
-  public boolean isDone() { return false; }
+  bool isDone() { return false; }
 }

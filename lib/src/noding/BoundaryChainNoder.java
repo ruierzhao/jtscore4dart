@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.noding;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,19 +37,19 @@ import org.locationtech.jts.geom.LineSegment;
  * @author Martin Davis
  *
  */
-public class BoundaryChainNoder implements Noder {
+class BoundaryChainNoder implements Noder {
 
   private List<SegmentString> chainList;
   
   /**
    * Creates a new boundary-extracting noder.
    */
-  public BoundaryChainNoder() {
+  BoundaryChainNoder() {
     
   }
 
   @Override
-  public void computeNodes(Collection segStrings) {
+  void computeNodes(Collection segStrings) {
     HashSet<Segment> segSet = new HashSet<Segment>();
     BoundaryChainMap[] boundaryChains = new BoundaryChainMap[segStrings.size()];
     addSegments(segStrings, segSet, boundaryChains);
@@ -96,24 +96,24 @@ public class BoundaryChainNoder implements Noder {
   }
 
   @Override
-  public Collection getNodedSubstrings() {
+  Collection getNodedSubstrings() {
     return chainList;
   }
 
   private static class BoundaryChainMap {
     private SegmentString segString;
-    private boolean[] isBoundary;
+    private bool[] isBoundary;
     
-    public BoundaryChainMap(SegmentString ss) {
+    BoundaryChainMap(SegmentString ss) {
       this.segString = ss;
-      isBoundary = new boolean[ss.size() - 1];
+      isBoundary = new bool[ss.size() - 1];
     }
     
-    public void setBoundarySegment(int index) {
+    void setBoundarySegment(int index) {
       isBoundary[index] = true;
     }
     
-    public void createChains(List<SegmentString> chainList) {
+    void createChains(List<SegmentString> chainList) {
       int endIndex = 0;
       while (true) {
         int startIndex = findChainStart(endIndex); 
@@ -126,7 +126,7 @@ public class BoundaryChainNoder implements Noder {
     }
 
     private static SegmentString createChain(SegmentString segString, int startIndex, int endIndex) {
-      Coordinate[] pts = new Coordinate[endIndex - startIndex + 1];
+      List<Coordinate> pts = new Coordinate[endIndex - startIndex + 1];
       int ipts = 0;
       for (int i = startIndex; i < endIndex + 1; i++) {
         pts[ipts++] = segString.getCoordinate(i).copy();
@@ -154,7 +154,7 @@ public class BoundaryChainNoder implements Noder {
     private BoundaryChainMap segMap;
     private int index;
 
-    public Segment(Coordinate p0, Coordinate p1, 
+    Segment(Coordinate p0, Coordinate p1, 
         BoundaryChainMap segMap, int index) {
       super(p0, p1);
       this.segMap = segMap;
@@ -162,7 +162,7 @@ public class BoundaryChainNoder implements Noder {
       normalize();
     }
     
-    public void markBoundary() {
+    void markBoundary() {
       segMap.setBoundarySegment(index);
     }
   }

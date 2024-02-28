@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom.prep;
+
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Puntal;
@@ -23,10 +23,10 @@ import org.locationtech.jts.geom.Puntal;
  * @author Martin Davis
  *
  */
-public class PreparedPoint
+class PreparedPoint
   extends BasicPreparedGeometry
 {
-  public PreparedPoint(Puntal point) {
+  PreparedPoint(Puntal point) {
     super((Geometry) point);
   }
 
@@ -36,7 +36,7 @@ public class PreparedPoint
    * The optimization here is that computing topology for the test geometry
    * is avoided.  This can be significant for large geometries.
    */
-  public boolean intersects(Geometry g)
+  bool intersects(Geometry g)
   {
   	if (! envelopesIntersect(g)) return false;
   	

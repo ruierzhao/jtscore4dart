@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.quadtree;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -21,9 +21,9 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @version 1.7
  */
-public class Key {
+class Key {
 
-  public static int computeQuadLevel(Envelope env)
+  static int computeQuadLevel(Envelope env)
   {
     double dx = env.getWidth();
     double dy = env.getHeight();
@@ -38,16 +38,16 @@ public class Key {
   // auxiliary data which is derived from the key for use in computation
   private Envelope env = null;
 
-  public Key(Envelope itemEnv)
+  Key(Envelope itemEnv)
   {
     computeKey(itemEnv);
   }
 
-  public Coordinate getPoint() { return pt; }
-  public int getLevel() { return level; }
-  public Envelope getEnvelope() { return env; }
+  Coordinate getPoint() { return pt; }
+  int getLevel() { return level; }
+  Envelope getEnvelope() { return env; }
 
-  public Coordinate getCentre()
+  Coordinate getCentre()
   {
     return new Coordinate(
       (env.getMinX() + env.getMaxX()) / 2,
@@ -58,7 +58,7 @@ public class Key {
    * return a square envelope containing the argument envelope,
    * whose extent is a power of two and which is based at a power of 2
    */
-  public void computeKey(Envelope itemEnv)
+  void computeKey(Envelope itemEnv)
   {
     level = computeQuadLevel(itemEnv);
     env = new Envelope();

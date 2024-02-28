@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.precision;
+
 
 import org.locationtech.jts.geom.Geometry;
 
@@ -19,7 +19,7 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @version 1.7
  */
-public class EnhancedPrecisionOp
+class EnhancedPrecisionOp
 {
   /**
    * Computes the set-theoretic intersection of two {@link Geometry}s, using enhanced precision.
@@ -27,7 +27,7 @@ public class EnhancedPrecisionOp
    * @param geom1 the second Geometry
    * @return the Geometry representing the set-theoretic intersection of the input Geometries.
    */
-  public static Geometry intersection(Geometry geom0, Geometry geom1)
+  static Geometry intersection(Geometry geom0, Geometry geom1)
   {
     RuntimeException originalEx;
     try {
@@ -62,7 +62,7 @@ public class EnhancedPrecisionOp
    * @param geom1 the second Geometry
    * @return the Geometry representing the set-theoretic union of the input Geometries.
    */
-  public static Geometry union(Geometry geom0, Geometry geom1)
+  static Geometry union(Geometry geom0, Geometry geom1)
   {
     RuntimeException originalEx;
     try {
@@ -97,7 +97,7 @@ public class EnhancedPrecisionOp
    * @param geom1 the second Geometry
    * @return the Geometry representing the set-theoretic difference of the input Geometries.
    */
-  public static Geometry difference(Geometry geom0, Geometry geom1)
+  static Geometry difference(Geometry geom0, Geometry geom1)
   {
     RuntimeException originalEx;
     try {
@@ -132,7 +132,7 @@ public class EnhancedPrecisionOp
    * @param geom1 the second Geometry
    * @return the Geometry representing the set-theoretic symmetric difference of the input Geometries.
    */
-  public static Geometry symDifference(Geometry geom0, Geometry geom1)
+  static Geometry symDifference(Geometry geom0, Geometry geom1)
   {
     RuntimeException originalEx;
     try {
@@ -170,7 +170,7 @@ public class EnhancedPrecisionOp
    * @param distance the buffer distance
    * @return the Geometry representing the buffer of the input Geometry.
    */
-  public static Geometry buffer(Geometry geom, double distance)
+  static Geometry buffer(Geometry geom, double distance)
   {
     RuntimeException originalEx;
     try {

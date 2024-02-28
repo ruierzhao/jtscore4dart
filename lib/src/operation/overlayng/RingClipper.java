@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlayng;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -43,7 +43,7 @@ import org.locationtech.jts.geom.Envelope;
  * @author Martin Davis
  *
  */
-public class RingClipper {
+class RingClipper {
   
   private static final int BOX_LEFT = 3;
   private static final int BOX_TOP = 2;
@@ -61,7 +61,7 @@ public class RingClipper {
    * 
    * @param clipEnv the clipping envelope
    */
-  public RingClipper(Envelope clipEnv) {
+  RingClipper(Envelope clipEnv) {
     this.clipEnv = clipEnv;
     clipEnvMinY = clipEnv.getMinY();
     clipEnvMaxY = clipEnv.getMaxY();
@@ -75,9 +75,9 @@ public class RingClipper {
    * @param pts
    * @return clipped pts array
    */
-  public Coordinate[] clip(Coordinate[] pts) {
+  List<Coordinate> clip(List<Coordinate> pts) {
     for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++) {
-      boolean closeRing = edgeIndex == 3;
+      bool closeRing = edgeIndex == 3;
       pts = clipToBoxEdge(pts, edgeIndex, closeRing);
       if (pts.length == 0) return pts;
     }
@@ -92,7 +92,7 @@ public class RingClipper {
    * @param closeRing 
    * @return
    */
-  private Coordinate[] clipToBoxEdge(Coordinate[] pts, int edgeIndex, boolean closeRing) {
+  private List<Coordinate> clipToBoxEdge(List<Coordinate> pts, int edgeIndex, bool closeRing) {
     // TODO: is it possible to avoid copying array 4 times?
     CoordinateList ptsClip = new CoordinateList();
 
@@ -167,8 +167,8 @@ public class RingClipper {
     return a.y + intercept;
   }
 
-  private boolean isInsideEdge(Coordinate p, int edgeIndex) {
-    boolean isInside = false;
+  private bool isInsideEdge(Coordinate p, int edgeIndex) {
+    bool isInside = false;
     switch (edgeIndex) {
     case BOX_BOTTOM: // bottom
       isInside = p.y > clipEnvMinY;

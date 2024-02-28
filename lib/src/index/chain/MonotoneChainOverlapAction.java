@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.chain;
+
 
 import org.locationtech.jts.geom.LineSegment;
 
@@ -19,7 +19,7 @@ import org.locationtech.jts.geom.LineSegment;
  *
  * @version 1.7
  */
-public class MonotoneChainOverlapAction
+class MonotoneChainOverlapAction
 {
   protected LineSegment overlapSeg1 = new LineSegment();
   protected LineSegment overlapSeg2 = new LineSegment();
@@ -30,7 +30,7 @@ public class MonotoneChainOverlapAction
    * @param start1 the index of the start of the overlapping segment from mc1
    * @param start2 the index of the start of the overlapping segment from mc2
    */
-  public void overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
+  void overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
   {
     mc1.getLineSegment(start1, overlapSeg1);
     mc2.getLineSegment(start2, overlapSeg2);
@@ -43,7 +43,7 @@ public class MonotoneChainOverlapAction
    * @param seg1
    * @param seg2
    */
-  public void overlap(LineSegment seg1, LineSegment seg2)
+  void overlap(LineSegment seg1, LineSegment seg2)
   {
   }
 }

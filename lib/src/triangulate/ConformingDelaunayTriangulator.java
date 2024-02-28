@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.triangulate;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,7 +65,7 @@ import org.locationtech.jts.util.Debug;
  * @author David Skea
  * @author Martin Davis
  */
-public class ConformingDelaunayTriangulator 
+class ConformingDelaunayTriangulator 
 {
 	private static Envelope computeVertexEnvelope(Collection vertices) {
 		Envelope env = new Envelope();
@@ -106,7 +106,7 @@ public class ConformingDelaunayTriangulator
 	 * @param tolerance
 	 *          the distance tolerance below which points are considered identical
 	 */
-	public ConformingDelaunayTriangulator(Collection initialVertices,
+	ConformingDelaunayTriangulator(Collection initialVertices,
 			double tolerance) {
 		this.initialVertices = new ArrayList(initialVertices);
 		this.tolerance = tolerance;
@@ -125,7 +125,7 @@ public class ConformingDelaunayTriangulator
 	 * @param segments a list of the constraint {@link Segment}s
 	 * @param segVertices the set of unique {@link ConstraintVertex}es referenced by the segments
 	 */
-	public void setConstraints(List segments, List segVertices) {
+	void setConstraints(List segments, List segVertices) {
 		this.segments = segments;
 		this.segVertices = segVertices;
 	}
@@ -138,7 +138,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @param splitFinder the ConstraintSplitPointFinder to be used
 	 */
-	public void setSplitPointFinder(ConstraintSplitPointFinder splitFinder) {
+	void setSplitPointFinder(ConstraintSplitPointFinder splitFinder) {
 		this.splitFinder = splitFinder;
 	}
 
@@ -147,7 +147,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @return a tolerance value
 	 */
-	public double getTolerance()
+	double getTolerance()
 	{
 		return tolerance;
 	}
@@ -157,7 +157,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @return a new constraint vertex
 	 */
-	public ConstraintVertexFactory getVertexFactory() {
+	ConstraintVertexFactory getVertexFactory() {
 		return vertexFactory;
 	}
 
@@ -167,7 +167,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @param vertexFactory the ConstraintVertexFactory to be used
 	 */
-	public void setVertexFactory(ConstraintVertexFactory vertexFactory) {
+	void setVertexFactory(ConstraintVertexFactory vertexFactory) {
 		this.vertexFactory = vertexFactory;
 	}
 
@@ -176,7 +176,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @return a subdivision
 	 */
-	public QuadEdgeSubdivision getSubdivision() {
+	QuadEdgeSubdivision getSubdivision() {
 		return subdiv;
 	}
 
@@ -185,7 +185,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @return a KdTree
 	 */
-	public KdTree getKDT() {
+	KdTree getKDT() {
 		return kdt;
 	}
 
@@ -194,7 +194,7 @@ public class ConformingDelaunayTriangulator
 	 *  
 	 * @return a List of Vertex
 	 */
-	public List getInitialVertices() {
+	List getInitialVertices() {
 		return initialVertices;
 	}
 
@@ -203,7 +203,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @return a collection of Segments
 	 */
-	public Collection getConstraintSegments() {
+	Collection getConstraintSegments() {
 		return segments;
 	}
 
@@ -214,7 +214,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @return the convex hull of the sites
 	 */
-	public Geometry getConvexHull() {
+	Geometry getConvexHull() {
 		return convexHull;
 	}
 
@@ -238,7 +238,7 @@ public class ConformingDelaunayTriangulator
 
 	private void computeConvexHull() {
 		GeometryFactory fact = new GeometryFactory();
-		Coordinate[] coords = getPointArray();
+		List<Coordinate> coords = getPointArray();
 		ConvexHull hull = new ConvexHull(coords, fact);
 		convexHull = hull.getConvexHull();
 	}
@@ -255,7 +255,7 @@ public class ConformingDelaunayTriangulator
 	// hull segment
 	// */
 	// private void addConvexHullToConstraints(Object convexHullSegmentData) {
-	// Coordinate[] coords = convexHull.getCoordinates();
+	// List<Coordinate> coords = convexHull.getCoordinates();
 	// for (int i = 1; i < coords.length; i++) {
 	// Segment s = new Segment(coords[i - 1], coords[i], convexHullSegmentData);
 	// addConstraintIfUnique(s);
@@ -263,7 +263,7 @@ public class ConformingDelaunayTriangulator
 	// }
 
 	// private void addConstraintIfUnique(Segment r) {
-	// boolean exists = false;
+	// bool exists = false;
 	// Iterator it = segments.iterator();
 	// Segment s = null;
 	// while (it.hasNext()) {
@@ -277,8 +277,8 @@ public class ConformingDelaunayTriangulator
 	// }
 	// }
 
-	private Coordinate[] getPointArray() {
-		Coordinate[] pts = new Coordinate[initialVertices.size()
+	private List<Coordinate> getPointArray() {
+		List<Coordinate> pts = new Coordinate[initialVertices.size()
 				+ segVertices.size()];
 		int index = 0;
 		for (Iterator i = initialVertices.iterator(); i.hasNext();) {
@@ -355,7 +355,7 @@ public class ConformingDelaunayTriangulator
 	 * 
 	 * @param p the location of the site to insert
 	 */
-	public void insertSite(Coordinate p) {
+	void insertSite(Coordinate p) {
 		insertSite(createVertex(p));
 	}
 
@@ -364,7 +364,7 @@ public class ConformingDelaunayTriangulator
 	/**
 	 * Computes the Delaunay triangulation of the initial sites.
 	 */
-	public void formInitialDelaunay() {
+	void formInitialDelaunay() {
 		computeBoundingBox();
 		subdiv = new QuadEdgeSubdivision(computeAreaEnv, tolerance);
 		subdiv.setLocator(new LastFoundQuadEdgeLocator(subdiv));
@@ -382,7 +382,7 @@ public class ConformingDelaunayTriangulator
 	 * @throws ConstraintEnforcementException
 	 *           if the constraints cannot be enforced
 	 */
-	public void enforceConstraints() {
+	void enforceConstraints() {
 		addConstraintVertices();
 		// if (true) return;
 
@@ -487,7 +487,7 @@ public class ConformingDelaunayTriangulator
 		return splits;
 	}
 
-//	public static final String DEBUG_SEG_SPLIT = "C:\\proj\\CWB\\test\\segSplit.jml";
+//	static final String DEBUG_SEG_SPLIT = "C:\\proj\\CWB\\test\\segSplit.jml";
 
 	/**
 	 * Given a set of points stored in the kd-tree and a line segment defined by

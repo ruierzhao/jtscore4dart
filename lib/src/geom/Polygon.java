@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 import java.util.Arrays;
 
@@ -43,7 +43,7 @@ import org.locationtech.jts.algorithm.Orientation;
  *
  *@version 1.7
  */
-public class Polygon
+class Polygon
 	extends Geometry
 	implements Polygonal
 {
@@ -75,7 +75,7 @@ public class Polygon
    *      <code>Polygon</code>
    * @deprecated Use GeometryFactory instead
    */
-  public Polygon(LinearRing shell, PrecisionModel precisionModel, int SRID) {
+  Polygon(LinearRing shell, PrecisionModel precisionModel, int SRID) {
     this(shell, new LinearRing[]{}, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -95,7 +95,7 @@ public class Polygon
    *      <code>Polygon</code>
    * @deprecated Use GeometryFactory instead
    */
-  public Polygon(LinearRing shell, LinearRing[] holes, PrecisionModel precisionModel, int SRID) {
+  Polygon(LinearRing shell, LinearRing[] holes, PrecisionModel precisionModel, int SRID) {
       this(shell, holes, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -110,7 +110,7 @@ public class Polygon
    *      , or <code>null</code> or empty <code>LinearRing</code>s if the empty
    *      geometry is to be created.
    */
-  public Polygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory) {
+  Polygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory) {
     super(factory);
     if (shell == null) {
       shell = getFactory().createLinearRing();
@@ -119,32 +119,32 @@ public class Polygon
       holes = new LinearRing[]{};
     }
     if (hasNullElements(holes)) {
-      throw new IllegalArgumentException("holes must not contain null elements");
+      throw new ArgumentError("holes must not contain null elements");
     }
     if (shell.isEmpty() && hasNonEmptyElements(holes)) {
-      throw new IllegalArgumentException("shell is empty but holes are not");
+      throw new ArgumentError("shell is empty but holes are not");
     }
     this.shell = shell;
     this.holes = holes;
   }
 
-  public Coordinate getCoordinate() {
+  Coordinate getCoordinate() {
     return shell.getCoordinate();
   }
 
-  public Coordinate[] getCoordinates() {
+  List<Coordinate> getCoordinates() {
     if (isEmpty()) {
-      return new Coordinate[]{};
+      return new List<Coordinate>{};
     }
-    Coordinate[] coordinates = new Coordinate[getNumPoints()];
+    List<Coordinate> coordinates = new Coordinate[getNumPoints()];
     int k = -1;
-    Coordinate[] shellCoordinates = shell.getCoordinates();
+    List<Coordinate> shellCoordinates = shell.getCoordinates();
     for (int x = 0; x < shellCoordinates.length; x++) {
       k++;
       coordinates[k] = shellCoordinates[x];
     }
     for (int i = 0; i < holes.length; i++) {
-      Coordinate[] childCoordinates = holes[i].getCoordinates();
+      List<Coordinate> childCoordinates = holes[i].getCoordinates();
       for (int j = 0; j < childCoordinates.length; j++) {
         k++;
         coordinates[k] = childCoordinates[j];
@@ -153,7 +153,7 @@ public class Polygon
     return coordinates;
   }
 
-  public int getNumPoints() {
+  int getNumPoints() {
     int numPoints = shell.getNumPoints();
     for (int i = 0; i < holes.length; i++) {
       numPoints += holes[i].getNumPoints();
@@ -161,19 +161,19 @@ public class Polygon
     return numPoints;
   }
 
-  public int getDimension() {
+  int getDimension() {
     return 2;
   }
 
-  public int getBoundaryDimension() {
+  int getBoundaryDimension() {
     return 1;
   }
 
-  public boolean isEmpty() {
+  bool isEmpty() {
     return shell.isEmpty();
   }
 
-  public boolean isRectangle()
+  bool isRectangle()
   {
     if (getNumInteriorRing() != 0) return false;
     if (shell == null) return false;
@@ -196,8 +196,8 @@ public class Polygon
     for (int i = 1; i <= 4; i++) {
       double x = seq.getX(i);
       double y = seq.getY(i);
-      boolean xChanged = x != prevX;
-      boolean yChanged = y != prevY;
+      bool xChanged = x != prevX;
+      bool yChanged = y != prevY;
       if (xChanged == yChanged)
         return false;
       prevX = x;
@@ -206,19 +206,19 @@ public class Polygon
     return true;
   }
 
-  public LinearRing getExteriorRing() {
+  LinearRing getExteriorRing() {
     return shell;
   }
 
-  public int getNumInteriorRing() {
+  int getNumInteriorRing() {
     return holes.length;
   }
 
-  public LinearRing getInteriorRingN(int n) {
+  LinearRing getInteriorRingN(int n) {
     return holes[n];
   }
 
-  public String getGeometryType() {
+  String getGeometryType() {
     return Geometry.TYPENAME_POLYGON;
   }
 
@@ -227,7 +227,7 @@ public class Polygon
    *
    *@return the area of the polygon
    */
-  public double getArea()
+  double getArea()
   {
     double area = 0.0;
     area += Area.ofRing(shell.getCoordinateSequence());
@@ -242,7 +242,7 @@ public class Polygon
    *
    *@return the perimeter of the polygon
    */
-  public double getLength()
+  double getLength()
   {
     double len = 0.0;
     len += shell.getLength();
@@ -258,7 +258,7 @@ public class Polygon
    * @return a lineal geometry (which may be empty)
    * @see Geometry#getBoundary
    */
-  public Geometry getBoundary() {
+  Geometry getBoundary() {
     if (isEmpty()) {
       return getFactory().createMultiLineString();
     }
@@ -277,7 +277,7 @@ public class Polygon
     return shell.getEnvelopeInternal();
   }
 
-  public boolean equalsExact(Geometry other, double tolerance) {
+  bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
@@ -298,14 +298,14 @@ public class Polygon
     return true;
   }
 
-  public void apply(CoordinateFilter filter) {
+  void apply(CoordinateFilter filter) {
 	    shell.apply(filter);
 	    for (int i = 0; i < holes.length; i++) {
 	      holes[i].apply(filter);
 	    }
 	  }
 
-  public void apply(CoordinateSequenceFilter filter)
+  void apply(CoordinateSequenceFilter filter)
   {
 	    shell.apply(filter);
       if (! filter.isDone()) {
@@ -319,11 +319,11 @@ public class Polygon
         geometryChanged();
 	  }
 
-  public void apply(GeometryFilter filter) {
+  void apply(GeometryFilter filter) {
     filter.filter(this);
   }
 
-  public void apply(GeometryComponentFilter filter) {
+  void apply(GeometryComponentFilter filter) {
     filter.filter(this);
     shell.apply(filter);
     for (int i = 0; i < holes.length; i++) {
@@ -338,7 +338,7 @@ public class Polygon
    * @return a clone of this instance
    * @deprecated
    */
-  public Object clone() {
+  Object clone() {
 
     return copy();
   }
@@ -352,11 +352,11 @@ public class Polygon
     return new Polygon(shellCopy, holeCopies, factory);
   }
 
-  public Geometry convexHull() {
+  Geometry convexHull() {
     return getExteriorRing().convexHull();
   }
 
-  public void normalize() {
+  void normalize() {
     shell = normalized(shell, true);
     for (int i = 0; i < holes.length; i++) {
       holes[i] = normalized(holes[i], false);
@@ -414,13 +414,13 @@ public class Polygon
     return Geometry.TYPECODE_POLYGON;
   }
 
-  private LinearRing normalized(LinearRing ring, boolean clockwise) {
+  private LinearRing normalized(LinearRing ring, bool clockwise) {
     LinearRing res = (LinearRing) ring.copy();
     normalize(res, clockwise);
     return res;
   }
 
-  private void normalize(LinearRing ring, boolean clockwise) {
+  private void normalize(LinearRing ring, bool clockwise) {
     if (ring.isEmpty()) {
       return;
     }
@@ -432,7 +432,7 @@ public class Polygon
       CoordinateSequences.reverse(seq);
   }
 
-  public Polygon reverse() {
+  Polygon reverse() {
     return (Polygon) super.reverse();
   }
 

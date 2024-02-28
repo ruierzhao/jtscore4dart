@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io.gml2;
+
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -53,16 +53,16 @@ import org.locationtech.jts.util.Assert;
  * @author David Zwiers, Vivid Solutions 
  * @author Martin Davis 
  */
-public class GMLWriter {
+class GMLWriter {
 	private static final String INDENT = "  ";
 
 	private int startingIndentIndex = 0;
 
 	private int maxCoordinatesPerLine = 10;
 
-	private boolean emitNamespace = false;
+	private bool emitNamespace = false;
 
-	private boolean isRootTag = false;
+	private bool isRootTag = false;
 
 	private String prefix = GMLConstants.GML_PREFIX;
 	private String namespace = GMLConstants.GML_NAMESPACE;
@@ -79,7 +79,7 @@ public class GMLWriter {
 	 * <li>no <tt>srsName</tt> attribute is written
 	 * </ul>
 	 */
-	public GMLWriter() {
+	GMLWriter() {
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class GMLWriter {
 	 * @param emitNamespace true if the GML namespace prefix declaration should be written
 	 *  in the geometry root element
 	 */
-	public GMLWriter(boolean emitNamespace) {
+	GMLWriter(bool emitNamespace) {
 		this.setNamespace(emitNamespace);
 	}
 
@@ -101,7 +101,7 @@ public class GMLWriter {
 	 * 
 	 * @param prefix the namespace prefix to use (<tt>null</tt> or blank if none)
 	 */
-	public void setPrefix(String prefix) {
+	void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
 
@@ -116,7 +116,7 @@ public class GMLWriter {
 	 * 
 	 * @param srsName the srsName attribute value
 	 */
-	public void setSrsName(String srsName) {
+	void setSrsName(String srsName) {
 		this.srsName = srsName;
 	}
 
@@ -128,7 +128,7 @@ public class GMLWriter {
 	 * @param emitNamespace true if the GML namespace prefix declaration 
 	 * should be written in the root geometry element
 	 */
-	public void setNamespace(boolean emitNamespace) {
+	void setNamespace(bool emitNamespace) {
 		this.emitNamespace = emitNamespace;
 	}
 
@@ -145,7 +145,7 @@ public class GMLWriter {
 	 * 
 	 * @param customElements a list of the custom element strings, or null if none
 	 */
-	public void setCustomElements(String[] customElements) {
+	void setCustomElements(String[] customElements) {
 		this.customElements = customElements;
 	}
 
@@ -154,7 +154,7 @@ public class GMLWriter {
 	 * 
 	 * @param indent
 	 */
-	public void setStartingIndentIndex(int indent) {
+	void setStartingIndentIndex(int indent) {
 		if (indent < 0)
 			indent = 0;
 		startingIndentIndex = indent;
@@ -165,7 +165,7 @@ public class GMLWriter {
 	 * 
 	 * @param num
 	 */
-	public void setMaxCoordinatesPerLine(int num) {
+	void setMaxCoordinatesPerLine(int num) {
 		if (num < 1)
 			throw new IndexOutOfBoundsException(
 					"Invalid coordinate count per line, must be > 0");
@@ -178,7 +178,7 @@ public class GMLWriter {
 	 * @param geom
 	 * @return String GML2 Encoded Geometry
 	 */
-	public String write(Geometry geom) 
+	String write(Geometry geom) 
 	{
 		StringWriter writer = new StringWriter();
 		try {
@@ -197,7 +197,7 @@ public class GMLWriter {
 	 * @param writer Stream to encode to.
 	 * @throws IOException 
 	 */
-	public void write(Geometry geom, Writer writer) throws IOException {
+	void write(Geometry geom, Writer writer) throws IOException {
 		write(geom, writer, startingIndentIndex);
 	}
 
@@ -221,7 +221,7 @@ public class GMLWriter {
 			writeGeometryCollection((GeometryCollection) geom, writer,
 					startingIndentIndex);
 		} else {
-			throw new IllegalArgumentException("Unhandled geometry type: "
+			throw new ArgumentError("Unhandled geometry type: "
 					+ geom.getGeometryType());
 		}
 		writer.flush();
@@ -232,7 +232,7 @@ public class GMLWriter {
 		startLine(level, writer);
 		startGeomTag(GMLConstants.GML_POINT, p, writer);
 
-		write(new Coordinate[] { p.getCoordinate() }, writer, level + 1);
+		write(new List<Coordinate> { p.getCoordinate() }, writer, level + 1);
 
 		startLine(level, writer);
 		endGeomTag(GMLConstants.GML_POINT, writer);
@@ -372,7 +372,7 @@ public class GMLWriter {
 	 * @param coords array of coordinates
 	 * @throws IOException 
 	 */
-	private void write(Coordinate[] coords, Writer writer, int level)
+	private void write(List<Coordinate> coords, Writer writer, int level)
 			throws IOException {
 		startLine(level, writer);
 		startGeomTag(GMLConstants.GML_COORDINATES, null, writer);
@@ -384,7 +384,7 @@ public class GMLWriter {
 				dim = 3;
 		}
 
-		boolean isNewLine = true;
+		bool isNewLine = true;
 		for (int i = 0; i < coords.length; i++) {
 			if (isNewLine) {
 				startLine(level + 1, writer);

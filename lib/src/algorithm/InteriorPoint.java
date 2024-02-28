@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.algorithm.construct.LargestEmptyCircle;
 import org.locationtech.jts.algorithm.construct.MaximumInscribedCircle;
@@ -44,7 +44,7 @@ import org.locationtech.jts.geom.GeometryFilter;
  * @see MaximumInscribedCircle
  * @see LargestEmptyCircle
  */
-public class InteriorPoint {
+class InteriorPoint {
   
   /**
    * Computes a location of an interior point in a {@link Geometry}.
@@ -54,7 +54,7 @@ public class InteriorPoint {
    * @return the location of an interior point, 
    *  or <code>null</code> if the input is empty
    */
-  public static Coordinate getInteriorPoint(Geometry geom) {
+  static Coordinate getInteriorPoint(Geometry geom) {
     if (geom.isEmpty()) 
       return null;
     
@@ -86,11 +86,11 @@ public class InteriorPoint {
   {
     private int dim = -1;
     
-    public int getDimension() {
+    int getDimension() {
       return dim;
     }
     
-    public void filter(Geometry elem) {
+    void filter(Geometry elem) {
       if (elem instanceof GeometryCollection)
         return;
       if (! elem.isEmpty()) {

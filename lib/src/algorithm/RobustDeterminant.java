@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.algorithm;
+
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -43,13 +43,13 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @version 1.7
  */
-public class RobustDeterminant {
+class RobustDeterminant {
 
-  //public static int callCount = 0; // debugging only
+  //static int callCount = 0; // debugging only
 
   /*
   // test point to allow injecting test code
-  public static int signOfDet2x2(double x1, double y1, double x2, double y2) 
+  static int signOfDet2x2(double x1, double y1, double x2, double y2) 
   {
     int d1 = originalSignOfDet2x2(x1, y1, x2, y2); 
     int d2 = -originalSignOfDet2x2(y1, x1, x2, y2); 
@@ -63,7 +63,7 @@ public class RobustDeterminant {
    * A possible fix for a rare problem where evaluation is order-dependent.
    */
   /*
-  public static int signOfDet2x2(double x1, double y1, double x2, double y2) 
+  static int signOfDet2x2(double x1, double y1, double x2, double y2) 
   {
     if (x1 > x2) {
       return -signOfDet2x2ordX(x2, y2, x1, y1);
@@ -89,7 +89,7 @@ public class RobustDeterminant {
    * @return  0 if the determinant is 0.
    */
    //private static int originalSignOfDet2x2(double x1, double y1, double x2, double y2) {
-   public static int signOfDet2x2(double x1, double y1, double x2, double y2) {
+   static int signOfDet2x2(double x1, double y1, double x2, double y2) {
     // returns -1 if the determinant is negative,
     // returns  1 if the determinant is positive,
     // returns  0 if the determinant is null.
@@ -369,7 +369,7 @@ public class RobustDeterminant {
     * @return -1 if q is clockwise (right) from p1-p2
     * @return 0 if q is collinear with p1-p2
     */
-   public static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
+   static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
    {
      /**
       * MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation

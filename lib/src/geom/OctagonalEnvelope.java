@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.geom;
+
 
 /**
  * A bounding container for a {@link Geometry} which is in the shape of a general octagon.
@@ -21,14 +21,14 @@ package org.locationtech.jts.geom;
  * geometry, the octagon may be degenerate to any extreme
  * (e.g. it may be a rectangle, a line, or a point).
  */
-public class OctagonalEnvelope
+class OctagonalEnvelope
 {
   /**
    * Gets the octagonal envelope of a geometry
    * @param geom the geometry
    * @return the octagonal envelope of the geometry
    */
-  public static Geometry octagonalEnvelope(Geometry geom) {
+  static Geometry octagonalEnvelope(Geometry geom) {
     return (new OctagonalEnvelope(geom)).toGeometry(geom.getFactory());
   }
   
@@ -57,7 +57,7 @@ public class OctagonalEnvelope
   /**
    * Creates a new null bounding octagon
    */
-  public OctagonalEnvelope()
+  OctagonalEnvelope()
   {
   }
 
@@ -66,7 +66,7 @@ public class OctagonalEnvelope
    * 
    * @param p the coordinate to bound
    */
-  public OctagonalEnvelope(Coordinate p)
+  OctagonalEnvelope(Coordinate p)
   {
     expandToInclude(p);
   }
@@ -77,7 +77,7 @@ public class OctagonalEnvelope
    * @param p0 a coordinate to bound
    * @param p1 a coordinate to bound
    */
-  public OctagonalEnvelope(Coordinate p0, Coordinate p1)
+  OctagonalEnvelope(Coordinate p0, Coordinate p1)
   {
     expandToInclude(p0);
     expandToInclude(p1);
@@ -86,7 +86,7 @@ public class OctagonalEnvelope
   /**
    * Creates a new null bounding octagon bounding an {@link Envelope}
    */
-  public OctagonalEnvelope(Envelope env)
+  OctagonalEnvelope(Envelope env)
   {
     expandToInclude(env);
   }
@@ -95,7 +95,7 @@ public class OctagonalEnvelope
    * Creates a new null bounding octagon bounding an {@link OctagonalEnvelope}
    * (the copy constructor).
    */
-  public OctagonalEnvelope(OctagonalEnvelope oct)
+  OctagonalEnvelope(OctagonalEnvelope oct)
   {
     expandToInclude(oct);
   }
@@ -103,36 +103,36 @@ public class OctagonalEnvelope
   /**
    * Creates a new null bounding octagon bounding a {@link Geometry}
    */
-  public OctagonalEnvelope(Geometry geom)
+  OctagonalEnvelope(Geometry geom)
   {
     expandToInclude(geom);
   }
 
 
-  public double getMinX() { return minX; }
-  public double getMaxX() { return maxX; }
-  public double getMinY() { return minY; }
-  public double getMaxY() { return maxY; }
-  public double getMinA() { return minA; }
-  public double getMaxA() { return maxA; }
-  public double getMinB() { return minB; }
-  public double getMaxB() { return maxB; }
+  double getMinX() { return minX; }
+  double getMaxX() { return maxX; }
+  double getMinY() { return minY; }
+  double getMaxY() { return maxY; }
+  double getMinA() { return minA; }
+  double getMaxA() { return maxA; }
+  double getMinB() { return minB; }
+  double getMaxB() { return maxB; }
 
-  public boolean isNull() { return Double.isNaN(minX); }
+  bool isNull() { return Double.isNaN(minX); }
 
   /**
    *  Sets the value of this object to the null value
    */
-  public void setToNull() {
+  void setToNull() {
     minX = Double.NaN;
   }
 
-  public void expandToInclude(Geometry g)
+  void expandToInclude(Geometry g)
   {
     g.apply(new BoundingOctagonComponentFilter(this));
   }
 
-  public OctagonalEnvelope expandToInclude(CoordinateSequence seq)
+  OctagonalEnvelope expandToInclude(CoordinateSequence seq)
   {
     for (int i = 0; i < seq.size(); i++) {
       double x = seq.getX(i);
@@ -142,7 +142,7 @@ public class OctagonalEnvelope
     return this;
   }
 
-  public OctagonalEnvelope expandToInclude(OctagonalEnvelope oct)
+  OctagonalEnvelope expandToInclude(OctagonalEnvelope oct)
   {
     if (oct.isNull()) return this;
 
@@ -168,13 +168,13 @@ public class OctagonalEnvelope
     return this;
   }
 
-  public OctagonalEnvelope expandToInclude(Coordinate p)
+  OctagonalEnvelope expandToInclude(Coordinate p)
   {
     expandToInclude(p.x, p.y);
     return this;
   }
 
-  public OctagonalEnvelope expandToInclude(Envelope env)
+  OctagonalEnvelope expandToInclude(Envelope env)
   {
     expandToInclude(env.getMinX(), env.getMinY());
     expandToInclude(env.getMinX(), env.getMaxY());
@@ -183,7 +183,7 @@ public class OctagonalEnvelope
     return this;
   }
 
-  public OctagonalEnvelope expandToInclude(double x, double y)
+  OctagonalEnvelope expandToInclude(double x, double y)
   {
     double A = computeA(x, y);
     double B = computeB(x, y);
@@ -211,7 +211,7 @@ public class OctagonalEnvelope
     return this;
   }
 
-  public void expandBy(double distance)
+  void expandBy(double distance)
   {
     if (isNull()) return;
 
@@ -235,7 +235,7 @@ public class OctagonalEnvelope
    *
    * @return <code>true</code> if this object has valid values
    */
-  private boolean isValid()
+  private bool isValid()
   {
     if (isNull()) return true;
     return minX <= maxX
@@ -244,7 +244,7 @@ public class OctagonalEnvelope
                  && minB <= maxB;
   }
 
-  public boolean intersects(OctagonalEnvelope other)
+  bool intersects(OctagonalEnvelope other)
   {
     if (isNull() || other.isNull()) { return false; }
 
@@ -259,7 +259,7 @@ public class OctagonalEnvelope
     return true;
   }
 
-  public boolean intersects(Coordinate p)
+  bool intersects(Coordinate p)
   {
     if (minX > p.x) return false;
     if (maxX < p.x) return false;
@@ -275,7 +275,7 @@ public class OctagonalEnvelope
     return true;
   }
 
-  public boolean contains(OctagonalEnvelope other)
+  bool contains(OctagonalEnvelope other)
   {
     if (isNull() || other.isNull()) { return false; }
 
@@ -289,7 +289,7 @@ public class OctagonalEnvelope
         && other.maxB <= maxB;
   }
 
-  public Geometry toGeometry(GeometryFactory geomFactory)
+  Geometry toGeometry(GeometryFactory geomFactory)
   {
     if (isNull()) {
       return geomFactory.createPoint();
@@ -331,12 +331,12 @@ public class OctagonalEnvelope
       return geomFactory.createPoint(px00);
     }
     if (coordList.size() == 2) {
-      Coordinate[] pts = coordList.toCoordinateArray();
+      List<Coordinate> pts = coordList.toCoordinateArray();
       return geomFactory.createLineString(pts);
     }
     // must be a polygon, so add closing point
     coordList.add(px00, false);
-    Coordinate[] pts = coordList.toCoordinateArray();
+    List<Coordinate> pts = coordList.toCoordinateArray();
     return geomFactory.createPolygon(geomFactory.createLinearRing(pts));
   }
 
@@ -349,7 +349,7 @@ public class OctagonalEnvelope
       this.oe = oe;
     }
     
-     public void filter(Geometry geom)
+     void filter(Geometry geom)
      {
        if (geom instanceof LineString) {
          oe.expandToInclude( ((LineString) geom).getCoordinateSequence());

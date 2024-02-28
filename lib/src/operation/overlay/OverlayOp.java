@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.operation.overlay;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,37 +36,37 @@ import org.locationtech.jts.util.Assert;
 
 /**
  * Computes the geometric overlay of two {@link Geometry}s.  The overlay
- * can be used to determine any boolean combination of the geometries.
+ * can be used to determine any bool combination of the geometries.
  *
  * @version 1.7
  */
-public class OverlayOp
+class OverlayOp
   extends GeometryGraphOperation
 {
 /**
  * The spatial functions supported by this class.
- * These operations implement various boolean combinations of the resultants of the overlay.
+ * These operations implement various bool combinations of the resultants of the overlay.
  */
 	
   /**
    * The code for the Intersection overlay operation.
    */
-  public static final int INTERSECTION  = 1;
+  static final int INTERSECTION  = 1;
   
   /**
    * The code for the Union overlay operation.
    */
-  public static final int UNION         = 2;
+  static final int UNION         = 2;
   
   /**
    *  The code for the Difference overlay operation.
    */
-  public static final int DIFFERENCE    = 3;
+  static final int DIFFERENCE    = 3;
   
   /**
    *  The code for the Symmetric Difference overlay operation.
    */
-  public static final int SYMDIFFERENCE = 4;
+  static final int SYMDIFFERENCE = 4;
 
   /**
    * Computes an overlay operation for 
@@ -78,7 +78,7 @@ public class OverlayOp
    * @return the result of the overlay operation
    * @throws TopologyException if a robustness problem is encountered
    */
-  public static Geometry overlayOp(Geometry geom0, Geometry geom1, int opCode)
+  static Geometry overlayOp(Geometry geom0, Geometry geom1, int opCode)
   {
     OverlayOp gov = new OverlayOp(geom0, geom1);
     Geometry geomOv = gov.getResultGeometry(opCode);
@@ -97,7 +97,7 @@ public class OverlayOp
    * @param opCode the code for the overlay operation to test
    * @return true if the label locations correspond to the overlayOpCode
    */
-  public static boolean isResultOfOp(Label label, int opCode)
+  static bool isResultOfOp(Label label, int opCode)
   {
     int loc0 = label.getLocation(0);
     int loc1 = label.getLocation(1);
@@ -117,7 +117,7 @@ public class OverlayOp
    * @param overlayOpCode the code for the overlay operation to test
    * @return true if the locations correspond to the overlayOpCode
    */
-  public static boolean isResultOfOp(int loc0, int loc1, int overlayOpCode)
+  static bool isResultOfOp(int loc0, int loc1, int overlayOpCode)
   {
     if (loc0 == Location.BOUNDARY) loc0 = Location.INTERIOR;
     if (loc1 == Location.BOUNDARY) loc1 = Location.INTERIOR;
@@ -156,7 +156,7 @@ public class OverlayOp
    * @param g0 the first geometry argument
    * @param g1 the second geometry argument
    */
-  public OverlayOp(Geometry g0, Geometry g1) {
+  OverlayOp(Geometry g0, Geometry g1) {
     super(g0, g1);
     graph = new PlanarGraph(new OverlayNodeFactory());
     /**
@@ -176,7 +176,7 @@ public class OverlayOp
    * @return the compute result geometry
    * @throws TopologyException if a robustness problem is encountered
    */
-  public Geometry getResultGeometry(int overlayOpCode)
+  Geometry getResultGeometry(int overlayOpCode)
   {
     computeOverlay(overlayOpCode);
     return resultGeom;
@@ -187,7 +187,7 @@ public class OverlayOp
    * 
    * @return the overlay graph
    */
-  public PlanarGraph getGraph() { return graph; }
+  PlanarGraph getGraph() { return graph; }
 
   private void computeOverlay(int opCode)
   {
@@ -563,7 +563,7 @@ public class OverlayOp
    * @param coord the point coordinate
    * @return true if the coordinate point is covered by a result Line or Area geometry
    */
-  public boolean isCoveredByLA(Coordinate coord)
+  bool isCoveredByLA(Coordinate coord)
   {
     if (isCovered(coord, resultLineList)) return true;
     if (isCovered(coord, resultPolyList)) return true;
@@ -575,7 +575,7 @@ public class OverlayOp
    * @param coord the point coordinate
    * @return true if the coordinate point is covered by a result Area geometry
    */
-  public boolean isCoveredByA(Coordinate coord)
+  bool isCoveredByA(Coordinate coord)
   {
     if (isCovered(coord, resultPolyList)) return true;
     return false;
@@ -584,7 +584,7 @@ public class OverlayOp
    * @return true if the coord is located in the interior or boundary of
    * a geometry in the list.
    */
-  private boolean isCovered(Coordinate coord, List geomList)
+  private bool isCovered(Coordinate coord, List geomList)
   {
     for (Iterator it = geomList.iterator(); it.hasNext(); ) {
       Geometry geom = (Geometry) it.next();
@@ -635,7 +635,7 @@ public class OverlayOp
    * @param geomFact the geometry factory being used for the operation
    * @return an empty atomic geometry of the appropriate dimension
    */
-  public static Geometry createEmptyResult(int overlayOpCode, Geometry a, Geometry b, GeometryFactory geomFact)
+  static Geometry createEmptyResult(int overlayOpCode, Geometry a, Geometry b, GeometryFactory geomFact)
   {
     Geometry result = null;
     int resultDim = resultDimension(overlayOpCode, a, b);

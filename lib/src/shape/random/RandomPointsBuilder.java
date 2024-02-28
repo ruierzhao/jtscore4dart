@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package org.locationtech.jts.shape.random;
+
 
 import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
 import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
@@ -29,7 +29,7 @@ import org.locationtech.jts.shape.GeometricShapeBuilder;
  * @author mbdavis
  *
  */
-public class RandomPointsBuilder 
+class RandomPointsBuilder 
 extends GeometricShapeBuilder
 {
   protected Geometry maskPoly = null;
@@ -39,7 +39,7 @@ extends GeometricShapeBuilder
    * Create a shape factory which will create shapes using the default
    * {@link GeometryFactory}.
    */
-  public RandomPointsBuilder()
+  RandomPointsBuilder()
   {
     super(new GeometryFactory());
   }
@@ -50,7 +50,7 @@ extends GeometricShapeBuilder
    *
    * @param geomFact the factory to use
    */
-  public RandomPointsBuilder(GeometryFactory geomFact)
+  RandomPointsBuilder(GeometryFactory geomFact)
   {
   	super(geomFact);
   }
@@ -59,20 +59,20 @@ extends GeometricShapeBuilder
    * Sets a polygonal mask.
    * 
    * @param mask
-   * @throws IllegalArgumentException if the mask is not polygonal
+   * @throws ArgumentError if the mask is not polygonal
    */
-  public void setExtent(Geometry mask)
+  void setExtent(Geometry mask)
   {
   	if (! (mask instanceof Polygonal))
-  		throw new IllegalArgumentException("Only polygonal extents are supported");
+  		throw new ArgumentError("Only polygonal extents are supported");
   	this.maskPoly = mask;
   	setExtent(mask.getEnvelopeInternal());
   	extentLocator = new IndexedPointInAreaLocator(mask);
   }
   
-  public Geometry getGeometry()
+  Geometry getGeometry()
   {
-  	Coordinate[] pts = new Coordinate[numPts];
+  	List<Coordinate> pts = new Coordinate[numPts];
   	int i = 0;
   	while (i < numPts) {
   		Coordinate p = createRandomCoord(getExtent());
@@ -83,7 +83,7 @@ extends GeometricShapeBuilder
   	return geomFactory.createMultiPointFromCoords(pts);
   }
   
-  protected boolean isInExtent(Coordinate p)
+  protected bool isInExtent(Coordinate p)
   {
   	if (extentLocator != null) 
   		return extentLocator.locate(p) != Location.EXTERIOR;

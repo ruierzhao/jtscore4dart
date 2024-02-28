@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.util;
+
 
 /**
  *@version 1.7
@@ -41,13 +41,13 @@ import org.locationtech.jts.geom.LineString;
  *
  * @version 1.7
  */
-public class Debug {
+class Debug {
 
-  public static String DEBUG_PROPERTY_NAME = "jts.debug";
-  public static String DEBUG_PROPERTY_VALUE_ON = "on";
-  public static String DEBUG_PROPERTY_VALUE_TRUE = "true";
+  static String DEBUG_PROPERTY_NAME = "jts.debug";
+  static String DEBUG_PROPERTY_VALUE_ON = "on";
+  static String DEBUG_PROPERTY_VALUE_TRUE = "true";
 
-  private static boolean debugOn = false;
+  private static bool debugOn = false;
 
   static {
     String debugValue = System.getProperty(DEBUG_PROPERTY_NAME);
@@ -66,7 +66,7 @@ public class Debug {
    *
    * @param args the cmd-line arguments (no arguments are required)
    */
-  public static void main(String[] args)
+  static void main(String[] args)
   {
     System.out.println("JTS Debugging is " +
                        (debugOn ? "ON" : "OFF") );
@@ -81,45 +81,45 @@ public class Debug {
   private Object watchObj = null;
   private Object[] args = new Object[1];
 
-  public static boolean isDebugging() { return debugOn; }
+  static bool isDebugging() { return debugOn; }
 
-  public static LineString toLine(Coordinate p0, Coordinate p1) {
-    return fact.createLineString(new Coordinate[] { p0, p1 });
+  static LineString toLine(Coordinate p0, Coordinate p1) {
+    return fact.createLineString(new List<Coordinate> { p0, p1 });
   }
 
-  public static LineString toLine(Coordinate p0, Coordinate p1, Coordinate p2) {
-    return fact.createLineString(new Coordinate[] { p0, p1, p2});
+  static LineString toLine(Coordinate p0, Coordinate p1, Coordinate p2) {
+    return fact.createLineString(new List<Coordinate> { p0, p1, p2});
   }
 
-  public static LineString toLine(Coordinate p0, Coordinate p1, Coordinate p2, Coordinate p3) {
-    return fact.createLineString(new Coordinate[] { p0, p1, p2, p3});
+  static LineString toLine(Coordinate p0, Coordinate p1, Coordinate p2, Coordinate p3) {
+    return fact.createLineString(new List<Coordinate> { p0, p1, p2, p3});
   }
 
-  public static void print(String str) {
+  static void print(String str) {
     if (!debugOn) {
       return;
     }
     debug.instancePrint(str);
   }
 /*
-  public static void println(String str) {
+  static void println(String str) {
     if (! debugOn) return;
     debug.instancePrint(str);
     debug.println();
   }
 */
-  public static void print(Object obj) {
+  static void print(Object obj) {
     if (! debugOn) return;
     debug.instancePrint(obj);
   }
 
-  public static void print(boolean isTrue, Object obj) {
+  static void print(bool isTrue, Object obj) {
     if (! debugOn) return;
     if (! isTrue) return;
     debug.instancePrint(obj);
   }
 
-  public static void println(Object obj) {
+  static void println(Object obj) {
     if (!debugOn) {
       return;
     }
@@ -127,13 +127,13 @@ public class Debug {
     debug.println();
   }
   
-  public static void resetTime()
+  static void resetTime()
   {
     stopwatch.reset();
     lastTimePrinted = stopwatch.getTime();
   }
   
-  public static void printTime(String tag)
+  static void printTime(String tag)
   {
     if (!debugOn) {
       return;
@@ -165,7 +165,7 @@ public class Debug {
     return new String(ch);
   }
   
-  public static boolean equals(Coordinate c1, Coordinate c2, double tolerance)
+  static bool equals(Coordinate c1, Coordinate c2, double tolerance)
   {
   	return c1.distance(c2) <= tolerance;
   }
@@ -176,29 +176,29 @@ public class Debug {
    * Currently only supports one watched object at a time.
    * @param obj
    */
-  public static void addWatch(Object obj) {
+  static void addWatch(Object obj) {
     debug.instanceAddWatch(obj);
   }
 
-  public static void printWatch() {
+  static void printWatch() {
     debug.instancePrintWatch();
   }
 
-  public static void printIfWatch(Object obj) {
+  static void printIfWatch(Object obj) {
     debug.instancePrintIfWatch(obj);
   }
 
-  public static void breakIf(boolean cond)
+  static void breakIf(bool cond)
   {
     if (cond) doBreak();
   }
   
-  public static void breakIfEqual(Object o1, Object o2)
+  static void breakIfEqual(Object o1, Object o2)
   {
     if (o1.equals(o2)) doBreak();
   }
   
-  public static void breakIfEqual(Coordinate p0, Coordinate p1, double tolerance)
+  static void breakIfEqual(Coordinate p0, Coordinate p1, double tolerance)
   {
     if (p0.distance(p1) <= tolerance) doBreak();
   }
@@ -209,7 +209,7 @@ public class Debug {
     return; 
   }
   
-  public static boolean hasSegment(Geometry geom, Coordinate p0, Coordinate p1)
+  static bool hasSegment(Geometry geom, Coordinate p0, Coordinate p1)
   {
     SegmentFindingFilter filter = new SegmentFindingFilter(p0, p1);
     geom.apply(filter);
@@ -220,29 +220,29 @@ public class Debug {
   implements CoordinateSequenceFilter
   {
     private Coordinate p0, p1;
-    private boolean hasSegment = false;
+    private bool hasSegment = false;
     
-    public SegmentFindingFilter(Coordinate p0, Coordinate p1)
+    SegmentFindingFilter(Coordinate p0, Coordinate p1)
     {
       this.p0 = p0;
       this.p1 = p1;
     }
 
-    public boolean hasSegment() { return hasSegment; }
+    bool hasSegment() { return hasSegment; }
 
-    public void filter(CoordinateSequence seq, int i)
+    void filter(CoordinateSequence seq, int i)
     {
       if (i == 0) return;
       hasSegment = p0.equals2D(seq.getCoordinate(i-1)) 
           && p1.equals2D(seq.getCoordinate(i));
     }
     
-    public boolean isDone()
+    bool isDone()
     {
       return hasSegment; 
     }
     
-    public boolean isGeometryChanged()
+    bool isGeometryChanged()
     {
       return false;
     }
@@ -259,18 +259,18 @@ public class Debug {
     }
   }
 
-  public void instancePrintWatch() {
+  void instancePrintWatch() {
     if (watchObj == null) return;
     instancePrint(watchObj);
   }
 
-  public void instancePrintIfWatch(Object obj) {
+  void instancePrintIfWatch(Object obj) {
     if (obj != watchObj) return;
     if (watchObj == null) return;
     instancePrint(watchObj);
   }
 
-  public void instancePrint(Object obj)
+  void instancePrint(Object obj)
   {
     if (obj instanceof Collection) {
       instancePrint(((Collection) obj).iterator());
@@ -283,14 +283,14 @@ public class Debug {
     }
   }
 
-  public void instancePrint(Iterator it)
+  void instancePrint(Iterator it)
   {
     while (it.hasNext()) {
       Object obj = it.next();
       instancePrintObject(obj);
     }
   }
-  public void instancePrintObject(Object obj) {
+  void instancePrintObject(Object obj) {
     //if (true) throw new RuntimeException("DEBUG TRAP!");
     Method printMethod = null;
     try {
@@ -310,7 +310,7 @@ public class Debug {
     }
   }
 
-  public void println() {
+  void println() {
     out.println();
   }
 

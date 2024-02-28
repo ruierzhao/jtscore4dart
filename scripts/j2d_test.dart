@@ -1,4 +1,4 @@
-
+/// dart 语法测试
 // ================================================test================================================
 import 'dart:io';
 
@@ -174,7 +174,7 @@ void main(List<String> args) {
   // renameJava2Dart(srcDir);
   // var editor = Editor.fromFileName(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");
 
-  editFile(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");
+  // editFile(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");
 
   // var f =
   //     File(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");

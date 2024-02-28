@@ -1,4 +1,7 @@
 /// 将java源文件转为dart
+///
+/// 1.修改文件名
+/// 2.修改代码
 
 // ignore_for_file: non_constant_identifier_names, avoid_print
 
@@ -11,22 +14,16 @@ import 'package:path/path.dart' as p;
 /// 输入一行 返回修改后的 新行
 typedef EditerFileFunc = String Function(String codeSegment);
 
-
-/// 修改整个文件
-class FileCodeEditor {
-  String code;
-
-  FileCodeEditor(this.code);
-}
-
 /// 一行一行修改
+///
+/// 重写List 类保存处理函数
 class ListEditorFunc extends ListBase<EditerFileFunc> {
   final List<EditerFileFunc> _handles = [];
   @override
   int get length => _handles.length;
 
   @override
-  void set length(int newlength) {
+  set length(int newlength) {
     _handles.length = newlength;
   }
 
@@ -42,6 +39,7 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
 
   @override
   void add(EditerFileFunc element) {
+    // 重写父类方法，防止重复添加处理函数
     if (!_handles.contains(element)) {
       _handles.add(element);
     }
@@ -49,6 +47,7 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
 
   @override
   void addAll(Iterable<EditerFileFunc> iterable) {
+    // 重写父类方法，防止重复添加处理函数
     for (var editerFileFunc in iterable) {
       add(editerFileFunc);
     }
@@ -76,7 +75,6 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   static const String pattern_package_line = "package "; // startwith
 
   /// replace code
-
   static const String pattern_boolean = "boolean";
   static const String pattern_boolean_to = "bool";
   static const String pattern_hashmap = "HashMap";
@@ -86,12 +84,12 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   static const String pattern_err = "IllegalArgumentException";
   static const String pattern_err_to = "ArgumentError";
 
+  /// 正则替换规则
   static const String pattern_math_abs = "Math.abs";
   static const String pattern_math_abs_to = "";
 
   static RegExp absRegexp = RegExp(
       r"(?<abs>(?<=abs\()(.+?)(?=\)))"); // () 小括号 - (?<ruier> 匹配表达式 ) // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
-
   /// dart正则匹配小括号 原文链接：https://blog.csdn.net/qq_52421092/article/details/126106237
   static RegExp regexp2 = RegExp(r"/(?<=\[)(.+?)(?=\])/g"); // [] 中括号
   static RegExp regexp3 = RegExp(r"/(?<=\{)(.+?)(?=\})/g"); // {} 花括号，大括号
@@ -102,10 +100,10 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
         .replaceAll(pattern_Delete_Public, "") // del public
         .replaceAll(pattern_boolean, pattern_boolean_to) // boolean -> bool
         .replaceAll(pattern_hashmap, pattern_hashmap_to) // HashMap -> Map
-        .replaceAll(pattern_err,
-            pattern_err_to) //IllegalArgumentException -> ArgumentError
-        .replaceAll(pattern_listCoordinate,
-            pattern_listCoordinate_to); // Coordinate[] -> List<Coordinate>
+        //IllegalArgumentException -> ArgumentError
+        .replaceAll(pattern_err, pattern_err_to)
+        // Coordinate[] -> List<Coordinate>
+        .replaceAll(pattern_listCoordinate, pattern_listCoordinate_to);
   }
 
   // delete "package ... " line
@@ -117,6 +115,8 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
     }
   }
 
+  /// 通过正则匹配修改
+  ///
   /// Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
   static String _edit(String codeSegment) {
     String replaceMathAbs(String codeSegment) {
@@ -169,13 +169,16 @@ class Editor {
 
   get tagetFilePath => p.setExtension(f.path, ".$_targetExt");
 
-  void setTargetExt(String ext) {
-    if (ext.startsWith(".")) {
-      _targetExt = ext.replaceFirst(".", "");
-    } else {
-      _targetExt = ext;
-    }
-  }
+  // void setTargetExt(String ext) {
+  //   if (ext.startsWith(".")) {
+  //     _targetExt = ext.replaceFirst(".", "");
+  //   } else {
+  //     _targetExt = ext;
+  //   }
+  // }
+  void setTargetExt(String ext) => ext.startsWith(".")
+      ? _targetExt = ext.replaceFirst(".", "")
+      : _targetExt = ext;
 
   void setFile(String filepath) {
     this.filepath = filepath;
@@ -219,6 +222,7 @@ class Editor {
           sb.write(newline);
           sb.write("\n");
         }
+        // 返回修改完成的整个文件
         return sb.toString();
       });
     });
@@ -262,7 +266,6 @@ class Editor {
   }
 }
 
-
 /// 递归读取文件夹的回调函数
 typedef ReadDirCallback = void Function(
   String filename,
@@ -280,7 +283,7 @@ void editFile(String filename, bool needRename, Editor editor, {int? i}) {
     return;
   }
 
-  print("开始处理${i !=null? '第 $i 个':''}文件: $filename");
+  print("开始处理${i != null ? '第 $i 个' : ''}文件: $filename");
   editor.editLineByLine().then((value) {
     // File oldFile = value.$1;
     String editedString = value;
@@ -291,7 +294,7 @@ void editFile(String filename, bool needRename, Editor editor, {int? i}) {
       // 覆盖原来的文件
       editor.saveNewContents(editedString);
     }
-    print("${i != null ? '第 $i 个':''}文件: $filename 处理完成。。");
+    print("${i != null ? '第 $i 个' : ''}文件: $filename 处理完成。。");
   });
 }
 
@@ -306,7 +309,7 @@ void readDirAndEditFile(
   List<FileSystemEntity> dirlist = dir.listSync(recursive: true);
   // print('==============${dirlist.length}====================='); // 649
 
-  // editor ??= Editor(); //初始化编辑器
+  // editor ??= Editor(); // 初始化编辑器 // 异步函数不能起作用
 
   int i = 0;
   for (var path in dirlist) {
@@ -316,19 +319,23 @@ void readDirAndEditFile(
     var srcName = path.path;
     // editor.setFile(srcName);
     if (FileSystemEntityType.file == filestat.type) {
-      
-      callbackHandler(srcName, needRename, Editor.fromFileName(srcName), i:i);
+      callbackHandler(srcName, needRename, Editor.fromFileName(srcName), i: i);
     } else {
       print('======dir:${path.path}');
-      print('===文件夹第 $i / ${dirlist.length}, finished: ${(100 * i / dirlist.length).toStringAsFixed(2)}%  ==================');
+      print('===文件夹：第 $i / ${dirlist.length} 个FileSystemEntity,'
+          ' finished: ${(100 * i / dirlist.length).toStringAsFixed(2)}%  ==================');
     }
   }
 }
 
 // 只修改文件名
-void renameJava2Dart(String dir) {
+void renameJava2Dart(String dir,) {
 // 递归读取当前文件夹下的文件及目录
-  ((String currDir, {srcExt = "java", targetExt = "dart"}) {
+  ((
+    String currDir, {
+    srcExt = "java",
+    targetExt = "dart",
+  }) {
     Directory dir = Directory(currDir);
     List<FileSystemEntity> dirlist = dir.listSync(recursive: true);
     print('==============${dirlist.length}====================='); // 649
@@ -355,7 +362,7 @@ void renameJava2Dart(String dir) {
 
 void main(List<String> args) {
   // String srcDir = r"D:\carbon\jtsd\lib\src2";
-  String srcDir = r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2";
+  String srcDir = r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src";
   // renameJava2Dart(srcDir);
   // var editor = Editor();
   // editor.addEditFun((codeSegment) {

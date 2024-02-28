@@ -228,6 +228,7 @@ class Editor {
     });
   }
 
+  /// TODO：如果java -> dart 情况下存在dart 文件，会将原有dart 文件删除并创建 .edit 副本。
   void save2newFile(String newContents) {
     // print("save2newFile");
     // 先创建xin文件
@@ -302,8 +303,13 @@ void readDirAndEditFile(
   String currDir,
   ReadDirCallback callbackHandler, {
   Editor? editor,
+  srcExt = "java", // 判断编辑文件的类型，不是此类型就跳过
   needRename = false,
+  onlyRename = false,
 }) {
+  if (onlyRename) {
+    return renameJava2Dart(currDir);
+  }
   Directory dir = Directory(currDir);
   List<FileSystemEntity> dirlist = dir.listSync(recursive: true);
   // print('==============${dirlist.length}====================='); // 649
@@ -317,9 +323,8 @@ void readDirAndEditFile(
     // editor ??= Editor(); // 初始化编辑器 // 异步函数不能起作用
     // editor.setFile(srcName);
     if (FileSystemEntityType.file == filestat.type &&
-            (srcName.endsWith(".java") ||
-                srcName.endsWith(".dart")) /** 粗略判断文件类型 */
-        ) {
+        (srcName.endsWith(".$srcExt") /** 粗略判断文件类型 || srcName.endsWith(".dart")*/
+        )) {
       callbackHandler(srcName, needRename, Editor.fromFileName(srcName), i: i);
     } else {
       print('======dir:${path.path}');
@@ -366,12 +371,6 @@ void renameJava2Dart(
 void main(List<String> args) {
   // String srcDir = r"D:\carbon\jtsd\lib\src2";
   String srcDir = r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src";
-  // renameJava2Dart(srcDir);
-  // var editor = Editor();
-  // editor.addEditFun((codeSegment) {
-  //   return codeSegment;
-  // },);
-  // print(editor._editorFuncs.length);
 
   readDirAndEditFile(srcDir, editFile, needRename: true);
 

@@ -15,6 +15,14 @@ typedef EditerFileFunc = String Function(String codeSegment);
 /// 递归读取文件夹的回调函数
 typedef ReadDirCallback = void Function(String filename);
 
+/// 修改整个文件
+class FileCodeEditor{
+  String code;
+
+  FileCodeEditor(this.code);
+}
+
+/// 一行一行修改
 class ListEditorFunc extends ListBase<EditerFileFunc> {
   final List<EditerFileFunc> _handles = [];
   @override

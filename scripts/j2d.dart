@@ -19,8 +19,6 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   final List<EditerFileFunc> _handles = [];
   @override
   int get length => _handles.length;
-  // @override
-  // bool get isEmpty => length == 0;
 
   @override
   operator [](int index) {

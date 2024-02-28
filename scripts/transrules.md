@@ -1,11 +1,13 @@
 
-delete "public","private"
-delete " package ... " line
+## needTran
+- [√] delete "public","private" 
+- [√] Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
 
-IllegalArgumentException -> ArgumentError
+- [x] delete " package ... " line
+- [x] IllegalArgumentException -> ArgumentError
+- [x] Coordinate[] -> List<Coordinate>
+- [x] boolean -> bool
 
-Coordinate[] -> List<Coordinate>
+- 任务1 &#x2714;
+- 任务2 &#x2716;
 
-boolean -> bool
-
-Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()

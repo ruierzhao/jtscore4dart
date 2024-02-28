@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-package jts.util;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.locationtech.jts.io.OrdinateFormat;
  * @author Martin Davis
  *
  */
-public class StringUtil
+class StringUtil
 {
   /**
    * Mimics the the Java SE {@link String#split(String)} method.
@@ -36,7 +36,7 @@ public class StringUtil
    * @param separator the separator to use.
    * @return the array of split strings.
    */
- public static String[] split(String s, String separator)
+ static String[] split(String s, String separator)
  {
    int separatorlen = separator.length();
    ArrayList tokenList = new ArrayList();
@@ -57,19 +57,19 @@ public class StringUtil
    return res;
  }
 
- public final static String NEWLINE = System.getProperty("line.separator");
+ final static String NEWLINE = System.getProperty("line.separator");
 
  /**
   *  Returns an throwable's stack trace
   */
- public static String getStackTrace(Throwable t) {
+ static String getStackTrace(Throwable t) {
      ByteArrayOutputStream os = new ByteArrayOutputStream();
      PrintStream ps = new PrintStream(os);
      t.printStackTrace(ps);
      return os.toString();
  }
 
- public static String getStackTrace(Throwable t, int depth) {
+ static String getStackTrace(Throwable t, int depth) {
      String stackTrace = "";
      StringReader stringReader = new StringReader(getStackTrace(t));
      LineNumberReader lineNumberReader = new LineNumberReader(stringReader);
@@ -92,16 +92,16 @@ public class StringUtil
    *
    * @deprecated use {@link OrdinateFormat}
    */
-  public static String toString(double d) {
+  static String toString(double d) {
     return OrdinateFormat.DEFAULT.format(d);
   }
 
-  public static String spaces(int n)
+  static String spaces(int n)
   {
     return chars(' ', n);
   }
   
-  public static String chars(char c, int n)
+  static String chars(char c, int n)
   {
     char[] ch = new char[n];
     for (int i = 0; i < n; i++) {

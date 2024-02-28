@@ -10,7 +10,14 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-/**
- * Contains support classes for the Java Topology Suite.
- */
-package jts.util;
+
+
+class NumberUtil
+{
+
+  static bool equalsWithTolerance(double x1, double x2, double tolerance)
+  {
+    return (x1 - x2).abs() <= tolerance;
+  }
+
+}

@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package jts.util;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -20,21 +20,21 @@ import org.locationtech.jts.geom.CoordinateFilter;
  *
  *@version 1.7
  */
-public class CoordinateCountFilter implements CoordinateFilter {
+class CoordinateCountFilter implements CoordinateFilter {
   private int n = 0;
 
-  public CoordinateCountFilter() { }
+  CoordinateCountFilter() { }
 
   /**
    *  Returns the result of the filtering.
    *
    *@return    the number of points found by this <code>CoordinateCountFilter</code>
    */
-  public int getCount() {
+  int getCount() {
     return n;
   }
 
-  public void filter(Coordinate coord) {
+  void filter(Coordinate coord) {
     n++;
   }
 }

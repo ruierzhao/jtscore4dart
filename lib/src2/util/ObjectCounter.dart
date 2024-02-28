@@ -9,9 +9,9 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package jts.util;
 
-import java.util.HashMap;
+
+import java.util.Map;
 import java.util.Map;
 
 /**
@@ -20,15 +20,15 @@ import java.util.Map;
  * @author Martin Davis
  *
  */
-public class ObjectCounter 
+class ObjectCounter 
 {
 
-  private Map counts = new HashMap();
+  private Map counts = new Map();
   
-  public ObjectCounter() {
+  ObjectCounter() {
   }
 
-  public void add(Object o)
+  void add(Object o)
   {
     Counter counter = (Counter) counts.get(o);
     if (counter == null)
@@ -39,7 +39,7 @@ public class ObjectCounter
   
   // TODO: add remove(Object o)
   
-  public int count(Object o)
+  int count(Object o)
   {
     Counter counter = (Counter) counts.get(o);
     if (counter == null)
@@ -52,22 +52,22 @@ public class ObjectCounter
   {
     int count = 0;
     
-    public Counter()
+    Counter()
     {
       
     }
     
-    public Counter(int count)
+    Counter(int count)
     {
       this.count = count;
     }
     
-    public int count()
+    int count()
     {
       return count;
     }
     
-    public void increment()
+    void increment()
     {
       count++;
     }

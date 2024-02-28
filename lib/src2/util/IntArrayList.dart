@@ -9,7 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package jts.util;
+
 
 import java.util.Arrays;
 
@@ -19,14 +19,14 @@ import java.util.Arrays;
  * @author Martin Davis
  *
  */
-public class IntArrayList {
+class IntArrayList {
   private int[] data;
   private int size = 0;
 
   /**
    * Constructs an empty list.
    */
-  public IntArrayList() {
+  IntArrayList() {
     this(10);
   }
 
@@ -35,7 +35,7 @@ public class IntArrayList {
    * 
    * @param initialCapacity the initial capacity of the list
    */
-  public IntArrayList(int initialCapacity) {
+  IntArrayList(int initialCapacity) {
     data = new int[initialCapacity];
   }
 
@@ -44,7 +44,7 @@ public class IntArrayList {
    * 
    * @return the number of values in the list
    */
-  public int size() {
+  int size() {
     return size;
   }
 
@@ -55,7 +55,7 @@ public class IntArrayList {
    * 
    * @param capacity the desired capacity
    */
-  public void ensureCapacity(final int capacity) {
+  void ensureCapacity(final int capacity) {
     if (capacity <= data.length) return;
     int newLength  = Math.max(capacity, data.length * 2);
     //System.out.println("IntArrayList: copying " + size + " ints to new array of length " + capacity);
@@ -66,7 +66,7 @@ public class IntArrayList {
    * 
    * @param value the value to add
    */
-  public void add(final int value) {
+  void add(final int value) {
     ensureCapacity(size + 1);
     data[size] = value;
     ++size;
@@ -77,7 +77,7 @@ public class IntArrayList {
    * 
    * @param values an array of values
    */
-  public void addAll(final int[] values) {
+  void addAll(final int[] values) {
     if (values == null) return;
     if (values.length == 0) return;
     ensureCapacity(size + values.length);
@@ -91,7 +91,7 @@ public class IntArrayList {
    * 
    * @return an array containing the values in this list
    */
-  public int[] toArray() {
+  int[] toArray() {
     int[] array = new int[size];
     System.arraycopy(data, 0, array, 0, size);
     return array;

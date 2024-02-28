@@ -119,7 +119,6 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
 
   /// Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
   static String _edit(String codeSegment) {
-    print("<< _deletePublic");
     String replaceMathAbs(String codeSegment) {
       // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
       bool matched = absRegexp.hasMatch(codeSegment);
@@ -275,12 +274,13 @@ typedef ReadDirCallback = void Function(
 // 修改代码源文件
 /// [i] 处理第i个文件。debug 参数
 void editFile(String filename, bool needRename, Editor editor, {int? i}) {
+  print(">> editor: $editor");
   if (editor.getFile() != filename) {
-    print("编辑的文件不一致。。");
+    print(">>>> 编辑的文件不一致。。");
     return;
   }
 
-  print("开始处理${i ?? '第$i个'}文件: $filename");
+  print("开始处理${i !=null? '第 $i 个':''}文件: $filename");
   editor.editLineByLine().then((value) {
     // File oldFile = value.$1;
     String editedString = value;
@@ -291,7 +291,7 @@ void editFile(String filename, bool needRename, Editor editor, {int? i}) {
       // 覆盖原来的文件
       editor.saveNewContents(editedString);
     }
-    print("${i ?? '第$i个'}文件: $filename 处理完成。。");
+    print("${i != null ? '第 $i 个':''}文件: $filename 处理完成。。");
   });
 }
 
@@ -306,7 +306,7 @@ void readDirAndEditFile(
   List<FileSystemEntity> dirlist = dir.listSync(recursive: true);
   // print('==============${dirlist.length}====================='); // 649
 
-  editor ??= Editor(); //初始化编辑器
+  // editor ??= Editor(); //初始化编辑器
 
   int i = 0;
   for (var path in dirlist) {
@@ -314,12 +314,13 @@ void readDirAndEditFile(
     var filestat = path.statSync();
 
     var srcName = path.path;
-    editor.setFile(srcName);
+    // editor.setFile(srcName);
     if (FileSystemEntityType.file == filestat.type) {
-      callbackHandler(srcName, needRename, editor,i:i);
+      
+      callbackHandler(srcName, needRename, Editor.fromFileName(srcName), i:i);
     } else {
       print('======dir:${path.path}');
-      print('==finished:${100 * i / dirlist.length}%');
+      print('===文件夹第 $i / ${dirlist.length}, finished: ${(100 * i / dirlist.length).toStringAsFixed(2)}%  ==================');
     }
   }
 }
@@ -353,16 +354,17 @@ void renameJava2Dart(String dir) {
 }
 
 void main(List<String> args) {
-  String srcDir = r"D:\carbon\jtsd\lib\src2";
+  // String srcDir = r"D:\carbon\jtsd\lib\src2";
+  String srcDir = r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2";
   // renameJava2Dart(srcDir);
-  var editor = Editor();
+  // var editor = Editor();
+  // editor.addEditFun((codeSegment) {
+  //   return codeSegment;
+  // },);
+  // print(editor._editorFuncs.length);
 
-  readDirAndEditFile(srcDir, editFile);
+  readDirAndEditFile(srcDir, editFile, needRename: true);
 
   // editFile(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test.dart",
   //     editor: editor);
-
-  // var f =
-  //     File(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test1.dart");
-  // print(f.path);
 }

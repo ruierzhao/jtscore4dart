@@ -12,20 +12,22 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
-import "dart:math" as Math;
+import "dart:math" as math;
 
-import 'package:jtscore4dart/src/geom/Coordinate.java.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+
 /// Utility functions for working with angles.
 /// Unless otherwise noted, methods in this class express angles in radians.
-class Angle
-{
+class Angle {
   /// The value of 2*Pi
-  static const double PI_TIMES_2 = 2.0 * Math.pi;
+  static const double PI_TIMES_2 = 2.0 * math.pi;
+
   /// The value of Pi/2
-  static const double PI_OVER_2 = Math.pi / 2.0;
+  static const double PI_OVER_2 = math.pi / 2.0;
+
   /// The value of Pi/4
-  static const double PI_OVER_4 = Math.pi / 4.0;
+  static const double PI_OVER_4 = math.pi / 4.0;
 
   /// Constant representing counterclockwise orientation
   static const int COUNTERCLOCKWISE = Orientation.COUNTERCLOCKWISE;
@@ -40,7 +42,7 @@ class Angle
   /// @param radians an angle in radians
   /// @return the angle in degrees
   static double toDegrees(double radians) {
-      return (radians * 180) / (Math.pi);
+    return (radians * 180) / (math.pi);
   }
 
   /// Converts from degrees to radians.
@@ -48,9 +50,8 @@ class Angle
   /// @param angleDegrees an angle in degrees
   /// @return the angle in radians
   static double toRadians(double angleDegrees) {
-      return (angleDegrees * Math.pi) / 180.0;
+    return (angleDegrees * math.pi) / 180.0;
   }
-
 
   /// Returns the angle of the vector from p0 to p1,
   /// relative to the positive X-axis.
@@ -60,16 +61,17 @@ class Angle
   /// @param p1 the terminal point of the vector
   /// @return the normalized angle (in radians) that p0-p1 makes with the positive x-axis.
   static double angle(Coordinate p0, Coordinate p1) {
-      double dx = p1.x - p0.x;
-      double dy = p1.y - p0.y;
-      return Math.atan2(dy, dx);
+    double dx = p1.x - p0.x;
+    double dy = p1.y - p0.y;
+    return math.atan2(dy, dx);
   }
+
   /// ruier add
   /// alias of [angle]
   static double of(Coordinate p0, Coordinate p1) {
-      double dx = p1.x - p0.x;
-      double dy = p1.y - p0.y;
-      return Math.atan2(dy, dx);
+    double dx = p1.x - p0.x;
+    double dy = p1.y - p0.y;
+    return math.atan2(dy, dx);
   }
 
   /// Returns the angle of the vector from (0,0) to p,
@@ -79,9 +81,8 @@ class Angle
   /// @param p the terminal point of the vector
   /// @return the normalized angle (in radians) that p makes with the positive x-axis.
   static double angleTozero(Coordinate p) {
-      return Math.atan2(p.y, p.x);
+    return math.atan2(p.y, p.x);
   }
-
 
   /// Tests whether the angle between p0-p1-p2 is acute.
   /// An angle is acute if it is less than 90 degrees.
@@ -92,11 +93,10 @@ class Angle
   /// @param p1 the base of the angle
   /// @param p2 the other endpoint of the angle
   /// @return true if the angle is acute
-  static bool isAcute(Coordinate p0, Coordinate p1, Coordinate p2)
-  {
+  static bool isAcute(Coordinate p0, Coordinate p1, Coordinate p2) {
     // relies on fact that A dot B is positive if A ang B is acute
     // 锐角：A 点乘 B 的值为正
-    double dx0 = p0.x - p1.x; 
+    double dx0 = p0.x - p1.x;
     double dy0 = p0.y - p1.y; // vec{p1 -> p0}
     double dx1 = p2.x - p1.x;
     double dy1 = p2.y - p1.y; // vec{p1 -> p0}
@@ -113,8 +113,7 @@ class Angle
   /// @param p1 the base of the angle
   /// @param p2 the other endpoint of the angle
   /// @return true if the angle is obtuse
-  static bool isObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
-  {
+  static bool isObtuse(Coordinate p0, Coordinate p1, Coordinate p2) {
     // relies on fact that A dot B is negative if A ang B is obtuse
     double dx0 = p0.x - p1.x;
     double dy0 = p0.y - p1.y;
@@ -131,12 +130,12 @@ class Angle
   /// @param tail the tail of each vector
   /// @param tip2 the tip of the other vector
   /// @return the angle between tail-tip1 and tail-tip2
-  static double angleBetween(Coordinate tip1, Coordinate tail,
-			Coordinate tip2) {
-		double a1 = angle(tail, tip1);
-		double a2 = angle(tail, tip2);
+  static double angleBetween(
+      Coordinate tip1, Coordinate tail, Coordinate tip2) {
+    double a1 = angle(tail, tip1);
+    double a2 = angle(tail, tip2);
 
-		return diff(a1, a2);
+    return diff(a1, a2);
   }
 
   /// Returns the oriented smallest angle between two vectors.
@@ -151,32 +150,27 @@ class Angle
   /// @param tail the tail of each vector
   /// @param tip2 the tip of v2
   /// @return the angle between v1 and v2, relative to v1
-  static double angleBetweenOriented(Coordinate tip1, Coordinate tail,
-			Coordinate tip2) 
-  {
-		double a1 = angle(tail, tip1);
-		double a2 = angle(tail, tip2);
-		double angDel = a2 - a1;
-		
-		// normalize, maintaining orientation
-		if (angDel <= -Math.pi)
-			return angDel + PI_TIMES_2;
-		if (angDel > Math.pi)
-			return angDel - PI_TIMES_2;
-		return angDel;
+  static double angleBetweenOriented(
+      Coordinate tip1, Coordinate tail, Coordinate tip2) {
+    double a1 = angle(tail, tip1);
+    double a2 = angle(tail, tip2);
+    double angDel = a2 - a1;
+
+    // normalize, maintaining orientation
+    if (angDel <= -math.pi) return angDel + PI_TIMES_2;
+    if (angDel > math.pi) return angDel - PI_TIMES_2;
+    return angDel;
   }
-  
-  /// Computes the angle of the unoriented bisector 
+
+  /// Computes the angle of the unoriented bisector
   /// of the smallest angle between two vectors.
   /// The computed angle will be in the range (-Pi, Pi].
-  /// 
+  ///
   /// @param tip1 the tip of v1
   /// @param tail the tail of each vector
   /// @param tip2 the tip of v2
   /// @return the angle of the bisector between v1 and v2
-  static double bisector(Coordinate tip1, Coordinate tail,
-      Coordinate tip2)
-  {
+  static double bisector(Coordinate tip1, Coordinate tail, Coordinate tip2) {
     double angDel = angleBetweenOriented(tip1, tail, tip2);
     double angBi = angle(tail, tip1) + angDel / 2;
     return normalize(angBi);
@@ -185,7 +179,7 @@ class Angle
   /// Computes the interior angle between two segments of a ring. The ring is
   /// assumed to be oriented in a clockwise direction. The computed angle will be
   /// in the range [0, 2Pi]
-  /// 
+  ///
   /// @param p0
   ///          a point of the ring
   /// @param p1
@@ -193,8 +187,7 @@ class Angle
   /// @param p2
   ///          the next point of the ring
   /// @return the interior angle based at {@code p1}
-  static double interiorAngle(Coordinate p0, Coordinate p1, Coordinate p2)
-  {
+  static double interiorAngle(Coordinate p0, Coordinate p1, Coordinate p2) {
     double anglePrev = Angle.angle(p1, p0);
     double angleNext = Angle.angle(p1, p2);
     return normalizePositive(angleNext - anglePrev);
@@ -208,15 +201,15 @@ class Angle
   /// @return whether a1 must turn CLOCKWISE, COUNTERCLOCKWISE or NONE to
   /// overlap a2.
   static int getTurn(double ang1, double ang2) {
-      double crossproduct = Math.sin(ang2 - ang1);
+    double crossproduct = math.sin(ang2 - ang1);
 
-      if (crossproduct > 0) {
-          return COUNTERCLOCKWISE;
-      }
-      if (crossproduct < 0) {
-          return CLOCKWISE;
-      }
-      return NONE;
+    if (crossproduct > 0) {
+      return COUNTERCLOCKWISE;
+    }
+    if (crossproduct < 0) {
+      return CLOCKWISE;
+    }
+    return NONE;
   }
 
   /// Computes the normalized value of an angle, which is the
@@ -224,12 +217,13 @@ class Angle
   ///
   /// @param angle the angle to normalize
   /// @return an equivalent angle in the range (-Pi, Pi]
-  static double normalize(double angle)
-  {
-    while (angle > Math.pi)
+  static double normalize(double angle) {
+    while (angle > math.pi) {
       angle -= PI_TIMES_2;
-    while (angle <= -Math.pi)
+    }
+    while (angle <= -math.pi) {
       angle += PI_TIMES_2;
+    }
     return angle;
   }
 
@@ -250,22 +244,20 @@ class Angle
   ///
   /// @param angle the angle to normalize, in radians
   /// @return an equivalent positive angle
-  static double normalizePositive(double angle)
-  {
-  	if (angle < 0.0) {
-  		while (angle < 0.0)
-  			angle += PI_TIMES_2;
-  		// in case round-off error bumps the value over 
-  		if (angle >= PI_TIMES_2)
-  			angle = 0.0;
-  	}
-  	else {
-  		while (angle >= PI_TIMES_2)
-  			angle -= PI_TIMES_2;
-  		// in case round-off error bumps the value under 
-  		if (angle < 0.0)
-  			angle = 0.0;
-  	}
+  static double normalizePositive(double angle) {
+    if (angle < 0.0) {
+      while (angle < 0.0) {
+        angle += PI_TIMES_2;
+      }
+      // in case round-off error bumps the value over
+      if (angle >= PI_TIMES_2) angle = 0.0;
+    } else {
+      while (angle >= PI_TIMES_2) {
+        angle -= PI_TIMES_2;
+      }
+      // in case round-off error bumps the value under
+      if (angle < 0.0) angle = 0.0;
+    }
     return angle;
   }
 
@@ -285,7 +277,7 @@ class Angle
       delAngle = ang1 - ang2;
     }
 
-    if (delAngle > Math.pi) {
+    if (delAngle > math.pi) {
       delAngle = PI_TIMES_2 - delAngle;
     }
 
@@ -297,7 +289,7 @@ class Angle
   /// @param ang the input angle (in radians)
   /// @return the result of the trigonometric function
   static double sinSnap(double ang) {
-    double res = Math.sin(ang);
+    double res = math.sin(ang);
     if (res.abs() < 5e-16) return 0.0;
     return res;
   }
@@ -307,13 +299,14 @@ class Angle
   /// @param ang the input angle (in radians)
   /// @return the result of the trigonometric function
   static double cosSnap(double ang) {
-    double res = Math.cos(ang);
+    double res = math.cos(ang);
     if (res.abs() < 5e-16) return 0.0;
     return res;
   }
 
   /// Projects a point by a given angle and distance.
-  /// 
+  /// 根据角度和距离计算另一个点的坐标
+  ///
   /// @param p the point to project
   /// @param angle the angle at which to project
   /// @param dist the distance to project
@@ -321,6 +314,14 @@ class Angle
   static Coordinate project(Coordinate p, double angle, double dist) {
     double x = p.getX() + dist * Angle.cosSnap(angle);
     double y = p.getY() + dist * Angle.sinSnap(angle);
-    return Coordinate(x, y);
+    return Coordinate.empty2D(x, y);
+  }
+
+  /// @ruier add
+  /// alias [projects]
+  static Coordinate offset(Coordinate p, double angle, double dist) {
+    double x = p.getX() + dist * Angle.cosSnap(angle);
+    double y = p.getY() + dist * Angle.sinSnap(angle);
+    return Coordinate.empty2D(x, y);
   }
 }

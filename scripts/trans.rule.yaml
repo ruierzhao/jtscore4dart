@@ -1,3 +1,4 @@
+# alread impl
 replace: # 替换
     - IllegalArgumentException -> ArgumentError
     - Coordinate[] -> List<Coordinate>
@@ -10,3 +11,11 @@ delete:
     line: # 删除整行
         - package
 
+# new rule
+replace:
+  - Double.NaN -> double.nan
+  - Double.isNaN(x) -> double.nan
+  - Double.isFinite(x) -> x.isFinite
+  - instanceof -> is
+  - Math -> math
+  - hashCode(x) -> x.hashCode

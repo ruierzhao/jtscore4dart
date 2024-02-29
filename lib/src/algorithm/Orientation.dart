@@ -9,69 +9,54 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
-/**
- * Functions to compute the orientation of basic geometric structures
- * including point triplets (triangles) and rings.
- * Orientation is a fundamental property of planar geometries 
- * (and more generally geometry on two-dimensional manifolds).
- * <p>
- * Determining triangle orientation 
- * is notoriously subject to numerical precision errors
- * in the case of collinear or nearly collinear points.  
- * JTS uses extended-precision arithmetic to increase
- * the robustness of the computation.
- * 
- * @author Martin Davis
- *
- */
+/// Functions to compute the orientation of basic geometric structures
+/// including point triplets (triangles) and rings.
+/// Orientation is a fundamental property of planar geometries 
+/// (and more generally geometry on two-dimensional manifolds).
+/// <p>
+/// Determining triangle orientation 
+/// is notoriously subject to numerical precision errors
+/// in the case of collinear or nearly collinear points.  
+/// JTS uses extended-precision arithmetic to increase
+/// the robustness of the computation.
+/// 
+/// @author Martin Davis
+///
 class Orientation {
-  /**
-   * A value that indicates an orientation of clockwise, or a right turn.
-   */
-  static final int CLOCKWISE = -1;
-  /**
-   * A value that indicates an orientation of clockwise, or a right turn.
-   */
-  static final int RIGHT = CLOCKWISE;
-  /**
-   * A value that indicates an orientation of counterclockwise, or a left turn.
-   */
-  static final int COUNTERCLOCKWISE = 1;
-  /**
-   * A value that indicates an orientation of counterclockwise, or a left turn.
-   */
-  static final int LEFT = COUNTERCLOCKWISE;
-  /**
-   * A value that indicates an orientation of collinear, or no turn (straight).
-   */
-  static final int COLLINEAR = 0;
-  /**
-   * A value that indicates an orientation of collinear, or no turn (straight).
-   */
-  static final int STRAIGHT = COLLINEAR;
+  /// A value that indicates an orientation of clockwise, or a right turn.
+  static const int CLOCKWISE = -1;
+  /// A value that indicates an orientation of clockwise, or a right turn.
+  static const int RIGHT = CLOCKWISE;
+  /// A value that indicates an orientation of counterclockwise, or a left turn.
+  static const int COUNTERCLOCKWISE = 1;
+  /// A value that indicates an orientation of counterclockwise, or a left turn.
+  static const int LEFT = COUNTERCLOCKWISE;
+  /// A value that indicates an orientation of collinear, or no turn (straight).
+  static const int COLLINEAR = 0;
+  /// A value that indicates an orientation of collinear, or no turn (straight).
+  static const int STRAIGHT = COLLINEAR;
 
-  /**
-   * Returns the orientation index of the direction of the point <code>q</code> relative to
-   * a directed infinite line specified by <code>p1-p2</code>.
-   * The index indicates whether the point lies to the {@link #LEFT} or {@link #RIGHT}
-   * of the line, or lies on it {@link #COLLINEAR}.
-   * The index also indicates the orientation of the triangle formed by the three points
-   * ( {@link #COUNTERCLOCKWISE}, {@link #CLOCKWISE}, or {@link #STRAIGHT} )
-   * 
-   * @param p1 the origin point of the line vector
-   * @param p2 the final point of the line vector
-   * @param q the point to compute the direction to
-   * 
-   * @return -1 ( {@link #CLOCKWISE} or {@link #RIGHT} ) if q is clockwise (right) from p1-p2;
-   *         1 ( {@link #COUNTERCLOCKWISE} or {@link #LEFT} ) if q is counter-clockwise (left) from p1-p2;
-   *         0 ( {@link #COLLINEAR} or {@link #STRAIGHT} ) if q is collinear with p1-p2
-   */
+  /// Returns the orientation index of the direction of the point <code>q</code> relative to
+  /// a directed infinite line specified by <code>p1-p2</code>.
+  /// The index indicates whether the point lies to the {@link #LEFT} or {@link #RIGHT}
+  /// of the line, or lies on it {@link #COLLINEAR}.
+  /// The index also indicates the orientation of the triangle formed by the three points
+  /// ( {@link #COUNTERCLOCKWISE}, {@link #CLOCKWISE}, or {@link #STRAIGHT} )
+  /// 
+  /// @param p1 the origin point of the line vector
+  /// @param p2 the final point of the line vector
+  /// @param q the point to compute the direction to
+  /// 
+  /// @return -1 ( {@link #CLOCKWISE} or {@link #RIGHT} ) if q is clockwise (right) from p1-p2;
+  ///         1 ( {@link #COUNTERCLOCKWISE} or {@link #LEFT} ) if q is counter-clockwise (left) from p1-p2;
+  ///         0 ( {@link #COLLINEAR} or {@link #STRAIGHT} ) if q is collinear with p1-p2
   static int index(Coordinate p1, Coordinate p2, Coordinate q)
   {
     /*
@@ -104,49 +89,45 @@ class Orientation {
     //return RobustDeterminant.orientationIndex(p1, p2, q);
   }
 
-  /**
-   * Tests if a ring defined by an array of {@link Coordinate}s is
-   * oriented counter-clockwise.
-   * <ul>
-   * <li>The list of points is assumed to have the first and last points equal.
-   * <li>This handles coordinate lists which contain repeated points.
-   * <li>This handles rings which contain collapsed segments 
-   *     (in particular, along the top of the ring).
-   * </ul>
-   * This algorithm is guaranteed to work with valid rings.
-   * It also works with "mildly invalid" rings 
-   * which contain collapsed (coincident) flat segments along the top of the ring.   
-   * If the ring is "more" invalid (e.g. self-crosses or touches), 
-   * the computed result may not be correct.
-   * 
-   * @param ring an array of Coordinates forming a ring (with first and last point identical)
-   * @return true if the ring is oriented counter-clockwise.
-   * @throws ArgumentError if there are too few points to determine orientation (&lt; 4)
-   */
+  /// Tests if a ring defined by an array of {@link Coordinate}s is
+  /// oriented counter-clockwise.
+  /// <ul>
+  /// <li>The list of points is assumed to have the first and last points equal.
+  /// <li>This handles coordinate lists which contain repeated points.
+  /// <li>This handles rings which contain collapsed segments 
+  ///     (in particular, along the top of the ring).
+  /// </ul>
+  /// This algorithm is guaranteed to work with valid rings.
+  /// It also works with "mildly invalid" rings 
+  /// which contain collapsed (coincident) flat segments along the top of the ring.   
+  /// If the ring is "more" invalid (e.g. self-crosses or touches), 
+  /// the computed result may not be correct.
+  /// 
+  /// @param ring an array of Coordinates forming a ring (with first and last point identical)
+  /// @return true if the ring is oriented counter-clockwise.
+  /// @throws ArgumentError if there are too few points to determine orientation (&lt; 4)
   static bool isCCW(List<Coordinate> ring)
   {
     // wrap with an XY CoordinateSequence
     return isCCW(new CoordinateArraySequence(ring, 2, 0));
   }
 
-  /**
-   * Tests if a ring defined by a {@link CoordinateSequence} is
-   * oriented counter-clockwise.
-   * <ul>
-   * <li>The list of points is assumed to have the first and last points equal.
-   * <li>This handles coordinate lists which contain repeated points.
-   * <li>This handles rings which contain collapsed segments 
-   *     (in particular, along the top of the ring).
-   * </ul>
-   * This algorithm is guaranteed to work with valid rings.
-   * It also works with "mildly invalid" rings 
-   * which contain collapsed (coincident) flat segments along the top of the ring.   
-   * If the ring is "more" invalid (e.g. self-crosses or touches), 
-   * the computed result may not be correct.
-   * 
-   * @param ring a CoordinateSequence forming a ring (with first and last point identical)
-   * @return true if the ring is oriented counter-clockwise.
-   */ 
+  /// Tests if a ring defined by a {@link CoordinateSequence} is
+  /// oriented counter-clockwise.
+  /// <ul>
+  /// <li>The list of points is assumed to have the first and last points equal.
+  /// <li>This handles coordinate lists which contain repeated points.
+  /// <li>This handles rings which contain collapsed segments 
+  ///     (in particular, along the top of the ring).
+  /// </ul>
+  /// This algorithm is guaranteed to work with valid rings.
+  /// It also works with "mildly invalid" rings 
+  /// which contain collapsed (coincident) flat segments along the top of the ring.   
+  /// If the ring is "more" invalid (e.g. self-crosses or touches), 
+  /// the computed result may not be correct.
+  /// 
+  /// @param ring a CoordinateSequence forming a ring (with first and last point identical)
+  /// @return true if the ring is oriented counter-clockwise. 
   static bool isCCW(CoordinateSequence ring)
   {
     // # of points without closing endpoint
@@ -164,7 +145,7 @@ class Orientation {
      */
     Coordinate upHiPt = ring.getCoordinate(0);
     double prevY = upHiPt.y;
-    Coordinate upLowPt = null;
+    Coordinate? upLowPt ;
     int iUpHi = 0;
     for (int i = 1; i <= nPts; i++) {
       double py = ring.getOrdinate(i, Coordinate.Y);
@@ -233,30 +214,28 @@ class Orientation {
     }
   }
   
-  /**
-   * Tests if a ring defined by an array of {@link Coordinate}s is
-   * oriented counter-clockwise, using the signed area of the ring.
-   * <ul>
-   * <li>The list of points is assumed to have the first and last points equal.
-   * <li>This handles coordinate lists which contain repeated points.
-   * <li>This handles rings which contain collapsed segments 
-   *     (in particular, along the top of the ring).
-   * <li>This handles rings which are invalid due to self-intersection
-   * </ul>
-   * This algorithm is guaranteed to work with valid rings.
-   * For invalid rings (containing self-intersections),   
-   * the algorithm determines the orientation of
-   * the largest enclosed area (including overlaps).
-   * This provides a more useful result in some situations, such as buffering.
-   * <p>
-   * However, this approach may be less accurate in the case of 
-   * rings with almost zero area.
-   * (Note that the orientation of rings with zero area is essentially
-   * undefined, and hence non-deterministic.)
-   * 
-   * @param ring an array of Coordinates forming a ring (with first and last point identical)
-   * @return true if the ring is oriented counter-clockwise.
-   */
+  /// Tests if a ring defined by an array of {@link Coordinate}s is
+  /// oriented counter-clockwise, using the signed area of the ring.
+  /// <ul>
+  /// <li>The list of points is assumed to have the first and last points equal.
+  /// <li>This handles coordinate lists which contain repeated points.
+  /// <li>This handles rings which contain collapsed segments 
+  ///     (in particular, along the top of the ring).
+  /// <li>This handles rings which are invalid due to self-intersection
+  /// </ul>
+  /// This algorithm is guaranteed to work with valid rings.
+  /// For invalid rings (containing self-intersections),   
+  /// the algorithm determines the orientation of
+  /// the largest enclosed area (including overlaps).
+  /// This provides a more useful result in some situations, such as buffering.
+  /// <p>
+  /// However, this approach may be less accurate in the case of 
+  /// rings with almost zero area.
+  /// (Note that the orientation of rings with zero area is essentially
+  /// undefined, and hence non-deterministic.)
+  /// 
+  /// @param ring an array of Coordinates forming a ring (with first and last point identical)
+  /// @return true if the ring is oriented counter-clockwise.
   static bool isCCWArea(List<Coordinate> ring) {
     return Area.ofRingSigned(ring) < 0;
   }

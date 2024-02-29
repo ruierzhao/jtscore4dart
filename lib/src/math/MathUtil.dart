@@ -184,7 +184,7 @@ class MathUtil
   /// 
   /// @param n the number of integers to shuffle
   /// @return the shuffled array
-  static int[] shuffle(int n) {
+  static List<int> shuffle(int n) {
     final Random rnd = new Random(13);
     int[] ints = new int[n];
     for (int i = 0; i < n; i++) {

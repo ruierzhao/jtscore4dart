@@ -11,23 +11,23 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+// import java.util.ArrayList;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.TreeMap;
 
-import org.locationtech.jts.algorithm.BoundaryNodeRule;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Dimension;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.algorithm.BoundaryNodeRule;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Dimension;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.Point;
 
 /**
  * Computes the boundary of a {@link Geometry}.
@@ -134,8 +134,8 @@ class BoundaryOp
    */
   Geometry getBoundary()
   {
-    if (geom instanceof LineString) return boundaryLineString((LineString) geom);
-    if (geom instanceof MultiLineString) return boundaryMultiLineString((MultiLineString) geom);
+    if (geom is LineString) return boundaryLineString((LineString) geom);
+    if (geom is MultiLineString) return boundaryMultiLineString((MultiLineString) geom);
     return geom.getBoundary();
   }
 

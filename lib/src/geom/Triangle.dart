@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.algorithm.Angle;
-import org.locationtech.jts.algorithm.HCoordinate;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.math.DD;
+// import org.locationtech.jts.algorithm.Angle;
+// import org.locationtech.jts.algorithm.HCoordinate;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.math.DD;
 
 /**
  * Represents a planar triangle, and provides methods for calculating various
@@ -459,7 +459,7 @@ class Triangle
 
     // tri area = 1/2 * | u x v |
     double absSq = crossx * crossx + crossy * crossy + crossz * crossz;
-    double area3D = Math.sqrt(absSq) / 2;
+    double area3D = math.sqrt(absSq) / 2;
 
     return area3D;
   }

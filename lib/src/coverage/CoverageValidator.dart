@@ -11,12 +11,12 @@
  */
 
 
-import java.util.List;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.index.strtree.STRtree;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.index.strtree.STRtree;
 
 /**
  * Validates a polygonal coverage, and returns the locations of

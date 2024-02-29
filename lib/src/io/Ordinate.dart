@@ -12,7 +12,7 @@
 
 
 
-import java.util.EnumSet;
+// import java.util.EnumSet;
 
 /**
  * An enumeration of possible Well-Known-Text or Well-Known-Binary ordinates.

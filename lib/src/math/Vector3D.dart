@@ -12,7 +12,7 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Represents a vector in 3-dimensional Cartesian space.
@@ -197,7 +197,7 @@ class Vector3D {
    * @return the length of the vector
    */
 	double length() {
-		return Math.sqrt(x * x + y * y + z * z);
+		return math.sqrt(x * x + y * y + z * z);
 	}
 
 	/**
@@ -207,7 +207,7 @@ class Vector3D {
 	 * @return the length of the vector
 	 */
 	static double length(Coordinate v) {
-		return Math.sqrt(v.x * v.x + v.y * v.y + v.getZ() * v.getZ());
+		return math.sqrt(v.x * v.x + v.y * v.y + v.getZ() * v.getZ());
 	}
 
   /**
@@ -252,7 +252,7 @@ class Vector3D {
    *         for the x and y components.
    */
   bool equals(Object o) {
-    if ( !(o instanceof Vector3D) ) {
+    if ( !(o is Vector3D) ) {
       return false;
     }
     Vector3D v = (Vector3D) o;

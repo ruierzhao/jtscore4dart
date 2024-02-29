@@ -11,9 +11,9 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.Envelope;
 
 /**
  * Clips rings of points to a rectangle.

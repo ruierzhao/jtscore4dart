@@ -12,11 +12,11 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateFilter;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateFilter;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFilter;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * An algorithm for computing a distance metric
@@ -167,7 +167,7 @@ class DiscreteHausdorffDistance
 
   MaxDensifiedByFractionDistanceFilter(Geometry geom, double fraction) {
     this.geom = geom;
-    numSubSegs = (int) Math.rint(1.0/fraction);
+    numSubSegs = (int) math.rint(1.0/fraction);
   }
 
   void filter(CoordinateSequence seq, int index) 

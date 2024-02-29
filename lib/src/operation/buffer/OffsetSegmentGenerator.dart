@@ -11,16 +11,16 @@
  */
 
 
-import org.locationtech.jts.algorithm.Angle;
-import org.locationtech.jts.algorithm.Distance;
-import org.locationtech.jts.algorithm.Intersection;
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.Position;
-import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.algorithm.Angle;
+// import org.locationtech.jts.algorithm.Distance;
+// import org.locationtech.jts.algorithm.Intersection;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * Generates segments which form an offset curve.
@@ -147,7 +147,7 @@ class OffsetSegmentGenerator
   private void init(double distance)
   {
     this.distance = (distance).abs();
-    maxCurveSegmentError = this.distance * (1 - Math.cos(filletAngleQuantum / 2.0));
+    maxCurveSegmentError = this.distance * (1 - math.cos(filletAngleQuantum / 2.0));
     segList = new OffsetSegmentString();
     segList.setPrecisionModel(precisionModel);
     /**
@@ -398,7 +398,7 @@ class OffsetSegmentGenerator
     int sideSign = side == Position.LEFT ? 1 : -1;
     double dx = seg.p1.x - seg.p0.x;
     double dy = seg.p1.y - seg.p0.y;
-    double len = Math.hypot(dx, dy);
+    double len = math.hypot(dx, dy);
     // u is the vector that is the length of the offset, in the direction of the segment
     double ux = sideSign * distance * dx / len;
     double uy = sideSign * distance * dy / len;
@@ -422,7 +422,7 @@ class OffsetSegmentGenerator
 
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
-    double angle = Math.atan2(dy, dx);
+    double angle = math.atan2(dy, dx);
 
     switch (bufParams.getEndCapStyle()) {
       case BufferParameters.CAP_ROUND:
@@ -538,7 +538,7 @@ class OffsetSegmentGenerator
     
     // compute the candidate bevel segment by projecting both sides of the midpoint
     Coordinate bevel0 = project(bevelMidPt, distance, dirBevel);
-    Coordinate bevel1 = project(bevelMidPt, distance, dirBevel + Math.PI);
+    Coordinate bevel1 = project(bevelMidPt, distance, dirBevel + math.PI);
     
     // compute actual bevel segment between the offset lines
     Coordinate bevelInt0 = Intersection.lineSegment(offset0.p0, offset0.p1, bevel0, bevel1);
@@ -601,10 +601,10 @@ class OffsetSegmentGenerator
   {
     double dx0 = p0.x - p.x;
     double dy0 = p0.y - p.y;
-    double startAngle = Math.atan2(dy0, dx0);
+    double startAngle = math.atan2(dy0, dx0);
     double dx1 = p1.x - p.x;
     double dy1 = p1.y - p.y;
-    double endAngle = Math.atan2(dy1, dx1);
+    double endAngle = math.atan2(dy1, dx1);
 
     if (direction == Orientation.CLOCKWISE) {
       if (startAngle <= endAngle) startAngle += Angle.PI_TIMES_2;

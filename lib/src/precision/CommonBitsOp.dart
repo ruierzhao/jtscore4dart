@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * Provides versions of Geometry spatial functions which use

@@ -11,10 +11,10 @@
  */
 
 
-import java.awt.geom.Point2D;
+// import java.awt.geom.Point2D;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Point;
 
 /**
  * Transforms a geometry {@link Coordinate} into a Java2D {@link Point},
@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.Point;
  * 
  * @author Martin Davis
  */
-interface PointTransformation {
+abstract class PointTransformation {
 	/**
 	 * Transforms a {@link Coordinate} into a Java2D {@link Point}.
 	 * 

@@ -13,9 +13,9 @@
 
 
 
-import org.locationtech.jts.algorithm.HCoordinate;
-import org.locationtech.jts.algorithm.NotRepresentableException;
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.algorithm.HCoordinate;
+// import org.locationtech.jts.algorithm.NotRepresentableException;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Models a site (node) in a {@link QuadEdgeSubdivision}. 
@@ -239,8 +239,8 @@ class Vertex
     }
 
     private double distance(Vertex v1, Vertex v2) {
-        return Math.sqrt(Math.pow(v2.getX() - v1.getX(), 2.0)
-                + Math.pow(v2.getY() - v1.getY(), 2.0));
+        return math.sqrt(Math.pow(v2.getX() - v1.getX(), 2.0)
+                + math.pow(v2.getY() - v1.getY(), 2.0));
     }
 
     /**

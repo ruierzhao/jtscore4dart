@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.Point;
 
 /**
  * Computes a point in the interior of an point geometry.
@@ -59,10 +59,10 @@ class InteriorPointPoint {
     if (geom.isEmpty())
       return;
     
-    if (geom instanceof Point) {
+    if (geom is Point) {
       add(geom.getCoordinate());
     }
-    else if (geom instanceof GeometryCollection) {
+    else if (geom is GeometryCollection) {
       GeometryCollection gc = (GeometryCollection) geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         add(gc.getGeometryN(i));

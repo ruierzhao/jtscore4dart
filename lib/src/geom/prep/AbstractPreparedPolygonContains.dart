@@ -11,13 +11,13 @@
  */
 
 
-import java.util.List;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.noding.SegmentIntersectionDetector;
-import org.locationtech.jts.noding.SegmentStringUtil;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.noding.SegmentIntersectionDetector;
+// import org.locationtech.jts.noding.SegmentStringUtil;
 
 
 
@@ -146,7 +146,7 @@ abstract class AbstractPreparedPolygonContains
 		 * a test polygon - which implies the exterior of the Target
 		 * intersects the interior of the Test, and hence the result is false
 		 */
-		if (geom instanceof Polygonal) {
+		if (geom is Polygonal) {
 			// TODO: generalize this to handle GeometryCollections
 			bool isTargetInTestArea = isAnyTargetComponentInAreaTest(geom, prepPoly.getRepresentativePoints());
 			if (isTargetInTestArea) return false;
@@ -197,7 +197,7 @@ abstract class AbstractPreparedPolygonContains
      * where the interior of the test intersects the exterior of the target.
      * This implies the test is NOT contained in the target. 
      */
-		if (testGeom instanceof Polygonal) return true;
+		if (testGeom is Polygonal) return true;
     /**
      * A single shell with no holes allows concluding that 
      * a proper intersection implies not contained 

@@ -12,35 +12,35 @@
 
 
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StreamTokenizer;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Locale;
+// import java.io.IOException;
+// import java.io.Reader;
+// import java.io.StreamTokenizer;
+// import java.io.StringReader;
+// import java.util.ArrayList;
+// import java.util.EnumSet;
+// import java.util.List;
+// import java.util.Locale;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFactory;
-import org.locationtech.jts.geom.CoordinateXY;
-import org.locationtech.jts.geom.CoordinateXYM;
-import org.locationtech.jts.geom.CoordinateXYZM;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
-import org.locationtech.jts.util.Assert;
-import org.locationtech.jts.util.AssertionFailedException;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFactory;
+// import org.locationtech.jts.geom.CoordinateXY;
+// import org.locationtech.jts.geom.CoordinateXYM;
+// import org.locationtech.jts.geom.CoordinateXYZM;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
+// import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.util.AssertionFailedException;
 
 /**
  * Converts a geometry in Well-Known Text format to a {@link Geometry}.
@@ -493,7 +493,7 @@ S  */
       case StreamTokenizer.TT_WORD:
       {
         if (tokenizer.sval.equalsIgnoreCase(NAN_SYMBOL)) {
-          return Double.NaN;
+          return double.nan;
         }
         else {
           try {

@@ -11,9 +11,9 @@
  */
 
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.Comparator;
+// import java.util.Iterator;
+// import java.util.List;
 
 /**
  * One-dimensional version of an STR-packed R-tree. SIR stands for
@@ -79,7 +79,7 @@ class SIRtree extends AbstractSTRtree {
    * Inserts an item having the given bounds into the tree.
    */
   void insert(double x1, double x2, Object item) {
-    super.insert(new Interval(Math.min(x1, x2), Math.max(x1, x2)), item);
+    super.insert(new Interval(Math.min(x1, x2), math.max(x1, x2)), item);
   }
 
   /**
@@ -94,7 +94,7 @@ class SIRtree extends AbstractSTRtree {
    * @param x1 possibly equal to x2
    */
   List query(double x1, double x2) {
-    return super.query(new Interval(Math.min(x1, x2), Math.max(x1, x2)));
+    return super.query(new Interval(Math.min(x1, x2), math.max(x1, x2)));
   }
 
   protected IntersectsOp getIntersectsOp() {

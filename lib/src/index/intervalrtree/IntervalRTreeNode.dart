@@ -11,11 +11,11 @@
  */
 
 
-import java.util.Comparator;
+// import java.util.Comparator;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.index.ItemVisitor;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.index.ItemVisitor;
+// import org.locationtech.jts.io.WKTWriter;
 
 
 abstract class IntervalRTreeNode 

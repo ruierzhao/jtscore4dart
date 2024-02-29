@@ -11,11 +11,11 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.math.MathUtil;
 
 /**
  * Specifies and implements various fundamental Computational Geometric
@@ -356,7 +356,7 @@ class CGAlgorithms
      */
     double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
         / len2;
-    return (s).abs() * Math.sqrt(len2);
+    return (s).abs() * math.sqrt(len2);
   }
 
   /**
@@ -389,7 +389,7 @@ class CGAlgorithms
     double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
         / len2;
 
-    return (s).abs() * Math.sqrt(len2);
+    return (s).abs() * math.sqrt(len2);
   }
 
   /**
@@ -607,7 +607,7 @@ class CGAlgorithms
       double dx = x1 - x0;
       double dy = y1 - y0;
 
-      len += Math.hypot(dx, dy);
+      len += math.hypot(dx, dy);
 
       x0 = x1;
       y0 = y1;

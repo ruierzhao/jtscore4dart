@@ -11,29 +11,29 @@
  */
 
 
-import java.util.Map;
-import java.util.List;
-import java.util.WeakMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+// import java.util.Map;
+// import java.util.List;
+// import java.util.WeakMap;
+// import java.util.regex.Matcher;
+// import java.util.regex.Pattern;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.io.gml2.GMLHandler.Handler;
-import org.locationtech.jts.util.StringUtil;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.io.gml2.GMLHandler.Handler;
+// import org.locationtech.jts.util.StringUtil;
+// import org.xml.sax.Attributes;
+// import org.xml.sax.SAXException;
 
 
 /**
@@ -52,7 +52,7 @@ class GeometryStrategies{
 	 *
 	 * @author David Zwiers, Vivid Solutions.
 	 */
-	static interface ParseStrategy{
+	static abstract class ParseStrategy{
 		/**
 		 * @param arg Value to interpret
 		 * @param gf GeometryFactory
@@ -80,7 +80,7 @@ class GeometryStrategies{
 
 				Object c = arg.children.get(0);
 				Point p = null;
-				if(c instanceof Coordinate){
+				if(c is Coordinate){
 					p = gf.createPoint((Coordinate)c);
 				}else{
 					p = gf.createPoint((CoordinateSequence)c);
@@ -412,7 +412,7 @@ class GeometryStrategies{
 						}
 					}
 						// fill remaining dim
-					while(dimIndex<dim)cs.setOrdinate(i,dimIndex++,Double.NaN);
+					while(dimIndex<dim)cs.setOrdinate(i,dimIndex++,double.nan);
 				}
 				
 				return cs;

@@ -12,28 +12,28 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.io.ParseException;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.io.ParseException;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.StringReader;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+// import java.io.StringReader;
+// import java.lang.reflect.Array;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Collections;
+// import java.util.Map;
+// import java.util.HashSet;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.Set;
 
 /**
  * Constructs a {@link Geometry} object from the OGC KML representation.
@@ -120,7 +120,7 @@ class KMLReader {
             raiseParseError("Empty coordinates");
         }
 
-        double[] parsedOrdinates = {Double.NaN, Double.NaN, Double.NaN};
+        double[] parsedOrdinates = {double.nan, double.nan, double.nan};
         List<Coordinate> coordinateList = new ArrayList();
 
         int spaceIdx = coordinates.indexOf(' ');
@@ -154,7 +154,7 @@ class KMLReader {
             coordinateList.add(crd);
             currentIdx = spaceIdx + 1;
             spaceIdx = coordinates.indexOf(' ', currentIdx);
-            parsedOrdinates[0] = parsedOrdinates[1] = parsedOrdinates[2] = Double.NaN;
+            parsedOrdinates[0] = parsedOrdinates[1] = parsedOrdinates[2] = double.nan;
         }
 
         return coordinateList.toArray(new List<Coordinate>{});

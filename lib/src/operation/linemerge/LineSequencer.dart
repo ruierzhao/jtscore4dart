@@ -11,27 +11,27 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-import java.util.TreeSet;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.LinkedList;
+// import java.util.List;
+// import java.util.ListIterator;
+// import java.util.Set;
+// import java.util.TreeSet;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.planargraph.DirectedEdge;
-import org.locationtech.jts.planargraph.GraphComponent;
-import org.locationtech.jts.planargraph.Node;
-import org.locationtech.jts.planargraph.Subgraph;
-import org.locationtech.jts.planargraph.algorithm.ConnectedSubgraphFinder;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.planargraph.DirectedEdge;
+// import org.locationtech.jts.planargraph.GraphComponent;
+// import org.locationtech.jts.planargraph.Node;
+// import org.locationtech.jts.planargraph.Subgraph;
+// import org.locationtech.jts.planargraph.algorithm.ConnectedSubgraphFinder;
+// import org.locationtech.jts.util.Assert;
 
 
 /**
@@ -97,7 +97,7 @@ class LineSequencer
    */
   static bool isSequenced(Geometry geom)
   {
-    if (! (geom instanceof MultiLineString)) {
+    if (! (geom is MultiLineString)) {
       return true;
     }
 
@@ -166,7 +166,7 @@ class LineSequencer
   void add(Geometry geometry) {
     geometry.apply(new GeometryComponentFilter() {
       void filter(Geometry component) {
-        if (component instanceof LineString) {
+        if (component is LineString) {
           addLine((LineString)component);
         }
       }
@@ -217,8 +217,8 @@ class LineSequencer
 
     int finalLineCount = sequencedGeometry.getNumGeometries();
     Assert.isTrue(lineCount == finalLineCount, "Lines were missing from result");
-    Assert.isTrue(sequencedGeometry instanceof LineString
-                  || sequencedGeometry instanceof MultiLineString,
+    Assert.isTrue(sequencedGeometry is LineString
+                  || sequencedGeometry is MultiLineString,
                   "Result is not lineal");
   }
 

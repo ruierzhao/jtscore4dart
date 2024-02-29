@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.io.OrdinateFormat;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.io.OrdinateFormat;
 
 /**
  * A key for sorting and comparing edges in a noded arrangement.
@@ -74,7 +74,7 @@ class EdgeKey implements Comparable<EdgeKey> {
   }
   
   bool equals(Object o) {
-    if (! (o instanceof EdgeKey)) {
+    if (! (o is EdgeKey)) {
       return false;
     }
     EdgeKey ek = (EdgeKey) o;

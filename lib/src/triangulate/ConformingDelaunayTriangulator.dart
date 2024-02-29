@@ -12,22 +12,22 @@
 
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.ConvexHull;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.index.kdtree.KdNode;
-import org.locationtech.jts.index.kdtree.KdTree;
-import org.locationtech.jts.triangulate.quadedge.LastFoundQuadEdgeLocator;
-import org.locationtech.jts.triangulate.quadedge.QuadEdgeSubdivision;
-import org.locationtech.jts.triangulate.quadedge.Vertex;
-import org.locationtech.jts.util.Debug;
+// import org.locationtech.jts.algorithm.ConvexHull;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.index.kdtree.KdNode;
+// import org.locationtech.jts.index.kdtree.KdTree;
+// import org.locationtech.jts.triangulate.quadedge.LastFoundQuadEdgeLocator;
+// import org.locationtech.jts.triangulate.quadedge.QuadEdgeSubdivision;
+// import org.locationtech.jts.triangulate.quadedge.Vertex;
+// import org.locationtech.jts.util.Debug;
 
 
 /**
@@ -230,7 +230,7 @@ class ConformingDelaunayTriangulator
 		double deltaX = allPointsEnv.getWidth() * 0.2;
 		double deltaY = allPointsEnv.getHeight() * 0.2;
 
-		double delta = Math.max(deltaX, deltaY);
+		double delta = math.max(deltaX, deltaY);
 
 		computeAreaEnv = new Envelope(allPointsEnv);
 		computeAreaEnv.expandBy(delta);

@@ -11,13 +11,13 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Computes a robust clipping envelope for a pair of polygonal geometries.
@@ -55,9 +55,9 @@ class RobustClipEnvelopeComputer {
     if ( g == null || g.isEmpty() )
       return;
 
-    if ( g instanceof Polygon )
+    if ( g is Polygon )
       addPolygon((Polygon) g);
-    else if ( g instanceof GeometryCollection )
+    else if ( g is GeometryCollection )
       addCollection((GeometryCollection) g);
   }
 

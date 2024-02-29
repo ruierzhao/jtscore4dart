@@ -11,20 +11,20 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
-import java.util.PriorityQueue;
+// import java.util.ArrayList;
+// import java.util.BitSet;
+// import java.util.List;
+// import java.util.PriorityQueue;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.index.VertexSequencePackedRtree;
-import org.locationtech.jts.index.strtree.STRtree;
-import org.locationtech.jts.simplify.LinkedLine;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.index.VertexSequencePackedRtree;
+// import org.locationtech.jts.index.strtree.STRtree;
+// import org.locationtech.jts.simplify.LinkedLine;
 
 /**
  * Computes a Topology-Preserving Visvalingam-Whyatt simplification

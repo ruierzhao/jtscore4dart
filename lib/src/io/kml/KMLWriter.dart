@@ -12,19 +12,19 @@
 
 
 
-import java.io.IOException;
-import java.io.Writer;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+// import java.io.IOException;
+// import java.io.Writer;
+// import java.text.DecimalFormat;
+// import java.text.DecimalFormatSymbols;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.StringUtil;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.util.StringUtil;
 
 
 /**
@@ -99,7 +99,7 @@ class KMLWriter
 
   private String linePrefix = null;
   private int maxCoordinatesPerLine = 5;
-  private double zVal = Double.NaN;
+  private double zVal = double.nan;
   private bool extrude = false;
   private bool tesselate;
   private String altitudeMode = null;
@@ -218,15 +218,15 @@ class KMLWriter
 
   private void writeGeometry(Geometry g, int level, StringBuffer buf) {
     String attributes = "";
-    if (g instanceof Point) {
+    if (g is Point) {
       writePoint((Point) g, attributes, level, buf);
-    } else if (g instanceof LinearRing) {
+    } else if (g is LinearRing) {
       writeLinearRing((LinearRing) g, attributes, true, level, buf);
-    } else if (g instanceof LineString) {
+    } else if (g is LineString) {
       writeLineString((LineString) g, attributes, level, buf);
-    } else if (g instanceof Polygon) {
+    } else if (g is Polygon) {
       writePolygon((Polygon) g, attributes, level, buf);
-    } else if (g instanceof GeometryCollection) {
+    } else if (g is GeometryCollection) {
       writeGeometryCollection((GeometryCollection) g, attributes, level, buf);
     }
     else 
@@ -358,12 +358,12 @@ class KMLWriter
 
     double z = p.getZ();
     // if altitude was specified directly, use it
-    if (!Double.isNaN(zVal))
+    if (!(zVal).isNaN)
       z = zVal;
 
     // only write if Z present
     // MD - is this right? Or should it always be written?
-    if (!Double.isNaN(z)) {
+    if (!(z).isNaN) {
       buf.append(COORDINATE_SEPARATOR);
       write(z, buf);
     }

@@ -13,12 +13,12 @@
 
 
 /**
- * An interface for algorithms which process the triangles in a {@link QuadEdgeSubdivision}.
+ * An abstract class for algorithms which process the triangles in a {@link QuadEdgeSubdivision}.
  * 
  * @author Martin Davis
  * @version 1.0
  */
-interface TriangleVisitor {
+abstract class TriangleVisitor {
     /**
      * Visits the {@link QuadEdge}s of a triangle.
      * 

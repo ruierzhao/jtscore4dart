@@ -11,12 +11,12 @@
  */
 
 
-import java.util.BitSet;
-import java.util.List;
+// import java.util.BitSet;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * Simplifies the boundaries of the polygons in a polygonal coverage

@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.algorithm.Length;
-import org.locationtech.jts.operation.BoundaryOp;
+// import org.locationtech.jts.algorithm.Length;
+// import org.locationtech.jts.operation.BoundaryOp;
 
 /**
  *  Models an OGC-style <code>LineString</code>.
@@ -302,7 +302,7 @@ class LineString
   }
 
   protected bool isEquivalentClass(Geometry other) {
-    return other instanceof LineString;
+    return other is LineString;
   }
 
   protected int compareToSameClass(Object o)

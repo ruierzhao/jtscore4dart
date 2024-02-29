@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineSegment;
 
 class LocateFailureException 
 	extends RuntimeException 

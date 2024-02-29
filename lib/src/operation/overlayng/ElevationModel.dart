@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFilter;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.math.MathUtil;
 
 /**
  * A simple elevation model used to populate missing Z values
@@ -73,7 +73,7 @@ class ElevationModel {
   private ElevationCell[][] cells;
   private bool isInitialized = false;
   private bool hasZValue = false;
-  private double averageZ = Double.NaN;
+  private double averageZ = double.nan;
 
   /**
    * Creates a new elevation model covering an extent by a grid of given dimensions.
@@ -135,7 +135,7 @@ class ElevationModel {
   }
   
   protected void add(double x, double y, double z) {
-    if (Double.isNaN(z))
+    if ((z).isNaN)
       return;
     hasZValue = true;
     ElevationCell cell = getCell(x, y, true);
@@ -157,7 +157,7 @@ class ElevationModel {
         }
       }
     }
-    averageZ = Double.NaN;
+    averageZ = double.nan;
     if (numCells > 0) {
       averageZ = sumZ / numCells;
     }
@@ -211,7 +211,7 @@ class ElevationModel {
           return;
         }
         // if Z not populated then assign using model
-        if (Double.isNaN( seq.getZ(i) )) {
+        if (( seq.getZ(i).isNaN )) {
           double z = getZ(seq.getOrdinate(i, Coordinate.X),
                           seq.getOrdinate(i, Coordinate.Y));
           seq.setOrdinate(i, Coordinate.Z, z);
@@ -263,7 +263,7 @@ class ElevationModel {
     }
     
     void compute() {
-      avgZ = Double.NaN;
+      avgZ = double.nan;
       if (numZ > 0) 
         avgZ = sumZ / numZ;
     }

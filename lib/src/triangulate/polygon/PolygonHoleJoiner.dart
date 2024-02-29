@@ -11,27 +11,27 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+// import java.util.ArrayList;
+// import java.util.Collections;
+// import java.util.Comparator;
+// import java.util.List;
+// import java.util.TreeSet;
 
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.algorithm.PolygonNodeTopology;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.noding.BasicSegmentString;
-import org.locationtech.jts.noding.MCIndexSegmentSetMutualIntersector;
-import org.locationtech.jts.noding.SegmentIntersector;
-import org.locationtech.jts.noding.SegmentSetMutualIntersector;
-import org.locationtech.jts.noding.SegmentString;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.algorithm.PolygonNodeTopology;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.noding.BasicSegmentString;
+// import org.locationtech.jts.noding.MCIndexSegmentSetMutualIntersector;
+// import org.locationtech.jts.noding.SegmentIntersector;
+// import org.locationtech.jts.noding.SegmentSetMutualIntersector;
+// import org.locationtech.jts.noding.SegmentString;
 
 /**
  * Transforms a polygon with holes into a single self-touching (invalid) ring

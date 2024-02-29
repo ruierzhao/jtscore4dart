@@ -12,13 +12,13 @@
 
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Represents a {@link LineString} which can be modified to a simplified shape.  

@@ -12,14 +12,14 @@
 
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.util.LinearComponentExtracter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.util.LinearComponentExtracter;
 
 /**
  * Generates points offset by a given distance 
@@ -95,7 +95,7 @@ class OffsetPointGenerator
   {
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
-    double len = Math.hypot(dx, dy);
+    double len = math.hypot(dx, dy);
     // u is the vector that is the length of the offset, in the direction of the segment
     double ux = offsetDistance * dx / len;
     double uy = offsetDistance * dy / len;

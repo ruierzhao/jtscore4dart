@@ -11,13 +11,13 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.util.GeometryEditor;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.util.GeometryEditor;
 
 class PrecisionReducerCoordinateOperation extends
 		GeometryEditor.CoordinateOperation 
@@ -57,9 +57,9 @@ class PrecisionReducerCoordinateOperation extends
 		 * handle this.)
 		 */
 		int minLength = 0;
-		if (geom instanceof LineString)
+		if (geom is LineString)
 			minLength = 2;
-		if (geom instanceof LinearRing)
+		if (geom is LinearRing)
 			minLength = 4;
 
 		List<Coordinate> collapsedCoords = reducedCoords;

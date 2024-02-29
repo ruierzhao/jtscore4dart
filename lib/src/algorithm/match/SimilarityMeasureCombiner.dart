@@ -22,7 +22,7 @@ class SimilarityMeasureCombiner
 {
 	static double combine(double measure1, double measure2)
 	{
-		return Math.min(measure1, measure2);
+		return math.min(measure1, measure2);
 	}
 
 }

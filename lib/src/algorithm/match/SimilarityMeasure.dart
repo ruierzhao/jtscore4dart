@@ -12,10 +12,10 @@
 
 
 
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
- * An interface for classes which measures the degree of similarity between two {@link Geometry}s.
+ * An abstract class for classes which measures the degree of similarity between two {@link Geometry}s.
  * The computed measure lies in the range [0, 1].
  * Higher measures indicate a great degree of similarity.
  * A measure of 1.0 indicates that the input geometries are identical
@@ -27,7 +27,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author mbdavis
  *
  */
-interface SimilarityMeasure
+abstract class SimilarityMeasure
 {
 	/**
 	 * Computes the similarity measure between two geometries

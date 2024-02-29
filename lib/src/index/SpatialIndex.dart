@@ -11,9 +11,9 @@
  */
 
 
-import java.util.List;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Envelope;
 
 /**
  * The basic operations supported by classes
@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @version 1.7
  */
-interface SpatialIndex
+abstract class SpatialIndex
 {
   /**
    * Adds a spatial item with an extent specified by the given {@link Envelope} to the index

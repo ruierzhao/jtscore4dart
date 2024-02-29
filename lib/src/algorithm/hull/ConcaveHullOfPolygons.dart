@@ -11,24 +11,24 @@
  */
 
 
-import java.util.ArrayDeque;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+// import java.util.ArrayDeque;
+// import java.util.Map;
+// import java.util.HashSet;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.Set;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.operation.overlayng.CoverageUnion;
-import org.locationtech.jts.triangulate.polygon.ConstrainedDelaunayTriangulator;
-import org.locationtech.jts.triangulate.tri.Tri;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.operation.overlayng.CoverageUnion;
+// import org.locationtech.jts.triangulate.polygon.ConstrainedDelaunayTriangulator;
+// import org.locationtech.jts.triangulate.tri.Tri;
 
 /**
  * Constructs a concave hull of a set of polygons, respecting 
@@ -195,7 +195,7 @@ class ConcaveHullOfPolygons {
    * @param geom the input geometry
    */
   ConcaveHullOfPolygons(Geometry polygons) {
-    if (! (polygons instanceof Polygon || polygons instanceof MultiPolygon)) {
+    if (! (polygons is Polygon || polygons is MultiPolygon)) {
       throw new ArgumentError("Input must be polygonal");
     }
     this.inputPolygons = polygons;

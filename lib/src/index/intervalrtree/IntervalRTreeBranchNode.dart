@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.index.ItemVisitor;
+// import org.locationtech.jts.index.ItemVisitor;
 
 class IntervalRTreeBranchNode 
 extends IntervalRTreeNode
@@ -28,8 +28,8 @@ extends IntervalRTreeNode
 	
 	private void buildExtent(IntervalRTreeNode n1, IntervalRTreeNode n2)
 	{
-		min = Math.min(n1.min, n2.min);
-		max = Math.max(n1.max, n2.max);
+		min = math.min(n1.min, n2.min);
+		max = math.max(n1.max, n2.max);
 	}
 	
 	void query(double queryMin, double queryMax, ItemVisitor visitor)

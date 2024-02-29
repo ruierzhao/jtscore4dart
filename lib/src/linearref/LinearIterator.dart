@@ -12,11 +12,11 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Lineal;
-import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Lineal;
+// import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * An iterator over the components and coordinates of a linear geometry
@@ -87,7 +87,7 @@ class LinearIterator
    */
   LinearIterator(Geometry linearGeom, int componentIndex, int vertexIndex) 
   {
-  	if (! (linearGeom instanceof Lineal))
+  	if (! (linearGeom is Lineal))
   			throw new ArgumentError("Lineal geometry is required");
     this.linearGeom = linearGeom;
     numLines = linearGeom.getNumGeometries();

@@ -12,16 +12,16 @@
 
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.index.strtree.STRtree;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.index.strtree.STRtree;
 
 
 class FacetSequenceTreeBuilder {
@@ -55,11 +55,11 @@ class FacetSequenceTreeBuilder {
 
       void filter(Geometry geom) {
         CoordinateSequence seq = null;
-        if (geom instanceof LineString) {
+        if (geom is LineString) {
           seq = ((LineString) geom).getCoordinateSequence();
           addFacetSequences(geom, seq, sections);
         }
-        else if (geom instanceof Point) {
+        else if (geom is Point) {
           seq = ((Point) geom).getCoordinateSequence();
           addFacetSequences(geom, seq, sections);
         }

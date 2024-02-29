@@ -12,12 +12,12 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Triangle;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Triangle;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Computes the <b>Minimum Bounding Circle</b> (MBC)
@@ -367,7 +367,7 @@ class MinimumBoundingCircle
 			double dx = p.x - P.x;
 			double dy = p.y - P.y;
 			if (dy < 0) dy = -dy;
-			double len = Math.hypot(dx, dy);
+			double len = math.hypot(dx, dy);
 			double sin = dy / len;
 			
 			if (sin < minSin) {

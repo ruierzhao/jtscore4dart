@@ -11,9 +11,9 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.planargraph.DirectedEdge;
-import org.locationtech.jts.planargraph.Node;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.planargraph.DirectedEdge;
+// import org.locationtech.jts.planargraph.Node;
 
 /**
  * A {@link DirectedEdge} of a {@link PolygonizeGraph}, which represents

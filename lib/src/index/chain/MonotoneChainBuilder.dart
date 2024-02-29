@@ -11,11 +11,11 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Quadrant;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Quadrant;
 
 /**
  * Constructs {@link MonotoneChain}s

@@ -11,10 +11,10 @@
  */
 
 
-import java.util.Arrays;
-import java.util.TreeSet;
+// import java.util.Arrays;
+// import java.util.TreeSet;
 
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.util.Assert;
 
 
 /**
@@ -99,7 +99,7 @@ class GeometryCollection extends Geometry {
   int getDimension() {
     int dimension = Dimension.FALSE;
     for (int i = 0; i < geometries.length; i++) {
-      dimension = Math.max(dimension, geometries[i].getDimension());
+      dimension = math.max(dimension, geometries[i].getDimension());
     }
     return dimension;
   }
@@ -115,7 +115,7 @@ class GeometryCollection extends Geometry {
   int getBoundaryDimension() {
     int dimension = Dimension.FALSE;
     for (int i = 0; i < geometries.length; i++) {
-      dimension = Math.max(dimension, ((Geometry) geometries[i]).getBoundaryDimension());
+      dimension = math.max(dimension, ((Geometry) geometries[i]).getBoundaryDimension());
     }
     return dimension;
   }

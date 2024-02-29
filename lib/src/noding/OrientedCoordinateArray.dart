@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
 
 /**
  * Allows comparing {@link Coordinate} arrays

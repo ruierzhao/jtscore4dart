@@ -11,14 +11,14 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Computes the minimum diameter of a {@link Geometry}.
@@ -183,7 +183,7 @@ class MinimumDiameter
   private void computeWidthConvex(Geometry convexGeom)
   {
 //System.out.println("Input = " + geom);
-    if (convexGeom instanceof Polygon)
+    if (convexGeom is Polygon)
       convexHullPts = ((Polygon) convexGeom).getExteriorRing().getCoordinates();
     else
       convexHullPts = convexGeom.getCoordinates();

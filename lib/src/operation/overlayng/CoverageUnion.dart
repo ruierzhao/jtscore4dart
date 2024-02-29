@@ -11,11 +11,11 @@
  */
 
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.noding.BoundaryChainNoder;
-import org.locationtech.jts.noding.Noder;
-import org.locationtech.jts.noding.SegmentExtractingNoder;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.noding.BoundaryChainNoder;
+// import org.locationtech.jts.noding.Noder;
+// import org.locationtech.jts.noding.SegmentExtractingNoder;
 
 /**
  * Unions a valid coverage of polygons or lines

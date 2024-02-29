@@ -11,19 +11,19 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.Angle;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.algorithm.Angle;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Creates a buffer polygon with a varying buffer distance 
@@ -340,7 +340,7 @@ class VariableBuffer {
       return null;
     int nPts = 4 * quadrantSegs; 
     List<Coordinate> pts = new Coordinate[nPts + 1];
-    double angInc = Math.PI / 2 / quadrantSegs;
+    double angInc = math.PI / 2 / quadrantSegs;
     for (int i = 0; i < nPts; i++) {
       pts[i] = projectPolar(center, radius, i * angInc);
     }
@@ -367,7 +367,7 @@ class VariableBuffer {
     double angStart = Angle.angle(p, t1);
     double angEnd = Angle.angle(p, t2);
     if (angStart < angEnd)
-      angStart += 2 * Math.PI;
+      angStart += 2 * math.PI;
     
     int indexStart = capAngleIndex(angStart);
     int indexEnd = capAngleIndex(angEnd);
@@ -386,7 +386,7 @@ class VariableBuffer {
    * @return
    */
   private double capAngle(int index) {
-    double capSegAng = Math.PI / 2 / quadrantSegs;
+    double capSegAng = math.PI / 2 / quadrantSegs;
     return index * capSegAng;
   }
 
@@ -406,7 +406,7 @@ class VariableBuffer {
    * @return the index for the angle.
    */
   private int capAngleIndex(double ang) {
-    double capSegAng = Math.PI / 2 / quadrantSegs;
+    double capSegAng = math.PI / 2 / quadrantSegs;
     int index = (int) (ang / capSegAng);
     return index;
   }
@@ -436,23 +436,23 @@ class VariableBuffer {
     double x2 = c2.getX();
     double y2 = c2.getY();
     // TODO: handle r1 == r2?
-    double a3 = - Math.atan2(y2 - y1, x2 - x1);
+    double a3 = - math.atan2(y2 - y1, x2 - x1);
     
     double dr = r2 - r1;
-    double d = Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+    double d = math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
     
-    double a2 = Math.asin(dr / d);
+    double a2 = math.asin(dr / d);
     // check if no tangent exists
-    if (Double.isNaN(a2))
+    if ((a2).isNaN)
       return null;
     
     double a1 = a3 - a2;
     
-    double aa = Math.PI/2 - a1;
-    double x3 = x1 + r1 * Math.cos(aa);
-    double y3 = y1 + r1 * Math.sin(aa);
-    double x4 = x2 + r2 * Math.cos(aa);
-    double y4 = y2 + r2 * Math.sin(aa);
+    double aa = math.PI/2 - a1;
+    double x3 = x1 + r1 * math.cos(aa);
+    double y3 = y1 + r1 * math.sin(aa);
+    double x4 = x2 + r2 * math.cos(aa);
+    double y4 = y2 + r2 * math.sin(aa);
     
     return new LineSegment(x3, y3, x4, y4);
   }

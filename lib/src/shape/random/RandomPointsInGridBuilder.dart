@@ -12,12 +12,12 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.math.MathUtil;
-import org.locationtech.jts.shape.GeometricShapeBuilder;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.shape.GeometricShapeBuilder;
 
 
 /**
@@ -86,7 +86,7 @@ extends GeometricShapeBuilder
    */
   Geometry getGeometry()
   {
-    int nCells = (int) Math.sqrt(numPts);
+    int nCells = (int) math.sqrt(numPts);
     // ensure that at least numPts points are generated
     if (nCells * nCells < numPts)
       nCells += 1;
@@ -126,8 +126,8 @@ extends GeometricShapeBuilder
   
   private Coordinate randomPointInGridCell(double orgX, double orgY, double xLen, double yLen)
   {
-    double x = orgX + xLen * Math.random();
-    double y = orgY + yLen * Math.random();
+    double x = orgX + xLen * math.random();
+    double y = orgY + yLen * math.random();
     return createCoord(x, y);
   }
 
@@ -136,12 +136,12 @@ extends GeometricShapeBuilder
   	double centreX = orgX + width/2;
   	double centreY = orgY + height/2;
   		
-  	double rndAng = 2 * Math.PI * Math.random();
-  	double rndRadius = Math.random();
+  	double rndAng = 2 * math.PI * math.random();
+  	double rndRadius = math.random();
     // use square root of radius, since area is proportional to square of radius
-    double rndRadius2 = Math.sqrt(rndRadius);
-  	double rndX = width/2 * rndRadius2 * Math.cos(rndAng); 
-  	double rndY = height/2 * rndRadius2 * Math.sin(rndAng); 
+    double rndRadius2 = math.sqrt(rndRadius);
+  	double rndX = width/2 * rndRadius2 * math.cos(rndAng); 
+  	double rndY = height/2 * rndRadius2 * math.sin(rndAng); 
   	
     double x0 = centreX + rndX;
     double y0 = centreY + rndY;

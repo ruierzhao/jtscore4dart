@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.algorithm.Angle;
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.algorithm.Angle;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Supports creating {@link AffineTransformation}s defined by various kinds of

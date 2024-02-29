@@ -11,11 +11,11 @@
  */
 
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Map;
+// import java.io.Serializable;
+// import java.util.Map;
+// import java.util.Map;
 
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Specifies the precision model of the {@link Coordinate}s in a {@link Geometry}.
@@ -253,7 +253,7 @@ class PrecisionModel implements Serializable, Comparable
     } else if (modelType == FLOATING_SINGLE) {
       maxSigDigits = 6;
     } else if (modelType == FIXED) {
-      maxSigDigits = 1 + (int) Math.ceil(Math.log(getScale()) / Math.log(10));
+      maxSigDigits = 1 + (int) math.ceil(Math.log(getScale()) / math.log(10));
     }
     return maxSigDigits;
   }
@@ -282,7 +282,7 @@ class PrecisionModel implements Serializable, Comparable
    */
   double gridSize() {
     if (isFloating())
-      return Double.NaN;
+      return double.nan;
     
     if (gridSize != 0)
       return gridSize;
@@ -420,7 +420,7 @@ class PrecisionModel implements Serializable, Comparable
   double makePrecise(double val) 
   {
   	// don't change NaN values
-  	if (Double.isNaN(val)) return val;
+  	if ((val).isNaN) return val;
   	
   	if (modelType == FLOATING_SINGLE) {
   		float floatSingleVal = (float) val;
@@ -428,10 +428,10 @@ class PrecisionModel implements Serializable, Comparable
   	}
   	if (modelType == FIXED) {
   	  if (gridSize > 0) {
-  	    return Math.round(val / gridSize) * gridSize;
+  	    return math.round(val / gridSize) * gridSize;
   	  }
   	  else {
-  	    return Math.round(val * scale) / scale;
+  	    return math.round(val * scale) / scale;
   	  }
   	}
   	// modelType == FLOATING - no rounding necessary
@@ -465,7 +465,7 @@ class PrecisionModel implements Serializable, Comparable
   }
 
   bool equals(Object other) {
-    if (! (other instanceof PrecisionModel)) {
+    if (! (other is PrecisionModel)) {
       return false;
     }
     PrecisionModel otherPrecisionModel = (PrecisionModel) other;

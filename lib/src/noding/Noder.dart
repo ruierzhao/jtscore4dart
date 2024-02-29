@@ -11,7 +11,7 @@
  */
 
 
-import java.util.Collection;
+// import java.util.Collection;
 
 /**
  * Computes all intersections between segments in a set of {@link SegmentString}s.
@@ -22,7 +22,7 @@ import java.util.Collection;
  *
  * @version 1.7
  */
-interface Noder
+abstract class Noder
 {
 
   /**

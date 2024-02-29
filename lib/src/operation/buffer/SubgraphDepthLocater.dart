@@ -11,19 +11,19 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Collections;
+// import java.util.Comparator;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.Position;
-import org.locationtech.jts.geomgraph.DirectedEdge;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geomgraph.DirectedEdge;
 
 /**
  * Locates a subgraph inside a set of subgraphs,
@@ -122,7 +122,7 @@ class SubgraphDepthLocater
         seg.reverse();
 
       // skip segment if it is left of the stabbing line
-      double maxx = Math.max(seg.p0.x, seg.p1.x);
+      double maxx = math.max(seg.p0.x, seg.p1.x);
       if (maxx < stabbingRayLeftPt.x)
         continue;
 

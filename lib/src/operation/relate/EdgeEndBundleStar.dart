@@ -11,11 +11,11 @@
  */
 
 
-import java.util.Iterator;
+// import java.util.Iterator;
 
-import org.locationtech.jts.geom.IntersectionMatrix;
-import org.locationtech.jts.geomgraph.EdgeEnd;
-import org.locationtech.jts.geomgraph.EdgeEndStar;
+// import org.locationtech.jts.geom.IntersectionMatrix;
+// import org.locationtech.jts.geomgraph.EdgeEnd;
+// import org.locationtech.jts.geomgraph.EdgeEndStar;
 
 /**
  * An ordered list of {@link EdgeEndBundle}s around a {@link RelateNode}.

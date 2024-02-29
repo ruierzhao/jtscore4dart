@@ -11,14 +11,14 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Computes the minimum-area rectangle enclosing a {@link Geometry}.
@@ -97,7 +97,7 @@ class MinimumAreaRectangle
   {
 //System.out.println("Input = " + geom);
     List<Coordinate> convexHullPts = null;
-    if (convexGeom instanceof Polygon)
+    if (convexGeom is Polygon)
       convexHullPts = ((Polygon) convexGeom).getExteriorRing().getCoordinates();
     else
       convexHullPts = convexGeom.getCoordinates();

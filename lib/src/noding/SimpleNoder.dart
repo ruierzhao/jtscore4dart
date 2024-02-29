@@ -11,10 +11,10 @@
  */
 
 
-import java.util.Collection;
-import java.util.Iterator;
+// import java.util.Collection;
+// import java.util.Iterator;
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Nodes a set of {@link SegmentString}s by

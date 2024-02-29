@@ -23,7 +23,7 @@
  *
  *@version 1.7
  */
-interface GeometryFilter {
+abstract class GeometryFilter {
 
   /**
    *  Performs an operation with or on <code>geom</code>.

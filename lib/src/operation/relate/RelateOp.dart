@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.algorithm.BoundaryNodeRule;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.IntersectionMatrix;
-import org.locationtech.jts.operation.GeometryGraphOperation;
+// import org.locationtech.jts.algorithm.BoundaryNodeRule;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.IntersectionMatrix;
+// import org.locationtech.jts.operation.GeometryGraphOperation;
 
 /**
  * Implements the SFS <tt>relate()</tt> generalized spatial predicate on two {@link Geometry}s.

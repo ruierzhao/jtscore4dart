@@ -11,19 +11,19 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Utility methods for overlay processing.
@@ -134,10 +134,10 @@ class OverlayUtil {
     double envExpandDist;
     if (isFloating(pm)) {
       // if PM is FLOAT then there is no scale factor, so add 10%
-      double minSize = Math.min(env.getHeight(), env.getWidth());
+      double minSize = math.min(env.getHeight(), env.getWidth());
       // heuristic to ensure zero-width envelopes don't cause total clipping
       if (minSize <= 0.0) {
-        minSize = Math.max(env.getHeight(), env.getWidth());
+        minSize = math.max(env.getHeight(), env.getWidth());
       }
       envExpandDist = SAFE_ENV_BUFFER_FACTOR * minSize;
     }
@@ -277,10 +277,10 @@ class OverlayUtil {
     int resultDimension = -1;
     switch (opCode) {
     case OverlayNG.INTERSECTION: 
-      resultDimension = Math.min(dim0, dim1);
+      resultDimension = math.min(dim0, dim1);
       break;
     case OverlayNG.UNION: 
-      resultDimension = Math.max(dim0, dim1);
+      resultDimension = math.max(dim0, dim1);
       break;
     case OverlayNG.DIFFERENCE: 
       resultDimension = dim0;
@@ -293,7 +293,7 @@ class OverlayUtil {
        * </pre>
        * and Union has the dimension of the highest-dimension argument.
        */
-      resultDimension = Math.max(dim0, dim1);
+      resultDimension = math.max(dim0, dim1);
       break;
     }
     return resultDimension;

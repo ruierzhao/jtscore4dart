@@ -11,13 +11,13 @@
  */
 
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
+// import java.io.Serializable;
+// import java.util.Collection;
+// import java.util.Iterator;
 
-import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
-import org.locationtech.jts.geom.util.GeometryEditor;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
+// import org.locationtech.jts.geom.util.GeometryEditor;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Supplies a set of utility methods for building Geometry objects from lists
@@ -559,7 +559,7 @@ class GeometryFactory
       if (partClass != geomClass) {
         isHeterogeneous = true;
       }
-      if (geom instanceof GeometryCollection)
+      if (geom is GeometryCollection)
         hasGeometryCollection = true;
     }
     
@@ -579,13 +579,13 @@ class GeometryFactory
     Geometry geom0 = (Geometry) geomList.iterator().next();
     bool isCollection = geomList.size() > 1;
     if (isCollection) {
-      if (geom0 instanceof Polygon) {
+      if (geom0 is Polygon) {
         return createMultiPolygon(toPolygonArray(geomList));
       }
-      else if (geom0 instanceof LineString) {
+      else if (geom0 is LineString) {
         return createMultiLineString(toLineStringArray(geomList));
       }
-      else if (geom0 instanceof Point) {
+      else if (geom0 is Point) {
         return createMultiPoint(toPointArray(geomList));
       }
       Assert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());

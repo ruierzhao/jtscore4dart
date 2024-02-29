@@ -11,15 +11,15 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.util.GeometryEditor;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.util.GeometryEditor;
 
 /**
  * Reduces the precision of the coordinates of a {@link Geometry}
@@ -134,8 +134,8 @@ class SimpleGeometryPrecisionReducer
        * (This may create an invalid geometry - the client must handle this.)
        */
       int minLength = 0;
-      if (geom instanceof LineString) minLength = 2;
-      if (geom instanceof LinearRing) minLength = 4;
+      if (geom is LineString) minLength = 2;
+      if (geom is LinearRing) minLength = 4;
 
       List<Coordinate> collapsedCoords = reducedCoords;
       if (removeCollapsed) collapsedCoords = null;

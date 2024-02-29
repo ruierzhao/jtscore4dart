@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.planargraph.DirectedEdge;
-import org.locationtech.jts.planargraph.Node;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.planargraph.DirectedEdge;
+// import org.locationtech.jts.planargraph.Node;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * A {@link org.locationtech.jts.planargraph.DirectedEdge} of a 

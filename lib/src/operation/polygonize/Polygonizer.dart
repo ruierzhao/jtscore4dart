@@ -11,17 +11,17 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Collections;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Polygon;
 
 
 /**
@@ -64,7 +64,7 @@ class Polygonizer
     }
     
     void filter(Geometry g) {
-      if (g instanceof LineString)
+      if (g is LineString)
         p.add((LineString) g);
     }
   }

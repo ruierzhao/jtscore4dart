@@ -11,16 +11,16 @@
  */
 
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.Random;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.index.kdtree.KdNode;
-import org.locationtech.jts.index.kdtree.KdNodeVisitor;
-import org.locationtech.jts.index.kdtree.KdTree;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.index.kdtree.KdNode;
+// import org.locationtech.jts.index.kdtree.KdNodeVisitor;
+// import org.locationtech.jts.index.kdtree.KdTree;
 
 /**
  * An index which creates unique {@link HotPixel}s for provided points,

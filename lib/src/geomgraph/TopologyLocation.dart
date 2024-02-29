@@ -13,8 +13,8 @@
 
 
 
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Position;
 
 /**
   * A TopologyLocation is the labelling of a

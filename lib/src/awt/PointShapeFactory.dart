@@ -11,15 +11,15 @@
  */
 
 
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+// import java.awt.Shape;
+// import java.awt.geom.Ellipse2D;
+// import java.awt.geom.GeneralPath;
+// import java.awt.geom.Line2D;
+// import java.awt.geom.Point2D;
+// import java.awt.geom.Rectangle2D;
 
 /**
- * An interface for classes which create {@link Shape}s to represent 
+ * An abstract class for classes which create {@link Shape}s to represent 
  * {@link Point}
  * geometries. Java2D does not provide an actual point shape, so some other
  * shape must be used to render points (e.g. such as a Rectangle or Ellipse).
@@ -27,7 +27,7 @@ import java.awt.geom.Rectangle2D;
  * @author Martin Davis
  * 
  */
-interface PointShapeFactory {
+abstract class PointShapeFactory {
   /**
    * Creates a shape representing a {@link Point}.
    * 

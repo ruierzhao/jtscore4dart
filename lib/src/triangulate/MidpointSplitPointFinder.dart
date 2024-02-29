@@ -13,7 +13,7 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * A simple split point finder which returns the midpoint of the split segment. This is a default

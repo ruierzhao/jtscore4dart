@@ -113,7 +113,7 @@ class CoordinateXY extends Coordinate {
       case X: return x;
       case Y: return y;
       }
-      return Double.NaN;
+      return double.nan;
       // disable for now to avoid regression issues
       //throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
   }

@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.index.ItemVisitor;
+// import org.locationtech.jts.index.ItemVisitor;
 
 class IntervalRTreeLeafNode 
 extends IntervalRTreeNode

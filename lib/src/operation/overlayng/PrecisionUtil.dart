@@ -11,13 +11,13 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateFilter;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.io.OrdinateFormat;
-import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateFilter;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.io.OrdinateFormat;
+// import org.locationtech.jts.math.MathUtil;
 
 /**
  * Functions for computing precision model scale factors
@@ -107,7 +107,7 @@ class PrecisionUtil
     double maxBnd = maxBoundMagnitude( a.getEnvelopeInternal());
     if (b != null) {
       double maxBndB = maxBoundMagnitude( b.getEnvelopeInternal());
-      maxBnd = Math.max(maxBnd,  maxBndB);
+      maxBnd = math.max(maxBnd,  maxBndB);
     }
     double scale = PrecisionUtil.safeScale(maxBnd);
     return scale;
@@ -154,10 +154,10 @@ class PrecisionUtil
       double value, int precisionDigits)
   {
     // the smallest power of 10 greater than the value
-    int magnitude = (int) (Math.log(value) / Math.log(10) + 1.0);
+    int magnitude = (int) (Math.log(value) / math.log(10) + 1.0);
     int precDigits = precisionDigits - magnitude;
     
-    double scaleFactor = Math.pow(10.0, precDigits);
+    double scaleFactor = math.pow(10.0, precDigits);
     return scaleFactor;
   }
  
@@ -178,7 +178,7 @@ class PrecisionUtil
    */
   static double inherentScale(double value) {
     int numDec = numberOfDecimals(value);
-    double scaleFactor = Math.pow(10.0, numDec);
+    double scaleFactor = math.pow(10.0, numDec);
     return scaleFactor;
   }
   
@@ -223,7 +223,7 @@ class PrecisionUtil
     double scale = PrecisionUtil.inherentScale(a);
     if (b != null) {
       double scaleB = PrecisionUtil.inherentScale(b);
-      scale = Math.max(scale, scaleB);
+      scale = math.max(scale, scaleB);
     }
     return scale;
   }
@@ -232,11 +232,11 @@ class PrecisionUtil
   // this doesn't work
   private static int BADnumDecimals(double value) {
     double val = (value).abs();
-    double frac = val - Math.floor(val);
+    double frac = val - math.floor(val);
     int numDec = 0;
     while (frac > 0 && numDec < MAX_PRECISION_DIGITS) {
       double mul10 = 10 * frac;
-      frac = mul10 - Math.floor(mul10);
+      frac = mul10 - math.floor(mul10);
       numDec ++;
     }
     return numDec;

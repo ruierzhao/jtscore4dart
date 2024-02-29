@@ -19,6 +19,6 @@
  * @author Martin Davis
  *
  */
-interface Puntal {
+abstract class Puntal {
 
 }

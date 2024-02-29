@@ -12,13 +12,13 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.math.Vector2D;
-import org.locationtech.jts.shape.GeometricShapeBuilder;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.math.Vector2D;
+// import org.locationtech.jts.shape.GeometricShapeBuilder;
 
 class KochSnowflakeBuilder 
 extends GeometricShapeBuilder
@@ -33,7 +33,7 @@ extends GeometricShapeBuilder
 	static int recursionLevelForSize(int numPts)
 	{
 		double pow4 = numPts / 3;
-		double exp = Math.log(pow4)/Math.log(4);
+		double exp = math.log(pow4)/Math.log(4);
 		return (int) exp;
 	}
 	
@@ -49,7 +49,7 @@ extends GeometricShapeBuilder
 	/**
 	 * The height of an equilateral triangle of side one
 	 */
-	private static final double HEIGHT_FACTOR = Math.sin(Math.PI / 3.0);
+	private static final double HEIGHT_FACTOR = math.sin(Math.PI / 3.0);
 	private static final double ONE_THIRD = 1.0/3.0;
 	private static final double THIRD_HEIGHT = HEIGHT_FACTOR/3.0;
 	private static final double TWO_THIRDS = 2.0/3.0;

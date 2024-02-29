@@ -11,15 +11,15 @@
  */
 
 
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+// import java.io.PrintStream;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Quadrant;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Quadrant;
 
 /**
  * Represents a directed edge in a {@link PlanarGraph}. A DirectedEdge may or
@@ -78,7 +78,7 @@ class DirectedEdge
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
     quadrant = Quadrant.quadrant(dx, dy);
-    angle = Math.atan2(dy, dx);
+    angle = math.atan2(dy, dx);
     //Assert.isTrue(! (dx == 0 && dy == 0), "EdgeEnd with identical endpoints found");
   }
 

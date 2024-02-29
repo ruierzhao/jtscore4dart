@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * A strategy class that adapts UnaryUnion to different 
@@ -20,7 +20,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Martin Davis
  *
  */
-interface UnionStrategy {
+abstract class UnionStrategy {
 
   /**
    * Computes the union of two geometries.

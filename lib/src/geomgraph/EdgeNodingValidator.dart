@@ -11,13 +11,13 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
 
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.noding.BasicSegmentString;
-import org.locationtech.jts.noding.FastNodingValidator;
+// import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.noding.BasicSegmentString;
+// import org.locationtech.jts.noding.FastNodingValidator;
 
 /**
  * Validates that a collection of {@link Edge}s is correctly noded.

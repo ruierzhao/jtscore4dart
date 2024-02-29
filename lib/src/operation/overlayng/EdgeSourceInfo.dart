@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.Dimension;
+// import org.locationtech.jts.geom.Dimension;
 
 /**
  * Records topological information about an 

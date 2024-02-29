@@ -13,13 +13,13 @@
 
 import static org.locationtech.jts.operation.overlayng.OverlayNG.UNION;
 
-import java.util.Collection;
+// import java.util.Collection;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.operation.union.UnaryUnionOp;
-import org.locationtech.jts.operation.union.UnionStrategy;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.operation.union.UnaryUnionOp;
+// import org.locationtech.jts.operation.union.UnionStrategy;
 
 /**
  * Unions a geometry or collection of geometries in an

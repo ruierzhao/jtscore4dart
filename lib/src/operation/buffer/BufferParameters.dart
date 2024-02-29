@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.algorithm.Angle;
+// import org.locationtech.jts.algorithm.Angle;
 
 /**
  * A value class containing the parameters which 
@@ -179,7 +179,7 @@ class BufferParameters
   static double bufferDistanceError(int quadSegs)
   {
     double alpha = Angle.PI_OVER_2 / quadSegs;
-    return 1 - Math.cos(alpha / 2.0);
+    return 1 - math.cos(alpha / 2.0);
   }
   
   /**

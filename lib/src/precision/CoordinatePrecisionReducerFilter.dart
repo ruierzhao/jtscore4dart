@@ -12,10 +12,10 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFilter;
+// import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * Reduces the precision of the {@link Coordinate}s in a

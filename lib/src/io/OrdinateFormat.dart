@@ -12,9 +12,9 @@
 
 
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
+// import java.text.DecimalFormat;
+// import java.text.NumberFormat;
+// import java.util.Locale;
 
 /**
  * Formats numeric values for ordinates
@@ -122,7 +122,7 @@ class OrdinateFormat
      * for very large/small numbers then this can be done here.
      */
     
-    if (Double.isNaN(ord)) return REP_NAN;
+    if ((ord).isNaN) return REP_NAN;
     if (Double.isInfinite(ord)) {
       return ord > 0 ? REP_POS_INF : REP_NEG_INF;
     }

@@ -13,10 +13,10 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
- * An interface for strategies for determining the location of split points on constraint segments.
+ * An abstract class for strategies for determining the location of split points on constraint segments.
  * The location of split points has a large effect on the performance and robustness of enforcing a
  * constrained Delaunay triangulation. Poorly chosen split points can cause repeated splitting,
  * especially at narrow constraint angles, since the split point will end up encroaching on the
@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.Coordinate;
  * 
  * @author mbdavis
  */
-interface ConstraintSplitPointFinder {
+abstract class ConstraintSplitPointFinder {
     /**
      * Finds a point at which to split an encroached segment to allow the original segment to appear
      * as edges in a constrained Delaunay triangulation.

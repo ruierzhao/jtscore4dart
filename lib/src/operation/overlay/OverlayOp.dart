@@ -11,28 +11,28 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.PointLocator;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Position;
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.geomgraph.Depth;
-import org.locationtech.jts.geomgraph.DirectedEdge;
-import org.locationtech.jts.geomgraph.DirectedEdgeStar;
-import org.locationtech.jts.geomgraph.Edge;
-import org.locationtech.jts.geomgraph.EdgeList;
-import org.locationtech.jts.geomgraph.EdgeNodingValidator;
-import org.locationtech.jts.geomgraph.Label;
-import org.locationtech.jts.geomgraph.Node;
-import org.locationtech.jts.geomgraph.PlanarGraph;
-import org.locationtech.jts.operation.GeometryGraphOperation;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.algorithm.PointLocator;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.geomgraph.Depth;
+// import org.locationtech.jts.geomgraph.DirectedEdge;
+// import org.locationtech.jts.geomgraph.DirectedEdgeStar;
+// import org.locationtech.jts.geomgraph.Edge;
+// import org.locationtech.jts.geomgraph.EdgeList;
+// import org.locationtech.jts.geomgraph.EdgeNodingValidator;
+// import org.locationtech.jts.geomgraph.Label;
+// import org.locationtech.jts.geomgraph.Node;
+// import org.locationtech.jts.geomgraph.PlanarGraph;
+// import org.locationtech.jts.operation.GeometryGraphOperation;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Computes the geometric overlay of two {@link Geometry}s.  The overlay
@@ -654,10 +654,10 @@ class OverlayOp
   	int resultDimension = -1;
   	switch (opCode) {
   	case INTERSECTION: 
-  		resultDimension = Math.min(dim0, dim1);
+  		resultDimension = math.min(dim0, dim1);
   		break;
   	case UNION: 
-  		resultDimension = Math.max(dim0, dim1);
+  		resultDimension = math.max(dim0, dim1);
   		break;
   	case DIFFERENCE: 
   		resultDimension = dim0;
@@ -670,7 +670,7 @@ class OverlayOp
   	   * </pre>
   	   * and Union has the dimension of the highest-dimension argument.
   	   */
-  		resultDimension = Math.max(dim0, dim1);
+  		resultDimension = math.max(dim0, dim1);
   		break;
   	}
   	return resultDimension;

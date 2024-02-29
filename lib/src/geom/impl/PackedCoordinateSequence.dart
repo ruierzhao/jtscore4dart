@@ -12,18 +12,18 @@
 
 
 
-import java.io.ObjectStreamException;
-import java.io.Serializable;
-import java.lang.ref.SoftReference;
-import java.util.Arrays;
+// import java.io.ObjectStreamException;
+// import java.io.Serializable;
+// import java.lang.ref.SoftReference;
+// import java.util.Arrays;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequences;
-import org.locationtech.jts.geom.CoordinateXY;
-import org.locationtech.jts.geom.CoordinateXYM;
-import org.locationtech.jts.geom.CoordinateXYZM;
-import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequences;
+// import org.locationtech.jts.geom.CoordinateXY;
+// import org.locationtech.jts.geom.CoordinateXYM;
+// import org.locationtech.jts.geom.CoordinateXYZM;
+// import org.locationtech.jts.geom.Envelope;
 
 /**
  * A {@link CoordinateSequence} implementation based on a packed arrays.
@@ -285,7 +285,7 @@ abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      */
     Double(List<Coordinate> coordinates, int dimension) {
-      this( coordinates, dimension,  Math.max(0,dimension-3));
+      this( coordinates, dimension,  math.max(0,dimension-3));
     }
     /**
      * Builds a new packed coordinate sequence out of a coordinate array
@@ -472,7 +472,7 @@ abstract class PackedCoordinateSequence
      * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
      */
     Float(List<Coordinate> coordinates, int dimension) {
-      this( coordinates, dimension, Math.max(0,dimension-3));
+      this( coordinates, dimension, math.max(0,dimension-3));
     }
     
     /**

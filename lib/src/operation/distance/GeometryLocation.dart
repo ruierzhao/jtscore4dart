@@ -11,9 +11,9 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Represents the location of a point on a Geometry.

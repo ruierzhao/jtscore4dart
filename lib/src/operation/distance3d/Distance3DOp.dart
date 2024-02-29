@@ -11,16 +11,16 @@
  */
 
 
-import org.locationtech.jts.algorithm.CGAlgorithms3D;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.operation.distance.GeometryLocation;
+// import org.locationtech.jts.algorithm.CGAlgorithms3D;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.operation.distance.GeometryLocation;
 
 /**
  * Find two points on two 3D {@link Geometry}s which lie within a given distance,
@@ -216,7 +216,7 @@ class Distance3DOp {
 	}
 
 	private void computeMinDistanceMultiMulti(Geometry g0, Geometry g1, bool flip) {
-		if (g0 instanceof GeometryCollection) {
+		if (g0 is GeometryCollection) {
 			int n = g0.getNumGeometries();
 			for (int i = 0; i < n; i++) {
 				Geometry g = g0.getGeometryN(i);
@@ -230,7 +230,7 @@ class Distance3DOp {
 				return;
 			
 			// compute planar polygon only once for efficiency
-			if (g0 instanceof Polygon) {
+			if (g0 is Polygon) {
 				computeMinDistanceOneMulti(polyPlane(g0), g1, flip);
 			}
 			else 
@@ -239,7 +239,7 @@ class Distance3DOp {
 	}
 	
 	private void computeMinDistanceOneMulti(Geometry g0, Geometry g1, bool flip) {
-		if (g1 instanceof GeometryCollection) {
+		if (g1 is GeometryCollection) {
 			int n = g1.getNumGeometries();
 			for (int i = 0; i < n; i++) {
 				Geometry g = g1.getGeometryN(i);
@@ -253,7 +253,7 @@ class Distance3DOp {
 	}
 
 	private void computeMinDistanceOneMulti(PlanarPolygon3D poly, Geometry geom, bool flip) {
-		if (geom instanceof GeometryCollection) {
+		if (geom is GeometryCollection) {
 			int n = geom.getNumGeometries();
 			for (int i = 0; i < n; i++) {
 				Geometry g = geom.getGeometryN(i);
@@ -262,15 +262,15 @@ class Distance3DOp {
 			}
 		}
 		else {
-			if (geom instanceof Point) {
+			if (geom is Point) {
 				computeMinDistancePolygonPoint(poly, (Point) geom, flip);
 				return;
 			}
-			if (geom instanceof LineString) {
+			if (geom is LineString) {
 				computeMinDistancePolygonLine(poly, (LineString) geom, flip);
 				return;
 			}
-			if (geom instanceof Polygon) {
+			if (geom is Polygon) {
 				computeMinDistancePolygonPolygon(poly, (Polygon) geom, flip);
 				return;
 			}
@@ -288,44 +288,44 @@ class Distance3DOp {
 	}
 	
 	private void computeMinDistance(Geometry g0, Geometry g1, bool flip) {
-		if (g0 instanceof Point) {
-			if (g1 instanceof Point) {
+		if (g0 is Point) {
+			if (g1 is Point) {
 				computeMinDistancePointPoint((Point) g0, (Point) g1, flip);
 				return;
 			}
-			if (g1 instanceof LineString) {
+			if (g1 is LineString) {
 				computeMinDistanceLinePoint((LineString) g1, (Point) g0, ! flip);
 				return;
 			}
-			if (g1 instanceof Polygon) {
+			if (g1 is Polygon) {
 				computeMinDistancePolygonPoint(polyPlane(g1), (Point) g0, ! flip);
 				return;
 			}
 		}
-		if (g0 instanceof LineString) {
-			if (g1 instanceof Point) {
+		if (g0 is LineString) {
+			if (g1 is Point) {
 				computeMinDistanceLinePoint((LineString) g0, (Point) g1, flip);
 				return;
 			}
-			if (g1 instanceof LineString) {
+			if (g1 is LineString) {
 				computeMinDistanceLineLine((LineString) g0, (LineString) g1, flip);
 				return;
 			}
-			if (g1 instanceof Polygon) {
+			if (g1 is Polygon) {
 				computeMinDistancePolygonLine(polyPlane(g1), (LineString) g0, ! flip);
 				return;
 			}
 		}
-		if (g0 instanceof Polygon) {
-			if (g1 instanceof Point) {
+		if (g0 is Polygon) {
+			if (g1 is Point) {
 				computeMinDistancePolygonPoint(polyPlane(g0), (Point) g1, flip);
 				return;
 			}
-			if (g1 instanceof LineString) {
+			if (g1 is LineString) {
 				computeMinDistancePolygonLine(polyPlane(g0), (LineString) g1, flip);
 				return;
 			}
-			if (g1 instanceof Polygon) {
+			if (g1 is Polygon) {
 				computeMinDistancePolygonPolygon(polyPlane(g0), (Polygon) g1, flip);
 				return;
 			}

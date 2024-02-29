@@ -11,11 +11,11 @@
  */
 
 
-import java.io.Serializable;
+// import java.io.Serializable;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFactory;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFactory;
 
 /**
  * Creates {@link CoordinateSequence}s represented as an array of {@link Coordinate}s.

@@ -11,13 +11,13 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Implements the appropriate checks for repeated points
@@ -39,12 +39,12 @@ class RepeatedPointTester {
   bool hasRepeatedPoint(Geometry g)
   {
     if (g.isEmpty()) return false;
-    if (g instanceof Point)                   return false;
-    else if (g instanceof MultiPoint)         return false;
+    if (g is Point)                   return false;
+    else if (g is MultiPoint)         return false;
                         // LineString also handles LinearRings
-    else if (g instanceof LineString)         return hasRepeatedPoint(((LineString) g).getCoordinates());
-    else if (g instanceof Polygon)            return hasRepeatedPoint((Polygon) g);
-    else if (g instanceof GeometryCollection) return hasRepeatedPoint((GeometryCollection) g);
+    else if (g is LineString)         return hasRepeatedPoint(((LineString) g).getCoordinates());
+    else if (g is Polygon)            return hasRepeatedPoint((Polygon) g);
+    else if (g is GeometryCollection) return hasRepeatedPoint((GeometryCollection) g);
     else  throw new UnsupportedOperationException(g.getClass().getName());
   }
 

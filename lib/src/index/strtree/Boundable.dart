@@ -16,7 +16,7 @@
  *
  * @version 1.7
  */
-interface Boundable {
+abstract class Boundable {
   /**
    * Returns a representation of space that encloses this Boundable, preferably
    * not much bigger than this Boundable's boundary yet fast to test for intersection

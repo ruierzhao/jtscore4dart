@@ -12,7 +12,7 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Models a plane in 3-dimensional Cartesian space.
@@ -53,7 +53,7 @@ class Plane3D {
 	double orientedDistance(Coordinate p) {
 		Vector3D pb = new Vector3D(p, basePt);
 		double pbdDotNormal = pb.dot(normal);
-		if (Double.isNaN(pbdDotNormal)) 
+		if ((pbdDotNormal).isNaN) 
 			throw new ArgumentError("3D Coordinate has NaN ordinate");
 		double d = pbdDotNormal / normal.length();
 		return d;

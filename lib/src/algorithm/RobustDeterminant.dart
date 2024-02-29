@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * @version 1.7
@@ -261,7 +261,7 @@ class RobustDeterminant {
       count = count + 1;
       // MD - UNSAFE HACK for testing only!
 //      k = (int) (x2 / x1);
-      k = Math.floor(x2 / x1);
+      k = math.floor(x2 / x1);
       x2 = x2 - k * x1;
       y2 = y2 - k * y1;
 
@@ -310,7 +310,7 @@ class RobustDeterminant {
        */
       // MD - UNSAFE HACK for testing only!
 //      k = (int) (x1 / x2);
-      k = Math.floor(x1 / x2);
+      k = math.floor(x1 / x2);
       x1 = x1 - k * x2;
       y1 = y1 - k * y2;
 

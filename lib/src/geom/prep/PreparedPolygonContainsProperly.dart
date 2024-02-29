@@ -11,11 +11,11 @@
  */
 
 
-import java.util.List;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.noding.SegmentStringUtil;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.noding.SegmentStringUtil;
 
 
 
@@ -93,7 +93,7 @@ class PreparedPolygonContainsProperly
 		 * is contained in some test component.
 		 * the test is NOT properly contained.
 		 */
-		if (geom instanceof Polygonal) {
+		if (geom is Polygonal) {
 			// TODO: generalize this to handle GeometryCollections
 			bool isTargetGeomInTestArea = isAnyTargetComponentInAreaTest(geom, prepPoly.getRepresentativePoints());
 			if (isTargetGeomInTestArea) return false;

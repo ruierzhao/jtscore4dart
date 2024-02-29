@@ -12,14 +12,14 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Optimized implementation of the <tt>contains</tt> spatial predicate 
@@ -79,9 +79,9 @@ class RectangleContains {
   private bool isContainedInBoundary(Geometry geom)
   {
     // polygons can never be wholely contained in the boundary
-    if (geom instanceof Polygon) return false;
-    if (geom instanceof Point) return isPointContainedInBoundary((Point) geom);
-    if (geom instanceof LineString) return isLineStringContainedInBoundary((LineString) geom);
+    if (geom is Polygon) return false;
+    if (geom is Point) return isPointContainedInBoundary((Point) geom);
+    if (geom is LineString) return isLineStringContainedInBoundary((LineString) geom);
 
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry comp = geom.getGeometryN(i);

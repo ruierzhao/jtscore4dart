@@ -11,12 +11,12 @@
  */
 
 
-import java.util.Collection;
+// import java.util.Collection;
 
-import org.locationtech.jts.algorithm.RayCrossingCounter;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.algorithm.RayCrossingCounter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.LineSegment;
 
 /**
  * Checks if simplifying (flattening) line sections or segments 

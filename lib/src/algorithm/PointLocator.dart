@@ -11,20 +11,20 @@
  */
 
 
-import java.util.Iterator;
+// import java.util.Iterator;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryCollectionIterator;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryCollectionIterator;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Computes the topological ({@link Location})
@@ -87,10 +87,10 @@ class PointLocator
   {
     if (geom.isEmpty()) return Location.EXTERIOR;
 
-    if (geom instanceof LineString) {
+    if (geom is LineString) {
       return locateOnLineString(p, (LineString) geom);
     }
-    else if (geom instanceof Polygon) {
+    else if (geom is Polygon) {
       return locateInPolygon(p, (Polygon) geom);
     }
 
@@ -110,30 +110,30 @@ class PointLocator
     if (geom.isEmpty())
       return;
     
-    if (geom instanceof Point) {
+    if (geom is Point) {
       updateLocationInfo(locateOnPoint(p, (Point) geom));
     }
-    if (geom instanceof LineString) {
+    if (geom is LineString) {
       updateLocationInfo(locateOnLineString(p, (LineString) geom));
     }
-    else if (geom instanceof Polygon) {
+    else if (geom is Polygon) {
       updateLocationInfo(locateInPolygon(p, (Polygon) geom));
     }
-    else if (geom instanceof MultiLineString) {
+    else if (geom is MultiLineString) {
       MultiLineString ml = (MultiLineString) geom;
       for (int i = 0; i < ml.getNumGeometries(); i++) {
         LineString l = (LineString) ml.getGeometryN(i);
         updateLocationInfo(locateOnLineString(p, l));
       }
     }
-    else if (geom instanceof MultiPolygon) {
+    else if (geom is MultiPolygon) {
       MultiPolygon mpoly = (MultiPolygon) geom;
       for (int i = 0; i < mpoly.getNumGeometries(); i++) {
         Polygon poly = (Polygon) mpoly.getGeometryN(i);
         updateLocationInfo(locateInPolygon(p, poly));
       }
     }
-    else if (geom instanceof GeometryCollection) {
+    else if (geom is GeometryCollection) {
       Iterator geomi = new GeometryCollectionIterator((GeometryCollection) geom);
       while (geomi.hasNext()) {
         Geometry g2 = (Geometry) geomi.next();

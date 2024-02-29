@@ -11,13 +11,13 @@
  */
 
 
-import java.io.PrintStream;
+// import java.io.PrintStream;
 
-import org.locationtech.jts.algorithm.BoundaryNodeRule;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Quadrant;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.algorithm.BoundaryNodeRule;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Quadrant;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Models the end of an edge incident on a node.
@@ -113,7 +113,7 @@ class EdgeEnd
   }
   void print(PrintStream out)
   {
-    double angle = Math.atan2(dy, dx);
+    double angle = math.atan2(dy, dx);
     String className = getClass().getName();
     int lastDotPos = className.lastIndexOf('.');
     String name = className.substring(lastDotPos + 1);
@@ -121,7 +121,7 @@ class EdgeEnd
   }
   String toString()
   {
-    double angle = Math.atan2(dy, dx);
+    double angle = math.atan2(dy, dx);
     String className = getClass().getName();
     int lastDotPos = className.lastIndexOf('.');
     String name = className.substring(lastDotPos + 1);

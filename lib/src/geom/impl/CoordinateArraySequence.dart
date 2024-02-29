@@ -11,14 +11,14 @@
  */
 
 
-import java.io.Serializable;
+// import java.io.Serializable;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Coordinates;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Coordinates;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * A {@link CoordinateSequence} backed by an array of {@link Coordinate}s.
@@ -231,7 +231,7 @@ class CoordinateArraySequence
     if (hasZ()) {
       return coordinates[index].getZ();
     } else {
-      return Double.NaN;
+      return double.nan;
     }
 
   }
@@ -244,7 +244,7 @@ class CoordinateArraySequence
       return coordinates[index].getM();
     }
     else {
-        return Double.NaN;
+        return double.nan;
     }    
   }
   

@@ -11,17 +11,17 @@
  */
 
 
-import java.util.Collection;
+// import java.util.Collection;
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.noding.ValidatingNoder;
-import org.locationtech.jts.noding.snap.SnappingNoder;
-import org.locationtech.jts.operation.union.UnaryUnionOp;
-import org.locationtech.jts.operation.union.UnionStrategy;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.noding.ValidatingNoder;
+// import org.locationtech.jts.noding.snap.SnappingNoder;
+// import org.locationtech.jts.operation.union.UnaryUnionOp;
+// import org.locationtech.jts.operation.union.UnionStrategy;
 
 /**
  * Performs an overlay operation using {@link OverlayNG}, 
@@ -293,7 +293,7 @@ class OverlayNGRobust
   private static double snapTolerance(Geometry geom0, Geometry geom1) {
     double tol0 = snapTolerance(geom0);
     double tol1 = snapTolerance(geom1);
-    double snapTol = Math.max(tol0,  tol1);
+    double snapTol = math.max(tol0,  tol1);
     return snapTol;
   }
   
@@ -312,11 +312,11 @@ class OverlayNGRobust
   private static double ordinateMagnitude(Geometry geom) {
     if (geom == null || geom.isEmpty()) return 0;
     Envelope env = geom.getEnvelopeInternal();
-    double magMax = Math.max(
+    double magMax = math.max(
         (env.getMaxX().abs()), (env.getMaxY().abs()));
-    double magMin = Math.max(
+    double magMin = math.max(
         (env.getMinX().abs()), (env.getMinY().abs()));
-    return Math.max(magMax, magMin);
+    return math.max(magMax, magMin);
   }
   
   //===============================================

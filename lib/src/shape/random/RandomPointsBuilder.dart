@@ -12,15 +12,15 @@
 
 
 
-import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
-import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.shape.GeometricShapeBuilder;
+// import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
+// import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.shape.GeometricShapeBuilder;
 
 /**
  * Creates random point sets contained in a 
@@ -63,7 +63,7 @@ extends GeometricShapeBuilder
    */
   void setExtent(Geometry mask)
   {
-  	if (! (mask instanceof Polygonal))
+  	if (! (mask is Polygonal))
   		throw new ArgumentError("Only polygonal extents are supported");
   	this.maskPoly = mask;
   	setExtent(mask.getEnvelopeInternal());
@@ -99,8 +99,8 @@ extends GeometricShapeBuilder
   
   protected Coordinate createRandomCoord(Envelope env)
   {
-    double x = env.getMinX() + env.getWidth() * Math.random();
-    double y = env.getMinY() + env.getHeight() * Math.random();
+    double x = env.getMinX() + env.getWidth() * math.random();
+    double y = env.getMinY() + env.getHeight() * math.random();
     return createCoord(x, y);
   }
 

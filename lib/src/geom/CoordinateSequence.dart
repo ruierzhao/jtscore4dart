@@ -28,7 +28,7 @@ import 'package:jtscore4dart/src/geom/Coordinates.dart';
 /// <p>
 /// Implementing a custom coordinate storage structure
 /// requires implementing the {@link CoordinateSequence} and
-/// {@link CoordinateSequenceFactory} interfaces. 
+/// {@link CoordinateSequenceFactory} abstract classs. 
 /// To use the custom CoordinateSequence, create a
 /// new {@link GeometryFactory} parameterized by the CoordinateSequenceFactory
 /// The {@link GeometryFactory} can then be used to create new {@link Geometry}s.
@@ -160,7 +160,7 @@ abstract class CoordinateSequence{
   /// Returns ordinate Z of the specified coordinate if available.
   ///
   /// @param index  the coordinate index in the sequence
-  /// @return the value of the Z ordinate in the index'th coordinate, or Double.NaN if not defined.
+  /// @return the value of the Z ordinate in the index'th coordinate, or double.nan if not defined.
   double getZ(int index)
   {
     if (hasZ()) {
@@ -173,7 +173,7 @@ abstract class CoordinateSequence{
   /// Returns ordinate M of the specified coordinate if available.
   /// 
   /// @param index  the coordinate index in the sequence
-  /// @return the value of the M ordinate in the index'th coordinate, or Double.NaN if not defined.
+  /// @return the value of the M ordinate in the index'th coordinate, or double.nan if not defined.
   double getM(int index)
   {
     if (hasM()) {

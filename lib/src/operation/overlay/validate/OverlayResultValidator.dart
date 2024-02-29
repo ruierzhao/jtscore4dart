@@ -11,15 +11,15 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.operation.overlay.OverlayOp;
-import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
-import org.locationtech.jts.util.Debug;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.operation.overlay.OverlayOp;
+// import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
+// import org.locationtech.jts.util.Debug;
 
 /**
  * Validates that the result of an overlay operation is
@@ -48,7 +48,7 @@ class OverlayResultValidator
 
   private static double computeBoundaryDistanceTolerance(Geometry g0, Geometry g1)
   {
-  	return Math.min(GeometrySnapper.computeSizeBasedSnapTolerance(g0),
+  	return math.min(GeometrySnapper.computeSizeBasedSnapTolerance(g0),
   			GeometrySnapper.computeSizeBasedSnapTolerance(g1));
   }
   

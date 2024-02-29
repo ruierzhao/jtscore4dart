@@ -11,9 +11,9 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * QuadRoot is the root of a single Quadtree.  It is centred at the origin,

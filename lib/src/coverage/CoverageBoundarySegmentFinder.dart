@@ -11,13 +11,13 @@
  */
 
 
-import java.util.HashSet;
-import java.util.Set;
+// import java.util.HashSet;
+// import java.util.Set;
 
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFilter;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineSegment;
 
 /**
  * Finds coverage segments which occur in only a single coverage element.

@@ -11,23 +11,23 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.algorithm.PointLocation;
-import org.locationtech.jts.algorithm.PolygonNodeTopology;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.noding.BasicSegmentString;
-import org.locationtech.jts.noding.MCIndexNoder;
-import org.locationtech.jts.noding.SegmentString;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.algorithm.PointLocation;
+// import org.locationtech.jts.algorithm.PolygonNodeTopology;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.noding.BasicSegmentString;
+// import org.locationtech.jts.noding.MCIndexNoder;
+// import org.locationtech.jts.noding.SegmentString;
 
 /**
  * Analyzes the topology of polygonal geometry
@@ -339,7 +339,7 @@ class PolygonTopologyAnalyzer {
 
   private static List<SegmentString> createSegmentStrings(Geometry geom, bool isInvertedRingValid) {
     List<SegmentString> segStrings = new ArrayList<SegmentString>();
-    if (geom instanceof LinearRing) {
+    if (geom is LinearRing) {
       LinearRing ring = (LinearRing) geom;
       segStrings.add( createSegString(ring, null));
       return segStrings;

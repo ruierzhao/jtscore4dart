@@ -12,7 +12,7 @@
 
 
 
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * Measures the degree of similarity between two {@link Geometry}s

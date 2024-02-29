@@ -12,13 +12,13 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.GeometricShapeFactory;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.util.GeometricShapeFactory;
 
 /**
  * Creates geometries which are shaped like multi-armed stars
@@ -125,11 +125,11 @@ class SineStarFactory
     for (int i = 0; i < nPts; i++) {
       // the fraction of the way through the current arm - in [0,1]
       double ptArcFrac = (i / (double) nPts) * numArms;
-      double armAngFrac = ptArcFrac - Math.floor(ptArcFrac);
+      double armAngFrac = ptArcFrac - math.floor(ptArcFrac);
       
       // the angle for the current arm - in [0,2Pi]  
       // (each arm is a complete sine wave cycle)
-      double armAng = 2 * Math.PI * armAngFrac;
+      double armAng = 2 * math.PI * armAngFrac;
       // the current length of the arm
       double armLenFrac = (Math.cos(armAng) + 1.0) / 2.0;
       
@@ -137,9 +137,9 @@ class SineStarFactory
       double curveRadius = insideRadius + armMaxLen * armLenFrac;
 
       // the current angle of the curve
-      double ang = i * (2 * Math.PI / nPts);
-      double x = curveRadius * Math.cos(ang) + centreX;
-      double y = curveRadius * Math.sin(ang) + centreY;
+      double ang = i * (2 * math.PI / nPts);
+      double x = curveRadius * math.cos(ang) + centreX;
+      double y = curveRadius * math.sin(ang) + centreY;
       pts[iPt++] = coord(x, y);
     }
     pts[iPt] = new Coordinate(pts[0]);

@@ -11,9 +11,9 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.index.kdtree.KdNode;
-import org.locationtech.jts.index.kdtree.KdTree;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.index.kdtree.KdNode;
+// import org.locationtech.jts.index.kdtree.KdTree;
 
 /**
  * An index providing fast creation and lookup of snap points.

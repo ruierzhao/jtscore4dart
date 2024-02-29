@@ -11,16 +11,16 @@
  */
 
 
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Lineal;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.operation.BoundaryOp;
-import org.locationtech.jts.operation.valid.IsSimpleOp;
-import org.locationtech.jts.operation.relate.RelateOp;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Lineal;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.operation.BoundaryOp;
+// import org.locationtech.jts.operation.valid.IsSimpleOp;
+// import org.locationtech.jts.operation.relate.RelateOp;
 
 /**
- * An interface for rules which determine whether node points
+ * An abstract class for rules which determine whether node points
  * which are in boundaries of {@link Lineal} geometry components
  * are in the boundary of the parent geometry collection.
  * The SFS specifies a single kind of boundary node rule,
@@ -45,7 +45,7 @@ import org.locationtech.jts.operation.relate.RelateOp;
  * sufficient to perform this test, since it
  * states that closed rings have <b>no</b> boundary points.
  * <p>
- * This interface and its subclasses follow the <tt>Strategy</tt> design pattern.
+ * This abstract class and its subclasses follow the <tt>Strategy</tt> design pattern.
  *
  * @author Martin Davis
  * @version 1.7
@@ -55,7 +55,7 @@ import org.locationtech.jts.operation.relate.RelateOp;
  * @see IsSimpleOp
  * @see PointLocator
  */
-interface BoundaryNodeRule
+abstract class BoundaryNodeRule
 {
 
 	/**

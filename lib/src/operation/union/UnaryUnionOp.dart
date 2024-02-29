@@ -12,17 +12,17 @@
 
 
 
-import java.util.Collection;
-import java.util.List;
+// import java.util.Collection;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Puntal;
-import org.locationtech.jts.operation.linemerge.LineMerger;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Puntal;
+// import org.locationtech.jts.operation.linemerge.LineMerger;
 
 /**
  * Unions a <code>Collection</code> of {@link Geometry}s or a single Geometry 

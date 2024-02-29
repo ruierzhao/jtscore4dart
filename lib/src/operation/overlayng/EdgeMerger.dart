@@ -11,12 +11,12 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.List;
-import java.util.Map;
+// import java.util.ArrayList;
+// import java.util.Map;
+// import java.util.List;
+// import java.util.Map;
 
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Performs merging on the noded edges of the input geometries.

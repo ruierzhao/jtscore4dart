@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Functions to compute intersection points between lines and line segments.
@@ -110,8 +110,8 @@ class Intersection {
     double yInt = y/w;
     
     // check for parallel lines
-    if ((Double.isNaN(xInt)) || (Double.isInfinite(xInt)
-        || Double.isNaN(yInt)) || (Double.isInfinite(yInt))) {
+    if (((xInt).isNaN) || (Double.isInfinite(xInt)
+        || (yInt).isNaN) || (Double.isInfinite(yInt))) {
       return null;
     }
     // de-condition intersection point

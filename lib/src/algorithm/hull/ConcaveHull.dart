@@ -11,15 +11,15 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.util.PriorityQueue;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Constructs a concave hull of a set of points.
@@ -80,7 +80,7 @@ class ConcaveHull
   static double uniformGridEdgeLength(Geometry geom) {
     double areaCH = geom.convexHull().getArea();
     int numPts = geom.getNumPoints();
-    return Math.sqrt(areaCH / numPts);
+    return math.sqrt(areaCH / numPts);
   }
   
   /**

@@ -14,17 +14,17 @@
 /**
  * @version 1.7
  */
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+// import java.io.PrintStream;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Quadrant;
-import org.locationtech.jts.util.Debug;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Quadrant;
+// import org.locationtech.jts.util.Debug;
 
 /**
  * The computation of the <code>IntersectionMatrix</code> relies on the use of a structure

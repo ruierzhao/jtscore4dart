@@ -11,29 +11,29 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+// import java.util.ArrayList;
+// import java.util.HashSet;
+// import java.util.List;
+// import java.util.Set;
 
-import org.locationtech.jts.algorithm.BoundaryNodeRule;
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Lineal;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.util.LinearComponentExtracter;
-import org.locationtech.jts.noding.BasicSegmentString;
-import org.locationtech.jts.noding.MCIndexNoder;
-import org.locationtech.jts.noding.SegmentIntersector;
-import org.locationtech.jts.noding.SegmentString;
+// import org.locationtech.jts.algorithm.BoundaryNodeRule;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Lineal;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.util.LinearComponentExtracter;
+// import org.locationtech.jts.noding.BasicSegmentString;
+// import org.locationtech.jts.noding.MCIndexNoder;
+// import org.locationtech.jts.noding.SegmentIntersector;
+// import org.locationtech.jts.noding.SegmentString;
 
 /**
  * Tests whether a <code>Geometry</code> is simple as defined by the OGC SFS specification.
@@ -192,12 +192,12 @@ class IsSimpleOp
   private bool computeSimple(Geometry geom)
   {
     if (geom.isEmpty()) return true;
-    if (geom instanceof Point) return true;
-    if (geom instanceof LineString) return isSimpleLinearGeometry(geom);
-    if (geom instanceof MultiLineString) return isSimpleLinearGeometry(geom);
-    if (geom instanceof MultiPoint) return isSimpleMultiPoint((MultiPoint) geom);
-    if (geom instanceof Polygonal) return isSimplePolygonal(geom);
-    if (geom instanceof GeometryCollection) return isSimpleGeometryCollection(geom);
+    if (geom is Point) return true;
+    if (geom is LineString) return isSimpleLinearGeometry(geom);
+    if (geom is MultiLineString) return isSimpleLinearGeometry(geom);
+    if (geom is MultiPoint) return isSimpleMultiPoint((MultiPoint) geom);
+    if (geom is Polygonal) return isSimplePolygonal(geom);
+    if (geom is GeometryCollection) return isSimpleGeometryCollection(geom);
     // all other geometry types are simple by definition
     return true;
   }

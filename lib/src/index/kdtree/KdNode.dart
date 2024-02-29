@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
 
 /**
  * A node of a {@link KdTree}, which represents one or more points in the same location.

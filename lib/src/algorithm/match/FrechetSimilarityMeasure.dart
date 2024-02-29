@@ -11,11 +11,11 @@
  */
 
 
-import org.locationtech.jts.algorithm.distance.DiscreteFrechetDistance;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.algorithm.distance.DiscreteFrechetDistance;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.MultiPoint;
 
 /**
  * Measures the degree of similarity between two

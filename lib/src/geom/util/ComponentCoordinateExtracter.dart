@@ -11,14 +11,14 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
 
 /**
  * Extracts a representative {@link Coordinate} 
@@ -63,8 +63,8 @@ class ComponentCoordinateExtracter
     if (geom.isEmpty())
       return;
     // add coordinates from connected components
-    if (geom instanceof LineString
-        || geom instanceof Point) 
+    if (geom is LineString
+        || geom is Point) 
       coords.add(geom.getCoordinate());
   }
 

@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.LineSegment;
 
 /**
  * Models a constraint segment in a triangulation.

@@ -12,15 +12,15 @@
 
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.TreeMap;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * Creates a map between the vertex {@link Coordinate}s of a 

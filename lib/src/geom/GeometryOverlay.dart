@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.geom.util.GeometryCollectionMapper;
-import org.locationtech.jts.geom.util.GeometryMapper;
-import org.locationtech.jts.operation.overlay.OverlayOp;
-import org.locationtech.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
-import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
-import org.locationtech.jts.operation.union.UnaryUnionOp;
+// import org.locationtech.jts.geom.util.GeometryCollectionMapper;
+// import org.locationtech.jts.geom.util.GeometryMapper;
+// import org.locationtech.jts.operation.overlay.OverlayOp;
+// import org.locationtech.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
+// import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
+// import org.locationtech.jts.operation.union.UnaryUnionOp;
 
 /**
  * Internal class which encapsulates the runtime switch to use OverlayNG,

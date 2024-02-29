@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Contains a pair of points and the distance between them.
@@ -23,7 +23,7 @@ import org.locationtech.jts.io.WKTWriter;
 class PointPairDistance {
 
   private final List<Coordinate> pt = { new Coordinate(), new Coordinate() };
-  private double distance = Double.NaN;
+  private double distance = double.nan;
   private bool isNull = true;
 
   /**

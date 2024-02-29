@@ -12,25 +12,25 @@
 
 
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.EnumSet;
+// import java.io.IOException;
+// import java.io.StringWriter;
+// import java.io.Writer;
+// import java.util.EnumSet;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFilter;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Writes the Well-Known Text representation of a {@link Geometry}.
@@ -199,12 +199,12 @@ class WKTWriter
     void filter(CoordinateSequence seq, int i) {
 
       if (checkOrdinateFlags.contains(Ordinate.Z) && !outputOrdinates.contains(Ordinate.Z)) {
-        if (!Double.isNaN(seq.getZ(i)))
+        if (!(seq.getZ(i).isNaN))
           outputOrdinates.add(Ordinate.Z);
       }
 
       if (checkOrdinateFlags.contains(Ordinate.M) && !outputOrdinates.contains(Ordinate.M)) {
-        if (!Double.isNaN(seq.getM(i)))
+        if (!(seq.getM(i).isNaN))
           outputOrdinates.add(Ordinate.M);
       }
     }
@@ -252,14 +252,14 @@ class WKTWriter
    * <ul>
    *   <li>If the specified <b>output dimension is 3</b> and the <b>z is measure flag
    *   is set to true</b>, the Z value of coordinates will be written if it is present
-   * (i.e. if it is not <code>Double.NaN</code>)</li>
+   * (i.e. if it is not <code>double.nan</code>)</li>
    *   <li>If the specified <b>output dimension is 3</b> and the <b>z is measure flag
    *   is set to false</b>, the Measure value of coordinates will be written if it is present
-   * (i.e. if it is not <code>Double.NaN</code>)</li>
+   * (i.e. if it is not <code>double.nan</code>)</li>
    *   <li>If the specified <b>output dimension is 4</b>, the Z value of coordinates will
    *   be written even if it is not present when the Measure value is present.The Measrue
    *   value of coordinates will be written if it is present
-   * (i.e. if it is not <code>Double.NaN</code>)</li>
+   * (i.e. if it is not <code>double.nan</code>)</li>
    * </ul>
    *
    * @param outputDimension the coordinate dimension to output (2 to 4)
@@ -497,35 +497,35 @@ class WKTWriter
   {
     indent(useFormatting, level, writer);
 
-    if (geometry instanceof Point) {
+    if (geometry is Point) {
       appendPointTaggedText((Point) geometry, outputOrdinates, useFormatting,
               level, writer, formatter);
     }
-    else if (geometry instanceof LinearRing) {
+    else if (geometry is LinearRing) {
       appendLinearRingTaggedText((LinearRing) geometry, outputOrdinates, useFormatting,
               level, writer, formatter);
     }
-    else if (geometry instanceof LineString) {
+    else if (geometry is LineString) {
       appendLineStringTaggedText((LineString) geometry, outputOrdinates, useFormatting,
               level, writer, formatter);
     }
-    else if (geometry instanceof Polygon) {
+    else if (geometry is Polygon) {
       appendPolygonTaggedText((Polygon) geometry, outputOrdinates, useFormatting,
               level, writer, formatter);
     }
-    else if (geometry instanceof MultiPoint) {
+    else if (geometry is MultiPoint) {
       appendMultiPointTaggedText((MultiPoint) geometry, outputOrdinates,
               useFormatting, level, writer, formatter);
     }
-    else if (geometry instanceof MultiLineString) {
+    else if (geometry is MultiLineString) {
       appendMultiLineStringTaggedText((MultiLineString) geometry, outputOrdinates,
               useFormatting, level, writer, formatter);
     }
-    else if (geometry instanceof MultiPolygon) {
+    else if (geometry is MultiPolygon) {
       appendMultiPolygonTaggedText((MultiPolygon) geometry, outputOrdinates,
               useFormatting, level, writer, formatter);
     }
-    else if (geometry instanceof GeometryCollection) {
+    else if (geometry is GeometryCollection) {
       appendGeometryCollectionTaggedText((GeometryCollection) geometry, outputOrdinates,
               useFormatting, level, writer, formatter);
     }

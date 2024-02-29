@@ -12,21 +12,21 @@
 
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.Stack;
 
-import org.locationtech.jts.edgegraph.HalfEdge;
-import org.locationtech.jts.edgegraph.MarkHalfEdge;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.edgegraph.HalfEdge;
+// import org.locationtech.jts.edgegraph.MarkHalfEdge;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
 
 
 
@@ -89,7 +89,7 @@ class LineDissolver
   void add(Geometry geometry) {
     geometry.apply(new GeometryComponentFilter() {
       void filter(Geometry component) {
-        if (component instanceof LineString) {
+        if (component is LineString) {
           add((LineString)component);
         }
       }      

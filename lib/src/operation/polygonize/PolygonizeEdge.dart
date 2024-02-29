@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.planargraph.Edge;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.planargraph.Edge;
 
 /**
  * An edge of a polygonization graph.

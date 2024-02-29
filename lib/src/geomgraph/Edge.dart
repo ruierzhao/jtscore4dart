@@ -11,14 +11,14 @@
  */
 
 
-import java.io.PrintStream;
+// import java.io.PrintStream;
 
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.IntersectionMatrix;
-import org.locationtech.jts.geom.Position;
-import org.locationtech.jts.geomgraph.index.MonotoneChainEdge;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.IntersectionMatrix;
+// import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geomgraph.index.MonotoneChainEdge;
 
 
 /**
@@ -211,7 +211,7 @@ class Edge
    */
   bool equals(Object o)
   {
-    if (! (o instanceof Edge)) return false;
+    if (! (o is Edge)) return false;
     Edge e = (Edge) o;
 
     if (pts.length != e.pts.length) return false;

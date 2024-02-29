@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Computes the Euclidean distance (L2 metric) from a Point to a Geometry.
@@ -29,13 +29,13 @@ class DistanceToPointFinder {
 
   static void computeDistance(Geometry geom, Coordinate pt, PointPairDistance ptDist)
   {
-    if (geom instanceof LineString) {
+    if (geom is LineString) {
       computeDistance((LineString) geom, pt, ptDist);
     }
-    else if (geom instanceof Polygon) {
+    else if (geom is Polygon) {
       computeDistance((Polygon) geom, pt, ptDist);
     }
-    else if (geom instanceof GeometryCollection) {
+    else if (geom is GeometryCollection) {
       GeometryCollection gc = (GeometryCollection) geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         Geometry g = gc.getGeometryN(i);

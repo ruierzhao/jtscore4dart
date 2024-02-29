@@ -11,9 +11,9 @@
  */
 
 
-import java.io.PrintStream;
+// import java.io.PrintStream;
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Represents an intersection point between two {@link SegmentString}s.

@@ -11,18 +11,18 @@
  */
 
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.PriorityQueue;
+// import java.io.Serializable;
+// import java.util.ArrayList;
+// import java.util.Collections;
+// import java.util.Comparator;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.PriorityQueue;
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.index.ItemVisitor;
-import org.locationtech.jts.index.SpatialIndex;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.index.ItemVisitor;
+// import org.locationtech.jts.index.SpatialIndex;
+// import org.locationtech.jts.util.Assert;
 
 
 /**
@@ -123,11 +123,11 @@ implements SpatialIndex, Serializable
    */
   protected List createParentBoundables(List childBoundables, int newLevel) {
     Assert.isTrue(!childBoundables.isEmpty());
-    int minLeafCount = (int) Math.ceil((childBoundables.size() / (double) getNodeCapacity()));
+    int minLeafCount = (int) math.ceil((childBoundables.size() / (double) getNodeCapacity()));
     ArrayList sortedChildBoundables = new ArrayList(childBoundables);
     Collections.sort(sortedChildBoundables, xComparator);
     List[] verticalSlices = verticalSlices(sortedChildBoundables,
-        (int) Math.ceil(Math.sqrt(minLeafCount)));
+        (int) math.ceil(Math.sqrt(minLeafCount)));
     return createParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
   }
 
@@ -149,7 +149,7 @@ implements SpatialIndex, Serializable
    * @param childBoundables Must be sorted by the x-value of the envelope midpoints
    */
   protected List[] verticalSlices(List childBoundables, int sliceCount) {
-    int sliceCapacity = (int) Math.ceil(childBoundables.size() / (double) sliceCount);
+    int sliceCapacity = (int) math.ceil(childBoundables.size() / (double) sliceCount);
     List[] slices = new List[sliceCount];
     Iterator i = childBoundables.iterator();
     for (int j = 0; j < sliceCount; j++) {

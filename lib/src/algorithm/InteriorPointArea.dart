@@ -11,18 +11,18 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Computes a point in the interior of an areal geometry.
@@ -121,9 +121,9 @@ class InteriorPointArea {
     if ( geom.isEmpty() )
       return;
 
-    if ( geom instanceof Polygon ) {
+    if ( geom is Polygon ) {
       processPolygon((Polygon) geom);
-    } else if ( geom instanceof GeometryCollection ) {
+    } else if ( geom is GeometryCollection ) {
       GeometryCollection gc = (GeometryCollection) geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         process(gc.getGeometryN(i));

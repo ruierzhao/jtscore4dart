@@ -20,7 +20,7 @@
  * @author Martin Davis
  *
  */
-interface Polygonal 
+abstract class Polygonal 
 {
 
 }

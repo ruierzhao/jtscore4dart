@@ -11,11 +11,11 @@
  */
 
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.PriorityQueue;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.PriorityQueue;
 
-import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Envelope;
 
 
 /**
@@ -130,7 +130,7 @@ class BoundablePair
   
   static bool isComposite(Object item)
   {
-    return (item instanceof AbstractNode); 
+    return (item is AbstractNode); 
   }
   
   private static double area(Boundable b)

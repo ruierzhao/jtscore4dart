@@ -12,16 +12,16 @@
 
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.shape.GeometricShapeBuilder;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.shape.GeometricShapeBuilder;
 
 
 class SierpinskiCarpetBuilder 
@@ -35,7 +35,7 @@ extends GeometricShapeBuilder
 	static int recursionLevelForSize(int numPts)
 	{
 		double pow4 = numPts / 3;
-		double exp = Math.log(pow4)/Math.log(4);
+		double exp = math.log(pow4)/Math.log(4);
 		return (int) exp;
 	}
 	

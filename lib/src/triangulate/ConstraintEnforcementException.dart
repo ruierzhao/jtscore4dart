@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Indicates a failure during constraint enforcement.

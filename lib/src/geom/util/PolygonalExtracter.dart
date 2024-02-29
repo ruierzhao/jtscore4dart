@@ -11,13 +11,13 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Extracts the {@link Polygon} and {@link MultiPolygon} elements from a {@link Geometry}.
@@ -33,10 +33,10 @@ class PolygonalExtracter
    */
   static List<Geometry> getPolygonals(Geometry geom, List<Geometry> list)
   {
-  	if (geom instanceof Polygon || geom instanceof MultiPolygon) {
+  	if (geom is Polygon || geom is MultiPolygon) {
   		list.add(geom);
   	}
-  	else if (geom instanceof GeometryCollection) {
+  	else if (geom is GeometryCollection) {
   	  for (int i = 0; i < geom.getNumGeometries(); i++) {
   	    getPolygonals(geom.getGeometryN(i), list);
   	  }

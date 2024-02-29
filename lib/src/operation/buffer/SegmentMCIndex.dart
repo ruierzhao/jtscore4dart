@@ -11,15 +11,15 @@
  */
 
 
-import java.util.List;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.index.ItemVisitor;
-import org.locationtech.jts.index.chain.MonotoneChain;
-import org.locationtech.jts.index.chain.MonotoneChainBuilder;
-import org.locationtech.jts.index.chain.MonotoneChainSelectAction;
-import org.locationtech.jts.index.strtree.STRtree;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.index.ItemVisitor;
+// import org.locationtech.jts.index.chain.MonotoneChain;
+// import org.locationtech.jts.index.chain.MonotoneChainBuilder;
+// import org.locationtech.jts.index.chain.MonotoneChainSelectAction;
+// import org.locationtech.jts.index.strtree.STRtree;
 
 /**
  * A spatial index over a segment sequence 

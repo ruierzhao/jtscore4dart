@@ -12,14 +12,14 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Lineal;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.Puntal;
-import org.locationtech.jts.index.strtree.ItemBoundable;
-import org.locationtech.jts.index.strtree.ItemDistance;
-import org.locationtech.jts.index.strtree.STRtree;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Lineal;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.Puntal;
+// import org.locationtech.jts.index.strtree.ItemBoundable;
+// import org.locationtech.jts.index.strtree.ItemDistance;
+// import org.locationtech.jts.index.strtree.STRtree;
 
 /**
  * Computes the distance between the facets (segments and vertices) 

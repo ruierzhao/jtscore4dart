@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.operation.BoundaryOp;
+// import org.locationtech.jts.operation.BoundaryOp;
 
 /**
  * Models a collection of {@link LineString}s.

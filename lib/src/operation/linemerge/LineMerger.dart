@@ -11,17 +11,17 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.planargraph.GraphComponent;
-import org.locationtech.jts.planargraph.Node;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.planargraph.GraphComponent;
+// import org.locationtech.jts.planargraph.Node;
+// import org.locationtech.jts.util.Assert;
 
 
 /**
@@ -71,7 +71,7 @@ class LineMerger
   void add(Geometry geometry) {
     geometry.apply(new GeometryComponentFilter() {
       void filter(Geometry component) {
-        if (component instanceof LineString) {
+        if (component is LineString) {
           add((LineString)component);
         }
       }      

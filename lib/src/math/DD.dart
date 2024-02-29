@@ -11,7 +11,7 @@
  */
 
 
-import java.io.Serializable;
+// import java.io.Serializable;
 
 /**
  * Implements extended-precision floating-point numbers 
@@ -51,7 +51,7 @@ import java.io.Serializable;
  * of the operation.  This provides a simple and safe semantics for
  * writing DoubleDouble expressions.  However, there is a performance
  * penalty for the object allocations required.
- * The mutable interface updates object values in-place.
+ * The mutable abstract class updates object values in-place.
  * It provides optimum memory performance, but requires
  * care to ensure that aliasing errors are not created
  * and constant values are not changed.
@@ -124,7 +124,7 @@ strictfp final class DD
   /**
    * A value representing the result of an operation which does not return a valid number.
    */
-  static final DD NaN = new DD(Double.NaN, Double.NaN);
+  static final DD NaN = new DD(double.nan, double.nan);
   
   /**
    * The smallest representable relative difference between two {link @ DoubleDouble} values
@@ -133,7 +133,7 @@ strictfp final class DD
   
   private static DD createNaN()
   {
-    return new DD(Double.NaN, Double.NaN); 
+    return new DD(double.nan, double.nan); 
   }
   
   /**
@@ -473,7 +473,7 @@ strictfp final class DD
    */
   final DD multiply(double y)
   {
-    if (Double.isNaN(y)) return createNaN();
+    if ((y).isNaN) return createNaN();
     return copy(this).selfMultiply(y, 0.0);
   }
   
@@ -547,7 +547,7 @@ strictfp final class DD
    */
   final DD divide(double y)
   {
-    if (Double.isNaN(y)) return createNaN();
+    if ((y).isNaN) return createNaN();
     return copy(this).selfDivide(y, 0.0);  
   }
 
@@ -634,7 +634,7 @@ strictfp final class DD
     double flo = 0.0;
     // Hi is already integral.  Floor the low word
     if (fhi == hi) {
-      flo = Math.floor(lo);
+      flo = math.floor(lo);
     }
       // do we need to renormalize here?    
     return new DD(fhi, flo); 
@@ -658,7 +658,7 @@ strictfp final class DD
     double flo = 0.0;
     // Hi is already integral.  Ceil the low word
     if (fhi == hi) {
-      flo = Math.ceil(lo);
+      flo = math.ceil(lo);
       // do we need to renormalize here?
     }
     return new DD(fhi, flo); 
@@ -797,7 +797,7 @@ strictfp final class DD
       return NaN;
     }
 
-    double x = 1.0 / Math.sqrt(hi);
+    double x = 1.0 / math.sqrt(hi);
     double ax = hi * x;
     
     DD axdd = valueOf(ax);
@@ -814,7 +814,7 @@ strictfp final class DD
   
   /**
    * Computes the value of this number raised to an integral power.
-   * Follows semantics of Java Math.pow as closely as possible.
+   * Follows semantics of Java math.pow as closely as possible.
    * 
    * @param exp the integer exponent
    * @return x raised to the integral power exp
@@ -1292,14 +1292,14 @@ strictfp final class DD
   private static int magnitude(double x)
   {
     double xAbs = (x).abs();
-    double xLog10 = Math.log(xAbs) / Math.log(10);
-    int xMag = (int) Math.floor(xLog10); 
+    double xLog10 = math.log(xAbs) / math.log(10);
+    int xMag = (int) math.floor(xLog10); 
     /**
      * Since log computation is inexact, there may be an off-by-one error
      * in the computed magnitude. 
      * Following tests that magnitude is correct, and adjusts it if not
      */
-    double xApprox = Math.pow(10, xMag);
+    double xApprox = math.pow(10, xMag);
     if (xApprox * 10 <= xAbs)
       xMag += 1;
     

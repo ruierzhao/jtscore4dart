@@ -12,11 +12,11 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFilter;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.util.Assert;
 /**
  * Represents an affine transformation on the 2D Cartesian plane. 
  * It can be used to transform a {@link Coordinate} or {@link Geometry}.
@@ -120,7 +120,7 @@ class AffineTransformation
    */
   static AffineTransformation rotationInstance(double theta)
   {
-    return rotationInstance(Math.sin(theta), Math.cos(theta));
+    return rotationInstance(Math.sin(theta), math.cos(theta));
   }
   
   /**
@@ -154,7 +154,7 @@ class AffineTransformation
    */
   static AffineTransformation rotationInstance(double theta, double x, double y)
   {
-    return rotationInstance(Math.sin(theta), Math.cos(theta), x, y);
+    return rotationInstance(Math.sin(theta), math.cos(theta), x, y);
   }
   
   /**
@@ -494,7 +494,7 @@ class AffineTransformation
     }
     double dx = x1 - x0;
     double dy = y1 - y0;
-    double d = Math.hypot(dx, dy);
+    double d = math.hypot(dx, dy);
     double sin = dy / d;
     double cos = dx / d;
     double cs2 = 2 * sin * cos;
@@ -525,7 +525,7 @@ class AffineTransformation
     // rotate vector to positive x axis direction
     double dx = x1 - x0;
     double dy = y1 - y0;
-    double d = Math.hypot(dx, dy);
+    double d = math.hypot(dx, dy);
     double sin = dy / d;
     double cos = dx / d;
     rotate(-sin, cos);
@@ -576,7 +576,7 @@ class AffineTransformation
     }
     
     // rotate vector to positive x axis direction
-    double d = Math.hypot(x, y);
+    double d = math.hypot(x, y);
     double sin = y / d;
     double cos = x / d;
     rotate(-sin, cos);
@@ -605,7 +605,7 @@ class AffineTransformation
    */
   AffineTransformation setToRotation(double theta)
   {
-    setToRotation(Math.sin(theta), Math.cos(theta));
+    setToRotation(Math.sin(theta), math.cos(theta));
     return this;
   }
   
@@ -652,7 +652,7 @@ class AffineTransformation
    */
   AffineTransformation setToRotation(double theta, double x, double y)
   {
-    setToRotation(Math.sin(theta), Math.cos(theta), x, y);
+    setToRotation(Math.sin(theta), math.cos(theta), x, y);
     return this;
   }
   
@@ -1053,7 +1053,7 @@ class AffineTransformation
   bool equals(Object obj)
   {
     if (obj == null) return false;
-    if (! (obj instanceof AffineTransformation))
+    if (! (obj is AffineTransformation))
       return false;
     
     AffineTransformation trans = (AffineTransformation) obj;

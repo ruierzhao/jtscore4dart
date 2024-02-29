@@ -12,17 +12,17 @@
 
 
 
-import java.util.Set;
-import java.util.TreeSet;
+// import java.util.Set;
+// import java.util.TreeSet;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.util.GeometryTransformer;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.util.GeometryTransformer;
 
 /**
  * Snaps the vertices and segments of a {@link Geometry} 
@@ -78,14 +78,14 @@ class GeometrySnapper
   static double computeSizeBasedSnapTolerance(Geometry g)
   {
     Envelope env = g.getEnvelopeInternal();
-    double minDimension = Math.min(env.getHeight(), env.getWidth());
+    double minDimension = math.min(env.getHeight(), env.getWidth());
     double snapTol = minDimension * SNAP_PRECISION_FACTOR;
     return snapTol;
   }
 
   static double computeOverlaySnapTolerance(Geometry g0, Geometry g1)
   {
-    return Math.min(computeOverlaySnapTolerance(g0), computeOverlaySnapTolerance(g1));
+    return math.min(computeOverlaySnapTolerance(g0), computeOverlaySnapTolerance(g1));
   }
 
   /**
@@ -180,7 +180,7 @@ class GeometrySnapper
     SnapTransformer snapTrans = new SnapTransformer(snapTolerance, snapPts, true);
     Geometry snappedGeom = snapTrans.transform(srcGeom);
     Geometry result = snappedGeom;
-    if (cleanResult && result instanceof Polygonal) {
+    if (cleanResult && result is Polygonal) {
       // TODO: use better cleaning approach
       result = snappedGeom.buffer(0);
     }

@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geomgraph.DirectedEdge;
-import org.locationtech.jts.geomgraph.Edge;
-import org.locationtech.jts.geomgraph.EdgeRing;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geomgraph.DirectedEdge;
+// import org.locationtech.jts.geomgraph.Edge;
+// import org.locationtech.jts.geomgraph.EdgeRing;
 
 /**
  * A ring of {@link Edge}s with the property that no node

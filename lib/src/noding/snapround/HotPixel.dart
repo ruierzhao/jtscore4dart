@@ -12,11 +12,11 @@
 
 
 
-import org.locationtech.jts.algorithm.CGAlgorithmsDD;
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.algorithm.CGAlgorithmsDD;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Implements a "hot pixel" as used in the Snap Rounding algorithm.
@@ -127,7 +127,7 @@ class HotPixel
   
   private double scaleRound(double val)
   {
-    return (double) Math.round(val * scaleFactor);
+    return (double) math.round(val * scaleFactor);
   }
 
   /**
@@ -204,19 +204,19 @@ class HotPixel
      */   
     // check Right side
     double maxx = hpx + TOLERANCE;
-    double segMinx = Math.min(px, qx);
+    double segMinx = math.min(px, qx);
     if (segMinx >= maxx) return false;
     // check Left side
     double minx = hpx - TOLERANCE;
-    double segMaxx = Math.max(px, qx);
+    double segMaxx = math.max(px, qx);
     if (segMaxx < minx) return false;
     // check Top side
     double maxy = hpy + TOLERANCE;
-    double segMiny = Math.min(py, qy);
+    double segMiny = math.min(py, qy);
     if (segMiny >= maxy) return false;
     // check Bottom side
     double miny = hpy - TOLERANCE;
-    double segMaxy = Math.max(py, qy);
+    double segMaxy = math.max(py, qy);
     if (segMaxy < miny) return false;
 
     /**

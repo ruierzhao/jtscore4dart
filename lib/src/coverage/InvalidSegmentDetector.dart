@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.algorithm.PolygonNodeTopology;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.noding.SegmentIntersector;
-import org.locationtech.jts.noding.SegmentString;
+// import org.locationtech.jts.algorithm.PolygonNodeTopology;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.noding.SegmentIntersector;
+// import org.locationtech.jts.noding.SegmentString;
 
 /**
  * Detects invalid coverage topology where ring segments interact.

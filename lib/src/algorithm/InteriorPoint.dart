@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.algorithm.construct.LargestEmptyCircle;
-import org.locationtech.jts.algorithm.construct.MaximumInscribedCircle;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFilter;
+// import org.locationtech.jts.algorithm.construct.LargestEmptyCircle;
+// import org.locationtech.jts.algorithm.construct.MaximumInscribedCircle;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFilter;
 
 /**
  * Computes an interior point of a <code>{@link Geometry}</code>.
@@ -91,7 +91,7 @@ class InteriorPoint {
     }
     
     void filter(Geometry elem) {
-      if (elem instanceof GeometryCollection)
+      if (elem is GeometryCollection)
         return;
       if (! elem.isEmpty()) {
         int elemDim = elem.getDimension();

@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geomgraph.Node;
-import org.locationtech.jts.geomgraph.NodeFactory;
-import org.locationtech.jts.geomgraph.NodeMap;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geomgraph.Node;
+// import org.locationtech.jts.geomgraph.NodeFactory;
+// import org.locationtech.jts.geomgraph.NodeMap;
 
 /**
  * Used by the {@link NodeMap} in a {@link RelateNodeGraph} to create {@link RelateNode}s.

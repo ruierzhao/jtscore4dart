@@ -12,13 +12,13 @@
 
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
 
 /**
  * Wraps a {@link Noder} and transforms its input
@@ -86,8 +86,8 @@ class ScaledNoder
     List<Coordinate> roundPts = new Coordinate[pts.length];
     for (int i = 0; i < pts.length; i++) {
       roundPts[i] = new Coordinate(
-          Math.round((pts[i].x - offsetX) * scaleFactor),
-          Math.round((pts[i].y - offsetY) * scaleFactor),
+          math.round((pts[i].x - offsetX) * scaleFactor),
+          math.round((pts[i].y - offsetY) * scaleFactor),
           pts[i].getZ()
         );
     }
@@ -95,7 +95,7 @@ class ScaledNoder
     return roundPtsNoDup;
   }
 
-  //private double scale(double val) { return (double) Math.round(val * scaleFactor); }
+  //private double scale(double val) { return (double) math.round(val * scaleFactor); }
 
   private void rescale(Collection segStrings)
   {

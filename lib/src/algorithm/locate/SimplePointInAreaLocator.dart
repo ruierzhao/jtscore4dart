@@ -11,17 +11,17 @@
  */
 
 
-import java.util.Iterator;
+// import java.util.Iterator;
 
-import org.locationtech.jts.algorithm.PointLocation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryCollectionIterator;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.algorithm.PointLocation;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryCollectionIterator;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Polygonal;
 
 
 /**
@@ -34,7 +34,7 @@ import org.locationtech.jts.geom.Polygonal;
  * or exactly on the boundary of the Geometry. 
  * <p>
  * Instance methods are provided to implement
- * the interface {@link SimplePointInAreaLocator}.
+ * the abstract class {@link SimplePointInAreaLocator}.
  * However, they provide no performance
  * advantage over the class methods.
  * <p>
@@ -92,11 +92,11 @@ class SimplePointInAreaLocator
   
   private static int locateInGeometry(Coordinate p, Geometry geom)
   {
-    if (geom instanceof Polygon) {
+    if (geom is Polygon) {
       return locatePointInPolygon(p, (Polygon) geom);
     }
     
-    if (geom instanceof GeometryCollection) {
+    if (geom is GeometryCollection) {
       Iterator geomi = new GeometryCollectionIterator((GeometryCollection) geom);
       while (geomi.hasNext()) {
         Geometry g2 = (Geometry) geomi.next();

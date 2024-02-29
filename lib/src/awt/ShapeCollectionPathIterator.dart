@@ -11,11 +11,11 @@
  */
 
 
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.util.Collection;
-import java.util.Iterator;
+// import java.awt.Shape;
+// import java.awt.geom.AffineTransform;
+// import java.awt.geom.PathIterator;
+// import java.util.Collection;
+// import java.util.Iterator;
 
 /**
  * A {@link PathIterator} which provides paths for a collection of {@link Shape}s. 

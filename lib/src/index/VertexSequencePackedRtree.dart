@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.math.MathUtil;
-import org.locationtech.jts.util.IntArrayList;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.util.IntArrayList;
 
 /**
  * A semi-static spatial index for points which occur 

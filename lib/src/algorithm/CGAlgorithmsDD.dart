@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.math.DD;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.math.DD;
 
 /**
  * Implements basic computational geometry algorithms using {@link DD} arithmetic.
@@ -212,7 +212,7 @@ class CGAlgorithmsDD
     double xInt = x.selfDivide(w).doubleValue();
     double yInt = y.selfDivide(w).doubleValue();
 
-    if ((Double.isNaN(xInt)) || (Double.isInfinite(xInt) || Double.isNaN(yInt)) || (Double.isInfinite(yInt))) {
+    if (((xInt).isNaN) || (Double.isInfinite(xInt) || (yInt).isNaN) || (Double.isInfinite(yInt))) {
       return null;
     }
 

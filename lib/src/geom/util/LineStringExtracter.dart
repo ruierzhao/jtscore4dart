@@ -11,14 +11,14 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFilter;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFilter;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * Extracts all the {@link LineString} elements from a {@link Geometry}.
@@ -39,10 +39,10 @@ class LineStringExtracter
    */
   static List getLines(Geometry geom, List lines)
   {
-  	if (geom instanceof LineString) {
+  	if (geom is LineString) {
   		lines.add(geom);
   	}
-  	else if (geom instanceof GeometryCollection) {
+  	else if (geom is GeometryCollection) {
   		geom.apply(new LineStringExtracter(lines));
   	}
   	// skip non-LineString elemental geometries
@@ -86,7 +86,7 @@ class LineStringExtracter
 
   void filter(Geometry geom)
   {
-    if (geom instanceof LineString) comps.add(geom);
+    if (geom is LineString) comps.add(geom);
   }
 
 }

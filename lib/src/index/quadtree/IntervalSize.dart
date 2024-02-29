@@ -43,7 +43,7 @@ class IntervalSize {
     double width = max - min;
     if (width == 0.0) return true;
 
-    double maxAbs = Math.max((min).abs(), (max).abs());
+    double maxAbs = math.max((min).abs(), (max).abs());
     double scaledInterval = width / maxAbs;
     int level = DoubleBits.exponent(scaledInterval);
     return level <= MIN_BINARY_EXPONENT;

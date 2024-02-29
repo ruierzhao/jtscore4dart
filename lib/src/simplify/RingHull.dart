@@ -11,19 +11,19 @@
  */
 
 
-import java.util.List;
-import java.util.PriorityQueue;
+// import java.util.List;
+// import java.util.PriorityQueue;
 
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Triangle;
-import org.locationtech.jts.index.VertexSequencePackedRtree;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Triangle;
+// import org.locationtech.jts.index.VertexSequencePackedRtree;
 
 /**
  * Computes the outer or inner hull of a ring.
@@ -326,7 +326,7 @@ class RingHull {
     }
 
     private static Coordinate safeCoord(Coordinate p) {
-      if (p ==null) return new Coordinate(Double.NaN, Double.NaN);
+      if (p ==null) return new Coordinate(double.nan, double.nan);
       return p;
     }
   }

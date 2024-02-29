@@ -12,7 +12,7 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * A {@link HalfEdge} which supports

@@ -11,9 +11,9 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateFilter;
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateFilter;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  *  A {@link CoordinateFilter} that creates an array containing every

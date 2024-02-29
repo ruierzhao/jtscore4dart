@@ -13,8 +13,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.LineSegment;
 
 /**
  * A strategy for finding constraint split points which attempts to maximise the length of the split

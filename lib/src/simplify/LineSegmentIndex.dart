@@ -12,13 +12,13 @@
 
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.index.ItemVisitor;
-import org.locationtech.jts.index.quadtree.Quadtree;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.index.ItemVisitor;
+// import org.locationtech.jts.index.quadtree.Quadtree;
 
 /**
  * An spatial index on a set of {@link LineSegment}s.

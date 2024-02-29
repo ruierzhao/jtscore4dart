@@ -11,13 +11,13 @@
  */
 
 
-import java.util.Collection;
-import java.util.Iterator;
+// import java.util.Collection;
+// import java.util.Iterator;
 
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Validates that a collection of {@link SegmentString}s is correctly noded.

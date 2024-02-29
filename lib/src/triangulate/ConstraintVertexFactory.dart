@@ -13,13 +13,13 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
- * An interface for factories which create a {@link ConstraintVertex}
+ * An abstract class for factories which create a {@link ConstraintVertex}
  * 
  * @author Martin Davis
  */
-interface ConstraintVertexFactory {
+abstract class ConstraintVertexFactory {
     ConstraintVertex createVertex(Coordinate p, Segment constraintSeg);
 }

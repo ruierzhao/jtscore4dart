@@ -11,18 +11,18 @@
  */
 
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.Map;
-import java.util.List;
-import java.util.Map;
+// import java.util.ArrayDeque;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Deque;
+// import java.util.Map;
+// import java.util.List;
+// import java.util.Map;
 
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.algorithm.PolygonNodeTopology;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.algorithm.PolygonNodeTopology;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.LinearRing;
 
 /**
  * A ring of a polygon being analyzed for topological validity.

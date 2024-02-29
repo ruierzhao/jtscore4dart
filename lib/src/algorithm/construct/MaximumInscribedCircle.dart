@@ -11,21 +11,21 @@
  */
 
 
-import java.util.PriorityQueue;
+// import java.util.PriorityQueue;
 
-import org.locationtech.jts.algorithm.Centroid;
-import org.locationtech.jts.algorithm.InteriorPoint;
-import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.operation.distance.IndexedFacetDistance;
+// import org.locationtech.jts.algorithm.Centroid;
+// import org.locationtech.jts.algorithm.InteriorPoint;
+// import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.operation.distance.IndexedFacetDistance;
 
 /**
  * Constructs the Maximum Inscribed Circle for a 
@@ -106,7 +106,7 @@ class MaximumInscribedCircle {
     double diam = geom.getEnvelopeInternal().getDiameter();
     double ncells = diam / toleranceDist;
     //-- Using log of ncells allows control over number of iterations
-    int factor = (int) Math.log(ncells);
+    int factor = (int) math.log(ncells);
     if (factor < 1) factor = 1;
     return 2000 + 2000 * factor;
   }
@@ -134,7 +134,7 @@ class MaximumInscribedCircle {
     if (tolerance <= 0) {
       throw new ArgumentError("Tolerance must be positive");
     }
-    if (! (polygonal instanceof Polygon || polygonal instanceof MultiPolygon)) {
+    if (! (polygonal is Polygon || polygonal is MultiPolygon)) {
       throw new ArgumentError("Input geometry must be a Polygon or MultiPolygon");
     }
     if (polygonal.isEmpty()) {
@@ -280,7 +280,7 @@ class MaximumInscribedCircle {
    * @param cellQueue the queue to initialize
    */
   private void createInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue) {
-    double cellSize = Math.max(env.getWidth(), env.getHeight());
+    double cellSize = math.max(env.getWidth(), env.getHeight());
     double hSide = cellSize / 2.0;
 
     // Check for flat collapsed input and if so short-circuit

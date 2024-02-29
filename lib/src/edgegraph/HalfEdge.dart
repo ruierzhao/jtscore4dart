@@ -12,11 +12,11 @@
 
 
 
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Quadrant;
-import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Quadrant;
+// import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Represents a directed component of an edge in an {@link EdgeGraph}.

@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Represents a homogeneous coordinate in a 2-D coordinate space.
@@ -57,8 +57,8 @@ class HCoordinate
     double xInt = x/w;
     double yInt = y/w;
     
-    if ((Double.isNaN(xInt)) || (Double.isInfinite(xInt)
-    		|| Double.isNaN(yInt)) || (Double.isInfinite(yInt))) {
+    if (((xInt).isNaN) || (Double.isInfinite(xInt)
+    		|| (yInt).isNaN) || (Double.isInfinite(yInt))) {
       throw new NotRepresentableException();
     }
     
@@ -146,7 +146,7 @@ class HCoordinate
   
   double getX() throws NotRepresentableException {
     double a = x/w;
-    if ((Double.isNaN(a)) || (Double.isInfinite(a))) {
+    if (((a).isNaN) || (Double.isInfinite(a))) {
       throw new NotRepresentableException();
     }
     return a;
@@ -154,7 +154,7 @@ class HCoordinate
 
   double getY() throws NotRepresentableException {
     double a = y/w;
-    if  ((Double.isNaN(a)) || (Double.isInfinite(a))) {
+    if  (((a).isNaN) || (Double.isInfinite(a))) {
       throw new NotRepresentableException();
     }
     return a;

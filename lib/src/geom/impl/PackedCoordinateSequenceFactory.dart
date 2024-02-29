@@ -11,12 +11,12 @@
  */
 
 
-import java.io.Serializable;
+// import java.io.Serializable;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFactory;
-import org.locationtech.jts.geom.Coordinates;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFactory;
+// import org.locationtech.jts.geom.Coordinates;
 
 /**
  * Builds packed array coordinate sequences. 
@@ -157,7 +157,7 @@ class PackedCoordinateSequenceFactory implements
    * @return a packed coordinate sequence of type {@link #FLOAT}
    */
   CoordinateSequence create(float[] packedCoordinates, int dimension) {
-    return create( packedCoordinates, dimension, Math.max(DEFAULT_MEASURES, dimension-3) );
+    return create( packedCoordinates, dimension, math.max(DEFAULT_MEASURES, dimension-3) );
   }
   
   /**
@@ -183,10 +183,10 @@ class PackedCoordinateSequenceFactory implements
   CoordinateSequence create(int size, int dimension) {
     if (type == DOUBLE) {
       return new PackedCoordinateSequence.Double(
-              size, dimension, Math.max(DEFAULT_MEASURES, dimension-3));
+              size, dimension, math.max(DEFAULT_MEASURES, dimension-3));
     } else {
       return new PackedCoordinateSequence.Float(
-              size, dimension, Math.max(DEFAULT_MEASURES, dimension-3));
+              size, dimension, math.max(DEFAULT_MEASURES, dimension-3));
     }
   }
   

@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * A contiguous portion of 1D-space. Used internally by SIRtree.
@@ -40,8 +40,8 @@ class Interval {
    * @return this
    */
   Interval expandToInclude(Interval other) {
-    max = Math.max(max, other.max);
-    min = Math.min(min, other.min);
+    max = math.max(max, other.max);
+    min = math.min(min, other.min);
     return this;
   }
 
@@ -50,7 +50,7 @@ class Interval {
   }
   
   bool equals(Object o) {
-    if (! (o instanceof Interval)) { return false; }
+    if (! (o is Interval)) { return false; }
     Interval other = (Interval) o;
     return min == other.min && max == other.max;
   }

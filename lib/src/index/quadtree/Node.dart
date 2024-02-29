@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Represents a node of a {@link Quadtree}.  Nodes contain

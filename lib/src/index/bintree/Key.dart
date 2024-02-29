@@ -13,7 +13,7 @@
 
 
 
-import org.locationtech.jts.index.quadtree.DoubleBits;
+// import org.locationtech.jts.index.quadtree.DoubleBits;
 
 /**
  * A Key is a unique identifier for a node in a tree.
@@ -68,7 +68,7 @@ class Key {
   {
     double size = DoubleBits.powerOf2(level);
     //double size = pow2.power(level);
-    pt = Math.floor(itemInterval.getMin() / size) * size;
+    pt = math.floor(itemInterval.getMin() / size) * size;
     interval.init(pt, pt + size);
   }
 }

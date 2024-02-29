@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
 
 /**
  * A visitor to {@link Geometry} components, which
@@ -31,7 +31,7 @@ abstract class ShortCircuitedGeometryVisitor
   void applyTo(Geometry geom) {
     for (int i = 0; i < geom.getNumGeometries() && ! isDone; i++) {
       Geometry element = geom.getGeometryN(i);
-      if (! (element instanceof GeometryCollection)) {
+      if (! (element is GeometryCollection)) {
         visit(element);
         if (isDone()) {
           isDone = true;

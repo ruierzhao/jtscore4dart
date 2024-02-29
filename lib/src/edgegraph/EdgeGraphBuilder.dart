@@ -12,13 +12,13 @@
 
 
 
-import java.util.Collection;
-import java.util.Iterator;
+// import java.util.Collection;
+// import java.util.Iterator;
 
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.LineString;
 
 
 /**
@@ -58,7 +58,7 @@ class EdgeGraphBuilder
   void add(Geometry geometry) {
     geometry.apply(new GeometryComponentFilter() {
       void filter(Geometry component) {
-        if (component instanceof LineString) {
+        if (component is LineString) {
           add((LineString)component);
         }
       }      

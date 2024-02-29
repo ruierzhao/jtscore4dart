@@ -11,11 +11,11 @@
  */
 
 
-import org.locationtech.jts.geom.util.GeometryEditor;
-import org.locationtech.jts.geom.util.GeometryTransformer;
+// import org.locationtech.jts.geom.util.GeometryEditor;
+// import org.locationtech.jts.geom.util.GeometryTransformer;
 
 /**
- *  An interface for classes which process the coordinates in a {@link CoordinateSequence}. 
+ *  An abstract class for classes which process the coordinates in a {@link CoordinateSequence}. 
  *  A filter can either record information about each coordinate,
  *  or change the value of the coordinate. 
  *  Filters can be
@@ -45,7 +45,7 @@ import org.locationtech.jts.geom.util.GeometryTransformer;
  *@author Martin Davis
  *@version 1.7
  */
-interface CoordinateSequenceFilter 
+abstract class CoordinateSequenceFilter 
 {
   /**
    * Performs an operation on a coordinate in a {@link CoordinateSequence}.

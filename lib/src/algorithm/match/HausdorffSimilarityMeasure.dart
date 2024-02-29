@@ -12,9 +12,9 @@
 
 
 
-import org.locationtech.jts.algorithm.distance.DiscreteHausdorffDistance;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.algorithm.distance.DiscreteHausdorffDistance;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * Measures the degree of similarity between two {@link Geometry}s
@@ -73,6 +73,6 @@ class HausdorffSimilarityMeasure
 		double width = env.getWidth();
 		double hgt = env.getHeight();
 
-		return Math.sqrt(width * width + hgt * hgt);
+		return math.sqrt(width * width + hgt * hgt);
 	}
 }

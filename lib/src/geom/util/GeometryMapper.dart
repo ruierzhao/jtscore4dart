@@ -11,13 +11,13 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
 
 /**
  * Methods to map various collections 
@@ -95,7 +95,7 @@ class GeometryMapper
   {
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry g = geom.getGeometryN(i);
-      if (g instanceof GeometryCollection) {
+      if (g is GeometryCollection) {
         flatMap(g, op, mapped);
       }
       else {
@@ -109,7 +109,7 @@ class GeometryMapper
   
   private static void addFlat(Geometry geom, List<Geometry> geomList) {
     if (geom.isEmpty()) return;
-    if (geom instanceof GeometryCollection) {
+    if (geom is GeometryCollection) {
       for (int i = 0; i < geom.getNumGeometries(); i++) {
         addFlat(geom.getGeometryN(i), geomList);
       }
@@ -120,14 +120,14 @@ class GeometryMapper
   }
   
   /**
-   * An interface for geometry functions that map a geometry input to a geometry output.
+   * An abstract class for geometry functions that map a geometry input to a geometry output.
    * The output may be <tt>null</tt> if there is no valid output value for 
    * the given input value.
    * 
    * @author Martin Davis
    *
    */
-  interface MapOp 
+  abstract class MapOp 
   {
     /**
      * Maps a geometry value into another value.

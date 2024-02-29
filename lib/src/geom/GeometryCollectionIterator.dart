@@ -11,8 +11,8 @@
  */
 
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+// import java.util.Iterator;
+// import java.util.NoSuchElementException;
 
 /**
  *  Iterates over all {@link Geometry}s in a {@link Geometry},
@@ -112,7 +112,7 @@ class GeometryCollectionIterator implements Iterator {
       throw new NoSuchElementException();
     }
     Geometry obj = parent.getGeometryN(index++);
-    if (obj instanceof GeometryCollection) {
+    if (obj is GeometryCollection) {
       subcollectionIterator = new GeometryCollectionIterator((GeometryCollection) obj);
       // there will always be at least one element in the sub-collection
       return subcollectionIterator.next();
@@ -122,7 +122,7 @@ class GeometryCollectionIterator implements Iterator {
 
   private static bool isAtomic(Geometry geom)
   {
-    return ! (geom instanceof GeometryCollection);
+    return ! (geom is GeometryCollection);
   }
   
   /**

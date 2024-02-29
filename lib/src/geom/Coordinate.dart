@@ -439,12 +439,12 @@ class DimensionalComparator
       if (a < b) return -1;
       if (a > b) return 1;
 
-      if (Double.isNaN(a)) {
-        if (Double.isNaN(b)) return 0;
+      if ((a).isNaN) {
+        if ((b).isNaN) return 0;
         return -1;
       }
 
-      if (Double.isNaN(b)) return 1;
+      if ((b).isNaN) return 1;
       return 0;
     }
 

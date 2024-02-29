@@ -12,10 +12,10 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * Supports linear referencing
@@ -40,7 +40,7 @@ class LocationIndexedLine
 
   private void checkGeometryType()
   {
-    if (! (linearGeom instanceof LineString || linearGeom instanceof MultiLineString))
+    if (! (linearGeom is LineString || linearGeom is MultiLineString))
       throw new ArgumentError("Input geometry must be linear");
   }
   /**

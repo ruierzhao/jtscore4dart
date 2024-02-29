@@ -12,12 +12,12 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Lineal;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Lineal;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Extracts the subline of a linear {@link Geometry} between
@@ -66,7 +66,7 @@ class ExtractLineByLocation
 
   private Geometry reverse(Geometry linear)
   {
-    if (linear instanceof Lineal)
+    if (linear is Lineal)
       return linear.reverse();
 
     Assert.shouldNeverReachHere("non-linear geometry encountered");

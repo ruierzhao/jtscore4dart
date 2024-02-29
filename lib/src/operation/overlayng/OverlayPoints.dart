@@ -11,19 +11,19 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Map;
-import java.util.Map.Entry;
+// import java.util.ArrayList;
+// import java.util.Map;
+// import java.util.Map;
+// import java.util.Map.Entry;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateFilter;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateFilter;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * Performs an overlay operation on inputs which are both point geometries.
@@ -162,7 +162,7 @@ class OverlayPoints {
 
       @Override
       void filter(Geometry geom) {
-        if (! (geom instanceof Point))
+        if (! (geom is Point))
           return;
         if (geom.isEmpty())
           return;

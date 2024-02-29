@@ -82,6 +82,6 @@ class Memory
 	
 	static double round(double d)
 	{
-		return Math.ceil(d * 100) / 100;
+		return math.ceil(d * 100) / 100;
 	}
 }

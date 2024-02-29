@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.shape.fractal.HilbertCode;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.shape.fractal.HilbertCode;
 
 class HilbertEncoder {
   private int level;
@@ -23,7 +23,7 @@ class HilbertEncoder {
 
   HilbertEncoder(int level, Envelope extent) {
     this.level = level;
-    int hside = (int) Math.pow(2, level) - 1;
+    int hside = (int) math.pow(2, level) - 1;
     
     minx = extent.getMinX();
     strideX = extent.getWidth() / hside;

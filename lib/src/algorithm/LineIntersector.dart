@@ -14,10 +14,10 @@
 /**
  * @version 1.7
  */
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * A <code>LineIntersector</code> is an algorithm that can both test whether
@@ -117,7 +117,7 @@ abstract class LineIntersector
       // hack to ensure that non-endpoints always have a non-zero distance
       if (dist == 0.0 && ! p.equals(p0))
       {
-        dist = Math.max(pdx, pdy);
+        dist = math.max(pdx, pdy);
       }
     }
     Assert.isTrue(! (dist == 0.0 && ! p.equals(p0)), "Bad distance calculation");
@@ -131,7 +131,7 @@ abstract class LineIntersector
   {
     double dx = p.x - p1.x;
     double dy = p.y - p1.y;
-    double dist = Math.hypot(dx, dy);   // dummy value
+    double dist = math.hypot(dx, dy);   // dummy value
     Assert.isTrue(! (dist == 0.0 && ! p.equals(p1)), "Invalid distance calculation");
     return dist;
   }

@@ -12,9 +12,9 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineSegment;
 
 /**
  * A {@link LineSegment} which is tagged with its location in a parent {@link Geometry}.

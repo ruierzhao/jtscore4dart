@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.math.Vector3D;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.math.Vector3D;
 
 /**
  * Basic computational geometry algorithms 
@@ -29,13 +29,13 @@ class CGAlgorithms3D
 	static double distance(Coordinate p0, Coordinate p1)
 	{
 		// default to 2D distance if either Z is not set
-		if (Double.isNaN(p0.getZ()) || Double.isNaN(p1.getZ()))
+		if (p0.getZ().isnan || (p1.getZ().isNaN))
 			return p0.distance(p1);
 		
 	    double dx = p0.x - p1.x;
 	    double dy = p0.y - p1.y;
 	    double dz = p0.getZ() - p1.getZ();
-	    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+	    return math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
 	static double distancePointSegment(Coordinate p,
@@ -59,7 +59,7 @@ class CGAlgorithms3D
 	     */
 
 	    double len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y) + (B.getZ() - A.getZ()) * (B.getZ() - A.getZ());
-	    if (Double.isNaN(len2))
+	    if ((len2).isNaN)
 	    	throw new ArgumentError("Ordinates must not be NaN");
 	    double r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y) + (p.getZ() - A.getZ()) * (B.getZ() - A.getZ()))
 	        / len2;
@@ -77,7 +77,7 @@ class CGAlgorithms3D
 	    double dx = p.x - qx;
 	    double dy = p.y - qy;
 	    double dz = p.getZ() - qz;
-	    return Math.sqrt(dx*dx + dy*dy + dz*dz);
+	    return math.sqrt(dx*dx + dy*dy + dz*dz);
 	}
 	
 
@@ -113,7 +113,7 @@ class CGAlgorithms3D
 		double e = Vector3D.dot(C, D, C, A);
 		
 		double denom = a*c - b*b;
-	    if (Double.isNaN(denom))
+	    if ((denom).isNaN)
 	    	throw new ArgumentError("Ordinates must not be NaN");
 		
 		double s;

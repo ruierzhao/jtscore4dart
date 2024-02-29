@@ -11,15 +11,15 @@
  */
 
 
-import java.io.IOException;
+// import java.io.IOException;
 
 /**
- * A interface for classes providing an input stream of bytes.
- * This interface is similar to the Java <code>InputStream</code>,
- * but with a narrower interface to make it easier to implement.
+ * A abstract class for classes providing an input stream of bytes.
+ * This abstract class is similar to the Java <code>InputStream</code>,
+ * but with a narrower abstract class to make it easier to implement.
  *
  */
-interface InStream
+abstract class InStream
 {
   /**
    * Reads <code>buf.length</code> bytes from the input stream

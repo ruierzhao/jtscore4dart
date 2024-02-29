@@ -11,26 +11,26 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.prep.PreparedGeometry;
-import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
-import org.locationtech.jts.operation.buffer.BufferOp;
-import org.locationtech.jts.operation.overlayng.OverlayNG;
-import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.prep.PreparedGeometry;
+// import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
+// import org.locationtech.jts.operation.buffer.BufferOp;
+// import org.locationtech.jts.operation.overlayng.OverlayNG;
+// import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
 
 /**
  * Fixes a geometry to be a valid geometry, while preserving as much as
@@ -157,15 +157,15 @@ class GeometryFixer {
       return geom.copy();
     }
 
-    if (geom instanceof Point)              return fixPoint((Point) geom);
+    if (geom is Point)              return fixPoint((Point) geom);
     //  LinearRing must come before LineString
-    if (geom instanceof LinearRing)         return fixLinearRing((LinearRing) geom);
-    if (geom instanceof LineString)         return fixLineString((LineString) geom);
-    if (geom instanceof Polygon)            return fixPolygon((Polygon) geom);
-    if (geom instanceof MultiPoint)         return fixMultiPoint((MultiPoint) geom);
-    if (geom instanceof MultiLineString)    return fixMultiLineString((MultiLineString) geom);
-    if (geom instanceof MultiPolygon)       return fixMultiPolygon((MultiPolygon) geom);
-    if (geom instanceof GeometryCollection) return fixCollection((GeometryCollection) geom);
+    if (geom is LinearRing)         return fixLinearRing((LinearRing) geom);
+    if (geom is LineString)         return fixLineString((LineString) geom);
+    if (geom is Polygon)            return fixPolygon((Polygon) geom);
+    if (geom is MultiPoint)         return fixMultiPoint((MultiPoint) geom);
+    if (geom is MultiLineString)    return fixMultiLineString((MultiLineString) geom);
+    if (geom is MultiPolygon)       return fixMultiPolygon((MultiPolygon) geom);
+    if (geom is GeometryCollection) return fixCollection((GeometryCollection) geom);
     throw new UnsupportedOperationException(geom.getClass().getName());
   }
 
@@ -278,14 +278,14 @@ class GeometryFixer {
       Geometry fix = fixLineStringElement(line);
       if (fix == null) continue;
 
-      if (! (fix instanceof LineString)) {
+      if (! (fix is LineString)) {
         isMixed = true;
       }
       fixed.add(fix);
     }
 
     if (fixed.size() == 1) {
-      if (!this.isKeepMulti || !(fixed.get(0) instanceof LineString))
+      if (!this.isKeepMulti || !(fixed.get(0) is LineString))
         return fixed.get(0);
     }
 
@@ -410,7 +410,7 @@ class GeometryFixer {
     // TODO: replace with polys.union() once OverlayNG is the default
     Geometry result = union(polys);
 
-    if (this.isKeepMulti && result instanceof Polygon)
+    if (this.isKeepMulti && result is Polygon)
       result = factory.createMultiPolygon(new Polygon[]{(Polygon) result});
 
     return result;

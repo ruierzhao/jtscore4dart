@@ -14,22 +14,22 @@
 /**
  * @version 1.7
  */
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+// import java.util.ArrayList;
+// import java.util.HashSet;
+// import java.util.Iterator;
+// import java.util.LinkedList;
+// import java.util.List;
+// import java.util.Set;
+// import java.util.Stack;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Position;
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.geomgraph.DirectedEdge;
-import org.locationtech.jts.geomgraph.DirectedEdgeStar;
-import org.locationtech.jts.geomgraph.Label;
-import org.locationtech.jts.geomgraph.Node;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.geomgraph.DirectedEdge;
+// import org.locationtech.jts.geomgraph.DirectedEdgeStar;
+// import org.locationtech.jts.geomgraph.Label;
+// import org.locationtech.jts.geomgraph.Node;
 
 /**
  * A connected subset of the graph of
@@ -300,10 +300,10 @@ class BufferSubgraph
       double dx = de.getDx();
       double dy = de.getDy();
       Coordinate p0 = de.getCoordinate();
-      double ang = Math.atan2(dy, dx);
+      double ang = math.atan2(dy, dx);
       Coordinate p1 = new Coordinate(
-          p0.x + .4 * Math.cos(ang),
-          p0.y + .4 * Math.sin(ang));
+          p0.x + .4 * math.cos(ang),
+          p0.y + .4 * math.sin(ang));
 //      DebugFeature.add(SAVE_DIREDGES,
 //                       fact.createLineString(new List<Coordinate> { p0, p1 } ),
 //                       de.getDepth(Position.LEFT) + "/" + de.getDepth(Position.RIGHT)

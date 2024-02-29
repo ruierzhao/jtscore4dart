@@ -12,11 +12,11 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
 
 abstract class GeometricShapeBuilder 
 {
@@ -46,7 +46,7 @@ abstract class GeometricShapeBuilder
 	
 	double getDiameter()
 	{
-		return Math.min(extent.getHeight(), extent.getWidth());
+		return math.min(extent.getHeight(), extent.getWidth());
 	}
 	
 	double getRadius()

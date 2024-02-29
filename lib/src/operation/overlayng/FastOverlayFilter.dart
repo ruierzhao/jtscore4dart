@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Geometry;
 
 class FastOverlayFilter {
   // superceded by overlap clipping?

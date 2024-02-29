@@ -17,7 +17,7 @@
  *
  * @version 1.7
  */
-interface SweepLineOverlapAction {
+abstract class SweepLineOverlapAction {
 
   void overlap(SweepLineInterval s0, SweepLineInterval s1);
 }

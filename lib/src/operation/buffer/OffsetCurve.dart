@@ -11,26 +11,26 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.Distance;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.util.GeometryMapper;
-import org.locationtech.jts.index.chain.MonotoneChain;
-import org.locationtech.jts.index.chain.MonotoneChainSelectAction;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.algorithm.Distance;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.util.GeometryMapper;
+// import org.locationtech.jts.index.chain.MonotoneChain;
+// import org.locationtech.jts.index.chain.MonotoneChainSelectAction;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Computes an offset curve from a geometry.
@@ -206,8 +206,8 @@ class OffsetCurve {
       
       @Override
       Geometry map(Geometry geom) {
-        if (geom instanceof Point) return null;
-        if (geom instanceof Polygon ) {
+        if (geom is Point) return null;
+        if (geom is Polygon ) {
           return toLineString(geom.buffer(distance).getBoundary());
         } 
         return computeCurve((LineString) geom, distance);
@@ -220,7 +220,7 @@ class OffsetCurve {
        * @return a geometry which will be a LineString or MultiLineString
        */
       private Geometry toLineString(Geometry geom) {
-        if (geom instanceof LinearRing) {
+        if (geom is LinearRing) {
           LinearRing ring = (LinearRing) geom;
           return geom.getFactory().createLineString(ring.getCoordinateSequence());
         }

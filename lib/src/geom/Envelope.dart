@@ -82,10 +82,10 @@ class Envelope
     if( maxp < minq )
         return false;
 
-    minq = Math.min(q1.y, q2.y);
-    maxq = Math.max(q1.y, q2.y);
-    minp = Math.min(p1.y, p2.y);
-    maxp = Math.max(p1.y, p2.y);
+    minq = math.min(q1.y, q2.y);
+    maxq = math.max(q1.y, q2.y);
+    minp = math.min(p1.y, p2.y);
+    maxp = math.max(p1.y, p2.y);
 
     if( minp > maxq )
         return false;
@@ -262,7 +262,7 @@ class Envelope
     }
     double w = getWidth();
     double h = getHeight();
-    return Math.hypot(w, h);
+    return math.hypot(w, h);
   }
   ///  Returns the <code>Envelope</code>s minimum x-value. min x &gt; max x
   ///  indicates that this is a null <code>Envelope</code>.
@@ -677,11 +677,11 @@ class Envelope
     // if either is zero, the envelopes overlap either vertically or horizontally
     if (dx == 0.0) return dy;
     if (dy == 0.0) return dx;
-    return Math.hypot(dx, dy);
+    return math.hypot(dx, dy);
   }
 
   bool equals(Object other) {
-    if (!(other instanceof Envelope)) {
+    if (!(other is Envelope)) {
       return false;
     }
     Envelope otherEnvelope = (Envelope) other;

@@ -19,6 +19,7 @@
 
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Coordinates.dart';
 
 /// Useful utility functions for handling Coordinate arrays
 ///
@@ -26,7 +27,8 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 class CoordinateArrays {
   private final static List<Coordinate> coordArrayType = new Coordinate[0];
 
-  private CoordinateArrays() {
+   CoordinateArrays() {
+    throw  Error("private");
   }
 
   /// Determine dimension based on subclass of {@link Coordinate}.
@@ -39,7 +41,7 @@ class CoordinateArrays {
     }
     int dimension = 0;
     for (Coordinate coordinate : pts) {
-      dimension = Math.max(dimension, Coordinates.dimension(coordinate));
+      dimension = math.max(dimension, Coordinates.dimension(coordinate));
     }
     return dimension;
   }
@@ -54,7 +56,7 @@ class CoordinateArrays {
     }
     int measures = 0;
     for (Coordinate coordinate : pts) {
-      measures = Math.max(measures, Coordinates.measures(coordinate));
+      measures = math.max(measures, Coordinates.measures(coordinate));
     }
     return measures;
   }
@@ -89,8 +91,8 @@ class CoordinateArrays {
         }
         if( d != maxDimension || m != maxMeasures ){
           isConsistent = false;
-          maxDimension = Math.max(maxDimension, d);
-          maxMeasures = Math.max(maxMeasures, m);
+          maxDimension = math.max(maxDimension, d);
+          maxMeasures = math.max(maxMeasures, m);
         }
       }
     }

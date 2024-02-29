@@ -18,7 +18,7 @@
  * 
  * @author Martin Davis
  */
-interface TraversalVisitor {
+abstract class TraversalVisitor {
     /**
      * Visits a triangle during a traversal of a {@link QuadEdgeSubdivision}. An implementation of
      * this method may perform processing on the current triangle. It must also decide whether a

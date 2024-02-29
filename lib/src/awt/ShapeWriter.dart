@@ -11,17 +11,17 @@
  */
 
 
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
+// import java.awt.Shape;
+// import java.awt.geom.GeneralPath;
+// import java.awt.geom.Point2D;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 
 
@@ -168,11 +168,11 @@ class ShapeWriter
 	Shape toShape(Geometry geometry)
 	{
 		if (geometry.isEmpty()) return new GeneralPath();
-		if (geometry instanceof Polygon) return toShape((Polygon) geometry);
-		if (geometry instanceof LineString) 			return toShape((LineString) geometry);
-		if (geometry instanceof MultiLineString) 	return toShape((MultiLineString) geometry);
-		if (geometry instanceof Point) 			return toShape((Point) geometry);
-		if (geometry instanceof GeometryCollection) return toShape((GeometryCollection) geometry);
+		if (geometry is Polygon) return toShape((Polygon) geometry);
+		if (geometry is LineString) 			return toShape((LineString) geometry);
+		if (geometry is MultiLineString) 	return toShape((MultiLineString) geometry);
+		if (geometry is Point) 			return toShape((Point) geometry);
+		if (geometry is GeometryCollection) return toShape((GeometryCollection) geometry);
 
 		throw new ArgumentError(
 			"Unrecognized Geometry class: " + geometry.getClass());
@@ -194,8 +194,8 @@ class ShapeWriter
 	{
 	  if (coords.length == 0) return;
 	  
-    double prevx = Double.NaN;
-    double prevy = Double.NaN;
+    double prevx = double.nan;
+    double prevy = double.nan;
     Coordinate prev = null;
     
     int n = coords.length - 1;

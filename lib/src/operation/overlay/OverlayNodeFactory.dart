@@ -14,11 +14,11 @@
 /**
  * @version 1.7
  */
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geomgraph.DirectedEdgeStar;
-import org.locationtech.jts.geomgraph.Node;
-import org.locationtech.jts.geomgraph.NodeFactory;
-import org.locationtech.jts.geomgraph.PlanarGraph;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geomgraph.DirectedEdgeStar;
+// import org.locationtech.jts.geomgraph.Node;
+// import org.locationtech.jts.geomgraph.NodeFactory;
+// import org.locationtech.jts.geomgraph.PlanarGraph;
 
 /**
  * Creates nodes for use in the {@link PlanarGraph}s constructed during

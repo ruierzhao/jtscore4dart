@@ -18,7 +18,7 @@
  * @version 1.7
  */
 
-interface ItemVisitor
+abstract class ItemVisitor
 {
   /**
    * Visits an item in the index.

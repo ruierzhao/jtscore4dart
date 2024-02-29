@@ -11,16 +11,16 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
 
 
 /**
@@ -78,7 +78,7 @@ class LinearComponentExtracter
    */
   static Collection getLines(Geometry geom, Collection lines)
   {
-  	if (geom instanceof LineString) {
+  	if (geom is LineString) {
   		lines.add(geom);
   	}
   	else {
@@ -193,13 +193,13 @@ class LinearComponentExtracter
   
   void filter(Geometry geom)
   {
-  	if (isForcedToLineString && geom instanceof LinearRing) {
+  	if (isForcedToLineString && geom is LinearRing) {
   		LineString line = geom.getFactory().createLineString( ((LinearRing) geom).getCoordinateSequence());
   		lines.add(line);
   		return;
   	}
   	// if not being forced, and this is a linear component
-  	if (geom instanceof LineString) 
+  	if (geom is LineString) 
   		lines.add(geom);
   	
   	// else this is not a linear component, so skip it

@@ -11,14 +11,14 @@
  */
 
 
-import java.util.List;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.index.SpatialIndex;
-import org.locationtech.jts.index.strtree.STRtree;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.index.SpatialIndex;
+// import org.locationtech.jts.index.strtree.STRtree;
 
 /**
  * Tests whether any holes of a Polygon are

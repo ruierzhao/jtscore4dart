@@ -12,10 +12,10 @@
 
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
 
 /**
  * Utilities for processing {@link Collection}s.
@@ -25,7 +25,7 @@ import java.util.List;
 class CollectionUtil 
 {
 
-  interface Function {
+  abstract class Function {
     Object execute(Object obj);
   }
 

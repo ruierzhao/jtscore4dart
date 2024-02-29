@@ -11,25 +11,25 @@
  */
 
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
+// import java.io.Serializable;
+// import java.util.Collection;
+// import java.util.Iterator;
 
-import org.locationtech.jts.algorithm.Centroid;
-import org.locationtech.jts.algorithm.ConvexHull;
-import org.locationtech.jts.algorithm.InteriorPoint;
-import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.operation.buffer.BufferOp;
-import org.locationtech.jts.operation.buffer.BufferParameters;
-import org.locationtech.jts.operation.distance.DistanceOp;
-import org.locationtech.jts.operation.linemerge.LineMerger;
-import org.locationtech.jts.operation.predicate.RectangleContains;
-import org.locationtech.jts.operation.predicate.RectangleIntersects;
-import org.locationtech.jts.operation.relate.RelateOp;
-import org.locationtech.jts.operation.union.UnaryUnionOp;
-import org.locationtech.jts.operation.valid.IsSimpleOp;
-import org.locationtech.jts.operation.valid.IsValidOp;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.algorithm.Centroid;
+// import org.locationtech.jts.algorithm.ConvexHull;
+// import org.locationtech.jts.algorithm.InteriorPoint;
+// import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.operation.buffer.BufferOp;
+// import org.locationtech.jts.operation.buffer.BufferParameters;
+// import org.locationtech.jts.operation.distance.DistanceOp;
+// import org.locationtech.jts.operation.linemerge.LineMerger;
+// import org.locationtech.jts.operation.predicate.RectangleContains;
+// import org.locationtech.jts.operation.predicate.RectangleIntersects;
+// import org.locationtech.jts.operation.relate.RelateOp;
+// import org.locationtech.jts.operation.union.UnaryUnionOp;
+// import org.locationtech.jts.operation.valid.IsSimpleOp;
+// import org.locationtech.jts.operation.valid.IsValidOp;
+// import org.locationtech.jts.util.Assert;
 
 
 /**
@@ -595,7 +595,7 @@ abstract class Geometry
    *  Returns the dimension of this <code>Geometry</code>s inherent boundary.
    *
    *@return    the dimension of the boundary of the class implementing this
-   *      interface, whether or not this object is the empty geometry. Returns
+   *      abstract class, whether or not this object is the empty geometry. Returns
    *      <code>Dimension.FALSE</code> if the boundary is the empty geometry.
    */
   abstract int getBoundaryDimension();
@@ -1138,7 +1138,7 @@ abstract class Geometry
    */
   bool equals(Object o)
   {
-    if (! (o instanceof Geometry)) return false;
+    if (! (o is Geometry)) return false;
     Geometry g = (Geometry) o;
     return equalsExact(g);
   }

@@ -11,14 +11,14 @@
  */
 
 
-import java.io.Serializable;
+// import java.io.Serializable;
 
-import org.locationtech.jts.algorithm.Distance;
-import org.locationtech.jts.algorithm.Intersection;
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.io.WKTConstants;
+// import org.locationtech.jts.algorithm.Distance;
+// import org.locationtech.jts.algorithm.Intersection;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.io.WKTConstants;
 
 
 /**
@@ -82,7 +82,7 @@ class LineSegment
    * @return the minimum X ordinate
    */
   double minX() {
-    return Math.min(p0.x, p1.x);
+    return math.min(p0.x, p1.x);
   }
   
   /**
@@ -90,7 +90,7 @@ class LineSegment
    * @return the maximum X ordinate
    */
   double maxX() {
-    return Math.max(p0.x, p1.x);
+    return math.max(p0.x, p1.x);
   }
 
   /**
@@ -98,7 +98,7 @@ class LineSegment
    * @return the minimum Y ordinate
    */
   double minY() {
-    return Math.min(p0.y, p1.y);
+    return math.min(p0.y, p1.y);
   }
   
   /**
@@ -106,7 +106,7 @@ class LineSegment
    * @return the maximum Y ordinate
    */
   double maxY() {
-    return Math.max(p0.y, p1.y);
+    return math.max(p0.y, p1.y);
   }
 
   /**
@@ -157,10 +157,10 @@ class LineSegment
     int orient1 = Orientation.index(p0, p1, seg.p1);
     // this handles the case where the points are L or collinear
     if (orient0 >= 0 && orient1 >= 0)
-      return Math.max(orient0, orient1);
+      return math.max(orient0, orient1);
     // this handles the case where the points are R or collinear
     if (orient0 <= 0 && orient1 <= 0)
-      return Math.min(orient0, orient1);
+      return math.min(orient0, orient1);
     // points lie on opposite sides ==> indeterminate orientation
     return 0;
   }
@@ -213,7 +213,7 @@ class LineSegment
    */
   double angle()
   {
-    return Math.atan2(p1.y - p0.y, p1.x - p0.x);
+    return math.atan2(p1.y - p0.y, p1.x - p0.x);
   }
 
   /**
@@ -337,7 +337,7 @@ class LineSegment
     
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
-    double len = Math.hypot(dx, dy);
+    double len = math.hypot(dx, dy);
     double ux = 0.0;
     double uy = 0.0;
     if (offsetDistance != 0.0) {
@@ -392,7 +392,7 @@ class LineSegment
     double len = dx * dx + dy * dy;
     
     // handle zero-length segments
-    if (len <= 0.0) return Double.NaN;
+    if (len <= 0.0) return double.nan;
     
     double r = ( (p.x - p0.x) * dx + (p.y - p0.y) * dy )
               / len;
@@ -418,7 +418,7 @@ class LineSegment
     double segFrac = projectionFactor(inputPt);
     if (segFrac < 0.0)
       segFrac = 0.0;
-    else if (segFrac > 1.0 || Double.isNaN(segFrac))
+    else if (segFrac > 1.0 || (segFrac).isNaN)
       segFrac = 1.0;
     return segFrac;
   }
@@ -661,7 +661,7 @@ class LineSegment
    *      with the same values for the x and y ordinates.
    */
   bool equals(Object o) {
-    if (!(o instanceof LineSegment)) {
+    if (!(o is LineSegment)) {
       return false;
     }
     LineSegment other = (LineSegment) o;

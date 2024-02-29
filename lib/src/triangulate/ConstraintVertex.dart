@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.triangulate.quadedge.Vertex;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.triangulate.quadedge.Vertex;
 
 /**
  * A vertex in a Constrained Delaunay Triangulation.

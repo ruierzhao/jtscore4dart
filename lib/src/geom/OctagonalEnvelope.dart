@@ -42,10 +42,10 @@ class OctagonalEnvelope
     return x - y;
   }
 
-  private static double SQRT2 = Math.sqrt(2.0);
+  private static double SQRT2 = math.sqrt(2.0);
   
   // initialize in the null state
-  private double minX = Double.NaN;
+  private double minX = double.nan;
   private double maxX;
   private double minY;
   private double maxY;
@@ -118,13 +118,13 @@ class OctagonalEnvelope
   double getMinB() { return minB; }
   double getMaxB() { return maxB; }
 
-  bool isNull() { return Double.isNaN(minX); }
+  bool isNull() { return (minX).isNaN; }
 
   /**
    *  Sets the value of this object to the null value
    */
   void setToNull() {
-    minX = Double.NaN;
+    minX = double.nan;
   }
 
   void expandToInclude(Geometry g)
@@ -351,10 +351,10 @@ class OctagonalEnvelope
     
      void filter(Geometry geom)
      {
-       if (geom instanceof LineString) {
+       if (geom is LineString) {
          oe.expandToInclude( ((LineString) geom).getCoordinateSequence());
        }
-       else if (geom instanceof Point) {
+       else if (geom is Point) {
          oe.expandToInclude( ((Point) geom).getCoordinateSequence());
        }
      }

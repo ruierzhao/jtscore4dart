@@ -11,23 +11,23 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+// import java.util.ArrayList;
+// import java.util.Map;
+// import java.util.HashSet;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.Set;
+// import java.util.stream.Collectors;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Models a polygonal coverage as a set of unique {@link CoverageEdge}s,
@@ -290,7 +290,7 @@ class CoverageRingEdges {
   }
 
   private Geometry buildPolygonal(Geometry geom) {
-    if (geom instanceof MultiPolygon) {
+    if (geom is MultiPolygon) {
       return buildMultiPolygon((MultiPolygon) geom);
     }
     else {

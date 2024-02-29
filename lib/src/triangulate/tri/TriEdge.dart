@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Represents an edge in a {@link Tri}, 
@@ -54,7 +54,7 @@ class TriEdge {
 
   @Override
   bool equals(Object arg) {
-    if ( !(arg instanceof TriEdge) )
+    if ( !(arg is TriEdge) )
       return false;
     TriEdge other = (TriEdge) arg;
     if ( p0.equals(other.p0) && p1.equals(other.p1) )

@@ -14,30 +14,30 @@
 /**
  * @version 1.7
  */
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.Distance;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Position;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.Triangle;
-import org.locationtech.jts.geomgraph.Label;
-import org.locationtech.jts.noding.NodedSegmentString;
-import org.locationtech.jts.noding.SegmentString;
+// import org.locationtech.jts.algorithm.Distance;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.Triangle;
+// import org.locationtech.jts.geomgraph.Label;
+// import org.locationtech.jts.noding.NodedSegmentString;
+// import org.locationtech.jts.noding.SegmentString;
 
 /**
  * Creates all the raw offset curves for a buffer of a {@link Geometry}.
@@ -135,14 +135,14 @@ class BufferCurveSetBuilder {
   {
     if (g.isEmpty()) return;
 
-    if (g instanceof Polygon)                 addPolygon((Polygon) g);
+    if (g is Polygon)                 addPolygon((Polygon) g);
                         // LineString also handles LinearRings
-    else if (g instanceof LineString)         addLineString((LineString) g);
-    else if (g instanceof Point)              addPoint((Point) g);
-    else if (g instanceof MultiPoint)         addCollection((MultiPoint) g);
-    else if (g instanceof MultiLineString)    addCollection((MultiLineString) g);
-    else if (g instanceof MultiPolygon)       addCollection((MultiPolygon) g);
-    else if (g instanceof GeometryCollection) addCollection((GeometryCollection) g);
+    else if (g is LineString)         addLineString((LineString) g);
+    else if (g is Point)              addPoint((Point) g);
+    else if (g is MultiPoint)         addCollection((MultiPoint) g);
+    else if (g is MultiLineString)    addCollection((MultiLineString) g);
+    else if (g is MultiPolygon)       addCollection((MultiPolygon) g);
+    else if (g is GeometryCollection) addCollection((GeometryCollection) g);
     else  throw new UnsupportedOperationException(g.getClass().getName());
   }
   private void addCollection(GeometryCollection gc)
@@ -406,7 +406,7 @@ class BufferCurveSetBuilder {
 
     // if envelope is narrower than twice the buffer distance, ring is eroded
     Envelope env = ring.getEnvelopeInternal();
-    double envMinDimension = Math.min(env.getHeight(), env.getWidth());
+    double envMinDimension = math.min(env.getHeight(), env.getWidth());
     if (bufferDistance < 0.0
         && 2 * (bufferDistance).abs() > envMinDimension)
       return true;

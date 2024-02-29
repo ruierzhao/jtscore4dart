@@ -11,21 +11,21 @@
  */
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+// import java.io.ByteArrayOutputStream;
+// import java.io.IOException;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * Writes a {@link Geometry} into Well-Known Binary format.
@@ -318,23 +318,23 @@ class WKBWriter
    */
   void write(Geometry geom, OutStream os) throws IOException
   {
-    if (geom instanceof Point)
+    if (geom is Point)
       writePoint((Point) geom, os);
     // LinearRings will be written as LineStrings
-    else if (geom instanceof LineString)
+    else if (geom is LineString)
       writeLineString((LineString) geom, os);
-    else if (geom instanceof Polygon)
+    else if (geom is Polygon)
       writePolygon((Polygon) geom, os);
-    else if (geom instanceof MultiPoint)
+    else if (geom is MultiPoint)
       writeGeometryCollection(WKBConstants.wkbMultiPoint, 
           (MultiPoint) geom, os);
-    else if (geom instanceof MultiLineString)
+    else if (geom is MultiLineString)
       writeGeometryCollection(WKBConstants.wkbMultiLineString,
           (MultiLineString) geom, os);
-    else if (geom instanceof MultiPolygon)
+    else if (geom is MultiPolygon)
       writeGeometryCollection(WKBConstants.wkbMultiPolygon,
           (MultiPolygon) geom, os);
-    else if (geom instanceof GeometryCollection)
+    else if (geom is GeometryCollection)
       writeGeometryCollection(WKBConstants.wkbGeometryCollection,
           (GeometryCollection) geom, os);
     else {
@@ -455,7 +455,7 @@ class WKBWriter
       throws IOException
   {
     for (int i = 0; i < numNaNs; i++) {
-      ByteOrderValues.putDouble(Double.NaN, buf, byteOrder);
+      ByteOrderValues.putDouble(double.nan, buf, byteOrder);
       os.write(buf, 8);
     }
   }

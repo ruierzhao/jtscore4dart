@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * A node of a {@link Bintree}.

@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.algorithm.BoundaryNodeRule;
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geomgraph.GeometryGraph;
+// import org.locationtech.jts.algorithm.BoundaryNodeRule;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geomgraph.GeometryGraph;
 
 /**
  * The base class for operations that require {@link GeometryGraph}s.

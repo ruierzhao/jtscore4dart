@@ -11,12 +11,12 @@
  */
 
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * A dynamic list of the vertices in a constructed offset curve.

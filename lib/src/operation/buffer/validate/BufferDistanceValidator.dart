@@ -11,21 +11,21 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.distance.DiscreteHausdorffDistance;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.util.LinearComponentExtracter;
-import org.locationtech.jts.geom.util.PolygonExtracter;
-import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.operation.distance.DistanceOp;
-import org.locationtech.jts.util.Debug;
+// import org.locationtech.jts.algorithm.distance.DiscreteHausdorffDistance;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.util.LinearComponentExtracter;
+// import org.locationtech.jts.geom.util.PolygonExtracter;
+// import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.operation.distance.DistanceOp;
+// import org.locationtech.jts.util.Debug;
 
 /**
  * Validates that a given buffer curve lies an appropriate distance
@@ -138,9 +138,9 @@ class BufferDistanceValidator
   	// Assert: only polygonal inputs can be checked for negative buffers
   	
   	// MD - could generalize this to handle GCs too
-  	if (! (input instanceof Polygon 
-  			|| input instanceof MultiPolygon
-  			|| input instanceof GeometryCollection
+  	if (! (input is Polygon 
+  			|| input is MultiPolygon
+  			|| input is GeometryCollection
   			)) {
   		return;
   	}

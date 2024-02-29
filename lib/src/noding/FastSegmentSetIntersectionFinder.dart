@@ -12,7 +12,7 @@
 
 
 
-import java.util.Collection;
+// import java.util.Collection;
 
 /**
  * Finds if two sets of {@link SegmentString}s intersect.

@@ -11,9 +11,9 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.IntersectionMatrix;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.IntersectionMatrix;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * A GraphComponent is the parent class for the objects'

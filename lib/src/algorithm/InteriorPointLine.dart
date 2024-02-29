@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
 
 /**
  * Computes a point in the interior of an linear geometry.
@@ -72,10 +72,10 @@ class InteriorPointLine {
     if (geom.isEmpty())
       return;
     
-    if (geom instanceof LineString) {
+    if (geom is LineString) {
       addInterior(geom.getCoordinates());
     }
-    else if (geom instanceof GeometryCollection) {
+    else if (geom is GeometryCollection) {
       GeometryCollection gc = (GeometryCollection) geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         addInterior(gc.getGeometryN(i));
@@ -99,10 +99,10 @@ class InteriorPointLine {
     if (geom.isEmpty())
       return;
     
-    if (geom instanceof LineString) {
+    if (geom is LineString) {
       addEndpoints(geom.getCoordinates());
     }
-    else if (geom instanceof GeometryCollection) {
+    else if (geom is GeometryCollection) {
       GeometryCollection gc = (GeometryCollection) geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         addEndpoints(gc.getGeometryN(i));

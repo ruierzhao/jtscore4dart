@@ -11,14 +11,14 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFilter;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFilter;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Extracts a single point
@@ -53,9 +53,9 @@ class ConnectedElementPointFilter
 
   void filter(Geometry geom)
   {
-    if (geom instanceof Point
-      || geom instanceof LineString
-      || geom instanceof Polygon )
+    if (geom is Point
+      || geom is LineString
+      || geom is Polygon )
       pts.add(geom.getCoordinate());
   }
 

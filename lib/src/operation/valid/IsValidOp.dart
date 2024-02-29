@@ -11,15 +11,15 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Implements the algorithms required to compute the <code>isValid()</code> method
@@ -54,9 +54,9 @@ class IsValidOp
    */
   static bool isValid(Coordinate coord)
   {
-    if (Double.isNaN(coord.x)) return false;
+    if ((coord.x).isNaN) return false;
     if (Double.isInfinite(coord.x)) return false;
-    if (Double.isNaN(coord.y)) return false;
+    if ((coord.y).isNaN) return false;
     if (Double.isInfinite(coord.y)) return false;
     return true;
   }
@@ -157,13 +157,13 @@ class IsValidOp
     // empty geometries are always valid
     if (g.isEmpty()) return true;
 
-    if (g instanceof Point)              return isValid( (Point) g);
-    if (g instanceof MultiPoint)         return isValid( (MultiPoint) g);
-    if (g instanceof LinearRing)         return isValid( (LinearRing) g);
-    if (g instanceof LineString)         return isValid( (LineString) g);
-    if (g instanceof Polygon)            return isValid( (Polygon) g);
-    if (g instanceof MultiPolygon)       return isValid( (MultiPolygon) g);
-    if (g instanceof GeometryCollection) return isValid( (GeometryCollection) g);
+    if (g is Point)              return isValid( (Point) g);
+    if (g is MultiPoint)         return isValid( (MultiPoint) g);
+    if (g is LinearRing)         return isValid( (LinearRing) g);
+    if (g is LineString)         return isValid( (LineString) g);
+    if (g is Polygon)            return isValid( (Polygon) g);
+    if (g is MultiPolygon)       return isValid( (MultiPolygon) g);
+    if (g is GeometryCollection) return isValid( (GeometryCollection) g);
     
     // geometry type not known
     throw new UnsupportedOperationException(g.getClass().getName());

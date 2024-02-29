@@ -12,13 +12,13 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.util.GeometryTransformer;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.util.GeometryTransformer;
 
 /**
  * Simplifies a {@link Geometry} using the Douglas-Peucker algorithm.
@@ -135,7 +135,7 @@ static class DPTransformer
 	
   protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
   {
-    bool isPreserveEndpoint = ! (parent instanceof LinearRing);
+    bool isPreserveEndpoint = ! (parent is LinearRing);
     List<Coordinate> inputPts = coords.toCoordinateArray();
     List<Coordinate> newPts = null;
     if (inputPts.length == 0) {
@@ -156,7 +156,7 @@ static class DPTransformer
       return null;
     Geometry rawGeom = super.transformPolygon(geom, parent);
     // don't try and correct if the parent is going to do this
-    if (parent instanceof MultiPolygon) {
+    if (parent is MultiPolygon) {
       return rawGeom;
     }
     return createValidArea(rawGeom);
@@ -171,9 +171,9 @@ static class DPTransformer
   //*
   protected Geometry transformLinearRing(LinearRing geom, Geometry parent) 
   {
-  	bool removeDegenerateRings = parent instanceof Polygon;
+  	bool removeDegenerateRings = parent is Polygon;
   	Geometry simpResult = super.transformLinearRing(geom, parent);
-  	if (removeDegenerateRings && ! (simpResult instanceof LinearRing))
+  	if (removeDegenerateRings && ! (simpResult is LinearRing))
   		return null;
   	return simpResult;
   }

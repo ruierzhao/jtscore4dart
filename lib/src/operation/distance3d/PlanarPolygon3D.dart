@@ -12,14 +12,14 @@
 
 
 
-import org.locationtech.jts.algorithm.RayCrossingCounter;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.math.Plane3D;
-import org.locationtech.jts.math.Vector3D;
+// import org.locationtech.jts.algorithm.RayCrossingCounter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.math.Plane3D;
+// import org.locationtech.jts.math.Vector3D;
 
 /**
  * Models a polygon lying in a plane in 3-dimensional Cartesian space.

@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Lineal;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.Puntal;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Lineal;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.Puntal;
 
 /**
  * A factory for creating {@link PreparedGeometry}s.
@@ -53,11 +53,11 @@ class PreparedGeometryFactory
    */
   PreparedGeometry create(Geometry geom)
   {
-    if (geom instanceof Polygonal) 
+    if (geom is Polygonal) 
       return new PreparedPolygon((Polygonal) geom);
-    if (geom instanceof Lineal) 
+    if (geom is Lineal) 
       return new PreparedLineString((Lineal) geom);
-    if (geom instanceof Puntal) 
+    if (geom is Puntal) 
       return new PreparedPoint((Puntal) geom);
     
     /**

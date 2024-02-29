@@ -14,7 +14,7 @@
 /**
  * @version 1.7
  */
-import java.util.List;
+// import java.util.List;
 
 /**
  * An EdgeSetIntersector computes all the intersections between the

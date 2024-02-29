@@ -11,31 +11,31 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.noding.IntersectionAdder;
-import org.locationtech.jts.noding.MCIndexNoder;
-import org.locationtech.jts.noding.NodedSegmentString;
-import org.locationtech.jts.noding.Noder;
-import org.locationtech.jts.noding.SegmentString;
-import org.locationtech.jts.noding.ValidatingNoder;
-import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.noding.IntersectionAdder;
+// import org.locationtech.jts.noding.MCIndexNoder;
+// import org.locationtech.jts.noding.NodedSegmentString;
+// import org.locationtech.jts.noding.Noder;
+// import org.locationtech.jts.noding.SegmentString;
+// import org.locationtech.jts.noding.ValidatingNoder;
+// import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
 
 /**
  * Builds a set of noded, unique, labelled Edges from 
@@ -215,12 +215,12 @@ class EdgeNodingBuilder {
     if (isClippedCompletely(g.getEnvelopeInternal())) 
       return;
 
-    if (g instanceof Polygon)                 addPolygon((Polygon) g, geomIndex);
+    if (g is Polygon)                 addPolygon((Polygon) g, geomIndex);
     // LineString also handles LinearRings
-    else if (g instanceof LineString)         addLine((LineString) g, geomIndex);
-    else if (g instanceof MultiLineString)    addCollection((MultiLineString) g, geomIndex);
-    else if (g instanceof MultiPolygon)       addCollection((MultiPolygon) g, geomIndex);
-    else if (g instanceof GeometryCollection) addGeometryCollection((GeometryCollection) g, geomIndex, g.getDimension());
+    else if (g is LineString)         addLine((LineString) g, geomIndex);
+    else if (g is MultiLineString)    addCollection((MultiLineString) g, geomIndex);
+    else if (g is MultiPolygon)       addCollection((MultiPolygon) g, geomIndex);
+    else if (g is GeometryCollection) addGeometryCollection((GeometryCollection) g, geomIndex, g.getDimension());
     // ignore Point geometries - they are handled elsewhere
   }
   

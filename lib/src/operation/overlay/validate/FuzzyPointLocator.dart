@@ -12,20 +12,20 @@
 
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.PointLocator;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.GeometryFilter;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.algorithm.PointLocator;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.GeometryFilter;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Finds the most likely {@link Location} of a point relative to
@@ -123,7 +123,7 @@ class PolygonalLineworkExtracter
 	 */
 	void filter(Geometry g)
 	{
-		if (g instanceof Polygon) {
+		if (g is Polygon) {
 			Polygon poly = (Polygon) g;
 			linework.add(poly.getExteriorRing());
 			for (int i = 0; i < poly.getNumInteriorRing(); i++) {

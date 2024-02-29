@@ -11,11 +11,11 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.util.GeometryTransformer;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.util.GeometryTransformer;
 
 /**
  * A transformer to reduce the precision of a geometry pointwise.

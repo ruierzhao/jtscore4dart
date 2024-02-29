@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Dimension;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Dimension;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Represents the linework for edges in the topology 

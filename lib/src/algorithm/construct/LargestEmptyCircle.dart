@@ -11,20 +11,20 @@
  */
 
 
-import java.util.PriorityQueue;
+// import java.util.PriorityQueue;
 
-import org.locationtech.jts.algorithm.Centroid;
-import org.locationtech.jts.algorithm.InteriorPoint;
-import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.operation.distance.IndexedFacetDistance;
+// import org.locationtech.jts.algorithm.Centroid;
+// import org.locationtech.jts.algorithm.InteriorPoint;
+// import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.operation.distance.IndexedFacetDistance;
 
 /**
  * Constructs the Largest Empty Circle for a set
@@ -158,7 +158,7 @@ class LargestEmptyCircle {
     if (obstacles == null || obstacles.isEmpty()) {
       throw new ArgumentError("Obstacles geometry is empty or null");
     }
-    if (boundary != null && ! (boundary instanceof Polygonal)) {
+    if (boundary != null && ! (boundary is Polygonal)) {
       throw new ArgumentError("Boundary must be polygonal");
     }
     if (tolerance <= 0) {
@@ -364,7 +364,7 @@ class LargestEmptyCircle {
    * @param cellQueue the queue to initialize
    */
   private void createInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue) {
-    double cellSize = Math.max(env.getWidth(), env.getHeight());
+    double cellSize = math.max(env.getWidth(), env.getHeight());
     double hSide = cellSize / 2.0;
 
     // Check for flat collapsed input and if so short-circuit

@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.index.quadtree.IntervalSize;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.index.quadtree.IntervalSize;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * The root node of a single {@link Bintree}.

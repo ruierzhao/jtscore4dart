@@ -11,11 +11,11 @@
  */
 
 
-import java.util.Arrays;
-import java.util.Map;
+// import java.util.Arrays;
+// import java.util.Map;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * The Fréchet distance is a measure of similarity between curves. Thus, it can
@@ -107,7 +107,7 @@ class DiscreteFrechetDistance {
    */
   private static MatrixStorage createMatrixStorage(int rows, int cols) {
 
-    int max = Math.max(rows, cols);
+    int max = math.max(rows, cols);
     // NOTE: these constraints need to be verified
     if (max < 1024)
       return new RectMatrix(rows, cols, Double.POSITIVE_INFINITY);
@@ -188,7 +188,7 @@ class DiscreteFrechetDistance {
       double d0 = matrix.get(i - 1, j - 1);
       double d1 = matrix.get(i - 1, j);
       double d2 = matrix.get(i, j - 1);
-      return Math.min(Math.min(d0, d1), d2);
+      return math.min(Math.min(d0, d1), d2);
     }
     if (i == 0 && j == 0)
       return matrix.get(0, 0);
@@ -289,7 +289,7 @@ class DiscreteFrechetDistance {
    * @return a packed array of column and row indices
    */
   static int[] bresenhamDiagonal(int numCols, int numRows) {
-    int dim = Math.max(numCols, numRows);
+    int dim = math.max(numCols, numRows);
     int[] diagXY = new int[2 * dim];
 
     int dx = numCols - 1;
@@ -455,7 +455,7 @@ class DiscreteFrechetDistance {
      * @return the expected number of values in the sparse matrix
      */
     private static int expectedValuesHeuristic(int numRows, int numCols) {
-      int max = Math.max(numRows, numCols);
+      int max = math.max(numRows, numCols);
       return max * max / 10;
     }
 
@@ -526,7 +526,7 @@ class DiscreteFrechetDistance {
       if (required < this.v.length)
         return;
 
-      int increment = Math.max(this.numRows, this.numCols);
+      int increment = math.max(this.numRows, this.numCols);
       this.v = Arrays.copyOf(this.v, this.v.length + increment);
       this.ci = Arrays.copyOf(this.ci, this.v.length + increment);
     }

@@ -12,14 +12,14 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.index.ItemVisitor;
-import org.locationtech.jts.index.SpatialIndex;
-import org.locationtech.jts.index.chain.MonotoneChain;
-import org.locationtech.jts.index.chain.MonotoneChainSelectAction;
-import org.locationtech.jts.noding.NodedSegmentString;
-import org.locationtech.jts.noding.SegmentString;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.index.ItemVisitor;
+// import org.locationtech.jts.index.SpatialIndex;
+// import org.locationtech.jts.index.chain.MonotoneChain;
+// import org.locationtech.jts.index.chain.MonotoneChainSelectAction;
+// import org.locationtech.jts.noding.NodedSegmentString;
+// import org.locationtech.jts.noding.SegmentString;
 
 /**
  * "Snaps" all {@link SegmentString}s in a {@link SpatialIndex} containing

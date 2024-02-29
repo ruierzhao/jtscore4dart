@@ -11,10 +11,10 @@
  */
 
 
-import java.awt.Color;
-import java.lang.reflect.Method;
+// import java.awt.Color;
+// import java.lang.reflect.Method;
 
-import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Geometry;
 
 /**
  * A proxy to call TestBuilder functions.

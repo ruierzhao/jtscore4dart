@@ -11,14 +11,14 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collections;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFilter;
-import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFilter;
+// import org.locationtech.jts.geom.Point;
 
 
 /**
@@ -39,10 +39,10 @@ class PointExtracter
    */
   static List getPoints(Geometry geom, List list)
   {
-  	if (geom instanceof Point) {
+  	if (geom is Point) {
   		list.add(geom);
   	}
-  	else if (geom instanceof GeometryCollection) {
+  	else if (geom is GeometryCollection) {
   		geom.apply(new PointExtracter(list));
   	}
   	// skip non-Polygonal elemental geometries
@@ -57,7 +57,7 @@ class PointExtracter
    * @param geom the geometry from which to extract
    */
   static List getPoints(Geometry geom) {
-    if (geom instanceof Point) {
+    if (geom is Point) {
       return Collections.singletonList(geom);
     }
     return getPoints(geom, new ArrayList());
@@ -74,7 +74,7 @@ class PointExtracter
 
   void filter(Geometry geom)
   {
-    if (geom instanceof Point) pts.add(geom);
+    if (geom is Point) pts.add(geom);
   }
 
 }

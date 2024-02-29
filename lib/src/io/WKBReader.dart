@@ -11,22 +11,22 @@
  */
 
 
-import java.io.IOException;
+// import java.io.IOException;
 
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFactory;
-import org.locationtech.jts.geom.CoordinateSequences;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFactory;
+// import org.locationtech.jts.geom.CoordinateSequences;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * Reads a {@link Geometry}from a byte stream in Well-Known Binary format.
@@ -302,7 +302,7 @@ class WKBReader
   {
     CoordinateSequence pts = readCoordinateSequence(1);
     // If X and Y are NaN create a empty point
-    if (Double.isNaN(pts.getX(0)) || Double.isNaN(pts.getY(0))) {
+    if ((pts.getX(0).isNaN) || (pts.getY(0).isNaN)) {
       return factory.createPoint();
     }
     return factory.createPoint(pts);
@@ -346,7 +346,7 @@ class WKBReader
     Point[] geoms = new Point[numGeom];
     for (int i = 0; i < numGeom; i++) {
       Geometry g = readGeometry(SRID);
-      if (! (g instanceof Point))
+      if (! (g is Point))
         throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPoint");
       geoms[i] = (Point) g;
     }
@@ -359,7 +359,7 @@ class WKBReader
     LineString[] geoms = new LineString[numGeom];
     for (int i = 0; i < numGeom; i++) {
       Geometry g = readGeometry(SRID);
-      if (! (g instanceof LineString))
+      if (! (g is LineString))
         throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiLineString");
       geoms[i] = (LineString) g;
     }
@@ -373,7 +373,7 @@ class WKBReader
 
     for (int i = 0; i < numGeom; i++) {
       Geometry g = readGeometry(SRID);
-      if (! (g instanceof Polygon))
+      if (! (g is Polygon))
         throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPolygon");
       geoms[i] = (Polygon) g;
     }

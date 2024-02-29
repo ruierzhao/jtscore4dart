@@ -11,11 +11,11 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Position;
-import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * Computes the raw offset curve for a

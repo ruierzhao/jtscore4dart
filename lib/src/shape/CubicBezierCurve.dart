@@ -11,16 +11,16 @@
  */
 
 
-import org.locationtech.jts.algorithm.Angle;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.util.GeometryMapper;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.algorithm.Angle;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.util.GeometryMapper;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Creates a curved geometry by replacing the segments
@@ -163,10 +163,10 @@ class CubicBezierCurve {
       
       @Override
       Geometry map(Geometry geom) {
-        if (geom instanceof LineString) {
+        if (geom is LineString) {
           return bezierLine((LineString) geom);
         }
-        if (geom instanceof Polygon ) {
+        if (geom is Polygon ) {
           return bezierPolygon((Polygon) geom);
         } 
         //-- Points
@@ -290,14 +290,14 @@ class CubicBezierCurve {
       Coordinate v2 = coords[i + 1];
 
       double interiorAng = Angle.angleBetweenOriented(v0, v1, v2);
-      double orient = Math.signum(interiorAng);
+      double orient = math.signum(interiorAng);
       double angBisect = Angle.bisector(v0, v1, v2);
       double ang0 = angBisect - orient * Angle.PI_OVER_2;
       double ang1 = angBisect + orient * Angle.PI_OVER_2;
       
       double dist0 = v1.distance(v0);
       double dist1 = v1.distance(v2);
-      double lenBase = Math.min(dist0, dist1);
+      double lenBase = math.min(dist0, dist1);
       
       double intAngAbs = (interiorAng).abs();
       
@@ -308,7 +308,7 @@ class CubicBezierCurve {
       double stretch0 = 1;
       double stretch1 = 1;
       if (skew != 0) {
-        double stretch = (dist0 - dist1).abs() / Math.max(dist0, dist1);
+        double stretch = (dist0 - dist1).abs() / math.max(dist0, dist1);
         int skewIndex = dist0 > dist1 ? 0 : 1;
         if (skew < 0) skewIndex = 1 - skewIndex;
         if (skewIndex == 0) {

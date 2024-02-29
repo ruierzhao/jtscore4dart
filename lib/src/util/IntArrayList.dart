@@ -11,7 +11,7 @@
  */
 
 
-import java.util.Arrays;
+// import java.util.Arrays;
 
 /**
  * An extendable array of primitive <code>int</code> values.
@@ -57,7 +57,7 @@ class IntArrayList {
    */
   void ensureCapacity(final int capacity) {
     if (capacity <= data.length) return;
-    int newLength  = Math.max(capacity, data.length * 2);
+    int newLength  = math.max(capacity, data.length * 2);
     //System.out.println("IntArrayList: copying " + size + " ints to new array of length " + capacity);
     data = Arrays.copyOf(data, newLength);
   }

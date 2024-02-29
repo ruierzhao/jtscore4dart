@@ -11,17 +11,17 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.Area;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.algorithm.Area;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.math.MathUtil;
 
 /**
  * Computes topology-preserving simplified hulls of polygonal geometry.
@@ -120,7 +120,7 @@ class PolygonHullSimplifier {
     this.inputGeom = inputGeom; 
     this.geomFactory = inputGeom.getFactory();
     this.isOuter = isOuter;
-    if (! (inputGeom instanceof Polygonal)) {
+    if (! (inputGeom is Polygonal)) {
       throw new ArgumentError("Input geometry must be  polygonal");
     }
   }
@@ -158,7 +158,7 @@ class PolygonHullSimplifier {
       return inputGeom.copy();
     }
     
-    if (inputGeom instanceof MultiPolygon) {
+    if (inputGeom is MultiPolygon) {
       /**
        * Only outer hulls where there is more than one polygon
        * can potentially overlap.
@@ -174,7 +174,7 @@ class PolygonHullSimplifier {
         return computeMultiPolygonEach((MultiPolygon) inputGeom);
       }
     }
-    else if (inputGeom instanceof Polygon) {
+    else if (inputGeom is Polygon) {
       return computePolygon((Polygon) inputGeom);
     }
     throw new ArgumentError("Input geometry must be polygonal");
@@ -271,7 +271,7 @@ class PolygonHullSimplifier {
   private RingHull createRingHull(LinearRing ring, bool isOuter, double areaTotal, RingHullIndex hullIndex) {
     RingHull ringHull = new RingHull(ring, isOuter);
     if (vertexNumFraction >= 0) {
-      int targetVertexCount = (int) Math.ceil(vertexNumFraction * (ring.getNumPoints() - 1));
+      int targetVertexCount = (int) math.ceil(vertexNumFraction * (ring.getNumPoints() - 1));
       ringHull.setMinVertexNum(targetVertexCount);
     }
     else if (areaDeltaRatio >= 0) {

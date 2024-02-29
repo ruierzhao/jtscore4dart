@@ -11,7 +11,7 @@
  */
 
 
-import java.io.IOException;
+// import java.io.IOException;
 
 /**
  * Allows reading a stream of Java primitive datatypes from an underlying

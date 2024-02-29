@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
 
 /**
  * Functions for computing length.
@@ -49,7 +49,7 @@ class Length {
       double dx = x1 - x0;
       double dy = y1 - y0;
   
-      len += Math.hypot(dx, dy);
+      len += math.hypot(dx, dy);
   
       x0 = x1;
       y0 = y1;

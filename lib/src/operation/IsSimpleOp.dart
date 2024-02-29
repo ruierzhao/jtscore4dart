@@ -11,31 +11,31 @@
  */
 
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.Set;
+// import java.util.TreeMap;
+// import java.util.TreeSet;
 
-import org.locationtech.jts.algorithm.BoundaryNodeRule;
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Lineal;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.util.LinearComponentExtracter;
-import org.locationtech.jts.geomgraph.Edge;
-import org.locationtech.jts.geomgraph.EdgeIntersection;
-import org.locationtech.jts.geomgraph.GeometryGraph;
-import org.locationtech.jts.geomgraph.index.SegmentIntersector;
+// import org.locationtech.jts.algorithm.BoundaryNodeRule;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Lineal;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.util.LinearComponentExtracter;
+// import org.locationtech.jts.geomgraph.Edge;
+// import org.locationtech.jts.geomgraph.EdgeIntersection;
+// import org.locationtech.jts.geomgraph.GeometryGraph;
+// import org.locationtech.jts.geomgraph.index.SegmentIntersector;
 
 /**
  * Tests whether a <code>Geometry</code> is simple.
@@ -130,11 +130,11 @@ class IsSimpleOp
   {
     nonSimpleLocation = null;
     if (geom.isEmpty()) return true;
-    if (geom instanceof LineString) return isSimpleLinearGeometry(geom);
-    if (geom instanceof MultiLineString) return isSimpleLinearGeometry(geom);
-    if (geom instanceof MultiPoint) return isSimpleMultiPoint((MultiPoint) geom);
-    if (geom instanceof Polygonal) return isSimplePolygonal(geom);
-    if (geom instanceof GeometryCollection) return isSimpleGeometryCollection(geom);
+    if (geom is LineString) return isSimpleLinearGeometry(geom);
+    if (geom is MultiLineString) return isSimpleLinearGeometry(geom);
+    if (geom is MultiPoint) return isSimpleMultiPoint((MultiPoint) geom);
+    if (geom is Polygonal) return isSimplePolygonal(geom);
+    if (geom is GeometryCollection) return isSimpleGeometryCollection(geom);
     // all other geometry types are simple by definition
     return true;
   }

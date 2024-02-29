@@ -12,9 +12,9 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.io.WKTWriter;
 
 /**
  * A class that represents the edge data structure which implements the quadedge algebra. 

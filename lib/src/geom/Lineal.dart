@@ -19,6 +19,6 @@
  * @author Martin Davis
  *
  */
-interface Lineal {
+abstract class Lineal {
 
 }

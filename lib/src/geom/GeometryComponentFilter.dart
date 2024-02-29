@@ -34,7 +34,7 @@
  *
  *@version 1.7
  */
-interface GeometryComponentFilter {
+abstract class GeometryComponentFilter {
 
   /**
    * Performs an operation with or on a geometry component.

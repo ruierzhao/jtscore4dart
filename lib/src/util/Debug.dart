@@ -14,17 +14,17 @@
 /**
  *@version 1.7
  */
-import java.io.PrintStream;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
+// import java.io.PrintStream;
+// import java.lang.reflect.Method;
+// import java.util.Collection;
+// import java.util.Iterator;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFilter;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
 
 /**
  * Provides routines to simplify and localize debugging output.
@@ -272,10 +272,10 @@ class Debug {
 
   void instancePrint(Object obj)
   {
-    if (obj instanceof Collection) {
+    if (obj is Collection) {
       instancePrint(((Collection) obj).iterator());
     }
-    else if (obj instanceof Iterator) {
+    else if (obj is Iterator) {
       instancePrint((Iterator) obj);
     }
     else {

@@ -11,10 +11,10 @@
  */
 
 
-import org.locationtech.jts.algorithm.Angle;
-import org.locationtech.jts.algorithm.CGAlgorithmsDD;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.algorithm.Angle;
+// import org.locationtech.jts.algorithm.CGAlgorithmsDD;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * A 2-dimensional mathematical vector represented by double-precision X and Y components.
@@ -148,7 +148,7 @@ class Vector2D {
 	}
 
 	double length() {
-		return Math.hypot(x, y);
+		return math.hypot(x, y);
 	}
 
 	double lengthSquared() {
@@ -196,7 +196,7 @@ class Vector2D {
   {
     double delx = v.x - x;
     double dely = v.y - y;
-    return Math.hypot(delx, dely);
+    return math.hypot(delx, dely);
   }
   
 	/**
@@ -211,7 +211,7 @@ class Vector2D {
 
 	double angle()
 	{
-		return Math.atan2(y, x);
+		return math.atan2(y, x);
 	}
 	
   double angle(Vector2D v)
@@ -228,15 +228,15 @@ class Vector2D {
     // normalize, maintaining orientation
     if (angDel <= -Math.PI)
       return angDel + Angle.PI_TIMES_2;
-    if (angDel > Math.PI)
+    if (angDel > math.PI)
       return angDel - Angle.PI_TIMES_2;
     return angDel;
   }
   
 	Vector2D rotate(double angle)
 	{
-		double cos = Math.cos(angle);
-		double sin = Math.sin(angle);
+		double cos = math.cos(angle);
+		double sin = math.sin(angle);
 		return create(
 				x * cos - y * sin,
 				x * sin + y * cos
@@ -315,7 +315,7 @@ class Vector2D {
 	 *         values for the x and y components.
 	 */
 	bool equals(Object o) {
-		if (!(o instanceof Vector2D)) {
+		if (!(o is Vector2D)) {
 			return false;
 		}
 		Vector2D v = (Vector2D) o;

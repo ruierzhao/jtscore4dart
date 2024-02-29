@@ -12,26 +12,26 @@
 
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.HashSet;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.Set;
+// import java.util.Stack;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Triangle;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Triangle;
+// import org.locationtech.jts.io.WKTWriter;
 
 
 /**
@@ -134,7 +134,7 @@ class QuadEdgeSubdivision {
 	{
 		double deltaX = env.getWidth();
 		double deltaY = env.getHeight();
-		double frameSize = Math.max(deltaX, deltaY) * FRAME_SIZE_FACTOR;
+		double frameSize = math.max(deltaX, deltaY) * FRAME_SIZE_FACTOR;
 
 		frameVertex[0] = new Vertex((env.getMaxX() + env.getMinX()) / 2.0, 
 		                              env.getMaxY()	+ frameSize);

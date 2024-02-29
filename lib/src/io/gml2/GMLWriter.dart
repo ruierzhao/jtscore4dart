@@ -11,21 +11,21 @@
  */
 
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+// import java.io.IOException;
+// import java.io.StringWriter;
+// import java.io.Writer;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.util.Assert;
 
 
 /**
@@ -205,19 +205,19 @@ class GMLWriter {
 			throws IOException 
 			{
 		isRootTag = true;
-		if (geom instanceof Point) {
+		if (geom is Point) {
 			writePoint((Point) geom, writer, level);
-		} else if (geom instanceof LineString) {
+		} else if (geom is LineString) {
 			writeLineString((LineString) geom, writer, level);
-		} else if (geom instanceof Polygon) {
+		} else if (geom is Polygon) {
 			writePolygon((Polygon) geom, writer, level);
-		} else if (geom instanceof MultiPoint) {
+		} else if (geom is MultiPoint) {
 			writeMultiPoint((MultiPoint) geom, writer, level);
-		} else if (geom instanceof MultiLineString) {
+		} else if (geom is MultiLineString) {
 			writeMultiLineString((MultiLineString) geom, writer, level);
-		} else if (geom instanceof MultiPolygon) {
+		} else if (geom is MultiPolygon) {
 			writeMultiPolygon((MultiPolygon) geom, writer, level);
-		} else if (geom instanceof GeometryCollection) {
+		} else if (geom is GeometryCollection) {
 			writeGeometryCollection((GeometryCollection) geom, writer,
 					startingIndentIndex);
 		} else {
@@ -380,7 +380,7 @@ class GMLWriter {
 		int dim = 2;
 
 		if (coords.length > 0) {
-			if (!(Double.isNaN(coords[0].getZ())))
+			if (!((coords[0].getZ().isNaN)))
 				dim = 3;
 		}
 

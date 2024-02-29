@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Debug;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.util.Debug;
 
 /**
  * Validates that the result of a buffer operation
@@ -132,8 +132,8 @@ class BufferResultValidator
   
   private void checkPolygonal()
   {
-  	if (! (result instanceof Polygon 
-  			|| result instanceof MultiPolygon))
+  	if (! (result is Polygon 
+  			|| result is MultiPolygon))
   	isValid = false;
   	errorMsg = "Result is not polygonal";
     errorIndicator = result;

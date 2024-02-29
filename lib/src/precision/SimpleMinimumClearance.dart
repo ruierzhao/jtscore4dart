@@ -11,14 +11,14 @@
  */
 
 
-import org.locationtech.jts.algorithm.Distance;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateFilter;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFilter;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.algorithm.Distance;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateFilter;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.CoordinateSequenceFilter;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
 
 /**
  * Computes the minimum clearance of a geometry or 

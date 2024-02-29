@@ -11,16 +11,16 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.util.GeometryTransformer;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.util.GeometryTransformer;
 
 /**
  * Densifies a {@link Geometry} by inserting extra vertices along the line segments
@@ -78,12 +78,12 @@ class Densifier {
 			  continue;
 			
 			// densify the segment
-			int densifiedSegCount = (int) Math.ceil(len / distanceTolerance);
+			int densifiedSegCount = (int) math.ceil(len / distanceTolerance);
 			double densifiedSegLen = len / densifiedSegCount;
 			for (int j = 1; j < densifiedSegCount; j++) {
 				double segFract = (j * densifiedSegLen) / len;
 				Coordinate p = seg.pointAlong(segFract);
-				if(!Double.isNaN(seg.p0.z) && !Double.isNaN(seg.p1.z)) {
+				if(!(seg.p0.z).isNaN && !(seg.p1.z).isNaN) {
 					p.setZ(seg.p0.z + segFract * (seg.p1.z - seg.p0.z));
 				}
         		precModel.makePrecise(p);
@@ -161,7 +161,7 @@ class Densifier {
 			List<Coordinate> newPts = Densifier
 					.densifyPoints(inputPts, distanceTolerance, parent.getPrecisionModel());
 			// prevent creation of invalid linestrings
-			if (parent instanceof LineString && newPts.length == 1) {
+			if (parent is LineString && newPts.length == 1) {
 				newPts = new Coordinate[0];
 			}
 			return factory.getCoordinateSequenceFactory().create(newPts);
@@ -170,7 +170,7 @@ class Densifier {
 		protected Geometry transformPolygon(Polygon geom, Geometry parent) {
 			Geometry roughGeom = super.transformPolygon(geom, parent);
 			// don't try and correct if the parent is going to do this
-			if (parent instanceof MultiPolygon) {
+			if (parent is MultiPolygon) {
 				return roughGeom;
 			}
 			return createValidArea(roughGeom);

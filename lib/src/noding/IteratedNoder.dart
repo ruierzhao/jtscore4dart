@@ -11,12 +11,12 @@
  */
 
 
-import java.util.Collection;
+// import java.util.Collection;
 
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.RobustLineIntersector;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.RobustLineIntersector;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.TopologyException;
 
 /**
  * Nodes a set of {@link NodedSegmentString}s completely.

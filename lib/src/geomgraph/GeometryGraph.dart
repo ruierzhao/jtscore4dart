@@ -11,36 +11,36 @@
  */
 
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+// import java.util.Collection;
+// import java.util.Map;
+// import java.util.Iterator;
+// import java.util.List;
+// import java.util.Map;
 
-import org.locationtech.jts.algorithm.BoundaryNodeRule;
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.algorithm.PointLocator;
-import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
-import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.Position;
-import org.locationtech.jts.geomgraph.index.EdgeSetIntersector;
-import org.locationtech.jts.geomgraph.index.SegmentIntersector;
-import org.locationtech.jts.geomgraph.index.SimpleMCSweepLineIntersector;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.algorithm.BoundaryNodeRule;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.algorithm.Orientation;
+// import org.locationtech.jts.algorithm.PointLocator;
+// import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
+// import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geomgraph.index.EdgeSetIntersector;
+// import org.locationtech.jts.geomgraph.index.SegmentIntersector;
+// import org.locationtech.jts.geomgraph.index.SimpleMCSweepLineIntersector;
+// import org.locationtech.jts.util.Assert;
 
 /**
  * A GeometryGraph is a graph that models a given Geometry
@@ -204,17 +204,17 @@ class GeometryGraph
 
     // check if this Geometry should obey the Boundary Determination Rule
     // all collections except MultiPolygons obey the rule
-    if (g instanceof MultiPolygon)
+    if (g is MultiPolygon)
       useBoundaryDeterminationRule = false;
 
-    if (g instanceof Polygon)                 addPolygon((Polygon) g);
+    if (g is Polygon)                 addPolygon((Polygon) g);
                         // LineString also handles LinearRings
-    else if (g instanceof LineString)         addLineString((LineString) g);
-    else if (g instanceof Point)              addPoint((Point) g);
-    else if (g instanceof MultiPoint)         addCollection((MultiPoint) g);
-    else if (g instanceof MultiLineString)    addCollection((MultiLineString) g);
-    else if (g instanceof MultiPolygon)       addCollection((MultiPolygon) g);
-    else if (g instanceof GeometryCollection) addCollection((GeometryCollection) g);
+    else if (g is LineString)         addLineString((LineString) g);
+    else if (g is Point)              addPoint((Point) g);
+    else if (g is MultiPoint)         addCollection((MultiPoint) g);
+    else if (g is MultiLineString)    addCollection((MultiLineString) g);
+    else if (g is MultiPolygon)       addCollection((MultiPolygon) g);
+    else if (g is GeometryCollection) addCollection((GeometryCollection) g);
     else  throw new UnsupportedOperationException(g.getClass().getName());
   }
 
@@ -355,9 +355,9 @@ class GeometryGraph
     SegmentIntersector si = new SegmentIntersector(li, true, false);
     EdgeSetIntersector esi = createEdgeSetIntersector();
     // optimize intersection search for valid Polygons and LinearRings
-    bool isRings = parentGeom instanceof LinearRing
-			|| parentGeom instanceof Polygon
-			|| parentGeom instanceof MultiPolygon;
+    bool isRings = parentGeom is LinearRing
+			|| parentGeom is Polygon
+			|| parentGeom is MultiPolygon;
     bool computeAllSegments = computeRingSelfNodes || ! isRings;
     esi.computeIntersections(edges, si, computeAllSegments);
     
@@ -455,7 +455,7 @@ Debug.print(e.getEdgeIntersectionList());
    */
   int locate(Coordinate pt)
   {
-  	if (parentGeom instanceof Polygonal && parentGeom.getNumGeometries() > 50) {
+  	if (parentGeom is Polygonal && parentGeom.getNumGeometries() > 50) {
   		// lazily init point locator
   		if (areaPtLocator == null) {
   			areaPtLocator = new IndexedPointInAreaLocator(parentGeom);

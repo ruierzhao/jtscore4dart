@@ -11,9 +11,9 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.LineSegment;
 
 
 /**
@@ -361,20 +361,20 @@ class MonotoneChain {
   
   private bool overlaps(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2, double overlapTolerance)
   {
-    double minq = Math.min(q1.x, q2.x);
-    double maxq = Math.max(q1.x, q2.x);
-    double minp = Math.min(p1.x, p2.x);
-    double maxp = Math.max(p1.x, p2.x);
+    double minq = math.min(q1.x, q2.x);
+    double maxq = math.max(q1.x, q2.x);
+    double minp = math.min(p1.x, p2.x);
+    double maxp = math.max(p1.x, p2.x);
 
     if( minp > maxq + overlapTolerance )
         return false;
     if( maxp < minq - overlapTolerance )
         return false;
 
-    minq = Math.min(q1.y, q2.y);
-    maxq = Math.max(q1.y, q2.y);
-    minp = Math.min(p1.y, p2.y);
-    maxp = Math.max(p1.y, p2.y);
+    minq = math.min(q1.y, q2.y);
+    maxq = math.max(q1.y, q2.y);
+    minp = math.min(p1.y, p2.y);
+    maxp = math.max(p1.y, p2.y);
 
     if( minp > maxq + overlapTolerance )
         return false;

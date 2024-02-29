@@ -12,21 +12,21 @@
 
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * A framework for processes which transform an input {@link Geometry} into
@@ -115,21 +115,21 @@ class GeometryTransformer
     this.inputGeom = inputGeom;
     this.factory = inputGeom.getFactory();
 
-    if (inputGeom instanceof Point)
+    if (inputGeom is Point)
       return transformPoint((Point) inputGeom, null);
-    if (inputGeom instanceof MultiPoint)
+    if (inputGeom is MultiPoint)
       return transformMultiPoint((MultiPoint) inputGeom, null);
-    if (inputGeom instanceof LinearRing)
+    if (inputGeom is LinearRing)
       return transformLinearRing((LinearRing) inputGeom, null);
-    if (inputGeom instanceof LineString)
+    if (inputGeom is LineString)
       return transformLineString((LineString) inputGeom, null);
-    if (inputGeom instanceof MultiLineString)
+    if (inputGeom is MultiLineString)
       return transformMultiLineString((MultiLineString) inputGeom, null);
-    if (inputGeom instanceof Polygon)
+    if (inputGeom is Polygon)
       return transformPolygon((Polygon) inputGeom, null);
-    if (inputGeom instanceof MultiPolygon)
+    if (inputGeom is MultiPolygon)
       return transformMultiPolygon((MultiPolygon) inputGeom, null);
-    if (inputGeom instanceof GeometryCollection)
+    if (inputGeom is GeometryCollection)
       return transformGeometryCollection((GeometryCollection) inputGeom, null);
 
     throw new ArgumentError("Unknown Geometry subtype: " + inputGeom.getClass().getName());
@@ -254,7 +254,7 @@ class GeometryTransformer
       return factory.createPolygon();
     }
     
-    if (shellIsNullOrEmpty || ! (shell instanceof LinearRing))
+    if (shellIsNullOrEmpty || ! (shell is LinearRing))
       isAllValidLinearRings = false;
 
     ArrayList holes = new ArrayList();
@@ -263,7 +263,7 @@ class GeometryTransformer
       if (hole == null || hole.isEmpty()) {
         continue;
       }
-      if (! (hole instanceof LinearRing))
+      if (! (hole is LinearRing))
         isAllValidLinearRings = false;
 
       holes.add(hole);

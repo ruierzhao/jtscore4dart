@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.io.OrdinateFormat;
+// import org.locationtech.jts.io.OrdinateFormat;
 
 
 /**
@@ -84,7 +84,7 @@ class CoordinateSequences {
    */
   static void copyCoord(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos)
   {
-    int minDim = Math.min(src.getDimension(), dest.getDimension());
+    int minDim = math.min(src.getDimension(), dest.getDimension());
 		for (int dim = 0; dim < minDim; dim++) {
 			dest.setOrdinate(destPos, dim, src.getOrdinate(srcPos, dim));
 		}
@@ -180,7 +180,7 @@ class CoordinateSequences {
     int cs1Size = cs1.size();
     int cs2Size = cs2.size();
     if (cs1Size != cs2Size) return false;
-    int dim = Math.min(cs1.getDimension(), cs2.getDimension());
+    int dim = math.min(cs1.getDimension(), cs2.getDimension());
     for (int i = 0; i < cs1Size; i++) {
       for (int d = 0; d < dim; d++) {
         double v1 = cs1.getOrdinate(i, d);
@@ -188,7 +188,7 @@ class CoordinateSequences {
         if (cs1.getOrdinate(i, d) == cs2.getOrdinate(i, d)) {
           continue;
         }
-        else if (Double.isNaN(v1) && Double.isNaN(v2)) {
+        else if ((v1).isNaN && (v2).isNaN) {
           // special check for NaNs
           continue;
         }

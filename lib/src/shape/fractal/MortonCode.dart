@@ -12,7 +12,7 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Encodes points as the index along the planar Morton (Z-order) curve.
@@ -64,7 +64,7 @@ class MortonCode
    */
   static int size(int level) {
     checkLevel(level);
-    return (int) Math.pow(2, 2 *level);
+    return (int) math.pow(2, 2 *level);
   }
   
   /**
@@ -77,7 +77,7 @@ class MortonCode
    */
   static int maxOrdinate(int level) {
     checkLevel(level);
-    return (int) Math.pow(2, level) - 1;
+    return (int) math.pow(2, level) - 1;
   }
   
   /**

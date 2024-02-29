@@ -11,9 +11,9 @@
  */
 
 
-import java.awt.geom.Point2D;
+// import java.awt.geom.Point2D;
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Copies point ordinates with no transformation.

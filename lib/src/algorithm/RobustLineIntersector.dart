@@ -14,8 +14,8 @@
 /**
  *@version 1.7
  */
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
 
 /**
  * A robust version of {@link LineIntersector}.
@@ -96,7 +96,7 @@ class RobustLineIntersector
      *  intersect.
      */
     Coordinate p = null;
-    double z = Double.NaN;
+    double z = double.nan;
     if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0) {
       isProper = false;
       
@@ -211,7 +211,7 @@ class RobustLineIntersector
 
   private static Coordinate copyWithZ(Coordinate p, double z) {
     Coordinate pCopy = copy(p);
-    if (! Double.isNaN(z)) {
+    if (!(z).isNaN) {
       pCopy.setZ( z );
     }
     return pCopy;
@@ -350,7 +350,7 @@ class RobustLineIntersector
    */
   private static double zGet(Coordinate p, Coordinate q) {
     double z = p.getZ();
-    if (Double.isNaN(z)) {
+    if ((z).isNaN) {
       z = q.getZ(); // may be NaN
     }
     return z;
@@ -369,7 +369,7 @@ class RobustLineIntersector
    */
   private static double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
     double z = p.getZ();
-    if (! Double.isNaN(z)) 
+    if (! (z).isNaN) 
       return z;
     return zInterpolate(p, p1, p2); // may be NaN
   }
@@ -389,10 +389,10 @@ class RobustLineIntersector
   private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
     double p1z = p1.getZ();
     double p2z = p2.getZ();
-    if (Double.isNaN(p1z)) {
+    if ((p1z).isNaN) {
       return p2z; // may be NaN
     }
-    if (Double.isNaN(p2z)) {
+    if ((p2z).isNaN) {
       return p1z; // may be NaN
     }
     if (p.equals2D(p1)) {
@@ -413,7 +413,7 @@ class RobustLineIntersector
     double xoff = (p.x - p1.x);
     double yoff = (p.y - p1.y);
     double plen = (xoff * xoff + yoff * yoff);
-    double frac = Math.sqrt(plen / seglen);
+    double frac = math.sqrt(plen / seglen);
     double zoff = dz * frac;
     double zInterpolated = p1z + zoff;
     return zInterpolated;
@@ -436,10 +436,10 @@ class RobustLineIntersector
   private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
     double zp = zInterpolate(p, p1, p2);
     double zq = zInterpolate(p, q1, q2);
-    if (Double.isNaN(zp)) {
+    if ((zp).isNaN) {
       return zq; // may be NaN
     }
-    if (Double.isNaN(zq)) {
+    if ((zq).isNaN) {
       return zp; // may be NaN
     }
     // both Zs have values, so average them

@@ -11,9 +11,9 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collections;
+// import java.util.List;
 
 /**
  * A sweepline implements a sorted index on a set of intervals.

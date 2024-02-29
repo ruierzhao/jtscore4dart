@@ -12,21 +12,21 @@
 
 
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiLineString;
+// import org.locationtech.jts.geom.MultiPoint;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.util.Assert;
 
 
 /**
@@ -142,20 +142,20 @@ class GeometryEditor
     if (factory == null)
       factory = geometry.getFactory();
 
-    if (geometry instanceof GeometryCollection) {
+    if (geometry is GeometryCollection) {
       return editGeometryCollection((GeometryCollection) geometry,
                                     operation);
     }
 
-    if (geometry instanceof Polygon) {
+    if (geometry is Polygon) {
       return editPolygon((Polygon) geometry, operation);
     }
 
-    if (geometry instanceof Point) {
+    if (geometry is Point) {
       return operation.edit(geometry, factory);
     }
 
-    if (geometry instanceof LineString) {
+    if (geometry is LineString) {
       return operation.edit(geometry, factory);
     }
 
@@ -227,11 +227,11 @@ class GeometryEditor
   }
 
   /**
-   * A interface which specifies an edit operation for Geometries.
+   * A abstract class which specifies an edit operation for Geometries.
    *
    * @version 1.7
    */
-  interface GeometryEditorOperation
+  abstract class GeometryEditorOperation
   {
     /**
      * Edits a Geometry by returning a new Geometry with a modification.
@@ -277,17 +277,17 @@ class GeometryEditor
       implements GeometryEditorOperation
   {
     final Geometry edit(Geometry geometry, GeometryFactory factory) {
-      if (geometry instanceof LinearRing) {
+      if (geometry is LinearRing) {
         return factory.createLinearRing(edit(geometry.getCoordinates(),
             geometry));
       }
 
-      if (geometry instanceof LineString) {
+      if (geometry is LineString) {
         return factory.createLineString(edit(geometry.getCoordinates(),
             geometry));
       }
 
-      if (geometry instanceof Point) {
+      if (geometry is Point) {
         List<Coordinate> newCoordinates = edit(geometry.getCoordinates(),
             geometry);
 
@@ -322,19 +322,19 @@ class GeometryEditor
       implements GeometryEditorOperation
   {
     final Geometry edit(Geometry geometry, GeometryFactory factory) {
-      if (geometry instanceof LinearRing) {
+      if (geometry is LinearRing) {
         return factory.createLinearRing(edit(
             ((LinearRing)geometry).getCoordinateSequence(),
             geometry));
       }
 
-      if (geometry instanceof LineString) {
+      if (geometry is LineString) {
         return factory.createLineString(edit(
             ((LineString)geometry).getCoordinateSequence(),
             geometry));
       }
 
-      if (geometry instanceof Point) {
+      if (geometry is Point) {
         return factory.createPoint(edit(
             ((Point)geometry).getCoordinateSequence(),
             geometry));

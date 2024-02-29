@@ -11,11 +11,11 @@
  */
 
 
-import java.util.Iterator;
-import java.util.List;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geomgraph.Edge;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geomgraph.Edge;
 
 /**
  * Finds all intersections in one or two sets of edges,

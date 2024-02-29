@@ -12,7 +12,7 @@
 
 
 
-import java.util.Collection;
+// import java.util.Collection;
 
 /**
  * Locates {@link QuadEdge}s in a {@link QuadEdgeSubdivision},

@@ -11,13 +11,13 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFilter;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFilter;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Extracts all the {@link Polygon} elements from a {@link Geometry}.
@@ -37,10 +37,10 @@ class PolygonExtracter
    */
   static List getPolygons(Geometry geom, List list)
   {
-  	if (geom instanceof Polygon) {
+  	if (geom is Polygon) {
   		list.add(geom);
   	}
-  	else if (geom instanceof GeometryCollection) {
+  	else if (geom is GeometryCollection) {
   		geom.apply(new PolygonExtracter(list));
   	}
   	// skip non-Polygonal elemental geometries
@@ -70,7 +70,7 @@ class PolygonExtracter
 
   void filter(Geometry geom)
   {
-    if (geom instanceof Polygon) comps.add(geom);
+    if (geom is Polygon) comps.add(geom);
   }
 
 }

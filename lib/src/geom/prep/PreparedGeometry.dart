@@ -11,11 +11,11 @@
  */
 
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
 
 /**
- * An interface for classes which prepare {@link Geometry}s 
+ * An abstract class for classes which prepare {@link Geometry}s 
  * in order to optimize the performance 
  * of repeated calls to specific geometric operations.
  * <p>
@@ -34,7 +34,7 @@ import org.locationtech.jts.geom.GeometryCollection;
  * @author Martin Davis
  *
  */
-interface PreparedGeometry 
+abstract class PreparedGeometry 
 {
 	
 	/**

@@ -11,19 +11,19 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Dimension;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.GeometryFilter;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+// import org.locationtech.jts.geom.Dimension;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.GeometryFilter;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.util.Assert;
 
 
 /**
@@ -140,7 +140,7 @@ class InputExtracter implements GeometryFilter
   void filter(Geometry geom) {
     recordDimension( geom.getDimension() );
     
-    if (geom instanceof GeometryCollection) {
+    if (geom is GeometryCollection) {
       return;
     }
     /**
@@ -149,15 +149,15 @@ class InputExtracter implements GeometryFilter
     if (geom.isEmpty()) 
       return;
     
-    if (geom instanceof Polygon) {
+    if (geom is Polygon) {
       polygons.add((Polygon) geom);
       return;
     }
-    else if (geom instanceof LineString) {
+    else if (geom is LineString) {
       lines.add((LineString) geom);
       return;
     }
-    else if (geom instanceof Point) {
+    else if (geom is Point) {
       points.add((Point) geom);
       return;
     }

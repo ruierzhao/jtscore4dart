@@ -24,11 +24,11 @@
  *
  * @version 1.7
  */
-interface SegmentIntersector
+abstract class SegmentIntersector
 {
   /**
    * This method is called by clients
-   * of the {@link SegmentIntersector} interface to process
+   * of the {@link SegmentIntersector} abstract class to process
    * intersections for two segments of the {@link SegmentString}s being intersected.
    */
   void processIntersections(

@@ -11,13 +11,13 @@
  */
 
 
-import java.util.Comparator;
+// import java.util.Comparator;
 
-import org.locationtech.jts.edgegraph.HalfEdge;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateArrays;
-import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.io.WKTWriter;
+// import org.locationtech.jts.edgegraph.HalfEdge;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateArrays;
+// import org.locationtech.jts.geom.CoordinateList;
+// import org.locationtech.jts.io.WKTWriter;
 
 class OverlayEdge extends HalfEdge {
 

@@ -11,23 +11,23 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.List;
-import java.util.Map;
+// import java.util.ArrayList;
+// import java.util.Map;
+// import java.util.List;
+// import java.util.Map;
 
-import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
-import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.util.PolygonExtracter;
-import org.locationtech.jts.noding.MCIndexSegmentSetMutualIntersector;
+// import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
+// import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.util.PolygonExtracter;
+// import org.locationtech.jts.noding.MCIndexSegmentSetMutualIntersector;
 
 /**
  * Validates that a polygon forms a valid polygonal coverage 

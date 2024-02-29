@@ -12,15 +12,15 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
- * An interface for classes which support adding nodes to
+ * An abstract class for classes which support adding nodes to
  * a segment string.
  * 
  * @author Martin Davis
  */
-interface NodableSegmentString
+abstract class NodableSegmentString
 	extends SegmentString
 {
   /**

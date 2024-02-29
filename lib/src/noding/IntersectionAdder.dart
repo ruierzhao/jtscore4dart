@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.algorithm.LineIntersector;
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.algorithm.LineIntersector;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Computes the possible intersections between two line segments in {@link NodedSegmentString}s

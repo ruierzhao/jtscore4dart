@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineSegment;
 
 /**
  * The action for the internal iterator for performing

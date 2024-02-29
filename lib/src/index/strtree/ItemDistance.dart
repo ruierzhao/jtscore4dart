@@ -31,7 +31,7 @@
  * @author Martin Davis
  *
  */
-interface ItemDistance 
+abstract class ItemDistance 
 {
   /**
    * Computes the distance between two items.

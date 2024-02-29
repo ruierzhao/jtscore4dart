@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Contains a pair of points and the distance between them.
@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.Coordinate;
 class PointPairDistance {
 
   private List<Coordinate> pt = { new Coordinate(), new Coordinate() };
-  private double distance = Double.NaN;
+  private double distance = double.nan;
   private bool isNull = true;
 
   PointPairDistance()

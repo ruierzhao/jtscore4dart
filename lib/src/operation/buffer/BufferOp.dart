@@ -11,18 +11,18 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.math.MathUtil;
-import org.locationtech.jts.noding.Noder;
-import org.locationtech.jts.noding.ScaledNoder;
-import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
+// import java.util.ArrayList;
+// import java.util.List;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.noding.Noder;
+// import org.locationtech.jts.noding.ScaledNoder;
+// import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
 
 //import debug.*;
 
@@ -143,10 +143,10 @@ class BufferOp
     double bufEnvMax = envMax + 2 * expandByDistance;
 
     // the smallest power of 10 greater than the buffer envelope
-    int bufEnvPrecisionDigits = (int) (Math.log(bufEnvMax) / Math.log(10) + 1.0);
+    int bufEnvPrecisionDigits = (int) (Math.log(bufEnvMax) / math.log(10) + 1.0);
     int minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
     
-    double scaleFactor = Math.pow(10.0, minUnitLog10);
+    double scaleFactor = math.pow(10.0, minUnitLog10);
     return scaleFactor;
   }
 
@@ -156,15 +156,15 @@ class BufferOp
     int maxPrecisionDigits)
   {
     Envelope env = g.getEnvelopeInternal();
-    double envSize = Math.max(env.getHeight(), env.getWidth());
+    double envSize = math.max(env.getHeight(), env.getWidth());
     double expandByDistance = distance > 0.0 ? distance : 0.0;
     double bufEnvSize = envSize + 2 * expandByDistance;
 
     // the smallest power of 10 greater than the buffer envelope
-    int bufEnvLog10 = (int) (Math.log(bufEnvSize) / Math.log(10) + 1.0);
+    int bufEnvLog10 = (int) (Math.log(bufEnvSize) / math.log(10) + 1.0);
     int minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
     // scale factor is inverse of min Unit size, so flip sign of exponent
-    double scaleFactor = Math.pow(10.0, -minUnitLog10);
+    double scaleFactor = math.pow(10.0, -minUnitLog10);
     return scaleFactor;
   }
   */

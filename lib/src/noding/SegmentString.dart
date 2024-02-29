@@ -11,16 +11,16 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Coordinate;
 
 /**
- * An interface for classes which represent a sequence of contiguous line segments.
+ * An abstract class for classes which represent a sequence of contiguous line segments.
  * SegmentStrings can carry a context object, which is useful
  * for preserving topological or parentage information.
  *
  * @version 1.7
  */
-interface SegmentString
+abstract class SegmentString
 {
   /**
    * Gets the user-defined data for this segment string.

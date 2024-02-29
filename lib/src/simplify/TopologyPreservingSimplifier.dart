@@ -12,17 +12,17 @@
 
 
 
-import java.util.Map;
-import java.util.Map;
+// import java.util.Map;
+// import java.util.Map;
 
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.util.GeometryTransformer;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryComponentFilter;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.MultiPolygon;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.util.GeometryTransformer;
 
 /**
  * Simplifies a geometry and ensures that
@@ -122,7 +122,7 @@ class TopologyPreservingSimplifier
     {
       if (coords.size() == 0) return null;
     	// for linear components (including rings), simplify the linestring
-      if (parent instanceof LineString) {
+      if (parent is LineString) {
         TaggedLineString taggedLine = linestringMap.get(parent);
         return createCoordinateSequence(taggedLine.getResultCoordinates());
       }
@@ -158,13 +158,13 @@ class TopologyPreservingSimplifier
      */
     void filter(Geometry geom)
     {
-      if (geom instanceof LineString) {
+      if (geom is LineString) {
         LineString line = (LineString) geom;
         // skip empty geometries
         if (line.isEmpty()) return;
         
         int minSize = ((LineString) line).isClosed() ? 4 : 2;
-        bool isRing = (line instanceof LinearRing) ? true : false;
+        bool isRing = (line is LinearRing) ? true : false;
         TaggedLineString taggedLine = new TaggedLineString((LineString) line, minSize, isRing);
         tps.linestringMap.put(line, taggedLine);
       }

@@ -75,8 +75,10 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   static const String pattern_package_line = "package "; // startwith
 
   /// replace code
+  // boolean -> bool
   static const String pattern_boolean = "boolean";
   static const String pattern_boolean_to = "bool";
+  // HashMap -> Map
   static const String pattern_hashmap = "HashMap";
   static const String pattern_hashmap_to = "Map";
   static const String pattern_listCoordinate = "Coordinate[]";
@@ -84,12 +86,33 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   static const String pattern_err = "IllegalArgumentException";
   static const String pattern_err_to = "ArgumentError";
 
+  // - instanceof -> is
+  static const String pattern_instanceof = "instanceof";
+  static const String pattern_instanceof_to = "is";
+  // - Double.NaN -> double.nan
+  static const String pattern_DoubleNaN = "Double.NaN";
+  static const String pattern_DoubleNaN_to = "double.nan";
+  // - interface -> abstract class
+  static const String pattern_interface = "interface";
+  static const String pattern_interface_to = "abstract class";
+  // - Math -> math
+  static const String pattern_Math = " Math.";
+  static const String pattern_Math_to = " math.";
+
+  static const String pattern_import1 = "import org.";
+  static const String pattern_import2 = "import java.";
+  static const String pattern_import_add = "// ";
+
   /// 正则替换规则
   static const String pattern_math_abs = "Math.abs";
-  static const String pattern_math_abs_to = "";
+  static const String pattern_zz_replace_to = "";
 
-  static RegExp absRegexp = RegExp(
-      r"(?<abs>(?<=abs\()(.+?)(?=\)))"); // () 小括号 - (?<ruier> 匹配表达式 ) // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
+  // () 小括号 - (?<ruier> 匹配表达式 ) // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
+  static RegExp absRegexp = RegExp(r"(?<abs>(?<=abs\()(.+?)(?=\)))");
+  static RegExp isnanRegexp = RegExp(r"(?<isnan>(?<=.isNaN\()(.+?)(?=\)))");
+  static RegExp isFiniteRegexp =
+      RegExp(r"(?<isFinite>(?<=.isFinite\()(.+?)(?=\)))");
+
   /// dart正则匹配小括号 原文链接：https://blog.csdn.net/qq_52421092/article/details/126106237
   static RegExp regexp2 = RegExp(r"/(?<=\[)(.+?)(?=\])/g"); // [] 中括号
   static RegExp regexp3 = RegExp(r"/(?<=\{)(.+?)(?=\})/g"); // {} 花括号，大括号
@@ -97,12 +120,14 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   static String _replace(String codeSegment) {
     // TODO: 从文件读取转换规则 like: ./trans.rule
     return codeSegment
+        .replaceAll(pattern_instanceof, pattern_instanceof_to)
+        .replaceAll(pattern_DoubleNaN, pattern_DoubleNaN_to)
+        .replaceAll(pattern_interface, pattern_interface_to)
+        .replaceAll(pattern_Math, pattern_Math_to)
         .replaceAll(pattern_Delete_Public, "") // del public
-        .replaceAll(pattern_boolean, pattern_boolean_to) // boolean -> bool
-        .replaceAll(pattern_hashmap, pattern_hashmap_to) // HashMap -> Map
-        //IllegalArgumentException -> ArgumentError
+        .replaceAll(pattern_boolean, pattern_boolean_to) 
+        .replaceAll(pattern_hashmap, pattern_hashmap_to) 
         .replaceAll(pattern_err, pattern_err_to)
-        // Coordinate[] -> List<Coordinate>
         .replaceAll(pattern_listCoordinate, pattern_listCoordinate_to);
   }
 
@@ -110,6 +135,9 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   static String _removeLine(String codeSegment) {
     if (codeSegment.startsWith(pattern_package_line)) {
       return "";
+    } else if (codeSegment.startsWith(pattern_import1) ||
+        codeSegment.startsWith(pattern_import2)) {
+      return "$pattern_import_add$codeSegment";
     } else {
       return codeSegment;
     }
@@ -119,24 +147,59 @@ class ListEditorFunc extends ListBase<EditerFileFunc> {
   ///
   /// Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
   static String _edit(String codeSegment) {
-    String replaceMathAbs(String codeSegment) {
+    String replaceDoubleIsNan(String codeSegment) {
       // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
-      bool matched = absRegexp.hasMatch(codeSegment);
+      bool matched = isnanRegexp.hasMatch(codeSegment);
       if (matched) {
-        var cc = absRegexp.allMatches(codeSegment);
+        var cc = isnanRegexp.allMatches(codeSegment);
         for (var c in cc) {
-          var value = c.namedGroup("abs");
-          String oldCode = "Math.abs($value)";
-          String replaceCode = "($value).abs()";
+          var value = c.namedGroup("isnan");
+          String oldCode = "Double.isNaN($value)";
+          String replaceCode = "($value).isNaN";
           codeSegment = codeSegment.replaceAll(oldCode, replaceCode);
         }
       }
       return codeSegment;
     }
 
-    String newcode = replaceMathAbs(codeSegment);
+    String replaceDoubleIsFinite(String codeSegment) {
+      // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
+      bool matched = isFiniteRegexp.hasMatch(codeSegment);
+      if (matched) {
+        var cc = isFiniteRegexp.allMatches(codeSegment);
+        for (var c in cc) {
+          var value = c.namedGroup("isFinite");
+          String oldCode = "Double.isFinite($value)";
+          String replaceCode = "($value).isFinite";
+          codeSegment = codeSegment.replaceAll(oldCode, replaceCode);
+        }
+      }
+      return codeSegment;
+    }
+    // - Double.isNaN(x) -> double.isNaN
+    // - Double.isFinite(x) -> x.isFinite
+    // - .hashCode(x) -> x.hashCode
+    // String replaceMathAbs(String codeSegment) {
+    //   // Math.abs(p.x - p0.x) -> (p.x - p0.x).abs()
+    //   bool matched = absRegexp.hasMatch(codeSegment);
+    //   if (matched) {
+    //     var cc = absRegexp.allMatches(codeSegment);
+    //     for (var c in cc) {
+    //       var value = c.namedGroup("abs");
+    //       String oldCode = "Math.abs($value)";
+    //       String replaceCode = "($value).abs()";
+    //       codeSegment = codeSegment.replaceAll(oldCode, replaceCode);
+    //     }
+    //   }
+    //   return codeSegment;
+    // }
+
+    String newcode = replaceDoubleIsFinite(
+      replaceDoubleIsNan(codeSegment),
+    );
     return newcode;
   }
+  // ================= 240301 new rule ===============
 
   /// 处理转换后的整个文件
   // ignore: unused_element
@@ -323,7 +386,8 @@ void readDirAndEditFile(
     // editor ??= Editor(); // 初始化编辑器 // 异步函数不能起作用
     // editor.setFile(srcName);
     if (FileSystemEntityType.file == filestat.type &&
-        (srcName.endsWith(".$srcExt") /** 粗略判断文件类型 || srcName.endsWith(".dart")*/
+        (srcName
+            .endsWith(".$srcExt") /** 粗略判断文件类型 || srcName.endsWith(".dart")*/
         )) {
       callbackHandler(srcName, needRename, Editor.fromFileName(srcName), i: i);
     } else {
@@ -372,7 +436,7 @@ void main(List<String> args) {
   // String srcDir = r"D:\carbon\jtsd\lib\src2";
   String srcDir = r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src";
 
-  readDirAndEditFile(srcDir, editFile, needRename: true);
+  readDirAndEditFile(srcDir, editFile, needRename: false, srcExt: "dart");
 
   // editFile(r"C:\Users\ruier\projections\jtsd\jtscore4dart\lib\src2\test.dart",
   //     editor: editor);

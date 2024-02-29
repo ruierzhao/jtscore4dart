@@ -14,7 +14,7 @@
 /**
  * Constant values used by the WKB format
  */
-interface WKBConstants {
+abstract class WKBConstants {
   int wkbXDR = 0;
   int wkbNDR = 1;
 

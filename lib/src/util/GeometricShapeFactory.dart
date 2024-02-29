@@ -11,16 +11,16 @@
  */
 
 
-import org.locationtech.jts.algorithm.Angle;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.util.AffineTransformation;
+// import org.locationtech.jts.algorithm.Angle;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.PrecisionModel;
+// import org.locationtech.jts.geom.util.AffineTransformation;
 
 /**
  * Computes various kinds of common geometric shapes.
@@ -222,7 +222,7 @@ class GeometricShapeFactory
     List<Coordinate> pts = new Coordinate[nPts + 1];
     int iPt = 0;
     for (int i = 0; i < nPts; i++) {
-        double ang = i * (2 * Math.PI / nPts);
+        double ang = i * (2 * math.PI / nPts);
         double x = xRadius * Angle.cosSnap(ang) + centreX;
         double y = yRadius * Angle.sinSnap(ang) + centreY;
         pts[iPt++] = coord(x, y);
@@ -261,10 +261,10 @@ class GeometricShapeFactory
     double radius = dim.getMinSize() / 2;
     Coordinate centre = dim.getCentre();
     
-    double r4 = Math.pow(radius, power);
+    double r4 = math.pow(radius, power);
     double y0 = radius;
     
-    double xyInt = Math.pow(r4 / 2, recipPow);
+    double xyInt = math.pow(r4 / 2, recipPow);
     
     int nSegsInOct = nPts / 8;
     int totPts = nSegsInOct * 8 + 1;
@@ -276,8 +276,8 @@ class GeometricShapeFactory
   		double y = y0;
     	if (i != 0) {
     		x = xInc * i;
-    		double x4 = Math.pow(x, power);
-    		y = Math.pow(r4 - x4, recipPow);
+    		double x4 = math.pow(x, power);
+    		y = math.pow(r4 - x4, recipPow);
     	}
       pts[i] = coordTrans(x, y, centre);
       pts[2 * nSegsInOct - i] = coordTrans(y, x, centre);
@@ -416,7 +416,7 @@ class GeometricShapeFactory
 
     double getMinSize()
     {
-    	return Math.min(width, height);
+    	return math.min(width, height);
     }
     void setWidth(double width) { this.width = width; }
     double getWidth() { return width; }

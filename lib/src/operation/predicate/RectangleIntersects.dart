@@ -12,20 +12,20 @@
 
 
 
-import java.util.Iterator;
-import java.util.List;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.RectangleLineIntersector;
-import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.util.LinearComponentExtracter;
-import org.locationtech.jts.geom.util.ShortCircuitedGeometryVisitor;
+// import org.locationtech.jts.algorithm.RectangleLineIntersector;
+// import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.CoordinateSequence;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.util.LinearComponentExtracter;
+// import org.locationtech.jts.geom.util.ShortCircuitedGeometryVisitor;
 
 
 /**
@@ -222,7 +222,7 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
   protected void visit(Geometry geom)
   {
     // if test geometry is not polygonal this check is not needed
-    if (!(geom instanceof Polygon))
+    if (!(geom is Polygon))
       return;
 
     // skip if envelopes do not intersect

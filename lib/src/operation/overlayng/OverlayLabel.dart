@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Position;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Position;
 
 /**
  * A structure recording the topological situation

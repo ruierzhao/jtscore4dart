@@ -11,22 +11,22 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.algorithm.RayCrossingCounter;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Location;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.util.LinearComponentExtracter;
-import org.locationtech.jts.index.ArrayListVisitor;
-import org.locationtech.jts.index.ItemVisitor;
-import org.locationtech.jts.index.intervalrtree.SortedPackedIntervalRTree;
+// import org.locationtech.jts.algorithm.RayCrossingCounter;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.LinearRing;
+// import org.locationtech.jts.geom.Location;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.util.LinearComponentExtracter;
+// import org.locationtech.jts.index.ArrayListVisitor;
+// import org.locationtech.jts.index.ItemVisitor;
+// import org.locationtech.jts.index.intervalrtree.SortedPackedIntervalRTree;
 
 
 /**
@@ -155,8 +155,8 @@ class IndexedPointInAreaLocator
     {
       for (int i = 1; i < pts.length; i++) {
         LineSegment seg = new LineSegment(pts[i-1], pts[i]);
-        double min = Math.min(seg.p0.y, seg.p1.y);
-        double max = Math.max(seg.p0.y, seg.p1.y);
+        double min = math.min(seg.p0.y, seg.p1.y);
+        double max = math.max(seg.p0.y, seg.p1.y);
         index.insert(min, max, seg);
       }
     }

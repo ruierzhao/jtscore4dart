@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Point;
+// import org.locationtech.jts.geom.Polygon;
 
 /**
  * Computes the centroid of a {@link Geometry} of any dimension.
@@ -92,17 +92,17 @@ class Centroid
   {
     if (geom.isEmpty())
       return;
-    if (geom instanceof Point) {
+    if (geom is Point) {
       addPoint(geom.getCoordinate());
     }
-    else if (geom instanceof LineString) {
+    else if (geom is LineString) {
       addLineSegments(geom.getCoordinates());
     }
-    else if (geom instanceof Polygon) {
+    else if (geom is Polygon) {
       Polygon poly = (Polygon) geom;
       add(poly);
     }
-    else if (geom instanceof GeometryCollection) {
+    else if (geom is GeometryCollection) {
       GeometryCollection gc = (GeometryCollection) geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         add(gc.getGeometryN(i));

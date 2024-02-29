@@ -11,13 +11,13 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.HashSet;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LineSegment;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.LineSegment;
 
 /**
  * A noder which extracts chains of boundary segments 

@@ -13,7 +13,7 @@
 
 
 /**
- *  An interface for classes which use the values of the coordinates in a {@link Geometry}. 
+ *  An abstract class for classes which use the values of the coordinates in a {@link Geometry}. 
  * Coordinate filters can be used to implement centroid and
  * envelope computation, and many other functions.
  * <p>
@@ -30,7 +30,7 @@
  *
  *@version 1.7
  */
-interface CoordinateFilter {
+abstract class CoordinateFilter {
 
   /**
    * Performs an operation with the provided <code>coord</code>.

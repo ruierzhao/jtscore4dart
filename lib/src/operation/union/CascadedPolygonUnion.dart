@@ -11,23 +11,23 @@
  */
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Collection;
+// import java.util.Iterator;
+// import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.Polygonal;
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.geom.util.PolygonExtracter;
-import org.locationtech.jts.index.strtree.STRtree;
-import org.locationtech.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
-import org.locationtech.jts.operation.overlayng.OverlayNG;
-import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
-import org.locationtech.jts.util.Debug;
+// import org.locationtech.jts.geom.Geometry;
+// import org.locationtech.jts.geom.GeometryCollection;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.Polygon;
+// import org.locationtech.jts.geom.Polygonal;
+// import org.locationtech.jts.geom.TopologyException;
+// import org.locationtech.jts.geom.util.PolygonExtracter;
+// import org.locationtech.jts.index.strtree.STRtree;
+// import org.locationtech.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
+// import org.locationtech.jts.operation.overlayng.OverlayNG;
+// import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
+// import org.locationtech.jts.util.Debug;
 
 
 /**
@@ -282,10 +282,10 @@ class CascadedPolygonUnion
     for (Iterator i = geomTree.iterator(); i.hasNext(); ) {
       Object o = i.next();
       Geometry geom = null;
-      if (o instanceof List) {
+      if (o is List) {
         geom = unionTree((List) o);
       }
-      else if (o instanceof Geometry) {
+      else if (o is Geometry) {
         geom = (Geometry) o;
       }
       geoms.add(geom);
@@ -355,7 +355,7 @@ class CascadedPolygonUnion
    */
   private static Geometry restrictToPolygons(Geometry g)
   {
-    if (g instanceof Polygonal) {
+    if (g is Polygonal) {
       return g;
     }
     List polygons = PolygonExtracter.getPolygons(g);

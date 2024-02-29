@@ -18,7 +18,7 @@
  * @version 1.7
  */
 
-interface KdNodeVisitor
+abstract class KdNodeVisitor
 {
   /**
    * Visits a node.

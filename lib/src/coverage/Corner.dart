@@ -11,12 +11,12 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Triangle;
-import org.locationtech.jts.simplify.LinkedLine;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.GeometryFactory;
+// import org.locationtech.jts.geom.LineString;
+// import org.locationtech.jts.geom.Triangle;
+// import org.locationtech.jts.simplify.LinkedLine;
 
 class Corner implements Comparable<Corner> {
   private LinkedLine edge;
@@ -128,7 +128,7 @@ class Corner implements Comparable<Corner> {
   }
 
   private static Coordinate safeCoord(Coordinate p) {
-    if (p == null) return new Coordinate(Double.NaN, Double.NaN);
+    if (p == null) return new Coordinate(double.nan, double.nan);
     return p;
   }
 

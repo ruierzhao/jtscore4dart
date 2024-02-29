@@ -11,7 +11,7 @@
  */
 
 
-import java.util.Collection;
+// import java.util.Collection;
 
 /**
  * An intersector for the red-blue intersection problem.
@@ -35,7 +35,7 @@ import java.util.Collection;
  * @author Martin Davis
  * @version 1.10
  */
-interface SegmentSetMutualIntersector
+abstract class SegmentSetMutualIntersector
 {  
   /**
    * Computes the intersections with a given set of {@link SegmentString}s,

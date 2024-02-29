@@ -12,8 +12,8 @@
 
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.math.Matrix;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.math.Matrix;
 
 /**
  * Builds an {@link AffineTransformation} defined by a set of control vectors. 

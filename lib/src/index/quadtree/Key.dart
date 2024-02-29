@@ -11,8 +11,8 @@
  */
 
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
+// import org.locationtech.jts.geom.Coordinate;
+// import org.locationtech.jts.geom.Envelope;
 
 /**
  * A Key is a unique identifier for a node in a quadtree.
@@ -73,8 +73,8 @@ class Key {
   private void computeKey(int level, Envelope itemEnv)
   {
     double quadSize = DoubleBits.powerOf2(level);
-    pt.x = Math.floor(itemEnv.getMinX() / quadSize) * quadSize;
-    pt.y = Math.floor(itemEnv.getMinY() / quadSize) * quadSize;
+    pt.x = math.floor(itemEnv.getMinX() / quadSize) * quadSize;
+    pt.y = math.floor(itemEnv.getMinY() / quadSize) * quadSize;
     env.init(pt.x, pt.x + quadSize, pt.y, pt.y + quadSize);
   }
 }

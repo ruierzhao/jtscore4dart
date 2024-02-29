@@ -1,4 +1,4 @@
 library jtsd;
 
-export 'src1/JTSVersion.dart';
-export 'src1/geom/Coordinate.dart';
+export 'src/JTSVersion.dart';
+export 'src/geom/Coordinate.dart';

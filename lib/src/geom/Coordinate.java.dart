@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2018 Vivid Solutions
  *
@@ -11,15 +10,13 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-// import java.io.Serializable;
-// import java.util.Comparator;
 
-// import org.locationtech.jts.util.Assert;
-// import org.locationtech.jts.util.NumberUtil;
+import 'Coordinate.java.dart'java.io.Serializable;
+import 'Coordinate.java.dart'java.util.Comparator;
 
-/// TODO: z 为 null 的情况不知道怎么处理，目前着重考虑2维的情况
-import 'package:jtscore4dart/src1/utils.dart';
-import "dart:math" as math;
+import 'Coordinate.java.dart'org.locationtech.jts.util.Assert;
+import 'Coordinate.java.dart'org.locationtech.jts.util.NumberUtil;
+
 
 /// A lightweight class used to store coordinates on the 2-dimensional Cartesian plane.
 /// <p>
@@ -44,65 +41,75 @@ import "dart:math" as math;
 ///
 /// @version 1.16
 class Coordinate implements Comparable<Coordinate> {
-  final int serialVersionUID = 6683108902428366910;
+  private static final long serialVersionUID = 6683108902428366910L;
   
   /// The value used to indicate a null or missing ordinate value.
   /// In particular, used for the value of ordinates for dimensions 
   /// greater than the defined dimension of a coordinate.
-  static const double NULL_ORDINATE = double.nan;
+  static final double NULL_ORDINATE = Double.NaN;
   
   /// Standard ordinate index value for, where X is 0
-  static const int X = 0;
+  static final int X = 0;
 
   /// Standard ordinate index value for, where Y is 1
-  static const int Y = 1;
+  static final int Y = 1;
   
   /// Standard ordinate index value for, where Z is 2.
   ///
   /// <p>This constant assumes XYZM coordinate sequence definition, please check this assumption
   /// using {@link CoordinateSequence#getDimension()} and {@link CoordinateSequence#getMeasures()}
   /// before use.
-  static const int Z = 2;
+  static final int Z = 2;
 
   /// Standard ordinate index value for, where M is 3.
   ///
   /// <p>This constant assumes XYZM coordinate sequence definition, please check this assumption
   /// using {@link CoordinateSequence#getDimension()} and {@link CoordinateSequence#getMeasures()}
   /// before use.
-  static const int M = 3;
+  static final int M = 3;
   
   /// The x-ordinate.
-  late double x;
+  double x;
   
   /// The y-ordinate.
-  late double y;
+  double y;
   
   /// The z-ordinate.
   /// <p>
   /// Direct access to this field is discouraged; use {@link #getZ()}.
-  double? z=NULL_ORDINATE;
+  double z;
 
   ///  Constructs a <code>Coordinate</code> at (x,y,z).
   ///
   ///@param  x  the x-ordinate
   ///@param  y  the y-ordinate
   ///@param  z  the z-ordinate
-  // Coordinate(this.x, this.y,[double? z]);
-  Coordinate(this.x, this.y,[this.z]);
+  Coordinate(double x, double y, double z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
 
   ///  Constructs a <code>Coordinate</code> at (0,0,NaN).
-  Coordinate empty2D() {
-    return Coordinate(0.0, 0.0);
+  Coordinate() {
+    this(0.0, 0.0);
   }
 
   ///  Constructs a <code>Coordinate</code> having the same (x,y,z) values as
   ///  <code>other</code>.
   ///
   ///@param  c  the <code>Coordinate</code> to copy.
-  Coordinate fromCoordinate(Coordinate c) {
-    return Coordinate(c.x, c.y, z);
+  Coordinate(Coordinate c) {
+    this(c.x, c.y, c.getZ());
   }
 
+  ///  Constructs a <code>Coordinate</code> at (x,y,NaN).
+  ///
+  ///@param  x  the x-value
+  ///@param  y  the y-value
+  Coordinate(double x, double y) {
+    this(x, y, NULL_ORDINATE);
+  }
 
   ///  Sets this <code>Coordinate</code>s (x,y,z) values to that of <code>other</code>.
   ///
@@ -145,7 +152,7 @@ class Coordinate implements Comparable<Coordinate> {
   ///  If no Z value is present returns <tt>NaN</tt>.
   ///  
   ///  @return the value of the Z ordinate, or <tt>NaN</tt>   
-  double? getZ() {
+  double getZ() {
       return z;      
   }
   
@@ -161,9 +168,15 @@ class Coordinate implements Comparable<Coordinate> {
   ///  
   ///  @return the value of the measure, or <tt>NaN</tt>    
   double getM() {
-    return double.nan;     
+    return Double.NaN;     
   }
   
+  /// Sets the measure value, if supported.
+  /// 
+  /// @param m the value to set as M
+  void setM(double m) {
+    throw new ArgumentError("Invalid ordinate index: " + M);
+  }
   
   /// Gets the ordinate value for the given index.
   /// 
@@ -173,14 +186,14 @@ class Coordinate implements Comparable<Coordinate> {
   /// @param ordinateIndex the ordinate index
   /// @return the value of the ordinate
   /// @throws ArgumentError if the index is not valid
-  double getOrdinate(int ordinateIndex) {
+  double getOrdinate(int ordinateIndex)
+  {
     switch (ordinateIndex) {
     case X: return x;
     case Y: return y;
-    case Z: return getZ()?? 0; // sure to delegate to subclass rather than offer direct field access
+    case Z: return getZ(); // sure to delegate to subclass rather than offer direct field access
     }
-    // throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
-    throw ArgumentError("Invalid ordinate index: $ordinateIndex");
+    throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
   }
   
   /// Sets the ordinate for the given index
@@ -205,7 +218,7 @@ class Coordinate implements Comparable<Coordinate> {
         setZ(value); // delegate to subclass rather than offer direct field access
         break;
       default:
-        throw ArgumentError("Invalid ordinate index: $ordinateIndex");
+        throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
     }
   }
 
@@ -215,11 +228,10 @@ class Coordinate implements Comparable<Coordinate> {
   /// @return true if the coordinate is valid
   /// @see Double#isFinite(double)
   bool isValid() {
-    if (! x.isFinite) return false;
-    if (! y.isFinite) return false;
+    if (! Double.isFinite(x)) return false;
+    if (! Double.isFinite(y)) return false;
     return true;
   }
-
   
   ///  Returns whether the planar projections of the two <code>Coordinate</code>s
   ///  are equal.
@@ -245,22 +257,11 @@ class Coordinate implements Comparable<Coordinate> {
   ///@param tolerance the tolerance value to use
   ///@return true if <code>other</code> is a <code>Coordinate</code>
   ///      with the same values for X and Y.
-  // bool equals2D(Coordinate c, double tolerance){
-  //   if (! NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
-  //     return false;
-  //   }
-  //   if (! NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  /// @add
-  bool equals2DWithTolerance(Coordinate c, double tolerance) {
-    if (equalsWithTolerance(this.x, c.x, tolerance)) {
+  bool equals2D(Coordinate c, double tolerance){
+    if (! NumberUtil.equalsWithTolerance(this.x, c.x, tolerance)) {
       return false;
     }
-    if (equalsWithTolerance(this.y, c.y, tolerance)) {
+    if (! NumberUtil.equalsWithTolerance(this.y, c.y, tolerance)) {
       return false;
     }
     return true;
@@ -272,9 +273,9 @@ class Coordinate implements Comparable<Coordinate> {
   ///@return true if <code>other</code> is a <code>Coordinate</code>
   ///      with the same values for X, Y and Z.
   bool equals3D(Coordinate other) {
-    return (x == other.x) &&
-        (y == other.y) &&
-        ((getZ() == other.getZ()) || (getZ()!.isNaN && other.getZ()!.isNaN));
+    return (x == other.x) && (y == other.y) &&
+               ((getZ() == other.getZ()) ||
+               (Double.isNaN(getZ()) && Double.isNaN(other.getZ())));
   }
   
   /// Tests if another coordinate has the same value for Z, within a tolerance.
@@ -282,9 +283,9 @@ class Coordinate implements Comparable<Coordinate> {
   /// @param c a coordinate
   /// @param tolerance the tolerance value
   /// @return true if the Z ordinates are within the given tolerance
-  // bool equalInZ(Coordinate c, double tolerance){
-  //   return equalsWithTolerance(this.getZ(), c.getZ(), tolerance);
-  // }
+  bool equalInZ(Coordinate c, double tolerance){
+    return NumberUtil.equalsWithTolerance(this.getZ(), c.getZ(), tolerance);
+  }
   
   ///  Returns <code>true</code> if <code>other</code> has the same values for
   ///  the x and y ordinates.
@@ -294,10 +295,10 @@ class Coordinate implements Comparable<Coordinate> {
   ///@return        <code>true</code> if <code>other</code> is a <code>Coordinate</code>
   ///      with the same values for the x and y ordinates.
   bool equals(Object other) {
-    if (other is! Coordinate) {
+    if (!(other instanceof Coordinate)) {
       return false;
     }
-    return equals2D(other);
+    return equals2D((Coordinate) other);
   }
 
   ///  Compares this {@link Coordinate} with the specified {@link Coordinate} for order.
@@ -317,7 +318,7 @@ class Coordinate implements Comparable<Coordinate> {
   ///@return    -1, zero, or 1 as this <code>Coordinate</code>
   ///      is less than, equal to, or greater than the specified <code>Coordinate</code>
   int compareTo(Coordinate o) {
-    Coordinate other = o;
+    Coordinate other = (Coordinate) o;
 
     if (x < other.x) return -1;
     if (x > other.x) return 1;
@@ -330,35 +331,35 @@ class Coordinate implements Comparable<Coordinate> {
   ///
   ///@return    a <code>String</code> of the form <I>(x,y,z)</I>
   String toString() {
-    return "($x , $y ${getZ()})";
+    return "(" + x + ", " + y + ", " + getZ() + ")";
   }
 
-  // Object clone() {
-  //   try {
-  //     Coordinate coord = (Coordinate) super.clone();
+  Object clone() {
+    try {
+      Coordinate coord = (Coordinate) super.clone();
 
-  //     return coord; // return the clone
-  //   } catch (CloneNotSupportedException e) {
-  //     Assert.shouldNeverReachHere(
-  //         "this shouldn't happen because this class is Cloneable");
+      return coord; // return the clone
+    } catch (CloneNotSupportedException e) {
+      Assert.shouldNeverReachHere(
+          "this shouldn't happen because this class is Cloneable");
 
-  //     return null;
-  //   }
-  // }
+      return null;
+    }
+  }
   
   /// Creates a copy of this Coordinate.
   /// 
   /// @return a copy of this coordinate.
   Coordinate copy() {
-    return Coordinate(x,y,z);
+    return new Coordinate(this);
   }
   
   /// Create a new Coordinate of the same type as this Coordinate, but with no values.
   /// 
   /// @return a new Coordinate
-  // Coordinate create() {
-  //     return new Coordinate();
-  // }
+  Coordinate create() {
+      return new Coordinate();
+  }
 
   /// Computes the 2-dimensional Euclidean distance to another location.
   /// The Z-ordinate is ignored.
@@ -368,7 +369,7 @@ class Coordinate implements Comparable<Coordinate> {
   double distance(Coordinate c) {
     double dx = x - c.x;
     double dy = y - c.y;
-    return hypot(dx, dy);
+    return Math.hypot(dx, dy);
   }
 
   /// Computes the 3-dimensional Euclidean distance to another location.
@@ -378,55 +379,47 @@ class Coordinate implements Comparable<Coordinate> {
   double distance3D(Coordinate c) {
     double dx = x - c.x;
     double dy = y - c.y;
-    double dz = getZ()! - c.getZ()!;
-    return math.sqrt(dx * dx + dy * dy + dz * dz);
+    double dz = getZ() - c.getZ();
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
   }
 
   /// Gets a hashcode for this coordinate.
   /// 
   /// @return a hashcode for this coordinate
-  @override
-  int get hashCode {
+  int hashCode() {
     //Algorithm from Effective Java by Joshua Bloch [Jon Aquino]
     int result = 17;
-    result = 37 * result + x.hashCode;
-    result = 37 * result + y.hashCode;
+    result = 37 * result + hashCode(x);
+    result = 37 * result + hashCode(y);
     return result;
   }
-
-/// dart_jts
-  // int get hashCode {
-  //   //Algorithm from Effective Java by Joshua Bloch [Jon Aquino]
-  //   const prime = 31;
-  //   int result = 1;
-  //   result = prime * result + x.hashCode;
-  //   result = prime * result + y.hashCode;
-  //   return result;
-  // }
 
   /// Computes a hash code for a double value, using the algorithm from
   /// Joshua Bloch's book <i>Effective Java"</i>
   /// 
   /// @param x the value to compute for
   /// @return a hashcode for x
-  // static int hashCode(double x) {
-  //   long f = Double.doubleToLongBits(x);
-  //   return (int)(f^(f>>>32));
-  // }
+  static int hashCode(double x) {
+    long f = Double.doubleToLongBits(x);
+    return (int)(f^(f>>>32));
+  }
 
-/** ruier
-  /// Compares two {@link Coordinate}s, allowing for either a 2-dimensional
-  /// or 3-dimensional comparison, and handling NaN values correctly.
+
+  /**
+   * Compares two {@link Coordinate}s, allowing for either a 2-dimensional
+   * or 3-dimensional comparison, and handling NaN values correctly.
+   */
   static class DimensionalComparator
       implements Comparator<Coordinate>
-  
   {
-     /// Compare two <code>double</code>s, allowing for NaN values.
-     /// NaN is treated as being less than any valid number.
-     ///
-     /// @param a a <code>double</code>
-     /// @param b a <code>double</code>
-     /// @return -1, 0, or 1 depending on whether a is less than, equal to or greater than b
+    /**
+     * Compare two <code>double</code>s, allowing for NaN values.
+     * NaN is treated as being less than any valid number.
+     *
+     * @param a a <code>double</code>
+     * @param b a <code>double</code>
+     * @return -1, 0, or 1 depending on whether a is less than, equal to or greater than b
+     */
     static int compare(double a, double b)
     {
       if (a < b) return -1;
@@ -443,16 +436,20 @@ class Coordinate implements Comparable<Coordinate> {
 
     private int dimensionsToTest = 2;
 
-     /// Creates a comparator for 2 dimensional coordinates.
+    /**
+     * Creates a comparator for 2 dimensional coordinates.
+     */
     DimensionalComparator()
     {
       this(2);
     }
 
-     /// Creates a comparator for 2 or 3 dimensional coordinates, depending
-     /// on the value provided.
-     ///
-     /// @param dimensionsToTest the number of dimensions to test
+    /**
+     * Creates a comparator for 2 or 3 dimensional coordinates, depending
+     * on the value provided.
+     *
+     * @param dimensionsToTest the number of dimensions to test
+     */
     DimensionalComparator(int dimensionsToTest)
     {
       if (dimensionsToTest != 2 && dimensionsToTest != 3)
@@ -460,13 +457,16 @@ class Coordinate implements Comparable<Coordinate> {
       this.dimensionsToTest = dimensionsToTest;
     }
 
-     /// Compares two {@link Coordinate}s along to the number of
-     /// dimensions specified.
-     ///
-     /// @param c1 a {@link Coordinate}
-     /// @param c2 a {link Coordinate}
-     /// @return -1, 0, or 1 depending on whether o1 is less than,
-     /// equal to, or greater than 02
+    /**
+     * Compares two {@link Coordinate}s along to the number of
+     * dimensions specified.
+     *
+     * @param c1 a {@link Coordinate}
+     * @param c2 a {link Coordinate}
+     * @return -1, 0, or 1 depending on whether o1 is less than,
+     * equal to, or greater than 02
+     *
+     */
     int compare(Coordinate c1, Coordinate c2)
     {
       int compX = compare(c1.x, c2.x);
@@ -481,5 +481,5 @@ class Coordinate implements Comparable<Coordinate> {
       return compZ;
     }
   }
-*/
+
 }

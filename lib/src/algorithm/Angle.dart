@@ -14,8 +14,8 @@
 
 import "dart:math" as Math;
 
-import 'package:jtscore4dart/src1/geom/Coordinate.dart';
-import 'package:jtscore4dart/src1/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.java.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 /// Utility functions for working with angles.
 /// Unless otherwise noted, methods in this class express angles in radians.
 class Angle

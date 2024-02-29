@@ -11,77 +11,69 @@
  */
 
 
-/**
- * Useful utility functions for handling Coordinate objects.
- */
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+/// Useful utility functions for handling Coordinate objects.
 class Coordinates {
-  /**
-   * Factory method providing access to common Coordinate implementations.
-   * 
-   * @param dimension
-   * @return created coordinate
-   */
+  /// Factory method providing access to common Coordinate implementations.
+  /// 
+  /// @param dimension
+  /// @return created coordinate
   static Coordinate create(int dimension)
   {
-    return create(dimension, 0);
+    return createWithMeasure(dimension, 0);
   }
 
-  /**
-   * Factory method providing access to common Coordinate implementations.
-   * 
-   * @param dimension
-   * @param measures
-   * @return created coordinate
-   */
-  static Coordinate create(int dimension, int measures)
+  /// Factory method providing access to common Coordinate implementations.
+  /// 
+  /// @param dimension
+  /// @param measures
+  /// @return created coordinate
+  static Coordinate createWithMeasure(int dimension, int measures)
   {
     if (dimension == 2) {
-      return new CoordinateXY();
+      return CoordinateXY();
     } else if (dimension == 3 && measures == 0) {
-      return new Coordinate();
+      return Coordinate();
     } else if (dimension == 3 && measures == 1) {
-      return new CoordinateXYM();
+      return CoordinateXYM();
     } else if (dimension == 4 && measures == 1) {
-      return new CoordinateXYZM();
+      return CoordinateXYZM();
     }
-    return new Coordinate();
+    return Coordinate();
   }
   
-  /**
-   * Determine dimension based on subclass of {@link Coordinate}.
-   * 
-   * @param coordinate supplied coordinate
-   * @return number of ordinates recorded
-   */
+  /// Determine dimension based on subclass of {@link Coordinate}.
+  /// 
+  /// @param coordinate supplied coordinate
+  /// @return number of ordinates recorded
   static int dimension(Coordinate coordinate)
   {
-    if (coordinate instanceof CoordinateXY) {
+    if (coordinate is CoordinateXY) {
       return 2;
-    } else if (coordinate instanceof CoordinateXYM) {
+    } else if (coordinate is CoordinateXYM) {
       return 3;
-    } else if (coordinate instanceof CoordinateXYZM) {
+    } else if (coordinate is CoordinateXYZM) {
       return 4;      
-    } else if (coordinate instanceof Coordinate) {
+    } else if (coordinate is Coordinate) {
       return 3;
     } 
     return 3;
   }
 
-  /**
-   * Determine number of measures based on subclass of {@link Coordinate}.
-   * 
-   * @param coordinate supplied coordinate
-   * @return number of measures recorded
-   */
+  /// Determine number of measures based on subclass of {@link Coordinate}.
+  /// 
+  /// @param coordinate supplied coordinate
+  /// @return number of measures recorded
   static int measures(Coordinate coordinate)
   {
-    if (coordinate instanceof CoordinateXY) {
+    if (coordinate is CoordinateXY) {
       return 0;
-    } else if (coordinate instanceof CoordinateXYM) {
+    } else if (coordinate is CoordinateXYM) {
       return 1;
-    } else if (coordinate instanceof CoordinateXYZM) {
+    } else if (coordinate is CoordinateXYZM) {
       return 1;
-    } else if (coordinate instanceof Coordinate) {
+    } else if (coordinate is Coordinate) {
       return 0;
     } 
     return 0;

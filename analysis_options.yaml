@@ -47,3 +47,4 @@ analyzer:
     constant_identifier_names: ignore # 忽略常量大小写
     # library_prefixes: ignore # 导入重命名可以为大写
     file_names: ignore # 忽略文件名大小写
+    

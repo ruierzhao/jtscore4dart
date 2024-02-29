@@ -13,9 +13,10 @@ delete:
 
 # new rule
 replace:
-  - Double.NaN -> double.nan
   - Double.isNaN(x) -> double.nan
   - Double.isFinite(x) -> x.isFinite
+  - .hashCode(x) -> x.hashCode
   - instanceof -> is
   - Math -> math
-  - hashCode(x) -> x.hashCode
+  - Double.NaN -> double.nan
+  - interface -> abstract class

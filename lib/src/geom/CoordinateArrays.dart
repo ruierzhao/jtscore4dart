@@ -11,30 +11,28 @@
  */
 
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Comparator;
+// import java.lang.reflect.Array;
+// import java.util.Collection;
+// import java.util.Comparator;
 
-import org.locationtech.jts.math.MathUtil;
+// import org.locationtech.jts.math.MathUtil;
 
 
-/**
- * Useful utility functions for handling Coordinate arrays
- *
- * @version 1.7
- */
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+/// Useful utility functions for handling Coordinate arrays
+///
+/// @version 1.7
 class CoordinateArrays {
   private final static List<Coordinate> coordArrayType = new Coordinate[0];
 
   private CoordinateArrays() {
   }
 
-  /**
-   * Determine dimension based on subclass of {@link Coordinate}.
-   *
-   * @param pts supplied coordinates
-   * @return number of ordinates recorded
-   */
+  /// Determine dimension based on subclass of {@link Coordinate}.
+  ///
+  /// @param pts supplied coordinates
+  /// @return number of ordinates recorded
   static int dimension(List<Coordinate> pts) {
     if (pts == null || pts.length == 0) {
       return 3; // unknown, assume default
@@ -46,12 +44,10 @@ class CoordinateArrays {
     return dimension;
   }
 
-  /**
-   * Determine number of measures based on subclass of {@link Coordinate}.
-   *
-   * @param pts supplied coordinates
-   * @return number of measures recorded
-   */
+  /// Determine number of measures based on subclass of {@link Coordinate}.
+  ///
+  /// @param pts supplied coordinates
+  /// @return number of measures recorded
   static int measures(List<Coordinate> pts) {
     if (pts == null || pts.length == 0) {
       return 0; // unknown, assume default
@@ -64,16 +60,14 @@ class CoordinateArrays {
   }
 
 
-  /**
-   * Utility method ensuring array contents are of consistent dimension and measures.
-   * <p>
-   * Array is modified in place if required, coordinates are replaced in the array as required
-   * to ensure all coordinates have the same dimension and measures. The final dimension and
-   * measures used are the maximum found when checking the array.
-   * </p>
-   *
-   * @param array Modified in place to coordinates of consistent dimension and measures.
-   */
+  /// Utility method ensuring array contents are of consistent dimension and measures.
+  /// <p>
+  /// Array is modified in place if required, coordinates are replaced in the array as required
+  /// to ensure all coordinates have the same dimension and measures. The final dimension and
+  /// measures used are the maximum found when checking the array.
+  /// </p>
+  ///
+  /// @param array Modified in place to coordinates of consistent dimension and measures.
   static void enforceConsistency(List<Coordinate> array)
   {
     if (array == null) {
@@ -116,18 +110,16 @@ class CoordinateArrays {
     }
   }
 
-  /**
-   * Utility method ensuring array contents are of the specified dimension and measures.
-   * <p>
-   * Array is returned unmodified if consistent, or a copy of the array is made with
-   * each inconsistent coordinate duplicated into an instance of the correct dimension and measures.
-   * </p></>
-   *
-   * @param array coordinate array
-   * @param dimension
-   * @param measures
-   * @return array returned, or copy created if required to enforce consistency.
-   */
+  /// Utility method ensuring array contents are of the specified dimension and measures.
+  /// <p>
+  /// Array is returned unmodified if consistent, or a copy of the array is made with
+  /// each inconsistent coordinate duplicated into an instance of the correct dimension and measures.
+  /// </p></>
+  ///
+  /// @param array coordinate array
+  /// @param dimension
+  /// @param measures
+  /// @return array returned, or copy created if required to enforce consistency.
   static List<Coordinate> enforceConsistency(List<Coordinate> array,int dimension, int measures)
   {
     Coordinate sample = Coordinates.create(dimension,measures);
@@ -161,28 +153,24 @@ class CoordinateArrays {
     }
   }
 
-  /**
-   * Tests whether an array of {@link Coordinate}s forms a ring,
-   * by checking length and closure.
-   * Self-intersection is not checked.
-   *
-   * @param pts an array of Coordinates
-   * @return true if the coordinate form a ring.
-   */
+  /// Tests whether an array of {@link Coordinate}s forms a ring,
+  /// by checking length and closure.
+  /// Self-intersection is not checked.
+  ///
+  /// @param pts an array of Coordinates
+  /// @return true if the coordinate form a ring.
   static bool isRing(List<Coordinate> pts) {
     if (pts.length < 4) return false;
     if (!pts[0].equals2D(pts[pts.length - 1])) return false;
     return true;
   }
 
-  /**
-   * Finds a point in a list of points which is not contained in another list of points
-   *
-   * @param testPts the {@link Coordinate}s to test
-   * @param pts     an array of {@link Coordinate}s to test the input points against
-   * @return a {@link Coordinate} from <code>testPts</code> which is not in <code>pts</code>, '
-   * or <code>null</code>
-   */
+  /// Finds a point in a list of points which is not contained in another list of points
+  ///
+  /// @param testPts the {@link Coordinate}s to test
+  /// @param pts     an array of {@link Coordinate}s to test the input points against
+  /// @return a {@link Coordinate} from <code>testPts</code> which is not in <code>pts</code>, '
+  /// or <code>null</code>
   static Coordinate ptNotInList(List<Coordinate> testPts, List<Coordinate> pts) {
     for (int i = 0; i < testPts.length; i++) {
       Coordinate testPt = testPts[i];
@@ -192,15 +180,13 @@ class CoordinateArrays {
     return null;
   }
 
-  /**
-   * Compares two {@link Coordinate} arrays
-   * in the forward direction of their coordinates,
-   * using lexicographic ordering.
-   *
-   * @param pts1
-   * @param pts2
-   * @return an integer indicating the order
-   */
+  /// Compares two {@link Coordinate} arrays
+  /// in the forward direction of their coordinates,
+  /// using lexicographic ordering.
+  ///
+  /// @param pts1
+  /// @param pts2
+  /// @return an integer indicating the order
   static int compare(List<Coordinate> pts1, List<Coordinate> pts2) {
     int i = 0;
     while (i < pts1.length && i < pts2.length) {
@@ -232,20 +218,18 @@ class CoordinateArrays {
   }
 
 
-  /**
-   * Determines which orientation of the {@link Coordinate} array
-   * is (overall) increasing.
-   * In other words, determines which end of the array is "smaller"
-   * (using the standard ordering on {@link Coordinate}).
-   * Returns an integer indicating the increasing direction.
-   * If the sequence is a palindrome, it is defined to be
-   * oriented in a positive direction.
-   *
-   * @param pts the array of Coordinates to test
-   * @return <code>1</code> if the array is smaller at the start
-   * or is a palindrome,
-   * <code>-1</code> if smaller at the end
-   */
+  /// Determines which orientation of the {@link Coordinate} array
+  /// is (overall) increasing.
+  /// In other words, determines which end of the array is "smaller"
+  /// (using the standard ordering on {@link Coordinate}).
+  /// Returns an integer indicating the increasing direction.
+  /// If the sequence is a palindrome, it is defined to be
+  /// oriented in a positive direction.
+  ///
+  /// @param pts the array of Coordinates to test
+  /// @return <code>1</code> if the array is smaller at the start
+  /// or is a palindrome,
+  /// <code>-1</code> if smaller at the end
   static int increasingDirection(List<Coordinate> pts) {
     for (int i = 0; i < pts.length / 2; i++) {
       int j = pts.length - 1 - i;
@@ -258,14 +242,12 @@ class CoordinateArrays {
     return 1;
   }
 
-  /**
-   * Determines whether two {@link Coordinate} arrays of equal length
-   * are equal in opposite directions.
-   *
-   * @param pts1
-   * @param pts2
-   * @return <code>true</code> if the two arrays are equal in opposite directions.
-   */
+  /// Determines whether two {@link Coordinate} arrays of equal length
+  /// are equal in opposite directions.
+  ///
+  /// @param pts1
+  /// @param pts2
+  /// @return <code>true</code> if the two arrays are equal in opposite directions.
   private static bool isEqualReversed(List<Coordinate> pts1, List<Coordinate> pts2) {
     for (int i = 0; i < pts1.length; i++) {
       Coordinate p1 = pts1[i];
@@ -329,12 +311,10 @@ class CoordinateArrays {
 
   }
 
-  /**
-   * Creates a deep copy of the argument {@link Coordinate} array.
-   *
-   * @param coordinates an array of Coordinates
-   * @return a deep copy of the input
-   */
+  /// Creates a deep copy of the argument {@link Coordinate} array.
+  ///
+  /// @param coordinates an array of Coordinates
+  /// @return a deep copy of the input
   static List<Coordinate> copyDeep(List<Coordinate> coordinates) {
     List<Coordinate> copy = new Coordinate[coordinates.length];
     for (int i = 0; i < coordinates.length; i++) {
@@ -343,38 +323,32 @@ class CoordinateArrays {
     return copy;
   }
 
-  /**
-   * Creates a deep copy of a given section of a source {@link Coordinate} array
-   * into a destination Coordinate array.
-   * The destination array must be an appropriate size to receive
-   * the copied coordinates.
-   *
-   * @param src       an array of Coordinates
-   * @param srcStart  the index to start copying from
-   * @param dest      the
-   * @param destStart the destination index to start copying to
-   * @param length    the number of items to copy
-   */
+  /// Creates a deep copy of a given section of a source {@link Coordinate} array
+  /// into a destination Coordinate array.
+  /// The destination array must be an appropriate size to receive
+  /// the copied coordinates.
+  ///
+  /// @param src       an array of Coordinates
+  /// @param srcStart  the index to start copying from
+  /// @param dest      the
+  /// @param destStart the destination index to start copying to
+  /// @param length    the number of items to copy
   static void copyDeep(List<Coordinate> src, int srcStart, List<Coordinate> dest, int destStart, int length) {
     for (int i = 0; i < length; i++) {
       dest[destStart + i] = src[srcStart + i].copy();
     }
   }
 
-  /**
-   * Converts the given Collection of Coordinates into a Coordinate array.
-   */
+  /// Converts the given Collection of Coordinates into a Coordinate array.
   static List<Coordinate> toCoordinateArray(Collection coordList) {
     return (List<Coordinate>) coordList.toArray(coordArrayType);
   }
 
-  /**
-   * Tests whether {@link Coordinate#equals(Object)} returns true for any two consecutive Coordinates
-   * in the given array.
-   * 
-   * @param coord an array of coordinates
-   * @return true if the array has repeated points
-   */
+  /// Tests whether {@link Coordinate#equals(Object)} returns true for any two consecutive Coordinates
+  /// in the given array.
+  /// 
+  /// @param coord an array of coordinates
+  /// @return true if the array has repeated points
   static bool hasRepeatedPoints(List<Coordinate> coord) {
     for (int i = 1; i < coord.length; i++) {
       if (coord[i - 1].equals(coord[i])) {
@@ -384,36 +358,30 @@ class CoordinateArrays {
     return false;
   }
   
-  /**
-   * Returns either the given coordinate array if its length is greater than the
-   * given amount, or an empty coordinate array.
-   */
+  /// Returns either the given coordinate array if its length is greater than the
+  /// given amount, or an empty coordinate array.
   static List<Coordinate> atLeastNCoordinatesOrNothing(int n, List<Coordinate> c) {
     return c.length >= n ? c : new List<Coordinate>{};
   }
 
-  /**
-   * If the coordinate array argument has repeated points,
-   * constructs a new array containing no repeated points.
-   * Otherwise, returns the argument.
-   *
-   * @param coord an array of coordinates
-   * @return the array with repeated coordinates removed
-   * @see #hasRepeatedPoints(List<Coordinate>)
-   */
+  /// If the coordinate array argument has repeated points,
+  /// constructs a new array containing no repeated points.
+  /// Otherwise, returns the argument.
+  ///
+  /// @param coord an array of coordinates
+  /// @return the array with repeated coordinates removed
+  /// @see #hasRepeatedPoints(List<Coordinate>)
   static List<Coordinate> removeRepeatedPoints(List<Coordinate> coord) {
     if (!hasRepeatedPoints(coord)) return coord;
     CoordinateList coordList = new CoordinateList(coord, false);
     return coordList.toCoordinateArray();
   }
 
-  /**
-   * Tests whether an array has any repeated or invalid coordinates.
-   * 
-   * @param coord an array of coordinates
-   * @return true if the array contains repeated or invalid coordinates
-   * @see Coordinate#isValid()
-   */
+  /// Tests whether an array has any repeated or invalid coordinates.
+  /// 
+  /// @param coord an array of coordinates
+  /// @return true if the array contains repeated or invalid coordinates
+  /// @see Coordinate#isValid()
   static bool hasRepeatedOrInvalidPoints(List<Coordinate> coord) {
     for (int i = 1; i < coord.length; i++) {
       if (! coord[i].isValid())
@@ -425,16 +393,14 @@ class CoordinateArrays {
     return false;
   }
   
-  /**
-   * If the coordinate array argument has repeated or invalid points,
-   * constructs a new array containing no repeated points.
-   * Otherwise, returns the argument.
-   * 
-   * @param coord an array of coordinates
-   * @return the array with repeated and invalid coordinates removed
-   * @see #hasRepeatedOrInvalidPoints(List<Coordinate>)
-   * @see Coordinate#isValid() 
-   */
+  /// If the coordinate array argument has repeated or invalid points,
+  /// constructs a new array containing no repeated points.
+  /// Otherwise, returns the argument.
+  /// 
+  /// @param coord an array of coordinates
+  /// @return the array with repeated and invalid coordinates removed
+  /// @see #hasRepeatedOrInvalidPoints(List<Coordinate>)
+  /// @see Coordinate#isValid() 
   static List<Coordinate> removeRepeatedOrInvalidPoints(List<Coordinate> coord) {
     if (!hasRepeatedOrInvalidPoints(coord)) return coord;
     CoordinateList coordList = new CoordinateList();
@@ -445,12 +411,10 @@ class CoordinateArrays {
     return coordList.toCoordinateArray();
   }
   
-  /**
-   * Collapses a coordinate array to remove all null elements.
-   *
-   * @param coord the coordinate array to collapse
-   * @return an array containing only non-null elements
-   */
+  /// Collapses a coordinate array to remove all null elements.
+  ///
+  /// @param coord the coordinate array to collapse
+  /// @return an array containing only non-null elements
   static List<Coordinate> removeNull(List<Coordinate> coord) {
     int nonNull = 0;
     for (int i = 0; i < coord.length; i++) {
@@ -467,9 +431,7 @@ class CoordinateArrays {
     return newCoord;
   }
 
-  /**
-   * Reverses the coordinates in an array in-place.
-   */
+  /// Reverses the coordinates in an array in-place.
   static void reverse(List<Coordinate> coord) {
     if (coord.length <= 1)
       return;
@@ -483,12 +445,10 @@ class CoordinateArrays {
     }
   }
 
-  /**
-   * Returns true if the two arrays are identical, both null, or pointwise
-   * equal (as compared using Coordinate#equals)
-   *
-   * @see Coordinate#equals(Object)
-   */
+  /// Returns true if the two arrays are identical, both null, or pointwise
+  /// equal (as compared using Coordinate#equals)
+  ///
+  /// @see Coordinate#equals(Object)
   static bool equals(
     List<Coordinate> coord1,
     List<Coordinate> coord2) {
@@ -501,14 +461,12 @@ class CoordinateArrays {
     return true;
   }
 
-  /**
-   * Returns true if the two arrays are identical, both null, or pointwise
-   * equal, using a user-defined {@link Comparator} for {@link Coordinate} s
-   *
-   * @param coord1               an array of Coordinates
-   * @param coord2               an array of Coordinates
-   * @param coordinateComparator a Comparator for Coordinates
-   */
+  /// Returns true if the two arrays are identical, both null, or pointwise
+  /// equal, using a user-defined {@link Comparator} for {@link Coordinate} s
+  ///
+  /// @param coord1               an array of Coordinates
+  /// @param coord2               an array of Coordinates
+  /// @param coordinateComparator a Comparator for Coordinates
   static bool equals(
     List<Coordinate> coord1,
     List<Coordinate> coord2,
@@ -523,13 +481,11 @@ class CoordinateArrays {
     return true;
   }
 
-  /**
-   * Returns the minimum coordinate, using the usual lexicographic comparison.
-   *
-   * @param coordinates the array to search
-   * @return the minimum coordinate in the array, found using <code>compareTo</code>
-   * @see Coordinate#compareTo(Coordinate)
-   */
+  /// Returns the minimum coordinate, using the usual lexicographic comparison.
+  ///
+  /// @param coordinates the array to search
+  /// @return the minimum coordinate in the array, found using <code>compareTo</code>
+  /// @see Coordinate#compareTo(Coordinate)
   static Coordinate minCoordinate(List<Coordinate> coordinates) {
     Coordinate minCoord = null;
     for (int i = 0; i < coordinates.length; i++) {
@@ -540,40 +496,34 @@ class CoordinateArrays {
     return minCoord;
   }
 
-  /**
-   * Shifts the positions of the coordinates until <code>firstCoordinate</code>
-   * is first.
-   *
-   * @param coordinates     the array to rearrange
-   * @param firstCoordinate the coordinate to make first
-   */
+  /// Shifts the positions of the coordinates until <code>firstCoordinate</code>
+  /// is first.
+  ///
+  /// @param coordinates     the array to rearrange
+  /// @param firstCoordinate the coordinate to make first
   static void scroll(List<Coordinate> coordinates, Coordinate firstCoordinate) {
     int i = indexOf(firstCoordinate, coordinates);
     scroll(coordinates, i);
   }
 
-  /**
-   * Shifts the positions of the coordinates until the coordinate
-   * at <code>firstCoordinate</code> is first.
-   *
-   * @param coordinates            the array to rearrange
-   * @param indexOfFirstCoordinate the index of the coordinate to make first
-   */
+  /// Shifts the positions of the coordinates until the coordinate
+  /// at <code>firstCoordinate</code> is first.
+  ///
+  /// @param coordinates            the array to rearrange
+  /// @param indexOfFirstCoordinate the index of the coordinate to make first
   static void scroll(List<Coordinate> coordinates, int indexOfFirstCoordinate) {
     scroll(coordinates, indexOfFirstCoordinate, CoordinateArrays.isRing(coordinates));
   }
 
-  /**
-   * Shifts the positions of the coordinates until the coordinate
-   * at <code>indexOfFirstCoordinate</code> is first.
-   * <p/>
-   * If {@code ensureRing} is {@code true}, first and last
-   * coordinate of the returned array are equal.
-   *
-   * @param coordinates            the array to rearrange
-   * @param indexOfFirstCoordinate the index of the coordinate to make first
-   * @param ensureRing             flag indicating if returned array should form a ring.
-   */
+  /// Shifts the positions of the coordinates until the coordinate
+  /// at <code>indexOfFirstCoordinate</code> is first.
+  /// <p/>
+  /// If {@code ensureRing} is {@code true}, first and last
+  /// coordinate of the returned array are equal.
+  ///
+  /// @param coordinates            the array to rearrange
+  /// @param indexOfFirstCoordinate the index of the coordinate to make first
+  /// @param ensureRing             flag indicating if returned array should form a ring.
   static void scroll(List<Coordinate> coordinates, int indexOfFirstCoordinate, bool ensureRing) {
     int i = indexOfFirstCoordinate;
     if (i <= 0) return;
@@ -596,15 +546,13 @@ class CoordinateArrays {
     System.arraycopy(newCoordinates, 0, coordinates, 0, coordinates.length);
   }
 
-  /**
-   * Returns the index of <code>coordinate</code> in <code>coordinates</code>.
-   * The first position is 0; the second, 1; etc.
-   *
-   * @param coordinate  the <code>Coordinate</code> to search for
-   * @param coordinates the array to search
-   * @return the position of <code>coordinate</code>, or -1 if it is
-   * not found
-   */
+  /// Returns the index of <code>coordinate</code> in <code>coordinates</code>.
+  /// The first position is 0; the second, 1; etc.
+  ///
+  /// @param coordinate  the <code>Coordinate</code> to search for
+  /// @param coordinates the array to search
+  /// @return the position of <code>coordinate</code>, or -1 if it is
+  /// not found
   static int indexOf(Coordinate coordinate, List<Coordinate> coordinates) {
     for (int i = 0; i < coordinates.length; i++) {
       if (coordinate.equals(coordinates[i])) {
@@ -614,19 +562,17 @@ class CoordinateArrays {
     return -1;
   }
 
-  /**
-   * Extracts a subsequence of the input {@link Coordinate} array
-   * from indices <code>start</code> to
-   * <code>end</code> (inclusive).
-   * The input indices are clamped to the array size;
-   * If the end index is less than the start index,
-   * the extracted array will be empty.
-   *
-   * @param pts   the input array
-   * @param start the index of the start of the subsequence to extract
-   * @param end   the index of the end of the subsequence to extract
-   * @return a subsequence of the input array
-   */
+  /// Extracts a subsequence of the input {@link Coordinate} array
+  /// from indices <code>start</code> to
+  /// <code>end</code> (inclusive).
+  /// The input indices are clamped to the array size;
+  /// If the end index is less than the start index,
+  /// the extracted array will be empty.
+  ///
+  /// @param pts   the input array
+  /// @param start the index of the start of the subsequence to extract
+  /// @param end   the index of the end of the subsequence to extract
+  /// @return a subsequence of the input array
   static List<Coordinate> extract(List<Coordinate> pts, int start, int end) {
     start = MathUtil.clamp(start, 0, pts.length);
     end = MathUtil.clamp(end, -1, pts.length);
@@ -646,12 +592,10 @@ class CoordinateArrays {
     return extractPts;
   }
 
-  /**
-   * Computes the envelope of the coordinates.
-   *
-   * @param coordinates the coordinates to scan
-   * @return the envelope of the coordinates
-   */
+  /// Computes the envelope of the coordinates.
+  ///
+  /// @param coordinates the coordinates to scan
+  /// @return the envelope of the coordinates
   static Envelope envelope(List<Coordinate> coordinates) {
     Envelope env = new Envelope();
     for (int i = 0; i < coordinates.length; i++) {
@@ -660,13 +604,11 @@ class CoordinateArrays {
     return env;
   }
 
-  /**
-   * Extracts the coordinates which intersect an {@link Envelope}.
-   *
-   * @param coordinates the coordinates to scan
-   * @param env         the envelope to intersect with
-   * @return an array of the coordinates which intersect the envelope
-   */
+  /// Extracts the coordinates which intersect an {@link Envelope}.
+  ///
+  /// @param coordinates the coordinates to scan
+  /// @param env         the envelope to intersect with
+  /// @return an array of the coordinates which intersect the envelope
   static List<Coordinate> intersection(List<Coordinate> coordinates, Envelope env) {
     CoordinateList coordList = new CoordinateList();
     for (int i = 0; i < coordinates.length; i++) {

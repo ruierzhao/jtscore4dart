@@ -9,15 +9,18 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.index.quadtree;
+package jts.index.quadtree;
 
-import junit.framework.TestCase;
-import junit.textui.TestRunner;
+// import junit.framework.TestCase;
+// import junit.textui.TestRunner;
 
 /**
  * Tests DoubleBits
  * @version 1.7
  */
+/**
+ * 
+
 public class DoubleBitsTest extends TestCase {
 
   public static void main(String args[]) {
@@ -34,3 +37,4 @@ public class DoubleBitsTest extends TestCase {
   }
 
 }
+ */

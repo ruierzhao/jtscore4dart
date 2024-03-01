@@ -20,7 +20,6 @@
 
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import "package:jtscore4dart/src/geom/Coordinate.dart";
-import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/geom/GeometryCollection.dart';
 import 'package:jtscore4dart/src/geom/LineString.dart';
@@ -65,7 +64,7 @@ class Centroid
   static Coordinate getCentroid(Geometry geom)
   {
     Centroid cent = Centroid(geom);
-    return cent.getCentroid();
+    return cent._getCentroid();
   }
   
   Coordinate? _areaBasePt;// the point all triangles are based at
@@ -116,7 +115,7 @@ class Centroid
   /// Gets the computed centroid.
   /// 
   /// @return the computed centroid, or null if the input is empty
-  Coordinate getCentroid()
+  Coordinate _getCentroid()
   {
     /*
      * The centroid is computed from the highest dimension components present in the input.

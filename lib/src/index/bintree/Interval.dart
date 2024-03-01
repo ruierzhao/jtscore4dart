@@ -10,74 +10,68 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-/**
- * Represents an (1-dimensional) closed interval on the Real number line.
- *
- * @version 1.7
- */
+/// Represents an (1-dimensional) closed interval on the Real number line.
+///
+/// @version 1.7
 class Interval {
-
   double min, max;
 
-  Interval()
-  {
-    min = 0.0;
-    max = 0.0;
-  }
-
-  Interval(double min, double max)
-  {
-    init(min, max);
-  }
-  Interval(Interval interval)
-  {
-    init(interval.min, interval.max);
-  }
-  void init(double min, double max)
-  {
-    this.min = min;
-    this.max = max;
+  Interval(this.min, this.max) {
+    var _temp = min;
     if (min > max) {
-      this.min = max;
-      this.max = min;
+      min = max;
+      max = _temp;
     }
   }
-  double getMin() { return min; }
-  double getMax() { return max; }
-  double getWidth() { return max - min; }
 
-  void expandToInclude(Interval interval)
-  {
+  Interval.empty()
+      : max = 0.0,
+        min = 0.0;
+
+  Interval.fromAnother(Interval interval)
+      : min = interval.getMin(),
+        max = interval.getMax();
+
+  double getMin() {
+    return min < max ? min : max;
+  }
+
+  double getMax() {
+    return min < max ? max : min;
+  }
+
+  double getWidth() {
+    return getMax() - getMin();
+  }
+
+  void expandToInclude(Interval interval) {
     if (interval.max > max) max = interval.max;
     if (interval.min < min) min = interval.min;
   }
-  bool overlaps(Interval interval)
-  {
-    return overlaps(interval.min, interval.max);
-  }
 
-  bool overlaps(double min, double max)
-  {
-    if (this.min > max || this.max < min) return false;
+  bool overlaps(Interval interval) {
+    if (min > interval.max || max < interval.min) return false;
     return true;
   }
 
-  bool contains(Interval interval)
-  {
-    return contains(interval.min, interval.max);
-  }
-  bool contains(double min, double max)
-  {
-    return (min >= this.min && max <= this.max);
-  }
-  bool contains(double p)
-  {
-    return (p >= this.min && p <= this.max);
+  // @ruier edit
+  bool overlaps2number(double min, double max) {
+    return overlaps(Interval(min, max));
   }
 
-  String toString()
-  {
-    return "[" + min + ", " + max + "]";
+  bool contains(Interval interval) {
+    return contains2number(interval.min, interval.max);
+  }
+
+  bool contains2number(double min, double max) {
+    return (min >= this.min && max <= this.max);
+  }
+
+  bool contains1number(double p) {
+    return (p >= min && p <= max);
+  }
+
+  String toString() {
+    return "[$min, $max]";
   }
 }

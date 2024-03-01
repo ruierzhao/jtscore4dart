@@ -16,6 +16,7 @@
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Coordinates.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
 
 /// The internal representation of a list of coordinates inside a Geometry.
 /// <p>

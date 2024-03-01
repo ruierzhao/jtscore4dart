@@ -32,7 +32,6 @@ import 'package:jtscore4dart/src/utils.dart';
 ///             {@link Orientation}, {@link PointLocation}
 class CGAlgorithms
 {
-
   /// A value that indicates an orientation of clockwise, or a right turn.
   /// 
   /// @deprecated Use {@link Orientation#CLOCKWISE} instead.
@@ -41,7 +40,7 @@ class CGAlgorithms
   /// A value that indicates an orientation of clockwise, or a right turn.
   /// 
   /// @deprecated Use {@link Orientation#RIGHT} instead.
-  static final int RIGHT = CLOCKWISE;
+  static const int RIGHT = CLOCKWISE;
 
   /// A value that indicates an orientation of counterclockwise, or a left turn.
   /// 
@@ -51,7 +50,7 @@ class CGAlgorithms
   /// A value that indicates an orientation of counterclockwise, or a left turn.
   /// 
   /// @deprecated Use {@link Orientation#LEFT} instead.
-  static final int LEFT = COUNTERCLOCKWISE;
+  static const int LEFT = COUNTERCLOCKWISE;
 
   /// A value that indicates an orientation of collinear, or no turn (straight).
   /// 
@@ -61,7 +60,7 @@ class CGAlgorithms
   /// A value that indicates an orientation of collinear, or no turn (straight).
   /// 
   /// @deprecated Use {@link Orientation#STRAIGHT} instead.
-  static final int STRAIGHT = COLLINEAR;
+  static const int STRAIGHT = COLLINEAR;
 
   /// Returns the index of the direction of the point {@code q} relative to
   /// a vector specified by {@code p1-p2}.
@@ -106,10 +105,6 @@ class CGAlgorithms
     // previous implementation - not quite fully robust
     //return RobustDeterminant.orientationIndex(p1, p2, q);
     
-  }
-
-  CGAlgorithms()
-  {
   }
 
   /// Tests whether a point lies inside or on a ring. The ring may be oriented in

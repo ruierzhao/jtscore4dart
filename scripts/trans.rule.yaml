@@ -24,4 +24,7 @@ delete:
 # new rule
 replace:
   - new Coordinate() -> Coordinate.empty2D()
+
+  - math.floor(next) -> next.floor()
+  - {@code q} -> [q] 
 delete: 

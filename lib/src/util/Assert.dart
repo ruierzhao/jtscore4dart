@@ -11,32 +11,26 @@
  */
 
 
-/**
- *  A utility for making programming assertions.
- *
- *@version 1.7
- */
+///  A utility for making programming assertions.
+///
+///@version 1.7
 class Assert {
 
-  /**
-   *  Throws an <code>AssertionFailedException</code> if the given assertion is
-   *  not true.
-   *
-   *@param  assertion                  a condition that is supposed to be true
-   *@throws  AssertionFailedException  if the condition is false
-   */
+  ///  Throws an <code>AssertionFailedException</code> if the given assertion is
+  ///  not true.
+  ///
+  ///@param  assertion                  a condition that is supposed to be true
+  ///@throws  AssertionFailedException  if the condition is false
   static void isTrue(bool assertion) {
     isTrue(assertion, null);
   }
 
-  /**
-   *  Throws an <code>AssertionFailedException</code> with the given message if
-   *  the given assertion is not true.
-   *
-   *@param  assertion                  a condition that is supposed to be true
-   *@param  message                    a description of the assertion
-   *@throws  AssertionFailedException  if the condition is false
-   */
+  ///  Throws an <code>AssertionFailedException</code> with the given message if
+  ///  the given assertion is not true.
+  ///
+  ///@param  assertion                  a condition that is supposed to be true
+  ///@param  message                    a description of the assertion
+  ///@throws  AssertionFailedException  if the condition is false
   static void isTrue(bool assertion, String message) {
     if (!assertion) {
       if (message == null) {
@@ -48,54 +42,48 @@ class Assert {
     }
   }
 
-  /**
-   *  Throws an <code>AssertionFailedException</code> if the given objects are
-   *  not equal, according to the <code>equals</code> method.
-   *
-   *@param  expectedValue              the correct value
-   *@param  actualValue                the value being checked
-   *@throws  AssertionFailedException  if the two objects are not equal
-   */
+  ///  Throws an <code>AssertionFailedException</code> if the given objects are
+  ///  not equal, according to the <code>equals</code> method.
+  ///
+  ///@param  expectedValue              the correct value
+  ///@param  actualValue                the value being checked
+  ///@throws  AssertionFailedException  if the two objects are not equal
   static void equals(Object expectedValue, Object actualValue) {
     equals(expectedValue, actualValue, null);
   }
 
-  /**
-   *  Throws an <code>AssertionFailedException</code> with the given message if
-   *  the given objects are not equal, according to the <code>equals</code>
-   *  method.
-   *
-   *@param  expectedValue              the correct value
-   *@param  actualValue                the value being checked
-   *@param  message                    a description of the assertion
-   *@throws  AssertionFailedException  if the two objects are not equal
-   */
+  ///  Throws an <code>AssertionFailedException</code> with the given message if
+  ///  the given objects are not equal, according to the <code>equals</code>
+  ///  method.
+  ///
+  ///@param  expectedValue              the correct value
+  ///@param  actualValue                the value being checked
+  ///@param  message                    a description of the assertion
+  ///@throws  AssertionFailedException  if the two objects are not equal
   static void equals(Object expectedValue, Object actualValue, String message) {
     if (!actualValue.equals(expectedValue)) {
-      throw new AssertionFailedException("Expected " + expectedValue + " but encountered "
+      throw new AssertionFailedException("Expected $expectedValue but encountered "
            + actualValue + (message != null ? ": " + message : ""));
     }
   }
 
-  /**
-   *  Always throws an <code>AssertionFailedException</code>.
-   *
-   *@throws  AssertionFailedException  thrown always
-   */
-  static void shouldNeverReachHere() {
-    shouldNeverReachHere(null);
-  }
+  ///  Always throws an <code>AssertionFailedException</code>.
+  ///
+  ///@throws  AssertionFailedException  thrown always
+  // TODO: ruier edit.
+  // static void shouldNeverReachHere() {
+  //   shouldNeverReachHere();
+  // }
 
-  /**
-   *  Always throws an <code>AssertionFailedException</code> with the given
-   *  message.
-   *
-   *@param  message                    a description of the assertion
-   *@throws  AssertionFailedException  thrown always
-   */
-  static void shouldNeverReachHere(String message) {
-    throw new AssertionFailedException("Should never reach here"
-         + (message != null ? ": " + message : ""));
+  ///  Always throws an <code>AssertionFailedException</code> with the given
+  ///  message.
+  ///
+  ///@param  message                    a description of the assertion
+  ///@throws  AssertionFailedException  thrown always
+  static void shouldNeverReachHere([String? message]) {
+    // throw AssertionFailedException("Should never reach here"+ (message != null ? ": " + message : ""));
+    var _massage = message != null ? ": $message": "";
+    throw AssertionFailedException("Should never reach here $_massage");
   }
 }
 

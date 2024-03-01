@@ -246,7 +246,6 @@ class RobustDeterminant {
           sign = -sign;
           x1 = -x1;
           x2 = -x2;
-          ;
         }
         else {
           return -sign;

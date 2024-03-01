@@ -11,28 +11,26 @@
  */
 
 
-/**
- * DoubleBits manipulates Double numbers
- * by using bit manipulation and bit-field extraction.
- * For some operations (such as determining the exponent)
- * this is more accurate than using mathematical operations
- * (which suffer from round-off error).
- * <p>
- * The algorithms and constants in this class
- * apply only to IEEE-754 double-precision floating point format.
- *
- * @version 1.7
- */
+/// DoubleBits manipulates Double numbers
+/// by using bit manipulation and bit-field extraction.
+/// For some operations (such as determining the exponent)
+/// this is more accurate than using mathematical operations
+/// (which suffer from round-off error).
+/// <p>
+/// The algorithms and constants in this class
+/// apply only to IEEE-754 double-precision floating point format.
+///
+/// @version 1.7
 class DoubleBits {
 
-  static final int EXPONENT_BIAS = 1023;
+  static const int EXPONENT_BIAS = 1023;
 
-  static double powerOf2(int exp)
-  {
-    if (exp > 1023 || exp < -1022)
-      throw new ArgumentError("Exponent out of bounds");
-    long expBias = exp + EXPONENT_BIAS;
-    long bits = expBias << 52;
+  static double powerOf2(int exp){
+    if (exp > 1023 || exp < -1022) {
+      throw ArgumentError("Exponent out of bounds");
+    }
+    int expBias = exp + EXPONENT_BIAS;
+    int bits = expBias << 52;
     return Double.longBitsToDouble(bits);
   }
 
@@ -83,9 +81,7 @@ class DoubleBits {
     return Double.longBitsToDouble(xBits);
   }
 
-  /**
-   * Determines the exponent for the number
-   */
+  /// Determines the exponent for the number
   int biasedExponent()
   {
     int signExp = (int) (xBits >> 52);
@@ -93,9 +89,7 @@ class DoubleBits {
     return exp;
   }
 
-  /**
-   * Determines the exponent for the number
-   */
+  /// Determines the exponent for the number
   int getExponent()
   {
     return biasedExponent() - EXPONENT_BIAS;
@@ -114,27 +108,24 @@ class DoubleBits {
     return (xBits & mask) != 0 ? 1 : 0;
   }
 
-  /**
-   * This computes the number of common most-significant bits in the mantissa.
-   * It does not count the hidden bit, which is always 1.
-   * It does not determine whether the numbers have the same exponent - if they do
-   * not, the value computed by this function is meaningless.
-   * @param db
-   * @return the number of common most-significant mantissa bits
-   */
+  /// This computes the number of common most-significant bits in the mantissa.
+  /// It does not count the hidden bit, which is always 1.
+  /// It does not determine whether the numbers have the same exponent - if they do
+  /// not, the value computed by this function is meaningless.
+  /// @param db
+  /// @return the number of common most-significant mantissa bits
   int numCommonMantissaBits(DoubleBits db)
   {
     for (int i = 0; i < 52; i++)
     {
-      if (getBit(i) != db.getBit(i))
+      if (getBit(i) != db.getBit(i)) {
         return i;
+      }
     }
     return 52;
   }
 
-  /**
-   * A representation of the Double bits formatted for easy readability
-   */
+  /// A representation of the Double bits formatted for easy readability
   String toString()
   {
     String numStr = Long.toBinaryString(xBits);

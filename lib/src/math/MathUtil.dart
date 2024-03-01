@@ -12,7 +12,7 @@
 
 
 // import java.util.Random;
-import "dart:math" as math;
+import "dart:math";
 
 
 /// Various utility functions for mathematical and numerical operations.
@@ -49,12 +49,18 @@ class MathUtil
   /// @param num the numerator
   /// @param denom the denominator
   /// @return the ceiling of num / denom
-  static int ceil(int num, int denom) {
-    int div = num / denom;
-    return div * denom >= num ? div : div + 1;
-  }
+  // TODO: ruier edit. replace use math.ceil.
   
-  static final double LOG_10 = math.log(10);
+  static int ceil(int num, int denom) {
+    return (num / denom).ceil();
+  }
+
+  // static int ceil(int num, int denom) {
+  //   int div = num / denom;
+  //   return div * denom >= num ? div : div + 1;
+  // }
+  
+  static final double LOG_10 = log(10);
   
   /// Computes the base-10 logarithm of a <tt>double</tt> value.
   /// <ul>
@@ -67,7 +73,7 @@ class MathUtil
   /// @return the value log a, the base-10 logarithm of the input value
   static double log10(double x)
   {
-    double ln = math.log(x);
+    double ln = log(x);
     // if (Double.isInfinite(ln)) return ln;
     if (ln.isInfinite) return ln;
     if ((ln).isNaN) return ln;
@@ -119,7 +125,7 @@ class MathUtil
   }
   
   /// The inverse of the Golden Ratio phi.
-  static final double PHI_INV = (math.sqrt(5) - 1.0) / 2.0;
+  static final double PHI_INV = (sqrt(5) - 1.0) / 2.0;
 
   /// Generates a quasi-random sequence of numbers in the range [0,1].
   /// They are produced by an additive recurrence with 1/&phi; as the constant.
@@ -153,11 +159,12 @@ class MathUtil
   /// @param curr the current number in the sequence
   /// @param alpha the sequence additive constant
   /// @return the next value in the sequence
-  static double quasirandom( double curr, [double alpha=PHI_INV]) {
-    // alpha ??= PHI_INV;
+  static double quasirandom( double curr, [double? alpha]) {
+    alpha ??= PHI_INV;
     double next = curr + alpha;
     if (next < 1) return next;
-    return next - math.floor(next);
+    // return next - math.floor(next);
+    return next - next.floor();
   }
   
   /// Generates a randomly-shuffled list of the integers from [0..n-1].
@@ -167,8 +174,9 @@ class MathUtil
   /// @param n the number of integers to shuffle
   /// @return the shuffled array
   static List<int> shuffle(int n) {
-    final Random rnd = new Random(13);
-    int[] ints = new int[n];
+    final Random rnd = Random(13);
+    List<int> ints = List<int>.filled(n, 0);
+
     for (int i = 0; i < n; i++) {
       ints[i] = i;
     }

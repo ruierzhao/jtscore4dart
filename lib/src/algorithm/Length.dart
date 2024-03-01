@@ -14,20 +14,20 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateSequence;
 
-/**
- * Functions for computing length.
- * 
- * @author Martin Davis
- *
- */
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/utils.dart';
+
+/// Functions for computing length.
+/// 
+/// @author Martin Davis
+///
 class Length {
 
-  /**
-   * Computes the length of a linestring specified by a sequence of points.
-   * 
-   * @param pts the points specifying the linestring
-   * @return the length of the linestring
-   */
+  /// Computes the length of a linestring specified(指定的) by a sequence of points.
+  /// 
+  /// @param pts the points specifying the linestring
+  /// @return the length of the linestring
   static double ofLine(CoordinateSequence pts)
   {
     // optimized for processing CoordinateSequences
@@ -49,7 +49,7 @@ class Length {
       double dx = x1 - x0;
       double dy = y1 - y0;
   
-      len += math.hypot(dx, dy);
+      len += hypot(dx, dy);
   
       x0 = x1;
       y0 = y1;

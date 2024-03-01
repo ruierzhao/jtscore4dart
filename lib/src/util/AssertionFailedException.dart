@@ -11,27 +11,21 @@
  */
 
 
-/**
- *  Thrown when the application is in an inconsistent state. Indicates a problem
- *  with the code.
- *
- *@version 1.7
- */
-class AssertionFailedException extends RuntimeException {
+///  Thrown when the application is in an inconsistent state. Indicates a problem
+///  with the code.
+///
+///@version 1.7
+class AssertionFailedException {
 
-  /**
-   *  Creates an <code>AssertionFailedException</code>.
-   */
+  ///  Creates an <code>AssertionFailedException</code>.
   AssertionFailedException() {
     super();
   }
 
-  /**
-   *  Creates a <code>AssertionFailedException</code> with the given detail
-   *  message.
-   *
-   *@param  message  a description of the assertion
-   */
+  ///  Creates a <code>AssertionFailedException</code> with the given detail
+  ///  message.
+  ///
+  ///@param  message  a description of the assertion
   AssertionFailedException(String message) {
     super(message);
   }

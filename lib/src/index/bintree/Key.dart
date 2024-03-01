@@ -10,18 +10,15 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-
-
 // import org.locationtech.jts.index.quadtree.DoubleBits;
 
-/**
- * A Key is a unique identifier for a node in a tree.
- * It contains a lower-left point and a level number. The level number
- * is the power of two for the size of the node envelope
- *
- * @version 1.7
- */
+import 'package:jtscore4dart/src/index/bintree/Interval.dart';
+
+/// A Key is a unique identifier for a node in a tree.
+/// It contains a lower-left point and a level number. The level number
+/// is the power of two for the size of the node envelope
+///
+/// @version 1.7
 class Key {
 
   static int computeLevel(Interval interval)
@@ -34,41 +31,39 @@ class Key {
 
 
   // the fields which make up the key
-  private double pt = 0.0;
-  private int level = 0;
+  double _pt = 0.0;
+  int _level = 0;
   // auxiliary data which is derived from the key for use in computation
-  private Interval interval;
+  Interval _interval;
 
   Key(Interval interval)
   {
     computeKey(interval);
   }
 
-  double getPoint() { return pt; }
-  int getLevel() { return level; }
-  Interval getInterval() { return interval; }
+  double getPoint() { return _pt; }
+  int getLevel() { return _level; }
+  Interval getInterval() { return _interval; }
 
-  /**
-   * return a square envelope containing the argument envelope,
-   * whose extent is a power of two and which is based at a power of 2
-   */
+  /// return a square envelope containing the argument envelope,
+  /// whose extent is a power of two and which is based at a power of 2
   void computeKey(Interval itemInterval)
   {
-    level = computeLevel(itemInterval);
-    interval = new Interval();
-    computeInterval(level, itemInterval);
+    _level = computeLevel(itemInterval);
+    _interval = Interval.empty();
+    _computeInterval(_level, itemInterval);
     // MD - would be nice to have a non-iterative form of this algorithm
-    while (! interval.contains(itemInterval)) {
-      level += 1;
-      computeInterval(level, itemInterval);
+    while (! _interval.contains(itemInterval)) {
+      _level += 1;
+      _computeInterval(_level, itemInterval);
     }
   }
 
-  private void computeInterval(int level, Interval itemInterval)
+  void _computeInterval(int level, Interval itemInterval)
   {
     double size = DoubleBits.powerOf2(level);
     //double size = pow2.power(level);
-    pt = math.floor(itemInterval.getMin() / size) * size;
-    interval.init(pt, pt + size);
+    _pt = (itemInterval.getMin() / size).floor() * size;
+    _interval.init(_pt, _pt + size);
   }
 }

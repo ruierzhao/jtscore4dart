@@ -11,13 +11,11 @@
  */
 
 
-/**
- * Implements some 2D matrix operations 
- * (in particular, solving systems of linear equations).
- * 
- * @author Martin Davis
- *
- */
+/// Implements some 2D matrix operations 
+/// (in particular, solving systems of linear equations).
+/// 
+/// @author Martin Davis
+///
 class Matrix
 {
   private static void swapRows(double[][] m, int i, int j)
@@ -38,19 +36,17 @@ class Matrix
     m[j] = temp;
   }
   
-  /**
-   * Solves a system of equations using Gaussian Elimination.
-   * In order to avoid overhead the algorithm runs in-place
-   * on A - if A should not be modified the client must supply a copy.
-   * 
-   * @param a an nxn matrix in row/column order )modified by this method)
-   * @param b a vector of length n
-   * 
-   * @return a vector containing the solution (if any)
-   * or null if the system has no or no unique solution
-   * 
-   * @throws ArgumentError if the matrix is the wrong size 
-   */
+  /// Solves a system of equations using Gaussian Elimination.
+  /// In order to avoid overhead the algorithm runs in-place
+  /// on A - if A should not be modified the client must supply a copy.
+  /// 
+  /// @param a an nxn matrix in row/column order )modified by this method)
+  /// @param b a vector of length n
+  /// 
+  /// @return a vector containing the solution (if any)
+  /// or null if the system has no or no unique solution
+  /// 
+  /// @throws ArgumentError if the matrix is the wrong size 
   static double[] solve( double[][] a, double[] b )
   {
     int n = b.length;

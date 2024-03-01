@@ -12,6 +12,7 @@
 
 
 // import java.util.Random;
+import "dart:math" as math;
 
 
 /// Various utility functions for mathematical and numerical operations.
@@ -25,27 +26,13 @@ class MathUtil
   /// @param min the minimum value of the range
   /// @param max the maximum value of the range
   /// @return the clamped value
-  static double clamp(double x, double min, double max)
+  static T clamp<T extends num>(T x, T min, T max)
   {
     if (x < min) return min;
     if (x > max) return max;
     return x;
   }
-  
-  /// Clamps an <tt>int</tt> value to a given range.
-  /// @param x the value to clamp
-  /// @param min the minimum value of the range
-  /// @param max the maximum value of the range
-  /// @return the clamped value
-  static int clamp(int x, int min, int max)
-  {
-    if (x < min) return min;
-    if (x > max) return max;
-    return x;
-  }
-  void c(){
-    int c;
-  }
+
   /// Clamps an integer to a given maximum limit.
   /// 
   /// @param x the value to clamp
@@ -67,7 +54,7 @@ class MathUtil
     return div * denom >= num ? div : div + 1;
   }
   
-  private static final double LOG_10 = math.log(10);
+  static final double LOG_10 = math.log(10);
   
   /// Computes the base-10 logarithm of a <tt>double</tt> value.
   /// <ul>
@@ -81,7 +68,8 @@ class MathUtil
   static double log10(double x)
   {
     double ln = math.log(x);
-    if (Double.isInfinite(ln)) return ln;
+    // if (Double.isInfinite(ln)) return ln;
+    if (ln.isInfinite) return ln;
     if ((ln).isNaN) return ln;
     return ln / LOG_10;
   }
@@ -111,20 +99,13 @@ class MathUtil
     return (x1 + x2) / 2.0;
   }
   
-  static double max(double v1, double v2, double v3)
+
+  static double max(double v1, double v2, double v3, [double? v4])
   {
     double max = v1;
     if (v2 > max) max = v2;
     if (v3 > max) max = v3;
-    return max;
-  }
-  
-  static double max(double v1, double v2, double v3, double v4)
-  {
-    double max = v1;
-    if (v2 > max) max = v2;
-    if (v3 > max) max = v3;
-    if (v4 > max) max = v4;
+    if (v4 != null && v4 > max) max = v4;
     return max;
   }
   
@@ -138,7 +119,7 @@ class MathUtil
   }
   
   /// The inverse of the Golden Ratio phi.
-  static final double PHI_INV = (Math.sqrt(5) - 1.0) / 2.0;
+  static final double PHI_INV = (math.sqrt(5) - 1.0) / 2.0;
 
   /// Generates a quasi-random sequence of numbers in the range [0,1].
   /// They are produced by an additive recurrence with 1/&phi; as the constant.
@@ -152,9 +133,9 @@ class MathUtil
   /// 
   /// @param curr the current number in the sequence
   /// @return the next value in the sequence
-  static double quasirandom( double curr) {
-    return quasirandom(curr, PHI_INV);
-  }
+  // static double quasirandom( double curr) {
+  //   return quasirandom(curr, PHI_INV);
+  // }
   
   /// Generates a quasi-random sequence of numbers in the range [0,1].
   /// They are produced by an additive recurrence with constant &alpha;.
@@ -172,7 +153,8 @@ class MathUtil
   /// @param curr the current number in the sequence
   /// @param alpha the sequence additive constant
   /// @return the next value in the sequence
-  static double quasirandom( double curr, double alpha) {
+  static double quasirandom( double curr, [double alpha=PHI_INV]) {
+    // alpha ??= PHI_INV;
     double next = curr + alpha;
     if (next < 1) return next;
     return next - math.floor(next);

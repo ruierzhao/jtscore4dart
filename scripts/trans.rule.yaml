@@ -1,18 +1,9 @@
 # alread impl
 replace: # 替换
-    - IllegalArgumentException -> ArgumentError
-    - Coordinate[] -> List<Coordinate>
-    - boolean -> bool
-    - HashMap -> Map
-delete: 
-    word: # 删除单词
-        - public
-        - private
-    line: # 删除整行
-        - package
-
-# new rule
-replace:
+  - IllegalArgumentException -> ArgumentError
+  - Coordinate[] -> List<Coordinate>
+  - boolean -> bool
+  - HashMap -> Map
   - Double.isNaN(x) -> double.isNaN
   - Double.isFinite(x) -> x.isFinite
   - .hashCode(x) -> x.hashCode
@@ -23,4 +14,14 @@ replace:
   - interface -> abstract class
   - import org.locationtech -> // import org.locationtech
   - import java. -> // import java.
+delete: 
+    word: # 删除单词
+        - public
+        - private
+    line: # 删除整行
+        - package
+
+# new rule
+replace:
+  - new Coordinate() -> Coordinate.empty2D()
 delete: 

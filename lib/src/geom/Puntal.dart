@@ -12,13 +12,11 @@
 
 
 
-/**
- * Identifies {@link Geometry} subclasses which
- * are 0-dimensional and with components which are {@link Point}s. 
- * 
- * @author Martin Davis
- *
- */
+/// Identifies {@link Geometry} subclasses which
+/// are 0-dimensional and with components which are {@link Point}s. 
+/// 
+/// @author Martin Davis
+///
 abstract class Puntal {
 
 }

@@ -15,48 +15,39 @@
 // import java.util.Collection;
 // import java.util.Iterator;
 
-/**
- * A list of {@link Coordinate}s, which may
- * be set to prevent repeated coordinates from occurring in the list.
- *
- *
- * @version 1.7
- */
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+/// A list of {@link Coordinate}s, which may
+/// be set to prevent repeated coordinates from occurring in the list.
+///
+///
+/// @version 1.7
 class CoordinateList
   extends ArrayList<Coordinate>
 {
-  private static final long serialVersionUID = -1626110935756089896L;
-//With contributions from Markus Schaber [schabios@logi-track.com]
+  // private static final long serialVersionUID = -1626110935756089896L;
+  //With contributions from Markus Schaber [schabios@logi-track.com]
   //[Jon Aquino 2004-03-25]
   private final static List<Coordinate> coordArrayType = new Coordinate[0];
 
-  /**
-   * Constructs a new list without any coordinates
-   */
-  CoordinateList()
-  {
-  }
+  /// Constructs a new list without any coordinates
+  CoordinateList();
 
-  /**
-   * Constructs a new list from an array of Coordinates, allowing repeated points.
-   * (I.e. this constructor produces a {@link CoordinateList} with exactly the same set of points
-   * as the input array.)
-   * 
-   * @param coord the initial coordinates
-   */
-  CoordinateList(List<Coordinate> coord)
-  {
+  /// Constructs a new list from an array of Coordinates, allowing repeated points.
+  /// (I.e. this constructor produces a {@link CoordinateList} with exactly the same set of points
+  /// as the input array.)
+  /// 
+  /// @param coord the initial coordinates
+  CoordinateList.fromAnother(List<Coordinate> coord){
   	ensureCapacity(coord.length);
     add(coord, true);
   }
 
-  /**
-   * Constructs a new list from an array of Coordinates,
-   * allowing caller to specify if repeated points are to be removed.
-   *
-   * @param coord the array of coordinates to load into the list
-   * @param allowRepeated if <code>false</code>, repeated points are removed
-   */
+  /// Constructs a new list from an array of Coordinates,
+  /// allowing caller to specify if repeated points are to be removed.
+  ///
+  /// @param coord the array of coordinates to load into the list
+  /// @param allowRepeated if <code>false</code>, repeated points are removed
   CoordinateList(List<Coordinate> coord, bool allowRepeated)
   {
   	ensureCapacity(coord.length);
@@ -66,14 +57,12 @@ class CoordinateList
   Coordinate getCoordinate(int i) { return (Coordinate) get(i); }
 
 
-  /** 
-   * Adds a section of an array of coordinates to the list.
-   * @param coord The coordinates
-   * @param allowRepeated if set to false, repeated coordinates are collapsed
-   * @param start the index to start from
-   * @param end the index to add up to but not including
-   * @return true (as by general collection contract)
-   */
+  /// Adds a section of an array of coordinates to the list.
+  /// @param coord The coordinates
+  /// @param allowRepeated if set to false, repeated coordinates are collapsed
+  /// @param start the index to start from
+  /// @param end the index to add up to but not including
+  /// @return true (as by general collection contract)
   bool add(List<Coordinate> coord, bool allowRepeated, int start, int end)
   {
     int inc = 1;
@@ -85,13 +74,11 @@ class CoordinateList
     return true;
   }
 
-  /** 
-   * Adds an array of coordinates to the list.
-   * @param coord The coordinates
-   * @param allowRepeated if set to false, repeated coordinates are collapsed
-   * @param direction if false, the array is added in reverse order
-   * @return true (as by general collection contract)
-   */
+  /// Adds an array of coordinates to the list.
+  /// @param coord The coordinates
+  /// @param allowRepeated if set to false, repeated coordinates are collapsed
+  /// @param direction if false, the array is added in reverse order
+  /// @return true (as by general collection contract)
   bool add(List<Coordinate> coord, bool allowRepeated, bool direction)
   {
     if (direction) {
@@ -108,36 +95,30 @@ class CoordinateList
   }
 
 
-  /** 
-   * Adds an array of coordinates to the list.
-   * @param coord The coordinates
-   * @param allowRepeated if set to false, repeated coordinates are collapsed
-   * @return true (as by general collection contract)
-   */
+  /// Adds an array of coordinates to the list.
+  /// @param coord The coordinates
+  /// @param allowRepeated if set to false, repeated coordinates are collapsed
+  /// @return true (as by general collection contract)
   bool add(List<Coordinate> coord, bool allowRepeated)
   {
     add(coord, allowRepeated, true);
     return true;
   }
 
-  /** 
-   * Adds a coordinate to the list.
-   * @param obj The coordinate to add
-   * @param allowRepeated if set to false, repeated coordinates are collapsed
-   * @return true (as by general collection contract)
-   */
+  /// Adds a coordinate to the list.
+  /// @param obj The coordinate to add
+  /// @param allowRepeated if set to false, repeated coordinates are collapsed
+  /// @return true (as by general collection contract)
   bool add(Object obj, bool allowRepeated)
   {
     add((Coordinate) obj, allowRepeated);
     return true;
   }
 
-  /**
-   * Adds a coordinate to the end of the list.
-   * 
-   * @param coord The coordinates
-   * @param allowRepeated if set to false, repeated coordinates are collapsed
-   */
+  /// Adds a coordinate to the end of the list.
+  /// 
+  /// @param coord The coordinates
+  /// @param allowRepeated if set to false, repeated coordinates are collapsed
   void add(Coordinate coord, bool allowRepeated)
   {
     // don't add duplicate coordinates
@@ -150,13 +131,11 @@ class CoordinateList
     super.add(coord);
   }
 
-  /**
-   * Inserts the specified coordinate at the specified position in this list.
-   * 
-   * @param i the position at which to insert
-   * @param coord the coordinate to insert
-   * @param allowRepeated if set to false, repeated coordinates are collapsed
-   */
+  /// Inserts the specified coordinate at the specified position in this list.
+  /// 
+  /// @param i the position at which to insert
+  /// @param coord the coordinate to insert
+  /// @param allowRepeated if set to false, repeated coordinates are collapsed
   void add(int i, Coordinate coord, bool allowRepeated)
   {
     // don't add duplicate coordinates
@@ -176,11 +155,10 @@ class CoordinateList
     super.add(i, coord);
   }
 
-  /** Add an array of coordinates
-   * @param coll The coordinates
-   * @param allowRepeated if set to false, repeated coordinates are collapsed
-   * @return true (as by general collection contract)
-   */
+  /// Add an array of coordinates
+  /// @param coll The coordinates
+  /// @param allowRepeated if set to false, repeated coordinates are collapsed
+  /// @return true (as by general collection contract)
   bool addAll(Collection<? extends Coordinate> coll, bool allowRepeated)
   {
     bool isChanged = false;
@@ -191,9 +169,7 @@ class CoordinateList
     return isChanged;
   }
 
-  /**
-   * Ensure this coordList is a ring, by adding the start point if necessary
-   */
+  /// Ensure this coordList is a ring, by adding the start point if necessary
   void closeRing()
   {
     if (size() > 0) {
@@ -202,22 +178,19 @@ class CoordinateList
     }
   }
 
-  /** Returns the Coordinates in this collection.
-   *
-   * @return the coordinates
-   */
+  /// Returns the Coordinates in this collection.
+  ///
+  /// @return the coordinates
   List<Coordinate> toCoordinateArray()
   {
     return (List<Coordinate>) toArray(coordArrayType);
   }
 
-  /**
-   * Creates an array containing the coordinates in this list,
-   * oriented in the given direction (forward or reverse).
-   * 
-   * @param isForward true if the direction is forward, false for reverse
-   * @return an oriented array of coordinates
-   */
+  /// Creates an array containing the coordinates in this list,
+  /// oriented in the given direction (forward or reverse).
+  /// 
+  /// @param isForward true if the direction is forward, false for reverse
+  /// @return an oriented array of coordinates
   List<Coordinate> toCoordinateArray(bool isForward)
   {
     if (isForward) {
@@ -232,11 +205,9 @@ class CoordinateList
     return pts;
   }
 
-  /**
-   * Returns a deep copy of this <tt>CoordinateList</tt> instance.
-   *
-   * @return a clone of this <tt>CoordinateList</tt> instance
-   */
+  /// Returns a deep copy of this <tt>CoordinateList</tt> instance.
+  ///
+  /// @return a clone of this <tt>CoordinateList</tt> instance
   Object clone() {
       CoordinateList clone = (CoordinateList) super.clone();
       for (int i = 0; i < this.size(); i++) {	  

@@ -10,11 +10,11 @@
 		"scope": "dart",
 		"prefix": "TD",
 		"body": [
-			"// TODO: ",
+			"// TODO: ruier edit.",
 		],
 		"description": "add a TODO mark vvv"
-	},
-	"import coordinate": {
+	}
+	,"import coordinate": {
 		"scope": "dart",
 		"prefix": "icoord",
 		"body": [
@@ -22,12 +22,12 @@
 			"$2"
 		],
 		"description": "import coordinate"
-	},
-	"import dart math": {
+	}
+	,"import dart math": {
 		"scope": "dart",
 		"prefix": "imath",
 		"body": [
-			"import \"dart:math\" as Math;",
+			"import \"dart:math\" as math;",
 			"$2"
 		],
 		"description": "import dart math"

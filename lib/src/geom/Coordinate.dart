@@ -89,7 +89,8 @@ class Coordinate implements Comparable<Coordinate> {
   Coordinate(this.x, this.y, [this.z]);
 
   ///  Constructs a <code>Coordinate</code> at (0,0,NaN).
-  Coordinate.empty2D(this.x, this.y) : z = NULL_ORDINATE;
+  // Coordinate.empty2D():x=0.0, y=0.0, z = NULL_ORDINATE;
+  Coordinate.empty2D():this(0.0,0.0, NULL_ORDINATE);
 
   ///  Constructs a <code>Coordinate</code> having the same (x,y,z) values as
   ///  <code>other</code>.

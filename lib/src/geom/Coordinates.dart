@@ -37,7 +37,7 @@ class Coordinates {
     } else if (dimension == 3 && measures == 0) {
       return Coordinate.empty2D();
     } else if (dimension == 3 && measures == 1) {
-      return CoordinateXYM();
+      return CoordinateXYM.empty();
     } else if (dimension == 4 && measures == 1) {
       return CoordinateXYZM.empty();
     }

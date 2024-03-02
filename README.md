@@ -13,6 +13,8 @@ and the Flutter guide for
 
 TODO: jts for dart. 由java 源代码翻译过来的。
 
+[java JTS](https://github1s.com/locationtech/jts/blob/master/modules/core/src/main/java/org/locationtech/jts/geom/Coordinate.java)
+
 ## Features
 
 TODO: List what your package can do. Maybe include images, gifs, or videos.
@@ -28,7 +30,7 @@ TODO: Include short and useful examples for package users. Add longer examples
 to `/example` folder.
 
 ```dart
-import 'package:jtsd/jtsd.dart' as jtsd;
+import 'package:jtscore4dart/jtscore4dart.dart' as jtsd;
 
 void main() {
   print('==============${jtsd.JTSVersion()}=====================');

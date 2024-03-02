@@ -64,7 +64,31 @@
 /// provides 53 bits of precision. (Thus the maximum precisely representable
 /// <i>integer</i> is 9,007,199,254,740,992 - or almost 16 decimal digits of precision).
 ///
+///
 ///@version 1.7
+
+
+  /// The types of Precision Model which JTS supports.
+  class Type /**implements Serializable */
+  {
+    // private static final long serialVersionUID = -5528602631731589822L;
+    static Map _nameToTypeMap = {};
+    Type(this._name) {
+        _nameToTypeMap.add(_name, this);
+    }
+    String _name;
+    String toString() { return _name; }
+    
+    
+    /*
+     * Ssee http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
+     */
+    Object _readResolve() {
+        return _nameToTypeMap.get(_name);
+    }
+  }
+
+
 class PrecisionModel implements /** Serializable, */  Comparable
 {
 	/// Determines which of two {@link PrecisionModel}s is the most precise
@@ -75,36 +99,13 @@ class PrecisionModel implements /** Serializable, */  Comparable
 	/// @return the PrecisionModel which is most precise
 	static PrecisionModel mostPrecise(PrecisionModel pm1, PrecisionModel pm2)
 	{
-		if (pm1.compareTo(pm2) >= 0)
-			return pm1;
+		if (pm1.compareTo(pm2) >= 0) {
+		  return pm1;
+		}
 		return pm2;
 	}
 	
-  private static final long serialVersionUID = 7777263578777803835L;
-
-  /**
-   * The types of Precision Model which JTS supports.
-   */
-  static class Type
-      implements Serializable
-  {
-    private static final long serialVersionUID = -5528602631731589822L;
-    private static Map nameToTypeMap = new Map();
-    Type(String name) {
-        this.name = name;
-        nameToTypeMap.put(name, this);
-    }
-    private String name;
-    String toString() { return name; }
-    
-    
-    /*
-     * Ssee http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
-     */
-    private Object readResolve() {
-        return nameToTypeMap.get(name);
-    }
-  }
+  // private static final long serialVersionUID = 7777263578777803835L;
 
   /// Fixed Precision indicates that coordinates have a fixed number of decimal places.
   /// The number of decimal places is determined by the log10 of the scale factor.
@@ -245,11 +246,13 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///  
   /// @return the grid size at a fixed precision scale.
   double gridSize() {
-    if (isFloating())
+    if (isFloating()) {
       return double.nan;
+    }
     
-    if (gridSize != 0)
+    if (gridSize != 0) {
       return gridSize;
+    }
     return 1.0 / scale;
   }
   

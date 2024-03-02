@@ -32,16 +32,13 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 
-// TODO: ruier edit.
-class GeometryComponentFilterImpl implements GeometryComponentFilter {
-    @override
-    void filter(Geometry geom) {
-      geom.geometryChangedAction();
-    }
-  }
 
 /// A representation of a planar, linear vector geometry.
 /// <P>
@@ -157,6 +154,16 @@ class GeometryComponentFilterImpl implements GeometryComponentFilter {
 /// Geometries can be used effectively in Java collections.
 ///
 ///@version 1.7
+
+// TODO: ruier edit.
+class GeometryComponentFilterImpl implements GeometryComponentFilter {
+    @override
+    void filter(Geometry geom) {
+      geom.geometryChangedAction();
+    }
+  }
+
+
 abstract class Geometry{
   // TODO: ruier edit. unused
   // private static final long serialVersionUID = 8763622679187376702L;
@@ -179,7 +186,7 @@ abstract class Geometry{
   static const String TYPENAME_MULTIPOLYGON = "MultiPolygon";
   static const String TYPENAME_GEOMETRYCOLLECTION = "GeometryCollection";
   
-  static final GeometryComponentFilter _geometryChangedFilter = 
+  static final GeometryComponentFilter _geometryChangedFilter = GeometryComponentFilterImpl();
 
   ///  The bounding box of this <code>Geometry</code>.
   Envelope envelope;
@@ -192,7 +199,7 @@ abstract class Geometry{
 
   /// An object reference which can be used to carry ancillary data defined
   /// by the client.
-  private Object userData = null;
+  /**private */ Object userData = null;
 
   /// Creates a new <code>Geometry</code> via the specified GeometryFactory.
   ///
@@ -1704,14 +1711,14 @@ abstract class Geometry{
     return 0;
   }
 
-  protected bool equal(Coordinate a, Coordinate b, double tolerance) {
+  bool equal(Coordinate a, Coordinate b, double tolerance) {
     if (tolerance == 0) { return a.equals(b); }
     return a.distance(b) <= tolerance;
   }
 
   abstract protected int getTypeCode();
 
-  private Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
+  /**private */ Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
   {
     // create empty point for null input
     if (coord == null) 

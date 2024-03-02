@@ -1,6 +1,93 @@
-abstract class Cga{
+import 'dart:math';
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+class Envelope {
   static final double _DP_SAFE_EPSILON = 1e-15;
-  static void ruier(){
+  static void ruier() {
     print("cga ruier");
   }
+
+  ///  the minimum x-coordinate
+  final double _minx;
+
+  ///  the maximum x-coordinate
+  final double _maxx;
+
+  ///  the minimum y-coordinate
+  final double _miny;
+
+  ///  the maximum y-coordinate
+  final double _maxy;
+
+  ///  Creates a null <code>Envelope</code>.
+  // TODO: ruier edit. 改写成 const
+  const Envelope.init()
+      : _minx = 0,
+        _maxx = -1,
+        _miny = 0,
+        _maxy = -1;
+
+  ///  Creates an <code>Envelope</code> for a region defined by maximum and minimum values.
+  ///
+  ///@param  x1  the first x-value
+  ///@param  x2  the second x-value
+  ///@param  y1  the first y-value
+  ///@param  y2  the second y-value
+  Envelope(double x1, double x2, double y1, double y2)
+      : _minx = min<double>(x1, x2),
+        _maxx = max(x1, x2),
+        _miny = min(y1, y2),
+        _maxy = max(y1, y2);
+  Envelope.fromCoord1(Coordinate p):this(p.x, p.x, p.y, p.y);
+  // {
+  //   adjustXY(_minx,_maxx,_maxx,_maxy);
+  // }
+// static double adjustXY(double x1, double x2, double y1, double y2)
+  
+  Envelope.fromAnother(Envelope env)
+      : _maxx = env._maxx,
+        _miny = env._miny,
+        _maxy = env._maxy,
+        _minx = env._minx;
+
+  ///  Initialize to a null <code>Envelope</code>.
+  // TODO: ruier edit.
+  // void init()
+  // {
+  //   setToNull();
+  // }
+
+  ///  Initialize an <code>Envelope</code> for a region defined by maximum and minimum values.
+  ///
+  ///@param  x1  the first x-value
+  ///@param  x2  the second x-value
+  ///@param  y1  the first y-value
+  ///@param  y2  the second y-value
+  // void init(double x1, double x2, double y1, double y2) {
+  //   if (x1 < x2) {
+  //     _minx = x1;
+  //     _maxx = x2;
+  //   } else {
+  //     _minx = x2;
+  //     _maxx = x1;
+  //   }
+  //   if (y1 < y2) {
+  //     _miny = y1;
+  //     _maxy = y2;
+  //   } else {
+  //     _miny = y2;
+  //     _maxy = y1;
+  //   }
+  // }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "($_minx, $_maxx, $_miny, $_maxy)";
+  }
+}
+
+void main() {
+  Envelope env = Envelope(0, 0, 1, 2);
+  print(env);
 }

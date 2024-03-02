@@ -417,6 +417,7 @@ class Coordinate implements Comparable<Coordinate> {
   ///
   /// @param x the value to compute for
   /// @return a hashcode for x
+  /// @ruier 参考： https://blog.csdn.net/kangzye/article/details/100766232
   // static int hashCode(double x) {
   //   long f = Double.doubleToLongBits(x);
   //   return (int)(f^(f>>>32));

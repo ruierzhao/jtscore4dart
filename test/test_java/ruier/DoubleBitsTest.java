@@ -3,12 +3,10 @@
 
 package ruier;
 
-
-
 public class DoubleBitsTest {
-
+    // https://blog.csdn.net/kangzye/article/details/100766232
     public static void main(String args[]) {
-            int bits = 2023 << 52;
-    System.out.println(Double.longBitsToDouble(bits)); // 1.048046261E-314
+        int bits = 2023 << 52;
+        System.out.println(Double.longBitsToDouble(bits)); // 1.048046261E-314
     }
 }

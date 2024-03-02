@@ -113,7 +113,7 @@ abstract class CoordinateSequence{
   /// </p>
   /// @return coordinate for use with this sequence
   Coordinate createCoordinate() {
-    return Coordinates.createWithMeasure(getDimension(), getMeasures());
+    return Coordinates.create(getDimension(), getMeasures());
   }
   
   /// Returns (possibly a copy of) the i'th coordinate in this sequence.

@@ -21,25 +21,25 @@ class Location {
   /// The location value for the interior of a geometry.
   /// Also, DE-9IM row index of the interior of the first geometry and column index of
   ///  the interior of the second geometry. 
-  final static int INTERIOR = 0;
+  static const int INTERIOR = 0;
   /// The location value for the boundary of a geometry.
   /// Also, DE-9IM row index of the boundary of the first geometry and column index of
   ///  the boundary of the second geometry. 
-  final static int BOUNDARY = 1;
+  static const int BOUNDARY = 1;
   /// The location value for the exterior of a geometry.
   /// Also, DE-9IM row index of the exterior of the first geometry and column index of
   ///  the exterior of the second geometry. 
-  final static int EXTERIOR = 2;
+  static const int EXTERIOR = 2;
 
   ///  Used for uninitialized location values.
-  final static int NONE = -1;
+  static const int NONE = -1;
 
   ///  Converts the location value to a location symbol, for example, <code>EXTERIOR =&gt; 'e'</code>
   ///  .
   ///
   ///@param  locationValue  either EXTERIOR, BOUNDARY, INTERIOR or NONE
   ///@return                either 'e', 'b', 'i' or '-'
-  static char toLocationSymbol(int locationValue) {
+  static String toLocationSymbol(int locationValue) {
     switch (locationValue) {
       case EXTERIOR:
         return 'e';
@@ -50,7 +50,7 @@ class Location {
       case NONE:
         return '-';
     }
-    throw new ArgumentError("Unknown location value: " + locationValue);
+    throw ArgumentError("Unknown location value: $locationValue");
   }
 }
 

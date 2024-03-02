@@ -36,34 +36,28 @@ class CoordinateXYZM extends Coordinate {
   /// Constructs a CoordinateXYZM instance with the ordinates of the given Coordinate.
   /// 
   /// @param coord the coordinate providing the ordinates
-  CoordinateXYZM.fromCoord(Coordinate coord) {
-    super(coord);
-    _m = getM();
-  }
+  CoordinateXYZM.fromCoord(Coordinate coord): _m=0.0,super.fromAnother(coord);
   
   /// Constructs a CoordinateXYZM instance with the ordinates of the given CoordinateXYZM.
   /// 
   /// @param coord the coordinate providing the ordinates
-  CoordinateXYZM(CoordinateXYZM coord) {
-    super(coord);
-    _m = coord._m;
-  }
+  CoordinateXYZM.fromAnother(CoordinateXYZM coord):_m = coord._m, super.fromAnother(coord); 
 
   /// Creates a copy of this CoordinateXYZM.
   /// 
   /// @return a copy of this CoordinateXYZM
+  @override
   CoordinateXYZM copy() {
-    return new CoordinateXYZM(this);
+    return CoordinateXYZM.fromAnother(this);
   }
   
   /// Create a new Coordinate of the same type as this Coordinate, but with no values.
   /// 
   /// @return a new Coordinate
-  // TODO: ruier edit.
-  // @override
-  // Coordinate create() {
-  //     return new CoordinateXYZM();
-  // }
+  @override
+  Coordinate create() {
+      return CoordinateXYZM.empty();
+  }
 
   /// The m-measure.
   double _m;
@@ -80,12 +74,12 @@ class CoordinateXYZM extends Coordinate {
   double getOrdinate(int ordinateIndex)
   {
     switch (ordinateIndex) {
-    case X: return x;
-    case Y: return y;
-    case Z: return getZ(); // sure to delegate to subclass rather than offer direct field access
-    case M: return getM(); // sure to delegate to subclass rather than offer direct field access
+    case Coordinate.X: return x;
+    case Coordinate.Y: return y;
+    case Coordinate.Z: return getZ(); // sure to delegate to subclass rather than offer direct field access
+    case Coordinate.M: return getM(); // sure to delegate to subclass rather than offer direct field access
     }
-    throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
+    throw ArgumentError("Invalid ordinate index: $ordinateIndex" );
   }
   
   @override
@@ -100,24 +94,25 @@ class CoordinateXYZM extends Coordinate {
   @override
   void setOrdinate(int ordinateIndex, double value) {
       switch (ordinateIndex) {
-      case X:
+      case Coordinate.X:
         x = value;
         break;
-      case Y:
+      case Coordinate.Y:
         y = value;
         break;
-      case Z:
+      case Coordinate.Z:
         z = value;
         break;
-      case M:
+      case Coordinate.M:
         _m = value;
         break;
       default:
-        throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
+        throw ArgumentError("Invalid ordinate index: $ordinateIndex");
     }
   }
   
   String toString() {
-    return "(" + x + ", " + y + ", " + getZ() + " m="+getM()+")";
+    // return "(" + x + ", " + y + ", " + getZ() + " m="+getM()+")";
+    return "($x, $y, ${getZ()} m=${getM()})";
   }
 }

@@ -25,70 +25,56 @@
 // import org.locationtech.jts.geom.CoordinateXYZM;
 // import org.locationtech.jts.geom.Envelope;
 
-/**
- * A {@link CoordinateSequence} implementation based on a packed arrays.
- * In this implementation, {@link Coordinate}s returned by #toArray and #get are copies
- * of the internal values.
- * To change the actual values, use the provided setters.
- * <p>
- * For efficiency, created Coordinate arrays
- * are cached using a soft reference.
- * The cache is cleared each time the coordinate sequence contents are
- * modified through a setter method.
- *
- * @version 1.7
- */
-abstract class PackedCoordinateSequence
-    implements CoordinateSequence, Serializable
-{
-  private static final long serialVersionUID = -3151899011275603L;
-  /**
-   * The dimensions of the coordinates held in the packed array
-   */
-  protected int dimension;
-  
-  /**
-   * The number of measures of the coordinates held in the packed array.
-   */
-  protected int measures;
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 
-  /**
-   * Creates an instance of this class
-   * @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
-   * @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
-   */
-  protected PackedCoordinateSequence(int dimension, int measures ) {
-      if (dimension - measures < 2) {
-         throw new ArgumentError("Must have at least 2 spatial dimensions");
+/// A {@link CoordinateSequence} implementation based on a packed arrays.
+/// In this implementation, {@link Coordinate}s returned by #toArray and #get are copies
+/// of the internal values.
+/// To change the actual values, use the provided setters.
+/// <p>
+/// For efficiency, created Coordinate arrays
+/// are cached using a soft reference.
+/// The cache is cleared each time the coordinate sequence contents are
+/// modified through a setter method.
+///
+/// @version 1.7
+abstract class PackedCoordinateSequence
+    implements CoordinateSequence
+{
+  // private static final long serialVersionUID = -3151899011275603L;
+  /// The dimensions of the coordinates held in the packed array
+  /** protected */ int dimension;
+  
+  /// The number of measures of the coordinates held in the packed array.
+  /** protected */ int measures;
+
+  /// Creates an instance of this class
+  /// @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
+  /// @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
+  /** protected */ PackedCoordinateSequence(int _dimension, int _measures ) {
+      if (_dimension - _measures < 2) {
+         throw ArgumentError("Must have at least 2 spatial dimensions");
       }
-      this.dimension = dimension;
-      this.measures = measures;
+      dimension = _dimension;
+      measures = _measures;
   }
   
-  /**
-   * A soft reference to the List<Coordinate> representation of this sequence.
-   * Makes repeated coordinate array accesses more efficient.
-   */
-  protected transient SoftReference<List<Coordinate>> coordRef;
+  /// A soft reference to the List<Coordinate> representation of this sequence.
+  /// Makes repeated coordinate array accesses more efficient.
+  /** protected transient 不序列化某个变量 */  SoftReference<List<Coordinate>> coordRef;
 
-  /**
-   * @see CoordinateSequence#getDimension()
-   */
+  /// @see CoordinateSequence#getDimension()
   int getDimension() {
     return this.dimension;
   }
 
-  /**
-   * @see CoordinateSequence#getMeasures()
-   */
+  /// @see CoordinateSequence#getMeasures()
   @Override
   int getMeasures() {
     return this.measures;
   }
 
-  /**
-   * @see CoordinateSequence#getCoordinate(int)
-   */
+  /// @see CoordinateSequence#getCoordinate(int)
   Coordinate getCoordinate(int i) {
     List<Coordinate> coords = getCachedCoords();
     if(coords != null)
@@ -96,16 +82,12 @@ abstract class PackedCoordinateSequence
     else
       return getCoordinateInternal(i);
   }
-  /**
-   * @see CoordinateSequence#getCoordinate(int)
-   */
+  /// @see CoordinateSequence#getCoordinate(int)
   Coordinate getCoordinateCopy(int i) {
     return getCoordinateInternal(i);
   }
 
-  /**
-   * @see CoordinateSequence#getCoordinate(int)
-   */
+  /// @see CoordinateSequence#getCoordinate(int)
   void getCoordinate(int i, Coordinate coord) {
     coord.x = getOrdinate(i, 0);
     coord.y = getOrdinate(i, 1);
@@ -117,9 +99,7 @@ abstract class PackedCoordinateSequence
     }
   }
 
-  /**
-   * @see CoordinateSequence#toCoordinateArray()
-   */
+  /// @see CoordinateSequence#toCoordinateArray()
   List<Coordinate> toCoordinateArray() {
     List<Coordinate> coords = getCachedCoords();
 // testing - never cache
@@ -152,42 +132,32 @@ abstract class PackedCoordinateSequence
 
   }
 
-  /**
-   * @see CoordinateSequence#getX(int)
-   */
+  /// @see CoordinateSequence#getX(int)
   double getX(int index) {
     return getOrdinate(index, 0);
   }
 
-  /**
-   * @see CoordinateSequence#getY(int)
-   */
+  /// @see CoordinateSequence#getY(int)
   double getY(int index) {
     return getOrdinate(index, 1);
   }
 
-  /**
-   * @see CoordinateSequence#getOrdinate(int, int)
-   */
+  /// @see CoordinateSequence#getOrdinate(int, int)
   abstract double getOrdinate(int index, int ordinateIndex);
 
-  /**
-   * Sets the first ordinate of a coordinate in this sequence.
-   *
-   * @param index  the coordinate index
-   * @param value  the new ordinate value
-   */
+  /// Sets the first ordinate of a coordinate in this sequence.
+  ///
+  /// @param index  the coordinate index
+  /// @param value  the new ordinate value
   void setX(int index, double value) {
     coordRef = null;
     setOrdinate(index, 0, value);
   }
 
-  /**
-   * Sets the second ordinate of a coordinate in this sequence.
-   *
-   * @param index  the coordinate index
-   * @param value  the new ordinate value
-   */
+  /// Sets the second ordinate of a coordinate in this sequence.
+  ///
+  /// @param index  the coordinate index
+  /// @param value  the new ordinate value
   void setY(int index, double value) {
     coordRef = null;
     setOrdinate(index, 1, value);
@@ -203,38 +173,32 @@ abstract class PackedCoordinateSequence
     return this;
   }
   
-  /**
-   * Returns a Coordinate representation of the specified coordinate, by always
-   * building a new Coordinate object
-   *
-   * @param index  the coordinate index
-   * @return  the {@link Coordinate} at the given index
-   */
+  /// Returns a Coordinate representation of the specified coordinate, by always
+  /// building a new Coordinate object
+  ///
+  /// @param index  the coordinate index
+  /// @return  the {@link Coordinate} at the given index
   protected abstract Coordinate getCoordinateInternal(int index);
 
-  /**
-   * @see java.lang.Object#clone()
-   * @see CoordinateSequence#clone()
-   * @deprecated
-   */
+  /// @see java.lang.Object#clone()
+  /// @see CoordinateSequence#clone()
+  /// @deprecated
   abstract Object clone();
   
   abstract PackedCoordinateSequence copy();
 
-  /**
-   * Sets the ordinate of a coordinate in this sequence.
-   * <br>
-   * Warning: for performance reasons the ordinate index is not checked
-   * - if it is over dimensions you may not get an exception but a meaningless value.
-   *
-   * @param index
-   *          the coordinate index
-   * @param ordinate
-   *          the ordinate index in the coordinate, 0 based, smaller than the
-   *          number of dimensions
-   * @param value
-   *          the new ordinate value
-   */
+  /// Sets the ordinate of a coordinate in this sequence.
+  /// <br>
+  /// Warning: for performance reasons the ordinate index is not checked
+  /// - if it is over dimensions you may not get an exception but a meaningless value.
+  ///
+  /// @param index
+  ///          the coordinate index
+  /// @param ordinate
+  ///          the ordinate index in the coordinate, 0 based, smaller than the
+  ///          number of dimensions
+  /// @param value
+  ///          the new ordinate value
   abstract void setOrdinate(int index, int ordinate, double value);
 
   /**

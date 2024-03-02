@@ -20,6 +20,8 @@
 // import org.locationtech.jts.geom.Envelope;
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 
 /// A {@link CoordinateSequence} backed by an array of {@link Coordinate}s.
@@ -41,12 +43,12 @@ class CoordinateArraySequence
 
   /// The actual dimension of the coordinates in the sequence.
   /// Allowable values are 2, 3 or 4.
-  private int dimension = 3;
+  int _dimension = 3;
   /// The number of measures of the coordinates in the sequence.
   /// Allowable values are 0 or 1.
-  private int measures = 0;
+  int _measures = 0;
   
-  private List<Coordinate> coordinates;
+  List<Coordinate> _coordinates;
 
   /// Constructs a sequence based on the given array
   /// of {@link Coordinate}s (the
@@ -80,13 +82,13 @@ class CoordinateArraySequence
   /// @param dimension the dimension of the coordinates
   CoordinateArraySequence(List<Coordinate> coordinates, int dimension, int measures)
   {
-    this.dimension = dimension;
-    this.measures = measures;
+    this._dimension = dimension;
+    this._measures = measures;
     if (coordinates == null) {
-      this.coordinates = new Coordinate[0];
+      this._coordinates = new Coordinate[0];
     }
     else {
-      this.coordinates = coordinates;
+      this._coordinates = coordinates;
     }
   }
 
@@ -95,9 +97,9 @@ class CoordinateArraySequence
   ///
   /// @param size the size of the sequence to create
   CoordinateArraySequence(int size) {
-    coordinates = new Coordinate[size];
+    _coordinates = new Coordinate[size];
     for (int i = 0; i < size; i++) {
-      coordinates[i] = new Coordinate();
+      _coordinates[i] = new Coordinate();
     }
   }
 
@@ -107,10 +109,10 @@ class CoordinateArraySequence
   /// @param size the size of the sequence to create
   /// @param dimension the dimension of the coordinates
   CoordinateArraySequence(int size, int dimension) {
-    coordinates = new Coordinate[size];
-    this.dimension = dimension;
+    _coordinates = new Coordinate[size];
+    this._dimension = dimension;
     for (int i = 0; i < size; i++) {
-      coordinates[i] = Coordinates.create(dimension);
+      _coordinates[i] = Coordinates.create(dimension);
     }
   }
   /// Constructs a sequence of a given size, populated
@@ -119,11 +121,11 @@ class CoordinateArraySequence
   /// @param size the size of the sequence to create
   /// @param dimension the dimension of the coordinates
   CoordinateArraySequence(int size, int dimension,int measures) {
-    coordinates = new Coordinate[size];
-    this.dimension = dimension;
-    this.measures = measures;
+    _coordinates = new Coordinate[size];
+    this._dimension = dimension;
+    this._measures = measures;
     for (int i = 0; i < size; i++) {
-      coordinates[i] = createCoordinate();
+      _coordinates[i] = createCoordinate();
     }
   }
 
@@ -135,28 +137,29 @@ class CoordinateArraySequence
   {
     // NOTE: this will make a sequence of the default dimension
     if (coordSeq == null) {
-      coordinates = new Coordinate[0];
+      _coordinates = new Coordinate[0];
       return;
     }
-    dimension = coordSeq.getDimension();
-    measures = coordSeq.getMeasures();    
-    coordinates = new Coordinate[coordSeq.size()];
+    _dimension = coordSeq.getDimension();
+    _measures = coordSeq.getMeasures();    
+    _coordinates = new Coordinate[coordSeq.size()];
 
-    for (int i = 0; i < coordinates.length; i++) {
-      coordinates[i] = coordSeq.getCoordinateCopy(i);
+    for (int i = 0; i < _coordinates.length; i++) {
+      _coordinates[i] = coordSeq.getCoordinateCopy(i);
     }
   }
 
   /// @see org.locationtech.jts.geom.CoordinateSequence#getDimension()
+  @override
   int getDimension()
   {
-    return dimension;
+    return _dimension;
   }
   
-  @Override
+  @override
   int getMeasures()
   {
-    return measures;
+    return _measures;
   }
 
   /// Get the Coordinate with index i.
@@ -164,40 +167,46 @@ class CoordinateArraySequence
   /// @param i
   ///                  the index of the coordinate
   /// @return the requested Coordinate instance
+  @override
   Coordinate getCoordinate(int i) {
-    return coordinates[i];
+    return _coordinates[i];
   }
 
   /// Get a copy of the Coordinate with index i.
   ///
   /// @param i  the index of the coordinate
   /// @return a copy of the requested Coordinate
+  @override
   Coordinate getCoordinateCopy(int i) {
     Coordinate copy = createCoordinate();
-    copy.setCoordinate(coordinates[i]);
+    copy.setCoordinate(_coordinates[i]);
     return copy;
   }
 
   /// @see org.locationtech.jts.geom.CoordinateSequence#getX(int)
-  void getCoordinate(int index, Coordinate coord) {
-    coord.setCoordinate(coordinates[index]);
+  @override
+  void getCoordinateTo(int index, Coordinate coord) {
+    coord.setCoordinate(_coordinates[index]);
   }
 
   /// @see org.locationtech.jts.geom.CoordinateSequence#getX(int)
+  @override
   double getX(int index) {
-    return coordinates[index].x;
+    return _coordinates[index].x;
   }
 
   /// @see org.locationtech.jts.geom.CoordinateSequence#getY(int)
+  @override
   double getY(int index) {
-    return coordinates[index].y;
+    return _coordinates[index].y;
   }
 
   /// @see org.locationtech.jts.geom.CoordinateSequence#getZ(int)
+  @override
   double getZ(int index)
   {
     if (hasZ()) {
-      return coordinates[index].getZ();
+      return _coordinates[index].getZ();
     } else {
       return double.nan;
     }
@@ -205,9 +214,10 @@ class CoordinateArraySequence
   }
   
   /// @see org.locationtech.jts.geom.CoordinateSequence#getM(int)
+  @override
   double getM(int index) {
     if (hasM()) {
-      return coordinates[index].getM();
+      return _coordinates[index].getM();
     }
     else {
         return double.nan;
@@ -215,13 +225,14 @@ class CoordinateArraySequence
   }
   
   /// @see org.locationtech.jts.geom.CoordinateSequence#getOrdinate(int, int)
+  @override
   double getOrdinate(int index, int ordinateIndex)
   {
     switch (ordinateIndex) {
-      case CoordinateSequence.X:  return coordinates[index].x;
-      case CoordinateSequence.Y:  return coordinates[index].y;
+      case CoordinateSequence.X:  return _coordinates[index].x;
+      case CoordinateSequence.Y:  return _coordinates[index].y;
       default:
-	      return coordinates[index].getOrdinate(ordinateIndex);
+	      return _coordinates[index].getOrdinate(ordinateIndex);
     }
   }
 
@@ -229,54 +240,60 @@ class CoordinateArraySequence
   ///
   /// @return The deep copy
   /// @deprecated
+  @override
   Object clone() {
     return copy();
   }
   /// Creates a deep copy of the CoordinateArraySequence
   ///
   /// @return The deep copy
+  @override
   CoordinateArraySequence copy() {
-    List<Coordinate> cloneCoordinates = new Coordinate[size()];
-    for (int i = 0; i < coordinates.length; i++) {
+    List<Coordinate> cloneCoordinates = Coordinate[size()];
+    for (int i = 0; i < _coordinates.length; i++) {
       Coordinate duplicate = createCoordinate();
-      duplicate.setCoordinate(coordinates[i]);
+      duplicate.setCoordinate(_coordinates[i]);
       cloneCoordinates[i] = duplicate;
     }
-    return new CoordinateArraySequence(cloneCoordinates, dimension, measures);
+    return new CoordinateArraySequence(cloneCoordinates, _dimension, _measures);
   }
   /// Returns the size of the coordinate sequence
   ///
   /// @return the number of coordinates
+  @override
   int size() {
-    return coordinates.length;
+    return _coordinates.length;
   }
 
   /// @see org.locationtech.jts.geom.CoordinateSequence#setOrdinate(int, int, double)
+  @override
   void setOrdinate(int index, int ordinateIndex, double value)
   {
     switch (ordinateIndex) {
       case CoordinateSequence.X:
-        coordinates[index].x = value;
+        _coordinates[index].x = value;
         break;
       case CoordinateSequence.Y:
-        coordinates[index].y = value;
+        _coordinates[index].y = value;
         break;
       default:
-        coordinates[index].setOrdinate(ordinateIndex, value);
+        _coordinates[index].setOrdinate(ordinateIndex, value);
     }
   }
 
   /// This method exposes the internal Array of Coordinate Objects
   ///
   /// @return the List<Coordinate> array.
+  @override
   List<Coordinate> toCoordinateArray() {
-    return coordinates;
+    return _coordinates;
   }
 
+  @override
   Envelope expandEnvelope(Envelope env)
   {
-    for (int i = 0; i < coordinates.length; i++ ) {
-      env.expandToInclude(coordinates[i]);
+    for (int i = 0; i < _coordinates.length; i++ ) {
+      env.expandToInclude(_coordinates[i]);
     }
     return env;
   }
@@ -284,14 +301,15 @@ class CoordinateArraySequence
   /// Returns the string Representation of the coordinate array
   ///
   /// @return The string
+  @override
   String toString() {
-    if (coordinates.length > 0) {
-      StringBuilder strBuilder = new StringBuilder(17 * coordinates.length);
+    if (_coordinates.length > 0) {
+      StringBuilder strBuilder = new StringBuilder(17 * _coordinates.length);
       strBuilder.append('(');
-      strBuilder.append(coordinates[0]);
-      for (int i = 1; i < coordinates.length; i++) {
+      strBuilder.append(_coordinates[0]);
+      for (int i = 1; i < _coordinates.length; i++) {
         strBuilder.append(", ");
-        strBuilder.append(coordinates[i]);
+        strBuilder.append(_coordinates[i]);
       }
       strBuilder.append(')');
       return strBuilder.toString();

@@ -79,18 +79,18 @@ class Coordinate implements Comparable<Coordinate> {
   /// The z-ordinate.
   /// <p>
   /// Direct access to this field is discouraged; use {@link #getZ()}.
-  double? z;
+  double z;
 
   ///  Constructs a <code>Coordinate</code> at (x,y,z).
   ///
   ///@param  x  the x-ordinate
   ///@param  y  the y-ordinate
   ///@param  z  the z-ordinate
-  Coordinate(this.x, this.y, [this.z]);
+  Coordinate(this.x, this.y, [this.z=NULL_ORDINATE]);
 
   ///  Constructs a <code>Coordinate</code> at (0,0,NaN).
   // Coordinate.empty2D():x=0.0, y=0.0, z = NULL_ORDINATE;
-  Coordinate.empty2D():this(0.0,0.0, NULL_ORDINATE);
+  Coordinate.empty2D():this(0.0, 0.0);
 
   ///  Constructs a <code>Coordinate</code> having the same (x,y,z) values as
   ///  <code>other</code>.
@@ -105,7 +105,7 @@ class Coordinate implements Comparable<Coordinate> {
   ///
   ///@param  x  the x-value
   ///@param  y  the y-value
-  // @ruier edit: 等价于empty2D()
+  // @ruier edit: 等价于Coordinate(this.x, this.y, [this.z=NULL_ORDINATE]);
   // Coordinate(double x, double y) {
   //   this(x, y, NULL_ORDINATE);
   // }
@@ -151,7 +151,7 @@ class Coordinate implements Comparable<Coordinate> {
   ///  If no Z value is present returns <tt>NaN</tt>.
   ///
   ///  @return the value of the Z ordinate, or <tt>NaN</tt>
-  double? getZ() {
+  double getZ() {
     return z;
   }
 
@@ -276,7 +276,7 @@ class Coordinate implements Comparable<Coordinate> {
   bool equals3D(Coordinate other) {
     return (x == other.x) &&
         (y == other.y) &&
-        ((getZ() == other.getZ()) || (z!.isNaN && other.getZ()!.isNaN));
+        ((getZ() == other.getZ()) || (z.isNaN && other.getZ().isNaN));
   }
 
   /// Tests if another coordinate has the same value for Z, within a tolerance.
@@ -285,7 +285,7 @@ class Coordinate implements Comparable<Coordinate> {
   /// @param tolerance the tolerance value
   /// @return true if the Z ordinates are within the given tolerance
   bool equalInZ(Coordinate c, double tolerance) {
-    return equalsWithTolerance(getZ()!, c.getZ()!, tolerance);
+    return equalsWithTolerance(getZ(), c.getZ(), tolerance);
   }
 
   ///  Returns <code>true</code> if <code>other</code> has the same values for
@@ -375,9 +375,9 @@ class Coordinate implements Comparable<Coordinate> {
   /// Create a new Coordinate of the same type as this Coordinate, but with no values.
   ///
   /// @return a new Coordinate
-  // Coordinate create() {
-  //     return new Coordinate();
-  // }
+  Coordinate create() {
+      return Coordinate.empty2D();
+  }
 
   /// Computes the 2-dimensional Euclidean distance to another location.
   /// The Z-ordinate is ignored.

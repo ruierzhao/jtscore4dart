@@ -11,6 +11,7 @@
  */
 
 import "package:jtscore4dart/src/geom/Coordinate.dart";
+import "package:jtscore4dart/src/geom/CoordinateSequence.dart";
 
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateSequence;
@@ -47,7 +48,7 @@ class Area {
   /// @param ring
   ///          the coordinates forming the ring
   /// @return the signed area of the ring
-  static double ofRingSigned(List<Coordinate> ring)
+  static double  ofRingSigned(List<Coordinate> ring)
   {
     if (ring.length < 3) {
       return 0.0;
@@ -77,34 +78,33 @@ class Area {
   /// @param ring
   ///          the coordinates forming the ring
   /// @return the signed area of the ring
-  // TODO：ruier edit. not implement.
-  // static double ofRingSigned(CoordinateSequence ring)
-  // {
-  //   int n = ring.size();
-  //   if (n < 3) {
-  //     return 0.0;
-  //   }
-  //   /*
-  //    * Based on the Shoelace formula.
-  //    * http://en.wikipedia.org/wiki/Shoelace_formula
-  //    */
-  //   Coordinate p0 = ring.createCoordinate();
-  //   Coordinate p1 = ring.createCoordinate();
-  //   Coordinate p2 = ring.createCoordinate();
-  //   ring.getCoordinate(0, p1);
-  //   ring.getCoordinate(1, p2);
-  //   double x0 = p1.x;
-  //   p2.x -= x0;
-  //   double sum = 0.0;
-  //   for (int i = 1; i < n - 1; i++) {
-  //     p0.y = p1.y;
-  //     p1.x = p2.x;
-  //     p1.y = p2.y;
-  //     ring.getCoordinate(i + 1, p2);
-  //     p2.x -= x0;
-  //     sum += p1.x * (p0.y - p2.y);
-  //   }
-  //   return sum / 2.0;
-  // }
+  // TODO：ruier edit. not test.
+  static double ofRingSignedFromSequence(CoordinateSequence ring){
+    int n = ring.size();
+    if (n < 3) {
+      return 0.0;
+    }
+    /*
+     * Based on the Shoelace formula.
+     * http://en.wikipedia.org/wiki/Shoelace_formula
+     */
+    Coordinate p0 = ring.createCoordinate();
+    Coordinate p1 = ring.createCoordinate();
+    Coordinate p2 = ring.createCoordinate();
+    ring.getCoordinateTo(0, p1);
+    ring.getCoordinateTo(1, p2);
+    double x0 = p1.x;
+    p2.x -= x0;
+    double sum = 0.0;
+    for (int i = 1; i < n - 1; i++) {
+      p0.y = p1.y;
+      p1.x = p2.x;
+      p1.y = p2.y;
+      ring.getCoordinateTo(i + 1, p2);
+      p2.x -= x0;
+      sum += p1.x * (p0.y - p2.y);
+    }
+    return sum / 2.0;
+  }
 
 }

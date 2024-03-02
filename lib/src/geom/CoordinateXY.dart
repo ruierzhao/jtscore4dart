@@ -23,16 +23,16 @@ class CoordinateXY extends Coordinate {
   // private static final long serialVersionUID = 3532307803472313082L;
 
   /// Standard ordinate index value for X
-  static final int X = 0;
+  static const int X = 0;
 
   /// Standard ordinate index value for Y
-  static final int Y = 1;
+  static const int Y = 1;
 
   /// CoordinateXY does not support Z values.
-  static final int Z = -1;
+  static const int Z = -1;
 
   /// CoordinateXY does not support M measures.
-  static final int M = -1;
+  static const int M = -1;
 
   /// Default constructor
   CoordinateXY.empty() : super.empty2D();
@@ -66,9 +66,9 @@ class CoordinateXY extends Coordinate {
   /// @return a new Coordinate
   // TODO: ruier edit.
   // @Override
-  // Coordinate create() {
-  //   return new CoordinateXY();
-  // }
+  Coordinate create() {
+    return CoordinateXY.empty();
+  }
 
   /// The z-ordinate is not supported
   @override

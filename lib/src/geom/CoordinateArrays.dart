@@ -17,6 +17,8 @@
 
 // import org.locationtech.jts.math.MathUtil;
 
+import "dart:math";
+
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Coordinates.dart';
@@ -24,24 +26,21 @@ import 'package:jtscore4dart/src/geom/Coordinates.dart';
 /// Useful utility functions for handling Coordinate arrays
 ///
 /// @version 1.7
-class CoordinateArrays {
-  private final static List<Coordinate> coordArrayType = new Coordinate[0];
 
-   CoordinateArrays() {
-    throw  Error("private");
-  }
+abstract class CoordinateArrays {
+  // private final static List<Coordinate> coordArrayType = new Coordinate[0];
 
   /// Determine dimension based on subclass of {@link Coordinate}.
   ///
-  /// @param pts supplied coordinates
-  /// @return number of ordinates recorded
+  /// @param [pts] supplied coordinates
+  /// @return [dimension] number of ordinates recorded
   static int dimension(List<Coordinate> pts) {
-    if (pts == null || pts.length == 0) {
+    if (pts.isEmpty) {
       return 3; // unknown, assume default
     }
     int dimension = 0;
-    for (Coordinate coordinate : pts) {
-      dimension = math.max(dimension, Coordinates.dimension(coordinate));
+    for (Coordinate coordinate in pts) {
+      dimension = max(dimension, Coordinates.dimension(coordinate));
     }
     return dimension;
   }

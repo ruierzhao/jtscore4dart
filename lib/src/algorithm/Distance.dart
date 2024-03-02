@@ -14,20 +14,18 @@
 // import org.locationtech.jts.geom.Envelope;
 // import org.locationtech.jts.math.MathUtil;
 
-import 'package:jtscore4dart/src1/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import "dart:math" as math;
 
-
 /// Functions to compute distance between basic geometric structures.
-/// 
+///
 /// @author Martin Davis
 ///
- class Distance {
-
+class Distance {
   /// Computes the distance from a line segment AB to a line segment CD
-  /// 
+  ///
   /// Note: NON-ROBUST!
-  /// 
+  ///
   /// @param A
   ///          a point of one line
   /// @param B
@@ -36,15 +34,16 @@ import "dart:math" as math;
   ///          one point of the line
   /// @param D
   ///          another point of the line (must be different to A)
-   static double segmentToSegment(Coordinate A, Coordinate B,
-      Coordinate C, Coordinate D)
-  {
+  static double segmentToSegment(
+      Coordinate A, Coordinate B, Coordinate C, Coordinate D) {
     // check for zero-length segments
-    if (A.equals(B))
+    if (A.equals(B)) {
       return Distance.pointToSegment(A, C, D);
-    if (C.equals(D))
+    }
+    if (C.equals(D)) {
       return Distance.pointToSegment(D, A, B);
-  
+    }
+
     // AB and CD are line segments
     /*
      * from comp.graphics.algo
@@ -71,25 +70,23 @@ import "dart:math" as math;
      *   If the denominator in eqn 1 is zero, AB & CD are parallel 
      *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
      */
-  
+
     bool noIntersection = false;
     // if (! Envelope.intersects(A, B, C, D)) {
     if (false) {
       noIntersection = true;
-    }
-    else {
+    } else {
       double denom = (B.x - A.x) * (D.y - C.y) - (B.y - A.y) * (D.x - C.x);
-      
+
       if (denom == 0) {
         noIntersection = true;
-      }
-      else {
+      } else {
         double r_num = (A.y - C.y) * (D.x - C.x) - (A.x - C.x) * (D.y - C.y);
         double s_num = (A.y - C.y) * (B.x - A.x) - (A.x - C.x) * (B.y - A.y);
-        
+
         double s = s_num / denom;
         double r = r_num / denom;
-  
+
         if ((r < 0) || (r > 1) || (s < 0) || (s > 1)) {
           noIntersection = true;
         }
@@ -97,8 +94,15 @@ import "dart:math" as math;
     }
     if (noIntersection) {
       return math.min(
-        math.min(Distance.pointToSegment(A, C, D), Distance.pointToSegment(B, C, D)), 
-        math.min(Distance.pointToSegment(C, A, B), Distance.pointToSegment(D, A, B)));
+        math.min(
+          Distance.pointToSegment(A, C, D),
+          Distance.pointToSegment(B, C, D),
+        ),
+        math.min(
+          Distance.pointToSegment(C, A, B),
+          Distance.pointToSegment(D, A, B),
+        ),
+      );
       // return math.min(
       //       Distance.pointToSegment(A, C, D),
       //       Distance.pointToSegment(B, C, D),
@@ -107,21 +111,19 @@ import "dart:math" as math;
       //       );
     }
     // segments intersect
-    return 0.0; 
+    return 0.0;
   }
 
   /// Computes the distance from a point to a sequence of line segments.
-  /// 
+  ///
   /// @param p
   ///          a point
   /// @param line
   ///          a sequence of contiguous line segments defined by their vertices
   /// @return the minimum distance between the point and the line segments
-   static double pointToSegmentString(Coordinate p, List<Coordinate> line)
-  {
-    if (line.length == 0) {
-      throw ArgumentError(
-          "Line array must contain at least one vertex");
+  static double pointToSegmentString(Coordinate p, List<Coordinate> line) {
+    if (line.isEmpty) {
+      throw ArgumentError("Line array must contain at least one vertex");
     }
     // this handles the case of length = 1
     double minDistance = p.distance(line[0]);
@@ -135,9 +137,9 @@ import "dart:math" as math;
   }
 
   /// Computes the distance from a point p to a line segment AB
-  /// 
+  ///
   /// Note: NON-ROBUST!
-  /// 
+  ///
   /// @param p
   ///          the point to compute the distance for
   /// @param A
@@ -145,13 +147,12 @@ import "dart:math" as math;
   /// @param B
   ///          another point of the line (must be different to A)
   /// @return the distance from p to line segment AB
-   static double pointToSegment(Coordinate p, Coordinate A,
-      Coordinate B)
-  {
+  static double pointToSegment(Coordinate p, Coordinate A, Coordinate B) {
     // if start = end, then just compute distance to one of the endpoints
-    if (A.x == B.x && A.y == B.y)
+    if (A.x == B.x && A.y == B.y) {
       return p.distance(A);
-  
+    }
+
     // otherwise use comp.graphics.algorithms Frequently Asked Questions method
     /*
      * (1) r = AC dot AB 
@@ -165,16 +166,17 @@ import "dart:math" as math;
      *   r>1 P is on the forward extension of AB 
      *   0<r<1 P is interior to AB
      */
-  
+
     double len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y);
-    double r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y))
-        / len2;
-  
-    if (r <= 0.0)
+    double r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y)) / len2;
+
+    if (r <= 0.0) {
       return p.distance(A);
-    if (r >= 1.0)
+    }
+    if (r >= 1.0) {
       return p.distance(B);
-  
+    }
+
     /*
      * (2) s = (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay) 
      *         ----------------------------- 
@@ -185,14 +187,13 @@ import "dart:math" as math;
      * This is the same calculation as {@link #distancePointLinePerpendicular}.
      * Unrolled here for performance.
      */
-    double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
-        / len2;
+    double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y)) / len2;
     return s.abs() * math.sqrt(len2);
   }
 
   /// Computes the perpendicular distance from a point p to the (infinite) line
   /// containing the points AB
-  /// 
+  ///
   /// @param p
   ///          the point to compute the distance for
   /// @param A
@@ -200,9 +201,8 @@ import "dart:math" as math;
   /// @param B
   ///          another point of the line (must be different to A)
   /// @return the distance from p to line AB
-   static double pointToLinePerpendicular(Coordinate p,
-      Coordinate A, Coordinate B)
-  {
+  static double pointToLinePerpendicular(
+      Coordinate p, Coordinate A, Coordinate B) {
     // use comp.graphics.algorithms Frequently Asked Questions method
     /*
      * (2) s = (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay) 
@@ -212,15 +212,13 @@ import "dart:math" as math;
      * Then the distance from C to P = |s|*L.
      */
     double len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y);
-    double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
-        / len2;
-  
+    double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y)) / len2;
+
     return s.abs() * math.sqrt(len2);
   }
 
-   static double pointToLinePerpendicularSigned(Coordinate p,
-      Coordinate A, Coordinate B)
-  {
+  static double pointToLinePerpendicularSigned(
+      Coordinate p, Coordinate A, Coordinate B) {
     // use comp.graphics.algorithms Frequently Asked Questions method
     /*
      * (2) s = (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay) 
@@ -230,9 +228,8 @@ import "dart:math" as math;
      * Then the distance from C to P = |s|*L.
      */
     double len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y);
-    double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y))
-        / len2;
-  
+    double s = ((A.y - p.y) * (B.x - A.x) - (A.x - p.x) * (B.y - A.y)) / len2;
+
     return s * math.sqrt(len2);
   }
 }

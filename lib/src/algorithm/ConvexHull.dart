@@ -31,18 +31,16 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.util.Assert;
 
-/**
- * Computes the convex hull of a {@link Geometry}.
- * The convex hull is the smallest convex Geometry that contains all the
- * points in the input Geometry.
- * <p>
- * Uses the Graham Scan algorithm.
- * <p>
- * Incorporates heuristics to optimize checking for degenerate results, 
- * and to reduce the number of points processed for large inputs.
- *
- *@version 1.7
- */
+/// Computes the convex hull of a {@link Geometry}.
+/// The convex hull is the smallest convex Geometry that contains all the
+/// points in the input Geometry.
+/// <p>
+/// Uses the Graham Scan algorithm.
+/// <p>
+/// Incorporates heuristics to optimize checking for degenerate results, 
+/// and to reduce the number of points processed for large inputs.
+///
+///@version 1.7
 class ConvexHull
 {
   private static final int TUNING_REDUCE_SIZE = 50;
@@ -50,16 +48,12 @@ class ConvexHull
   private GeometryFactory geomFactory;
   private List<Coordinate> inputPts;
 
-  /**
-   * Create a new convex hull construction for the input {@link Geometry}.
-   */
+  /// Create a new convex hull construction for the input {@link Geometry}.
   ConvexHull(Geometry geometry)
   {
     this(geometry.getCoordinates(), geometry.getFactory());
   }
-  /**
-   * Create a new convex hull construction for the input {@link Coordinate} array.
-   */
+  /// Create a new convex hull construction for the input {@link Coordinate} array.
   ConvexHull(List<Coordinate> pts, GeometryFactory geomFactory)
   {  
     //-- suboptimal early uniquing - for performance testing only
@@ -69,18 +63,16 @@ class ConvexHull
     this.geomFactory = geomFactory;
   }
 
-  /**
-   * Returns a {@link Geometry} that represents the convex hull of the input
-   * geometry.
-   * The returned geometry contains the minimal number of points needed to
-   * represent the convex hull.  In particular, no more than two consecutive
-   * points will be collinear.
-   *
-   * @return if the convex hull contains 3 or more points, a {@link Polygon};
-   * 2 points, a {@link LineString};
-   * 1 point, a {@link Point};
-   * 0 points, an empty {@link GeometryCollection}.
-   */
+  /// Returns a {@link Geometry} that represents the convex hull of the input
+  /// geometry.
+  /// The returned geometry contains the minimal number of points needed to
+  /// represent the convex hull.  In particular, no more than two consecutive
+  /// points will be collinear.
+  ///
+  /// @return if the convex hull contains 3 or more points, a {@link Polygon};
+  /// 2 points, a {@link LineString};
+  /// 1 point, a {@link Point};
+  /// 0 points, an empty {@link GeometryCollection}.
   Geometry getConvexHull() {
 
     Geometry fewPointsGeom = createFewPointsResult();
@@ -110,18 +102,16 @@ class ConvexHull
     return lineOrPolygon(cH);
   }
 
-  /**
-   * Checks if there are <= 2 unique points,
-   * which produce an obviously degenerate result.
-   * If there are more points, returns null to indicate this.
-   * 
-   * This is a fast check for an obviously degenerate result.
-   * If the result is not obviously degenerate (at least 3 unique points found) 
-   * the full uniquing of the entire point set is
-   * done only once during the reduce phase.
-   * 
-   * @return a degenerate hull geometry, or null if the number of input points is large
-   */
+  /// Checks if there are <= 2 unique points,
+  /// which produce an obviously degenerate result.
+  /// If there are more points, returns null to indicate this.
+  /// 
+  /// This is a fast check for an obviously degenerate result.
+  /// If the result is not obviously degenerate (at least 3 unique points found) 
+  /// the full uniquing of the entire point set is
+  /// done only once during the reduce phase.
+  /// 
+  /// @return a degenerate hull geometry, or null if the number of input points is large
   private Geometry createFewPointsResult() {
     List<Coordinate> uniquePts = extractUnique(inputPts, 2);
     if (uniquePts == null) {
@@ -142,18 +132,16 @@ class ConvexHull
     return extractUnique(pts, -1);
   }
   
-  /**
-   * Extracts unique coordinates from an array of coordinates, 
-   * up to an (optional) maximum count of values.
-   * If more than the given maximum of unique values are found,
-   * this is reported by returning <code>null</code>.
-   * This avoids scanning all input points if not needed.
-   * If the maximum points is not specified, all unique points are extracted.
-   * 
-   * @param pts an array of Coordinates
-   * @param maxPts the maximum number of unique points to scan, or -1
-   * @return an array of unique values, or null
-   */
+  /// Extracts unique coordinates from an array of coordinates, 
+  /// up to an (optional) maximum count of values.
+  /// If more than the given maximum of unique values are found,
+  /// this is reported by returning <code>null</code>.
+  /// This avoids scanning all input points if not needed.
+  /// If the maximum points is not specified, all unique points are extracted.
+  /// 
+  /// @param pts an array of Coordinates
+  /// @param maxPts the maximum number of unique points to scan, or -1
+  /// @return an array of unique values, or null
   private static List<Coordinate> extractUnique(List<Coordinate> pts, int maxPts) {
     Set<Coordinate> uniquePts = new HashSet<Coordinate>();
     for (Coordinate pt : pts) {
@@ -164,10 +152,8 @@ class ConvexHull
     return CoordinateArrays.toCoordinateArray(uniquePts);
   }
   
-  /**
-   * An alternative to Stack.toArray, which is not present in earlier versions
-   * of Java.
-   */
+  /// An alternative to Stack.toArray, which is not present in earlier versions
+  /// of Java.
   protected List<Coordinate> toCoordinateArray(Stack<Coordinate> stack) {
     List<Coordinate> coordinates = new Coordinate[stack.size()];
     for (int i = 0; i < stack.size(); i++) {
@@ -177,28 +163,26 @@ class ConvexHull
     return coordinates;
   }
 
-  /**
-   * Uses a heuristic to reduce the number of points scanned
-   * to compute the hull.
-   * The heuristic is to find a polygon guaranteed to
-   * be in (or on) the hull, and eliminate all points inside it.
-   * A quadrilateral defined by the extremal points
-   * in the four orthogonal directions
-   * can be used, but even more inclusive is
-   * to use an octilateral defined by the points in the 8 cardinal directions.
-   * <p>
-   * Note that even if the method used to determine the polygon vertices
-   * is not 100% robust, this does not affect the robustness of the convex hull.
-   * <p>
-   * To satisfy the requirements of the Graham Scan algorithm, 
-   * the returned array has at least 3 entries.
-   * <p>
-   * This has the side effect of making the reduced points unique,
-   * as required by the convex hull algorithm used.
-   *
-   * @param pts the points to reduce
-   * @return the reduced list of points (at least 3)
-   */
+  /// Uses a heuristic to reduce the number of points scanned
+  /// to compute the hull.
+  /// The heuristic is to find a polygon guaranteed to
+  /// be in (or on) the hull, and eliminate all points inside it.
+  /// A quadrilateral defined by the extremal points
+  /// in the four orthogonal directions
+  /// can be used, but even more inclusive is
+  /// to use an octilateral defined by the points in the 8 cardinal directions.
+  /// <p>
+  /// Note that even if the method used to determine the polygon vertices
+  /// is not 100% robust, this does not affect the robustness of the convex hull.
+  /// <p>
+  /// To satisfy the requirements of the Graham Scan algorithm, 
+  /// the returned array has at least 3 entries.
+  /// <p>
+  /// This has the side effect of making the reduced points unique,
+  /// as required by the convex hull algorithm used.
+  ///
+  /// @param pts the points to reduce
+  /// @return the reduced list of points (at least 3)
   private List<Coordinate> reduce(List<Coordinate> inputPts)
   {
     //List<Coordinate> polyPts = computeQuad(inputPts);
@@ -248,12 +232,10 @@ class ConvexHull
     return pad;
   }
     
-  /**
-   * Sorts the points radially CW around the point with minimum Y and then X.
-   * 
-   * @param pts the points to sort
-   * @return the sorted points
-   */
+  /// Sorts the points radially CW around the point with minimum Y and then X.
+  /// 
+  /// @param pts the points to sort
+  /// @return the sorted points
   private List<Coordinate> preSort(List<Coordinate> pts) {
     Coordinate t;
 
@@ -276,12 +258,10 @@ class ConvexHull
     return pts;
   }
 
-  /**
-   * Uses the Graham Scan algorithm to compute the convex hull vertices.
-   * 
-   * @param c a list of points, with at least 3 entries
-   * @return a Stack containing the ordered points of the convex hull ring
-   */
+  /// Uses the Graham Scan algorithm to compute the convex hull vertices.
+  /// 
+  /// @param c a list of points, with at least 3 entries
+  /// @return a Stack containing the ordered points of the convex hull ring
   private Stack<Coordinate> grahamScan(List<Coordinate> c) {
     Coordinate p;
     Stack<Coordinate> ps = new Stack<Coordinate>();
@@ -304,10 +284,8 @@ class ConvexHull
     return ps;
   }
 
-  /**
-   *@return    whether the three coordinates are collinear and c2 lies between
-   *      c1 and c3 inclusive
-   */
+  ///@return    whether the three coordinates are collinear and c2 lies between
+  ///      c1 and c3 inclusive
   private bool isBetween(Coordinate c1, Coordinate c2, Coordinate c3) {
     if (Orientation.index(c1, c2, c3) != 0) {
       return false;
@@ -344,13 +322,11 @@ class ConvexHull
     return coordList.toCoordinateArray();
   }
 
-  /**
-   * Computes the extremal points of an inner octolateral.
-   * Some points may be duplicates - these are collapsed later.
-   * 
-   * @param inputPts the points to compute the octolateral for
-   * @return the extremal points of the octolateral
-   */
+  /// Computes the extremal points of an inner octolateral.
+  /// Some points may be duplicates - these are collapsed later.
+  /// 
+  /// @param inputPts the points to compute the octolateral for
+  /// @return the extremal points of the octolateral
   private List<Coordinate> computeInnerOctolateralPts(List<Coordinate> inputPts)
   {
     List<Coordinate> pts = new Coordinate[8];
@@ -387,13 +363,11 @@ class ConvexHull
 
   }
 
-  /**
-   *@param  vertices  the vertices of a linear ring, which may or may not be
-   *      flattened (i.e. vertices collinear)
-   *@return           a 2-vertex <code>LineString</code> if the vertices are
-   *      collinear; otherwise, a <code>Polygon</code> with unnecessary
-   *      (collinear) vertices removed
-   */
+  ///@param  vertices  the vertices of a linear ring, which may or may not be
+  ///      flattened (i.e. vertices collinear)
+  ///@return           a 2-vertex <code>LineString</code> if the vertices are
+  ///      collinear; otherwise, a <code>Polygon</code> with unnecessary
+  ///      (collinear) vertices removed
   private Geometry lineOrPolygon(List<Coordinate> coordinates) {
 
     coordinates = cleanRing(coordinates);
@@ -404,13 +378,11 @@ class ConvexHull
     return geomFactory.createPolygon(linearRing);
   }
 
-  /**
-   * Cleans a list of points by removing interior collinear vertices.
-   * 
-   * @param  vertices  the vertices of a linear ring, which may or may not be
-   *      flattened (i.e. vertices collinear)
-   * @return the coordinates with unnecessary (collinear) vertices removed
-   */
+  /// Cleans a list of points by removing interior collinear vertices.
+  /// 
+  /// @param  vertices  the vertices of a linear ring, which may or may not be
+  ///      flattened (i.e. vertices collinear)
+  /// @return the coordinates with unnecessary (collinear) vertices removed
   private List<Coordinate> cleanRing(List<Coordinate> original) {
     Assert.equals(original[0], original[original.length - 1]);
     List<Coordinate> cleanedRing = new ArrayList<Coordinate>();
@@ -434,16 +406,14 @@ class ConvexHull
   }
 
 
-  /**
-   * Compares {@link Coordinate}s for their angle and distance
-   * relative to an origin.
-   * The origin is assumed to be lower in Y and then X than
-   * all other point inputs.
-   * The points are ordered CCW around the origin.
-   *
-   * @author Martin Davis
-   * @version 1.7
-   */
+  /// Compares {@link Coordinate}s for their angle and distance
+  /// relative to an origin.
+  /// The origin is assumed to be lower in Y and then X than
+  /// all other point inputs.
+  /// The points are ordered CCW around the origin.
+  ///
+  /// @author Martin Davis
+  /// @version 1.7
   private static class RadialComparator
       implements Comparator<Coordinate>
   {

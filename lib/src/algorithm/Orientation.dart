@@ -9,8 +9,11 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
+import 'package:jtscore4dart/src/algorithm/Area.dart';
 import 'package:jtscore4dart/src/algorithm/CGAlgorithmsDD.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/impl/CoordinateArraySequence.dart';
 
 
 // import org.locationtech.jts.geom.Coordinate;
@@ -110,7 +113,7 @@ class Orientation {
   static bool isCCW(List<Coordinate> ring)
   {
     // wrap with an XY CoordinateSequence
-    return isCCW(new CoordinateArraySequence(ring, 2, 0));
+    return isCCW(CoordinateArraySequence(ring, 2, 0));
   }
 
   /// Tests if a ring defined by a {@link CoordinateSequence} is
@@ -203,8 +206,8 @@ class Orientation {
        * This is an invalid ring, which cannot be computed correctly.
        * In this case the orientation is 0, and the result is false.
        */
-      int index = index(upLowPt, upHiPt, downLowPt);
-      return index == COUNTERCLOCKWISE;
+      int _index = index(upLowPt, upHiPt, downLowPt);
+      return _index == COUNTERCLOCKWISE;
     }
     else {
       /**

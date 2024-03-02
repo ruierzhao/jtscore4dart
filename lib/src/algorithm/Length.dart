@@ -38,12 +38,12 @@ class Length {
     double len = 0.0;
   
     Coordinate p = pts.createCoordinate();
-    pts.getCoordinate(0, p);
+    pts.getCoordinateTo(0, p);
     double x0 = p.x;
     double y0 = p.y;
   
     for (int i = 1; i < n; i++) {
-      pts.getCoordinate(i, p);
+      pts.getCoordinateTo(i, p);
       double x1 = p.x;
       double y1 = p.y;
       double dx = x1 - x0;

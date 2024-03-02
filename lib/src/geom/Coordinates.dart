@@ -12,6 +12,9 @@
 
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateXY.dart';
+import 'package:jtscore4dart/src/geom/CoordinateXYM.dart';
+import 'package:jtscore4dart/src/geom/CoordinateXYZM.dart';
 
 /// Useful utility functions for handling Coordinate objects.
 class Coordinates {
@@ -32,15 +35,15 @@ class Coordinates {
   static Coordinate createWithMeasure(int dimension, int measures)
   {
     if (dimension == 2) {
-      return CoordinateXY();
+      return CoordinateXY.empty();
     } else if (dimension == 3 && measures == 0) {
-      return Coordinate();
+      return Coordinate.empty2D();
     } else if (dimension == 3 && measures == 1) {
       return CoordinateXYM();
     } else if (dimension == 4 && measures == 1) {
-      return CoordinateXYZM();
+      return CoordinateXYZM.empty();
     }
-    return Coordinate();
+    return Coordinate.empty2D();
   }
   
   /// Determine dimension based on subclass of {@link Coordinate}.

@@ -9,6 +9,7 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
+import 'package:jtscore4dart/src/algorithm/CGAlgorithmsDD.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
 

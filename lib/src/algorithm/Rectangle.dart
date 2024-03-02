@@ -19,29 +19,27 @@
 
 class Rectangle {
   
-  /**
-   * Creates a rectangular {@link Polygon} from a base segment
-   * defining the position and orientation of one side of the rectangle, and 
-   * three points defining the locations of the line segments 
-   * forming the opposite, left and right sides of the rectangle.
-   * The base segment and side points must be presented so that the 
-   * rectangle has CW orientation.
-   * <p>
-   * The rectangle corners are computed as intersections of
-   * lines, which generally cannot produce exact values.
-   * If a rectangle corner is determined to coincide with a side point
-   * the side point value is used to avoid numerical inaccuracy.
-   * <p>
-   * The first side of the constructed rectangle contains the base segment.
-   * 
-   * @param baseRightPt the right point of the base segment
-   * @param baseLeftPt the left point of the base segment
-   * @param oppositePt the point defining the opposite side
-   * @param leftSidePt the point defining the left side
-   * @param rightSidePt the point defining the right side
-   * @param factory the geometry factory to use
-   * @return the rectangular polygon
-   */
+  /// Creates a rectangular {@link Polygon} from a base segment
+  /// defining the position and orientation of one side of the rectangle, and 
+  /// three points defining the locations of the line segments 
+  /// forming the opposite, left and right sides of the rectangle.
+  /// The base segment and side points must be presented so that the 
+  /// rectangle has CW orientation.
+  /// <p>
+  /// The rectangle corners are computed as intersections of
+  /// lines, which generally cannot produce exact values.
+  /// If a rectangle corner is determined to coincide with a side point
+  /// the side point value is used to avoid numerical inaccuracy.
+  /// <p>
+  /// The first side of the constructed rectangle contains the base segment.
+  /// 
+  /// @param baseRightPt the right point of the base segment
+  /// @param baseLeftPt the left point of the base segment
+  /// @param oppositePt the point defining the opposite side
+  /// @param leftSidePt the point defining the left side
+  /// @param rightSidePt the point defining the right side
+  /// @param factory the geometry factory to use
+  /// @return the rectangular polygon
   static Polygon createFromSidePts(Coordinate baseRightPt, Coordinate baseLeftPt, 
       Coordinate oppositePt, 
       Coordinate leftSidePt, Coordinate rightSidePt, 
@@ -86,15 +84,13 @@ class Rectangle {
     return factory.createPolygon(shell);
   }
 
-  /**
-   * Computes the constant C in the standard line equation Ax + By = C
-   * from A and B and a point on the line.
-   * 
-   * @param a the X coefficient
-   * @param b the Y coefficient
-   * @param p a point on the line
-   * @return the constant C
-   */
+  /// Computes the constant C in the standard line equation Ax + By = C
+  /// from A and B and a point on the line.
+  /// 
+  /// @param a the X coefficient
+  /// @param b the Y coefficient
+  /// @param p a point on the line
+  /// @return the constant C
   private static double computeLineEquationC(double a, double b, Coordinate p)
   {
     return a * p.y - b * p.x;

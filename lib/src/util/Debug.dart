@@ -26,21 +26,19 @@
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.LineString;
 
-/**
- * Provides routines to simplify and localize debugging output.
- * Debugging is controlled via a Java system property value.
- * If the system property with the name given in
- * DEBUG_PROPERTY_NAME (currently "jts.debug") has the value
- * "on" or "true" debugging is enabled.
- * Otherwise, debugging is disabled.
- * The system property can be set by specifying the following JVM option:
- * <pre>
- * -Djts.debug=on
- * </pre>
- * 
- *
- * @version 1.7
- */
+/// Provides routines to simplify and localize debugging output.
+/// Debugging is controlled via a Java system property value.
+/// If the system property with the name given in
+/// DEBUG_PROPERTY_NAME (currently "jts.debug") has the value
+/// "on" or "true" debugging is enabled.
+/// Otherwise, debugging is disabled.
+/// The system property can be set by specifying the following JVM option:
+/// <pre>
+/// -Djts.debug=on
+/// </pre>
+/// 
+///
+/// @version 1.7
 class Debug {
 
   static String DEBUG_PROPERTY_NAME = "jts.debug";
@@ -61,11 +59,9 @@ class Debug {
   private static Stopwatch stopwatch = new Stopwatch();
   private static long lastTimePrinted;
 
-  /**
-   * Prints the status of debugging to <tt>System.out</tt>
-   *
-   * @param args the cmd-line arguments (no arguments are required)
-   */
+  /// Prints the status of debugging to <tt>System.out</tt>
+  ///
+  /// @param args the cmd-line arguments (no arguments are required)
   static void main(String[] args)
   {
     System.out.println("JTS Debugging is " +
@@ -169,13 +165,11 @@ class Debug {
   {
   	return c1.distance(c2) <= tolerance;
   }
-  /**
-   * Adds an object to be watched.
-   * A watched object can be printed out at any time.
-   * 
-   * Currently only supports one watched object at a time.
-   * @param obj
-   */
+  /// Adds an object to be watched.
+  /// A watched object can be printed out at any time.
+  /// 
+  /// Currently only supports one watched object at a time.
+  /// @param obj
   static void addWatch(Object obj) {
     debug.instanceAddWatch(obj);
   }

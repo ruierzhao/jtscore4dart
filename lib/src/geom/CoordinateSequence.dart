@@ -143,7 +143,8 @@ abstract class CoordinateSequence{
   ///
   /// @param index the index of the coordinate to copy
   /// @param coord a {@link Coordinate} to receive the value
-  // @ruier edit
+  // TODO: @ruier edit
+  void getCoordinateTo(int index, Coordinate coord);
   // void getCoordinate(int index, Coordinate coord);
 
   /// Returns ordinate X (0) of the specified coordinate.

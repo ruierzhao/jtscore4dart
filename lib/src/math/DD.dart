@@ -13,122 +13,108 @@
 
 // import java.io.Serializable;
 
-/**
- * Implements extended-precision floating-point numbers 
- * which maintain 106 bits (approximately 30 decimal digits) of precision. 
- * <p>
- * A DoubleDouble uses a representation containing two double-precision values.
- * A number x is represented as a pair of doubles, x.hi and x.lo,
- * such that the number represented by x is x.hi + x.lo, where
- * <pre>
- *    |x.lo| &lt;= 0.5*ulp(x.hi)
- * </pre>
- * and ulp(y) means "unit in the last place of y".  
- * The basic arithmetic operations are implemented using 
- * convenient properties of IEEE-754 floating-point arithmetic.
- * <p>
- * The range of values which can be represented is the same as in IEEE-754.  
- * The precision of the representable numbers 
- * is twice as great as IEEE-754 double precision.
- * <p>
- * The correctness of the arithmetic algorithms relies on operations
- * being performed with standard IEEE-754 double precision and rounding.
- * This is the Java standard arithmetic model, but for performance reasons 
- * Java implementations are not
- * constrained to using this standard by default.  
- * Some processors (notably the Intel Pentium architecture) perform
- * floating point operations in (non-IEEE-754-standard) extended-precision.
- * A JVM implementation may choose to use the non-standard extended-precision
- * as its default arithmetic mode.
- * To prevent this from happening, this code uses the
- * Java <tt>strictfp</tt> modifier, 
- * which forces all operations to take place in the standard IEEE-754 rounding model. 
- * <p>
- * The API provides both a set of value-oriented operations 
- * and a set of mutating operations.
- * Value-oriented operations treat DoubleDouble values as 
- * immutable; operations on them return new objects carrying the result
- * of the operation.  This provides a simple and safe semantics for
- * writing DoubleDouble expressions.  However, there is a performance
- * penalty for the object allocations required.
- * The mutable abstract class updates object values in-place.
- * It provides optimum memory performance, but requires
- * care to ensure that aliasing errors are not created
- * and constant values are not changed.
- * <p>
- * For example, the following code example constructs three DD instances:
- * two to hold the input values and one to hold the result of the addition.
- * <pre>
- *     DD a = new DD(2.0);
- *     DD b = new DD(3.0);
- *     DD c = a.add(b);
- * </pre>
- * In contrast, the following approach uses only one object:
- * <pre>
- *     DD a = new DD(2.0);
- *     a.selfAdd(3.0);
- * </pre>
- * <p>
- * This implementation uses algorithms originally designed variously by 
- * Knuth, Kahan, Dekker, and Linnainmaa.  
- * Douglas Priest developed the first C implementation of these techniques. 
- * Other more recent C++ implementation are due to Keith M. Briggs and David Bailey et al.
- * 
- * <h3>References</h3>
- * <ul>
- * <li>Priest, D., <i>Algorithms for Arbitrary Precision Floating Point Arithmetic</i>,
- * in P. Kornerup and D. Matula, Eds., Proc. 10th Symposium on Computer Arithmetic, 
- * IEEE Computer Society Press, Los Alamitos, Calif., 1991.
- * <li>Yozo Hida, Xiaoye S. Li and David H. Bailey, 
- * <i>Quad-Double Arithmetic: Algorithms, Implementation, and Application</i>, 
- * manuscript, Oct 2000; Lawrence Berkeley National Laboratory Report BNL-46996.
- * <li>David Bailey, <i>High Precision Software Directory</i>; 
- * <tt>http://crd.lbl.gov/~dhbailey/mpdist/index.html</tt>
- * </ul>
- * 
- * 
- * @author Martin Davis
- *
- */
+/// Implements extended-precision floating-point numbers 
+/// which maintain 106 bits (approximately 30 decimal digits) of precision. 
+/// <p>
+/// A DoubleDouble uses a representation containing two double-precision values.
+/// A number x is represented as a pair of doubles, x.hi and x.lo,
+/// such that the number represented by x is x.hi + x.lo, where
+/// <pre>
+///    |x.lo| &lt;= 0.5*ulp(x.hi)
+/// </pre>
+/// and ulp(y) means "unit in the last place of y".  
+/// The basic arithmetic operations are implemented using 
+/// convenient properties of IEEE-754 floating-point arithmetic.
+/// <p>
+/// The range of values which can be represented is the same as in IEEE-754.  
+/// The precision of the representable numbers 
+/// is twice as great as IEEE-754 double precision.
+/// <p>
+/// The correctness of the arithmetic algorithms relies on operations
+/// being performed with standard IEEE-754 double precision and rounding.
+/// This is the Java standard arithmetic model, but for performance reasons 
+/// Java implementations are not
+/// constrained to using this standard by default.  
+/// Some processors (notably the Intel Pentium architecture) perform
+/// floating point operations in (non-IEEE-754-standard) extended-precision.
+/// A JVM implementation may choose to use the non-standard extended-precision
+/// as its default arithmetic mode.
+/// To prevent this from happening, this code uses the
+/// Java <tt>strictfp</tt> modifier, 
+/// which forces all operations to take place in the standard IEEE-754 rounding model. 
+/// <p>
+/// The API provides both a set of value-oriented operations 
+/// and a set of mutating operations.
+/// Value-oriented operations treat DoubleDouble values as 
+/// immutable; operations on them return new objects carrying the result
+/// of the operation.  This provides a simple and safe semantics for
+/// writing DoubleDouble expressions.  However, there is a performance
+/// penalty for the object allocations required.
+/// The mutable abstract class updates object values in-place.
+/// It provides optimum memory performance, but requires
+/// care to ensure that aliasing errors are not created
+/// and constant values are not changed.
+/// <p>
+/// For example, the following code example constructs three DD instances:
+/// two to hold the input values and one to hold the result of the addition.
+/// <pre>
+///     DD a = new DD(2.0);
+///     DD b = new DD(3.0);
+///     DD c = a.add(b);
+/// </pre>
+/// In contrast, the following approach uses only one object:
+/// <pre>
+///     DD a = new DD(2.0);
+///     a.selfAdd(3.0);
+/// </pre>
+/// <p>
+/// This implementation uses algorithms originally designed variously by 
+/// Knuth, Kahan, Dekker, and Linnainmaa.  
+/// Douglas Priest developed the first C implementation of these techniques. 
+/// Other more recent C++ implementation are due to Keith M. Briggs and David Bailey et al.
+/// 
+/// <h3>References</h3>
+/// <ul>
+/// <li>Priest, D., <i>Algorithms for Arbitrary Precision Floating Point Arithmetic</i>,
+/// in P. Kornerup and D. Matula, Eds., Proc. 10th Symposium on Computer Arithmetic, 
+/// IEEE Computer Society Press, Los Alamitos, Calif., 1991.
+/// <li>Yozo Hida, Xiaoye S. Li and David H. Bailey, 
+/// <i>Quad-Double Arithmetic: Algorithms, Implementation, and Application</i>, 
+/// manuscript, Oct 2000; Lawrence Berkeley National Laboratory Report BNL-46996.
+/// <li>David Bailey, <i>High Precision Software Directory</i>; 
+/// <tt>http://crd.lbl.gov/~dhbailey/mpdist/index.html</tt>
+/// </ul>
+/// 
+/// 
+/// @author Martin Davis
+///
 strictfp final class DD 
   implements Serializable, Comparable, Cloneable
 {
-  /**
-   * The value nearest to the constant Pi.
-   */
+  /// The value nearest to the constant Pi.
   static final DD PI = new DD(
       3.141592653589793116e+00,
       1.224646799147353207e-16);
   
-  /**
-   * The value nearest to the constant 2 * Pi.
-   */ 
+  /// The value nearest to the constant 2 * Pi. 
   static final DD TWO_PI = new DD(
       6.283185307179586232e+00,
       2.449293598294706414e-16);
   
-  /**
-   * The value nearest to the constant Pi / 2.
-   */
+  /// The value nearest to the constant Pi / 2.
   static final DD PI_2 = new DD(
       1.570796326794896558e+00,
       6.123233995736766036e-17);
   
-  /**
-   * The value nearest to the constant e (the natural logarithm base). 
-   */
+  /// The value nearest to the constant e (the natural logarithm base). 
   static final DD E = new DD(
       2.718281828459045091e+00,
       1.445646891729250158e-16);
   
-  /**
-   * A value representing the result of an operation which does not return a valid number.
-   */
+  /// A value representing the result of an operation which does not return a valid number.
   static final DD NaN = new DD(double.nan, double.nan);
   
-  /**
-   * The smallest representable relative difference between two {link @ DoubleDouble} values
-   */
+  /// The smallest representable relative difference between two {link @ DoubleDouble} values
   static final double EPS = 1.23259516440783e-32;  /* = 2^-106 */
   
   private static DD createNaN()
@@ -136,109 +122,85 @@ strictfp final class DD
     return new DD(double.nan, double.nan); 
   }
   
-  /**
-   * Converts the string argument to a DoubleDouble number.
-   * 
-   * @param str a string containing a representation of a numeric value
-   * @return the extended precision version of the value
-   * @throws NumberFormatException if <tt>s</tt> is not a valid representation of a number
-   */
+  /// Converts the string argument to a DoubleDouble number.
+  /// 
+  /// @param str a string containing a representation of a numeric value
+  /// @return the extended precision version of the value
+  /// @throws NumberFormatException if <tt>s</tt> is not a valid representation of a number
   static DD valueOf(String str) 
   throws NumberFormatException
   { 
     return parse(str); 
     }
   
-  /**
-   * Converts the <tt>double</tt> argument to a DoubleDouble number.
-   * 
-   * @param x a numeric value
-   * @return the extended precision version of the value
-   */
+  /// Converts the <tt>double</tt> argument to a DoubleDouble number.
+  /// 
+  /// @param x a numeric value
+  /// @return the extended precision version of the value
   static DD valueOf(double x) { return new DD(x); }
   
-  /**
-   * The value to split a double-precision value on during multiplication
-   */
+  /// The value to split a double-precision value on during multiplication
   private static final double SPLIT = 134217729.0D; // 2^27+1, for IEEE double
   
-  /**
-   * The high-order component of the double-double precision value.
-   */
+  /// The high-order component of the double-double precision value.
   private double hi = 0.0;
   
-  /**
-   * The low-order component of the double-double precision value.
-   */
+  /// The low-order component of the double-double precision value.
   private double lo = 0.0;
   
-  /**
-   * Creates a new DoubleDouble with value 0.0.
-   */
+  /// Creates a new DoubleDouble with value 0.0.
   DD()
   {
     init(0.0);
   }
   
-  /**
-   * Creates a new DoubleDouble with value x.
-   * 
-   * @param x the value to initialize
-   */
+  /// Creates a new DoubleDouble with value x.
+  /// 
+  /// @param x the value to initialize
   DD(double x)
   {
     init(x);
   }
   
-  /**
-   * Creates a new DoubleDouble with value (hi, lo).
-   * 
-   * @param hi the high-order component 
-   * @param lo the high-order component 
-   */
+  /// Creates a new DoubleDouble with value (hi, lo).
+  /// 
+  /// @param hi the high-order component 
+  /// @param lo the high-order component 
   DD(double hi, double lo)
   {
     init(hi, lo);
   }
   
-  /**
-   * Creates a new DoubleDouble with value equal to the argument.
-   * 
-   * @param dd the value to initialize
-   */
+  /// Creates a new DoubleDouble with value equal to the argument.
+  /// 
+  /// @param dd the value to initialize
   DD(DD dd)
   {
     init(dd);
   }
   
-  /**
-   * Creates a new DoubleDouble with value equal to the argument.
-   * 
-   * @param str the value to initialize by
-   * @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
-   */
+  /// Creates a new DoubleDouble with value equal to the argument.
+  /// 
+  /// @param str the value to initialize by
+  /// @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
   DD(String str)
     throws NumberFormatException
   {
     this(parse(str));
   }
   
-  /**
-   * Creates a new DoubleDouble with the value of the argument.
-   * 
-   * @param dd the DoubleDouble value to copy
-   * @return a copy of the input value
-   */
+  /// Creates a new DoubleDouble with the value of the argument.
+  /// 
+  /// @param dd the DoubleDouble value to copy
+  /// @return a copy of the input value
   static DD copy(DD dd)
   {
     return new DD(dd);
   }
   
-  /**
-   * Creates and returns a copy of this value.
-   * 
-   * @return a copy of this value
-   */
+  /// Creates and returns a copy of this value.
+  /// 
+  /// @return a copy of this value
   Object clone()
   {
     try {
@@ -285,74 +247,62 @@ strictfp final class DD
   }
   */
   
-  /**
-   * Set the value for the DD object. This method supports the mutating
-   * operations concept described in the class documentation (see above).
-   * @param value a DD instance supplying an extended-precision value.
-   * @return a self-reference to the DD instance.
-   */
+  /// Set the value for the DD object. This method supports the mutating
+  /// operations concept described in the class documentation (see above).
+  /// @param value a DD instance supplying an extended-precision value.
+  /// @return a self-reference to the DD instance.
   DD setValue(DD value) {
     init(value);
     return this;
   }
   
-  /**
-   * Set the value for the DD object. This method supports the mutating
-   * operations concept described in the class documentation (see above).
-   * @param value a floating point value to be stored in the instance.
-   * @return a self-reference to the DD instance.
-   */
+  /// Set the value for the DD object. This method supports the mutating
+  /// operations concept described in the class documentation (see above).
+  /// @param value a floating point value to be stored in the instance.
+  /// @return a self-reference to the DD instance.
   DD setValue(double value) {
     init(value);
     return this;
   }
   
 
-  /**
-   * Returns a new DoubleDouble whose value is <tt>(this + y)</tt>.
-   * 
-   * @param y the addend
-   * @return <tt>(this + y)</tt>
-   */ 
+  /// Returns a new DoubleDouble whose value is <tt>(this + y)</tt>.
+  /// 
+  /// @param y the addend
+  /// @return <tt>(this + y)</tt> 
   final DD add(DD y)
   {
     return copy(this).selfAdd(y);
   }
   
-  /**
-   * Returns a new DoubleDouble whose value is <tt>(this + y)</tt>.
-   * 
-   * @param y the addend
-   * @return <tt>(this + y)</tt>
-   */ 
+  /// Returns a new DoubleDouble whose value is <tt>(this + y)</tt>.
+  /// 
+  /// @param y the addend
+  /// @return <tt>(this + y)</tt> 
   final DD add(double y)
   {
     return copy(this).selfAdd(y);
   }
   
-  /**
-   * Adds the argument to the value of <tt>this</tt>.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @param y the addend
-   * @return this object, increased by y
-   */
+  /// Adds the argument to the value of <tt>this</tt>.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @param y the addend
+  /// @return this object, increased by y
   final DD selfAdd(DD y)
   {
     return selfAdd(y.hi, y.lo);
   }
   
-  /**
-   * Adds the argument to the value of <tt>this</tt>.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @param y the addend
-   * @return this object, increased by y
-   */
+  /// Adds the argument to the value of <tt>this</tt>.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @param y the addend
+  /// @return this object, increased by y
   final DD selfAdd(double y)
   {
     double H, h, S, s, e, f;
@@ -389,123 +339,105 @@ strictfp final class DD
     return this;
   }
   
-  /**
-   * Computes a new DoubleDouble object whose value is <tt>(this - y)</tt>.
-   * 
-   * @param y the subtrahend
-   * @return <tt>(this - y)</tt>
-   */
+  /// Computes a new DoubleDouble object whose value is <tt>(this - y)</tt>.
+  /// 
+  /// @param y the subtrahend
+  /// @return <tt>(this - y)</tt>
   final DD subtract(DD y)
   {
     return add(y.negate());
   }
   
-  /**
-   * Computes a new DoubleDouble object whose value is <tt>(this - y)</tt>.
-   * 
-   * @param y the subtrahend
-   * @return <tt>(this - y)</tt>
-   */
+  /// Computes a new DoubleDouble object whose value is <tt>(this - y)</tt>.
+  /// 
+  /// @param y the subtrahend
+  /// @return <tt>(this - y)</tt>
   final DD subtract(double y)
   {
     return add(-y);
   }
   
   
-  /**
-   * Subtracts the argument from the value of <tt>this</tt>.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @param y the addend
-   * @return this object, decreased by y
-   */
+  /// Subtracts the argument from the value of <tt>this</tt>.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @param y the addend
+  /// @return this object, decreased by y
   final DD selfSubtract(DD y)
   {
     if (isNaN()) return this;
     return selfAdd(-y.hi, -y.lo);
   }
   
-  /**
-   * Subtracts the argument from the value of <tt>this</tt>.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @param y the addend
-   * @return this object, decreased by y
-   */
+  /// Subtracts the argument from the value of <tt>this</tt>.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @param y the addend
+  /// @return this object, decreased by y
   final DD selfSubtract(double y)
   {
     if (isNaN()) return this;
     return selfAdd(-y, 0.0);
   }
   
-  /**
-   * Returns a new DoubleDouble whose value is <tt>-this</tt>.
-   * 
-   * @return <tt>-this</tt>
-   */
+  /// Returns a new DoubleDouble whose value is <tt>-this</tt>.
+  /// 
+  /// @return <tt>-this</tt>
   final DD negate()
   {
     if (isNaN()) return this;
     return new DD(-hi, -lo);
   }
   
-  /**
-   * Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
-   * 
-   * @param y the multiplicand
-   * @return <tt>(this * y)</tt>
-   */
+  /// Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
+  /// 
+  /// @param y the multiplicand
+  /// @return <tt>(this * y)</tt>
   final DD multiply(DD y)
   {
     if (y.isNaN()) return createNaN();
     return copy(this).selfMultiply(y);
   }
   
-  /**
-   * Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
-   * 
-   * @param y the multiplicand
-   * @return <tt>(this * y)</tt>
-   */
+  /// Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
+  /// 
+  /// @param y the multiplicand
+  /// @return <tt>(this * y)</tt>
   final DD multiply(double y)
   {
     if ((y).isNaN) return createNaN();
     return copy(this).selfMultiply(y, 0.0);
   }
   
-  /**
-   * Multiplies this object by the argument, returning <tt>this</tt>.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @param y the value to multiply by
-   * @return this object, multiplied by y
-   */
+  /// Multiplies this object by the argument, returning <tt>this</tt>.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @param y the value to multiply by
+  /// @return this object, multiplied by y
   final DD selfMultiply(DD y)
   {
     return selfMultiply(y.hi, y.lo);
   }
   
-  /**
-   * Multiplies this object by the argument, returning <tt>this</tt>.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @param y the value to multiply by
-   * @return this object, multiplied by y
-   */
+  /// Multiplies this object by the argument, returning <tt>this</tt>.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @param y the value to multiply by
+  /// @return this object, multiplied by y
   final DD selfMultiply(double y)
   {
     return selfMultiply(y, 0.0);
   }
   
-  private final DD selfMultiply(double yhi, double ylo)
+  final DD _selfMultiply(double yhi, double ylo)
   {
     double hx, tx, hy, ty, C, c;
     C = SPLIT * hi; hx = C-hi; c = SPLIT * yhi;
@@ -519,12 +451,10 @@ strictfp final class DD
     return this;
   }
   
-  /**
-   * Computes a new DoubleDouble whose value is <tt>(this / y)</tt>.
-   * 
-   * @param y the divisor
-   * @return a new object with the value <tt>(this / y)</tt>
-   */
+  /// Computes a new DoubleDouble whose value is <tt>(this / y)</tt>.
+  /// 
+  /// @param y the divisor
+  /// @return a new object with the value <tt>(this / y)</tt>
   final DD divide(DD y)
   {
     double hc, tc, hy, ty, C, c, U, u;
@@ -539,41 +469,35 @@ strictfp final class DD
     return new DD(zhi, zlo);
   }
   
-  /**
-   * Computes a new DoubleDouble whose value is <tt>(this / y)</tt>.
-   * 
-   * @param y the divisor
-   * @return a new object with the value <tt>(this / y)</tt>
-   */
+  /// Computes a new DoubleDouble whose value is <tt>(this / y)</tt>.
+  /// 
+  /// @param y the divisor
+  /// @return a new object with the value <tt>(this / y)</tt>
   final DD divide(double y)
   {
     if ((y).isNaN) return createNaN();
     return copy(this).selfDivide(y, 0.0);  
   }
 
-  /**
-   * Divides this object by the argument, returning <tt>this</tt>.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @param y the value to divide by
-   * @return this object, divided by y
-   */
+  /// Divides this object by the argument, returning <tt>this</tt>.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @param y the value to divide by
+  /// @return this object, divided by y
   final DD selfDivide(DD y)
   {
     return selfDivide(y.hi, y.lo);
   }
   
-  /**
-   * Divides this object by the argument, returning <tt>this</tt>.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @param y the value to divide by
-   * @return this object, divided by y
-   */
+  /// Divides this object by the argument, returning <tt>this</tt>.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @param y the value to divide by
+  /// @return this object, divided by y
   final DD selfDivide(double y)
   {
     return selfDivide(y, 0.0);
@@ -593,11 +517,9 @@ strictfp final class DD
     return this;
   }
   
-  /**
-   * Returns a DoubleDouble whose value is  <tt>1 / this</tt>.
-   * 
-   * @return the reciprocal of this value
-   */
+  /// Returns a DoubleDouble whose value is  <tt>1 / this</tt>.
+  /// 
+  /// @return the reciprocal of this value
   final DD reciprocal()
   {
     double  hc, tc, hy, ty, C, c, U, u;
@@ -614,19 +536,17 @@ strictfp final class DD
     return new DD(zhi, zlo);
   }
   
-  /**
-   * Returns the largest (closest to positive infinity) 
-   * value that is not greater than the argument 
-   * and is equal to a mathematical integer.
-   * Special cases:
-   * <ul>
-   * <li>If this value is NaN, returns NaN.
-   * </ul>
-   * 
-   * @return the largest (closest to positive infinity) 
-   * value that is not greater than the argument 
-   * and is equal to a mathematical integer.
-   */
+  /// Returns the largest (closest to positive infinity) 
+  /// value that is not greater than the argument 
+  /// and is equal to a mathematical integer.
+  /// Special cases:
+  /// <ul>
+  /// <li>If this value is NaN, returns NaN.
+  /// </ul>
+  /// 
+  /// @return the largest (closest to positive infinity) 
+  /// value that is not greater than the argument 
+  /// and is equal to a mathematical integer.
   DD floor()
   {
     if (isNaN()) return NaN;
@@ -640,17 +560,15 @@ strictfp final class DD
     return new DD(fhi, flo); 
   }
   
-  /**
-   * Returns the smallest (closest to negative infinity) value 
-   * that is not less than the argument and is equal to a mathematical integer. 
-   * Special cases:
-   * <ul>
-   * <li>If this value is NaN, returns NaN.
-   * </ul>
-   * 
-   * @return the smallest (closest to negative infinity) value 
-   * that is not less than the argument and is equal to a mathematical integer. 
-   */
+  /// Returns the smallest (closest to negative infinity) value 
+  /// that is not less than the argument and is equal to a mathematical integer. 
+  /// Special cases:
+  /// <ul>
+  /// <li>If this value is NaN, returns NaN.
+  /// </ul>
+  /// 
+  /// @return the smallest (closest to negative infinity) value 
+  /// that is not less than the argument and is equal to a mathematical integer. 
   DD ceil()
   {
     if (isNaN()) return NaN;
@@ -664,17 +582,15 @@ strictfp final class DD
     return new DD(fhi, flo); 
   }
   
-  /**
-   * Returns an integer indicating the sign of this value.
-   * <ul>
-   * <li>if this value is &gt; 0, returns 1
-   * <li>if this value is &lt; 0, returns -1
-   * <li>if this value is = 0, returns 0
-   * <li>if this value is NaN, returns 0
-   * </ul>
-   * 
-   * @return an integer indicating the sign of this value
-   */
+  /// Returns an integer indicating the sign of this value.
+  /// <ul>
+  /// <li>if this value is &gt; 0, returns 1
+  /// <li>if this value is &lt; 0, returns -1
+  /// <li>if this value is = 0, returns 0
+  /// <li>if this value is NaN, returns 0
+  /// </ul>
+  /// 
+  /// @return an integer indicating the sign of this value
   int signum()
   {
     if (hi > 0) return 1;
@@ -684,16 +600,14 @@ strictfp final class DD
     return 0;
   }
   
-  /**
-   * Rounds this value to the nearest integer.
-   * The value is rounded to an integer by adding 1/2 and taking the floor of the result.
-   * Special cases:
-   * <ul>
-   * <li>If this value is NaN, returns NaN.
-   * </ul>
-   *
-   * @return this value rounded to the nearest integer
-   */
+  /// Rounds this value to the nearest integer.
+  /// The value is rounded to an integer by adding 1/2 and taking the floor of the result.
+  /// Special cases:
+  /// <ul>
+  /// <li>If this value is NaN, returns NaN.
+  /// </ul>
+  ///
+  /// @return this value rounded to the nearest integer
   DD rint()
   {
     if (isNaN()) return this;
@@ -702,16 +616,14 @@ strictfp final class DD
     return plus5.floor();
   }
   
-  /**
-   * Returns the integer which is largest in absolute value and not further
-   * from zero than this value.  
-   * Special cases:
-   * <ul>
-   * <li>If this value is NaN, returns NaN.
-   * </ul>
-   *  
-   * @return the integer which is largest in absolute value and not further from zero than this value
-   */
+  /// Returns the integer which is largest in absolute value and not further
+  /// from zero than this value.  
+  /// Special cases:
+  /// <ul>
+  /// <li>If this value is NaN, returns NaN.
+  /// </ul>
+  ///  
+  /// @return the integer which is largest in absolute value and not further from zero than this value
   DD trunc()
   {
     if (isNaN()) return NaN;
@@ -721,15 +633,13 @@ strictfp final class DD
       return ceil();
   }
   
-  /**
-   * Returns the absolute value of this value.
-   * Special cases:
-   * <ul>
-   * <li>If this value is NaN, it is returned.
-   * </ul>
-   * 
-   * @return the absolute value of this value
-   */
+  /// Returns the absolute value of this value.
+  /// Special cases:
+  /// <ul>
+  /// <li>If this value is NaN, it is returned.
+  /// </ul>
+  /// 
+  /// @return the absolute value of this value
   DD abs()
   {
     if (isNaN()) return NaN;
@@ -738,46 +648,38 @@ strictfp final class DD
     return new DD(this);
   }
   
-  /**
-   * Computes the square of this value.
-   * 
-   * @return the square of this value.
-   */
+  /// Computes the square of this value.
+  /// 
+  /// @return the square of this value.
   DD sqr()
   {
     return this.multiply(this);
   }
   
-  /**
-   * Squares this object.
-   * To prevent altering constants, 
-   * this method <b>must only</b> be used on values known to 
-   * be newly created. 
-   * 
-   * @return the square of this value.
-   */
+  /// Squares this object.
+  /// To prevent altering constants, 
+  /// this method <b>must only</b> be used on values known to 
+  /// be newly created. 
+  /// 
+  /// @return the square of this value.
   DD selfSqr()
   {
     return this.selfMultiply(this);
   }
   
-  /**
-   * Computes the square of this value.
-   * 
-   * @return the square of this value.
-   */
+  /// Computes the square of this value.
+  /// 
+  /// @return the square of this value.
   static DD sqr(double x)
   {
     return valueOf(x).selfMultiply(x);
   }
   
-  /**
-   * Computes the positive square root of this value.
-   * If the number is NaN or negative, NaN is returned.
-   * 
-   * @return the positive square root of this number. 
-   * If the argument is NaN or less than zero, the result is NaN.
-   */
+  /// Computes the positive square root of this value.
+  /// If the number is NaN or negative, NaN is returned.
+  /// 
+  /// @return the positive square root of this number. 
+  /// If the argument is NaN or less than zero, the result is NaN.
   DD sqrt()
   {
     /* Strategy:  Use Karp's trick:  if x is an approximation
@@ -812,13 +714,11 @@ strictfp final class DD
     return valueOf(x).sqrt();
   }
   
-  /**
-   * Computes the value of this number raised to an integral power.
-   * Follows semantics of Java math.pow as closely as possible.
-   * 
-   * @param exp the integer exponent
-   * @return x raised to the integral power exp
-   */
+  /// Computes the value of this number raised to an integral power.
+  /// Follows semantics of Java math.pow as closely as possible.
+  /// 
+  /// @param exp the integer exponent
+  /// @return x raised to the integral power exp
   DD pow(int exp)
   {
     if (exp == 0.0)
@@ -848,29 +748,25 @@ strictfp final class DD
     return s;
   }
   
-  /**
-   * Computes the determinant of the 2x2 matrix with the given entries.
-   * 
-   * @param x1 a double value
-   * @param y1 a double value
-   * @param x2 a double value
-   * @param y2 a double value
-   * @return the determinant of the values
-   */
+  /// Computes the determinant of the 2x2 matrix with the given entries.
+  /// 
+  /// @param x1 a double value
+  /// @param y1 a double value
+  /// @param x2 a double value
+  /// @param y2 a double value
+  /// @return the determinant of the values
   static DD determinant(double x1, double y1, double x2, double y2)
   {
     return determinant(valueOf(x1), valueOf(y1), valueOf(x2), valueOf(y2) );
   }
   
-  /**
-   * Computes the determinant of the 2x2 matrix with the given entries.
-   * 
-   * @param x1 a matrix entry
-   * @param y1 a matrix entry
-   * @param x2 a matrix entry
-   * @param y2 a matrix entry
-   * @return the determinant of the matrix of values
-   */
+  /// Computes the determinant of the 2x2 matrix with the given entries.
+  /// 
+  /// @param x1 a matrix entry
+  /// @param y1 a matrix entry
+  /// @param x2 a matrix entry
+  /// @param y2 a matrix entry
+  /// @return the determinant of the matrix of values
   static DD determinant(DD x1, DD y1, DD x2, DD y2)
   {
     DD det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
@@ -882,12 +778,10 @@ strictfp final class DD
    *------------------------------------------------------------
    */
 
-  /**
-   * Computes the minimum of this and another DD number.
-   * 
-   * @param x a DD number
-   * @return the minimum of the two numbers
-   */
+  /// Computes the minimum of this and another DD number.
+  /// 
+  /// @param x a DD number
+  /// @return the minimum of the two numbers
   DD min(DD x) {
     if (this.le(x)) {
       return this;
@@ -897,12 +791,10 @@ strictfp final class DD
     }
   }
   
-  /**
-   * Computes the maximum of this and another DD number.
-   * 
-   * @param x a DD number
-   * @return the maximum of the two numbers
-   */
+  /// Computes the maximum of this and another DD number.
+  /// 
+  /// @param x a DD number
+  /// @return the maximum of the two numbers
   DD max(DD x) {
     if (this.ge(x)) {
       return this;
@@ -917,21 +809,17 @@ strictfp final class DD
    *------------------------------------------------------------
    */
   
-  /**
-   * Converts this value to the nearest double-precision number.
-   * 
-   * @return the nearest double-precision number to this value
-   */
+  /// Converts this value to the nearest double-precision number.
+  /// 
+  /// @return the nearest double-precision number to this value
   double doubleValue()
   {
     return hi + lo;
   }
      
-  /**
-   * Converts this value to the nearest integer.
-   * 
-   * @return the nearest integer to this value
-   */
+  /// Converts this value to the nearest integer.
+  /// 
+  /// @return the nearest integer to this value
   int intValue()
   {
     return (int) hi;
@@ -942,97 +830,77 @@ strictfp final class DD
    *------------------------------------------------------------
    */
   
-  /**
-   * Tests whether this value is equal to 0.
-   * 
-   * @return true if this value is equal to 0
-   */
+  /// Tests whether this value is equal to 0.
+  /// 
+  /// @return true if this value is equal to 0
   bool isZero() 
   {
     return hi == 0.0 && lo == 0.0;
   }
 
-  /**
-   * Tests whether this value is less than 0.
-   * 
-   * @return true if this value is less than 0
-   */
+  /// Tests whether this value is less than 0.
+  /// 
+  /// @return true if this value is less than 0
   bool isNegative()
   {
     return hi < 0.0 || (hi == 0.0 && lo < 0.0);
   }
   
-  /**
-   * Tests whether this value is greater than 0.
-   * 
-   * @return true if this value is greater than 0
-   */
+  /// Tests whether this value is greater than 0.
+  /// 
+  /// @return true if this value is greater than 0
   bool isPositive()
   {
     return hi > 0.0 || (hi == 0.0 && lo > 0.0);
   }
   
-  /**
-   * Tests whether this value is NaN.
-   * 
-   * @return true if this value is NaN
-   */
+  /// Tests whether this value is NaN.
+  /// 
+  /// @return true if this value is NaN
   bool isNaN() { return Double.isNaN(hi); }
   
-  /**
-   * Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
-   * 
-   * @param y a DoubleDouble value
-   * @return true if this value = y
-   */
+  /// Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
+  /// 
+  /// @param y a DoubleDouble value
+  /// @return true if this value = y
   bool equals(DD y)
   {
     return hi == y.hi && lo == y.lo;
   }
   
-  /**
-   * Tests whether this value is greater than another <tt>DoubleDouble</tt> value.
-   * @param y a DoubleDouble value
-   * @return true if this value &gt; y
-   */
+  /// Tests whether this value is greater than another <tt>DoubleDouble</tt> value.
+  /// @param y a DoubleDouble value
+  /// @return true if this value &gt; y
   bool gt(DD y)
   {
     return (hi > y.hi) || (hi == y.hi && lo > y.lo);
   }
-  /**
-   * Tests whether this value is greater than or equals to another <tt>DoubleDouble</tt> value.
-   * @param y a DoubleDouble value
-   * @return true if this value &gt;= y
-   */
+  /// Tests whether this value is greater than or equals to another <tt>DoubleDouble</tt> value.
+  /// @param y a DoubleDouble value
+  /// @return true if this value &gt;= y
   bool ge(DD y)
   {
     return (hi > y.hi) || (hi == y.hi && lo >= y.lo);
   }
-  /**
-   * Tests whether this value is less than another <tt>DoubleDouble</tt> value.
-   * @param y a DoubleDouble value
-   * @return true if this value &lt; y
-   */
+  /// Tests whether this value is less than another <tt>DoubleDouble</tt> value.
+  /// @param y a DoubleDouble value
+  /// @return true if this value &lt; y
   bool lt(DD y)
   {
     return (hi < y.hi) || (hi == y.hi && lo < y.lo);
   }
-  /**
-   * Tests whether this value is less than or equal to another <tt>DoubleDouble</tt> value.
-   * @param y a DoubleDouble value
-   * @return true if this value &lt;= y
-   */
+  /// Tests whether this value is less than or equal to another <tt>DoubleDouble</tt> value.
+  /// @param y a DoubleDouble value
+  /// @return true if this value &lt;= y
   bool le(DD y)
   {
     return (hi < y.hi) || (hi == y.hi && lo <= y.lo);
   }
   
-  /**
-   * Compares two DoubleDouble objects numerically.
-   * 
-   * @return -1,0 or 1 depending on whether this value is less than, equal to
-   * or greater than the value of <tt>o</tt>
-   */
+  /// Compares two DoubleDouble objects numerically.
+  /// 
+  /// @return -1,0 or 1 depending on whether this value is less than, equal to
+  /// or greater than the value of <tt>o</tt>
   int compareTo(Object o) 
   {
     DD other = (DD) o;
@@ -1056,23 +924,19 @@ strictfp final class DD
   private static final String SCI_NOT_EXPONENT_CHAR = "E";
   private static final String SCI_NOT_ZERO = "0.0E0";
   
-  /**
-   * Dumps the components of this number to a string.
-   * 
-   * @return a string showing the components of the number
-   */
+  /// Dumps the components of this number to a string.
+  /// 
+  /// @return a string showing the components of the number
   String dump()
   {
     return "DD<" + hi + ", " + lo + ">";
   }
   
-  /**
-   * Returns a string representation of this number, in either standard or scientific notation.
-   * If the magnitude of the number is in the range [ 10<sup>-3</sup>, 10<sup>8</sup> ]
-   * standard notation will be used.  Otherwise, scientific notation will be used.
-   * 
-   * @return a string representation of this number
-   */
+  /// Returns a string representation of this number, in either standard or scientific notation.
+  /// If the magnitude of the number is in the range [ 10<sup>-3</sup>, 10<sup>8</sup> ]
+  /// standard notation will be used.  Otherwise, scientific notation will be used.
+  /// 
+  /// @return a string representation of this number
   String toString()
   {
     int mag = magnitude(hi);
@@ -1081,11 +945,9 @@ strictfp final class DD
     return toSciNotation();
   }
   
-  /**
-   * Returns the string representation of this value in standard notation.
-   * 
-   * @return the string representation in standard notation 
-   */
+  /// Returns the string representation of this value in standard notation.
+  /// 
+  /// @return the string representation in standard notation 
   String toStandardNotation()
   {
     String specialStr = getSpecialNumberString();
@@ -1117,11 +979,9 @@ strictfp final class DD
     return num;
   }
   
-  /**
-   * Returns the string representation of this value in scientific notation.
-   * 
-   * @return the string representation in scientific notation 
-   */
+  /// Returns the string representation of this value in scientific notation.
+  /// 
+  /// @return the string representation in scientific notation 
   String toSciNotation()
   {
     // special case zero, to allow as
@@ -1154,16 +1014,14 @@ strictfp final class DD
   }
   
   
-  /**
-   * Extracts the significant digits in the decimal representation of the argument.
-   * A decimal point may be optionally inserted in the string of digits
-   * (as long as its position lies within the extracted digits
-   * - if not, the caller must prepend or append the appropriate zeroes and decimal point).
-   * 
-   * @param y the number to extract ( >= 0)
-   * @param decimalPointPos the position in which to insert a decimal point
-   * @return the string containing the significant digits and possibly a decimal point
-   */
+  /// Extracts the significant digits in the decimal representation of the argument.
+  /// A decimal point may be optionally inserted in the string of digits
+  /// (as long as its position lies within the extracted digits
+  /// - if not, the caller must prepend or append the appropriate zeroes and decimal point).
+  /// 
+  /// @param y the number to extract ( >= 0)
+  /// @param decimalPointPos the position in which to insert a decimal point
+  /// @return the string containing the significant digits and possibly a decimal point
   private String extractSignificantDigits(bool insertDecimalPoint, int[] magnitude)
   {
     DD y = this.abs();
@@ -1249,13 +1107,11 @@ strictfp final class DD
   }
 
 
-  /**
-   * Creates a string of a given length containing the given character
-   * 
-   * @param ch the character to be repeated
-   * @param len the len of the desired string
-   * @return the string 
-   */
+  /// Creates a string of a given length containing the given character
+  /// 
+  /// @param ch the character to be repeated
+  /// @param len the len of the desired string
+  /// @return the string 
   private static String stringOfChar(char ch, int len)
   {
     StringBuffer buf = new StringBuffer();
@@ -1265,13 +1121,11 @@ strictfp final class DD
     return buf.toString();
   }
   
-  /**
-   * Returns the string for this value if it has a known representation.
-   * (E.g. NaN or 0.0)
-   * 
-   * @return the string for this special number
-   * or null if the number is not a special number
-   */
+  /// Returns the string for this value if it has a known representation.
+  /// (E.g. NaN or 0.0)
+  /// 
+  /// @return the string for this special number
+  /// or null if the number is not a special number
   private String getSpecialNumberString()
   {
     if (isZero()) return "0.0";
@@ -1281,14 +1135,12 @@ strictfp final class DD
   
 
   
-  /**
-   * Determines the decimal magnitude of a number.
-   * The magnitude is the exponent of the greatest power of 10 which is less than
-   * or equal to the number.
-   * 
-   * @param x the number to find the magnitude of
-   * @return the decimal magnitude of x
-   */
+  /// Determines the decimal magnitude of a number.
+  /// The magnitude is the exponent of the greatest power of 10 which is less than
+  /// or equal to the number.
+  /// 
+  /// @param x the number to find the magnitude of
+  /// @return the decimal magnitude of x
   private static int magnitude(double x)
   {
     double xAbs = (x).abs();
@@ -1312,18 +1164,16 @@ strictfp final class DD
    *------------------------------------------------------------
    */
 
-  /**
-   * Converts a string representation of a real number into a DoubleDouble value.
-   * The format accepted is similar to the standard Java real number syntax.  
-   * It is defined by the following regular expression:
-   * <pre>
-   * [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>} [ <tt>.</tt> {<i>digit</i>} ] [ ( <tt>e</tt> | <tt>E</tt> ) [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>}+
-   * </pre>
-   * 
-   * @param str the string to parse
-   * @return the value of the parsed number
-   * @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
-   */
+  /// Converts a string representation of a real number into a DoubleDouble value.
+  /// The format accepted is similar to the standard Java real number syntax.  
+  /// It is defined by the following regular expression:
+  /// <pre>
+  /// [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>} [ <tt>.</tt> {<i>digit</i>} ] [ ( <tt>e</tt> | <tt>E</tt> ) [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>}+
+  /// </pre>
+  /// 
+  /// @param str the string to parse
+  /// @return the value of the parsed number
+  /// @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
   static DD parse(String str)
     throws NumberFormatException
   {

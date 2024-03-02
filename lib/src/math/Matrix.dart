@@ -18,7 +18,7 @@
 ///
 class Matrix
 {
-  private static void swapRows(double[][] m, int i, int j)
+  static void swapRows(double[][] m, int i, int j)
   {
     if (i == j) return;
     for (int col = 0; col < m[0].length; col++) {
@@ -28,7 +28,7 @@ class Matrix
     }
   }
   
-  private static void swapRows(double[] m, int i, int j)
+  static void swapRows(double[] m, int i, int j)
   {
     if (i == j) return;
     double temp = m[i];

@@ -17,99 +17,91 @@
 // import org.locationtech.jts.algorithm.Orientation;
 
 
-/**
- * Represents a polygon with linear edges, which may include holes.
- * The outer boundary (shell)
- * and inner boundaries (holes) of the polygon are represented by {@link LinearRing}s.
- * The boundary rings of the polygon may have any orientation.
- * Polygons are closed, simple geometries by definition.
- * <p>
- * The polygon model conforms to the assertions specified in the
- * <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
- * Specification for SQL</A>.
- * <p>
- * A <code>Polygon</code> is topologically valid if and only if:
- * <ul>
- * <li>the coordinates which define it are valid coordinates
- * <li>the linear rings for the shell and holes are valid
- * (i.e. are closed and do not self-intersect)
- * <li>holes touch the shell or another hole at at most one point
- * (which implies that the rings of the shell and holes must not cross)
- * <li>the interior of the polygon is connected,
- * or equivalently no sequence of touching holes
- * makes the interior of the polygon disconnected
- * (i.e. effectively split the polygon into two pieces).
- * </ul>
- *
- *@version 1.7
- */
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/LinearRing.dart';
+import 'package:jtscore4dart/src/geom/Polygonal.dart';
+
+/// Represents a polygon with linear edges, which may include holes.
+/// The outer boundary (shell)
+/// and inner boundaries (holes) of the polygon are represented by {@link LinearRing}s.
+/// The boundary rings of the polygon may have any orientation.
+/// Polygons are closed, simple geometries by definition.
+/// <p>
+/// The polygon model conforms to the assertions specified in the
+/// <A HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+/// Specification for SQL</A>.
+/// <p>
+/// A <code>Polygon</code> is topologically valid if and only if:
+/// <ul>
+/// <li>the coordinates which define it are valid coordinates
+/// <li>the linear rings for the shell and holes are valid
+/// (i.e. are closed and do not self-intersect)
+/// <li>holes touch the shell or another hole at at most one point
+/// (which implies that the rings of the shell and holes must not cross)
+/// <li>the interior of the polygon is connected,
+/// or equivalently no sequence of touching holes
+/// makes the interior of the polygon disconnected
+/// (i.e. effectively split the polygon into two pieces).
+/// </ul>
+///
+///@version 1.7 
 class Polygon
 	extends Geometry
 	implements Polygonal
 {
-  private static final long serialVersionUID = -3494792200821764533L;
+  // private static final long serialVersionUID = -3494792200821764533L;
 
-  /**
-   *  The exterior boundary,
-   * or <code>null</code> if this <code>Polygon</code>
-   *  is empty.
-   */
-  protected LinearRing shell = null;
+  ///  The exterior boundary,
+  /// or <code>null</code> if this <code>Polygon</code>
+  ///  is empty.
+  LinearRing shell;
 
-  /**
-   * The interior boundaries, if any.
-   * This instance var is never null.
-   * If there are no holes, the array is of zero length.
-   */
-  protected LinearRing[] holes;
+  /// The interior boundaries, if any.
+  /// This instance var is never null.
+  /// If there are no holes, the array is of zero length.
+  List<LinearRing> holes;
 
-  /**
-   *  Constructs a <code>Polygon</code> with the given exterior boundary.
-   *
-   *@param  shell           the outer boundary of the new <code>Polygon</code>,
-   *      or <code>null</code> or an empty <code>LinearRing</code> if the empty
-   *      geometry is to be created.
-   *@param  precisionModel  the specification of the grid of allowable points
-   *      for this <code>Polygon</code>
-   *@param  SRID            the ID of the Spatial Reference System used by this
-   *      <code>Polygon</code>
-   * @deprecated Use GeometryFactory instead
-   */
+  ///  Constructs a <code>Polygon</code> with the given exterior boundary.
+  ///
+  ///@param  shell           the outer boundary of the new <code>Polygon</code>,
+  ///      or <code>null</code> or an empty <code>LinearRing</code> if the empty
+  ///      geometry is to be created.
+  ///@param  precisionModel  the specification of the grid of allowable points
+  ///      for this <code>Polygon</code>
+  ///@param  SRID            the ID of the Spatial Reference System used by this
+  ///      <code>Polygon</code>
+  /// @deprecated Use GeometryFactory instead
   Polygon(LinearRing shell, PrecisionModel precisionModel, int SRID) {
     this(shell, new LinearRing[]{}, new GeometryFactory(precisionModel, SRID));
   }
 
-  /**
-   *  Constructs a <code>Polygon</code> with the given exterior boundary and
-   *  interior boundaries.
-   *
-   *@param  shell           the outer boundary of the new <code>Polygon</code>,
-   *      or <code>null</code> or an empty <code>LinearRing</code> if the empty
-   *      geometry is to be created.
-   *@param  holes           the inner boundaries of the new <code>Polygon</code>
-   *      , or <code>null</code> or empty <code>LinearRing</code>s if the empty
-   *      geometry is to be created.
-   *@param  precisionModel  the specification of the grid of allowable points
-   *      for this <code>Polygon</code>
-   *@param  SRID            the ID of the Spatial Reference System used by this
-   *      <code>Polygon</code>
-   * @deprecated Use GeometryFactory instead
-   */
+  ///  Constructs a <code>Polygon</code> with the given exterior boundary and
+  ///  interior boundaries.
+  ///
+  ///@param  shell           the outer boundary of the new <code>Polygon</code>,
+  ///      or <code>null</code> or an empty <code>LinearRing</code> if the empty
+  ///      geometry is to be created.
+  ///@param  holes           the inner boundaries of the new <code>Polygon</code>
+  ///      , or <code>null</code> or empty <code>LinearRing</code>s if the empty
+  ///      geometry is to be created.
+  ///@param  precisionModel  the specification of the grid of allowable points
+  ///      for this <code>Polygon</code>
+  ///@param  SRID            the ID of the Spatial Reference System used by this
+  ///      <code>Polygon</code>
+  /// @deprecated Use GeometryFactory instead
   Polygon(LinearRing shell, LinearRing[] holes, PrecisionModel precisionModel, int SRID) {
       this(shell, holes, new GeometryFactory(precisionModel, SRID));
   }
 
-  /**
-   *  Constructs a <code>Polygon</code> with the given exterior boundary and
-   *  interior boundaries.
-   *
-   *@param  shell           the outer boundary of the new <code>Polygon</code>,
-   *      or <code>null</code> or an empty <code>LinearRing</code> if the empty
-   *      geometry is to be created.
-   *@param  holes           the inner boundaries of the new <code>Polygon</code>
-   *      , or <code>null</code> or empty <code>LinearRing</code>s if the empty
-   *      geometry is to be created.
-   */
+  ///  Constructs a <code>Polygon</code> with the given exterior boundary and
+  ///  interior boundaries.
+  ///
+  ///@param  shell           the outer boundary of the new <code>Polygon</code>,
+  ///      or <code>null</code> or an empty <code>LinearRing</code> if the empty
+  ///      geometry is to be created.
+  ///@param  holes           the inner boundaries of the new <code>Polygon</code>
+  ///      , or <code>null</code> or empty <code>LinearRing</code>s if the empty
+  ///      geometry is to be created.
   Polygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory) {
     super(factory);
     if (shell == null) {
@@ -222,11 +214,9 @@ class Polygon
     return Geometry.TYPENAME_POLYGON;
   }
 
-  /**
-   *  Returns the area of this <code>Polygon</code>
-   *
-   *@return the area of the polygon
-   */
+  ///  Returns the area of this <code>Polygon</code>
+  ///
+  ///@return the area of the polygon
   double getArea()
   {
     double area = 0.0;
@@ -237,11 +227,9 @@ class Polygon
     return area;
   }
 
-  /**
-   *  Returns the perimeter of this <code>Polygon</code>
-   *
-   *@return the perimeter of the polygon
-   */
+  ///  Returns the perimeter of this <code>Polygon</code>
+  ///
+  ///@return the perimeter of the polygon
   double getLength()
   {
     double len = 0.0;
@@ -252,12 +240,10 @@ class Polygon
     return len;
   }
 
-  /**
-   * Computes the boundary of this geometry
-   *
-   * @return a lineal geometry (which may be empty)
-   * @see Geometry#getBoundary
-   */
+  /// Computes the boundary of this geometry
+  ///
+  /// @return a lineal geometry (which may be empty)
+  /// @see Geometry#getBoundary
   Geometry getBoundary() {
     if (isEmpty()) {
       return getFactory().createMultiLineString();
@@ -331,13 +317,11 @@ class Polygon
     }
   }
 
-  /**
-   * Creates and returns a full copy of this {@link Polygon} object.
-   * (including all coordinates contained by it).
-   *
-   * @return a clone of this instance
-   * @deprecated
-   */
+  /// Creates and returns a full copy of this {@link Polygon} object.
+  /// (including all coordinates contained by it).
+  ///
+  /// @return a clone of this instance
+  /// @deprecated
   Object clone() {
 
     return copy();

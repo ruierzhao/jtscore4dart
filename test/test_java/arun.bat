@@ -1,4 +1,5 @@
 @REM 快捷编译运行java
+@REM eg: arun StrictfpTest === run ruier/StrictfpTest.java
 
 @echo off
 

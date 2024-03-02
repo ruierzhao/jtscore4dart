@@ -11,34 +11,36 @@
  */
 
 
-/**
- * Indicates an invalid or inconsistent topological situation encountered during processing
- *
- * @version 1.7
- */
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+/// Indicates an invalid or inconsistent topological situation encountered during processing
+///
+/// @version 1.7
+// TODO: ruier edit.
 class TopologyException
-  extends RuntimeException
+  // extends Exception
 {
-  private static String msgWithCoord(String msg, Coordinate pt)
-  {
-    if (pt != null)
-      return msg + " [ " + pt + " ]";
-    return msg;
-  }
+  // static String _msgWithCoord(String msg, [Coordinate? pt])
+  // {
+  //   if (pt != null) {
+  //     return "$msg [ $pt ]";
+  //   }
+  //   return msg;
+  // }
 
-  private Coordinate pt = null;
+  // Coordinate? _pt;
 
-  TopologyException(String msg)
-  {
-    super(msg);
-  }
+  // // TopologyException(String msg):super(msg);
 
-  TopologyException(String msg, Coordinate pt)
-  {
-    super(msgWithCoord(msg, pt));
-    this.pt = new Coordinate(pt);
-  }
+  // TopologyException(String msg, [this._pt])
+  // {
+  //   if (pt == null) {
+  //     super(msg);
+  //   }
+  //   _pt = Coordinate.fromAnother(pt);
+  //   super(_msgWithCoord(msg, pt));
+  // }
 
-  Coordinate getCoordinate() { return pt; }
+  // Coordinate getCoordinate() { return _pt; }
 
 }

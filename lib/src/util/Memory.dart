@@ -11,12 +11,10 @@
  */
 
 
-/**
- * Utility functions to report JVM memory usage.
- * 
- * @author mbdavis
- *
- */
+/// Utility functions to report JVM memory usage.
+/// 
+/// @author mbdavis
+///
 class Memory 
 {
 	static long used()

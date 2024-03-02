@@ -11,84 +11,70 @@
  */
 
 
-/**
- * Coordinate subclass supporting XYZM ordinates.
- * <p>
- * This data object is suitable for use with coordinate sequences with <tt>dimension</tt> = 4 and <tt>measures</tt> = 1.
- *
- * @since 1.16
- */
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+/// Coordinate subclass supporting XYZM ordinates.
+/// <p>
+/// This data object is suitable for use with coordinate sequences with <tt>dimension</tt> = 4 and <tt>measures</tt> = 1.
+///
+/// @since 1.16
 class CoordinateXYZM extends Coordinate {
-  private static final long serialVersionUID = -8763329985881823442L;
+  // private static final long serialVersionUID = -8763329985881823442L;
 
-  /** Default constructor */
-  CoordinateXYZM() {
-    super();
-    this.m = 0.0;
-  }
+  /// Default constructor
+  CoordinateXYZM.empty():_m = 0.0,super.empty2D(); 
 
-  /**
-   * Constructs a CoordinateXYZM instance with the given ordinates and measure.
-   * 
-   * @param x the X ordinate
-   * @param y the Y ordinate
-   * @param z the Z ordinate
-   * @param m the M measure value
-   */
-  CoordinateXYZM(double x, double y, double z, double m) {
-    super(x, y, z);
-    this.m = m;
-  }
+  /// Constructs a CoordinateXYZM instance with the given ordinates and measure.
+  /// 
+  /// @param x the X ordinate
+  /// @param y the Y ordinate
+  /// @param z the Z ordinate
+  /// @param m the M measure value
+  CoordinateXYZM(double x, double y, double z,  this._m):super(x, y, z);
 
-  /**
-   * Constructs a CoordinateXYZM instance with the ordinates of the given Coordinate.
-   * 
-   * @param coord the coordinate providing the ordinates
-   */
-  CoordinateXYZM(Coordinate coord) {
+
+  /// Constructs a CoordinateXYZM instance with the ordinates of the given Coordinate.
+  /// 
+  /// @param coord the coordinate providing the ordinates
+  CoordinateXYZM.fromCoord(Coordinate coord) {
     super(coord);
-    m = getM();
+    _m = getM();
   }
   
-  /**
-   * Constructs a CoordinateXYZM instance with the ordinates of the given CoordinateXYZM.
-   * 
-   * @param coord the coordinate providing the ordinates
-   */
+  /// Constructs a CoordinateXYZM instance with the ordinates of the given CoordinateXYZM.
+  /// 
+  /// @param coord the coordinate providing the ordinates
   CoordinateXYZM(CoordinateXYZM coord) {
     super(coord);
-    m = coord.m;
+    _m = coord._m;
   }
 
-  /**
-   * Creates a copy of this CoordinateXYZM.
-   * 
-   * @return a copy of this CoordinateXYZM
-   */
+  /// Creates a copy of this CoordinateXYZM.
+  /// 
+  /// @return a copy of this CoordinateXYZM
   CoordinateXYZM copy() {
     return new CoordinateXYZM(this);
   }
   
-  /**
-   * Create a new Coordinate of the same type as this Coordinate, but with no values.
-   * 
-   * @return a new Coordinate
-   */
-  @Override
-  Coordinate create() {
-      return new CoordinateXYZM();
-  }
+  /// Create a new Coordinate of the same type as this Coordinate, but with no values.
+  /// 
+  /// @return a new Coordinate
+  // TODO: ruier edit.
+  // @override
+  // Coordinate create() {
+  //     return new CoordinateXYZM();
+  // }
 
-  /** The m-measure. */
-  private double m;
+  /// The m-measure.
+  double _m;
 
-  /** The m-measure, if available. */
+  /// The m-measure, if available.
   double getM() {
-    return m;
+    return _m;
   }
 
   void setM(double m) {
-    this.m = m;
+    this._m = m;
   }
 
   double getOrdinate(int ordinateIndex)
@@ -102,16 +88,16 @@ class CoordinateXYZM extends Coordinate {
     throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);
   }
   
-  @Override
+  @override
   void setCoordinate(Coordinate other)
   {
     x = other.x;
     y = other.y;
     z = other.getZ();
-    m = other.getM();
+    _m = other.getM();
   }
   
-  @Override
+  @override
   void setOrdinate(int ordinateIndex, double value) {
       switch (ordinateIndex) {
       case X:
@@ -124,7 +110,7 @@ class CoordinateXYZM extends Coordinate {
         z = value;
         break;
       case M:
-        m = value;
+        _m = value;
         break;
       default:
         throw new ArgumentError("Invalid ordinate index: " + ordinateIndex);

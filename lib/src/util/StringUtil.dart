@@ -21,21 +21,17 @@
 
 // import org.locationtech.jts.io.OrdinateFormat;
 
-/**
- * Utility methods for working with {@link String}s.
- * 
- * @author Martin Davis
- *
- */
+/// Utility methods for working with {@link String}s.
+/// 
+/// @author Martin Davis
+///
 class StringUtil
 {
-  /**
-   * Mimics the the Java SE {@link String#split(String)} method.
-   *
-   * @param s the string to split.
-   * @param separator the separator to use.
-   * @return the array of split strings.
-   */
+  /// Mimics the the Java SE {@link String#split(String)} method.
+  ///
+  /// @param s the string to split.
+  /// @param separator the separator to use.
+  /// @return the array of split strings.
  static String[] split(String s, String separator)
  {
    int separatorlen = separator.length();
@@ -59,9 +55,7 @@ class StringUtil
 
  final static String NEWLINE = System.getProperty("line.separator");
 
- /**
-  *  Returns an throwable's stack trace
-  */
+ ///  Returns an throwable's stack trace
  static String getStackTrace(Throwable t) {
      ByteArrayOutputStream os = new ByteArrayOutputStream();
      PrintStream ps = new PrintStream(os);
@@ -83,15 +77,13 @@ class StringUtil
      return stackTrace;
  }
 
-  /**
-   * Returns a string representation of the given number,
-   * using a format compatible with WKT.
-   * 
-   * @param d a number
-   * @return a string 
-   *
-   * @deprecated use {@link OrdinateFormat}
-   */
+  /// Returns a string representation of the given number,
+  /// using a format compatible with WKT.
+  /// 
+  /// @param d a number
+  /// @return a string 
+  ///
+  /// @deprecated use {@link OrdinateFormat}
   static String toString(double d) {
     return OrdinateFormat.DEFAULT.format(d);
   }

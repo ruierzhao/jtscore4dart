@@ -11,76 +11,66 @@
  */
 
 
-/**
- * Models an OGC SFS <code>LinearRing</code>.
- * A <code>LinearRing</code> is a {@link LineString} which is both closed and simple.
- * In other words,
- * the first and last coordinate in the ring must be equal,
- * and the ring must not self-intersect.
- * Either orientation of the ring is allowed.
- * <p>
- * A ring must have either 0 or 3 or more points.
- * The first and last points must be equal (in 2D).
- * If these conditions are not met, the constructors throw
- * an {@link ArgumentError}.
- * A ring with 3 points is invalid, because it is collapsed
- * and thus has a self-intersection.  It is allowed to be constructed
- * so that it can be represented, and repaired if needed.
- *
- * @version 1.7
- */
+/// Models an OGC SFS <code>LinearRing</code>.
+/// A <code>LinearRing</code> is a {@link LineString} which is both closed and simple.
+/// In other words,
+/// the first and last coordinate in the ring must be equal,
+/// and the ring must not self-intersect.
+/// Either orientation of the ring is allowed.
+/// <p>
+/// A ring must have either 0 or 3 or more points.
+/// The first and last points must be equal (in 2D).
+/// If these conditions are not met, the constructors throw
+/// an {@link ArgumentError}.
+/// A ring with 3 points is invalid, because it is collapsed
+/// and thus has a self-intersection.  It is allowed to be constructed
+/// so that it can be represented, and repaired if needed.
+///
+/// @version 1.7
 class LinearRing extends LineString
 {
-  /**
-   * The minimum number of vertices allowed in a valid non-empty ring.
-   * Empty rings with 0 vertices are also valid.
-   */
+  /// The minimum number of vertices allowed in a valid non-empty ring.
+  /// Empty rings with 0 vertices are also valid.
   static final int MINIMUM_VALID_SIZE = 3;
 
   private static final long serialVersionUID = -4261142084085851829L;
 
-  /**
-   * Constructs a <code>LinearRing</code> with the given points.
-   *
-   *@param  points          points forming a closed and simple linestring, or
-   *      <code>null</code> or an empty array to create the empty geometry.
-   *      This array must not contain <code>null</code> elements.
-   *
-   *@param  precisionModel  the specification of the grid of allowable points
-   *      for this <code>LinearRing</code>
-   *@param  SRID            the ID of the Spatial Reference System used by this
-   *      <code>LinearRing</code>
-   * @throws ArgumentError if the ring is not closed, or has too few points
-   *
-   * @deprecated Use GeometryFactory instead
-   */
+  /// Constructs a <code>LinearRing</code> with the given points.
+  ///
+  ///@param  points          points forming a closed and simple linestring, or
+  ///      <code>null</code> or an empty array to create the empty geometry.
+  ///      This array must not contain <code>null</code> elements.
+  ///
+  ///@param  precisionModel  the specification of the grid of allowable points
+  ///      for this <code>LinearRing</code>
+  ///@param  SRID            the ID of the Spatial Reference System used by this
+  ///      <code>LinearRing</code>
+  /// @throws ArgumentError if the ring is not closed, or has too few points
+  ///
+  /// @deprecated Use GeometryFactory instead
   LinearRing(Coordinate points[], PrecisionModel precisionModel,
                     int SRID) {
     this(points, new GeometryFactory(precisionModel, SRID));
     validateConstruction();
   }
 
-  /**
-   * This method is ONLY used to avoid deprecation warnings.
-   * @param points
-   * @param factory
-   * @throws ArgumentError if the ring is not closed, or has too few points
-   */
+  /// This method is ONLY used to avoid deprecation warnings.
+  /// @param points
+  /// @param factory
+  /// @throws ArgumentError if the ring is not closed, or has too few points
   private LinearRing(Coordinate points[], GeometryFactory factory) {
     this(factory.getCoordinateSequenceFactory().create(points), factory);
   }
 
 
-  /**
-   * Constructs a <code>LinearRing</code> with the vertices
-   * specified by the given {@link CoordinateSequence}.
-   *
-   *@param  points  a sequence points forming a closed and simple linestring, or
-   *      <code>null</code> to create the empty geometry.
-   *
-   * @throws ArgumentError if the ring is not closed, or has too few points
-   *
-   */
+  /// Constructs a <code>LinearRing</code> with the vertices
+  /// specified by the given {@link CoordinateSequence}.
+  ///
+  ///@param  points  a sequence points forming a closed and simple linestring, or
+  ///      <code>null</code> to create the empty geometry.
+  ///
+  /// @throws ArgumentError if the ring is not closed, or has too few points
+  ///
   LinearRing(CoordinateSequence points, GeometryFactory factory) {
     super(points, factory);
     validateConstruction();
@@ -96,22 +86,18 @@ class LinearRing extends LineString
     }
   }
 
-  /**
-   * Returns <code>Dimension.FALSE</code>, since by definition LinearRings do
-   * not have a boundary.
-   *
-   * @return Dimension.FALSE
-   */
+  /// Returns <code>Dimension.FALSE</code>, since by definition LinearRings do
+  /// not have a boundary.
+  ///
+  /// @return Dimension.FALSE
   int getBoundaryDimension() {
     return Dimension.FALSE;
   }
 
-  /**
-   * Tests whether this ring is closed.
-   * Empty rings are closed by definition.
-   *
-   * @return true if this ring is closed
-   */
+  /// Tests whether this ring is closed.
+  /// Empty rings are closed by definition.
+  ///
+  /// @return true if this ring is closed
   bool isClosed() {
     if (isEmpty()) {
     	// empty LinearRings are closed by definition

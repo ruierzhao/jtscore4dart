@@ -11,23 +11,19 @@
  */
 
 
-/**
- * A bounding container for a {@link Geometry} which is in the shape of a general octagon.
- * The OctagonalEnvelope of a geometric object
- * is a geometry which is a tight bound
- * along the (up to) four extremal rectilinear parallels
- * and along the (up to) four extremal diagonal parallels.
- * Depending on the shape of the contained
- * geometry, the octagon may be degenerate to any extreme
- * (e.g. it may be a rectangle, a line, or a point).
- */
+/// A bounding container for a {@link Geometry} which is in the shape of a general octagon.
+/// The OctagonalEnvelope of a geometric object
+/// is a geometry which is a tight bound
+/// along the (up to) four extremal rectilinear parallels
+/// and along the (up to) four extremal diagonal parallels.
+/// Depending on the shape of the contained
+/// geometry, the octagon may be degenerate to any extreme
+/// (e.g. it may be a rectangle, a line, or a point).
 class OctagonalEnvelope
 {
-  /**
-   * Gets the octagonal envelope of a geometry
-   * @param geom the geometry
-   * @return the octagonal envelope of the geometry
-   */
+  /// Gets the octagonal envelope of a geometry
+  /// @param geom the geometry
+  /// @return the octagonal envelope of the geometry
   static Geometry octagonalEnvelope(Geometry geom) {
     return (new OctagonalEnvelope(geom)).toGeometry(geom.getFactory());
   }
@@ -54,55 +50,43 @@ class OctagonalEnvelope
   private double minB;
   private double maxB;
 
-  /**
-   * Creates a new null bounding octagon
-   */
+  /// Creates a new null bounding octagon
   OctagonalEnvelope()
   {
   }
 
-  /**
-   * Creates a new null bounding octagon bounding a {@link Coordinate}
-   * 
-   * @param p the coordinate to bound
-   */
+  /// Creates a new null bounding octagon bounding a {@link Coordinate}
+  /// 
+  /// @param p the coordinate to bound
   OctagonalEnvelope(Coordinate p)
   {
     expandToInclude(p);
   }
 
-  /**
-   * Creates a new null bounding octagon bounding a pair of {@link Coordinate}s
-   * 
-   * @param p0 a coordinate to bound
-   * @param p1 a coordinate to bound
-   */
+  /// Creates a new null bounding octagon bounding a pair of {@link Coordinate}s
+  /// 
+  /// @param p0 a coordinate to bound
+  /// @param p1 a coordinate to bound
   OctagonalEnvelope(Coordinate p0, Coordinate p1)
   {
     expandToInclude(p0);
     expandToInclude(p1);
   }
 
-  /**
-   * Creates a new null bounding octagon bounding an {@link Envelope}
-   */
+  /// Creates a new null bounding octagon bounding an {@link Envelope}
   OctagonalEnvelope(Envelope env)
   {
     expandToInclude(env);
   }
 
-  /**
-   * Creates a new null bounding octagon bounding an {@link OctagonalEnvelope}
-   * (the copy constructor).
-   */
+  /// Creates a new null bounding octagon bounding an {@link OctagonalEnvelope}
+  /// (the copy constructor).
   OctagonalEnvelope(OctagonalEnvelope oct)
   {
     expandToInclude(oct);
   }
 
-  /**
-   * Creates a new null bounding octagon bounding a {@link Geometry}
-   */
+  /// Creates a new null bounding octagon bounding a {@link Geometry}
   OctagonalEnvelope(Geometry geom)
   {
     expandToInclude(geom);
@@ -120,9 +104,7 @@ class OctagonalEnvelope
 
   bool isNull() { return (minX).isNaN; }
 
-  /**
-   *  Sets the value of this object to the null value
-   */
+  ///  Sets the value of this object to the null value
   void setToNull() {
     minX = double.nan;
   }
@@ -230,11 +212,9 @@ class OctagonalEnvelope
       setToNull();
   }
 
-  /**
-   * Tests if the extremal values for this octagon are valid.
-   *
-   * @return <code>true</code> if this object has valid values
-   */
+  /// Tests if the extremal values for this octagon are valid.
+  ///
+  /// @return <code>true</code> if this object has valid values
   private bool isValid()
   {
     if (isNull()) return true;

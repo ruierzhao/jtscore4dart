@@ -13,44 +13,38 @@
 
 // import org.locationtech.jts.operation.BoundaryOp;
 
-/**
- * Models a collection of {@link LineString}s.
- * <p>
- * Any collection of LineStrings is a valid MultiLineString.
- *
- *@version 1.7
- */
+/// Models a collection of {@link LineString}s.
+/// <p>
+/// Any collection of LineStrings is a valid MultiLineString.
+///
+///@version 1.7
 class MultiLineString
 	extends GeometryCollection
 	implements Lineal
 	{
   private static final long serialVersionUID = 8166665132445433741L;
-  /**
-   *  Constructs a <code>MultiLineString</code>.
-   *
-   *@param  lineStrings     the <code>LineString</code>s for this <code>MultiLineString</code>
-   *      , or <code>null</code> or an empty array to create the empty geometry.
-   *      Elements may be empty <code>LineString</code>s, but not <code>null</code>
-   *      s.
-   *@param  precisionModel  the specification of the grid of allowable points
-   *      for this <code>MultiLineString</code>
-   *@param  SRID            the ID of the Spatial Reference System used by this
-   *      <code>MultiLineString</code>
-   * @deprecated Use GeometryFactory instead
-   */
+  ///  Constructs a <code>MultiLineString</code>.
+  ///
+  ///@param  lineStrings     the <code>LineString</code>s for this <code>MultiLineString</code>
+  ///      , or <code>null</code> or an empty array to create the empty geometry.
+  ///      Elements may be empty <code>LineString</code>s, but not <code>null</code>
+  ///      s.
+  ///@param  precisionModel  the specification of the grid of allowable points
+  ///      for this <code>MultiLineString</code>
+  ///@param  SRID            the ID of the Spatial Reference System used by this
+  ///      <code>MultiLineString</code>
+  /// @deprecated Use GeometryFactory instead
   MultiLineString(LineString[] lineStrings, PrecisionModel precisionModel, int SRID) {
     super(lineStrings, new GeometryFactory(precisionModel, SRID));
   }
 
 
 
-  /**
-   * @param lineStrings
-   *            the <code>LineString</code>s for this <code>MultiLineString</code>,
-   *            or <code>null</code> or an empty array to create the empty
-   *            geometry. Elements may be empty <code>LineString</code>s,
-   *            but not <code>null</code>s.
-   */
+  /// @param lineStrings
+  ///            the <code>LineString</code>s for this <code>MultiLineString</code>,
+  ///            or <code>null</code> or an empty array to create the empty
+  ///            geometry. Elements may be empty <code>LineString</code>s,
+  ///            but not <code>null</code>s.
   MultiLineString(LineString[] lineStrings, GeometryFactory factory) {
     super(lineStrings, factory);
   }
@@ -86,27 +80,23 @@ class MultiLineString
     return true;
   }
 
-  /**
-   * Gets the boundary of this geometry.
-   * The boundary of a lineal geometry is always a zero-dimensional geometry (which may be empty).
-   *
-   * @return the boundary geometry
-   * @see Geometry#getBoundary
-   */
+  /// Gets the boundary of this geometry.
+  /// The boundary of a lineal geometry is always a zero-dimensional geometry (which may be empty).
+  ///
+  /// @return the boundary geometry
+  /// @see Geometry#getBoundary
   Geometry getBoundary()
   {
     return (new BoundaryOp(this)).getBoundary();
   }
 
-  /**
-   * Creates a {@link MultiLineString} in the reverse
-   * order to this object.
-   * Both the order of the component LineStrings
-   * and the order of their coordinate sequences
-   * are reversed.
-   *
-   * @return a {@link MultiLineString} in the reverse order
-   */
+  /// Creates a {@link MultiLineString} in the reverse
+  /// order to this object.
+  /// Both the order of the component LineStrings
+  /// and the order of their coordinate sequences
+  /// are reversed.
+  ///
+  /// @return a {@link MultiLineString} in the reverse order
   MultiLineString reverse() {
     return (MultiLineString) super.reverse();
   }

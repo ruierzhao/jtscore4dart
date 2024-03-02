@@ -21,19 +21,17 @@
 // import org.locationtech.jts.io.WKTConstants;
 
 
-/**
- * Represents a line segment defined by two {@link Coordinate}s.
- * Provides methods to compute various geometric properties
- * and relationships of line segments.
- * <p>
- * This class is designed to be easily mutable (to the extent of
- * having its contained points public).
- * This supports a common pattern of reusing a single LineSegment
- * object as a way of computing segment properties on the
- * segments defined by arrays or lists of {@link Coordinate}s.
- *
- *@version 1.7
- */
+/// Represents a line segment defined by two {@link Coordinate}s.
+/// Provides methods to compute various geometric properties
+/// and relationships of line segments.
+/// <p>
+/// This class is designed to be easily mutable (to the extent of
+/// having its contained points public).
+/// This supports a common pattern of reusing a single LineSegment
+/// object as a way of computing segment properties on the
+/// segments defined by arrays or lists of {@link Coordinate}s.
+///
+///@version 1.7
 class LineSegment
   implements Comparable, Serializable
 {
@@ -77,80 +75,64 @@ class LineSegment
     this.p1.y = p1.y;
   }
 
-  /**
-   * Gets the minimum X ordinate.
-   * @return the minimum X ordinate
-   */
+  /// Gets the minimum X ordinate.
+  /// @return the minimum X ordinate
   double minX() {
     return math.min(p0.x, p1.x);
   }
   
-  /**
-   * Gets the maximum X ordinate.
-   * @return the maximum X ordinate
-   */
+  /// Gets the maximum X ordinate.
+  /// @return the maximum X ordinate
   double maxX() {
     return math.max(p0.x, p1.x);
   }
 
-  /**
-   * Gets the minimum Y ordinate.
-   * @return the minimum Y ordinate
-   */
+  /// Gets the minimum Y ordinate.
+  /// @return the minimum Y ordinate
   double minY() {
     return math.min(p0.y, p1.y);
   }
   
-  /**
-   * Gets the maximum Y ordinate.
-   * @return the maximum Y ordinate
-   */
+  /// Gets the maximum Y ordinate.
+  /// @return the maximum Y ordinate
   double maxY() {
     return math.max(p0.y, p1.y);
   }
 
-  /**
-   * Computes the length of the line segment.
-   * @return the length of the line segment
-   */
+  /// Computes the length of the line segment.
+  /// @return the length of the line segment
   double getLength()
   {
     return p0.distance(p1);
   }
 
-  /**
-   * Tests whether the segment is horizontal.
-   *
-   * @return <code>true</code> if the segment is horizontal
-   */
+  /// Tests whether the segment is horizontal.
+  ///
+  /// @return <code>true</code> if the segment is horizontal
   bool isHorizontal() { return p0.y == p1.y; }
 
-  /**
-   * Tests whether the segment is vertical.
-   *
-   * @return <code>true</code> if the segment is vertical
-   */
+  /// Tests whether the segment is vertical.
+  ///
+  /// @return <code>true</code> if the segment is vertical
   bool isVertical() { return p0.x == p1.x; }
 
-  /**
-   * Determines the orientation of a LineSegment relative to this segment.
-   * The concept of orientation is specified as follows:
-   * Given two line segments A and L,
-   * <ul>
-   * <li>A is to the left of a segment L if A lies wholly in the
-   * closed half-plane lying to the left of L
-   * <li>A is to the right of a segment L if A lies wholly in the
-   * closed half-plane lying to the right of L
-   * <li>otherwise, A has indeterminate orientation relative to L. This
-   * happens if A is collinear with L or if A crosses the line determined by L.
-   * </ul>
-   *
-   * @param seg the LineSegment to compare
-   *
-   * @return 1 if <code>seg</code> is to the left of this segment
-   * @return -1 if <code>seg</code> is to the right of this segment
-   * @return 0 if <code>seg</code> is collinear to or crosses this segment
-   */
+  /// Determines the orientation of a LineSegment relative to this segment.
+  /// The concept of orientation is specified as follows:
+  /// Given two line segments A and L,
+  /// <ul>
+  /// <li>A is to the left of a segment L if A lies wholly in the
+  /// closed half-plane lying to the left of L
+  /// <li>A is to the right of a segment L if A lies wholly in the
+  /// closed half-plane lying to the right of L
+  /// <li>otherwise, A has indeterminate orientation relative to L. This
+  /// happens if A is collinear with L or if A crosses the line determined by L.
+  /// </ul>
+  ///
+  /// @param seg the LineSegment to compare
+  ///
+  /// @return 1 if <code>seg</code> is to the left of this segment
+  /// @return -1 if <code>seg</code> is to the right of this segment
+  /// @return 0 if <code>seg</code> is collinear to or crosses this segment
   int orientationIndex(LineSegment seg)
   {
     int orient0 = Orientation.index(p0, p1, seg.p0);
@@ -165,26 +147,22 @@ class LineSegment
     return 0;
   }
   
-  /**
-   * Determines the orientation index of a {@link Coordinate} relative to this segment.
-   * The orientation index is as defined in {@link Orientation#index(Coordinate, Coordinate, Coordinate)}.
-   *
-   * @param p the coordinate to compare
-   *
-   * @return 1 (LEFT) if <code>p</code> is to the left of this segment
-   * @return -1 (RIGHT) if <code>p</code> is to the right of this segment
-   * @return 0 (COLLINEAR) if <code>p</code> is collinear with this segment
-   * 
-   * @see Orientation#index(Coordinate, Coordinate, Coordinate)
-   */
+  /// Determines the orientation index of a {@link Coordinate} relative to this segment.
+  /// The orientation index is as defined in {@link Orientation#index(Coordinate, Coordinate, Coordinate)}.
+  ///
+  /// @param p the coordinate to compare
+  ///
+  /// @return 1 (LEFT) if <code>p</code> is to the left of this segment
+  /// @return -1 (RIGHT) if <code>p</code> is to the right of this segment
+  /// @return 0 (COLLINEAR) if <code>p</code> is collinear with this segment
+  /// 
+  /// @see Orientation#index(Coordinate, Coordinate, Coordinate)
   int orientationIndex(Coordinate p)
   {
     return Orientation.index(p0, p1, p);
   }
   
-  /**
-   * Reverses the direction of the line segment.
-   */
+  /// Reverses the direction of the line segment.
   void reverse()
   {
     Coordinate temp = p0;
@@ -192,80 +170,66 @@ class LineSegment
     p1 = temp;
   }
 
-  /**
-   * Puts the line segment into a normalized form.
-   * This is useful for using line segments in maps and indexes when
-   * topological equality rather than exact equality is desired.
-   * A segment in normalized form has the first point smaller
-   * than the second (according to the standard ordering on {@link Coordinate}).
-   */
+  /// Puts the line segment into a normalized form.
+  /// This is useful for using line segments in maps and indexes when
+  /// topological equality rather than exact equality is desired.
+  /// A segment in normalized form has the first point smaller
+  /// than the second (according to the standard ordering on {@link Coordinate}).
   void normalize()
   {
     if (p1.compareTo(p0) < 0) reverse();
   }
 
-  /**
-   * Computes the angle that the vector defined by this segment
-   * makes with the X-axis.
-   * The angle will be in the range [ -PI, PI ] radians.
-   *
-   * @return the angle this segment makes with the X-axis (in radians)
-   */
+  /// Computes the angle that the vector defined by this segment
+  /// makes with the X-axis.
+  /// The angle will be in the range [ -PI, PI ] radians.
+  ///
+  /// @return the angle this segment makes with the X-axis (in radians)
   double angle()
   {
     return math.atan2(p1.y - p0.y, p1.x - p0.x);
   }
 
-  /**
-   * Computes the midpoint of the segment
-   *
-   * @return the midpoint of the segment
-   */
+  /// Computes the midpoint of the segment
+  ///
+  /// @return the midpoint of the segment
   Coordinate midPoint()
   {
     return midPoint(p0, p1);
   }
 
-  /**
-   * Computes the midpoint of a segment
-   *
-   * @return the midpoint of the segment
-   */
+  /// Computes the midpoint of a segment
+  ///
+  /// @return the midpoint of the segment
   static Coordinate midPoint(Coordinate p0, Coordinate p1)
   {
     return new Coordinate( (p0.x + p1.x) / 2,
                            (p0.y + p1.y) / 2);
   }
 
-  /**
-   * Computes the distance between this line segment and another segment.
-   *
-   * @return the distance to the other segment
-   */
+  /// Computes the distance between this line segment and another segment.
+  ///
+  /// @return the distance to the other segment
   double distance(LineSegment ls)
   {
     return Distance.segmentToSegment(p0, p1, ls.p0, ls.p1);
   }
 
-  /**
-   * Computes the distance between this line segment and a given point.
-   *
-   * @return the distance from this segment to the given point
-   */
+  /// Computes the distance between this line segment and a given point.
+  ///
+  /// @return the distance from this segment to the given point
   double distance(Coordinate p)
   {
     return Distance.pointToSegment(p, p0, p1);
   }
 
-  /**
-   * Computes the perpendicular distance between the (infinite) line defined
-   * by this line segment and a point.
-   * If the segment has zero length this returns the distance between
-   * the segment and the point.
-   *
-   * @param p the point to compute the distance to
-   * @return the perpendicular distance between the line and point
-   */
+  /// Computes the perpendicular distance between the (infinite) line defined
+  /// by this line segment and a point.
+  /// If the segment has zero length this returns the distance between
+  /// the segment and the point.
+  ///
+  /// @param p the point to compute the distance to
+  /// @return the perpendicular distance between the line and point
   double distancePerpendicular(Coordinate p)
   {
     if (p0.equals2D(p1))
@@ -273,17 +237,15 @@ class LineSegment
     return Distance.pointToLinePerpendicular(p, p0, p1);
   }
 
-  /**
-   * Computes the oriented perpendicular distance between the (infinite) line
-   * defined by this line segment and a point.
-   * The oriented distance is positive if the point on the left of the line,
-   * and negative if it is on the right.
-   * If the segment has zero length this returns the distance between
-   * the segment and the point.
-   * 
-   * @param p the point to compute the distance to
-   * @return the oriented perpendicular distance between the line and point
-   */
+  /// Computes the oriented perpendicular distance between the (infinite) line
+  /// defined by this line segment and a point.
+  /// The oriented distance is positive if the point on the left of the line,
+  /// and negative if it is on the right.
+  /// If the segment has zero length this returns the distance between
+  /// the segment and the point.
+  /// 
+  /// @param p the point to compute the distance to
+  /// @return the oriented perpendicular distance between the line and point
   double distancePerpendicularOriented(Coordinate p)
   {
     if (p0.equals2D(p1))
@@ -294,17 +256,15 @@ class LineSegment
     return dist;
   }
   
-  /**
-   * Computes the {@link Coordinate} that lies a given
-   * fraction along the line defined by this segment.
-   * A fraction of <code>0.0</code> returns the start point of the segment;
-   * a fraction of <code>1.0</code> returns the end point of the segment.
-   * If the fraction is &lt; 0.0 or &gt; 1.0 the point returned
-   * will lie before the start or beyond the end of the segment. 
-   *
-   * @param segmentLengthFraction the fraction of the segment length along the line
-   * @return the point at that distance
-   */
+  /// Computes the {@link Coordinate} that lies a given
+  /// fraction along the line defined by this segment.
+  /// A fraction of <code>0.0</code> returns the start point of the segment;
+  /// a fraction of <code>1.0</code> returns the end point of the segment.
+  /// If the fraction is &lt; 0.0 or &gt; 1.0 the point returned
+  /// will lie before the start or beyond the end of the segment. 
+  ///
+  /// @param segmentLengthFraction the fraction of the segment length along the line
+  /// @return the point at that distance
   Coordinate pointAlong(double segmentLengthFraction)
   {
     Coordinate coord = p0.create();
@@ -313,22 +273,20 @@ class LineSegment
     return coord;
   }
 
-  /**
-   * Computes the {@link Coordinate} that lies a given
-   * fraction along the line defined by this segment and offset from 
-   * the segment by a given distance.
-   * A fraction of <code>0.0</code> offsets from the start point of the segment;
-   * a fraction of <code>1.0</code> offsets from the end point of the segment.
-   * The computed point is offset to the left of the line if the offset distance is
-   * positive, to the right if negative.
-   *
-   * @param segmentLengthFraction the fraction of the segment length along the line
-   * @param offsetDistance the distance the point is offset from the segment
-   *    (positive is to the left, negative is to the right)
-   * @return the point at that distance and offset
-   * 
-   * @throws IllegalStateException if the segment has zero length
-   */
+  /// Computes the {@link Coordinate} that lies a given
+  /// fraction along the line defined by this segment and offset from 
+  /// the segment by a given distance.
+  /// A fraction of <code>0.0</code> offsets from the start point of the segment;
+  /// a fraction of <code>1.0</code> offsets from the end point of the segment.
+  /// The computed point is offset to the left of the line if the offset distance is
+  /// positive, to the right if negative.
+  ///
+  /// @param segmentLengthFraction the fraction of the segment length along the line
+  /// @param offsetDistance the distance the point is offset from the segment
+  ///    (positive is to the left, negative is to the right)
+  /// @return the point at that distance and offset
+  /// 
+  /// @throws IllegalStateException if the segment has zero length
   Coordinate pointAlongOffset(double segmentLengthFraction, double offsetDistance)
   {
   	// the point on the segment line
@@ -359,19 +317,17 @@ class LineSegment
     return coord;
   }
 
-  /**
-   * Computes the Projection Factor for the projection of the point p
-   * onto this LineSegment.  The Projection Factor is the constant r
-   * by which the vector for this segment must be multiplied to
-   * equal the vector for the projection of <tt>p</tt> on the line
-   * defined by this segment.
-   * <p>
-   * The projection factor will lie in the range <tt>(-inf, +inf)</tt>,
-   * or be <code>NaN</code> if the line segment has zero length..
-   * 
-   * @param p the point to compute the factor for
-   * @return the projection factor for the point
-   */
+  /// Computes the Projection Factor for the projection of the point p
+  /// onto this LineSegment.  The Projection Factor is the constant r
+  /// by which the vector for this segment must be multiplied to
+  /// equal the vector for the projection of <tt>p</tt> on the line
+  /// defined by this segment.
+  /// <p>
+  /// The projection factor will lie in the range <tt>(-inf, +inf)</tt>,
+  /// or be <code>NaN</code> if the line segment has zero length..
+  /// 
+  /// @param p the point to compute the factor for
+  /// @return the projection factor for the point
   double projectionFactor(Coordinate p)
   {
     if (p.equals(p0)) return 0.0;
@@ -399,19 +355,17 @@ class LineSegment
     return r;
   }
 
-  /**
-   * Computes the fraction of distance (in <tt>[0.0, 1.0]</tt>) 
-   * that the projection of a point occurs along this line segment.
-   * If the point is beyond either ends of the line segment,
-   * the closest fractional value (<tt>0.0</tt> or <tt>1.0</tt>) is returned.
-   * <p>
-   * Essentially, this is the {@link #projectionFactor} clamped to 
-   * the range <tt>[0.0, 1.0]</tt>.
-   * If the segment has zero length, 1.0 is returned.
-   *  
-   * @param inputPt the point
-   * @return the fraction along the line segment the projection of the point occurs
-   */
+  /// Computes the fraction of distance (in <tt>[0.0, 1.0]</tt>) 
+  /// that the projection of a point occurs along this line segment.
+  /// If the point is beyond either ends of the line segment,
+  /// the closest fractional value (<tt>0.0</tt> or <tt>1.0</tt>) is returned.
+  /// <p>
+  /// Essentially, this is the {@link #projectionFactor} clamped to 
+  /// the range <tt>[0.0, 1.0]</tt>.
+  /// If the segment has zero length, 1.0 is returned.
+  ///  
+  /// @param inputPt the point
+  /// @return the fraction along the line segment the projection of the point occurs
   double segmentFraction(
       Coordinate inputPt)
   {
@@ -423,14 +377,12 @@ class LineSegment
     return segFrac;
   }
 
-  /**
-   * Compute the projection of a point onto the line determined
-   * by this line segment.
-   * <p>
-   * Note that the projected point
-   * may lie outside the line segment.  If this is the case,
-   * the projection factor will lie outside the range [0.0, 1.0].
-   */
+  /// Compute the projection of a point onto the line determined
+  /// by this line segment.
+  /// <p>
+  /// Note that the projected point
+  /// may lie outside the line segment.  If this is the case,
+  /// the projection factor will lie outside the range [0.0, 1.0].
   Coordinate project(Coordinate p)
   {
     if (p.equals(p0) || p.equals(p1)) return p.copy();
@@ -447,18 +399,16 @@ class LineSegment
     return coord;
   }
   
-  /**
-   * Project a line segment onto this line segment and return the resulting
-   * line segment.  The returned line segment will be a subset of
-   * the target line line segment.  This subset may be null, if
-   * the segments are oriented in such a way that there is no projection.
-   * <p>
-   * Note that the returned line may have zero length (i.e. the same endpoints).
-   * This can happen for instance if the lines are perpendicular to one another.
-   *
-   * @param seg the line segment to project
-   * @return the projected line segment, or <code>null</code> if there is no overlap
-   */
+  /// Project a line segment onto this line segment and return the resulting
+  /// line segment.  The returned line segment will be a subset of
+  /// the target line line segment.  This subset may be null, if
+  /// the segments are oriented in such a way that there is no projection.
+  /// <p>
+  /// Note that the returned line may have zero length (i.e. the same endpoints).
+  /// This can happen for instance if the lines are perpendicular to one another.
+  ///
+  /// @param seg the line segment to project
+  /// @return the projected line segment, or <code>null</code> if there is no overlap
   LineSegment project(LineSegment seg)
   {
     double pf0 = projectionFactor(seg.p0);
@@ -478,31 +428,27 @@ class LineSegment
     return new LineSegment(newp0, newp1);
   }
   
-  /**
-   * Computes the {@link LineSegment} that is offset from 
-   * the segment by a given distance.
-   * The computed segment is offset to the left of the line if the offset distance is
-   * positive, to the right if negative.
-   *
-   * @param offsetDistance the distance the point is offset from the segment
-   *    (positive is to the left, negative is to the right)
-   * @return a line segment offset by the specified distance
-   * 
-   * @throws IllegalStateException if the segment has zero length
-   */
+  /// Computes the {@link LineSegment} that is offset from 
+  /// the segment by a given distance.
+  /// The computed segment is offset to the left of the line if the offset distance is
+  /// positive, to the right if negative.
+  ///
+  /// @param offsetDistance the distance the point is offset from the segment
+  ///    (positive is to the left, negative is to the right)
+  /// @return a line segment offset by the specified distance
+  /// 
+  /// @throws IllegalStateException if the segment has zero length
   LineSegment offset(double offsetDistance) {
     Coordinate offset0 = pointAlongOffset(0, offsetDistance);
     Coordinate offset1 = pointAlongOffset(1, offsetDistance);
     return new LineSegment(offset0, offset1);
   }
   
-  /**
-   * Computes the reflection of a point in the line defined
-   * by this line segment.
-   * 
-   * @param p the point to reflect
-   * @return the reflected point
-   */
+  /// Computes the reflection of a point in the line defined
+  /// by this line segment.
+  /// 
+  /// @param p the point to reflect
+  /// @return the reflected point
   Coordinate reflect(Coordinate p) {
     // general line equation
     double A = p1.getY() - p0.getY();
@@ -524,11 +470,9 @@ class LineSegment
     return coord;
   }
   
-  /**
-   * Computes the closest point on this line segment to another point.
-   * @param p the point to find the closest point to
-   * @return a Coordinate which is the closest point on the line segment to the point p
-   */
+  /// Computes the closest point on this line segment to another point.
+  /// @param p the point to find the closest point to
+  /// @return a Coordinate which is the closest point on the line segment to the point p
   Coordinate closestPoint(Coordinate p)
   {
     double factor = projectionFactor(p);
@@ -541,12 +485,10 @@ class LineSegment
       return p0;
     return p1;
   }
-  /**
-   * Computes the closest points on two line segments.
-   * 
-   * @param line the segment to find the closest point to
-   * @return a pair of Coordinates which are the closest points on the line segments
-   */
+  /// Computes the closest points on two line segments.
+  /// 
+  /// @param line the segment to find the closest point to
+  /// @return a pair of Coordinates which are the closest points on the line segments
   List<Coordinate> closestPoints(LineSegment line)
   {
     // test for intersection
@@ -595,20 +537,18 @@ class LineSegment
     return closestPt;
   }
 
-  /**
-   * Computes an intersection point between two line segments, if there is one.
-   * There may be 0, 1 or many intersection points between two segments.
-   * If there are 0, null is returned. If there is 1 or more, 
-   * exactly one of them is returned 
-   * (chosen at the discretion of the algorithm).  
-   * If more information is required about the details of the intersection,
-   * the {@link RobustLineIntersector} class should be used.
-   *
-   * @param line a line segment
-   * @return an intersection point, or <code>null</code> if there is none
-   * 
-   * @see RobustLineIntersector
-   */
+  /// Computes an intersection point between two line segments, if there is one.
+  /// There may be 0, 1 or many intersection points between two segments.
+  /// If there are 0, null is returned. If there is 1 or more, 
+  /// exactly one of them is returned 
+  /// (chosen at the discretion of the algorithm).  
+  /// If more information is required about the details of the intersection,
+  /// the {@link RobustLineIntersector} class should be used.
+  ///
+  /// @param line a line segment
+  /// @return an intersection point, or <code>null</code> if there is none
+  /// 
+  /// @see RobustLineIntersector
   Coordinate intersection(LineSegment line)
   {
     LineIntersector li = new RobustLineIntersector();
@@ -618,48 +558,42 @@ class LineSegment
     return null;
   }
 
-  /**
-   * Computes the intersection point of the lines of infinite extent defined
-   * by two line segments (if there is one).
-   * There may be 0, 1 or an infinite number of intersection points 
-   * between two lines.
-   * If there is a unique intersection point, it is returned. 
-   * Otherwise, <tt>null</tt> is returned.
-   * If more information is required about the details of the intersection,
-   * the {@link RobustLineIntersector} class should be used.
-   *
-   * @param line a line segment defining an straight line with infinite extent
-   * @return an intersection point, 
-   * or <code>null</code> if there is no point of intersection
-   * or an infinite number of intersection points
-   * 
-   * @see RobustLineIntersector
-   */
+  /// Computes the intersection point of the lines of infinite extent defined
+  /// by two line segments (if there is one).
+  /// There may be 0, 1 or an infinite number of intersection points 
+  /// between two lines.
+  /// If there is a unique intersection point, it is returned. 
+  /// Otherwise, <tt>null</tt> is returned.
+  /// If more information is required about the details of the intersection,
+  /// the {@link RobustLineIntersector} class should be used.
+  ///
+  /// @param line a line segment defining an straight line with infinite extent
+  /// @return an intersection point, 
+  /// or <code>null</code> if there is no point of intersection
+  /// or an infinite number of intersection points
+  /// 
+  /// @see RobustLineIntersector
   Coordinate lineIntersection(LineSegment line)
   {
     Coordinate intPt = Intersection.intersection(p0, p1, line.p0, line.p1);
     return intPt;
   }
 
-  /**
-   * Creates a LineString with the same coordinates as this segment
-   * 
-   * @param geomFactory the geometry factory to use
-   * @return a LineString with the same geometry as this segment
-   */
+  /// Creates a LineString with the same coordinates as this segment
+  /// 
+  /// @param geomFactory the geometry factory to use
+  /// @return a LineString with the same geometry as this segment
   LineString toGeometry(GeometryFactory geomFactory)
   {
     return geomFactory.createLineString(new List<Coordinate> { p0, p1 });
   }
   
-  /**
-   *  Returns <code>true</code> if <code>other</code> has the same values for
-   *  its points.
-   *
-   *@param  o  a <code>LineSegment</code> with which to do the comparison.
-   *@return        <code>true</code> if <code>other</code> is a <code>LineSegment</code>
-   *      with the same values for the x and y ordinates.
-   */
+  ///  Returns <code>true</code> if <code>other</code> has the same values for
+  ///  its points.
+  ///
+  ///@param  o  a <code>LineSegment</code> with which to do the comparison.
+  ///@return        <code>true</code> if <code>other</code> is a <code>LineSegment</code>
+  ///      with the same values for the x and y ordinates.
   bool equals(Object o) {
     if (!(o is LineSegment)) {
       return false;
@@ -668,11 +602,9 @@ class LineSegment
     return p0.equals(other.p0) && p1.equals(other.p1);
   }
 
-  /**
-   * Gets a hashcode for this object.
-   * 
-   * @return a hashcode for this object
-   */
+  /// Gets a hashcode for this object.
+  /// 
+  /// @return a hashcode for this object
   int hashCode() {
     int hash = 17;
     hash = hash * 29 + Double.hashCode(p0.x);
@@ -695,15 +627,13 @@ class LineSegment
     return hash0 ^ hash1;
   }
   
-  /**
-   *  Compares this object with the specified object for order.
-   *  Uses the standard lexicographic ordering for the points in the LineSegment.
-   *
-   *@param  o  the <code>LineSegment</code> with which this <code>LineSegment</code>
-   *      is being compared
-   *@return    a negative integer, zero, or a positive integer as this <code>LineSegment</code>
-   *      is less than, equal to, or greater than the specified <code>LineSegment</code>
-   */
+  ///  Compares this object with the specified object for order.
+  ///  Uses the standard lexicographic ordering for the points in the LineSegment.
+  ///
+  ///@param  o  the <code>LineSegment</code> with which this <code>LineSegment</code>
+  ///      is being compared
+  ///@return    a negative integer, zero, or a positive integer as this <code>LineSegment</code>
+  ///      is less than, equal to, or greater than the specified <code>LineSegment</code>
   int compareTo(Object o) {
     LineSegment other = (LineSegment) o;
     int comp0 = p0.compareTo(other.p0);
@@ -711,15 +641,13 @@ class LineSegment
     return p1.compareTo(other.p1);
   }
 
-  /**
-   *  Returns <code>true</code> if <code>other</code> is
-   *  topologically equal to this LineSegment (e.g. irrespective
-   *  of orientation).
-   *
-   *@param  other  a <code>LineSegment</code> with which to do the comparison.
-   *@return        <code>true</code> if <code>other</code> is a <code>LineSegment</code>
-   *      with the same values for the x and y ordinates.
-   */
+  ///  Returns <code>true</code> if <code>other</code> is
+  ///  topologically equal to this LineSegment (e.g. irrespective
+  ///  of orientation).
+  ///
+  ///@param  other  a <code>LineSegment</code> with which to do the comparison.
+  ///@return        <code>true</code> if <code>other</code> is a <code>LineSegment</code>
+  ///      with the same values for the x and y ordinates.
   bool equalsTopo(LineSegment other)
   {
     return

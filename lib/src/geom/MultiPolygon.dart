@@ -13,53 +13,47 @@
 
 // import java.util.ArrayList;
 
-/**
- * Models a collection of {@link Polygon}s.
- * <p>
- * As per the OGC SFS specification,
- * the Polygons in a MultiPolygon may not overlap,
- * and may only touch at single points.
- * This allows the topological point-set semantics
- * to be well-defined.
- *
- *
- *@version 1.7
- */
+/// Models a collection of {@link Polygon}s.
+/// <p>
+/// As per the OGC SFS specification,
+/// the Polygons in a MultiPolygon may not overlap,
+/// and may only touch at single points.
+/// This allows the topological point-set semantics
+/// to be well-defined.
+///
+///
+///@version 1.7
 class MultiPolygon
 	extends GeometryCollection
 	implements Polygonal
 {
   private static final long serialVersionUID = -551033529766975875L;
-  /**
-   *  Constructs a <code>MultiPolygon</code>.
-   *
-   *@param  polygons        the <code>Polygon</code>s for this <code>MultiPolygon</code>
-   *      , or <code>null</code> or an empty array to create the empty geometry.
-   *      Elements may be empty <code>Polygon</code>s, but not <code>null</code>
-   *      s. The polygons must conform to the assertions specified in the <A
-   *      HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
-   *      Specification for SQL</A> .
-   *@param  precisionModel  the specification of the grid of allowable points
-   *      for this <code>MultiPolygon</code>
-   *@param  SRID            the ID of the Spatial Reference System used by this
-   *      <code>MultiPolygon</code>
-   * @deprecated Use GeometryFactory instead
-   */
+  ///  Constructs a <code>MultiPolygon</code>.
+  ///
+  ///@param  polygons        the <code>Polygon</code>s for this <code>MultiPolygon</code>
+  ///      , or <code>null</code> or an empty array to create the empty geometry.
+  ///      Elements may be empty <code>Polygon</code>s, but not <code>null</code>
+  ///      s. The polygons must conform to the assertions specified in the <A
+  ///      HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+  ///      Specification for SQL</A> .
+  ///@param  precisionModel  the specification of the grid of allowable points
+  ///      for this <code>MultiPolygon</code>
+  ///@param  SRID            the ID of the Spatial Reference System used by this
+  ///      <code>MultiPolygon</code>
+  /// @deprecated Use GeometryFactory instead
   MultiPolygon(Polygon[] polygons, PrecisionModel precisionModel, int SRID) {
     this(polygons, new GeometryFactory(precisionModel, SRID));
   }
 
 
-  /**
-   * @param polygons
-   *            the <code>Polygon</code>s for this <code>MultiPolygon</code>,
-   *            or <code>null</code> or an empty array to create the empty
-   *            geometry. Elements may be empty <code>Polygon</code>s, but
-   *            not <code>null</code>s. The polygons must conform to the
-   *            assertions specified in the <A
-   *            HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple
-   *            Features Specification for SQL</A>.
-   */
+  /// @param polygons
+  ///            the <code>Polygon</code>s for this <code>MultiPolygon</code>,
+  ///            or <code>null</code> or an empty array to create the empty
+  ///            geometry. Elements may be empty <code>Polygon</code>s, but
+  ///            not <code>null</code>s. The polygons must conform to the
+  ///            assertions specified in the <A
+  ///            HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple
+  ///            Features Specification for SQL</A>.
   MultiPolygon(Polygon[] polygons, GeometryFactory factory) {
     super(polygons, factory);
   }
@@ -86,12 +80,10 @@ class MultiPolygon
   }
 */
 
-  /**
-   * Computes the boundary of this geometry
-   *
-   * @return a lineal geometry (which may be empty)
-   * @see Geometry#getBoundary
-   */
+  /// Computes the boundary of this geometry
+  ///
+  /// @return a lineal geometry (which may be empty)
+  /// @see Geometry#getBoundary
   Geometry getBoundary() {
     if (isEmpty()) {
       return getFactory().createMultiLineString();
@@ -115,13 +107,11 @@ class MultiPolygon
     return super.equalsExact(other, tolerance);
   }
 
-  /**
-   * Creates a {@link MultiPolygon} with
-   * every component reversed.
-   * The order of the components in the collection are not reversed.
-   *
-   * @return a MultiPolygon in the reverse order
-   */
+  /// Creates a {@link MultiPolygon} with
+  /// every component reversed.
+  /// The order of the components in the collection are not reversed.
+  ///
+  /// @return a MultiPolygon in the reverse order
   MultiPolygon reverse() {
     return (MultiPolygon) super.reverse();
   }

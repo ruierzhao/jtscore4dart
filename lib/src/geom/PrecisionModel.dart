@@ -13,9 +13,11 @@
 
 // import java.io.Serializable;
 // import java.util.Map;
-// import java.util.Map;
 
 // import org.locationtech.jts.io.WKTWriter;
+
+import "dart:math" as math;
+
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
@@ -70,25 +72,24 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 ///@version 1.7
 
 
-  /// The types of Precision Model which JTS supports.
-  class Type /**implements Serializable */
-  {
-    // private static final long serialVersionUID = -5528602631731589822L;
-    static Map _nameToTypeMap = {};
-    Type(this._name) {
-        _nameToTypeMap.add(_name, this);
-    }
-    String _name;
-    String toString() { return _name; }
-    
-    
-    /*
-     * Ssee http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
-     */
-    Object _readResolve() {
-        return _nameToTypeMap.get(_name);
-    }
+/// The types of Precision Model which JTS supports.
+class _Type /**implements Serializable */
+{
+  // private static final long serialVersionUID = -5528602631731589822L;
+  static final Map _nameToTypeMap = {};
+  _Type(this._name) {
+      _nameToTypeMap[_name] = this;
   }
+  final String _name;
+  @override
+  String toString() { return _name; }
+  
+  
+  /// Ssee http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
+  // Object _readResolve() {
+  //     return _nameToTypeMap.get(_name);
+  // }
+}
 
 
 class PrecisionModel implements /** Serializable, */  Comparable
@@ -111,30 +112,30 @@ class PrecisionModel implements /** Serializable, */  Comparable
 
   /// Fixed Precision indicates that coordinates have a fixed number of decimal places.
   /// The number of decimal places is determined by the log10 of the scale factor.
-  static final Type FIXED = new Type("FIXED");
+  static final _Type FIXED = _Type("FIXED");
   /// Floating precision corresponds to the standard Java
   /// double-precision floating-point representation, which is
   /// based on the IEEE-754 standard
-  static final Type FLOATING = new Type("FLOATING");
+  static final _Type FLOATING = _Type("FLOATING");
   /// Floating single precision corresponds to the standard Java
   /// single-precision floating-point representation, which is
   /// based on the IEEE-754 standard
-  static final Type FLOATING_SINGLE = new Type("FLOATING SINGLE");
+  static final _Type FLOATING_SINGLE = _Type("FLOATING SINGLE");
 
 
   ///  The maximum precise value representable in a double. Since IEE754
   ///  double-precision numbers allow 53 bits of mantissa, the value is equal to
   ///  2^53 - 1.  This provides <i>almost</i> 16 decimal digits of precision.
-  final static double maximumPreciseValue = 9007199254740992.0;
+  static final double maximumPreciseValue = 9007199254740992.0;
 
   /// The type of PrecisionModel this represents.
-  private Type modelType;
+  /**private */ _Type modelType;
   /// The scale factor which determines the number of decimal places in fixed precision.
-  private double scale;
+  /**private */ double scale;
   /// If non-zero, the precise grid size specified.
   /// In this case, the scale is also valid and is computed from the grid size.
   /// If zero, the scale is used to compute the grid size where needed.
-  private double gridSize;
+  /**private */ double gridSize;
 
   /// Creates a <code>PrecisionModel</code> with a default precision
   /// of FLOATING.
@@ -148,7 +149,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
   /// If the model type is FIXED the scale factor will default to 1.
   ///
   /// @param modelType the type of the precision model
-  PrecisionModel(Type modelType)
+  PrecisionModel(_Type modelType)
   {
     this.modelType = modelType;
     if (modelType == FIXED)
@@ -224,7 +225,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
     } else if (modelType == FLOATING_SINGLE) {
       maxSigDigits = 6;
     } else if (modelType == FIXED) {
-      maxSigDigits = 1 + (int) math.ceil(Math.log(getScale()) / math.log(10));
+      maxSigDigits = 1 + (math.log(getScale()) / math.log(10)).ceil();
     }
     return maxSigDigits;
   }
@@ -261,13 +262,13 @@ class PrecisionModel implements /** Serializable, */  Comparable
   /// Gets the type of this precision model
   /// @return the type of this precision model
   /// @see Type
-  Type getType()
+  _Type getType()
   {
     return modelType;
   }
   ///  Sets the multiplying factor used to obtain a precise coordinate.
   /// This method is private because PrecisionModel is an immutable (value) type.
-  private void setScale(double scale)
+  /**private */ void setScale(double scale)
   {
     /**
      * A negative scale indicates the grid size is being set.
@@ -379,10 +380,10 @@ class PrecisionModel implements /** Serializable, */  Comparable
   	}
   	if (modelType == FIXED) {
   	  if (gridSize > 0) {
-  	    return math.round(val / gridSize) * gridSize;
+  	    return (val / gridSize).roundToDouble() * gridSize;
   	  }
   	  else {
-  	    return math.round(val * scale) / scale;
+  	    return (val * scale).roundToDouble() / scale;
   	  }
   	}
   	// modelType == FLOATING - no rounding necessary
@@ -408,16 +409,16 @@ class PrecisionModel implements /** Serializable, */  Comparable
   	} else if (modelType == FLOATING_SINGLE) {
   		description = "Floating-Single";
   	} else if (modelType == FIXED) {
-  		description = "Fixed (Scale=" + getScale() + ")";
+  		description = "Fixed (Scale= ${getScale()})";
   	}
   	return description;
   }
 
   bool equals(Object other) {
-    if (! (other is PrecisionModel)) {
+    if (other is! PrecisionModel) {
       return false;
     }
-    PrecisionModel otherPrecisionModel = (PrecisionModel) other;
+    PrecisionModel otherPrecisionModel = other;
     return modelType == otherPrecisionModel.modelType
         && scale == otherPrecisionModel.scale;
   }
@@ -425,11 +426,11 @@ class PrecisionModel implements /** Serializable, */  Comparable
   /* (non-Javadoc)
    * @see java.lang.Object#hashCode()
    */
-  @Override
-  int hashCode() {
-    final int prime = 31;
+  @override
+  int get hashCode {
+    const int prime = 31;
     int result = 1;
-    result = prime * result + ((modelType == null) ? 0 : modelType.hashCode());
+    result = prime * result + ((modelType == null) ? 0 : modelType.hashCode);
     long temp;
     temp = Double.doubleToLongBits(scale);
     result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -469,6 +470,12 @@ class PrecisionModel implements /** Serializable, */  Comparable
 //    }
 //    Assert.shouldNeverReachHere("Unknown Precision Model type encountered");
 //    return 0;
+  }
+  
+  @override
+  bool operator ==(Object other) {
+    // TODO: implement ==
+    return super == other;
   }
 }
 

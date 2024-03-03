@@ -54,8 +54,8 @@ abstract class CoordinateArrays {
       return 0; // unknown, assume default
     }
     int measures = 0;
-    for (Coordinate coordinate : pts) {
-      measures = math.max(measures, Coordinates.measures(coordinate));
+    for (Coordinate coordinate in pts) {
+      measures = max(measures, Coordinates.measures(coordinate));
     }
     return measures;
   }
@@ -69,47 +69,59 @@ abstract class CoordinateArrays {
   /// </p>
   ///
   /// @param array Modified in place to coordinates of consistent dimension and measures.
-  static void enforceConsistency(List<Coordinate> array)
-  {
-    if (array == null) {
-      return;
-    }
-    // step one check
-    int maxDimension = -1;
-    int maxMeasures = -1;
-    bool isConsistent = true;
-    for (int i = 0; i < array.length; i++) {
-      Coordinate coordinate = array[i];
-      if (coordinate != null) {
-        int d = Coordinates.dimension(coordinate);
-        int m = Coordinates.measures(coordinate);
-        if( maxDimension == -1){
-           maxDimension = d;
-           maxMeasures = m;
-           continue;
-        }
-        if( d != maxDimension || m != maxMeasures ){
-          isConsistent = false;
-          maxDimension = math.max(maxDimension, d);
-          maxMeasures = math.max(maxMeasures, m);
-        }
-      }
-    }
-    if (!isConsistent) {
-      // step two fix
-      Coordinate sample = Coordinates.create(maxDimension, maxMeasures);
-      Class<?> type = sample.getClass();
+  // TODO: ruier edit.
+  // static void enforceConsistency(List<Coordinate> array)
+  // {
+  //   // if (array == null) {
+  //   //   return;
+  //   // }
+  //   // step one check
+  //   int maxDimension = -1;
+  //   int maxMeasures = -1;
+  //   bool isConsistent = true;
+  //   for (int i = 0; i < array.length; i++) {
+  //     Coordinate coordinate = array[i];
+  //     if (coordinate != null) {
+  //       int d = Coordinates.dimension(coordinate);
+  //       int m = Coordinates.measures(coordinate);
+  //       if( maxDimension == -1){
+  //          maxDimension = d;
+  //          maxMeasures = m;
+  //          continue;
+  //       }
+  //       if( d != maxDimension || m != maxMeasures ){
+  //         isConsistent = false;
+  //         maxDimension = max(maxDimension, d);
+  //         maxMeasures = max(maxMeasures, m);
+  //       }
+  //     }
+  //   }
+  //   if (!isConsistent) {
+  //     // step two fix
+  //     Coordinate sample = Coordinates.create(maxDimension, maxMeasures);
+  //     Type type = sample.runtimeType;
 
-      for (int i = 0; i < array.length; i++) {
-        Coordinate coordinate = array[i];
-        if (coordinate != null && !coordinate.getClass().equals(type)) {
-          Coordinate duplicate = Coordinates.create(maxDimension, maxMeasures);
-          duplicate.setCoordinate(coordinate);
-          array[i] = duplicate;
-        }
-      }
-    }
-  }
+  //     for (int i = 0; i < array.length; i++) {
+  //       Coordinate coordinate = array[i];
+  //       if (coordinate != null && coordinate.runtimeType !=type) {
+  //         Coordinate duplicate = Coordinates.create(maxDimension, maxMeasures);
+  //         duplicate.setCoordinate(coordinate);
+  //         array[i] = duplicate;
+  //       }
+  //     }
+  //     // Coordinate sample = Coordinates.create(maxDimension, maxMeasures);
+  //     // Class<?> type = sample.getClass();
+
+  //     // for (int i = 0; i < array.length; i++) {
+  //     //   Coordinate coordinate = array[i];
+  //     //   if (coordinate != null && !coordinate.getClass().equals(type)) {
+  //     //     Coordinate duplicate = Coordinates.create(maxDimension, maxMeasures);
+  //     //     duplicate.setCoordinate(coordinate);
+  //     //     array[i] = duplicate;
+  //     //   }
+  //     // }
+  //   }
+  // }
 
   /// Utility method ensuring array contents are of the specified dimension and measures.
   /// <p>
@@ -121,38 +133,39 @@ abstract class CoordinateArrays {
   /// @param dimension
   /// @param measures
   /// @return array returned, or copy created if required to enforce consistency.
-  static List<Coordinate> enforceConsistency(List<Coordinate> array,int dimension, int measures)
-  {
-    Coordinate sample = Coordinates.create(dimension,measures);
-    Class<?> type = sample.getClass();
-    bool isConsistent = true;
-    for (int i = 0; i < array.length; i++) {
-      Coordinate coordinate = array[i];
-      if (coordinate != null && !coordinate.getClass().equals(type)) {
-        isConsistent = false;
-        break;
-      }
-    }
-    if (isConsistent) {
-      return array;
-    }
-    else {
-      Class<? extends Coordinate> coordinateType = sample.getClass();
-      Coordinate copy[] = (List<Coordinate>) Array.newInstance(coordinateType, array.length);
-      for (int i = 0; i < copy.length; i++) {
-        Coordinate coordinate = array[i];
-        if (coordinate != null && !coordinate.getClass().equals(type)) {
-          Coordinate duplicate = Coordinates.create(dimension,measures);
-          duplicate.setCoordinate(coordinate);
-          copy[i] = duplicate;
-        }
-        else {
-          copy[i] = coordinate;
-        }
-      }
-      return copy;
-    }
-  }
+  // TODO: ruier edit.
+  // static List<Coordinate> enforceConsistency(List<Coordinate> array,int dimension, int measures)
+  // {
+  //   Coordinate sample = Coordinates.create(dimension,measures);
+  //   Class<?> type = sample.getClass();
+  //   bool isConsistent = true;
+  //   for (int i = 0; i < array.length; i++) {
+  //     Coordinate coordinate = array[i];
+  //     if (coordinate != null && !coordinate.getClass().equals(type)) {
+  //       isConsistent = false;
+  //       break;
+  //     }
+  //   }
+  //   if (isConsistent) {
+  //     return array;
+  //   }
+  //   else {
+  //     Class<? extends Coordinate> coordinateType = sample.getClass();
+  //     Coordinate copy[] = (List<Coordinate>) Array.newInstance(coordinateType, array.length);
+  //     for (int i = 0; i < copy.length; i++) {
+  //       Coordinate coordinate = array[i];
+  //       if (coordinate != null && !coordinate.getClass().equals(type)) {
+  //         Coordinate duplicate = Coordinates.create(dimension,measures);
+  //         duplicate.setCoordinate(coordinate);
+  //         copy[i] = duplicate;
+  //       }
+  //       else {
+  //         copy[i] = coordinate;
+  //       }
+  //     }
+  //     return copy;
+  //   }
+  // }
 
   /// Tests whether an array of {@link Coordinate}s forms a ring,
   /// by checking length and closure.
@@ -172,11 +185,12 @@ abstract class CoordinateArrays {
   /// @param pts     an array of {@link Coordinate}s to test the input points against
   /// @return a {@link Coordinate} from <code>testPts</code> which is not in <code>pts</code>, '
   /// or <code>null</code>
-  static Coordinate ptNotInList(List<Coordinate> testPts, List<Coordinate> pts) {
+  static Coordinate? ptNotInList(List<Coordinate> testPts, List<Coordinate> pts) {
     for (int i = 0; i < testPts.length; i++) {
       Coordinate testPt = testPts[i];
-      if (CoordinateArrays.indexOf(testPt, pts) < 0)
+      if (CoordinateArrays.indexOf(testPt, pts) < 0) {
         return testPt;
+      }
     }
     return null;
   }
@@ -192,8 +206,9 @@ abstract class CoordinateArrays {
     int i = 0;
     while (i < pts1.length && i < pts2.length) {
       int compare = pts1[i].compareTo(pts2[i]);
-      if (compare != 0)
+      if (compare != 0) {
         return compare;
+      }
       i++;
     }
     // handle situation when arrays are of different length
@@ -236,8 +251,9 @@ abstract class CoordinateArrays {
       int j = pts.length - 1 - i;
       // skip equal points on both ends
       int comp = pts[i].compareTo(pts[j]);
-      if (comp != 0)
+      if (comp != 0) {
         return comp;
+      }
     }
     // array must be a palindrome - defined to be in positive direction
     return 1;
@@ -253,8 +269,9 @@ abstract class CoordinateArrays {
     for (int i = 0; i < pts1.length; i++) {
       Coordinate p1 = pts1[i];
       Coordinate p2 = pts2[pts1.length - i - 1];
-      if (p1.compareTo(p2) != 0)
+      if (p1.compareTo(p2) != 0) {
         return false;
+      }
     }
     return true;
   }
@@ -280,8 +297,9 @@ abstract class CoordinateArrays {
 
       int forwardComp = CoordinateArrays.compare(pts1, pts2);
       bool isEqualRev = isEqualReversed(pts1, pts2);
-      if (isEqualRev)
+      if (isEqualRev) {
         return 0;
+      }
       return forwardComp;
     }
 
@@ -302,8 +320,9 @@ abstract class CoordinateArrays {
 
       for (int i = 0; i < pts1.length; i++) {
         int comparePt = pts1[i1].compareTo(pts2[i2]);
-        if (comparePt != 0)
+        if (comparePt != 0) {
           return comparePt;
+        }
         i1 += dir1;
         i2 += dir2;
       }
@@ -385,8 +404,9 @@ abstract class CoordinateArrays {
   /// @see Coordinate#isValid()
   static bool hasRepeatedOrInvalidPoints(List<Coordinate> coord) {
     for (int i = 1; i < coord.length; i++) {
-      if (! coord[i].isValid())
+      if (! coord[i].isValid()) {
         return true;
+      }
       if (coord[i - 1].equals(coord[i])) {
         return true;
       }
@@ -434,8 +454,9 @@ abstract class CoordinateArrays {
 
   /// Reverses the coordinates in an array in-place.
   static void reverse(List<Coordinate> coord) {
-    if (coord.length <= 1)
+    if (coord.length <= 1) {
       return;
+    }
     
     int last = coord.length - 1;
     int mid = last / 2;
@@ -476,8 +497,9 @@ abstract class CoordinateArrays {
     if (coord1 == null || coord2 == null) return false;
     if (coord1.length != coord2.length) return false;
     for (int i = 0; i < coord1.length; i++) {
-      if (coordinateComparator.compare(coord1[i], coord2[i]) != 0)
+      if (coordinateComparator.compare(coord1[i], coord2[i]) != 0) {
         return false;
+      }
     }
     return true;
   }
@@ -538,8 +560,9 @@ abstract class CoordinateArrays {
 
       // fill in values
       int j;
-      for (j = 0; j < last; j++)
+      for (j = 0; j < last; j++) {
         newCoordinates[j] = coordinates[(i + j) % last];
+      }
 
       // Fix the ring (first == last)
       newCoordinates[j] = newCoordinates[0].copy();
@@ -613,8 +636,9 @@ abstract class CoordinateArrays {
   static List<Coordinate> intersection(List<Coordinate> coordinates, Envelope env) {
     CoordinateList coordList = new CoordinateList();
     for (int i = 0; i < coordinates.length; i++) {
-      if (env.intersects(coordinates[i]))
+      if (env.intersects(coordinates[i])) {
         coordList.add(coordinates[i], true);
+      }
     }
     return coordList.toCoordinateArray();
   }

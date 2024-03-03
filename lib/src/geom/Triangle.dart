@@ -16,6 +16,11 @@
 // import org.locationtech.jts.algorithm.Orientation;
 // import org.locationtech.jts.math.DD;
 
+import 'package:jtscore4dart/src/algorithm/Angle.dart';
+import 'package:jtscore4dart/src/algorithm/HCoordinate.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
 /// Represents a planar triangle, and provides methods for calculating various
 /// properties of triangles.
 /// 
@@ -36,12 +41,15 @@ class Triangle
   /// @return true if the triangle is acute
   static bool isAcute(Coordinate a, Coordinate b, Coordinate c)
   {
-    if (!Angle.isAcute(a, b, c))
+    if (!Angle.isAcute(a, b, c)) {
       return false;
-    if (!Angle.isAcute(b, c, a))
+    }
+    if (!Angle.isAcute(b, c, a)) {
       return false;
-    if (!Angle.isAcute(c, a, b))
+    }
+    if (!Angle.isAcute(c, a, b)) {
       return false;
+    }
     return true;
   }
   
@@ -86,10 +94,10 @@ class Triangle
     // returns the perpendicular bisector of the line segment ab
     double dx = b.x - a.x;
     double dy = b.y - a.y;
-    HCoordinate l1 = new HCoordinate(a.x + dx / 2.0, a.y + dy / 2.0, 1.0);
-    HCoordinate l2 = new HCoordinate(a.x - dy + dx / 2.0, a.y + dx + dy / 2.0,
+    HCoordinate l1 = HCoordinate(a.x + dx / 2.0, a.y + dy / 2.0, 1.0);
+    HCoordinate l2 = HCoordinate(a.x - dy + dx / 2.0, a.y + dx + dy / 2.0,
         1.0);
-    return new HCoordinate(l1, l2);
+    return HCoordinate(l1, l2);
   }
 
   /// Computes the radius of the circumcircle of a triangle.
@@ -104,9 +112,10 @@ class Triangle
     double A = a.distance(b);
     double B = b.distance(c);
     double C = c.distance(a);
-    double area = area(a, b, c);
-    if (area == 0.0)
+    double _area = area(a, b, c);
+    if (_area == 0.0) {
       return Double.POSITIVE_INFINITY;
+    }
     return (A * B * C) / (4 * area);
   }
   
@@ -315,10 +324,12 @@ class Triangle
     double lenBC = b.distance(c);
     double lenCA = c.distance(a);
     double maxLen = lenAB;
-    if (lenBC > maxLen)
+    if (lenBC > maxLen) {
       maxLen = lenBC;
-    if (lenCA > maxLen)
+    }
+    if (lenCA > maxLen) {
       maxLen = lenCA;
+    }
     return maxLen;
   }
 
@@ -362,8 +373,7 @@ class Triangle
   /// @see #signedArea(Coordinate, Coordinate, Coordinate)
   static double area(Coordinate a, Coordinate b, Coordinate c)
   {
-    return Math
-        .abs(((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2);
+    return (((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2).abs();
   }
 
   /// Computes the signed 2D area of a triangle. The area value is positive if
@@ -619,8 +629,9 @@ class Triangle
   /// @return the computed Z-value (elevation) of the point
   double interpolateZ(Coordinate p)
   {
-    if (p == null)
+    if (p == null) {
       throw new ArgumentError("Supplied point is null.");
+    }
     return interpolateZ(p, this.p0, this.p1, this.p2);
   }
 

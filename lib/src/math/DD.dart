@@ -88,38 +88,38 @@
 /// 
 /// @author Martin Davis
 ///
-strictfp final class DD 
-  implements Serializable, Comparable, Cloneable
+/**strictfp */ final class DD 
+  implements Comparable /**,Serializable,  Cloneable */
 {
   /// The value nearest to the constant Pi.
-  static final DD PI = new DD(
+  static final DD PI = DD(
       3.141592653589793116e+00,
       1.224646799147353207e-16);
   
   /// The value nearest to the constant 2 * Pi. 
-  static final DD TWO_PI = new DD(
+  static final DD TWO_PI = DD(
       6.283185307179586232e+00,
       2.449293598294706414e-16);
   
   /// The value nearest to the constant Pi / 2.
-  static final DD PI_2 = new DD(
+  static final DD PI_2 = DD(
       1.570796326794896558e+00,
       6.123233995736766036e-17);
   
   /// The value nearest to the constant e (the natural logarithm base). 
-  static final DD E = new DD(
+  static final DD E = DD(
       2.718281828459045091e+00,
       1.445646891729250158e-16);
   
   /// A value representing the result of an operation which does not return a valid number.
-  static final DD NaN = new DD(double.nan, double.nan);
+  static final DD NaN = DD(double.nan, double.nan);
   
   /// The smallest representable relative difference between two {link @ DoubleDouble} values
   static final double EPS = 1.23259516440783e-32;  /* = 2^-106 */
   
-  private static DD createNaN()
+  /**private */ static DD createNaN()
   {
-    return new DD(double.nan, double.nan); 
+    return DD(double.nan, double.nan); 
   }
   
   /// Converts the string argument to a DoubleDouble number.
@@ -128,8 +128,9 @@ strictfp final class DD
   /// @return the extended precision version of the value
   /// @throws NumberFormatException if <tt>s</tt> is not a valid representation of a number
   static DD valueOf(String str) 
-  throws NumberFormatException
+ /** throws NumberFormatException */
   { 
+    
     return parse(str); 
     }
   
@@ -137,16 +138,16 @@ strictfp final class DD
   /// 
   /// @param x a numeric value
   /// @return the extended precision version of the value
-  static DD valueOf(double x) { return new DD(x); }
+  static DD valueOf(double x) { return DD(x); }
   
   /// The value to split a double-precision value on during multiplication
-  private static final double SPLIT = 134217729.0D; // 2^27+1, for IEEE double
+  /**private */ static const double SPLIT = 134217729.0; // 2^27+1, for IEEE double
   
   /// The high-order component of the double-double precision value.
-  private double hi = 0.0;
+  /**private */ double hi = 0.0;
   
   /// The low-order component of the double-double precision value.
-  private double lo = 0.0;
+  /**private */ double lo = 0.0;
   
   /// Creates a new DoubleDouble with value 0.0.
   DD()
@@ -1175,7 +1176,7 @@ strictfp final class DD
   /// @return the value of the parsed number
   /// @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
   static DD parse(String str)
-    throws NumberFormatException
+    /**throws NumberFormatException */
   {
     int i = 0;
     int strlen = str.length();

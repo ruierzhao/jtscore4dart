@@ -56,7 +56,7 @@ class CommonBitsOp {
    */
   Geometry intersection(Geometry geom0, Geometry geom1)
   {
-    Geometry[] geom = removeCommonBits(geom0, geom1);
+    List<Geometry> geom = removeCommonBits(geom0, geom1);
     return computeResultPrecision(geom[0].intersection(geom[1]));
   }
 
@@ -68,7 +68,7 @@ class CommonBitsOp {
    */
   Geometry union(Geometry geom0, Geometry geom1)
   {
-    Geometry[] geom = removeCommonBits(geom0, geom1);
+    List<Geometry> geom = removeCommonBits(geom0, geom1);
     return computeResultPrecision(geom[0].union(geom[1]));
   }
 
@@ -80,7 +80,7 @@ class CommonBitsOp {
    */
   Geometry difference(Geometry geom0, Geometry geom1)
   {
-    Geometry[] geom = removeCommonBits(geom0, geom1);
+    List<Geometry> geom = removeCommonBits(geom0, geom1);
     return computeResultPrecision(geom[0].difference(geom[1]));
   }
 
@@ -93,7 +93,7 @@ class CommonBitsOp {
    */
   Geometry symDifference(Geometry geom0, Geometry geom1)
   {
-    Geometry[] geom = removeCommonBits(geom0, geom1);
+    List<Geometry> geom = removeCommonBits(geom0, geom1);
     return computeResultPrecision(geom[0].symDifference(geom[1]));
   }
 
@@ -149,7 +149,7 @@ class CommonBitsOp {
    * @return an array containing copies
    * of the input Geometry's with common bits removed
    */
-  private Geometry[] removeCommonBits(Geometry geom0, Geometry geom1)
+  private List<Geometry> removeCommonBits(Geometry geom0, Geometry geom1)
   {
     cbr = new CommonBitsRemover();
     cbr.add(geom0);

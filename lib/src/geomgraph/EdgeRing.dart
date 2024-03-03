@@ -76,7 +76,7 @@ abstract class EdgeRing {
 
   Polygon toPolygon(GeometryFactory geometryFactory)
   {
-    LinearRing[] holeLR = new LinearRing[holes.size()];
+    List<LinearRing> holeLR = new LinearRing[holes.size()];
     for (int i = 0; i < holes.size(); i++) {
       holeLR[i] = ((EdgeRing) holes.get(i)).getLinearRing();
     }

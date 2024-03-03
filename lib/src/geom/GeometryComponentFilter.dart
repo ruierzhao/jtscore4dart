@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
+// import 'package:jtscore4dart/src/geom/Geometry.dart';
 
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 
@@ -19,10 +19,10 @@ import 'package:jtscore4dart/src/geom/Geometry.dart';
 /// filter to a geometry.
 /// The filter is applied to every component of a geometry,
 /// as well as to the geometry itself.
-/// (For instance, in a {@link Polygon}, 
+/// (For instance, in a {@link Polygon},
 /// all the {@link LinearRing} components for the shell and holes are visited,
 /// as well as the polygon itself.
-/// In order to process only atomic components, 
+/// In order to process only atomic components,
 /// the {@link #filter} method code must
 /// explicitly handle only {@link LineString}s, {@link LinearRing}s and {@link Point}s.
 /// <p>
@@ -35,10 +35,16 @@ import 'package:jtscore4dart/src/geom/Geometry.dart';
 ///
 ///@version 1.7
 abstract class GeometryComponentFilter {
-
   /// Performs an operation with or on a geometry component.
   ///
   /// @param geom a component of the geometry to which the filter is applied.
   void filter(Geometry geom);
 }
 
+// TODO: ruier edit.
+class GeometryComponentFilterImpl implements GeometryComponentFilter {
+  @override
+  void filter(Geometry geom) {
+    geom.geometryChangedAction();
+  }
+}

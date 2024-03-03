@@ -17,6 +17,8 @@
 
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
 /// Specifies the precision model of the {@link Coordinate}s in a {@link Geometry}.
 /// In other words, specifies the grid of allowable points for a <code>Geometry</code>.
 /// A precision model may be <b>floating</b> ({@link #FLOATING} or {@link #FLOATING_SINGLE}), 

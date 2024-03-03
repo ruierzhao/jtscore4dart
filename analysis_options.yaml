@@ -36,12 +36,13 @@ linter:
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
 
+
 # 排除文件
 analyzer: 
-  # exclude:
+  exclude:
+    - test/test_java/**
   #   - lib/client.dart
   #   - lib/server/*.g.dart
-  #   - test/_data/**
   errors:
     missing_return: warning
     constant_identifier_names: ignore # 忽略常量大小写

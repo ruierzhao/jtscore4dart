@@ -106,7 +106,7 @@ class ShapeReader
         holes.add(hole);
         seqIndex++;
       }
-      LinearRing[] holeArray = GeometryFactory.toLinearRingArray(holes);
+      List<LinearRing> holeArray = GeometryFactory.toLinearRingArray(holes);
       polys.add(geometryFactory.createPolygon(shell, holeArray));
     }
     return geometryFactory.buildGeometry(polys);

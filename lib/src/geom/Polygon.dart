@@ -72,7 +72,7 @@ class Polygon
   ///      <code>Polygon</code>
   /// @deprecated Use GeometryFactory instead
   Polygon(LinearRing shell, PrecisionModel precisionModel, int SRID) {
-    this(shell, new LinearRing[]{}, new GeometryFactory(precisionModel, SRID));
+    this(shell, new List<LinearRing>{}, new GeometryFactory(precisionModel, SRID));
   }
 
   ///  Constructs a <code>Polygon</code> with the given exterior boundary and
@@ -89,7 +89,7 @@ class Polygon
   ///@param  SRID            the ID of the Spatial Reference System used by this
   ///      <code>Polygon</code>
   /// @deprecated Use GeometryFactory instead
-  Polygon(LinearRing shell, LinearRing[] holes, PrecisionModel precisionModel, int SRID) {
+  Polygon(LinearRing shell, List<LinearRing> holes, PrecisionModel precisionModel, int SRID) {
       this(shell, holes, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -102,13 +102,13 @@ class Polygon
   ///@param  holes           the inner boundaries of the new <code>Polygon</code>
   ///      , or <code>null</code> or empty <code>LinearRing</code>s if the empty
   ///      geometry is to be created.
-  Polygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory) {
+  Polygon(LinearRing shell, List<LinearRing> holes, GeometryFactory factory) {
     super(factory);
     if (shell == null) {
       shell = getFactory().createLinearRing();
     }
     if (holes == null) {
-      holes = new LinearRing[]{};
+      holes = new List<LinearRing>{};
     }
     if (hasNullElements(holes)) {
       throw new ArgumentError("holes must not contain null elements");
@@ -248,7 +248,7 @@ class Polygon
     if (isEmpty()) {
       return getFactory().createMultiLineString();
     }
-    LinearRing[] rings = new LinearRing[holes.length + 1];
+    List<LinearRing> rings = new LinearRing[holes.length + 1];
     rings[0] = shell;
     for (int i = 0; i < holes.length; i++) {
       rings[i + 1] = holes[i];
@@ -329,7 +329,7 @@ class Polygon
 
   protected Polygon copyInternal() {
     LinearRing shellCopy = (LinearRing) shell.copy();
-    LinearRing[] holeCopies = new LinearRing[this.holes.length];
+    List<LinearRing> holeCopies = new LinearRing[this.holes.length];
     for (int i = 0; i < holes.length; i++) {
     	holeCopies[i] = (LinearRing) holes[i].copy();
     }
@@ -423,7 +423,7 @@ class Polygon
   protected Polygon reverseInternal()
   {
     LinearRing shell = (LinearRing) getExteriorRing().reverse();
-    LinearRing[] holes = new LinearRing[getNumInteriorRing()];
+    List<LinearRing> holes = new LinearRing[getNumInteriorRing()];
     for (int i = 0; i < holes.length; i++) {
       holes[i] = (LinearRing) getInteriorRingN(i).reverse();
     }

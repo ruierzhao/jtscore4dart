@@ -856,7 +856,7 @@ class QuadEdgeSubdivision {
 	 */
 	Geometry getEdges(GeometryFactory geomFact) {
 		List quadEdges = getPrimaryEdges(false);
-		LineString[] edges = new LineString[quadEdges.size()];
+		List<LineString> edges = new LineString[quadEdges.size()];
 		int i = 0;
 		for (Iterator it = quadEdges.iterator(); it.hasNext();) {
 			QuadEdge qe = (QuadEdge) it.next();
@@ -875,7 +875,7 @@ class QuadEdgeSubdivision {
 	 */
 	Geometry getTriangles(GeometryFactory geomFact) {
 		List triPtsList = getTriangleCoordinates(false);
-		Polygon[] tris = new Polygon[triPtsList.size()];
+		List<Polygon> tris = new Polygon[triPtsList.size()];
 		int i = 0;
 		for (Iterator it = triPtsList.iterator(); it.hasNext();) {
 			List<Coordinate> triPt = (List<Coordinate>) it.next();
@@ -895,7 +895,7 @@ class QuadEdgeSubdivision {
 	 */
   Geometry getTriangles(bool includeFrame, GeometryFactory geomFact) {
     List triPtsList = getTriangleCoordinates(includeFrame);
-    Polygon[] tris = new Polygon[triPtsList.size()];
+    List<Polygon> tris = new Polygon[triPtsList.size()];
     int i = 0;
     for (Iterator it = triPtsList.iterator(); it.hasNext();) {
       List<Coordinate> triPt = (List<Coordinate>) it.next();

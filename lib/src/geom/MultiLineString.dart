@@ -34,7 +34,7 @@ class MultiLineString
   ///@param  SRID            the ID of the Spatial Reference System used by this
   ///      <code>MultiLineString</code>
   /// @deprecated Use GeometryFactory instead
-  MultiLineString(LineString[] lineStrings, PrecisionModel precisionModel, int SRID) {
+  MultiLineString(List<LineString> lineStrings, PrecisionModel precisionModel, int SRID) {
     super(lineStrings, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -45,7 +45,7 @@ class MultiLineString
   ///            or <code>null</code> or an empty array to create the empty
   ///            geometry. Elements may be empty <code>LineString</code>s,
   ///            but not <code>null</code>s.
-  MultiLineString(LineString[] lineStrings, GeometryFactory factory) {
+  MultiLineString(List<LineString> lineStrings, GeometryFactory factory) {
     super(lineStrings, factory);
   }
 
@@ -102,7 +102,7 @@ class MultiLineString
   }
 
   protected MultiLineString reverseInternal() {
-    LineString[] lineStrings = new LineString[this.geometries.length];
+    List<LineString> lineStrings = new LineString[this.geometries.length];
     for (int i = 0; i < lineStrings.length; i++) {
       lineStrings[i] = (LineString) this.geometries[i].reverse();
     }
@@ -110,7 +110,7 @@ class MultiLineString
   }
   
   protected MultiLineString copyInternal() {
-    LineString[] lineStrings = new LineString[this.geometries.length];
+    List<LineString> lineStrings = new LineString[this.geometries.length];
     for (int i = 0; i < lineStrings.length; i++) {
       lineStrings[i] = (LineString) this.geometries[i].copy();
     }

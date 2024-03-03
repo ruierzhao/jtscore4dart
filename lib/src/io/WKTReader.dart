@@ -895,8 +895,8 @@ S  */
       holes.add(hole);
       nextToken = getNextCloserOrComma(tokenizer);
     }
-    LinearRing[] array = new LinearRing[holes.size()];
-    return geometryFactory.createPolygon(shell, (LinearRing[]) holes.toArray(array));
+    List<LinearRing> array = new LinearRing[holes.size()];
+    return geometryFactory.createPolygon(shell, (List<LinearRing>) holes.toArray(array));
   }
 
   /**
@@ -923,8 +923,8 @@ S  */
       nextToken = getNextCloserOrComma(tokenizer);
     } while (nextToken.equals(COMMA));
 
-    LineString[] array = new LineString[lineStrings.size()];
-    return geometryFactory.createMultiLineString((LineString[]) lineStrings.toArray(array));
+    List<LineString> array = new LineString[lineStrings.size()];
+    return geometryFactory.createMultiLineString((List<LineString>) lineStrings.toArray(array));
   }
 
   /**
@@ -949,8 +949,8 @@ S  */
       polygons.add(polygon);
       nextToken = getNextCloserOrComma(tokenizer);
     } while (nextToken.equals(COMMA));
-    Polygon[] array = new Polygon[polygons.size()];
-    return geometryFactory.createMultiPolygon((Polygon[]) polygons.toArray(array));
+    List<Polygon> array = new Polygon[polygons.size()];
+    return geometryFactory.createMultiPolygon((List<Polygon>) polygons.toArray(array));
   }
 
   /**
@@ -978,8 +978,8 @@ S  */
       nextToken = getNextCloserOrComma(tokenizer);
     } while (nextToken.equals(COMMA));
 
-    Geometry[] array = new Geometry[geometries.size()];
-    return geometryFactory.createGeometryCollection((Geometry[]) geometries.toArray(array));
+    List<Geometry> array = new Geometry[geometries.size()];
+    return geometryFactory.createGeometryCollection((List<Geometry>) geometries.toArray(array));
   }
 
 }

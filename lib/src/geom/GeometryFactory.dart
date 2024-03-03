@@ -19,6 +19,16 @@
 // import org.locationtech.jts.geom.util.GeometryEditor;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceFactory.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import 'impl/CoordinateArraySequenceFactory.dart';
+
 /// Supplies a set of utility methods for building Geometry objects from lists
 /// of Coordinates.
 /// <p>
@@ -29,13 +39,13 @@
 /// Instances of this class are thread-safe.
 ///
 /// @version 1.7
-class GeometryFactory
-    implements Serializable
-{
-  private static final long serialVersionUID = -6820524753094095635L;
-  private PrecisionModel precisionModel;
+class GeometryFactory{
+  // private static final long serialVersionUID = -6820524753094095635L;
+  /**private */ PrecisionModel? precisionModel;
 
-  private CoordinateSequenceFactory coordinateSequenceFactory;
+  /**private */ CoordinateSequenceFactory? coordinateSequenceFactory;
+  
+  /** private */ int SRID;
 
 
   static Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
@@ -44,48 +54,19 @@ class GeometryFactory
     return exemplar.getFactory().createPoint(coord);
   }
 
-  /// Constructs a GeometryFactory that generates Geometries having the given
-  /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
-  GeometryFactory(PrecisionModel precisionModel, int SRID,
-                         CoordinateSequenceFactory coordinateSequenceFactory) {
-      this.precisionModel = precisionModel;
-      this.coordinateSequenceFactory = coordinateSequenceFactory;
-      this.SRID = SRID;
-  }
 
-  /// Constructs a GeometryFactory that generates Geometries having the given
-  /// CoordinateSequence implementation, a double-precision floating PrecisionModel and a
-  /// spatial-reference ID of 0.
-  GeometryFactory(CoordinateSequenceFactory coordinateSequenceFactory) {
-    this(new PrecisionModel(), 0, coordinateSequenceFactory);
-  }
+  // TODO: ruier edit.
+    GeometryFactory({
+      this.precisionModel,
+      this.SRID = 0 ,
+      this.coordinateSequenceFactory,
+      }) 
+      {
+        precisionModel ??= PrecisionModel();
+        coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
+      }
 
-  /// Constructs a GeometryFactory that generates Geometries having the given
-  /// {@link PrecisionModel} and the default CoordinateSequence
-  /// implementation.
-  ///
-  /// @param precisionModel the PrecisionModel to use
-  GeometryFactory(PrecisionModel precisionModel) {
-    this(precisionModel, 0, getDefaultCoordinateSequenceFactory());
-  }
-
-  /// Constructs a GeometryFactory that generates Geometries having the given
-  /// {@link PrecisionModel} and spatial-reference ID, and the default CoordinateSequence
-  /// implementation.
-  ///
-  /// @param precisionModel the PrecisionModel to use
-  /// @param SRID the SRID to use
-  GeometryFactory(PrecisionModel precisionModel, int SRID) {
-    this(precisionModel, SRID, getDefaultCoordinateSequenceFactory());
-  }
-
-  /// Constructs a GeometryFactory that generates Geometries having a floating
-  /// PrecisionModel and a spatial-reference ID of 0.
-  GeometryFactory() {
-    this(new PrecisionModel(), 0);
-  }
-
-  private static CoordinateSequenceFactory getDefaultCoordinateSequenceFactory()
+  /**private */ static CoordinateSequenceFactory getDefaultCoordinateSequenceFactory()
   {
     return CoordinateArraySequenceFactory.instance();
   }
@@ -94,73 +75,73 @@ class GeometryFactory
   ///
   ///@param  points  the <code>List</code> of Points to convert
   ///@return         the <code>List</code> in array format
-  static Point[] toPointArray(Collection points) {
-    Point[] pointArray = new Point[points.size()];
-    return (Point[]) points.toArray(pointArray);
+  static List<Point> toPointArray(Collection points) {
+    List<Point> pointArray = new Point[points.size()];
+    return (List<Point>) points.toArray(pointArray);
   }
 
   ///  Converts the <code>List</code> to an array.
   ///
   ///@param  geometries  the list of <code>Geometry's</code> to convert
   ///@return            the <code>List</code> in array format
-  static Geometry[] toGeometryArray(Collection geometries) {
+  static List<Geometry> toGeometryArray(Collection geometries) {
     if (geometries == null) return null;
-    Geometry[] geometryArray = new Geometry[geometries.size()];
-    return (Geometry[]) geometries.toArray(geometryArray);
+    List<Geometry> geometryArray = new Geometry[geometries.size()];
+    return (List<Geometry>) geometries.toArray(geometryArray);
   }
 
   ///  Converts the <code>List</code> to an array.
   ///
   ///@param  linearRings  the <code>List</code> of LinearRings to convert
   ///@return              the <code>List</code> in array format
-  static LinearRing[] toLinearRingArray(Collection linearRings) {
-    LinearRing[] linearRingArray = new LinearRing[linearRings.size()];
-    return (LinearRing[]) linearRings.toArray(linearRingArray);
+  static List<LinearRing> toLinearRingArray(Collection linearRings) {
+    List<LinearRing> linearRingArray = new LinearRing[linearRings.size()];
+    return (List<LinearRing>) linearRings.toArray(linearRingArray);
   }
 
   ///  Converts the <code>List</code> to an array.
   ///
   ///@param  lineStrings  the <code>List</code> of LineStrings to convert
   ///@return              the <code>List</code> in array format
-  static LineString[] toLineStringArray(Collection lineStrings) {
-    LineString[] lineStringArray = new LineString[lineStrings.size()];
-    return (LineString[]) lineStrings.toArray(lineStringArray);
+  static List<LineString> toLineStringArray(Collection lineStrings) {
+    List<LineString> lineStringArray = new LineString[lineStrings.size()];
+    return (List<LineString>) lineStrings.toArray(lineStringArray);
   }
 
   ///  Converts the <code>List</code> to an array.
   ///
   ///@param  polygons  the <code>List</code> of Polygons to convert
   ///@return           the <code>List</code> in array format
-  static Polygon[] toPolygonArray(Collection polygons) {
-    Polygon[] polygonArray = new Polygon[polygons.size()];
-    return (Polygon[]) polygons.toArray(polygonArray);
+  static List<Polygon> toPolygonArray(Collection polygons) {
+    List<Polygon> polygonArray = new Polygon[polygons.size()];
+    return (List<Polygon>) polygons.toArray(polygonArray);
   }
 
   ///  Converts the <code>List</code> to an array.
   ///
   ///@param  multiPolygons  the <code>List</code> of MultiPolygons to convert
   ///@return                the <code>List</code> in array format
-  static MultiPolygon[] toMultiPolygonArray(Collection multiPolygons) {
-    MultiPolygon[] multiPolygonArray = new MultiPolygon[multiPolygons.size()];
-    return (MultiPolygon[]) multiPolygons.toArray(multiPolygonArray);
+  static MultiList<Polygon> toMultiPolygonArray(Collection multiPolygons) {
+    MultiList<Polygon> multiPolygonArray = new MultiPolygon[multiPolygons.size()];
+    return (MultiList<Polygon>) multiPolygons.toArray(multiPolygonArray);
   }
 
   ///  Converts the <code>List</code> to an array.
   ///
   ///@param  multiLineStrings  the <code>List</code> of MultiLineStrings to convert
   ///@return                   the <code>List</code> in array format
-  static MultiLineString[] toMultiLineStringArray(Collection multiLineStrings) {
-    MultiLineString[] multiLineStringArray = new MultiLineString[multiLineStrings.size()];
-    return (MultiLineString[]) multiLineStrings.toArray(multiLineStringArray);
+  static MultiList<LineString> toMultiLineStringArray(Collection multiLineStrings) {
+    MultiList<LineString> multiLineStringArray = new MultiLineString[multiLineStrings.size()];
+    return (MultiList<LineString>) multiLineStrings.toArray(multiLineStringArray);
   }
 
   ///  Converts the <code>List</code> to an array.
   ///
   ///@param  multiPoints  the <code>List</code> of MultiPoints to convert
   ///@return              the <code>List</code> in array format
-  static MultiPoint[] toMultiPointArray(Collection multiPoints) {
-    MultiPoint[] multiPointArray = new MultiPoint[multiPoints.size()];
-    return (MultiPoint[]) multiPoints.toArray(multiPointArray);
+  static List<MultiPoint> toMultiPointArray(Collection multiPoints) {
+    List<MultiPoint> multiPointArray = new MultiPoint[multiPoints.size()];
+    return (List<MultiPoint>) multiPoints.toArray(multiPointArray);
   }
 
   /// Creates a {@link Geometry} with the same extent as the given envelope.
@@ -180,8 +161,7 @@ class GeometryFactory
   ///@return an empty <code>Point</code> (for null <code>Envelope</code>s), 
   ///	a <code>Point</code> (when min x = max x and min y = max y) or a
   ///      <code>Polygon</code> (in all other cases)
-  Geometry toGeometry(Envelope envelope) 
-  {
+  Geometry toGeometry(Envelope envelope) {
   	// null envelope - return empty point geometry
     if (envelope.isNull()) {
       return createPoint();
@@ -189,7 +169,7 @@ class GeometryFactory
     
     // point?
     if (envelope.getMinX() == envelope.getMaxX() && envelope.getMinY() == envelope.getMaxY()) {
-      return createPoint(new Coordinate(envelope.getMinX(), envelope.getMinY()));
+      return createPoint(Coordinate(envelope.getMinX(), envelope.getMinY()));
     }
     
     // vertical or horizontal line?
@@ -202,13 +182,13 @@ class GeometryFactory
     }
 
     // create a CW ring for the polygon 
-    return createPolygon(createLinearRing(new List<Coordinate>{
-        new Coordinate(envelope.getMinX(), envelope.getMinY()),
-        new Coordinate(envelope.getMinX(), envelope.getMaxY()),
-        new Coordinate(envelope.getMaxX(), envelope.getMaxY()),
-        new Coordinate(envelope.getMaxX(), envelope.getMinY()),
-        new Coordinate(envelope.getMinX(), envelope.getMinY())
-        }), null);
+    return createPolygon(createLinearRing(List<Coordinate>[
+        Coordinate(envelope.getMinX(), envelope.getMinY()),
+        Coordinate(envelope.getMinX(), envelope.getMaxY()),
+        Coordinate(envelope.getMaxX(), envelope.getMaxY()),
+        Coordinate(envelope.getMaxX(), envelope.getMinY()),
+        Coordinate(envelope.getMinX(), envelope.getMinY())
+        ]), null);
   }
 
   /// Returns the PrecisionModel that Geometries created by this factory
@@ -256,7 +236,7 @@ class GeometryFactory
   /// 
   /// @param lineStrings LineStrings, each of which may be empty but not null
   /// @return the created MultiLineString
-  MultiLineString createMultiLineString(LineString[] lineStrings) {
+  MultiLineString createMultiLineString(List<LineString> lineStrings) {
   	return new MultiLineString(lineStrings, this);
   }
   
@@ -272,7 +252,7 @@ class GeometryFactory
   /// 
   /// @param geometries an array of Geometries, each of which may be empty but not null, or null
   /// @return the created GeometryCollection
-  GeometryCollection createGeometryCollection(Geometry[] geometries) {
+  GeometryCollection createGeometryCollection(List<Geometry> geometries) {
   	return new GeometryCollection(geometries, this);
   }
   
@@ -292,7 +272,7 @@ class GeometryFactory
   /// @param polygons
   ///            Polygons, each of which may be empty but not null
   /// @return the created MultiPolygon
-  MultiPolygon createMultiPolygon(Polygon[] polygons) {
+  MultiPolygon createMultiPolygon(List<Polygon> polygons) {
     return new MultiPolygon(polygons, this);
   }
   
@@ -373,7 +353,7 @@ class GeometryFactory
     if (coordinates == null) {
       return createMultiPoint(new Point[0]);
     }
-    Point[] points = new Point[coordinates.size()];
+   List<Point>points = new Point[coordinates.size()];
     for (int i = 0; i < coordinates.size(); i++) {
       CoordinateSequence ptSeq = getCoordinateSequenceFactory()
         .create(1, coordinates.getDimension(), coordinates.getMeasures());
@@ -395,7 +375,7 @@ class GeometryFactory
   ///            <code>null</code> or empty <code>LinearRing</code> s if
   ///            the empty geometry is to be created.
   /// @throws ArgumentError if a ring is invalid
-  Polygon createPolygon(LinearRing shell, LinearRing[] holes) {
+  Polygon createPolygon(LinearRing shell, List<LinearRing> holes) {
     return new Polygon(shell, holes, this);
   }
 
@@ -591,7 +571,6 @@ class GeometryFactory
     return SRID;
   }
 
-  private int SRID;
 
   CoordinateSequenceFactory getCoordinateSequenceFactory() {
     return coordinateSequenceFactory;

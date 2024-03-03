@@ -44,23 +44,23 @@ import 'package:jtscore4dart/src/geom/Envelope.dart';
 /// @version 1.7
 abstract class CoordinateSequence{
   /// Standard ordinate index value for, where X is 0
-  int X = 0;
+  static const int X = 0;
 
   /// Standard ordinate index value for, where Y is 1
-  int Y = 1;
+  static const int Y = 1;
   
   /// Standard ordinate index value for, where Z is 2.
   ///
   /// <p>This constant assumes XYZM coordinate sequence definition, please check this assumption
   /// using {@link #getDimension()} and {@link #getMeasures()} before use.
   /// Standard z-ordinate index
-  int Z = 2;
+  static const int Z = 2;
 
   /// Standard ordinate index value for, where M is 3.
   ///
   /// <p>This constant assumes XYZM coordinate sequence definition, please check this assumption
   /// using {@link #getDimension()} and {@link #getMeasures()} before use.
-  int M = 3;
+  static const int M = 3;
 
   /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
   ///

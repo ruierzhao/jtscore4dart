@@ -50,7 +50,7 @@ class Tri {
    * @return the polygons for the triangles
    */
   static Geometry toGeometry(Collection<Tri> tris, GeometryFactory geomFact) {
-    Geometry[] geoms = new Geometry[tris.size()];
+    List<Geometry> geoms = new Geometry[tris.size()];
     int i = 0;
     for (Tri tri : tris) {
       geoms[i++] = tri.toPolygon(geomFact);

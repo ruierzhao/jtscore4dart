@@ -32,11 +32,13 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'package:jtscore4dart/src/algorithm/Centroid.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
 import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/Point.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 
 
@@ -155,13 +157,6 @@ import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 ///
 ///@version 1.7
 
-// TODO: ruier edit.
-class GeometryComponentFilterImpl implements GeometryComponentFilter {
-    @override
-    void filter(Geometry geom) {
-      geom.geometryChangedAction();
-    }
-  }
 
 
 abstract class Geometry{
@@ -189,24 +184,24 @@ abstract class Geometry{
   static final GeometryComponentFilter _geometryChangedFilter = GeometryComponentFilterImpl();
 
   ///  The bounding box of this <code>Geometry</code>.
-  Envelope envelope;
+  Envelope? envelope;
 
   /// The {@link GeometryFactory} used to create this Geometry
   final GeometryFactory factory;
 
   ///  The ID of the Spatial Reference System used by this <code>Geometry</code>
-  int SRID;
+  late int SRID;
 
   /// An object reference which can be used to carry ancillary data defined
   /// by the client.
-  /**private */ Object userData = null;
+  // /**private */ Object userData = null;
+  /**private */ Object? userData;
 
   /// Creates a new <code>Geometry</code> via the specified GeometryFactory.
   ///
   /// @param factory
-  Geometry(GeometryFactory factory) {
-    this.factory = factory;
-    this.SRID = factory.getSRID();
+  Geometry(this.factory) {
+    SRID = factory.getSRID();
   }
 
   /// Returns the name of this Geometry's actual class.
@@ -234,7 +229,7 @@ abstract class Geometry{
   ///@param  array  an array to validate
   ///@return        <code>true</code> if any of <code>array</code>s elements are
   ///      <code>null</code>
-  static bool hasNullElements(Object[] array) {
+  static bool hasNullElements(List<Object> array) {
     for (int i = 0; i < array.length; i++) {
       if (array[i] == null) {
         return true;
@@ -289,6 +284,7 @@ abstract class Geometry{
   /// (or 1, if the geometry is not a collection).
   ///
   /// @return the number of geometries contained in this geometry
+  /// @ruier 由GeometryCollection重写，非GeometryCollection 类型返回1
   int getNumGeometries() {
     return 1;
   }
@@ -298,6 +294,7 @@ abstract class Geometry{
   ///
   /// @param n the index of the geometry element
   /// @return the n'th geometry contained in this geometry
+  /// @ruier 按索引返回GeometryCollection中的Geometry
   Geometry getGeometryN(int n) {
     return this;
   }
@@ -409,7 +406,7 @@ abstract class Geometry{
   /// To check structural emptiness use {@link #getNumGeometries()}.
   ///
   ///@return <code>true</code> if this <code>Geometry</code> does not cover any points
-  abstract bool isEmpty();
+  bool isEmpty();
 
   /// Returns the minimum distance between this <code>Geometry</code>
   /// and another <code>Geometry</code>.
@@ -477,8 +474,9 @@ abstract class Geometry{
   /// @return a {@link Point} which is the centroid of this Geometry
   Point getCentroid()
   {
-    if (isEmpty())
+    if (isEmpty()) {
       return factory.createPoint();
+    }
     Coordinate centPt = Centroid.getCentroid(this);
     return createPointFromInternalCoord(centPt, this);
   }
@@ -578,10 +576,8 @@ abstract class Geometry{
   ///@return the envelope of this <code>Geometry</code>.
   ///@return an empty Envelope if this Geometry is empty
   Envelope getEnvelopeInternal() {
-    if (envelope == null) {
-      envelope = computeEnvelopeInternal();
-    }
-    return new Envelope(envelope);
+    envelope ??= computeEnvelopeInternal();
+    return Envelope.fromAnother(envelope!);
   }
 
   /// Notifies this geometry that its coordinates have been changed by an external
@@ -647,8 +643,9 @@ abstract class Geometry{
   ///      Returns <code>false</code> if both <code>Geometry</code>s are points
   bool touches(Geometry g) {
     // short-circuit test
-    if (! getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+    if (! getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
       return false;
+    }
     return relate(g).isTouches(getDimension(), g.getDimension());
   }
 
@@ -676,8 +673,9 @@ abstract class Geometry{
   bool intersects(Geometry g) {
 
     // short-circuit envelope test
-    if (! getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+    if (! getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
       return false;
+    }
 
     /**
      * TODO: (MD) Add optimizations:
@@ -697,7 +695,7 @@ abstract class Geometry{
 
     // optimization for rectangle arguments
     if (isRectangle()) {
-      return RectangleIntersects.intersects((Polygon) this, g);
+      return RectangleIntersects.intersects( this as Polygon, g);
     }
     if (g.isRectangle()) {
       return RectangleIntersects.intersects((Polygon) g, this);
@@ -740,8 +738,9 @@ abstract class Geometry{
   ///@return        <code>true</code> if the two <code>Geometry</code>s cross.
   bool crosses(Geometry g) {
     // short-circuit test
-    if (! getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+    if (!getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
       return false;
+    }
     return relate(g).isCrosses(getDimension(), g.getDimension());
   }
 
@@ -812,11 +811,12 @@ abstract class Geometry{
       return false;
     }
     // optimization - envelope test
-    if (! getEnvelopeInternal().contains(g.getEnvelopeInternal()))
+    if (! getEnvelopeInternal().contains(g.getEnvelopeInternal())) {
       return false;
+    }
     // optimization for rectangle arguments
     if (isRectangle()) {
-      return RectangleContains.contains((Polygon) this, g);
+      return RectangleContains.contains( this as Polygon, g);
     }
     // general case
     return relate(g).isContains();
@@ -843,8 +843,9 @@ abstract class Geometry{
   ///@return        <code>true</code> if the two <code>Geometry</code>s overlap.
   bool overlaps(Geometry g) {
     // short-circuit test
-    if (! getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+    if (! getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
       return false;
+    }
     return relate(g).isOverlaps(getDimension(), g.getDimension());
   }
 
@@ -891,8 +892,9 @@ abstract class Geometry{
       return false;
     }
     // optimization - envelope test
-    if (! getEnvelopeInternal().covers(g.getEnvelopeInternal()))
+    if (! getEnvelopeInternal().covers(g.getEnvelopeInternal())) {
       return false;
+    }
     // optimization for rectangle arguments
     if (isRectangle()) {
     	// since we have already tested that the test envelope is covered
@@ -1013,8 +1015,9 @@ abstract class Geometry{
   bool equalsTopo(Geometry g)
   {
     // short-circuit test
-    if (! getEnvelopeInternal().equals(g.getEnvelopeInternal()))
+    if (! getEnvelopeInternal().equals(g.getEnvelopeInternal())) {
       return false;
+    }
     return relate(g).isEquals(getDimension(), g.getDimension());
   }
 
@@ -1047,8 +1050,8 @@ abstract class Geometry{
   /// @see #normalize()
   bool equals(Object o)
   {
-    if (! (o is Geometry)) return false;
-    Geometry g = (Geometry) o;
+    if (o is! Geometry) return false;
+    Geometry g = o;
     return equalsExact(g);
   }
 
@@ -1208,14 +1211,15 @@ abstract class Geometry{
   Geometry reverse() {
 
     Geometry res = reverseInternal();
-    if (this.envelope != null)
+    if (this.envelope != null) {
       res.envelope = this.envelope.copy();
+    }
     res.setSRID(getSRID());
 
     return res;
   }
 
-  protected abstract Geometry reverseInternal();
+  /**protected abstract  */ Geometry reverseInternal();
 
   /// Computes a <code>Geometry</code> representing the point-set which is
   /// common to both this <code>Geometry</code> and the <code>other</code> Geometry.
@@ -1367,7 +1371,7 @@ abstract class Geometry{
   /// @see #equalsExact(Geometry)
   /// @see #normalize()
   /// @see #norm()
-  abstract bool equalsExact(Geometry other, double tolerance);
+  /**abstract */ bool equalsExactWithTolerance(Geometry other, double tolerance);
 
   /// Returns true if the two <code>Geometry</code>s are exactly equal.
   /// Two Geometries are exactly equal iff:
@@ -1397,7 +1401,7 @@ abstract class Geometry{
   /// @see #norm()
   bool equalsExact(Geometry other)
   {
-    return this == other || equalsExact(other, 0);
+    return this == other || equalsExactWithTolerance(other, 0);
   }
 
   /// Tests whether two geometries are exactly equal
@@ -1431,7 +1435,7 @@ abstract class Geometry{
   ///
   ///@param  filter  the filter to apply to this <code>Geometry</code>'s
   ///      coordinates
-  abstract void apply(CoordinateFilter filter);
+  /**abstract */ void apply(CoordinateFilter filter);
 
   ///  Performs an operation on the coordinates in this <code>Geometry</code>'s
   ///  {@link CoordinateSequence}s.
@@ -1439,7 +1443,7 @@ abstract class Geometry{
   ///  {@link #geometryChanged} will be called automatically.
   ///
   ///@param  filter  the filter to apply
-  abstract void apply(CoordinateSequenceFilter filter);
+  /**abstract */ void apply(CoordinateSequenceFilter filter);
 
   ///  Performs an operation with or on this <code>Geometry</code> and its
   ///  subelement <code>Geometry</code>s (if any).
@@ -1498,7 +1502,7 @@ abstract class Geometry{
   /// An internal method to copy subclass-specific geometry data.
   ///
   /// @return a copy of the target geometry object.
-  protected abstract Geometry copyInternal();
+  /**protected abstract */ Geometry copyInternal();
 
   ///  Converts this <code>Geometry</code> to <b>normal form</b> (or <b>
   ///  canonical form</b> ). Normal form is a unique representation for <code>Geometry</code>
@@ -1513,7 +1517,7 @@ abstract class Geometry{
   ///  NOTE that this method mutates the value of this geometry in-place.
   ///  If this is not safe and/or wanted, the geometry should be
   ///  cloned prior to normalization.
-  abstract void normalize();
+  /**abstract */ void normalize();
 
   /// Creates a new Geometry which is a normalized
   /// copy of this Geometry.
@@ -1552,7 +1556,7 @@ abstract class Geometry{
   ///      defined in "Normal Form For Geometry" in the JTS Technical
   ///      Specifications
   int compareTo(Object o) {
-    Geometry other = (Geometry) o;
+    Geometry other = o as Geometry;
     if (getTypeCode() != other.getTypeCode()) {
       return getTypeCode() - other.getTypeCode();
     }
@@ -1623,7 +1627,7 @@ abstract class Geometry{
   ///      for equality
   ///@return        <code>true</code> if the classes of the two <code>Geometry</code>
   ///      s are considered to be equal by the <code>equalsExact</code> method.
-  protected bool isEquivalentClass(Geometry other) {
+  /**protected */ bool isEquivalentClass(Geometry other) {
     return this.getClass().getName().equals(other.getClass().getName());
   }
 
@@ -1643,7 +1647,7 @@ abstract class Geometry{
   /// rather than a homogeneous subclass.
   ///
   /// @return true if this is a heterogeneous GeometryCollection
-  protected bool isGeometryCollection()
+  /**protected */ bool isGeometryCollection()
   {
     return getTypeCode() == TYPECODE_GEOMETRYCOLLECTION;
   }
@@ -1656,7 +1660,7 @@ abstract class Geometry{
   ///
   ///@return    this <code>Geometry</code>s bounding box; if the <code>Geometry</code>
   ///      is empty, <code>Envelope#isNull</code> will return <code>true</code>
-  protected abstract Envelope computeEnvelopeInternal();
+  /**protected */ abstract Envelope computeEnvelopeInternal();
 
   ///  Returns whether this <code>Geometry</code> is greater than, equal to,
   ///  or less than another <code>Geometry</code> having the same class.
@@ -1666,7 +1670,7 @@ abstract class Geometry{
   ///      this object is greater than, equal to, or less than <code>o</code>, as
   ///      defined in "Normal Form For Geometry" in the JTS Technical
   ///      Specifications
-  protected abstract int compareToSameClass(Object o);
+  /**protected */ abstract int compareToSameClass(Object o);
 
   ///  Returns whether this <code>Geometry</code> is greater than, equal to,
   ///  or less than another <code>Geometry</code> of the same class.
@@ -1678,7 +1682,7 @@ abstract class Geometry{
   ///      this object is greater than, equal to, or less than <code>o</code>, as
   ///      defined in "Normal Form For Geometry" in the JTS Technical
   ///      Specifications
-  protected abstract int compareToSameClass(Object o, CoordinateSequenceComparator comp);
+  /**protected  abstract */ int compareToSameClass(Object o, CoordinateSequenceComparator comp);
 
   ///  Returns the first non-zero result of <code>compareTo</code> encountered as
   ///  the two <code>Collection</code>s are iterated over. If, by the time one of
@@ -1691,7 +1695,7 @@ abstract class Geometry{
   ///@param  b  a <code>Collection</code> of <code>Comparable</code>s
   ///@return    the first non-zero <code>compareTo</code> result, if any;
   ///      otherwise, zero
-  protected int compare(Collection a, Collection b) {
+  /**protected */ int compare(Collection a, Collection b) {
     Iterator i = a.iterator();
     Iterator j = b.iterator();
     while (i.hasNext() && j.hasNext()) {
@@ -1716,13 +1720,14 @@ abstract class Geometry{
     return a.distance(b) <= tolerance;
   }
 
-  abstract protected int getTypeCode();
+  /**abstract protected */ int getTypeCode();
 
   /**private */ Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
   {
     // create empty point for null input
-    if (coord == null) 
+    if (coord == null) {
       return exemplar.getFactory().createPoint();
+    }
     exemplar.getPrecisionModel().makePrecise(coord);
     return exemplar.getFactory().createPoint(coord);
   }

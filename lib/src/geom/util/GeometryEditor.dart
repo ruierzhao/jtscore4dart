@@ -190,7 +190,7 @@ class GeometryEditor
     }
 
     return factory.createPolygon(shell,
-                                 (LinearRing[]) holes.toArray(new LinearRing[] {  }));
+                                 (List<LinearRing>) holes.toArray(new List<LinearRing> {  }));
   }
 
   private GeometryCollection editGeometryCollection(
@@ -215,15 +215,15 @@ class GeometryEditor
             new Point[] {  }));
     }
     if (collectionForType.getClass() == MultiLineString.class) {
-      return factory.createMultiLineString((LineString[]) geometries.toArray(
-            new LineString[] {  }));
+      return factory.createMultiLineString((List<LineString>) geometries.toArray(
+            new List<LineString> {  }));
     }
     if (collectionForType.getClass() == MultiPolygon.class) {
-      return factory.createMultiPolygon((Polygon[]) geometries.toArray(
-            new Polygon[] {  }));
+      return factory.createMultiPolygon((List<Polygon>) geometries.toArray(
+            new List<Polygon> {  }));
     }
-    return factory.createGeometryCollection((Geometry[]) geometries.toArray(
-          new Geometry[] {  }));
+    return factory.createGeometryCollection((List<Geometry>) geometries.toArray(
+          new List<Geometry> {  }));
   }
 
   /**

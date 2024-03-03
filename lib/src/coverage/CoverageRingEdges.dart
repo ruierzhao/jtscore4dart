@@ -53,16 +53,16 @@ class CoverageRingEdges {
    * @param coverage the set of polygonal geometries in the coverage
    * @return the edges of the coverage
    */
-  static CoverageRingEdges create(Geometry[] coverage) {
+  static CoverageRingEdges create(List<Geometry> coverage) {
     CoverageRingEdges edges = new CoverageRingEdges(coverage);
     return edges;
   }
   
-  private Geometry[] coverage;
+  private List<Geometry> coverage;
   private Map<LinearRing, List<CoverageEdge>> ringEdgesMap;
   private List<CoverageEdge> edges;
   
-  CoverageRingEdges(Geometry[] coverage) {
+  CoverageRingEdges(List<Geometry> coverage) {
     this.coverage = coverage;
     ringEdgesMap = new Map<LinearRing, List<CoverageEdge>>();
     edges = new ArrayList<CoverageEdge>();
@@ -129,7 +129,7 @@ class CoverageRingEdges {
    * Detects nodes occurring at vertices which are between a boundary segment 
    * and an inner (shared) segment.  
    * These occur where two polygons are adjacent at the coverage boundary
-   * (this is not detected by {@link #findMultiRingNodes(Geometry[])}).
+   * (this is not detected by {@link #findMultiRingNodes(List<Geometry>)}).
    * 
    * @param ring
    * @param boundarySegs
@@ -242,7 +242,7 @@ class CoverageRingEdges {
    * @param coverage a list of polygonal geometries
    * @return the set of nodes contained in 3 or more rings
    */
-  private Set<Coordinate> findMultiRingNodes(Geometry[] coverage) {
+  private Set<Coordinate> findMultiRingNodes(List<Geometry> coverage) {
     Map<Coordinate, Integer> vertexRingCount = VertexRingCounter.count(coverage);
     Set<Coordinate> nodes = new HashSet<Coordinate>();
     for (Coordinate v : vertexRingCount.keySet()) {
@@ -260,7 +260,7 @@ class CoverageRingEdges {
    * This detects situations where two rings touch only at a vertex
    * (i.e. two polygons touch, or a polygon shell touches a hole)
    * These nodes lie in only 2 adjacent rings, 
-   * so are not detected by {@link #findMultiRingNodes(Geometry[])}. 
+   * so are not detected by {@link #findMultiRingNodes(List<Geometry>)}. 
    * 
    * @param boundarySegments
    * @return a set of vertices which are nodes where two rings touch
@@ -281,8 +281,8 @@ class CoverageRingEdges {
    * 
    * @return an array of polygonal geometries representing the coverage
    */
-  Geometry[] buildCoverage() {
-    Geometry[] result = new Geometry[coverage.length];
+  List<Geometry> buildCoverage() {
+    List<Geometry> result = new Geometry[coverage.length];
     for (int i = 0; i < coverage.length; i++) {
       result[i] = buildPolygonal(coverage[i]);
     }
@@ -299,7 +299,7 @@ class CoverageRingEdges {
   }
 
   private Geometry buildMultiPolygon(MultiPolygon geom) {
-    Polygon[] polys = new Polygon[geom.getNumGeometries()];
+    List<Polygon> polys = new Polygon[geom.getNumGeometries()];
     for (int i = 0; i < polys.length; i++) {
       polys[i] = buildPolygon((Polygon) geom.getGeometryN(i));
     }

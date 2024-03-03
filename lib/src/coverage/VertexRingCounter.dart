@@ -30,7 +30,7 @@
  */
 class VertexRingCounter implements CoordinateSequenceFilter {
 
-  static Map<Coordinate, Integer> count(Geometry[] geoms) {
+  static Map<Coordinate, Integer> count(List<Geometry> geoms) {
     Map<Coordinate, Integer> vertexRingCount = new Map<Coordinate, Integer>();
     VertexRingCounter counter = new VertexRingCounter(vertexRingCount);
     for (Geometry geom : geoms) {

@@ -296,7 +296,7 @@ class PolygonHullSimplifier {
       //TODO: handle empty
       holeHulls.add(hull);
     }
-    LinearRing[] resultHoles = GeometryFactory.toLinearRingArray(holeHulls);
+    List<LinearRing> resultHoles = GeometryFactory.toLinearRingArray(holeHulls);
     return geomFactory.createPolygon(shellHull, resultHoles);
   }
 }

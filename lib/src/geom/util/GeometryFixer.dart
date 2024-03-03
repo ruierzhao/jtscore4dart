@@ -411,13 +411,13 @@ class GeometryFixer {
     Geometry result = union(polys);
 
     if (this.isKeepMulti && result is Polygon)
-      result = factory.createMultiPolygon(new Polygon[]{(Polygon) result});
+      result = factory.createMultiPolygon(new List<Polygon>{(Polygon) result});
 
     return result;
   }
 
   private Geometry fixCollection(GeometryCollection geom) {
-    Geometry[] geomRep = new Geometry[geom.getNumGeometries()];
+    List<Geometry> geomRep = new Geometry[geom.getNumGeometries()];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       geomRep[i] = fix(geom.getGeometryN(i), this.isKeepCollapsed, this.isKeepMulti);
     }

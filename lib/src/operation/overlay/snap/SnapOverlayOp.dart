@@ -57,7 +57,7 @@ class SnapOverlayOp
   }
   
 
-  private Geometry[] geom = new Geometry[2];
+  private List<Geometry> geom = new Geometry[2];
   private double snapTolerance;
 
   SnapOverlayOp(Geometry g1, Geometry g2)
@@ -75,8 +75,8 @@ class SnapOverlayOp
 
   Geometry getResultGeometry(int opCode)
   {
-//  	Geometry[] selfSnapGeom = new Geometry[] { selfSnap(geom[0]), selfSnap(geom[1])};
-    Geometry[] prepGeom = snap(geom);
+//  	List<Geometry> selfSnapGeom = new List<Geometry> { selfSnap(geom[0]), selfSnap(geom[1])};
+    List<Geometry> prepGeom = snap(geom);
     Geometry result = OverlayOp.overlayOp(prepGeom[0], prepGeom[1], opCode);
     return prepareResult(result);	
   }
@@ -90,14 +90,14 @@ class SnapOverlayOp
     return snapGeom;
   }
   
-  private Geometry[] snap(Geometry[] geom)
+  private List<Geometry> snap(List<Geometry> geom)
   {
-    Geometry[] remGeom = removeCommonBits(geom);
+    List<Geometry> remGeom = removeCommonBits(geom);
   	
   	// MD - testing only
-//  	Geometry[] remGeom = geom;
+//  	List<Geometry> remGeom = geom;
     
-    Geometry[] snapGeom = GeometrySnapper.snap(remGeom[0], remGeom[1], snapTolerance);
+    List<Geometry> snapGeom = GeometrySnapper.snap(remGeom[0], remGeom[1], snapTolerance);
     // MD - may want to do this at some point, but it adds cycles
 //    checkValid(snapGeom[0]);
 //    checkValid(snapGeom[1]);
@@ -118,7 +118,7 @@ class SnapOverlayOp
 
   private CommonBitsRemover cbr;
 
-  private Geometry[] removeCommonBits(Geometry[] geom)
+  private List<Geometry> removeCommonBits(List<Geometry> geom)
   {
     cbr = new CommonBitsRemover();
     cbr.add(geom[0]);

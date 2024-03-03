@@ -242,7 +242,7 @@ class KMLReader {
             raiseParseError("No outer boundary for Polygon");
         }
 
-        Polygon polygon = geometryFactory.createPolygon(shell, holes == null ? null : holes.toArray(new LinearRing[]{}));
+        Polygon polygon = geometryFactory.createPolygon(shell, holes == null ? null : holes.toArray(new List<LinearRing>{}));
         polygon.setUserData(attributes);
 
         return polygon;
@@ -293,10 +293,10 @@ class KMLReader {
                 case POLYGON:
                     return geometryFactory.createMultiPolygon(prepareTypedArray(geometries, Polygon.class));
                 default:
-                    return geometryFactory.createGeometryCollection(geometries.toArray(new Geometry[]{}));
+                    return geometryFactory.createGeometryCollection(geometries.toArray(new List<Geometry>{}));
             }
         } else {
-            return geometryFactory.createGeometryCollection(geometries.toArray(new Geometry[]{}));
+            return geometryFactory.createGeometryCollection(geometries.toArray(new List<Geometry>{}));
         }
     }
 

@@ -167,7 +167,7 @@ class GMLHandler extends DefaultHandler {
 			if (h.children.size() == 1)
 				return (Geometry) h.children.get(0);
 			return gf.createGeometryCollection(
-					(Geometry[]) h.children.toArray(new Geometry[stack.size()]));
+					(List<Geometry>) h.children.toArray(new Geometry[stack.size()]));
 		}
 		throw new IllegalStateException(
 				"Parse did not complete as expected, there are " + stack.size()

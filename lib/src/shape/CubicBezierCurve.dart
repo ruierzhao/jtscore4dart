@@ -191,7 +191,7 @@ class CubicBezierCurve {
   
   private Polygon bezierPolygon(Polygon poly) {
     LinearRing shell = bezierRing(poly.getExteriorRing());
-    LinearRing[] holes = null;
+    List<LinearRing> holes = null;
     if (poly.getNumInteriorRing() > 0) {
       holes = new LinearRing[poly.getNumInteriorRing()];
       for (int i = 0; i < poly.getNumInteriorRing(); i++) {

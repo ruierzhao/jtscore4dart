@@ -47,19 +47,19 @@ class CoverageGapFinder {
    * @param gapWidth the maximum width of gap to detect
    * @return a geometry indicating the locations of gaps (which is empty if no gaps were found), or null if the coverage was empty
    */
-  static Geometry findGaps(Geometry[] coverage, double gapWidth) {
+  static Geometry findGaps(List<Geometry> coverage, double gapWidth) {
     CoverageGapFinder finder = new CoverageGapFinder(coverage);
     return finder.findGaps(gapWidth);
   }
   
-  private Geometry[] coverage;
+  private List<Geometry> coverage;
 
   /**
    * Creates a new polygonal coverage gap finder.
    * 
    * @param coverage a set of polygons forming a polygonal coverage
    */
-  CoverageGapFinder(Geometry[] coverage) {
+  CoverageGapFinder(List<Geometry> coverage) {
     this.coverage = coverage;
   }
   

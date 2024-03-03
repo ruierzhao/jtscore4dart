@@ -60,7 +60,7 @@ class CoverageSimplifier {
    * @param tolerance the simplification tolerance
    * @return the simplified polygons
    */
-  static Geometry[] simplify(Geometry[] coverage, double tolerance) {
+  static List<Geometry> simplify(List<Geometry> coverage, double tolerance) {
     CoverageSimplifier simplifier = new CoverageSimplifier(coverage);
     return simplifier.simplify(tolerance);
   }
@@ -74,12 +74,12 @@ class CoverageSimplifier {
    * @param tolerance the simplification tolerance
    * @return the simplified polygons
    */
-  static Geometry[] simplifyInner(Geometry[] coverage, double tolerance) {
+  static List<Geometry> simplifyInner(List<Geometry> coverage, double tolerance) {
     CoverageSimplifier simplifier = new CoverageSimplifier(coverage);
     return simplifier.simplifyInner(tolerance);
   }
   
-  private Geometry[] input;
+  private List<Geometry> input;
   private GeometryFactory geomFactory;
   
   /**
@@ -87,7 +87,7 @@ class CoverageSimplifier {
    * 
    * @param coverage a set of polygonal geometries forming a coverage
    */
-  CoverageSimplifier(Geometry[] coverage) {
+  CoverageSimplifier(List<Geometry> coverage) {
     input = coverage;
     geomFactory = coverage[0].getFactory();
   }
@@ -98,10 +98,10 @@ class CoverageSimplifier {
    * @param tolerance the simplification tolerance
    * @return the simplified polygons
    */
-  Geometry[] simplify(double tolerance) {
+  List<Geometry> simplify(double tolerance) {
     CoverageRingEdges cov = CoverageRingEdges.create(input);
     simplifyEdges(cov.getEdges(), null, tolerance);
-    Geometry[] result = cov.buildCoverage();
+    List<Geometry> result = cov.buildCoverage();
     return result;
   }
   
@@ -113,14 +113,14 @@ class CoverageSimplifier {
    * @param tolerance the simplification tolerance
    * @return the simplified polygons
    */
-  Geometry[] simplifyInner(double tolerance) {
+  List<Geometry> simplifyInner(double tolerance) {
     CoverageRingEdges cov = CoverageRingEdges.create(input);
     List<CoverageEdge> innerEdges = cov.selectEdges(2);
     List<CoverageEdge> outerEdges = cov.selectEdges(1);
     MultiLineString constraintEdges = CoverageEdge.createLines(outerEdges, geomFactory);
 
     simplifyEdges(innerEdges, constraintEdges, tolerance);
-    Geometry[] result = cov.buildCoverage();
+    List<Geometry> result = cov.buildCoverage();
     return result;
   }
 

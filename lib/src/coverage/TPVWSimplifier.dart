@@ -110,7 +110,7 @@ class TPVWSimplifier {
     edgeIndex.add(edges);
     edgeIndex.add(constraintEdges);
 
-    LineString[] result = new LineString[edges.size()];
+    List<LineString> result = new LineString[edges.size()];
     for (int i = 0 ; i < edges.size(); i++) {
       Edge edge = edges.get(i);
       List<Coordinate> ptsSimp = edge.simplify(edgeIndex);

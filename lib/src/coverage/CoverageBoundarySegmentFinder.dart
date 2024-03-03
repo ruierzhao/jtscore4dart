@@ -32,7 +32,7 @@
  */
 class CoverageBoundarySegmentFinder implements CoordinateSequenceFilter {
   
-  static Set<LineSegment> findBoundarySegments(Geometry[] geoms) {
+  static Set<LineSegment> findBoundarySegments(List<Geometry> geoms) {
     Set<LineSegment> segs = new HashSet<LineSegment>();
     CoverageBoundarySegmentFinder finder = new CoverageBoundarySegmentFinder(segs);
     for (Geometry geom : geoms) {

@@ -30,7 +30,7 @@ class CoverageUnion {
    * @param coverage the polygons in the coverage
    * @return the union of the coverage polygons
    */
-  static Geometry union(Geometry[] coverage) {
+  static Geometry union(List<Geometry> coverage) {
     // union of an empty coverage is null, since no factory is available
     if (coverage.length == 0)
       return null;

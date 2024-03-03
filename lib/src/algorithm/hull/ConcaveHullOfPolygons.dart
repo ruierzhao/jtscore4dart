@@ -179,7 +179,7 @@ class ConcaveHullOfPolygons {
   private bool isTight = false;
   
   private GeometryFactory geomFactory;
-  private LinearRing[] polygonRings;
+  private List<LinearRing> polygonRings;
   
   private Set<Tri> hullTris;
   private ArrayDeque<Tri> borderTriQue;
@@ -560,7 +560,7 @@ class ConcaveHullOfPolygons {
       return inputPolygons.copy();
     }
     //-- union with input polygons
-    Geometry[] geoms = new Geometry[] { fillGeometry, inputPolygons };
+    List<Geometry> geoms = new List<Geometry> { fillGeometry, inputPolygons };
     GeometryCollection geomColl = geomFactory.createGeometryCollection(geoms);
     Geometry hull = CoverageUnion.union(geomColl);
     return hull;
@@ -579,7 +579,7 @@ class ConcaveHullOfPolygons {
    * @param geomFactory 
    * @return the frame polygon
    */
-  private static Polygon createFrame(Envelope polygonsEnv, LinearRing[] polygonRings, GeometryFactory geomFactory) {
+  private static Polygon createFrame(Envelope polygonsEnv, List<LinearRing> polygonRings, GeometryFactory geomFactory) {
     double diam = polygonsEnv.getDiameter();
     Envelope envFrame = polygonsEnv.copy();
     envFrame.expandBy(FRAME_EXPAND_FACTOR * diam);
@@ -589,8 +589,8 @@ class ConcaveHullOfPolygons {
     return frame;
   }
 
-  private static LinearRing[] extractShellRings(Geometry polygons) {
-    LinearRing[] rings = new LinearRing[polygons.getNumGeometries()];
+  private static List<LinearRing> extractShellRings(Geometry polygons) {
+    List<LinearRing> rings = new LinearRing[polygons.getNumGeometries()];
     for (int i = 0; i < polygons.getNumGeometries(); i++) {
       Polygon consPoly = (Polygon) polygons.getGeometryN(i);
       rings[i] = (LinearRing) consPoly.getExteriorRing().copy();

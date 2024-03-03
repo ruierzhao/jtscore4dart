@@ -96,7 +96,7 @@ class SegmentStringUtil
    */
   static Geometry toGeometry(Collection segStrings, GeometryFactory geomFact)
   {
-    LineString[] lines = new LineString[segStrings.size()];
+    List<LineString> lines = new LineString[segStrings.size()];
     int index = 0;
     for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
       SegmentString ss = (SegmentString) i.next();

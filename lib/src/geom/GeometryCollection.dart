@@ -17,38 +17,32 @@
 // import org.locationtech.jts.util.Assert;
 
 
-/**
- * Models a collection of {@link Geometry}s of
- * arbitrary type and dimension.
- *
- *
- *@version 1.7
- */
+/// Models a collection of {@link Geometry}s of
+/// arbitrary type and dimension.
+///
+///
+///@version 1.7
 class GeometryCollection extends Geometry {
 //  With contributions from Markus Schaber [schabios@logi-track.com] 2004-03-26
   private static final long serialVersionUID = -5694727726395021467L;
-  /**
-   *  Internal representation of this <code>GeometryCollection</code>.
-   */
-  protected Geometry[] geometries;
+  ///  Internal representation of this <code>GeometryCollection</code>.
+  protected List<Geometry> geometries;
 
-  /** @deprecated Use GeometryFactory instead */
-  GeometryCollection(Geometry[] geometries, PrecisionModel precisionModel, int SRID) {
+  /// @deprecated Use GeometryFactory instead
+  GeometryCollection(List<Geometry> geometries, PrecisionModel precisionModel, int SRID) {
       this(geometries, new GeometryFactory(precisionModel, SRID));
   }
 
 
-  /**
-   * @param geometries
-   *            the <code>Geometry</code>s for this <code>GeometryCollection</code>,
-   *            or <code>null</code> or an empty array to create the empty
-   *            geometry. Elements may be empty <code>Geometry</code>s,
-   *            but not <code>null</code>s.
-   */
-  GeometryCollection(Geometry[] geometries, GeometryFactory factory) {
+  /// @param geometries
+  ///            the <code>Geometry</code>s for this <code>GeometryCollection</code>,
+  ///            or <code>null</code> or an empty array to create the empty
+  ///            geometry. Elements may be empty <code>Geometry</code>s,
+  ///            but not <code>null</code>s.
+  GeometryCollection(List<Geometry> geometries, GeometryFactory factory) {
     super(factory);
     if (geometries == null) {
-      geometries = new Geometry[]{};
+      geometries = new List<Geometry>{};
     }
     if (hasNullElements(geometries)) {
       throw new ArgumentError("geometries must not contain null elements");
@@ -65,15 +59,14 @@ class GeometryCollection extends Geometry {
     return null;
   }
 
-  /**
-   * Collects all coordinates of all subgeometries into an Array.
-   *
-   * Note that while changes to the coordinate objects themselves
-   * may modify the Geometries in place, the returned Array as such
-   * is only a temporary container which is not synchronized back.
-   *
-   * @return the collected coordinates
-   *    */
+  /// Collects all coordinates of all subgeometries into an Array.
+  ///
+  /// Note that while changes to the coordinate objects themselves
+  /// may modify the Geometries in place, the returned Array as such
+  /// is only a temporary container which is not synchronized back.
+  ///
+  /// @return the collected coordinates
+  ///
   List<Coordinate> getCoordinates() {
     List<Coordinate> coordinates = new Coordinate[getNumPoints()];
     int k = -1;
@@ -146,11 +139,9 @@ class GeometryCollection extends Geometry {
     return null;
   }
 
-  /**
-   *  Returns the area of this <code>GeometryCollection</code>
-   *
-   * @return the area of the polygon
-   */
+  ///  Returns the area of this <code>GeometryCollection</code>
+  ///
+  /// @return the area of the polygon
   double getArea()
   {
     double area = 0.0;
@@ -218,19 +209,17 @@ class GeometryCollection extends Geometry {
     }
   }
 
-  /**
-   * Creates and returns a full copy of this {@link GeometryCollection} object.
-   * (including all coordinates contained by it).
-   *
-   * @return a clone of this instance
-   * @deprecated
-   */
+  /// Creates and returns a full copy of this {@link GeometryCollection} object.
+  /// (including all coordinates contained by it).
+  ///
+  /// @return a clone of this instance
+  /// @deprecated
   Object clone() {
     return copy();
   }
 
   protected GeometryCollection copyInternal() {
-    Geometry[] geometries = new Geometry[this.geometries.length];
+    List<Geometry> geometries = new Geometry[this.geometries.length];
     for (int i = 0; i < geometries.length; i++) {
       geometries[i] = this.geometries[i].copy();
     }
@@ -281,20 +270,18 @@ class GeometryCollection extends Geometry {
     return Geometry.TYPECODE_GEOMETRYCOLLECTION;
   }
 
-  /**
-   * Creates a {@link GeometryCollection} with
-   * every component reversed.
-   * The order of the components in the collection are not reversed.
-   *
-   * @return a {@link GeometryCollection} in the reverse order
-   */
+  /// Creates a {@link GeometryCollection} with
+  /// every component reversed.
+  /// The order of the components in the collection are not reversed.
+  ///
+  /// @return a {@link GeometryCollection} in the reverse order
   GeometryCollection reverse() {
     return (GeometryCollection) super.reverse();
   }
 
   protected GeometryCollection reverseInternal()
   {
-    Geometry[] geometries = new Geometry[this.geometries.length];
+    List<Geometry> geometries = new Geometry[this.geometries.length];
     for (int i = 0; i < geometries.length; i++) {
       geometries[i] = this.geometries[i].reverse();
     }

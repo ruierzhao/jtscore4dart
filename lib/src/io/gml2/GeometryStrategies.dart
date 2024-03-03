@@ -180,7 +180,7 @@ class GeometryStrategies{
 				
 				LinearRing outer = (LinearRing) arg.children.get(0); // will be the first
 				List t = arg.children.size()>1?arg.children.subList(1,arg.children.size()):null;
-				LinearRing[] inner = t==null?null:(LinearRing[]) t.toArray(new LinearRing[t.size()]);
+				List<LinearRing> inner = t==null?null:(List<LinearRing>) t.toArray(new LinearRing[t.size()]);
 				
 				Polygon p = gf.createPolygon(outer,inner);
 				
@@ -250,7 +250,7 @@ class GeometryStrategies{
 
 				int srid = getSrid(arg.attrs,gf.getSRID());
 				
-				LineString[] lns = (LineString[]) arg.children.toArray(new LineString[arg.children.size()]);
+				List<LineString> lns = (List<LineString>) arg.children.toArray(new LineString[arg.children.size()]);
 				
 				MultiLineString mp = gf.createMultiLineString(lns);
 				
@@ -273,7 +273,7 @@ class GeometryStrategies{
 
 				int srid = getSrid(arg.attrs,gf.getSRID());
 				
-				Polygon[] plys = (Polygon[]) arg.children.toArray(new Polygon[arg.children.size()]);
+				List<Polygon> plys = (List<Polygon>) arg.children.toArray(new Polygon[arg.children.size()]);
 				
 				MultiPolygon mp = gf.createMultiPolygon(plys);
 				
@@ -294,7 +294,7 @@ class GeometryStrategies{
 				if(arg.children.size()<1)
 					throw new SAXException("Cannot create a multi-polygon without atleast one geometry");
 				
-				Geometry[] geoms = (Geometry[]) arg.children.toArray(new Geometry[arg.children.size()]);
+				List<Geometry> geoms = (List<Geometry>) arg.children.toArray(new Geometry[arg.children.size()]);
 				
 				GeometryCollection gc = gf.createGeometryCollection(geoms);
 								

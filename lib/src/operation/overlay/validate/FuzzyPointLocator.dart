@@ -81,7 +81,7 @@ class FuzzyPointLocator
   	PolygonalLineworkExtracter extracter = new PolygonalLineworkExtracter();
   	g.apply(extracter);
   	List linework = extracter.getLinework();
-  	LineString[] lines = GeometryFactory.toLineStringArray(linework);
+  	List<LineString> lines = GeometryFactory.toLineStringArray(linework);
   	return g.getFactory().createMultiLineString(lines);
   }
   

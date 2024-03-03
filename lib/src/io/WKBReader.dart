@@ -325,7 +325,7 @@ class WKBReader
   private Polygon readPolygon() throws IOException, ParseException
   {
     int numRings = readNumField(FIELD_NUMRINGS);
-    LinearRing[] holes = null;
+    List<LinearRing> holes = null;
     if (numRings > 1)
       holes = new LinearRing[numRings - 1];
 
@@ -356,7 +356,7 @@ class WKBReader
   private MultiLineString readMultiLineString(int SRID) throws IOException, ParseException
   {
     int numGeom = readNumField(FIELD_NUMELEMS);
-    LineString[] geoms = new LineString[numGeom];
+    List<LineString> geoms = new LineString[numGeom];
     for (int i = 0; i < numGeom; i++) {
       Geometry g = readGeometry(SRID);
       if (! (g is LineString))
@@ -369,7 +369,7 @@ class WKBReader
   private MultiPolygon readMultiPolygon(int SRID) throws IOException, ParseException
   {
     int numGeom = readNumField(FIELD_NUMELEMS);
-    Polygon[] geoms = new Polygon[numGeom];
+    List<Polygon> geoms = new Polygon[numGeom];
 
     for (int i = 0; i < numGeom; i++) {
       Geometry g = readGeometry(SRID);
@@ -383,7 +383,7 @@ class WKBReader
   private GeometryCollection readGeometryCollection(int SRID) throws IOException, ParseException
   {
     int numGeom = readNumField(FIELD_NUMELEMS);
-    Geometry[] geoms = new Geometry[numGeom];
+    List<Geometry> geoms = new Geometry[numGeom];
     for (int i = 0; i < numGeom; i++) {
       geoms[i] = readGeometry(SRID);
     }

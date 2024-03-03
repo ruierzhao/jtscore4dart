@@ -54,7 +54,7 @@ class OverlayResultValidator
   
   private static final double TOLERANCE = 0.000001;
 
-  private Geometry[] geom;
+  private List<Geometry> geom;
   private FuzzyPointLocator[] locFinder;
   private int[] location = new int[3] ;
   private Coordinate invalidLocation = null;
@@ -69,7 +69,7 @@ class OverlayResultValidator
   	 * It should not be more precise than double-precision can support. 
   	 */
     boundaryDistanceTolerance = computeBoundaryDistanceTolerance(a, b);
-    geom = new Geometry[] { a, b, result };
+    geom = new List<Geometry> { a, b, result };
     locFinder = new FuzzyPointLocator[] {
       new FuzzyPointLocator(geom[0], boundaryDistanceTolerance),
       new FuzzyPointLocator(geom[1], boundaryDistanceTolerance),

@@ -111,7 +111,7 @@ class DistanceOp
   }
 
   // input
-  private Geometry[] geom;
+  private List<Geometry> geom;
   private double terminateDistance = 0.0;
   // working
   private PointLocator ptLocator = new PointLocator();

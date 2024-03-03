@@ -224,7 +224,7 @@ class OverlayEdgeRing {
    */
   Polygon toPolygon(GeometryFactory factory)
   {
-    LinearRing[] holeLR = null;
+    List<LinearRing> holeLR = null;
     if (holes != null) {
       holeLR = new LinearRing[holes.size()];
       for (int i = 0; i < holes.size(); i++) {

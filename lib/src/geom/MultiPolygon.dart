@@ -41,7 +41,7 @@ class MultiPolygon
   ///@param  SRID            the ID of the Spatial Reference System used by this
   ///      <code>MultiPolygon</code>
   /// @deprecated Use GeometryFactory instead
-  MultiPolygon(Polygon[] polygons, PrecisionModel precisionModel, int SRID) {
+  MultiPolygon(List<Polygon> polygons, PrecisionModel precisionModel, int SRID) {
     this(polygons, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -54,7 +54,7 @@ class MultiPolygon
   ///            assertions specified in the <A
   ///            HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple
   ///            Features Specification for SQL</A>.
-  MultiPolygon(Polygon[] polygons, GeometryFactory factory) {
+  MultiPolygon(List<Polygon> polygons, GeometryFactory factory) {
     super(polygons, factory);
   }
 
@@ -96,8 +96,8 @@ class MultiPolygon
         allRings.add(rings.getGeometryN(j));
       }
     }
-    LineString[] allRingsArray = new LineString[allRings.size()];
-    return getFactory().createMultiLineString((LineString[]) allRings.toArray(allRingsArray));
+    List<LineString> allRingsArray = new LineString[allRings.size()];
+    return getFactory().createMultiLineString((List<LineString>) allRings.toArray(allRingsArray));
   }
 
   bool equalsExact(Geometry other, double tolerance) {
@@ -117,7 +117,7 @@ class MultiPolygon
   }
 
   protected MultiPolygon reverseInternal() {
-    Polygon[] polygons = new Polygon[this.geometries.length];
+    List<Polygon> polygons = new Polygon[this.geometries.length];
     for (int i = 0; i < polygons.length; i++) {
       polygons[i] = (Polygon) this.geometries[i].reverse();
     }
@@ -125,7 +125,7 @@ class MultiPolygon
   }
   
   protected MultiPolygon copyInternal() {
-    Polygon[] polygons = new Polygon[this.geometries.length];
+    List<Polygon> polygons = new Polygon[this.geometries.length];
     for (int i = 0; i < polygons.length; i++) {
       polygons[i] = (Polygon) this.geometries[i].copy();
     }

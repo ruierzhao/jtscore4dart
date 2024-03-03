@@ -96,9 +96,9 @@ class GeometrySnapper
    * @param snapTolerance the tolerance to use
    * @return the snapped geometries
    */
-  static Geometry[] snap(Geometry g0, Geometry g1, double snapTolerance)
+  static List<Geometry> snap(Geometry g0, Geometry g1, double snapTolerance)
   {
-    Geometry[] snapGeom = new Geometry[2];
+    List<Geometry> snapGeom = new Geometry[2];
     GeometrySnapper snapper0 = new GeometrySnapper(g0);
     snapGeom[0] = snapper0.snapTo(g1, snapTolerance);
     

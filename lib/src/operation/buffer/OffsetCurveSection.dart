@@ -42,7 +42,7 @@ implements Comparable<OffsetCurveSection> {
     
     //-- sort sections in order along the offset curve
     Collections.sort(sections);
-    LineString[] lines = new LineString[sections.size()];
+    List<LineString> lines = new LineString[sections.size()];
     
     for (int i = 0; i < sections.size(); i++) {
       lines[i] = geomFactory.createLineString(sections.get(i).getCoordinates());

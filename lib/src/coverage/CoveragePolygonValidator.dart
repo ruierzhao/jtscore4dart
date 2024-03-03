@@ -94,7 +94,7 @@ class CoveragePolygonValidator {
    * @param adjPolygons the adjacent polygons
    * @return a linear geometry containing the segments causing invalidity (if any)
    */
-  static Geometry validate(Geometry targetPolygon, Geometry[] adjPolygons) {
+  static Geometry validate(Geometry targetPolygon, List<Geometry> adjPolygons) {
     CoveragePolygonValidator v = new CoveragePolygonValidator(targetPolygon, adjPolygons);
     return v.validate();
   }
@@ -112,7 +112,7 @@ class CoveragePolygonValidator {
    * @param gapWidth the maximum width of invalid gaps
    * @return a linear geometry containing the segments causing invalidity (if any)
    */  
-  static Geometry validate(Geometry targetPolygon, Geometry[] adjPolygons, double gapWidth) {
+  static Geometry validate(Geometry targetPolygon, List<Geometry> adjPolygons, double gapWidth) {
     CoveragePolygonValidator v = new CoveragePolygonValidator(targetPolygon, adjPolygons);
     v.setGapWidth(gapWidth);
     return v.validate();
@@ -121,7 +121,7 @@ class CoveragePolygonValidator {
   private Geometry targetGeom;
   private double gapWidth = 0.0;
   private GeometryFactory geomFactory;
-  private Geometry[] adjGeoms;
+  private List<Geometry> adjGeoms;
   private List<Polygon> adjPolygons;
   private IndexedPointInAreaLocator[] adjPolygonLocators;
 
@@ -135,7 +135,7 @@ class CoveragePolygonValidator {
    * @param geom the geometry to validate
    * @param adjGeoms the adjacent polygons in the polygonal coverage
    */
-  CoveragePolygonValidator(Geometry geom, Geometry[] adjGeoms) {
+  CoveragePolygonValidator(Geometry geom, List<Geometry> adjGeoms) {
     this.targetGeom = geom;
     this.adjGeoms = adjGeoms;
     geomFactory = targetGeom.getFactory();
@@ -200,7 +200,7 @@ class CoveragePolygonValidator {
     markInvalidInteriorSegments(targetRings, adjPolygons);
   }
 
-  private static List<Polygon> extractPolygons(Geometry[] geoms) {
+  private static List<Polygon> extractPolygons(List<Geometry> geoms) {
     List<Polygon> polygons = new ArrayList<Polygon>();
     for (Geometry geom : geoms) {
         PolygonExtracter.getPolygons(geom, polygons);

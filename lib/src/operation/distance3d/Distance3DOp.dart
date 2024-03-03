@@ -90,7 +90,7 @@ class Distance3DOp {
 	}
 
 	// input
-	private Geometry[] geom;
+	private List<Geometry> geom;
 	private double terminateDistance = 0.0;
 	// working
 	private GeometryLocation[] minDistanceLocation;

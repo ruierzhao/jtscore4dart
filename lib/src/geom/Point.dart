@@ -16,6 +16,7 @@
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/geom/Puntal.dart';
 
@@ -46,7 +47,7 @@ class Point
   ///      <code>Point</code>
   /// @deprecated Use GeometryFactory instead
   Point(Coordinate coordinate, PrecisionModel precisionModel, int SRID) {
-    super(new GeometryFactory(precisionModel, SRID));
+    super(GeometryFactory(precisionModel, SRID));
     init(getFactory().getCoordinateSequenceFactory().create(
           coordinate != null ? new List<Coordinate>{coordinate} : new List<Coordinate>{}));
   }

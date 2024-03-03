@@ -271,7 +271,7 @@ class GeometryTransformer
 
     if (isAllValidLinearRings)
       return factory.createPolygon((LinearRing) shell,
-                                   (LinearRing[]) holes.toArray(new LinearRing[] {  }));
+                                   (List<LinearRing>) holes.toArray(new List<LinearRing> {  }));
     else {
       List components = new ArrayList();
       if (shell != null) components.add(shell);

@@ -44,13 +44,13 @@ extends GeometricShapeBuilder
 		int level = recursionLevelForSize(numPts);
 		LineSegment baseLine = getSquareBaseLine();
 		Coordinate origin = baseLine.getCoordinate(0);
-		LinearRing[] holes = getHoles(level, origin.x, origin.y, getDiameter());
+		List<LinearRing> holes = getHoles(level, origin.x, origin.y, getDiameter());
 		LinearRing shell = ((Polygon) geomFactory.toGeometry(getSquareExtent())).getExteriorRing();
 		return geomFactory.createPolygon(
 				shell, holes);
 	}
 	
-	private LinearRing[] getHoles(int n, double originX, double originY, double width) 
+	private List<LinearRing> getHoles(int n, double originX, double originY, double width) 
 	{
 		List holeList = new ArrayList();
 		

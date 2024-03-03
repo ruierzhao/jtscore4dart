@@ -57,7 +57,7 @@ class CoverageValidator {
    * @param coverage an array of polygons forming a coverage
    * @return true if the coverage is valid
    */
-  static bool isValid(Geometry[] coverage) {
+  static bool isValid(List<Geometry> coverage) {
     CoverageValidator v = new CoverageValidator(coverage);
     return ! hasInvalidResult(v.validate());     
   }
@@ -69,7 +69,7 @@ class CoverageValidator {
    * @param validateResult an array produced by a polygonal coverage validation
    * @return true if the result has at least one invalid indicator
    */
-  static bool hasInvalidResult(Geometry[] validateResult) {
+  static bool hasInvalidResult(List<Geometry> validateResult) {
     for (Geometry geom : validateResult) {
       if (geom != null)
         return true;
@@ -84,7 +84,7 @@ class CoverageValidator {
    * @param coverage an array of polygons forming a coverage
    * @return an array of linear geometries indicating coverage errors, or nulls
    */
-  static Geometry[] validate(Geometry[] coverage) {
+  static List<Geometry> validate(List<Geometry> coverage) {
     CoverageValidator v = new CoverageValidator(coverage);
     return v.validate();
   }
@@ -99,13 +99,13 @@ class CoverageValidator {
    * @param gapWidth the maximum width of invalid gaps
    * @return an array of linear geometries indicating coverage errors, or nulls
    */
-  static Geometry[] validate(Geometry coverage[], double gapWidth) {
+  static List<Geometry> validate(Geometry coverage[], double gapWidth) {
     CoverageValidator v = new CoverageValidator(coverage);
     v.setGapWidth(gapWidth);
     return v.validate();
   }
   
-  private Geometry[] coverage;
+  private List<Geometry> coverage;
   private double gapWidth;
 
   /**
@@ -113,7 +113,7 @@ class CoverageValidator {
    * 
    * @param coverage a array of polygons representing a polygonal coverage
    */
-  CoverageValidator(Geometry[] coverage) {
+  CoverageValidator(List<Geometry> coverage) {
     this.coverage = coverage;
   }
   
@@ -136,12 +136,12 @@ class CoverageValidator {
    * 
    * @return an array of nulls or linear geometries
    */
-  Geometry[] validate() {
+  List<Geometry> validate() {
     STRtree index = new STRtree();
     for (Geometry geom : coverage) {
       index.insert(geom.getEnvelopeInternal(), geom);
     }
-    Geometry[] invalidLines = new Geometry[coverage.length];
+    List<Geometry> invalidLines = new Geometry[coverage.length];
     for (int i = 0; i < coverage.length; i++) {
       Geometry geom = coverage[i];
       invalidLines[i] = validate(geom, index);
@@ -156,7 +156,7 @@ class CoverageValidator {
     //-- the target geometry is returned in the query, so must be removed from the set
     nearGeomList.remove(targetGeom);
     
-    Geometry[] nearGeoms = GeometryFactory.toGeometryArray(nearGeomList);
+    List<Geometry> nearGeoms = GeometryFactory.toGeometryArray(nearGeomList);
     Geometry result = CoveragePolygonValidator.validate(targetGeom, nearGeoms, gapWidth);
     return result.isEmpty() ? null : result;
   }

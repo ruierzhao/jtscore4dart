@@ -29,101 +29,89 @@
 // import org.locationtech.jts.util.Assert;
 
 
-/**
- * A class which supports creating new {@link Geometry}s 
- * which are modifications of existing ones,
- * maintaining the same type structure.
- * Geometry objects are intended to be treated as immutable.
- * This class "modifies" Geometrys
- * by traversing them, applying a user-defined
- * {@link GeometryEditorOperation}, {@link CoordinateSequenceOperation} or {@link CoordinateOperation}  
- * and creating new Geometrys with the same structure but
- * (possibly) modified components.
- * <p>
- * Examples of the kinds of modifications which can be made are:
- * <ul>
- * <li>the values of the coordinates may be changed.
- *     The editor does not check whether changing coordinate values makes the result Geometry invalid
- * <li>the coordinate lists may be changed
- *     (e.g. by adding, deleting or modifying coordinates).
- *     The modified coordinate lists must be consistent with their original parent component
- *     (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
- *     coordinate must be equal)
- * <li>components of the original geometry may be deleted
- *    (e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
- *     Deletions will be propagated up the component tree appropriately.
- * </ul>
- * All changes must be consistent with the original Geometry's structure
- * (e.g. a <tt>Polygon</tt> cannot be collapsed into a <tt>LineString</tt>).
- * If changing the structure is required, use a {@link GeometryTransformer}.
- * <p>
- * This class supports creating an edited Geometry
- * using a different <code>GeometryFactory</code> via the {@link #GeometryEditor(GeometryFactory)}
- * constructor.  
- * Examples of situations where this is required is if the geometry is 
- * transformed to a new SRID and/or a new PrecisionModel.
- * <p>
- * <b>Usage Notes</b>
- * <ul>
- * <li>The resulting Geometry is not checked for validity.
- * If validity needs to be enforced, the new Geometry's 
- * {@link Geometry#isValid} method should be called.
- * <li>By default the UserData of the input geometry is not copied to the result.
- * </ul>
- * 
- * @see GeometryTransformer
- * @see Geometry#isValid
- *
- * @version 1.7
- */
+/// A class which supports creating new {@link Geometry}s 
+/// which are modifications of existing ones,
+/// maintaining the same type structure.
+/// Geometry objects are intended to be treated as immutable.
+/// This class "modifies" Geometrys
+/// by traversing them, applying a user-defined
+/// {@link GeometryEditorOperation}, {@link CoordinateSequenceOperation} or {@link CoordinateOperation}  
+/// and creating new Geometrys with the same structure but
+/// (possibly) modified components.
+/// <p>
+/// Examples of the kinds of modifications which can be made are:
+/// <ul>
+/// <li>the values of the coordinates may be changed.
+///     The editor does not check whether changing coordinate values makes the result Geometry invalid
+/// <li>the coordinate lists may be changed
+///     (e.g. by adding, deleting or modifying coordinates).
+///     The modified coordinate lists must be consistent with their original parent component
+///     (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
+///     coordinate must be equal)
+/// <li>components of the original geometry may be deleted
+///    (e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
+///     Deletions will be propagated up the component tree appropriately.
+/// </ul>
+/// All changes must be consistent with the original Geometry's structure
+/// (e.g. a <tt>Polygon</tt> cannot be collapsed into a <tt>LineString</tt>).
+/// If changing the structure is required, use a {@link GeometryTransformer}.
+/// <p>
+/// This class supports creating an edited Geometry
+/// using a different <code>GeometryFactory</code> via the {@link #GeometryEditor(GeometryFactory)}
+/// constructor.  
+/// Examples of situations where this is required is if the geometry is 
+/// transformed to a new SRID and/or a new PrecisionModel.
+/// <p>
+/// <b>Usage Notes</b>
+/// <ul>
+/// <li>The resulting Geometry is not checked for validity.
+/// If validity needs to be enforced, the new Geometry's 
+/// {@link Geometry#isValid} method should be called.
+/// <li>By default the UserData of the input geometry is not copied to the result.
+/// </ul>
+/// 
+/// @see GeometryTransformer
+/// @see Geometry#isValid
+///
+/// @version 1.7
 class GeometryEditor
 {
-  /**
-   * The factory used to create the modified Geometry.
-   * If <tt>null</tt> the GeometryFactory of the input is used.
-   */
+  /// The factory used to create the modified Geometry.
+  /// If <tt>null</tt> the GeometryFactory of the input is used.
   private GeometryFactory factory = null;
   private bool isUserDataCopied = false;
 
-  /**
-   * Creates a new GeometryEditor object which will create
-   * edited {@link Geometry}s with the same {@link GeometryFactory} as the input Geometry.
-   */
+  /// Creates a new GeometryEditor object which will create
+  /// edited {@link Geometry}s with the same {@link GeometryFactory} as the input Geometry.
   GeometryEditor()
   {
   }
 
-  /**
-   * Creates a new GeometryEditor object which will create
-   * edited {@link Geometry}s with the given {@link GeometryFactory}.
-   *
-   * @param factory the GeometryFactory to create  edited Geometrys with
-   */
+  /// Creates a new GeometryEditor object which will create
+  /// edited {@link Geometry}s with the given {@link GeometryFactory}.
+  ///
+  /// @param factory the GeometryFactory to create  edited Geometrys with
   GeometryEditor(GeometryFactory factory)
   {
     this.factory = factory;
   }
 
-  /**
-   * Sets whether the User Data is copied to the edit result.
-   * Only the object reference is copied.
-   * 
-   * @param isUserDataCopied true if the input user data should be copied.
-   */
+  /// Sets whether the User Data is copied to the edit result.
+  /// Only the object reference is copied.
+  /// 
+  /// @param isUserDataCopied true if the input user data should be copied.
   void setCopyUserData(bool isUserDataCopied)
   {
     this.isUserDataCopied = isUserDataCopied;
   }
   
-  /**
-   * Edit the input {@link Geometry} with the given edit operation.
-   * Clients can create subclasses of {@link GeometryEditorOperation} or
-   * {@link CoordinateOperation} to perform required modifications.
-   *
-   * @param geometry the Geometry to edit
-   * @param operation the edit operation to carry out
-   * @return a new {@link Geometry} which is the result of the editing (which may be empty)
-   */
+  /// Edit the input {@link Geometry} with the given edit operation.
+  /// Clients can create subclasses of {@link GeometryEditorOperation} or
+  /// {@link CoordinateOperation} to perform required modifications.
+  ///
+  /// @param geometry the Geometry to edit
+  /// @param operation the edit operation to carry out
+  /// @return a new {@link Geometry} which is the result of the editing (which may be empty)
   Geometry edit(Geometry geometry, GeometryEditorOperation operation)
   {
     // nothing to do

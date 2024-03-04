@@ -40,7 +40,7 @@ linter:
 # 排除文件
 analyzer: 
   exclude:
-    - test/test_java/**
+    # - test/test_java/**
   #   - lib/client.dart
   #   - lib/server/*.g.dart
   errors:

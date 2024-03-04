@@ -45,7 +45,7 @@ class Debug {
   static String DEBUG_PROPERTY_VALUE_ON = "on";
   static String DEBUG_PROPERTY_VALUE_TRUE = "true";
 
-  private static bool debugOn = false;
+  /**private */ static bool debugOn = false;
 
   static {
     String debugValue = System.getProperty(DEBUG_PROPERTY_NAME);

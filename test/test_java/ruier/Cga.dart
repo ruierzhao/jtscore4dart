@@ -1,8 +1,9 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
-class Envelope {
+class Envelope implements Comparable {
   static final double _DP_SAFE_EPSILON = 1e-15;
   static void ruier() {
     print("cga ruier");
@@ -85,9 +86,60 @@ class Envelope {
     // TODO: implement toString
     return "($_minx, $_maxx, $_miny, $_maxy)";
   }
+  
+  @override
+  int compareTo(other) {
+    // TODO: implement compareTo
+    throw UnimplementedError();
+  }
 }
 
+class Ruier extends ListBase<Coordinate>{
+  void ruier(){
+    print("ruier");
+  }
+
+  Ruier(List<Coordinate> coord, [bool allowRepeated=true]){
+    length = coord.length;
+    for (var i = 0; i < coord.length; i++) {
+      // add(coord[i]);
+      this[i] = coord[i];
+    }
+  }
+
+  @override
+  void add(Coordinate element) {
+    // TODO: implement add
+    super.add(element);
+  }
+  
+  @override
+  late int length;
+
+  @override
+  operator [](int index) {
+    // TODO: implement []
+    throw UnimplementedError();
+  }
+  
+  @override
+  void operator []=(int index, value) {
+    // TODO: implement []=
+  }
+  
+
+}
+
+class Ruier2{
+  int cc;
+  Ruier2([this.cc = 5]);
+}
+
+
 void main() {
-  Envelope env = Envelope(0, 0, 1, 2);
-  print(env);
+  var c = Ruier2(6);
+  var v = Ruier2();
+  print(c.cc);
+  print(v.cc);
+
 }

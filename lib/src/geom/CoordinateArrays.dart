@@ -19,14 +19,60 @@
 
 import "dart:math";
 
-
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
 import 'package:jtscore4dart/src/geom/Coordinates.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+
+
+/// A {@link Comparator} for {@link Coordinate} arrays
+/// in the forward direction of their coordinates,
+/// using lexicographic ordering.
+/// @ruier 两个内部类,好像没地方用到
+class _ForwardComparator implements Comparable /**Comparator */{
+  int compare(Object o1, Object o2) {
+    List<Coordinate> pts1 =  o1 as List<Coordinate>;
+    List<Coordinate> pts2 =  o2 as List<Coordinate>;
+
+    return CoordinateArrays.compare(pts1, pts2);
+  }
+  
+  @override
+  int compareTo(other) {
+    // TODO: implement compareTo
+    throw UnimplementedError();
+  }
+}
+// TODO: ruier edit.not use
+class _BidirectionalComparator implements Comparable /**Comparator */ {
+  int compare(Object o1, Object o2) {
+    List<Coordinate> pts1 =  o1 as List<Coordinate>;
+    List<Coordinate> pts2 = o2 as  List<Coordinate>;
+
+    if (pts1.length < pts2.length) return -1;
+    if (pts1.length > pts2.length) return 1;
+
+    if (pts1.length == 0) return 0;
+
+    int forwardComp = CoordinateArrays.compare(pts1, pts2);
+    bool isEqualRev = CoordinateArrays._isEqualReversed(pts1, pts2);
+    if (isEqualRev) {
+      return 0;
+    }
+    return forwardComp;
+  }
+  
+  @override
+  int compareTo(other) {
+    // TODO: implement compareTo
+    throw UnimplementedError();
+  }
+}
 
 /// Useful utility functions for handling Coordinate arrays
 ///
 /// @version 1.7
-
+/// 工具类
 abstract class CoordinateArrays {
   // private final static List<Coordinate> coordArrayType = new Coordinate[0];
 
@@ -70,58 +116,58 @@ abstract class CoordinateArrays {
   ///
   /// @param array Modified in place to coordinates of consistent dimension and measures.
   // TODO: ruier edit.
-  // static void enforceConsistency(List<Coordinate> array)
-  // {
-  //   // if (array == null) {
-  //   //   return;
-  //   // }
-  //   // step one check
-  //   int maxDimension = -1;
-  //   int maxMeasures = -1;
-  //   bool isConsistent = true;
-  //   for (int i = 0; i < array.length; i++) {
-  //     Coordinate coordinate = array[i];
-  //     if (coordinate != null) {
-  //       int d = Coordinates.dimension(coordinate);
-  //       int m = Coordinates.measures(coordinate);
-  //       if( maxDimension == -1){
-  //          maxDimension = d;
-  //          maxMeasures = m;
-  //          continue;
-  //       }
-  //       if( d != maxDimension || m != maxMeasures ){
-  //         isConsistent = false;
-  //         maxDimension = max(maxDimension, d);
-  //         maxMeasures = max(maxMeasures, m);
-  //       }
-  //     }
-  //   }
-  //   if (!isConsistent) {
-  //     // step two fix
-  //     Coordinate sample = Coordinates.create(maxDimension, maxMeasures);
-  //     Type type = sample.runtimeType;
+  static void enforceConsistency(List<Coordinate> array)
+  {
+    // if (array == null) {
+    //   return;
+    // }
+    // step one check
+    int maxDimension = -1;
+    int maxMeasures = -1;
+    bool isConsistent = true;
+    for (int i = 0; i < array.length; i++) {
+      Coordinate coordinate = array[i];
+      if (coordinate != null) {
+        int d = Coordinates.dimension(coordinate);
+        int m = Coordinates.measures(coordinate);
+        if( maxDimension == -1){
+           maxDimension = d;
+           maxMeasures = m;
+           continue;
+        }
+        if( d != maxDimension || m != maxMeasures ){
+          isConsistent = false;
+          maxDimension = max(maxDimension, d);
+          maxMeasures = max(maxMeasures, m);
+        }
+      }
+    }
+    if (!isConsistent) {
+      // step two fix
+      Coordinate sample = Coordinates.create(maxDimension, maxMeasures);
+      Type type = sample.runtimeType;
 
-  //     for (int i = 0; i < array.length; i++) {
-  //       Coordinate coordinate = array[i];
-  //       if (coordinate != null && coordinate.runtimeType !=type) {
-  //         Coordinate duplicate = Coordinates.create(maxDimension, maxMeasures);
-  //         duplicate.setCoordinate(coordinate);
-  //         array[i] = duplicate;
-  //       }
-  //     }
-  //     // Coordinate sample = Coordinates.create(maxDimension, maxMeasures);
-  //     // Class<?> type = sample.getClass();
+      for (int i = 0; i < array.length; i++) {
+        Coordinate coordinate = array[i];
+        if (coordinate != null && coordinate.runtimeType != type) {
+          Coordinate duplicate = Coordinates.create(maxDimension, maxMeasures);
+          duplicate.setCoordinate(coordinate);
+          array[i] = duplicate;
+        }
+      }
+      // Coordinate sample = Coordinates.create(maxDimension, maxMeasures);
+      // Class<?> type = sample.getClass();
 
-  //     // for (int i = 0; i < array.length; i++) {
-  //     //   Coordinate coordinate = array[i];
-  //     //   if (coordinate != null && !coordinate.getClass().equals(type)) {
-  //     //     Coordinate duplicate = Coordinates.create(maxDimension, maxMeasures);
-  //     //     duplicate.setCoordinate(coordinate);
-  //     //     array[i] = duplicate;
-  //     //   }
-  //     // }
-  //   }
-  // }
+      // for (int i = 0; i < array.length; i++) {
+      //   Coordinate coordinate = array[i];
+      //   if (coordinate != null && !coordinate.getClass().equals(type)) {
+      //     Coordinate duplicate = Coordinates.create(maxDimension, maxMeasures);
+      //     duplicate.setCoordinate(coordinate);
+      //     array[i] = duplicate;
+      //   }
+      // }
+    }
+  }
 
   /// Utility method ensuring array contents are of the specified dimension and measures.
   /// <p>
@@ -218,20 +264,20 @@ abstract class CoordinateArrays {
     return 0;
   }
 
-  /**
-   * A {@link Comparator} for {@link Coordinate} arrays
-   * in the forward direction of their coordinates,
-   * using lexicographic ordering.
-   */
-  static class ForwardComparator
-    implements Comparator {
-    int compare(Object o1, Object o2) {
-      List<Coordinate> pts1 = (List<Coordinate>) o1;
-      List<Coordinate> pts2 = (List<Coordinate>) o2;
+  /// A {@link Comparator} for {@link Coordinate} arrays
+  /// in the forward direction of their coordinates,
+  /// using lexicographic ordering.
+  // TODO: ruier edit.
+  _ForwardComparator get ForwardComparator => _ForwardComparator();
+  //static class ForwardComparator
+  //   implements Comparator {
+  //   int compare(Object o1, Object o2) {
+  //     List<Coordinate> pts1 = (List<Coordinate>) o1;
+  //     List<Coordinate> pts2 = (List<Coordinate>) o2;
 
-      return CoordinateArrays.compare(pts1, pts2);
-    }
-  }
+  //     return CoordinateArrays.compare(pts1, pts2);
+  //   }
+  // }
 
 
   /// Determines which orientation of the {@link Coordinate} array
@@ -265,7 +311,7 @@ abstract class CoordinateArrays {
   /// @param pts1
   /// @param pts2
   /// @return <code>true</code> if the two arrays are equal in opposite directions.
-  private static bool isEqualReversed(List<Coordinate> pts1, List<Coordinate> pts2) {
+  /**private */ static bool _isEqualReversed(List<Coordinate> pts1, List<Coordinate> pts2) {
     for (int i = 0; i < pts1.length; i++) {
       Coordinate p1 = pts1[i];
       Coordinate p2 = pts2[pts1.length - i - 1];
@@ -276,41 +322,42 @@ abstract class CoordinateArrays {
     return true;
   }
 
-  /**
-   * A {@link Comparator} for {@link Coordinate} arrays
-   * modulo their directionality.
-   * E.g. if two coordinate arrays are identical but reversed
-   * they will compare as equal under this ordering.
-   * If the arrays are not equal, the ordering returned
-   * is the ordering in the forward direction.
-   */
-  static class BidirectionalComparator
-    implements Comparator {
-    int compare(Object o1, Object o2) {
-      List<Coordinate> pts1 = (List<Coordinate>) o1;
-      List<Coordinate> pts2 = (List<Coordinate>) o2;
+  /// A {@link Comparator} for {@link Coordinate} arrays
+  /// modulo their directionality.
+  /// E.g. if two coordinate arrays are identical but reversed
+  /// they will compare as equal under this ordering.
+  /// If the arrays are not equal, the ordering returned
+  /// is the ordering in the forward direction.
+  // TODO: ruier edit.not use
+  // ignore: library_private_types_in_public_api
+  _BidirectionalComparator get BidirectionalComparator => _BidirectionalComparator(); 
+  // static class BidirectionalComparator
+  //   implements Comparator {
+  //   int compare(Object o1, Object o2) {
+  //     List<Coordinate> pts1 = (List<Coordinate>) o1;
+  //     List<Coordinate> pts2 = (List<Coordinate>) o2;
 
-      if (pts1.length < pts2.length) return -1;
-      if (pts1.length > pts2.length) return 1;
+  //     if (pts1.length < pts2.length) return -1;
+  //     if (pts1.length > pts2.length) return 1;
 
-      if (pts1.length == 0) return 0;
+  //     if (pts1.length == 0) return 0;
 
-      int forwardComp = CoordinateArrays.compare(pts1, pts2);
-      bool isEqualRev = isEqualReversed(pts1, pts2);
-      if (isEqualRev) {
-        return 0;
-      }
-      return forwardComp;
-    }
-
+  //     int forwardComp = CoordinateArrays.compare(pts1, pts2);
+  //     bool isEqualRev = isEqualReversed(pts1, pts2);
+  //     if (isEqualRev) {
+  //       return 0;
+  //     }
+  //     return forwardComp;
+  //   }
+  
     int OLDcompare(Object o1, Object o2) {
-      List<Coordinate> pts1 = (List<Coordinate>) o1;
-      List<Coordinate> pts2 = (List<Coordinate>) o2;
+      List<Coordinate> pts1 = o1 as List<Coordinate>;
+      List<Coordinate> pts2 = o2 as List<Coordinate>;
 
       if (pts1.length < pts2.length) return -1;
       if (pts1.length > pts2.length) return 1;
 
-      if (pts1.length == 0) return 0;
+      if (pts1.isEmpty) return 0;
 
       int dir1 = increasingDirection(pts1);
       int dir2 = increasingDirection(pts2);
@@ -328,19 +375,22 @@ abstract class CoordinateArrays {
       }
       return 0;
     }
+    
 
-  }
 
   /// Creates a deep copy of the argument {@link Coordinate} array.
   ///
   /// @param coordinates an array of Coordinates
   /// @return a deep copy of the input
+  /// list<coordinate>的深拷贝
   static List<Coordinate> copyDeep(List<Coordinate> coordinates) {
-    List<Coordinate> copy = new Coordinate[coordinates.length];
-    for (int i = 0; i < coordinates.length; i++) {
-      copy[i] = coordinates[i].copy();
-    }
-    return copy;
+    // TODO: ruier edit.替换实现
+    // List<Coordinate> copy = new Coordinate[coordinates.length];
+    // for (int i = 0; i < coordinates.length; i++) {
+    //   copy[i] = coordinates[i].copy();
+    // }
+    // return copy;
+    return List.generate(coordinates.length, (index) => coordinates[index].copy());
   }
 
   /// Creates a deep copy of a given section of a source {@link Coordinate} array
@@ -353,15 +403,20 @@ abstract class CoordinateArrays {
   /// @param dest      the
   /// @param destStart the destination index to start copying to
   /// @param length    the number of items to copy
-  static void copyDeep(List<Coordinate> src, int srcStart, List<Coordinate> dest, int destStart, int length) {
-    for (int i = 0; i < length; i++) {
-      dest[destStart + i] = src[srcStart + i].copy();
-    }
-  }
+  // TODO: ruier edit.省略实现
+  // static void copyDeep(List<Coordinate> src, int srcStart, List<Coordinate> dest, int destStart, int length) {
+  //   for (int i = 0; i < length; i++) {
+  //     dest[destStart + i] = src[srcStart + i].copy();
+  //   }
+  // }
 
   /// Converts the given Collection of Coordinates into a Coordinate array.
-  static List<Coordinate> toCoordinateArray(Collection coordList) {
-    return (List<Coordinate>) coordList.toArray(coordArrayType);
+  // static List<Coordinate> toCoordinateArray(Collection coordList) {
+  //   return  coordList.toArray(coordArrayType);
+  // }
+  // TODO: ruier edit.replace [toCoordinateArray]
+  static List<Coordinate> toCoordinateArray(Iterable<Coordinate> coordList) {
+    return  coordList.toList();
   }
 
   /// Tests whether {@link Coordinate#equals(Object)} returns true for any two consecutive Coordinates
@@ -381,7 +436,8 @@ abstract class CoordinateArrays {
   /// Returns either the given coordinate array if its length is greater than the
   /// given amount, or an empty coordinate array.
   static List<Coordinate> atLeastNCoordinatesOrNothing(int n, List<Coordinate> c) {
-    return c.length >= n ? c : new List<Coordinate>{};
+    // return c.length >= n ? c : new List<Coordinate>{};
+    return c.length >= n ? c : <Coordinate>[];
   }
 
   /// If the coordinate array argument has repeated points,
@@ -509,10 +565,24 @@ abstract class CoordinateArrays {
   /// @param coordinates the array to search
   /// @return the minimum coordinate in the array, found using <code>compareTo</code>
   /// @see Coordinate#compareTo(Coordinate)
-  static Coordinate minCoordinate(List<Coordinate> coordinates) {
-    Coordinate minCoord = null;
-    for (int i = 0; i < coordinates.length; i++) {
-      if (minCoord == null || minCoord.compareTo(coordinates[i]) > 0) {
+  /// TODO: ruier edit. 返回X 或者 y 最小的？返回位于最左下角的坐标？
+  static Coordinate? minCoordinate(List<Coordinate> coordinates) {
+    // TODO: ruier replace.
+    // Coordinate minCoord;
+    // for (int i = 0; i < coordinates.length; i++) {
+    //   if (minCoord == null || minCoord.compareTo(coordinates[i]) > 0) {
+    //     minCoord = coordinates[i];
+    //   }
+    // }
+    // return minCoord;
+    Coordinate minCoord;
+    if (coordinates.isNotEmpty) {
+      minCoord = coordinates[0];
+    }else{
+      return null;
+    }
+    for (int i = 1; i < coordinates.length; i++) {
+      if (minCoord.compareTo(coordinates[i]) > 0) {
         minCoord = coordinates[i];
       }
     }
@@ -600,6 +670,7 @@ abstract class CoordinateArrays {
   static List<Coordinate> extract(List<Coordinate> pts, int start, int end) {
     start = MathUtil.clamp(start, 0, pts.length);
     end = MathUtil.clamp(end, -1, pts.length);
+    
 
     int npts = end - start + 1;
     if (end < 0) npts = 0;

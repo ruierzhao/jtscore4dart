@@ -16,12 +16,13 @@ import 'package:jtscore4dart/src/geom/CoordinateXYM.dart';
 import 'package:jtscore4dart/src/geom/CoordinateXYZM.dart';
 
 /// Useful utility functions for handling Coordinate objects.
+/// 操作 Coordinate 对象的函数
 class Coordinates {
   /// Factory method providing access to common Coordinate implementations.
   ///
   /// @param dimension
   /// @return created coordinate
-  // TODO: ruier edit.
+  /// TODO: ruier edit. replace with [create]
   // static Coordinate create(int dimension) {
   //   return createWithMeasure(dimension, 0);
   // }

@@ -14,6 +14,8 @@
 
 // import java.util.Comparator;
 
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+
 /// Compares two {@link CoordinateSequence}s.
 /// For sequences of the same dimension, the ordering is lexicographic.
 /// Otherwise, lower dimensions are sorted before higher.
@@ -24,7 +26,7 @@
 /// coordinate values, any or all methods can be overridden.
 ///
 class CoordinateSequenceComparator
-	implements Comparator
+	implements Comparable/**Comparator */
 {
   /// Compare two <code>double</code>s, allowing for NaN values.
   /// NaN is treated as being less than any valid number.
@@ -32,7 +34,7 @@ class CoordinateSequenceComparator
   /// @param a a <code>double</code>
   /// @param b a <code>double</code>
   /// @return -1, 0, or 1 depending on whether a is less than, equal to or greater than b
-  static int compare(double a, double b)
+  static int compare2Double(double a, double b)
   {
     if (a < b) return -1;
     if (a > b) return 1;
@@ -50,18 +52,19 @@ class CoordinateSequenceComparator
   /**protected */ int dimensionLimit;
 
   /// Creates a comparator which will test all dimensions.
-  CoordinateSequenceComparator()
-  {
-    dimensionLimit = Integer.MAX_VALUE;
-  }
+  // CoordinateSequenceComparator()
+  // {
+  //   dimensionLimit = IntegerMAX_VALUE;
+  //   // dimensionLimit = Integer.MAX_VALUE;
+  // }
 
   /// Creates a comparator which will test only the specified number of dimensions.
   ///
   /// @param dimensionLimit the number of dimensions to test
-  CoordinateSequenceComparator(int dimensionLimit)
-  {
-    this.dimensionLimit = dimensionLimit;
-  }
+  CoordinateSequenceComparator([this.dimensionLimit = 1<<31]);
+  // {
+  //   this.dimensionLimit = dimensionLimit;
+  // }
 
   /// Compares two {@link CoordinateSequence}s for relative order.
   ///
@@ -70,8 +73,8 @@ class CoordinateSequenceComparator
   /// @return -1, 0, or 1 depending on whether o1 is less than, equal to, or greater than o2
   int compare(Object o1, Object o2)
   {
-    CoordinateSequence s1 = (CoordinateSequence) o1;
-    CoordinateSequence s2 = (CoordinateSequence) o2;
+    CoordinateSequence s1 =  o1 as CoordinateSequence;
+    CoordinateSequence s2 =  o2 as CoordinateSequence;
 
     int size1 = s1.size();
     int size2 = s2.size();
@@ -80,8 +83,9 @@ class CoordinateSequenceComparator
     int dim2 = s2.getDimension();
 
     int minDim = dim1;
-    if (dim2 < minDim)
+    if (dim2 < minDim) {
       minDim = dim2;
+    }
     bool dimLimited = false;
     if (dimensionLimit <= minDim) {
       minDim = dimensionLimit;
@@ -120,9 +124,15 @@ class CoordinateSequenceComparator
     for (int d = 0; d < dimension; d++) {
       double ord1 = s1.getOrdinate(i, d);
       double ord2 = s2.getOrdinate(i, d);
-      int comp = compare(ord1, ord2);
+      int comp = compare2Double(ord1, ord2); // 修改为 Static 方法
       if (comp != 0) return comp;
     }
     return 0;
+  }
+  
+  @override
+  int compareTo(other) {
+    // TODO: java not use.
+    throw UnimplementedError();
   }
 }

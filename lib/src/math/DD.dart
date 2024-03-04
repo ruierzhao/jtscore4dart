@@ -13,6 +13,10 @@
 
 // import java.io.Serializable;
 
+import "dart:ffi";
+import "dart:math" as math;
+
+
 /// Implements extended-precision floating-point numbers 
 /// which maintain 106 bits (approximately 30 decimal digits) of precision. 
 /// <p>
@@ -115,7 +119,7 @@
   static final DD NaN = DD(double.nan, double.nan);
   
   /// The smallest representable relative difference between two {link @ DoubleDouble} values
-  static final double EPS = 1.23259516440783e-32;  /* = 2^-106 */
+  static const double EPS = 1.23259516440783e-32;  /* = 2^-106 */
   
   /**private */ static DD createNaN()
   {
@@ -127,12 +131,12 @@
   /// @param str a string containing a representation of a numeric value
   /// @return the extended precision version of the value
   /// @throws NumberFormatException if <tt>s</tt> is not a valid representation of a number
-  static DD valueOf(String str) 
- /** throws NumberFormatException */
-  { 
+//   static DD valueOf(String str) 
+//  /** throws NumberFormatException */
+//   { 
     
-    return parse(str); 
-    }
+//     return parse(str); 
+//     }
   
   /// Converts the <tt>double</tt> argument to a DoubleDouble number.
   /// 
@@ -150,24 +154,23 @@
   /**private */ double lo = 0.0;
   
   /// Creates a new DoubleDouble with value 0.0.
-  DD()
-  {
+  DD.zero(){
     init(0.0);
   }
   
   /// Creates a new DoubleDouble with value x.
   /// 
   /// @param x the value to initialize
-  DD(double x)
-  {
-    init(x);
-  }
+  // DD(double x)
+  // {
+  //   init(x);
+  // }
   
   /// Creates a new DoubleDouble with value (hi, lo).
   /// 
   /// @param hi the high-order component 
   /// @param lo the high-order component 
-  DD(double hi, double lo)
+  DD(double hi, [double? lo])
   {
     init(hi, lo);
   }
@@ -175,20 +178,21 @@
   /// Creates a new DoubleDouble with value equal to the argument.
   /// 
   /// @param dd the value to initialize
-  DD(DD dd)
+  DD.fromAnother(DD dd)
   {
-    init(dd);
+    hi = dd.hi;
+    lo = dd.lo;
   }
   
   /// Creates a new DoubleDouble with value equal to the argument.
   /// 
   /// @param str the value to initialize by
   /// @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
-  DD(String str)
-    throws NumberFormatException
-  {
-    this(parse(str));
-  }
+  // DD.fromString(String str){
+  //   DD dd = parse(str);
+  //   hi = dd.hi;
+  //   lo = dd.lo;
+  // }
   
   /// Creates a new DoubleDouble with the value of the argument.
   /// 
@@ -196,36 +200,37 @@
   /// @return a copy of the input value
   static DD copy(DD dd)
   {
-    return new DD(dd);
+    return DD.fromAnother(dd);
   }
   
   /// Creates and returns a copy of this value.
   /// 
   /// @return a copy of this value
-  Object clone()
-  {
-    try {
-      return super.clone();
-    }
-    catch (CloneNotSupportedException ex) {
-      // should never reach here
-      return null;
-    }
-  }
+  // TODO: ruier edit.
+  // Object clone()
+  // {
+  //   try {
+  //     return super.clone();
+  //   }
+  //   catch (CloneNotSupportedException ex) {
+  //     // should never reach here
+  //     return null;
+  //   }
+  // }
   
-  private final void init(double x)
-  {
-    this.hi = x;
-    this.lo = 0.0;
-  }
+  /**private */  // void init(double x)
+  // {
+  //   this.hi = x;
+  //   this.lo = 0.0;
+  // }
   
-  private final void init(double hi, double lo)
+  /**private */  void init(double hi, [double? lo])
   {
     this.hi = hi;
-    this.lo = lo;   
+    this.lo = (lo ??= 0.0);   
   }
   
-  private final void init(DD dd)
+  /**private */  void initFromDD(DD dd)
   {
     hi = dd.hi;
     lo = dd.lo;
@@ -252,8 +257,8 @@
   /// operations concept described in the class documentation (see above).
   /// @param value a DD instance supplying an extended-precision value.
   /// @return a self-reference to the DD instance.
-  DD setValue(DD value) {
-    init(value);
+  DD setValueFromDD(DD value) {
+    initFromDD(value);
     return this;
   }
   
@@ -261,7 +266,7 @@
   /// operations concept described in the class documentation (see above).
   /// @param value a floating point value to be stored in the instance.
   /// @return a self-reference to the DD instance.
-  DD setValue(double value) {
+  DD setValueFromDouble(double value) {
     init(value);
     return this;
   }
@@ -271,16 +276,16 @@
   /// 
   /// @param y the addend
   /// @return <tt>(this + y)</tt> 
-  final DD add(DD y)
+  DD addDD(DD y)
   {
-    return copy(this).selfAdd(y);
+    return copy(this).selfAddDD(y);
   }
   
   /// Returns a new DoubleDouble whose value is <tt>(this + y)</tt>.
   /// 
   /// @param y the addend
   /// @return <tt>(this + y)</tt> 
-  final DD add(double y)
+  DD add(double y)
   {
     return copy(this).selfAdd(y);
   }
@@ -292,9 +297,9 @@
   /// 
   /// @param y the addend
   /// @return this object, increased by y
-  final DD selfAdd(DD y)
+  DD selfAddDD(DD y)
   {
-    return selfAdd(y.hi, y.lo);
+    return selfAddHiLo(y.hi, y.lo);
   }
   
   /// Adds the argument to the value of <tt>this</tt>.
@@ -304,7 +309,7 @@
   /// 
   /// @param y the addend
   /// @return this object, increased by y
-  final DD selfAdd(double y)
+  DD selfAdd(double y)
   {
     double H, h, S, s, e, f;
     S = hi + y;
@@ -320,7 +325,7 @@
     // return selfAdd(y, 0.0);
   }
   
-  private final DD selfAdd(double yhi, double ylo)
+  DD selfAddHiLo(double yhi, double ylo)
   {
     double H, h, T, t, S, s, e, f;
     S = hi + yhi; 
@@ -344,16 +349,16 @@
   /// 
   /// @param y the subtrahend
   /// @return <tt>(this - y)</tt>
-  final DD subtract(DD y)
+  DD subtractDD(DD y)
   {
-    return add(y.negate());
+    return addDD(y.negate());
   }
   
   /// Computes a new DoubleDouble object whose value is <tt>(this - y)</tt>.
   /// 
   /// @param y the subtrahend
   /// @return <tt>(this - y)</tt>
-  final DD subtract(double y)
+  DD subtract(double y)
   {
     return add(-y);
   }
@@ -366,10 +371,10 @@
   /// 
   /// @param y the addend
   /// @return this object, decreased by y
-  final DD selfSubtract(DD y)
+  DD selfSubtractDD(DD y)
   {
     if (isNaN()) return this;
-    return selfAdd(-y.hi, -y.lo);
+    return selfAddHiLo(-y.hi, -y.lo);
   }
   
   /// Subtracts the argument from the value of <tt>this</tt>.
@@ -379,39 +384,39 @@
   /// 
   /// @param y the addend
   /// @return this object, decreased by y
-  final DD selfSubtract(double y)
+  DD selfSubtract(double y)
   {
     if (isNaN()) return this;
-    return selfAdd(-y, 0.0);
+    return selfAddHiLo(-y, 0.0);
   }
   
   /// Returns a new DoubleDouble whose value is <tt>-this</tt>.
   /// 
   /// @return <tt>-this</tt>
-  final DD negate()
+  DD negate()
   {
     if (isNaN()) return this;
-    return new DD(-hi, -lo);
+    return DD(-hi, -lo);
   }
   
   /// Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
   /// 
   /// @param y the multiplicand
   /// @return <tt>(this * y)</tt>
-  final DD multiply(DD y)
+  DD multiplyDD(DD y)
   {
     if (y.isNaN()) return createNaN();
-    return copy(this).selfMultiply(y);
+    return copy(this).selfMultiplyDD(y);
   }
   
   /// Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
   /// 
   /// @param y the multiplicand
   /// @return <tt>(this * y)</tt>
-  final DD multiply(double y)
+  DD multiply(double y)
   {
     if ((y).isNaN) return createNaN();
-    return copy(this).selfMultiply(y, 0.0);
+    return copy(this).selfMultiplyHiLo(y, 0.0);
   }
   
   /// Multiplies this object by the argument, returning <tt>this</tt>.
@@ -421,9 +426,9 @@
   /// 
   /// @param y the value to multiply by
   /// @return this object, multiplied by y
-  final DD selfMultiply(DD y)
+  DD selfMultiplyDD(DD y)
   {
-    return selfMultiply(y.hi, y.lo);
+    return selfMultiplyHiLo(y.hi, y.lo);
   }
   
   /// Multiplies this object by the argument, returning <tt>this</tt>.
@@ -433,12 +438,12 @@
   /// 
   /// @param y the value to multiply by
   /// @return this object, multiplied by y
-  final DD selfMultiply(double y)
+  DD selfMultiply(double y)
   {
-    return selfMultiply(y, 0.0);
+    return selfMultiplyHiLo(y, 0.0);
   }
   
-  final DD _selfMultiply(double yhi, double ylo)
+  DD selfMultiplyHiLo(double yhi, double ylo)
   {
     double hx, tx, hy, ty, C, c;
     C = SPLIT * hi; hx = C-hi; c = SPLIT * yhi;
@@ -456,7 +461,7 @@
   /// 
   /// @param y the divisor
   /// @return a new object with the value <tt>(this / y)</tt>
-  final DD divide(DD y)
+  DD divideDD(DD y)
   {
     double hc, tc, hy, ty, C, c, U, u;
     C = hi/y.hi; c = SPLIT*C; hc =c-C;  u = SPLIT*y.hi; hc = c-hc;
@@ -474,10 +479,10 @@
   /// 
   /// @param y the divisor
   /// @return a new object with the value <tt>(this / y)</tt>
-  final DD divide(double y)
+  DD divide(double y)
   {
     if ((y).isNaN) return createNaN();
-    return copy(this).selfDivide(y, 0.0);  
+    return copy(this).selfDivideHiLo(y, 0.0);  
   }
 
   /// Divides this object by the argument, returning <tt>this</tt>.
@@ -487,9 +492,9 @@
   /// 
   /// @param y the value to divide by
   /// @return this object, divided by y
-  final DD selfDivide(DD y)
+  DD selfDivideDD(DD y)
   {
-    return selfDivide(y.hi, y.lo);
+    return selfDivideHiLo(y.hi, y.lo);
   }
   
   /// Divides this object by the argument, returning <tt>this</tt>.
@@ -499,12 +504,12 @@
   /// 
   /// @param y the value to divide by
   /// @return this object, divided by y
-  final DD selfDivide(double y)
+  DD selfDivide(double y)
   {
-    return selfDivide(y, 0.0);
+    return selfDivideHiLo(y, 0.0);
   }
   
-  private final DD selfDivide(double yhi, double ylo)
+  /**private */ DD selfDivideHiLo(double yhi, double ylo)
   {
     double hc, tc, hy, ty, C, c, U, u;
     C = hi/yhi; c = SPLIT*C; hc =c-C;  u = SPLIT*yhi; hc = c-hc;
@@ -521,7 +526,7 @@
   /// Returns a DoubleDouble whose value is  <tt>1 / this</tt>.
   /// 
   /// @return the reciprocal of this value
-  final DD reciprocal()
+  DD reciprocal()
   {
     double  hc, tc, hy, ty, C, c, U, u;
     C = 1.0/hi; 
@@ -534,7 +539,7 @@
     
     double  zhi = C+c; 
     double  zlo = (C-zhi)+c;
-    return new DD(zhi, zlo);
+    return DD(zhi, zlo);
   }
   
   /// Returns the largest (closest to positive infinity) 
@@ -551,14 +556,14 @@
   DD floor()
   {
     if (isNaN()) return NaN;
-    double fhi=Math.floor(hi);
+    double fhi=hi.floorToDouble();
     double flo = 0.0;
     // Hi is already integral.  Floor the low word
     if (fhi == hi) {
-      flo = math.floor(lo);
+      flo = lo.floorToDouble();
     }
       // do we need to renormalize here?    
-    return new DD(fhi, flo); 
+    return DD(fhi, flo); 
   }
   
   /// Returns the smallest (closest to negative infinity) value 
@@ -573,14 +578,15 @@
   DD ceil()
   {
     if (isNaN()) return NaN;
-    double fhi=Math.ceil(hi);
+    // double fhi=math.ceil(hi);
+    double fhi=hi.ceilToDouble();
     double flo = 0.0;
     // Hi is already integral.  Ceil the low word
     if (fhi == hi) {
-      flo = math.ceil(lo);
+      flo = lo.ceilToDouble();
       // do we need to renormalize here?
     }
-    return new DD(fhi, flo); 
+    return DD(fhi, flo); 
   }
   
   /// Returns an integer indicating the sign of this value.
@@ -613,7 +619,7 @@
   {
     if (isNaN()) return this;
     // may not be 100% correct
-    DD plus5 = this.add(0.5);
+    DD plus5 = add(0.5);
     return plus5.floor();
   }
   
@@ -628,10 +634,11 @@
   DD trunc()
   {
     if (isNaN()) return NaN;
-    if (isPositive()) 
+    if (isPositive()) {
       return floor();
-    else 
+    } else {
       return ceil();
+    }
   }
   
   /// Returns the absolute value of this value.
@@ -644,9 +651,10 @@
   DD abs()
   {
     if (isNaN()) return NaN;
-    if (isNegative())
+    if (isNegative()) {
       return negate();
-    return new DD(this);
+    }
+    return DD.fromAnother(this);
   }
   
   /// Computes the square of this value.
@@ -654,7 +662,7 @@
   /// @return the square of this value.
   DD sqr()
   {
-    return this.multiply(this);
+    return multiplyDD(this);
   }
   
   /// Squares this object.
@@ -665,13 +673,13 @@
   /// @return the square of this value.
   DD selfSqr()
   {
-    return this.selfMultiply(this);
+    return selfMultiplyDD(this);
   }
   
   /// Computes the square of this value.
   /// 
   /// @return the square of this value.
-  static DD sqr(double x)
+  static DD sqrDouble(double x)
   {
     return valueOf(x).selfMultiply(x);
   }
@@ -693,8 +701,9 @@
     only half the precision.
  */
 
-    if (isZero())
+    if (isZero()) {
       return valueOf(0.0);
+    }
 
     if (isNegative()) {
       return NaN;
@@ -704,13 +713,13 @@
     double ax = hi * x;
     
     DD axdd = valueOf(ax);
-    DD diffSq = this.subtract(axdd.sqr());
+    DD diffSq = subtractDD(axdd.sqr());
     double d2 = diffSq.hi * (x * 0.5);
     
     return axdd.add(d2);
   }
   
-  static DD sqrt(double x)
+  static DD sqrtDouble(double x)
   {
     return valueOf(x).sqrt();
   }
@@ -722,10 +731,11 @@
   /// @return x raised to the integral power exp
   DD pow(int exp)
   {
-    if (exp == 0.0)
+    if (exp == 0.0) {
       return valueOf(1.0);
+    }
     
-    DD r = new DD(this);
+    DD r = DD.fromAnother(this);
     DD s = valueOf(1.0);
     int n = (exp).abs();
 
@@ -733,19 +743,22 @@
       /* Use binary exponentiation */
       while (n > 0) {
         if (n % 2 == 1) {
-          s.selfMultiply(r);
+          s.selfMultiplyDD(r);
         }
-        n /= 2;
-        if (n > 0)
+        // n ~/= 2;
+        n = n ~/ 2;
+        if (n > 0) {
           r = r.sqr();
+        }
       }
     } else {
       s = r;
     }
 
     /* Compute the reciprocal if n is negative. */
-    if (exp < 0)
+    if (exp < 0) {
       return s.reciprocal();
+    }
     return s;
   }
   
@@ -758,7 +771,7 @@
   /// @return the determinant of the values
   static DD determinant(double x1, double y1, double x2, double y2)
   {
-    return determinant(valueOf(x1), valueOf(y1), valueOf(x2), valueOf(y2) );
+    return determinantDD(valueOf(x1), valueOf(y1), valueOf(x2), valueOf(y2) );
   }
   
   /// Computes the determinant of the 2x2 matrix with the given entries.
@@ -768,9 +781,9 @@
   /// @param x2 a matrix entry
   /// @param y2 a matrix entry
   /// @return the determinant of the matrix of values
-  static DD determinant(DD x1, DD y1, DD x2, DD y2)
+  static DD determinantDD(DD x1, DD y1, DD x2, DD y2)
   {
-    DD det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
+    DD det = x1.multiplyDD(y2).selfSubtractDD(y1.multiplyDD(x2));
     return det;
   }
   
@@ -823,7 +836,7 @@
   /// @return the nearest integer to this value
   int intValue()
   {
-    return (int) hi;
+    return hi.round();
   }
   
   /*------------------------------------------------------------
@@ -858,7 +871,7 @@
   /// Tests whether this value is NaN.
   /// 
   /// @return true if this value is NaN
-  bool isNaN() { return Double.isNaN(hi); }
+  bool isNaN() { return hi.isNaN; }
   
   /// Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
   /// 
@@ -902,9 +915,10 @@
   /// 
   /// @return -1,0 or 1 depending on whether this value is less than, equal to
   /// or greater than the value of <tt>o</tt>
-  int compareTo(Object o) 
+  @override
+  int compareTo(o) 
   {
-    DD other = (DD) o;
+    DD other =  o as DD;
 
     if (hi < other.hi) return -1;
     if (hi > other.hi) return 1;
@@ -919,18 +933,18 @@
    *------------------------------------------------------------
    */
 
-  private static final int MAX_PRINT_DIGITS = 32;
-  private static final DD TEN = DD.valueOf(10.0);
-  private static final DD ONE = DD.valueOf(1.0);
-  private static final String SCI_NOT_EXPONENT_CHAR = "E";
-  private static final String SCI_NOT_ZERO = "0.0E0";
+  /**private */ static const int MAX_PRINT_DIGITS = 32;
+  /**private */ static final DD TEN = DD.valueOf(10.0);
+  /**private */ static final DD ONE = DD.valueOf(1.0);
+  /**private */ static const String SCI_NOT_EXPONENT_CHAR = "E";
+  /**private */ static const String SCI_NOT_ZERO = "0.0E0";
   
   /// Dumps the components of this number to a string.
   /// 
   /// @return a string showing the components of the number
   String dump()
   {
-    return "DD<" + hi + ", " + lo + ">";
+    return "DD<$hi, $lo>";
   }
   
   /// Returns a string representation of this number, in either standard or scientific notation.
@@ -938,11 +952,13 @@
   /// standard notation will be used.  Otherwise, scientific notation will be used.
   /// 
   /// @return a string representation of this number
+  @override
   String toString()
   {
     int mag = magnitude(hi);
-    if (mag >= -3 && mag <= 20)
+    if (mag >= -3 && mag <= 20) {
       return toStandardNotation();
+    }
     return toSciNotation();
   }
   
@@ -951,18 +967,21 @@
   /// @return the string representation in standard notation 
   String toStandardNotation()
   {
-    String specialStr = getSpecialNumberString();
-    if (specialStr != null)
+    String? specialStr = getSpecialNumberString();
+    if (specialStr != null) {
       return specialStr;
+    }
     
-    int[] magnitude = new int[1];
+    // int[] magnitude = new int[1];
+    List<int> magnitude = List.filled(1, 0);
+
     String sigDigits = extractSignificantDigits(true, magnitude);
     int decimalPointPos = magnitude[0] + 1;
 
     String num = sigDigits;
     // add a leading 0 if the decimal point is the first char
-    if (sigDigits.charAt(0) == '.') {
-      num = "0" + sigDigits;
+    if (sigDigits[0] == '.') {
+      num = "0$sigDigits";
     }
     else if (decimalPointPos < 0) {
       num = "0." + stringOfChar('0', -decimalPointPos) + sigDigits;
@@ -970,13 +989,14 @@
     else if (sigDigits.indexOf('.') == -1) {
       // no point inserted - sig digits must be smaller than magnitude of number
       // add zeroes to end to make number the correct size
-      int numZeroes = decimalPointPos - sigDigits.length();
+      int numZeroes = decimalPointPos - sigDigits.length;
       String zeroes = stringOfChar('0', numZeroes);
       num = sigDigits + zeroes + ".0";
     }
     
-    if (this.isNegative())
-      return "-" + num;
+    if (isNegative()) {
+      return "-$num";
+    }
     return num;
   }
   
@@ -986,31 +1006,36 @@
   String toSciNotation()
   {
     // special case zero, to allow as
-    if (isZero())
+    if (isZero()) {
       return SCI_NOT_ZERO;
+    }
     
-    String specialStr = getSpecialNumberString();
-    if (specialStr != null)
+    String? specialStr = getSpecialNumberString();
+    if (specialStr != null) {
       return specialStr;
+    }
     
-    int[] magnitude = new int[1];
+    // int[] magnitude = new int[1];
+    List<int> magnitude = List.filled(1, 0);
     String digits = extractSignificantDigits(false, magnitude);
-    String expStr = SCI_NOT_EXPONENT_CHAR + magnitude[0];
+    String expStr = "$SCI_NOT_EXPONENT_CHAR ${magnitude[0]}";
     
     // should never have leading zeroes
     // MD - is this correct?  Or should we simply strip them if they are present?
-    if (digits.charAt(0) == '0') {
-      throw new IllegalStateException("Found leading zero: " + digits);
+    if (digits[0] == '0') {
+      throw ArgumentError("Found leading zero: $digits");
     }
     
     // add decimal point
     String trailingDigits = "";
-    if (digits.length() > 1)
+    if (digits.length > 1) {
       trailingDigits = digits.substring(1);
-    String digitsWithDecimal = digits.charAt(0) + "." + trailingDigits;
+    }
+    String digitsWithDecimal = "${digits[0]}.$trailingDigits";
     
-    if (this.isNegative())
+    if (this.isNegative()) {
       return "-" + digitsWithDecimal + expStr;
+    }
     return digitsWithDecimal + expStr;
   }
   
@@ -1023,21 +1048,21 @@
   /// @param y the number to extract ( >= 0)
   /// @param decimalPointPos the position in which to insert a decimal point
   /// @return the string containing the significant digits and possibly a decimal point
-  private String extractSignificantDigits(bool insertDecimalPoint, int[] magnitude)
+  /**private */ String extractSignificantDigits(bool insertDecimalPoint, List<int> magnitudeList)
   {
     DD y = this.abs();
     // compute *correct* magnitude of y
     int mag = magnitude(y.hi);
     DD scale = TEN.pow(mag);
-    y = y.divide(scale);
+    y = y.divideDD(scale);
     
     // fix magnitude if off by one
     if (y.gt(TEN)) {
-      y = y.divide(TEN);
+      y = y.divideDD(TEN);
       mag += 1;
     }
     else if (y.lt(ONE)) {
-      y = y.multiply(TEN);
+      y = y.multiplyDD(TEN);
       mag -= 1;   
     }
     
@@ -1046,9 +1071,9 @@
     int numDigits = MAX_PRINT_DIGITS - 1;
     for (int i = 0; i <= numDigits; i++) {
       if (insertDecimalPoint && i == decimalPointPos) {
-        buf.append('.');
+        buf.write('.');
       }
-      int digit = (int) y.hi;
+      int digit = y.hi.floor();
 //      System.out.println("printDump: [" + i + "] digit: " + digit + "  y: " + y.dump() + "  buf: " + buf);
 
       /**
@@ -1069,7 +1094,8 @@
         // throw new IllegalStateException("Internal errror: found digit = " + digit);
       }
       bool rebiasBy10 = false;
-      char digitChar = 0;
+      // Char digitChar = 0;
+      String digitChar = String.fromCharCode(0);
       if (digit > 9) {
         // set flag to re-bias after next 10-shift
         rebiasBy10 = true;
@@ -1077,13 +1103,14 @@
         digitChar = '9';
       }
       else {
-       digitChar = (char) ('0' + digit);
+       digitChar = ('0$digit');
       }
-      buf.append(digitChar);
-      y = (y.subtract(DD.valueOf(digit))
-          .multiply(TEN));
-      if (rebiasBy10)
-        y.selfAdd(TEN);
+      buf.write(digitChar);
+      y = (y.subtractDD(DD.valueOf(digit.toDouble()))
+          .multiplyDD(TEN));
+      if (rebiasBy10) {
+        y.selfAddDD(TEN);
+      }
       
       bool continueExtractingDigits = true;
       /**
@@ -1098,12 +1125,14 @@
        * Do this by comparing the magnitude of the remainder with the expected precision.
        */
       int remMag = magnitude(y.hi);
-      if (remMag < 0 && (remMag).abs() >= (numDigits - i)) 
+      if (remMag < 0 && (remMag).abs() >= (numDigits - i)) {
         continueExtractingDigits = false;
-      if (! continueExtractingDigits)
+      }
+      if (! continueExtractingDigits) {
         break;
+      }
     }
-    magnitude[0] = mag;
+    magnitudeList[0] = mag;
     return buf.toString();
   }
 
@@ -1113,11 +1142,18 @@
   /// @param ch the character to be repeated
   /// @param len the len of the desired string
   /// @return the string 
-  private static String stringOfChar(char ch, int len)
-  {
-    StringBuffer buf = new StringBuffer();
+  // /**private */ static String stringOfChar(char ch, int len)
+  // {
+  //   StringBuffer buf = new StringBuffer();
+  //   for (int i = 0; i < len; i++) {
+  //     buf.append(ch);
+  //   }
+  //   return buf.toString();
+  // }
+    static String stringOfChar(String ch, int len) {
+    StringBuffer buf = StringBuffer();
     for (int i = 0; i < len; i++) {
-      buf.append(ch);
+      buf.write(ch);
     }
     return buf.toString();
   }
@@ -1127,7 +1163,7 @@
   /// 
   /// @return the string for this special number
   /// or null if the number is not a special number
-  private String getSpecialNumberString()
+  /**private */ String? getSpecialNumberString()
   {
     if (isZero()) return "0.0";
     if (isNaN())  return "NaN ";
@@ -1142,19 +1178,20 @@
   /// 
   /// @param x the number to find the magnitude of
   /// @return the decimal magnitude of x
-  private static int magnitude(double x)
+  /**private */ static int magnitude(double x)
   {
     double xAbs = (x).abs();
     double xLog10 = math.log(xAbs) / math.log(10);
-    int xMag = (int) math.floor(xLog10); 
+    int xMag = xLog10.floor(); 
     /**
      * Since log computation is inexact, there may be an off-by-one error
      * in the computed magnitude. 
      * Following tests that magnitude is correct, and adjusts it if not
      */
-    double xApprox = math.pow(10, xMag);
-    if (xApprox * 10 <= xAbs)
+    double xApprox = math.pow(10, xMag).toDouble();
+    if (xApprox * 10 <= xAbs) {
       xMag += 1;
+    }
     
     return xMag;
   }
@@ -1175,90 +1212,91 @@
   /// @param str the string to parse
   /// @return the value of the parsed number
   /// @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
-  static DD parse(String str)
-    /**throws NumberFormatException */
-  {
-    int i = 0;
-    int strlen = str.length();
+  // TODO: ruier edit.
+  // static DD parse(String str)
+  //   /**throws NumberFormatException */
+  // {
+  //   int i = 0;
+  //   int strlen = str.length;
     
-    // skip leading whitespace
-    while (Character.isWhitespace(str.charAt(i)))
-      i++;
+  //   // skip leading whitespace
+  //   while (Character.isWhitespace(str.charAt(i)))
+  //     i++;
     
-    // check for sign
-    bool isNegative = false;
-    if (i < strlen) {
-      char signCh = str.charAt(i);
-      if (signCh == '-' || signCh == '+') {
-        i++;
-        if (signCh == '-') isNegative = true;
-      }
-    }
+  //   // check for sign
+  //   bool isNegative = false;
+  //   if (i < strlen) {
+  //     char signCh = str.charAt(i);
+  //     if (signCh == '-' || signCh == '+') {
+  //       i++;
+  //       if (signCh == '-') isNegative = true;
+  //     }
+  //   }
     
-    // scan all digits and accumulate into an integral value
-    // Keep track of the location of the decimal point (if any) to allow scaling later
-    DD val = new DD();
+  //   // scan all digits and accumulate into an integral value
+  //   // Keep track of the location of the decimal point (if any) to allow scaling later
+  //   DD val = new DD();
 
-    int numDigits = 0;
-    int numBeforeDec = 0;
-    int exp = 0;
-    bool hasDecimalChar = false;
-    while (true) {
-      if (i >= strlen)
-        break;
-      char ch = str.charAt(i);
-      i++;
-      if (Character.isDigit(ch)) {
-        double d = ch - '0';
-        val.selfMultiply(TEN);
-        // MD: need to optimize this
-        val.selfAdd(d);
-        numDigits++;
-        continue;
-      }
-      if (ch == '.') {
-        numBeforeDec = numDigits;
-        hasDecimalChar = true;
-        continue;
-      }
-      if (ch == 'e' || ch == 'E') {
-        String expStr = str.substring(i);
-        // this should catch any format problems with the exponent
-        try {
-          exp = Integer.parseInt(expStr);
-        }
-        catch (NumberFormatException ex) {
-          throw new NumberFormatException("Invalid exponent " + expStr + " in string " + str);  
-        }
-        break;
-      }
-      throw new NumberFormatException("Unexpected character '" + ch 
-          + "' at position " + i 
-          + " in string " + str);
-    }
-    DD val2 = val;
+  //   int numDigits = 0;
+  //   int numBeforeDec = 0;
+  //   int exp = 0;
+  //   bool hasDecimalChar = false;
+  //   while (true) {
+  //     if (i >= strlen)
+  //       break;
+  //     char ch = str.charAt(i);
+  //     i++;
+  //     if (Character.isDigit(ch)) {
+  //       double d = ch - '0';
+  //       val.selfMultiply(TEN);
+  //       // MD: need to optimize this
+  //       val.selfAdd(d);
+  //       numDigits++;
+  //       continue;
+  //     }
+  //     if (ch == '.') {
+  //       numBeforeDec = numDigits;
+  //       hasDecimalChar = true;
+  //       continue;
+  //     }
+  //     if (ch == 'e' || ch == 'E') {
+  //       String expStr = str.substring(i);
+  //       // this should catch any format problems with the exponent
+  //       try {
+  //         exp = Integer.parseInt(expStr);
+  //       }
+  //       catch (NumberFormatException ex) {
+  //         throw new NumberFormatException("Invalid exponent " + expStr + " in string " + str);  
+  //       }
+  //       break;
+  //     }
+  //     throw new NumberFormatException("Unexpected character '" + ch 
+  //         + "' at position " + i 
+  //         + " in string " + str);
+  //   }
+  //   DD val2 = val;
 
-    // correct number of digits before decimal sign if we don't have a decimal sign in the string
-    if (!hasDecimalChar) numBeforeDec = numDigits;
+  //   // correct number of digits before decimal sign if we don't have a decimal sign in the string
+  //   if (!hasDecimalChar) numBeforeDec = numDigits;
 
-    // scale the number correctly
-    int numDecPlaces = numDigits - numBeforeDec - exp;
-    if (numDecPlaces == 0) {
-      val2 = val;
-    }
-    else if (numDecPlaces > 0) {  
-      DD scale = TEN.pow(numDecPlaces);
-      val2 = val.divide(scale);
-    }
-    else if (numDecPlaces < 0) {
-      DD scale = TEN.pow(-numDecPlaces);    
-      val2 = val.multiply(scale);
-    }
-    // apply leading sign, if any
-    if (isNegative) {
-      return val2.negate();
-    }
-    return val2;
+  //   // scale the number correctly
+  //   int numDecPlaces = numDigits - numBeforeDec - exp;
+  //   if (numDecPlaces == 0) {
+  //     val2 = val;
+  //   }
+  //   else if (numDecPlaces > 0) {  
+  //     DD scale = TEN.pow(numDecPlaces);
+  //     val2 = val.divide(scale);
+  //   }
+  //   else if (numDecPlaces < 0) {
+  //     DD scale = TEN.pow(-numDecPlaces);    
+  //     val2 = val.multiply(scale);
+  //   }
+  //   // apply leading sign, if any
+  //   if (isNegative) {
+  //     return val2.negate();
+  //   }
+  //   return val2;
 
-  }
+  // }
 }

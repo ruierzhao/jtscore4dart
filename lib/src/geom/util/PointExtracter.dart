@@ -21,22 +21,18 @@
 // import org.locationtech.jts.geom.Point;
 
 
-/**
- * Extracts all the 0-dimensional ({@link Point}) components from a {@link Geometry}.
- *
- * @version 1.7
- * @see GeometryExtracter
- */
+/// Extracts all the 0-dimensional ({@link Point}) components from a {@link Geometry}.
+///
+/// @version 1.7
+/// @see GeometryExtracter
 class PointExtracter
   implements GeometryFilter
 {
-  /**
-   * Extracts the {@link Point} elements from a single {@link Geometry}
-   * and adds them to the provided {@link List}.
-   * 
-   * @param geom the geometry from which to extract
-   * @param list the list to add the extracted elements to
-   */
+  /// Extracts the {@link Point} elements from a single {@link Geometry}
+  /// and adds them to the provided {@link List}.
+  /// 
+  /// @param geom the geometry from which to extract
+  /// @param list the list to add the extracted elements to
   static List getPoints(Geometry geom, List list)
   {
   	if (geom is Point) {
@@ -50,12 +46,10 @@ class PointExtracter
     return list;
   }
 
-  /**
-   * Extracts the {@link Point} elements from a single {@link Geometry}
-   * and returns them in a {@link List}.
-   * 
-   * @param geom the geometry from which to extract
-   */
+  /// Extracts the {@link Point} elements from a single {@link Geometry}
+  /// and returns them in a {@link List}.
+  /// 
+  /// @param geom the geometry from which to extract
   static List getPoints(Geometry geom) {
     if (geom is Point) {
       return Collections.singletonList(geom);
@@ -64,9 +58,7 @@ class PointExtracter
   }
 
   private List pts;
-  /**
-   * Constructs a PointExtracterFilter with a list in which to store Points found.
-   */
+  /// Constructs a PointExtracterFilter with a list in which to store Points found.
   PointExtracter(List pts)
   {
     this.pts = pts;

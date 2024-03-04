@@ -6,12 +6,17 @@ class MathUtil {
         return div * denom >= num ? div : div + 1;
     }
 
+    public static void D2I() {
+        double cc = 15.87;
+        int cci = (int) cc;
+        double cc2 = 15.35;
+        int cci2 = (int) cc2;
+        System.out.println(cci);
+        System.out.println(cci2);
+    }
+
     public static void main(String[] args) {
-        System.out.println(ceil(5, 2));
-        System.out.println(Math.ceil(5 / 2.0));
-        System.out.println("==========================");
-        System.out.println(ceil(5995, 34));
-        System.out.println(Math.ceil(5995 / 34.0));
+        D2I();
     }
 
 }

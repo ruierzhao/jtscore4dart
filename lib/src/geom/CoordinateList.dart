@@ -22,13 +22,12 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 ///
 ///
 /// @version 1.7
-class CoordinateList
-  extends ArrayList<Coordinate>
+class CoordinateList  /** extends ArrayList<Coordinate> */
 {
   // private static final long serialVersionUID = -1626110935756089896L;
   //With contributions from Markus Schaber [schabios@logi-track.com]
   //[Jon Aquino 2004-03-25]
-  private final static List<Coordinate> coordArrayType = new Coordinate[0];
+  // private final static List<Coordinate> coordArrayType = new Coordinate[0];
 
   /// Constructs a new list without any coordinates
   CoordinateList();
@@ -38,19 +37,19 @@ class CoordinateList
   /// as the input array.)
   /// 
   /// @param coord the initial coordinates
-  CoordinateList.fromAnother(List<Coordinate> coord){
-  	ensureCapacity(coord.length);
-    add(coord, true);
-  }
+  // CoordinateList.fromAnother(List<Coordinate> coord){
+  // 	ensureCapacity(coord.length);
+  //   add(coord, true);
+  // }
 
   /// Constructs a new list from an array of Coordinates,
   /// allowing caller to specify if repeated points are to be removed.
   ///
   /// @param coord the array of coordinates to load into the list
   /// @param allowRepeated if <code>false</code>, repeated points are removed
-  CoordinateList(List<Coordinate> coord, bool allowRepeated)
+  CoordinateList(List<Coordinate> coord, [bool allowRepeated=true])
   {
-  	ensureCapacity(coord.length);
+  	// ensureCapacity(coord.length); // 预估容量大小
     add(coord, allowRepeated);
   }
 
@@ -214,5 +213,19 @@ class CoordinateList
           clone.add(i, (Coordinate) this.get(i).clone());
       }
       return clone;
+  }
+  
+  @override
+  int length;
+  
+  @override
+  Coordinate operator [](int index) {
+    // TODO: implement []
+    throw UnimplementedError();
+  }
+  
+  @override
+  void operator []=(int index, Coordinate value) {
+    // TODO: implement []=
   }
 }

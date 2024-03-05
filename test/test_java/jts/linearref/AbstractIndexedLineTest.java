@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  */
 public abstract class AbstractIndexedLineTest extends TestCase {
 
-  private WKTReader reader = new WKTReader();
+ /**private */WKTReader reader = new WKTReader();
 
   public AbstractIndexedLineTest(String name) {
     super(name);
@@ -148,7 +148,7 @@ public abstract class AbstractIndexedLineTest extends TestCase {
     runOffsetTest("MULTILINESTRING ((0 0, 10 0), (10 0, 20 0))", "POINT(20 0)", 1.0, "POINT (20 1)");
   }
   
-  protected Geometry read(String wkt)
+ /**protected */Geometry read(String wkt)
   {
     try {
       return reader.read(wkt);
@@ -158,7 +158,7 @@ public abstract class AbstractIndexedLineTest extends TestCase {
     }
   }
 
-  protected void runIndicesOfThenExtract(String inputStr,
+ /**protected */void runIndicesOfThenExtract(String inputStr,
     String subLineStr)
 //      throws Exception
   {
@@ -168,7 +168,7 @@ public abstract class AbstractIndexedLineTest extends TestCase {
     checkExpected(result, subLineStr);
   }
 
-  protected void checkExpected(Geometry result, String expected)
+ /**protected */void checkExpected(Geometry result, String expected)
   {
     Geometry subLine = read(expected);
     boolean isEqual = result.equalsExact(subLine, 1.0e-5);
@@ -178,11 +178,11 @@ public abstract class AbstractIndexedLineTest extends TestCase {
     assertTrue(isEqual);
   }
 
-  protected abstract Geometry indicesOfThenExtract(Geometry input, Geometry subLine);
+ /**protected */abstract Geometry indicesOfThenExtract(Geometry input, Geometry subLine);
 
 /*
   // example of indicesOfThenLocate method
-  private Geometry indicesOfThenLocate(LineString input, LineString subLine)
+ /**private */Geometry indicesOfThenLocate(LineString input, LineString subLine)
   {
     LocationIndexedLine indexedLine = new LocationIndexedLine(input);
     LineStringLocation[] loc = indexedLine.indicesOf(subLine);
@@ -191,7 +191,7 @@ public abstract class AbstractIndexedLineTest extends TestCase {
   }
 */
 
-  protected void runIndexOfAfterTest(String inputStr,
+ /**protected */void runIndexOfAfterTest(String inputStr,
       String testPtWKT)
 //        throws Exception
     {
@@ -202,7 +202,7 @@ public abstract class AbstractIndexedLineTest extends TestCase {
       assertTrue(resultOK);
     }
   
-  protected void runIndexOfAfterTest(String inputStr,
+ /**protected */void runIndexOfAfterTest(String inputStr,
       String testPtWKT, String afterPtWKT)
 //        throws Exception
     {
@@ -225,13 +225,13 @@ public abstract class AbstractIndexedLineTest extends TestCase {
    * @param testPt test point
    * @return true if the result of indexOfAfter is the same as the input point
    */
-  protected abstract boolean indexOfAfterCheck(Geometry input, Coordinate testPt);
+ /**protected */abstract boolean indexOfAfterCheck(Geometry input, Coordinate testPt);
   
-  protected abstract boolean indexOfAfterCheck(Geometry input, Coordinate testPt, Coordinate afterPt);
+ /**protected */abstract boolean indexOfAfterCheck(Geometry input, Coordinate testPt, Coordinate afterPt);
 
   static final double TOLERANCE_DIST = 0.001;
   
-  protected void runOffsetTest(String inputWKT,
+ /**protected */void runOffsetTest(String inputWKT,
       String testPtWKT, double offsetDistance, String expectedPtWKT)
 //        throws Exception
     {
@@ -248,6 +248,6 @@ public abstract class AbstractIndexedLineTest extends TestCase {
       assertTrue(isOk);
     }
   
-  protected abstract Coordinate extractOffsetAt(Geometry input, Coordinate testPt, double offsetDistance);
+ /**protected */abstract Coordinate extractOffsetAt(Geometry input, Coordinate testPt, double offsetDistance);
 
 }

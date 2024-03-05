@@ -37,7 +37,7 @@ import test.jts.util.SerializationUtil;
  * @version 1.7
  */
 public class STRtreeTest extends TestCase {
-  private GeometryFactory factory = new GeometryFactory();
+ /**private */GeometryFactory factory = new GeometryFactory();
 
   public STRtreeTest(String Name_) {
     super(Name_);
@@ -182,7 +182,7 @@ public class STRtreeTest extends TestCase {
     assertEquals(3, tree.size());
   }
  
-  private void doTestCreateParentsFromVerticalSlice(int childCount,
+ /**private */void doTestCreateParentsFromVerticalSlice(int childCount,
       int nodeCapacity, int expectedChildrenPerParentBoundable,
       int expectedChildrenOfLastParent) {
     STRtreeDemo.TestTree t = new STRtreeDemo.TestTree(nodeCapacity);
@@ -196,7 +196,7 @@ public class STRtreeTest extends TestCase {
     assertEquals(expectedChildrenOfLastParent, lastParent.getChildBoundables().size());
   }
 
-  private void doTestVerticalSlices(int itemCount, int sliceCount,
+ /**private */void doTestVerticalSlices(int itemCount, int sliceCount,
       int expectedBoundablesPerSlice, int expectedBoundablesOnLastSlice) {
     STRtreeDemo.TestTree t = new STRtreeDemo.TestTree(2);
     List[] slices =
@@ -208,7 +208,7 @@ public class STRtreeTest extends TestCase {
     assertEquals(expectedBoundablesOnLastSlice, slices[sliceCount - 1].size());
   }
 
-  private List itemWrappers(int size) {
+ /**private */List itemWrappers(int size) {
     ArrayList itemWrappers = new ArrayList();
     for (int i = 0; i < size; i++) {
       itemWrappers.add(new ItemBoundable(new Envelope(0, 0, 0, 0), new Object()));

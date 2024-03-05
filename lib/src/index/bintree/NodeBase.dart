@@ -36,14 +36,14 @@ abstract class NodeBase {
     return subnodeIndex;
   }
 
-  protected List items = new ArrayList();
+ /**protected */List items = new ArrayList();
 
   /**
    * subnodes are numbered as follows:
    *
    *  0 | 1
    */
-  protected Node[] subnode = new Node[2];
+ /**protected */Node[] subnode = new Node[2];
 
   NodeBase() {
   }
@@ -64,7 +64,7 @@ abstract class NodeBase {
     }
     return items;
   }
-  protected abstract bool isSearchMatch(Interval interval);
+ /**protected */abstract bool isSearchMatch(Interval interval);
 
   /**
    * Adds items in the tree which potentially overlap the query interval

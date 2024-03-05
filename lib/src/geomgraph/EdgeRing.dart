@@ -34,17 +34,17 @@
  */
 abstract class EdgeRing {
 
-  protected DirectedEdge startDe; // the directed edge which starts the list of edges for this EdgeRing
-  private int maxNodeDegree = -1;
-  private List edges = new ArrayList(); // the DirectedEdges making up this EdgeRing
-  private List pts = new ArrayList();
-  private Label label = new Label(Location.NONE); // label stores the locations of each geometry on the face surrounded by this ring
-  private LinearRing ring;  // the ring created for this EdgeRing
-  private bool isHole;
-  private EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
-  private ArrayList holes = new ArrayList(); // a list of EdgeRings which are holes in this EdgeRing
+ /**protected */DirectedEdge startDe; // the directed edge which starts the list of edges for this EdgeRing
+ /**private */int maxNodeDegree = -1;
+ /**private */List edges = new ArrayList(); // the DirectedEdges making up this EdgeRing
+ /**private */List pts = new ArrayList();
+ /**private */Label label = new Label(Location.NONE); // label stores the locations of each geometry on the face surrounded by this ring
+ /**private */LinearRing ring;  // the ring created for this EdgeRing
+ /**private */bool isHole;
+ /**private */EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
+ /**private */ArrayList holes = new ArrayList(); // a list of EdgeRings which are holes in this EdgeRing
 
-  protected GeometryFactory geometryFactory;
+ /**protected */GeometryFactory geometryFactory;
 
   EdgeRing(DirectedEdge start, GeometryFactory geometryFactory) {
     this.geometryFactory = geometryFactory;
@@ -112,7 +112,7 @@ abstract class EdgeRing {
   /**
    * Collect all the points from the DirectedEdges of this ring into a contiguous list
    */
-  protected void computePoints(DirectedEdge start)
+ /**protected */void computePoints(DirectedEdge start)
   {
 //System.out.println("buildRing");
     startDe = start;
@@ -144,7 +144,7 @@ abstract class EdgeRing {
     return maxNodeDegree;
   }
 
-  private void computeMaxNodeDegree()
+ /**private */void computeMaxNodeDegree()
   {
     maxNodeDegree = 0;
     DirectedEdge de = startDe;
@@ -167,7 +167,7 @@ abstract class EdgeRing {
     } while (de != startDe);
   }
 
-  protected void mergeLabel(Label deLabel)
+ /**protected */void mergeLabel(Label deLabel)
   {
     mergeLabel(deLabel, 0);
     mergeLabel(deLabel, 1);
@@ -179,7 +179,7 @@ abstract class EdgeRing {
    * (e.g. the end node of a LinearRing).  In this case the DirectedEdge label
    * does not contribute any information to the overall labelling, and is simply skipped.
    */
-  protected void mergeLabel(Label deLabel, int geomIndex)
+ /**protected */void mergeLabel(Label deLabel, int geomIndex)
   {
     int loc = deLabel.getLocation(geomIndex, Position.RIGHT);
     // no information to be had from this label
@@ -190,7 +190,7 @@ abstract class EdgeRing {
       return;
     }
   }
-  protected void addPoints(Edge edge, bool isForward, bool isFirstEdge)
+ /**protected */void addPoints(Edge edge, bool isForward, bool isFirstEdge)
   {
     List<Coordinate> edgePts = edge.getCoordinates();
     if (isForward) {

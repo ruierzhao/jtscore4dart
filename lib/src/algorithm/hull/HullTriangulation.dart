@@ -47,7 +47,7 @@ class HullTriangulation
     return triList;
   }
   
-  private static List<HullTri> toTris(QuadEdgeSubdivision subdiv) {
+ /**private */static List<HullTri> toTris(QuadEdgeSubdivision subdiv) {
     HullTriVisitor visitor = new HullTriVisitor();
     subdiv.visitTriangles(visitor, false);
     List<HullTri> triList = visitor.getTriangles();
@@ -55,8 +55,8 @@ class HullTriangulation
     return triList;
   }
   
-  private static class HullTriVisitor implements TriangleVisitor {
-    private List<HullTri> triList = new ArrayList<HullTri>();
+ /**private */static class HullTriVisitor implements TriangleVisitor {
+   /**private */List<HullTri> triList = new ArrayList<HullTri>();
 
     HullTriVisitor() {
     }
@@ -124,7 +124,7 @@ class HullTriangulation
    * @param triList the triangulation
    * @return the points in the boundary of the triangulation
    */
-  private static List<Coordinate> traceBoundary(List<HullTri> triList) {
+ /**private */static List<Coordinate> traceBoundary(List<HullTri> triList) {
     HullTri triStart = findBorderTri(triList);
     CoordinateList coordList = new CoordinateList();
     HullTri tri = triStart;
@@ -145,7 +145,7 @@ class HullTriangulation
     return coordList.toCoordinateArray();
   }
   
-  private static HullTri findBorderTri(List<HullTri> triList) {
+ /**private */static HullTri findBorderTri(List<HullTri> triList) {
     for (HullTri tri : triList) {
       if (tri.isBorder()) return tri;
     }

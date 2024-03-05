@@ -35,7 +35,7 @@ class LinearRing extends LineString
   /// Empty rings with 0 vertices are also valid.
   static final int MINIMUM_VALID_SIZE = 3;
 
-  // private static final long serialVersionUID = -4261142084085851829L;
+  ///**private */static final long serialVersionUID = -4261142084085851829L;
 
   /// Constructs a <code>LinearRing</code> with the given points.
   ///
@@ -60,7 +60,7 @@ class LinearRing extends LineString
   /// @param points
   /// @param factory
   /// @throws ArgumentError if the ring is not closed, or has too few points
-  private LinearRing(Coordinate points[], GeometryFactory factory) {
+ /**private */LinearRing(Coordinate points[], GeometryFactory factory) {
     this(factory.getCoordinateSequenceFactory().create(points), factory);
   }
 
@@ -78,7 +78,7 @@ class LinearRing extends LineString
     validateConstruction();
   }
 
-  private void validateConstruction() {
+ /**private */void validateConstruction() {
     if (!isEmpty() && ! super.isClosed()) {
       throw new ArgumentError("Points of LinearRing do not form a closed linestring");
     }
@@ -113,11 +113,11 @@ class LinearRing extends LineString
     return Geometry.TYPENAME_LINEARRING;
   }
   
-  protected int getTypeCode() {
+ /**protected */int getTypeCode() {
     return Geometry.TYPECODE_LINEARRING;
   }
 
-  protected LinearRing copyInternal() {
+ /**protected */LinearRing copyInternal() {
     return new LinearRing(points.copy(), factory);
   }
 

@@ -44,9 +44,9 @@ class ConstrainedDelaunayTriangulator {
     return cdt.getResult();
   }
   
-  private final GeometryFactory geomFact;
-  private final Geometry inputGeom;
-  private List<Tri> triList;
+ /**private */final GeometryFactory geomFact;
+ /**private */final Geometry inputGeom;
+ /**private */List<Tri> triList;
 
   /**
    * Constructs a new Constrained Delaunay triangulator.
@@ -78,7 +78,7 @@ class ConstrainedDelaunayTriangulator {
     return triList;
   }
   
-  private void compute() {
+ /**private */void compute() {
     if (triList != null) return;
     
     List<Polygon> polys = PolygonExtracter.getPolygons(inputGeom);

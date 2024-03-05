@@ -52,7 +52,7 @@
 class Quadtree
     implements SpatialIndex, Serializable
 {
-  private static final long serialVersionUID = -7461163625812743604L;
+ /**private */static final long serialVersionUID = -7461163625812743604L;
 
   /**
    * Ensure that the envelope for the inserted item has non-zero extents.
@@ -83,7 +83,7 @@ class Quadtree
     return new Envelope(minx, maxx, miny, maxy);
   }
 
-  private Root root;
+ /**private */Root root;
   /**
 
   * minExtent is the minimum envelope extent of all items
@@ -93,7 +93,7 @@ class Quadtree
   * a zero extent in both directions.  This value may be non-optimal, but
   * only one feature will be inserted with this value.
   **/
-  private double minExtent = 1.0;
+ /**private */double minExtent = 1.0;
 
   /**
    * Constructs a Quadtree with zero items.
@@ -227,7 +227,7 @@ class Quadtree
     return foundItems;
   }
 
-  private void collectStats(Envelope itemEnv)
+ /**private */void collectStats(Envelope itemEnv)
   {
     double delX = itemEnv.getWidth();
     if (delX < minExtent && delX > 0.0)

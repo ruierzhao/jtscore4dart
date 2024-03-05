@@ -38,7 +38,7 @@ class LocationIndexOfLine
     return locater.indicesOf(subLine);
   }
 
-  private Geometry linearGeom;
+ /**private */Geometry linearGeom;
 
   LocationIndexOfLine(Geometry linearGeom) {
     this.linearGeom = linearGeom;

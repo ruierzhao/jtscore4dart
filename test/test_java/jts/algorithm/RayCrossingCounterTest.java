@@ -27,7 +27,7 @@ import junit.textui.TestRunner;
  */
 public class RayCrossingCounterTest extends AbstractPointInRingTest {
 
-  private WKTReader reader = new WKTReader();
+ /**private */WKTReader reader = new WKTReader();
 
   public static void main(String args[]) {
     TestRunner.run(RayCrossingCounterTest.class);
@@ -36,7 +36,7 @@ public class RayCrossingCounterTest extends AbstractPointInRingTest {
 
   public RayCrossingCounterTest(String name) { super(name); }
 
-  protected void runPtInRing(int expectedLoc, Coordinate pt, String wkt)
+ /**protected */void runPtInRing(int expectedLoc, Coordinate pt, String wkt)
           throws Exception
   {
     Geometry geom = reader.read(wkt);

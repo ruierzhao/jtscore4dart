@@ -27,8 +27,8 @@ import junit.textui.TestRunner;
 public class RectanglePredicateTest
      extends TestCase
 {
-  private WKTReader rdr = new WKTReader();
-  private GeometryFactory fact = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader();
+ /**private */GeometryFactory fact = new GeometryFactory();
 
   public static void main(String args[]) {
     TestRunner.run(RectanglePredicateTest.class);
@@ -54,7 +54,7 @@ public class RectanglePredicateTest
     runRectanglePred(onBoundary);
   }
 
-  private void runRectanglePred(String[] wkt)
+ /**private */void runRectanglePred(String[] wkt)
       throws Exception
   {
     Geometry rect = rdr.read(wkt[0]);
@@ -62,7 +62,7 @@ public class RectanglePredicateTest
     runRectanglePred(rect, b);
   }
 
-  private void runRectanglePred(Geometry rect, Geometry testGeom) {
+ /**private */void runRectanglePred(Geometry rect, Geometry testGeom) {
     boolean intersectsValue = rect.intersects(testGeom);
     boolean relateIntersectsValue = rect.relate(testGeom).isIntersects();
     boolean intersectsOK = intersectsValue == relateIntersectsValue;

@@ -44,9 +44,9 @@
 class SnapRoundingIntersectionAdder
     implements SegmentIntersector
 { 
-  private final LineIntersector li;
-  private final List<Coordinate> intersections;
-  private final double nearnessTol;
+ /**private */final LineIntersector li;
+ /**private */final List<Coordinate> intersections;
+ /**private */final double nearnessTol;
 
 
   /**
@@ -141,7 +141,7 @@ class SnapRoundingIntersectionAdder
    * @param p0
    * @param p1
    */
-  private void processNearVertex(Coordinate p, SegmentString edge, int segIndex, Coordinate p0, Coordinate p1) {
+ /**private */void processNearVertex(Coordinate p, SegmentString edge, int segIndex, Coordinate p0, Coordinate p1) {
     
     /**
      * Don't add intersection if candidate vertex is near endpoints of segment.

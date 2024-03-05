@@ -39,7 +39,7 @@ public class SegmentPointComparatorTest
     checkNodePosition(0, 1, 0, 1, 1, -1);
   }
 
-  private void checkNodePosition(int octant,
+ /**private */void checkNodePosition(int octant,
       double x0, double y0,
     double x1, double y1,
     int expectedPositionValue

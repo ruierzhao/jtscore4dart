@@ -48,7 +48,7 @@ public class MatrixStorageTest extends TestCase {
     runUnorderedTest(mat);
   }
 
-  private static void runOrderedTest(MatrixStorage mat) {
+ /**private */static void runOrderedTest(MatrixStorage mat) {
     mat.set(0, 0, 10);
     mat.set(0, 1, 20);
     mat.set(1, 1, 30);
@@ -69,7 +69,7 @@ public class MatrixStorageTest extends TestCase {
 
   }
 
-  private static void runUnorderedTest(MatrixStorage mat) {
+ /**private */static void runUnorderedTest(MatrixStorage mat) {
     mat.set(0, 0, 10);
     mat.set(3, 5, 80);
     mat.set(0, 1, 20);

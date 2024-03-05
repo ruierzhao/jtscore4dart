@@ -38,7 +38,7 @@ class LocationIndexOfPoint
     return locater.indexOfAfter(inputPt, minIndex);
   }
 
-  private Geometry linearGeom;
+ /**private */Geometry linearGeom;
 
   LocationIndexOfPoint(Geometry linearGeom) {
     this.linearGeom = linearGeom;
@@ -89,7 +89,7 @@ class LocationIndexOfPoint
     return closestAfter;
   }
 
-  private LinearLocation indexOfFromStart(Coordinate inputPt, LinearLocation minIndex)
+ /**private */LinearLocation indexOfFromStart(Coordinate inputPt, LinearLocation minIndex)
   {
     double minDistance = Double.MAX_VALUE;
     int minComponentIndex = 0;
@@ -144,7 +144,7 @@ class LocationIndexOfPoint
    */
   /*
    // MD - no longer needed
-  private static double segmentFraction(
+ /**private */static double segmentFraction(
       LineSegment seg,
       Coordinate inputPt)
   {

@@ -52,7 +52,7 @@ class CoverageGapFinder {
     return finder.findGaps(gapWidth);
   }
   
-  private List<Geometry> coverage;
+ /**private */List<Geometry> coverage;
 
   /**
    * Creates a new polygonal coverage gap finder.
@@ -86,12 +86,12 @@ class CoverageGapFinder {
     return union.getFactory().buildGeometry(gapLines);
   }
 
-  private LineString copyLine(LinearRing hole) {
+ /**private */LineString copyLine(LinearRing hole) {
     List<Coordinate> pts = hole.getCoordinates();
     return hole.getFactory().createLineString(pts);
   }
 
-  private bool isGap(LinearRing hole, double gapWidth) {
+ /**private */bool isGap(LinearRing hole, double gapWidth) {
     Geometry holePoly = hole.getFactory().createPolygon(hole);
     //-- guard against bad input
     if (gapWidth <= 0.0)

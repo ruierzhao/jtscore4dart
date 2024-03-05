@@ -202,7 +202,7 @@ class WKBWriter
     return buf.toString();
   }
 
-  private static char toHexDigit(int n)
+ /**private */static char toHexDigit(int n)
   {
     if (n < 0 || n > 15)
       throw new ArgumentError("Nibble value out of range: " + n);
@@ -211,13 +211,13 @@ class WKBWriter
     return (char) ('A' + (n - 10));
   }
 
-  private int outputDimension = 2;
-  private int byteOrder;
-  private bool includeSRID = false;
-  private ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
-  private OutStream byteArrayOutStream = new OutputStreamOutStream(byteArrayOS);
+ /**private */int outputDimension = 2;
+ /**private */int byteOrder;
+ /**private */bool includeSRID = false;
+ /**private */ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+ /**private */OutStream byteArrayOutStream = new OutputStreamOutStream(byteArrayOS);
   // holds output data values
-  private byte[] buf = new byte[8];
+ /**private */byte[] buf = new byte[8];
 
   /**
    * Creates a writer that writes {@link Geometry}s with
@@ -342,7 +342,7 @@ class WKBWriter
     }
   }
 
-  private void writePoint(Point pt, OutStream os) throws IOException
+ /**private */void writePoint(Point pt, OutStream os) throws IOException
   {
     writeByteOrder(os);
     writeGeometryType(WKBConstants.wkbPoint, pt, os);
@@ -354,7 +354,7 @@ class WKBWriter
     }
   }
 
-  private void writeLineString(LineString line, OutStream os)
+ /**private */void writeLineString(LineString line, OutStream os)
       throws IOException
   {
     writeByteOrder(os);
@@ -362,7 +362,7 @@ class WKBWriter
     writeCoordinateSequence(line.getCoordinateSequence(), true, os);
   }
 
-  private void writePolygon(Polygon poly, OutStream os) throws IOException
+ /**private */void writePolygon(Polygon poly, OutStream os) throws IOException
   {
     writeByteOrder(os);
     writeGeometryType(WKBConstants.wkbPolygon, poly, os);
@@ -379,7 +379,7 @@ class WKBWriter
     }
   }
 
-  private void writeGeometryCollection(int geometryType, GeometryCollection gc,
+ /**private */void writeGeometryCollection(int geometryType, GeometryCollection gc,
       OutStream os) throws IOException
   {
     writeByteOrder(os);
@@ -393,7 +393,7 @@ class WKBWriter
     this.includeSRID = originalIncludeSRID;
   }
 
-  private void writeByteOrder(OutStream os) throws IOException
+ /**private */void writeByteOrder(OutStream os) throws IOException
   {
     if (byteOrder == ByteOrderValues.LITTLE_ENDIAN)
       buf[0] = WKBConstants.wkbNDR;
@@ -402,7 +402,7 @@ class WKBWriter
     os.write(buf, 1);
   }
 
-  private void writeGeometryType(int geometryType, Geometry g, OutStream os)
+ /**private */void writeGeometryType(int geometryType, Geometry g, OutStream os)
       throws IOException
   {
     int flag3D = (outputDimension == 3) ? 0x80000000 : 0;
@@ -414,13 +414,13 @@ class WKBWriter
     }
   }
 
-  private void writeInt(int intValue, OutStream os) throws IOException
+ /**private */void writeInt(int intValue, OutStream os) throws IOException
   {
     ByteOrderValues.putInt(intValue, buf, byteOrder);
     os.write(buf, 4);
   }
 
-  private void writeCoordinateSequence(CoordinateSequence seq, bool writeSize, OutStream os)
+ /**private */void writeCoordinateSequence(CoordinateSequence seq, bool writeSize, OutStream os)
       throws IOException
   {
     if (writeSize)
@@ -431,7 +431,7 @@ class WKBWriter
     }
   }
 
-  private void writeCoordinate(CoordinateSequence seq, int index, OutStream os)
+ /**private */void writeCoordinate(CoordinateSequence seq, int index, OutStream os)
   throws IOException
   {
     ByteOrderValues.putDouble(seq.getX(index), buf, byteOrder);
@@ -451,7 +451,7 @@ class WKBWriter
     }
   }
   
-  private void writeNaNs(int numNaNs, OutStream os)
+ /**private */void writeNaNs(int numNaNs, OutStream os)
       throws IOException
   {
     for (int i = 0; i < numNaNs; i++) {

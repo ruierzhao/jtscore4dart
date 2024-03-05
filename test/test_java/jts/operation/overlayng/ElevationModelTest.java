@@ -18,7 +18,7 @@ import test.jts.GeometryTestCase;
 
 public class ElevationModelTest extends GeometryTestCase {
   
-  private static final double TOLERANCE = 0.00001;
+ /**private */static final double TOLERANCE = 0.00001;
 
   public static void main(String args[]) {
     TestRunner.run(ElevationModelTest.class);
@@ -127,16 +127,16 @@ public class ElevationModelTest extends GeometryTestCase {
         );
   }
 
-  private void checkElevation(String wkt1, String wkt2, double... ords) {
+ /**private */void checkElevation(String wkt1, String wkt2, double... ords) {
     checkElevation(read(wkt1), read(wkt2), ords);
   }
   
-  private void checkElevation(String wkt1, double... ords) {
+ /**private */void checkElevation(String wkt1, double... ords) {
     checkElevation(read(wkt1), null, ords);
   }
   
   
-  private void checkElevation(Geometry geom1, Geometry geom2, double[] ords) {
+ /**private */void checkElevation(Geometry geom1, Geometry geom2, double[] ords) {
     ElevationModel model = ElevationModel.create(geom1, geom2);
     int numPts = ords.length / 3;
     if (3 * numPts != ords.length) {
@@ -152,7 +152,7 @@ public class ElevationModelTest extends GeometryTestCase {
     }
   }
   
-  private void checkElevationPopulateZ(String wkt, String wktNoZ, String wktZExpected) {
+ /**private */void checkElevationPopulateZ(String wkt, String wktNoZ, String wktZExpected) {
     Geometry geom = read(wkt);
     ElevationModel model = ElevationModel.create(geom, null);
     

@@ -30,16 +30,16 @@ class EdgeKey implements Comparable<EdgeKey> {
     return new EdgeKey(edge);
   }
     
-  private double p0x;
-  private double p0y;
-  private double p1x;
-  private double p1y;
+ /**private */double p0x;
+ /**private */double p0y;
+ /**private */double p1x;
+ /**private */double p1y;
 
   EdgeKey(Edge edge) {
     initPoints(edge);
   }
 
-  private void initPoints(Edge edge) {
+ /**private */void initPoints(Edge edge) {
     bool direction = edge.direction();
     if (direction) {
       init(edge.getCoordinate(0), 
@@ -52,7 +52,7 @@ class EdgeKey implements Comparable<EdgeKey> {
     }
   }
 
-  private void init(Coordinate p0, Coordinate p1) {
+ /**private */void init(Coordinate p0, Coordinate p1) {
     p0x = p0.getX();
     p0y = p0.getY();
     p1x = p1.getX();
@@ -116,7 +116,7 @@ class EdgeKey implements Comparable<EdgeKey> {
       + ", " +  format(p1x, p1y) + ")";
   }
   
-  private String format(double x, double y) {
+ /**private */String format(double x, double y) {
     return OrdinateFormat.DEFAULT.format(x) + " " + OrdinateFormat.DEFAULT.format(y);
   }
 }

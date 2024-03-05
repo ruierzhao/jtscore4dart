@@ -92,9 +92,9 @@ class BoundaryOp
     return true;
   }
   
-  private Geometry geom;
-  private GeometryFactory geomFact;
-  private BoundaryNodeRule bnRule;
+ /**private */Geometry geom;
+ /**private */GeometryFactory geomFact;
+ /**private */BoundaryNodeRule bnRule;
 
   /// Creates a new instance for the given geometry.
   /// 
@@ -125,12 +125,12 @@ class BoundaryOp
     return geom.getBoundary();
   }
 
-  private MultiPoint getEmptyMultiPoint()
+ /**private */MultiPoint getEmptyMultiPoint()
   {
     return geomFact.createMultiPoint();
   }
 
-  private Geometry boundaryMultiLineString(MultiLineString mLine)
+ /**private */Geometry boundaryMultiLineString(MultiLineString mLine)
   {
     if (geom.isEmpty()) {
       return getEmptyMultiPoint();
@@ -148,7 +148,7 @@ class BoundaryOp
 
 /*
 // MD - superseded
-  private List<Coordinate> computeBoundaryFromGeometryGraph(MultiLineString mLine)
+ /**private */List<Coordinate> computeBoundaryFromGeometryGraph(MultiLineString mLine)
   {
     GeometryGraph g = new GeometryGraph(0, mLine, bnRule);
     List<Coordinate> bdyPts = g.getBoundaryPoints();
@@ -156,9 +156,9 @@ class BoundaryOp
   }
 */
 
-  private Map endpointMap;
+ /**private */Map endpointMap;
 
-  private List<Coordinate> computeBoundaryCoordinates(MultiLineString mLine)
+ /**private */List<Coordinate> computeBoundaryCoordinates(MultiLineString mLine)
   {
     List bdyPts = new ArrayList();
     endpointMap = new TreeMap();
@@ -182,7 +182,7 @@ class BoundaryOp
     return CoordinateArrays.toCoordinateArray(bdyPts);
   }
 
-  private void addEndpoint(Coordinate pt)
+ /**private */void addEndpoint(Coordinate pt)
   {
     Counter counter = (Counter) endpointMap.get(pt);
     if (counter == null) {
@@ -192,7 +192,7 @@ class BoundaryOp
     counter.count++;
   }
 
-  private Geometry boundaryLineString(LineString line)
+ /**private */Geometry boundaryLineString(LineString line)
   {
     if (geom.isEmpty()) {
       return getEmptyMultiPoint();

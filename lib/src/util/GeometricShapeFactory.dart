@@ -42,15 +42,15 @@
  */
 class GeometricShapeFactory
 {
-  protected GeometryFactory geomFact;
-  protected PrecisionModel precModel = null;
-  protected Dimensions dim = new Dimensions();
-  protected int nPts = 100;
+ /**protected */GeometryFactory geomFact;
+ /**protected */PrecisionModel precModel = null;
+ /**protected */Dimensions dim = new Dimensions();
+ /**protected */int nPts = 100;
   
   /**
    * Default is no rotation.
    */
-  protected double rotationAngle = 0.0;
+ /**protected */double rotationAngle = 0.0;
 
   /**
    * Create a shape factory which will create shapes using the default
@@ -133,7 +133,7 @@ class GeometricShapeFactory
     rotationAngle = radians;
   }
   
-  protected Geometry rotate(Geometry geom)
+ /**protected */Geometry rotate(Geometry geom)
   {
     if (rotationAngle != 0.0) {
       AffineTransformation trans = AffineTransformation.rotationInstance(rotationAngle, 
@@ -377,19 +377,19 @@ class GeometricShapeFactory
     return (Polygon) rotate(poly);
   }
 
-  protected Coordinate coord(double x, double y)
+ /**protected */Coordinate coord(double x, double y)
   {
   	Coordinate pt = new Coordinate(x, y);
     precModel.makePrecise(pt);
     return pt;
   }
   
-  protected Coordinate coordTrans(double x, double y, Coordinate trans)
+ /**protected */Coordinate coordTrans(double x, double y, Coordinate trans)
   {
   	return coord(x + trans.x, y + trans.y);
   }
   
-  static protected class Dimensions
+  static/**protected */class Dimensions
   {
     Coordinate base;
     Coordinate centre;

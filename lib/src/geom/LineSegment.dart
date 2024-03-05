@@ -35,7 +35,7 @@
 class LineSegment
   implements Comparable, Serializable
 {
-  private static final long serialVersionUID = 3252005833466256227L;
+ /**private */static final long serialVersionUID = 3252005833466256227L;
 
   Coordinate p0, p1;
 
@@ -391,7 +391,7 @@ class LineSegment
     return project(p, r);
   }
   
-  private Coordinate project(Coordinate p, double projectionFactor)
+ /**private */Coordinate project(Coordinate p, double projectionFactor)
   {
     Coordinate coord = p.copy();
     coord.x = p0.x + projectionFactor * (p1.x - p0.x);

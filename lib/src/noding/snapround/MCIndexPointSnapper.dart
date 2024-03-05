@@ -31,7 +31,7 @@ class MCIndexPointSnapper
 {
   //static final int nSnaps = 0;
 
-  private SpatialIndex index;
+ /**private */SpatialIndex index;
 
   MCIndexPointSnapper(SpatialIndex index) {
     this.index = index;
@@ -68,7 +68,7 @@ class MCIndexPointSnapper
     return snap(hotPixel, null, -1);
   }
 
-  private static final double SAFE_ENV_EXPANSION_FACTOR = 0.75;
+ /**private */static final double SAFE_ENV_EXPANSION_FACTOR = 0.75;
   
   /**
    * Returns a "safe" envelope that is guaranteed to contain the hot pixel.
@@ -88,11 +88,11 @@ class MCIndexPointSnapper
   static class HotPixelSnapAction
       extends MonotoneChainSelectAction
   {
-    private HotPixel hotPixel;
-    private SegmentString parentEdge;
+   /**private */HotPixel hotPixel;
+   /**private */SegmentString parentEdge;
     // is -1 if hotPixel is not a vertex
-    private int hotPixelVertexIndex;
-    private bool isNodeAdded = false;
+   /**private */int hotPixelVertexIndex;
+   /**private */bool isNodeAdded = false;
 
     HotPixelSnapAction(HotPixel hotPixel, SegmentString parentEdge, int hotPixelVertexIndex)
     {

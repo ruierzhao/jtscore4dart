@@ -23,15 +23,15 @@
  */
 class ConstraintEnforcementException extends RuntimeException {
 
-    private static final long serialVersionUID = 386496846550080140L;
+   /**private */static final long serialVersionUID = 386496846550080140L;
 
-    private static String msgWithCoord(String msg, Coordinate pt) {
+   /**private */static String msgWithCoord(String msg, Coordinate pt) {
         if (pt != null)
             return msg + " [ " + WKTWriter.toPoint(pt) + " ]";
         return msg;
     }
 
-    private Coordinate pt = null;
+   /**private */Coordinate pt = null;
 
     /**
      * Creates a new instance with a given message.

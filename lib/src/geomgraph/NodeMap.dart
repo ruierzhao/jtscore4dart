@@ -41,7 +41,7 @@ class NodeMap
    * Factory function - subclasses can override to create their own types of nodes
    */
    /*
-  protected Node createNode(Coordinate coord)
+ /**protected */Node createNode(Coordinate coord)
   {
     return new Node(coord);
   }

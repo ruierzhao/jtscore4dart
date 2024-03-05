@@ -22,7 +22,7 @@ class MultiLineString
 	extends GeometryCollection
 	implements Lineal
 	{
-  private static final long serialVersionUID = 8166665132445433741L;
+ /**private */static final long serialVersionUID = 8166665132445433741L;
   ///  Constructs a <code>MultiLineString</code>.
   ///
   ///@param  lineStrings     the <code>LineString</code>s for this <code>MultiLineString</code>
@@ -101,7 +101,7 @@ class MultiLineString
     return (MultiLineString) super.reverse();
   }
 
-  protected MultiLineString reverseInternal() {
+ /**protected */MultiLineString reverseInternal() {
     List<LineString> lineStrings = new LineString[this.geometries.length];
     for (int i = 0; i < lineStrings.length; i++) {
       lineStrings[i] = (LineString) this.geometries[i].reverse();
@@ -109,7 +109,7 @@ class MultiLineString
     return new MultiLineString(lineStrings, factory);
   }
   
-  protected MultiLineString copyInternal() {
+ /**protected */MultiLineString copyInternal() {
     List<LineString> lineStrings = new LineString[this.geometries.length];
     for (int i = 0; i < lineStrings.length; i++) {
       lineStrings[i] = (LineString) this.geometries[i].copy();
@@ -124,7 +124,7 @@ class MultiLineString
     return super.equalsExact(other, tolerance);
   }
 
-  protected int getTypeCode() {
+ /**protected */int getTypeCode() {
     return Geometry.TYPECODE_MULTILINESTRING;
   }
 }

@@ -45,7 +45,7 @@
  */
 class GeometrySnapper
 {
-  private static final double SNAP_PRECISION_FACTOR = 1e-9;
+ /**private */static final double SNAP_PRECISION_FACTOR = 1e-9;
 
   /**
    * Estimates the snap tolerance for a Geometry, taking into account its precision model.
@@ -132,7 +132,7 @@ class GeometrySnapper
     return snapper0.snapToSelf(snapTolerance, cleanResult);
   }
   
-  private Geometry srcGeom;
+ /**private */Geometry srcGeom;
 
   /**
    * Creates a new snapper acting on the given geometry
@@ -187,7 +187,7 @@ class GeometrySnapper
     return result;
   }
 
-  private List<Coordinate> extractTargetCoordinates(Geometry g)
+ /**private */List<Coordinate> extractTargetCoordinates(Geometry g)
   {
     // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
     Set ptSet = new TreeSet();
@@ -204,7 +204,7 @@ class GeometrySnapper
    * @param ringPts
    * @return
    */
-  private double computeSnapTolerance(List<Coordinate> ringPts)
+ /**private */double computeSnapTolerance(List<Coordinate> ringPts)
   {
     double minSegLen = computeMinimumSegmentLength(ringPts);
     // use a small percentage of this to be safe
@@ -212,7 +212,7 @@ class GeometrySnapper
     return snapTol;
   }
 
-  private double computeMinimumSegmentLength(List<Coordinate> pts)
+ /**private */double computeMinimumSegmentLength(List<Coordinate> pts)
   {
     double minSegLen = Double.MAX_VALUE;
     for (int i = 0; i < pts.length - 1; i++) {
@@ -228,9 +228,9 @@ class GeometrySnapper
 class SnapTransformer
     extends GeometryTransformer
 {
-  private double snapTolerance;
-  private List<Coordinate> snapPts;
-  private bool isSelfSnap = false;
+ /**private */double snapTolerance;
+ /**private */List<Coordinate> snapPts;
+ /**private */bool isSelfSnap = false;
 
   SnapTransformer(double snapTolerance, List<Coordinate> snapPts)
   {
@@ -245,14 +245,14 @@ class SnapTransformer
     this.isSelfSnap = isSelfSnap;
   }
 
-  protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
+ /**protected */CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
   {
     List<Coordinate> srcPts = coords.toCoordinateArray();
     List<Coordinate> newPts = snapLine(srcPts, snapPts);
     return factory.getCoordinateSequenceFactory().create(newPts);
   }
 
-  private List<Coordinate> snapLine(List<Coordinate> srcPts, List<Coordinate> snapPts)
+ /**private */List<Coordinate> snapLine(List<Coordinate> srcPts, List<Coordinate> snapPts)
   {
     LineStringSnapper snapper = new LineStringSnapper(srcPts, snapTolerance);
     snapper.setAllowSnappingToSourceVertices(isSelfSnap);

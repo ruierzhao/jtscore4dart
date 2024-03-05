@@ -74,7 +74,7 @@ public class InteriorPointTest extends GeometryTestCase
     checkInteriorPointFile(fileRdr);
   }
 
-  private void checkInteriorPointFile(WKTFileReader fileRdr) throws IOException, ParseException
+ /**private */void checkInteriorPointFile(WKTFileReader fileRdr) throws IOException, ParseException
   {
     List polys = fileRdr.read();
     checkInteriorPoint(polys);
@@ -92,13 +92,13 @@ public class InteriorPointTest extends GeometryTestCase
     //System.out.println("  " + sw.getTimeString());
   }
 
-  private void checkInteriorPoint(Geometry g)
+ /**private */void checkInteriorPoint(Geometry g)
   {
     Point ip = g.getInteriorPoint();
     assertTrue(g.contains(ip));
   }
   
-  private void checkInteriorPoint(Geometry g, Coordinate expectedPt)
+ /**private */void checkInteriorPoint(Geometry g, Coordinate expectedPt)
   {
     Point ip = g.getInteriorPoint();
     assertTrue(ip.getCoordinate().equals2D(expectedPt));

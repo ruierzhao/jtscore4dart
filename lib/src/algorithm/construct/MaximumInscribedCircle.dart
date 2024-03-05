@@ -111,17 +111,17 @@ class MaximumInscribedCircle {
     return 2000 + 2000 * factor;
   }
   
-  private Geometry inputGeom;
-  private double tolerance;
+ /**private */Geometry inputGeom;
+ /**private */double tolerance;
 
-  private GeometryFactory factory;
-  private IndexedPointInAreaLocator ptLocater;
-  private IndexedFacetDistance indexedDistance;
-  private Cell centerCell = null;
-  private Coordinate centerPt = null;
-  private Coordinate radiusPt;
-  private Point centerPoint;
-  private Point radiusPoint;
+ /**private */GeometryFactory factory;
+ /**private */IndexedPointInAreaLocator ptLocater;
+ /**private */IndexedFacetDistance indexedDistance;
+ /**private */Cell centerCell = null;
+ /**private */Coordinate centerPt = null;
+ /**private */Coordinate radiusPt;
+ /**private */Point centerPoint;
+ /**private */Point radiusPoint;
 
   /**
    * Creates a new instance of a Maximum Inscribed Circle computation.
@@ -195,20 +195,20 @@ class MaximumInscribedCircle {
    * @param p the point to compute the distance for
    * @return the signed distance to the area boundary (negative indicates outside the area)
    */
-  private double distanceToBoundary(Point p) {
+ /**private */double distanceToBoundary(Point p) {
     double dist = indexedDistance.distance(p);
     bool isOutide = Location.EXTERIOR == ptLocater.locate(p.getCoordinate());
     if (isOutide) return -dist;
     return dist;
   }
 
-  private double distanceToBoundary(double x, double y) {
+ /**private */double distanceToBoundary(double x, double y) {
     Coordinate coord = new Coordinate(x, y);
     Point pt = factory.createPoint(coord);
     return distanceToBoundary(pt);
   }
   
-  private void compute() {
+ /**private */void compute() {
     // check if already computed
     if (centerCell != null) return;
     
@@ -279,7 +279,7 @@ class MaximumInscribedCircle {
    * @param env the area extent to cover
    * @param cellQueue the queue to initialize
    */
-  private void createInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue) {
+ /**private */void createInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue) {
     double cellSize = math.max(env.getWidth(), env.getHeight());
     double hSide = cellSize / 2.0;
 
@@ -291,12 +291,12 @@ class MaximumInscribedCircle {
     cellQueue.add(createCell(centre.x, centre.y, hSide)); 
   }
 
-  private Cell createCell(double x, double y, double hSide) {
+ /**private */Cell createCell(double x, double y, double hSide) {
     return new Cell(x, y, hSide, distanceToBoundary(x, y));
   }
 
   // create a cell at an interior point
-  private Cell createInterorPointCell(Geometry geom) {
+ /**private */Cell createInterorPointCell(Geometry geom) {
     Point p = geom.getInteriorPoint();
     return new Cell(p.getX(), p.getY(), 0, distanceToBoundary(p));
   }
@@ -311,15 +311,15 @@ class MaximumInscribedCircle {
    * the branch-and-bound algorithm. 
    *
    */
-  private static class Cell implements Comparable<Cell> {
+ /**private */static class Cell implements Comparable<Cell> {
 
-    private static final double SQRT2 = 1.4142135623730951;
+   /**private */static final double SQRT2 = 1.4142135623730951;
 
-    private double x;
-    private double y;
-    private double hSide;
-    private double distance;
-    private double maxDist;
+   /**private */double x;
+   /**private */double y;
+   /**private */double hSide;
+   /**private */double distance;
+   /**private */double maxDist;
 
     Cell(double x, double y, double hSide, double distanceToBoundary) {
       this.x = x; // cell center x

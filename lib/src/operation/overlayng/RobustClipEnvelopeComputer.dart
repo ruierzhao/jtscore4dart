@@ -39,8 +39,8 @@ class RobustClipEnvelopeComputer {
     return cec.getEnvelope();
   }
   
-  private Envelope targetEnv;
-  private Envelope clipEnv;
+ /**private */Envelope targetEnv;
+ /**private */Envelope clipEnv;
 
   RobustClipEnvelopeComputer(Envelope targetEnv) {
     this.targetEnv = targetEnv;
@@ -61,14 +61,14 @@ class RobustClipEnvelopeComputer {
       addCollection((GeometryCollection) g);
   }
 
-  private void addCollection(GeometryCollection gc) {
+ /**private */void addCollection(GeometryCollection gc) {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       Geometry g = gc.getGeometryN(i);
       add(g);
     }
   }
 
-  private void addPolygon(Polygon poly) {
+ /**private */void addPolygon(Polygon poly) {
     LinearRing shell = poly.getExteriorRing();
     addPolygonRing(shell);
 
@@ -81,7 +81,7 @@ class RobustClipEnvelopeComputer {
   /**
    * Adds a polygon ring to the graph. Empty rings are ignored.
    */
-  private void addPolygonRing(LinearRing ring) {
+ /**private */void addPolygonRing(LinearRing ring) {
     // don't add empty lines
     if ( ring.isEmpty() )
       return;
@@ -92,14 +92,14 @@ class RobustClipEnvelopeComputer {
     }
   }
 
-  private void addSegment(Coordinate p1, Coordinate p2) {
+ /**private */void addSegment(Coordinate p1, Coordinate p2) {
     if (intersectsSegment(targetEnv, p1, p2)) {
       clipEnv.expandToInclude(p1);
       clipEnv.expandToInclude(p2);
     }
   }
 
-  private static bool intersectsSegment(Envelope env, Coordinate p1, Coordinate p2) {
+ /**private */static bool intersectsSegment(Envelope env, Coordinate p1, Coordinate p2) {
     /**
      * This is a crude test of whether segment intersects envelope.
      * It could be refined by checking exact intersection.

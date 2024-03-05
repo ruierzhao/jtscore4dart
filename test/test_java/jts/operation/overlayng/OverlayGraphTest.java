@@ -104,20 +104,20 @@ public class OverlayGraphTest extends GeometryTestCase {
     checkNodeValid(node);
   }
   
-  private void checkNext(OverlayEdge e, OverlayEdge eNext) {
+ /**private */void checkNext(OverlayEdge e, OverlayEdge eNext) {
     assertEquals(eNext, e.next());
   }
   
-  private void checkPrev(OverlayEdge e, OverlayEdge ePrev) {
+ /**private */void checkPrev(OverlayEdge e, OverlayEdge ePrev) {
     assertEquals(ePrev, e.prev());
   }
   
-  private void checkNodeValid(OverlayEdge e) {
+ /**private */void checkNodeValid(OverlayEdge e) {
     boolean isNodeValid = e.isEdgesSorted();
     assertTrue("Found non-sorted edges around node " + e.toStringNode(), isNodeValid); 
   }
 
-  private static OverlayEdge findEdge(OverlayGraph graph, double orgx, double orgy, double destx, double desty) {
+ /**private */static OverlayEdge findEdge(OverlayGraph graph, double orgx, double orgy, double destx, double desty) {
     Collection<OverlayEdge> edges = graph.getEdges();
     for (OverlayEdge e : edges) {
       if (isEdgeOrgDest(e, orgx, orgy, destx, desty)) {
@@ -130,17 +130,17 @@ public class OverlayGraphTest extends GeometryTestCase {
     return null;
   }
   
-  private static boolean isEdgeOrgDest(OverlayEdge e, double orgx, double orgy, double destx, double desty) {
+ /**private */static boolean isEdgeOrgDest(OverlayEdge e, double orgx, double orgy, double destx, double desty) {
     if (! isEqual(e.orig(), orgx, orgy)) return false;
     if (! isEqual(e.dest(), destx, desty)) return false;
     return true;
   }
 
-  private static boolean isEqual(Coordinate p, double x, double y) {
+ /**private */static boolean isEqual(Coordinate p, double x, double y) {
     return p.getX() == x && p.getY() == y;
   }
 
-  private OverlayGraph createGraph(Coordinate[]... edges) {
+ /**private */OverlayGraph createGraph(Coordinate[]... edges) {
     OverlayGraph graph = new OverlayGraph();
     for (Coordinate[] e : edges) {
       graph.addEdge(e, new OverlayLabel());
@@ -148,19 +148,19 @@ public class OverlayGraphTest extends GeometryTestCase {
     return graph;
   }
   
-  private OverlayEdge addEdge(OverlayGraph graph, double x1, double y1, double x2, double y2) {
+ /**private */OverlayEdge addEdge(OverlayGraph graph, double x1, double y1, double x2, double y2) {
     Coordinate[] pts = new Coordinate[] {
         new Coordinate(x1, y1), new Coordinate(x2, y2)
     };
     return graph.addEdge(pts, new OverlayLabel());
   }
   
-  private Coordinate[] createLine(double... ord) {
+ /**private */Coordinate[] createLine(double... ord) {
     Coordinate[] pts = toCoordinates(ord);
     return pts;
   }
 
-  private Coordinate[] toCoordinates(double[] ord) {
+ /**private */Coordinate[] toCoordinates(double[] ord) {
     Coordinate[] pts = new Coordinate[ord.length / 2];
     for (int i = 0; i < pts.length; i++) {
       pts[i] = new Coordinate(ord[2*i], ord[2*i+1]);

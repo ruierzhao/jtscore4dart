@@ -96,10 +96,10 @@ class CascadedPolygonUnion
 
 	private Collection inputPolys;
 	private GeometryFactory geomFactory = null;
-  private UnionStrategy unionFun;
+ /**private */UnionStrategy unionFun;
 
-  private int countRemainder = 0;
-  private int countInput = 0;
+ /**private */int countRemainder = 0;
+ /**private */int countInput = 0;
 
   /**
    * Creates a new instance to union
@@ -135,7 +135,7 @@ class CascadedPolygonUnion
    * For an STRtree, 4 is probably a good number (since
    * this produces 2x2 "squares").
    */
-  private static final int STRTREE_NODE_CAPACITY = 4;
+ /**private */static final int STRTREE_NODE_CAPACITY = 4;
 
 	/**
 	 * Computes the union of the input geometries.
@@ -180,7 +180,7 @@ class CascadedPolygonUnion
     return unionAll;
 	}
 
-  private Geometry unionTree(List geomTree)
+ /**private */Geometry unionTree(List geomTree)
   {
     /**
      * Recursively unions all subtrees in the list into single geometries.
@@ -201,7 +201,7 @@ class CascadedPolygonUnion
    * The following methods are for experimentation only
    */
 /*
-  private Geometry repeatedUnion(List geoms)
+ /**private */Geometry repeatedUnion(List geoms)
   {
   	Geometry union = null;
   	for (Iterator i = geoms.iterator(); i.hasNext(); ) {
@@ -222,7 +222,7 @@ class CascadedPolygonUnion
    * by treating the list as a flattened binary tree,
    * and performing a cascaded union on the tree.
    */
-  private Geometry binaryUnion(List geoms)
+ /**private */Geometry binaryUnion(List geoms)
   {
   	return binaryUnion(geoms, 0, geoms.size());
   }
@@ -236,7 +236,7 @@ class CascadedPolygonUnion
    * @param end the index after the end of the section
    * @return the union of the list section
    */
-  private Geometry binaryUnion(List geoms, int start, int end)
+ /**private */Geometry binaryUnion(List geoms, int start, int end)
   {
   	if (end - start <= 1) {
   		Geometry g0 = getGeometry(geoms, start);
@@ -263,7 +263,7 @@ class CascadedPolygonUnion
    * @return the geometry at the given index
    * or null if the index is out of range
    */
-  private static Geometry getGeometry(List list, int index)
+ /**private */static Geometry getGeometry(List list, int index)
   {
   	if (index >= list.size()) return null;
   	return (Geometry) list.get(index);
@@ -276,7 +276,7 @@ class CascadedPolygonUnion
    * @param geomTree a tree-structured list of geometries
    * @return a list of Geometrys
    */
-  private List reduceToGeometries(List geomTree)
+ /**private */List reduceToGeometries(List geomTree)
   {
     List geoms = new ArrayList();
     for (Iterator i = geomTree.iterator(); i.hasNext(); ) {
@@ -302,7 +302,7 @@ class CascadedPolygonUnion
    * @return the union of the input(s)
    * or null if both inputs are null
    */
-  private Geometry unionSafe(Geometry g0, Geometry g1)
+ /**private */Geometry unionSafe(Geometry g0, Geometry g1)
   {
   	if (g0 == null && g1 == null)
   		return null;
@@ -333,7 +333,7 @@ class CascadedPolygonUnion
    * @param g1
    * @return
    */
-  private Geometry unionActual(Geometry g0, Geometry g1)
+ /**private */Geometry unionActual(Geometry g0, Geometry g1)
   {
     Geometry union = unionFun.union(g0, g1);
     Geometry unionPoly = restrictToPolygons( union );
@@ -353,7 +353,7 @@ class CascadedPolygonUnion
    * @param g the geometry to filter
    * @return a Polygonal geometry
    */
-  private static Geometry restrictToPolygons(Geometry g)
+ /**private */static Geometry restrictToPolygons(Geometry g)
   {
     if (g is Polygonal) {
       return g;

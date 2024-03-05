@@ -53,15 +53,15 @@ public class CascadedPolygonUnionFileTest extends TestCase
   			CascadedPolygonUnionTester.MIN_SIMILARITY_MEAURE);
   }
 
-  private static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
+ /**private */static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
   
-  private void runTest(String filename, double minimumMeasure) 
+ /**private */void runTest(String filename, double minimumMeasure) 
   throws IOException, ParseException
   {
     Collection geoms = IOUtil.readWKTFile(filename);
     assertTrue(tester.test(geoms, minimumMeasure));
   }
-  private void runTestResource(String resource, double minimumMeasure) 
+ /**private */void runTestResource(String resource, double minimumMeasure) 
   throws IOException, ParseException
   {
     InputStream is = this.getClass().getResourceAsStream(resource);

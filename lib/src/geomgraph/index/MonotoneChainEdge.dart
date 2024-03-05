@@ -86,7 +86,7 @@ class MonotoneChainEdge {
                             si );
   }
 
-  private void computeIntersectsForChain(
+ /**private */void computeIntersectsForChain(
     int start0, int end0,
     MonotoneChainEdge mce,
     int start1, int end1,
@@ -128,7 +128,7 @@ class MonotoneChainEdge {
    * @param end1
    * @return true if the section envelopes overlap
    */
-  private bool overlaps(
+ /**private */bool overlaps(
       int start0, int end0,
       MonotoneChainEdge mce,
       int start1, int end1)

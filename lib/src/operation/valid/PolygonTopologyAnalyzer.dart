@@ -77,7 +77,7 @@ class PolygonTopologyAnalyzer {
     return isIncidentSegmentInRing(p0, p1, targetPts);
   }
   
-  private static Coordinate findNonEqualVertex(LinearRing ring, Coordinate p) {
+ /**private */static Coordinate findNonEqualVertex(LinearRing ring, Coordinate p) {
     int i = 1;
     Coordinate next = ring.getCoordinateN(i);
     while (next.equals2D(p) && i < ring.getNumPoints() - 1) {
@@ -104,7 +104,7 @@ class PolygonTopologyAnalyzer {
    * @param ringPts the points of the ring
    * @return true if the segment is inside the ring.
    */
-  private static bool isIncidentSegmentInRing(Coordinate p0, Coordinate p1, List<Coordinate> ringPts) {
+ /**private */static bool isIncidentSegmentInRing(Coordinate p0, Coordinate p1, List<Coordinate> ringPts) {
     int index = intersectingSegIndex(ringPts, p0);
     if (index < 0) {
       throw new ArgumentError("Segment vertex does not intersect ring");
@@ -134,7 +134,7 @@ class PolygonTopologyAnalyzer {
    * 
    * @return the previous ring vertex
    */
-  private static Coordinate findRingVertexPrev(List<Coordinate> ringPts, int index, Coordinate node) {
+ /**private */static Coordinate findRingVertexPrev(List<Coordinate> ringPts, int index, Coordinate node) {
     int iPrev = index;
     Coordinate prev = ringPts[iPrev];
     while (node.equals2D(prev)) {
@@ -155,7 +155,7 @@ class PolygonTopologyAnalyzer {
    * 
    * @return the next ring vertex
    */
-  private static Coordinate findRingVertexNext(List<Coordinate> ringPts, int index, Coordinate node) {
+ /**private */static Coordinate findRingVertexNext(List<Coordinate> ringPts, int index, Coordinate node) {
     //-- safe, since index is always the start of a ring segment
     int iNext = index + 1;
     Coordinate next = ringPts[iNext];
@@ -166,13 +166,13 @@ class PolygonTopologyAnalyzer {
     return next;
   }
   
-  private static int ringIndexPrev(List<Coordinate> ringPts, int index) {
+ /**private */static int ringIndexPrev(List<Coordinate> ringPts, int index) {
     if (index == 0) 
       return ringPts.length - 2;
     return index - 1;
   }
   
-  private static int ringIndexNext(List<Coordinate> ringPts, int index) {
+ /**private */static int ringIndexNext(List<Coordinate> ringPts, int index) {
     if (index >= ringPts.length - 2) 
       return 0;
     return index + 1;
@@ -184,7 +184,7 @@ class PolygonTopologyAnalyzer {
    * @param pt the intersection point
    * @return the intersection segment index, or -1 if no intersection is found
    */
-  private static int intersectingSegIndex(List<Coordinate> ringPts, Coordinate pt) {
+ /**private */static int intersectingSegIndex(List<Coordinate> ringPts, Coordinate pt) {
     LineIntersector li = new RobustLineIntersector();
     for (int i = 0; i < ringPts.length - 1; i++) {
       li.computeIntersection(pt, ringPts[i], ringPts[i + 1]);
@@ -212,11 +212,11 @@ class PolygonTopologyAnalyzer {
     return null;
   }
   
-  private bool isInvertedRingValid;
+ /**private */bool isInvertedRingValid;
   
-  private PolygonIntersectionAnalyzer intFinder;
-  private List<PolygonRing> polyRings = null;
-  private Coordinate disconnectionPt = null;
+ /**private */PolygonIntersectionAnalyzer intFinder;
+ /**private */List<PolygonRing> polyRings = null;
+ /**private */Coordinate disconnectionPt = null;
 
   /**
    * Creates a new analyzer for a {@link Polygon} or {@link MultiPolygon}.
@@ -315,7 +315,7 @@ class PolygonTopologyAnalyzer {
     }
   }
   
-  private void analyze(Geometry geom) {
+ /**private */void analyze(Geometry geom) {
     if (geom.isEmpty()) 
       return;
     List<SegmentString> segStrings = createSegmentStrings(geom, isInvertedRingValid);
@@ -328,7 +328,7 @@ class PolygonTopologyAnalyzer {
     }
   }
   
-  private PolygonIntersectionAnalyzer analyzeIntersections(List<SegmentString> segStrings)
+ /**private */PolygonIntersectionAnalyzer analyzeIntersections(List<SegmentString> segStrings)
   {
     PolygonIntersectionAnalyzer segInt = new PolygonIntersectionAnalyzer(isInvertedRingValid);
     MCIndexNoder noder = new MCIndexNoder();
@@ -337,7 +337,7 @@ class PolygonTopologyAnalyzer {
     return segInt;
   }
 
-  private static List<SegmentString> createSegmentStrings(Geometry geom, bool isInvertedRingValid) {
+ /**private */static List<SegmentString> createSegmentStrings(Geometry geom, bool isInvertedRingValid) {
     List<SegmentString> segStrings = new ArrayList<SegmentString>();
     if (geom is LinearRing) {
       LinearRing ring = (LinearRing) geom;
@@ -366,7 +366,7 @@ class PolygonTopologyAnalyzer {
     return segStrings;
   }
   
-  private static List<PolygonRing> getPolygonRings(List<SegmentString> segStrings) {
+ /**private */static List<PolygonRing> getPolygonRings(List<SegmentString> segStrings) {
     List<PolygonRing> polyRings = null;
     for (SegmentString ss : segStrings) {
       PolygonRing polyRing = (PolygonRing) ss.getData();
@@ -380,7 +380,7 @@ class PolygonTopologyAnalyzer {
     return polyRings;
   }
 
-  private static SegmentString createSegString(LinearRing ring, PolygonRing polyRing) {
+ /**private */static SegmentString createSegString(LinearRing ring, PolygonRing polyRing) {
     List<Coordinate> pts = ring.getCoordinates();
     
     //--- repeated points must be removed for accurate intersection detection

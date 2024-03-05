@@ -115,7 +115,7 @@ public class GeometryImplTest extends TestCase {
               + "((160 300, 160 200, 260 200, 260 300, 160 300)))").buffer(0);
     }
 
-    private void doTestFromCommcast2003AtYahooDotCa(WKTReader reader)
+   /**private */void doTestFromCommcast2003AtYahooDotCa(WKTReader reader)
         throws ParseException {
         readerFloat.read(
             "POLYGON ((708653.498611049 2402311.54647056, 708708.895756966 2402203.47250014, 708280.326454234 2402089.6337791, 708247.896591321 2402252.48269854, 708367.379593851 2402324.00761653, 708248.882609455 2402253.07294874, 708249.523621829 2402244.3124463, 708261.854734465 2402182.39086576, 708262.818392579 2402183.35452387, 708653.498611049 2402311.54647056))")
@@ -138,7 +138,7 @@ public class GeometryImplTest extends TestCase {
         doTestEquals(g, differentSecond, false, false, false, false);
     }
 
-    private void doTestEquals(Geometry a, Geometry b, boolean equalsGeometry,
+   /**private */void doTestEquals(Geometry a, Geometry b, boolean equalsGeometry,
         boolean equalsObject, boolean equalsExact, boolean equalsHash) {
         assertEquals(equalsGeometry, a.equals(b));
         assertEquals(equalsObject, a.equals((Object) b));
@@ -372,7 +372,7 @@ public class GeometryImplTest extends TestCase {
         assertTrue(gc2.intersects(gc1));
     }
 
-    private void doTestEqualsExact(Geometry x, 
+   /**private */void doTestEqualsExact(Geometry x, 
         Geometry somethingExactlyEqual,
         Geometry somethingNotEqualButSameClass, 
         Geometry sameClassButEmpty,
@@ -413,7 +413,7 @@ public class GeometryImplTest extends TestCase {
                 new Geometry[] { x, somethingNotEqualButSameClass }));
     }
 
-    private void doTestEqualsExact(Geometry x, 
+   /**private */void doTestEqualsExact(Geometry x, 
         Geometry somethingExactlyEqual,
         Geometry somethingEqualButNotExactly,
         Geometry somethingNotEqualButSameClass) throws Exception {
@@ -441,7 +441,7 @@ public class GeometryImplTest extends TestCase {
         junit.textui.TestRunner.run(suite());
     }
 
-    private interface CollectionFactory {
+   /**private */interface CollectionFactory {
         Geometry createCollection(Geometry[] geometries);
     }
 }

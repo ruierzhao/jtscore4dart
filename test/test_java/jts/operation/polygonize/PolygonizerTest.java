@@ -195,15 +195,15 @@ public class PolygonizerTest extends GeometryTestCase {
   }
 */
 
-  private void checkPolygonize(String[] inputWKT, String[] expectedWKT) {
+ /**private */void checkPolygonize(String[] inputWKT, String[] expectedWKT) {
     checkPolygonize(false, inputWKT, expectedWKT);
   }
 
-  private void checkPolygonize(String inputWKT, String[] expectedWKT) {
+ /**private */void checkPolygonize(String inputWKT, String[] expectedWKT) {
     checkPolygonize(false, new String[] { inputWKT }, expectedWKT);
   }
 
-  private void checkPolygonize(boolean extractOnlyPolygonal, String[] inputWKT, String[] expectedWKT) {
+ /**private */void checkPolygonize(boolean extractOnlyPolygonal, String[] inputWKT, String[] expectedWKT) {
     Polygonizer polygonizer = new Polygonizer(extractOnlyPolygonal);
     polygonizer.add(readList(inputWKT));
     List expected = readList(expectedWKT);
@@ -211,7 +211,7 @@ public class PolygonizerTest extends GeometryTestCase {
     checkEqual(expected, actual);
   }
 
-  private void checkPolygonizeNoError(String[] inputWKT) {
+ /**private */void checkPolygonizeNoError(String[] inputWKT) {
     Polygonizer polygonizer = new Polygonizer();
     polygonizer.add(readList(inputWKT));
     try {
@@ -223,7 +223,7 @@ public class PolygonizerTest extends GeometryTestCase {
     }
   }
   
-  private void checkPolygonizeInvalidRings(String inputWKT, String expectedWKT) {
+ /**private */void checkPolygonizeInvalidRings(String inputWKT, String expectedWKT) {
     Polygonizer polygonizer = new Polygonizer();
     polygonizer.add(read(inputWKT));
     Collection actualList = polygonizer.getInvalidRingLines();

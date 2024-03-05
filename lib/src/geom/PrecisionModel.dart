@@ -75,7 +75,7 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 /// The types of Precision Model which JTS supports.
 class _Type /**implements Serializable */
 {
-  // private static final long serialVersionUID = -5528602631731589822L;
+  ///**private */static final long serialVersionUID = -5528602631731589822L;
   static final Map _nameToTypeMap = {};
   _Type(this._name) {
       _nameToTypeMap[_name] = this;
@@ -108,7 +108,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
 		return pm2;
 	}
 	
-  // private static final long serialVersionUID = 7777263578777803835L;
+  ///**private */static final long serialVersionUID = 7777263578777803835L;
 
   /// Fixed Precision indicates that coordinates have a fixed number of decimal places.
   /// The number of decimal places is determined by the log10 of the scale factor.
@@ -267,7 +267,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
     return modelType;
   }
   ///  Sets the multiplying factor used to obtain a precise coordinate.
-  /// This method is private because PrecisionModel is an immutable (value) type.
+  /// This method is/**private */because PrecisionModel is an immutable (value) type.
   /**private */ void setScale(double scale)
   {
     /**

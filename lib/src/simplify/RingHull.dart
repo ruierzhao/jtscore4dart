@@ -33,26 +33,26 @@
  */
 class RingHull {
   
-  private LinearRing inputRing;
-  private int targetVertexNum = -1;
-  private double targetAreaDelta = -1;
+ /**private */LinearRing inputRing;
+ /**private */int targetVertexNum = -1;
+ /**private */double targetAreaDelta = -1;
 
   /**
    * The ring vertices are oriented so that
    * for corners which are to be kept 
    * the vertices forming the corner are in CW orientation.
    */
-  private LinkedRing vertexRing;
-  private double areaDelta = 0;
+ /**private */LinkedRing vertexRing;
+ /**private */double areaDelta = 0;
   
   /**
    * Indexing vertices improves corner intersection testing performance.
    * The ring vertices are contiguous, so are suitable for a
    * {@link VertexSequencePackedRtree}.
    */
-  private VertexSequencePackedRtree vertexIndex;
+ /**private */VertexSequencePackedRtree vertexIndex;
 
-  private PriorityQueue<Corner> cornerQueue;
+ /**private */PriorityQueue<Corner> cornerQueue;
 
   /**
    * Creates a new instance.
@@ -87,7 +87,7 @@ class RingHull {
     return inputRing.getFactory().createLinearRing(hullPts);
   }
   
-  private void init(List<Coordinate> ring, bool isOuter) {
+ /**private */void init(List<Coordinate> ring, bool isOuter) {
     /**
      * Ensure ring is oriented according to outer/inner:
      * - outer, CW
@@ -110,7 +110,7 @@ class RingHull {
     }
   }
 
-  private void addCorner(int i, PriorityQueue<Corner> cornerQueue) {
+ /**private */void addCorner(int i, PriorityQueue<Corner> cornerQueue) {
     //-- convex corners are left untouched
     if (isConvex(vertexRing, i)) 
       return;
@@ -155,7 +155,7 @@ class RingHull {
     }
   }
 
-  private bool isAtTarget(Corner corner) {
+ /**private */bool isAtTarget(Corner corner) {
     if (targetVertexNum >= 0) {
       return vertexRing.size() < targetVertexNum;
     }
@@ -177,7 +177,7 @@ class RingHull {
    * @param corner the corner to remove
    * @param cornerQueue the corner queue
    */
-  private void removeCorner(Corner corner, PriorityQueue<Corner> cornerQueue) {
+ /**private */void removeCorner(Corner corner, PriorityQueue<Corner> cornerQueue) {
     int index = corner.getIndex();
     int prev = vertexRing.prev(index);
     int next = vertexRing.next(index);
@@ -190,7 +190,7 @@ class RingHull {
     addCorner(next, cornerQueue);
   }
 
-  private bool isRemovable(Corner corner, RingHullIndex hullIndex) {
+ /**private */bool isRemovable(Corner corner, RingHullIndex hullIndex) {
     Envelope cornerEnv = corner.envelope(vertexRing);
     if (hasIntersectingVertex(corner, cornerEnv, this))
       return false;
@@ -217,7 +217,7 @@ class RingHull {
    * @param hull the hull to test
    * @return true if there is an intersecting vertex
    */
-  private bool hasIntersectingVertex(Corner corner, Envelope cornerEnv, 
+ /**private */bool hasIntersectingVertex(Corner corner, Envelope cornerEnv, 
       RingHull hull) {
     int[] result = hull.query(cornerEnv);
     for (int i = 0; i < result.length; i++) {
@@ -234,11 +234,11 @@ class RingHull {
     return false;
   }
   
-  private Coordinate getCoordinate(int index) {
+ /**private */Coordinate getCoordinate(int index) {
     return vertexRing.getCoordinate(index);
   }
 
-  private int[] query(Envelope cornerEnv) {
+ /**private */int[] query(Envelope cornerEnv) {
     return vertexIndex.query(cornerEnv);
   }
 
@@ -262,11 +262,11 @@ class RingHull {
     return fact.createPolygon(fact.createLinearRing(coords));
   }
 
-  private static class Corner implements Comparable<Corner> {
-    private int index;
-    private int prev;
-    private int next;
-    private double area;
+ /**private */static class Corner implements Comparable<Corner> {
+   /**private */int index;
+   /**private */int prev;
+   /**private */int next;
+   /**private */double area;
 
     Corner(int i, int prev, int next, double area) {
       this.index = i;
@@ -325,7 +325,7 @@ class RingHull {
           new List<Coordinate> { safeCoord(pp), safeCoord(p), safeCoord(pn) });
     }
 
-    private static Coordinate safeCoord(Coordinate p) {
+   /**private */static Coordinate safeCoord(Coordinate p) {
       if (p ==null) return new Coordinate(double.nan, double.nan);
       return p;
     }

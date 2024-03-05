@@ -86,16 +86,16 @@ public class PolygonHullSimplifierTest extends GeometryTestCase {
   
   //=================================================
   
-  private void checkHullOuter(String wkt, double vertexNumFraction, String wktExpected) {
+ /**private */void checkHullOuter(String wkt, double vertexNumFraction, String wktExpected) {
     checkHull(wkt, true, vertexNumFraction, wktExpected);
   }
 
-  private void checkHullInner(String wkt, double vertexNumFraction, String wktExpected) {
+ /**private */void checkHullInner(String wkt, double vertexNumFraction, String wktExpected) {
     checkHull(wkt, false, vertexNumFraction, wktExpected);
   }
 
     
-  private void checkHull(String wkt, boolean isOuter, double vertexNumFraction, String wktExpected) {
+ /**private */void checkHull(String wkt, boolean isOuter, double vertexNumFraction, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = PolygonHullSimplifier.hull(geom, isOuter, vertexNumFraction);
     //System.out.println(actual);
@@ -105,7 +105,7 @@ public class PolygonHullSimplifierTest extends GeometryTestCase {
     checkEqual(expected, actual);
   }
   
-  private void checkHullByAreaDelta(String wkt, double areaDeltaRatio, String wktExpected) {
+ /**private */void checkHullByAreaDelta(String wkt, double areaDeltaRatio, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = PolygonHullSimplifier.hullByAreaDelta(geom, true, areaDeltaRatio);
     //System.out.println(actual);

@@ -191,7 +191,7 @@ public class NormalizeTest extends TestCase {
     assertEqualsExact(geom, clone);
   }
 
-  private void assertEqualsExact(Geometry expectedValue, Geometry actualValue) {
+ /**private */void assertEqualsExact(Geometry expectedValue, Geometry actualValue) {
     assertTrue("Expected " + expectedValue + " but encountered " + actualValue,
           actualValue.equalsExact(expectedValue));
   }

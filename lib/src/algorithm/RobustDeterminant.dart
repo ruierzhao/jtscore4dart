@@ -71,7 +71,7 @@ class RobustDeterminant {
     return signOfDet2x2ordX(x1, y1, x2, y2);
   }
     
-  private static int signOfDet2x2ordX(double x1, double y1, double x2, double y2) 
+ /**private */static int signOfDet2x2ordX(double x1, double y1, double x2, double y2) 
   {
     if (y1 > y2) {
       return -originalSignOfDet2x2(y1, x1, y2, x2);

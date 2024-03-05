@@ -41,10 +41,10 @@ class Node
     return largerNode;
   }
 
-  private Envelope env;
-  private double centrex;
-  private double centrey;
-  private int level;
+ /**private */Envelope env;
+ /**private */double centrex;
+ /**private */double centrey;
+ /**private */int level;
 
   Node(Envelope env, int level)
   {
@@ -57,7 +57,7 @@ class Node
 
   Envelope getEnvelope() { return env; }
 
-  protected bool isSearchMatch(Envelope searchEnv)
+ /**protected */bool isSearchMatch(Envelope searchEnv)
   {
   	if (searchEnv == null) return false;
     return env.intersects(searchEnv);
@@ -127,7 +127,7 @@ class Node
    * get the subquad for the index.
    * If it doesn't exist, create it
    */
-  private Node getSubnode(int index)
+ /**private */Node getSubnode(int index)
   {
     if (subnode[index] == null) {
       subnode[index] = createSubnode(index);
@@ -135,7 +135,7 @@ class Node
     return subnode[index];
   }
 
-  private Node createSubnode(int index)
+ /**private */Node createSubnode(int index)
   {
         // create a new subquad in the appropriate quadrant
 

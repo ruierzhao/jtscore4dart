@@ -103,7 +103,7 @@ class PolygonNodeTopology
    * @param e1 the destination point of edge e1
    * @return true if p is between e0 and e1
    */
-  private static bool isBetween(Coordinate origin, Coordinate p, Coordinate e0, Coordinate e1) {
+ /**private */static bool isBetween(Coordinate origin, Coordinate p, Coordinate e0, Coordinate e1) {
     bool isGreater0 = isAngleGreater(origin, p, e0);
     if (! isGreater0) return false;
     bool isGreater1 = isAngleGreater(origin, p, e1);
@@ -123,7 +123,7 @@ class PolygonNodeTopology
    * @param e1 the destination point of edge e1
    * @return a negative integer, zero or positive integer as the vector P lies outside, collinear with, or inside the vectors E0 and E1
    */
-  private static int compareBetween(Coordinate origin, Coordinate p, Coordinate e0, Coordinate e1) {
+ /**private */static int compareBetween(Coordinate origin, Coordinate p, Coordinate e0, Coordinate e1) {
     int comp0 = compareAngle(origin, p, e0);
     if (comp0 == 0) return 0;
     int comp1 = compareAngle(origin, p, e1);
@@ -141,7 +141,7 @@ class PolygonNodeTopology
    * @param q the endpoint of the vector Q
    * @return true if vector P has angle greater than Q
    */
-  private static bool isAngleGreater(Coordinate origin, Coordinate p, Coordinate q) {      
+ /**private */static bool isAngleGreater(Coordinate origin, Coordinate p, Coordinate q) {      
     int quadrantP = quadrant(origin, p);
     int quadrantQ = quadrant(origin, q);
 
@@ -190,7 +190,7 @@ class PolygonNodeTopology
     }
   }
   
-  private static int quadrant(Coordinate origin, Coordinate p) {
+ /**private */static int quadrant(Coordinate origin, Coordinate p) {
     double dx = p.getX() - origin.getX();
     double dy = p.getY() - origin.getY();
     return Quadrant.quadrant(dx,  dy);

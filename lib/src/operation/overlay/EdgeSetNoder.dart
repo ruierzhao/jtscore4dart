@@ -30,8 +30,8 @@
  */
 class EdgeSetNoder {
 
-  private LineIntersector li;
-  private List inputEdges = new ArrayList();
+ /**private */LineIntersector li;
+ /**private */List inputEdges = new ArrayList();
 
   EdgeSetNoder(LineIntersector li) {
     this.li = li;

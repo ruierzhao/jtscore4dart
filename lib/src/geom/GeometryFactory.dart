@@ -40,12 +40,12 @@ import 'impl/CoordinateArraySequenceFactory.dart';
 ///
 /// @version 1.7
 class GeometryFactory{
-  // private static final long serialVersionUID = -6820524753094095635L;
+  ///**private */static final long serialVersionUID = -6820524753094095635L;
   /**private */ PrecisionModel? precisionModel;
 
   /**private */ CoordinateSequenceFactory? coordinateSequenceFactory;
   
-  /** private */ int SRID;
+  /**/**private */*/ int SRID;
 
 
   static Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
@@ -554,7 +554,7 @@ class GeometryFactory{
     return editor.edit(g, new CoordSeqCloneOp(coordinateSequenceFactory));
   }
 
-  private static class CoordSeqCloneOp extends GeometryEditor.CoordinateSequenceOperation {
+ /**private */static class CoordSeqCloneOp extends GeometryEditor.CoordinateSequenceOperation {
     CoordinateSequenceFactory coordinateSequenceFactory;
     CoordSeqCloneOp(CoordinateSequenceFactory coordinateSequenceFactory) {
       this.coordinateSequenceFactory = coordinateSequenceFactory;

@@ -93,17 +93,17 @@ class KMLWriter
     return writer.write(geometry);
   }
 
-  private static final int INDENT_SIZE = 2;
-  private static final String COORDINATE_SEPARATOR = ",";
-  private static final String TUPLE_SEPARATOR = " ";
+ /**private */static final int INDENT_SIZE = 2;
+ /**private */static final String COORDINATE_SEPARATOR = ",";
+ /**private */static final String TUPLE_SEPARATOR = " ";
 
-  private String linePrefix = null;
-  private int maxCoordinatesPerLine = 5;
-  private double zVal = double.nan;
-  private bool extrude = false;
-  private bool tesselate;
-  private String altitudeMode = null;
-  private DecimalFormat numberFormatter = null;
+ /**private */String linePrefix = null;
+ /**private */int maxCoordinatesPerLine = 5;
+ /**private */double zVal = double.nan;
+ /**private */bool extrude = false;
+ /**private */bool tesselate;
+ /**private */String altitudeMode = null;
+ /**private */DecimalFormat numberFormatter = null;
 
   /**
    * Creates a new writer.
@@ -216,7 +216,7 @@ class KMLWriter
     writeGeometry(geometry, 0, buf);
   }
 
-  private void writeGeometry(Geometry g, int level, StringBuffer buf) {
+ /**private */void writeGeometry(Geometry g, int level, StringBuffer buf) {
     String attributes = "";
     if (g is Point) {
       writePoint((Point) g, attributes, level, buf);
@@ -233,14 +233,14 @@ class KMLWriter
       throw new ArgumentError("Geometry type not supported: " + g.getGeometryType());
   }
 
-  private void startLine(String text, int level, StringBuffer buf) {
+ /**private */void startLine(String text, int level, StringBuffer buf) {
     if (linePrefix != null)
       buf.append(linePrefix);
     buf.append(StringUtil.spaces(INDENT_SIZE * level));
     buf.append(text);
   }
 
-  private String geometryTag(String geometryName, String attributes) {
+ /**private */String geometryTag(String geometryName, String attributes) {
     StringBuffer buf = new StringBuffer();
     buf.append("<");
     buf.append(geometryName);
@@ -252,7 +252,7 @@ class KMLWriter
     return buf.toString();
   }
 
-  private void writeModifiers(int level, StringBuffer buf)
+ /**private */void writeModifiers(int level, StringBuffer buf)
   {
     if (extrude) {
       startLine("<extrude>1</extrude>\n", level, buf);
@@ -265,7 +265,7 @@ class KMLWriter
     }
   }
   
-  private void writePoint(Point p, String attributes, int level,
+ /**private */void writePoint(Point p, String attributes, int level,
       StringBuffer buf) {
   // <Point><coordinates>...</coordinates></Point>
     startLine(geometryTag("Point", attributes) + "\n", level, buf);
@@ -274,7 +274,7 @@ class KMLWriter
     startLine("</Point>\n", level, buf);
   }
 
-  private void writeLineString(LineString ls, String attributes, int level,
+ /**private */void writeLineString(LineString ls, String attributes, int level,
       StringBuffer buf) {
   // <LineString><coordinates>...</coordinates></LineString>
     startLine(geometryTag("LineString", attributes) + "\n", level, buf);
@@ -283,7 +283,7 @@ class KMLWriter
     startLine("</LineString>\n", level, buf);
   }
 
-  private void writeLinearRing(LinearRing lr, String attributes, 
+ /**private */void writeLinearRing(LinearRing lr, String attributes, 
       bool writeModifiers, int level,
       StringBuffer buf) {
   // <LinearRing><coordinates>...</coordinates></LinearRing>
@@ -293,7 +293,7 @@ class KMLWriter
     startLine("</LinearRing>\n", level, buf);
   }
 
-  private void writePolygon(Polygon p, String attributes, int level,
+ /**private */void writePolygon(Polygon p, String attributes, int level,
       StringBuffer buf) {
     startLine(geometryTag("Polygon", attributes) + "\n", level, buf);
     writeModifiers(level, buf);
@@ -311,7 +311,7 @@ class KMLWriter
     startLine("</Polygon>\n", level, buf);
   }
 
-  private void writeGeometryCollection(GeometryCollection gc,
+ /**private */void writeGeometryCollection(GeometryCollection gc,
       String attributes, int level, StringBuffer buf) {
     startLine("<MultiGeometry>\n", level, buf);
     for (int t = 0; t < gc.getNumGeometries(); t++) {
@@ -326,7 +326,7 @@ class KMLWriter
    * 
    * @param cs array of coordinates
    */
-  private void write(List<Coordinate> coords, int level, StringBuffer buf) {
+ /**private */void write(List<Coordinate> coords, int level, StringBuffer buf) {
     startLine("<coordinates>", level, buf);
 
     bool isNewLine = false;
@@ -351,7 +351,7 @@ class KMLWriter
     buf.append("</coordinates>\n");
   }
 
-  private void write(Coordinate p, StringBuffer buf) {
+ /**private */void write(Coordinate p, StringBuffer buf) {
     write(p.x, buf);
     buf.append(COORDINATE_SEPARATOR);
     write(p.y, buf);
@@ -369,7 +369,7 @@ class KMLWriter
     }
   }
 
-  private void write(double num, StringBuffer buf) {
+ /**private */void write(double num, StringBuffer buf) {
     if (numberFormatter != null)
       buf.append(numberFormatter.format(num));
     else
@@ -386,7 +386,7 @@ class KMLWriter
    * @return a <code>DecimalFormat</code> that write <code>double</code> s
    *         without scientific notation.
    */
-  private static DecimalFormat createFormatter(int precision) {
+ /**private */static DecimalFormat createFormatter(int precision) {
     // specify decimal separator explicitly to avoid problems in other locales
     DecimalFormatSymbols symbols = new DecimalFormatSymbols();
     symbols.setDecimalSeparator('.');

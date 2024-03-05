@@ -38,10 +38,10 @@ class InteriorPointPoint {
     return intPt.getInteriorPoint();
   }
   
-  private Coordinate centroid;
-  private double minDistance = Double.MAX_VALUE;
+ /**private */Coordinate centroid;
+ /**private */double minDistance = Double.MAX_VALUE;
 
-  private Coordinate interiorPoint = null;
+ /**private */Coordinate interiorPoint = null;
 
   InteriorPointPoint(Geometry g)
   {
@@ -54,7 +54,7 @@ class InteriorPointPoint {
    * If a Geometry is not of dimension 0 it is not tested.
    * @param geom the geometry to add
    */
-  private void add(Geometry geom)
+ /**private */void add(Geometry geom)
   {
     if (geom.isEmpty())
       return;
@@ -69,7 +69,7 @@ class InteriorPointPoint {
       }
     }
   }
-  private void add(Coordinate point)
+ /**private */void add(Coordinate point)
   {
     double dist = point.distance(centroid);
     if (dist < minDistance) {

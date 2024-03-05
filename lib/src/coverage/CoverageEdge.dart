@@ -52,7 +52,7 @@ class CoverageEdge {
     return mls;
   }
   
-  private static List<Coordinate> extractEdgePoints(List<Coordinate> ring, int start, int end) {
+ /**private */static List<Coordinate> extractEdgePoints(List<Coordinate> ring, int start, int end) {
     int size = start < end 
                   ? end - start + 1 
                   : ring.length - start + end;
@@ -114,7 +114,7 @@ class CoverageEdge {
     return new LineSegment(key0, key1);  
   }
 
-  private static Coordinate findDistinctPoint(List<Coordinate> pts, int index, bool isForward, Coordinate pt) {
+ /**private */static Coordinate findDistinctPoint(List<Coordinate> pts, int index, bool isForward, Coordinate pt) {
     int inc = isForward ? 1 : -1;
     int i = index;
     do {
@@ -133,9 +133,9 @@ class CoverageEdge {
     throw new IllegalStateException("Edge does not contain distinct points");
   }
 
-  private List<Coordinate> pts;
-  private int ringCount = 0;
-  private bool isFreeRing = true;
+ /**private */List<Coordinate> pts;
+ /**private */int ringCount = 0;
+ /**private */bool isFreeRing = true;
 
   CoverageEdge(List<Coordinate> pts, bool isFreeRing) {
     this.pts = pts;

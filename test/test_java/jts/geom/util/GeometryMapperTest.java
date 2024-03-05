@@ -90,7 +90,7 @@ public class GeometryMapperTest extends GeometryTestCase {
   }
 
 
-  private void checkFlatMap(String wkt, int dim, MapOp op, String wktExpected) {
+ /**private */void checkFlatMap(String wkt, int dim, MapOp op, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = GeometryMapper.flatMap(geom, dim, op);
     Geometry expected = read(wktExpected);

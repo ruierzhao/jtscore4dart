@@ -105,8 +105,8 @@ public class ConcaveHullTest extends GeometryTestCase {
   
   //------------------------------------------------
   
-  private static String WKT_SIMPLE = "MULTIPOINT ((14 18), (18 14), (15 6), (15 2), (5 5), (3 13), (8 14), (8 10), (16 8))";
-  private static String WKT_CIRCLE = "MULTIPOINT ((90 20), (80 10), (45 5), (10 20), (20 10), (21 30), (40 20), (11 60), (20 70), (20 90), (40 80), (70 80), (80 60), (90 70), (80 90), (56 95), (95 45), (80 40), (70 20), (15 45), (5 40), (40 96), (60 15))";
+ /**private */static String WKT_SIMPLE = "MULTIPOINT ((14 18), (18 14), (15 6), (15 2), (5 5), (3 13), (8 14), (8 10), (16 8))";
+ /**private */static String WKT_CIRCLE = "MULTIPOINT ((90 20), (80 10), (45 5), (10 20), (20 10), (21 30), (40 20), (11 60), (20 70), (20 90), (40 80), (70 80), (80 60), (90 70), (80 90), (56 95), (95 45), (80 40), (70 20), (15 45), (5 40), (40 96), (60 15))";
   
   public void testLengthSimple() {
     checkHullByLength(WKT_SIMPLE, 8,
@@ -145,39 +145,39 @@ public class ConcaveHullTest extends GeometryTestCase {
   
   //==========================================================================
   
-  private void checkHullByLengthRatio(String wkt, double threshold, String wktExpected) {
+ /**private */void checkHullByLengthRatio(String wkt, double threshold, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHull.concaveHullByLengthRatio(geom, threshold);
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual);
   }
   
-  private void checkHullByLengthRatioXYZ(String wkt, double threshold, String wktExpected) {
+ /**private */void checkHullByLengthRatioXYZ(String wkt, double threshold, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHull.concaveHullByLengthRatio(geom, threshold);
     Geometry expected = read(wktExpected);
     checkEqualXYZ(expected, actual);
   }
   
-  private void checkHullByLength(String wkt, double threshold, String wktExpected) {
+ /**private */void checkHullByLength(String wkt, double threshold, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHull.concaveHullByLength(geom, threshold);
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual);
   }
   
-  private void checkHullWithHolesByLength(String wkt, double threshold, String wktExpected) {
+ /**private */void checkHullWithHolesByLength(String wkt, double threshold, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHull.concaveHullByLength(geom, threshold, true);
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual);
   }
 
-  private void checkAlphaShape(String wkt, double alpha, String wktExpected) {
+ /**private */void checkAlphaShape(String wkt, double alpha, String wktExpected) {
     checkAlphaShape(wkt, alpha, false, wktExpected);
   }
   
-  private void checkAlphaShape(String wkt, double alpha, boolean isHolesAllowed, String wktExpected) {
+ /**private */void checkAlphaShape(String wkt, double alpha, boolean isHolesAllowed, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHull.alphaShape(geom, alpha, isHolesAllowed);
     Geometry expected = read(wktExpected);

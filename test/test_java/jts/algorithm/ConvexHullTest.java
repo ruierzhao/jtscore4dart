@@ -150,14 +150,14 @@ public class ConvexHullTest extends GeometryTestCase {
   
   //==========================================================
 
-  private void checkConvexHull(String wkt, String wktExpected) {
+ /**private */void checkConvexHull(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = geom.convexHull();
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual);
   }
 
-  private void checkConvexHull(String wkt, String wktExpected, double tolerance) {
+ /**private */void checkConvexHull(String wkt, String wktExpected, double tolerance) {
     Geometry geom = read(wkt);
     Geometry actual = geom.convexHull();
     Geometry expected = read(wktExpected);
@@ -180,11 +180,11 @@ public class ConvexHullTest extends GeometryTestCase {
     assertTrue(!array1[0].equals(array1[1]));
   }
 
-  private static class ConvexHullEx extends ConvexHull {
+ /**private */static class ConvexHullEx extends ConvexHull {
     public ConvexHullEx(Geometry geometry) {
       super(geometry);
     }
-    protected Coordinate[] toCoordinateArray(Stack stack) {
+   /**protected */Coordinate[] toCoordinateArray(Stack stack) {
       return super.toCoordinateArray(stack);
     }
   }

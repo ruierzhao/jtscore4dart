@@ -108,12 +108,12 @@ class IsSimpleOp
     return op.getNonSimpleLocation();
   }
 
-  private final Geometry inputGeom;
-  private final bool isClosedEndpointsInInterior;
-  private bool isFindAllLocations;
+ /**private */final Geometry inputGeom;
+ /**private */final bool isClosedEndpointsInInterior;
+ /**private */bool isFindAllLocations;
 
-  private bool isSimple = false;
-  private List<Coordinate> nonSimplePts;
+ /**private */bool isSimple = false;
+ /**private */List<Coordinate> nonSimplePts;
 
   /**
    * Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
@@ -183,13 +183,13 @@ class IsSimpleOp
     return nonSimplePts;
   }
 
-  private void compute() {
+ /**private */void compute() {
     if (nonSimplePts != null) return;
     nonSimplePts = new ArrayList<Coordinate>();
     isSimple = computeSimple(inputGeom);
   }
 
-  private bool computeSimple(Geometry geom)
+ /**private */bool computeSimple(Geometry geom)
   {
     if (geom.isEmpty()) return true;
     if (geom is Point) return true;
@@ -202,7 +202,7 @@ class IsSimpleOp
     return true;
   }
 
-  private bool isSimpleMultiPoint(MultiPoint mp)
+ /**private */bool isSimpleMultiPoint(MultiPoint mp)
   {
     if (mp.isEmpty()) return true;
     bool isSimple = true;
@@ -230,7 +230,7 @@ class IsSimpleOp
    * @param geom a Polygonal geometry
    * @return true if the geometry is simple
    */
-  private bool isSimplePolygonal(Geometry geom)
+ /**private */bool isSimplePolygonal(Geometry geom)
   {
     bool isSimple = true;
     List<Geometry> rings = LinearComponentExtracter.getLines(geom);
@@ -252,7 +252,7 @@ class IsSimpleOp
    * @param geom a geometry collection
    * @return true if the geometry is simple
    */
-  private bool isSimpleGeometryCollection(Geometry geom)
+ /**private */bool isSimpleGeometryCollection(Geometry geom)
   {
     bool isSimple = true;
     for (int i = 0; i < geom.getNumGeometries(); i++ ) {
@@ -267,7 +267,7 @@ class IsSimpleOp
     return isSimple;
   }
 
-  private bool isSimpleLinearGeometry(Geometry geom)
+ /**private */bool isSimpleLinearGeometry(Geometry geom)
   {
     if (geom.isEmpty()) return true;
     List<SegmentString> segStrings = extractSegmentStrings(geom);
@@ -281,7 +281,7 @@ class IsSimpleOp
     return true;
   }
 
-  private static List<SegmentString> extractSegmentStrings(Geometry geom) {
+ /**private */static List<SegmentString> extractSegmentStrings(Geometry geom) {
     List<SegmentString> segStrings = new ArrayList<SegmentString>();
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       LineString line = (LineString) geom.getGeometryN(i);
@@ -294,7 +294,7 @@ class IsSimpleOp
     return segStrings;
   }
 
-  private static List<Coordinate> trimRepeatedPoints(List<Coordinate> pts) {
+ /**private */static List<Coordinate> trimRepeatedPoints(List<Coordinate> pts) {
     if (pts.length <= 2)
       return pts;
     
@@ -323,14 +323,14 @@ class IsSimpleOp
     return trimPts;
   }
   
-  private static class NonSimpleIntersectionFinder
+ /**private */static class NonSimpleIntersectionFinder
   implements SegmentIntersector
   {
-    private final bool isClosedEndpointsInInterior;
-    private final bool isFindAll;
+   /**private */final bool isClosedEndpointsInInterior;
+   /**private */final bool isFindAll;
 
     LineIntersector li = new RobustLineIntersector();
-    private final List<Coordinate> intersectionPts;
+   /**private */final List<Coordinate> intersectionPts;
 
     NonSimpleIntersectionFinder(bool isClosedEndpointsInInterior, bool isFindAll, List<Coordinate> intersectionPts) {
       this.isClosedEndpointsInInterior =isClosedEndpointsInInterior;
@@ -364,7 +364,7 @@ class IsSimpleOp
       }
     }
 
-    private bool findIntersection(SegmentString ss0, int segIndex0,
+   /**private */bool findIntersection(SegmentString ss0, int segIndex0,
         SegmentString ss1, int segIndex1) {
 
       Coordinate p00 = ss0.getCoordinate(segIndex0);
@@ -431,7 +431,7 @@ class IsSimpleOp
      * @param liSegmentIndex index of segment in intersector
      * @return true if the intersection vertex is an endpoint
      */
-    private static bool isIntersectionEndpoint(SegmentString ss, int ssIndex,
+   /**private */static bool isIntersectionEndpoint(SegmentString ss, int ssIndex,
         LineIntersector li, int liSegmentIndex) {
       int vertexIndex = intersectionVertexIndex(li, liSegmentIndex);
       /**
@@ -454,7 +454,7 @@ class IsSimpleOp
      * @param segmentIndex the intersection segment index
      * @return the vertex index (0 or 1) in the segment vertex of the intersection point
      */
-    private static int intersectionVertexIndex(LineIntersector li, int segmentIndex) {
+   /**private */static int intersectionVertexIndex(LineIntersector li, int segmentIndex) {
       Coordinate intPt = li.getIntersection(0);
       Coordinate endPt0 = li.getEndpoint(segmentIndex, 0);
       return intPt.equals2D(endPt0) ? 0 : 1;

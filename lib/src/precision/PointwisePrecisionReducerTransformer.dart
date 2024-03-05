@@ -30,13 +30,13 @@ class PointwisePrecisionReducerTransformer extends GeometryTransformer {
     return trans.transform(geom);
   }
   
-  private PrecisionModel targetPM;
+ /**private */PrecisionModel targetPM;
 
   PointwisePrecisionReducerTransformer(PrecisionModel targetPM) {
     this.targetPM = targetPM;
   }
   
-  protected CoordinateSequence transformCoordinates(
+ /**protected */CoordinateSequence transformCoordinates(
       CoordinateSequence coordinates, Geometry parent) {
     if (coordinates.size() == 0)
       return null;
@@ -45,7 +45,7 @@ class PointwisePrecisionReducerTransformer extends GeometryTransformer {
     return factory.getCoordinateSequenceFactory().create(coordsReduce);
   }
 
-  private List<Coordinate> reducePointwise(CoordinateSequence coordinates) {
+ /**private */List<Coordinate> reducePointwise(CoordinateSequence coordinates) {
     List<Coordinate> coordReduce = new Coordinate[coordinates.size()];
     // copy coordinates and reduce
     for (int i = 0; i < coordinates.size(); i++) {

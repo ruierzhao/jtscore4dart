@@ -38,7 +38,7 @@ class LengthIndexOfPoint
     return locater.indexOfAfter(inputPt, minIndex);
   }
 
-  private Geometry linearGeom;
+ /**private */Geometry linearGeom;
 
   LengthIndexOfPoint(Geometry linearGeom) {
     this.linearGeom = linearGeom;
@@ -88,7 +88,7 @@ class LengthIndexOfPoint
     return closestAfter;
   }
 
-  private double indexOfFromStart(Coordinate inputPt, double minIndex)
+ /**private */double indexOfFromStart(Coordinate inputPt, double minIndex)
   {
     double minDistance = Double.MAX_VALUE;
 
@@ -114,7 +114,7 @@ class LengthIndexOfPoint
     return ptMeasure;
   }
 
-  private double segmentNearestMeasure(LineSegment seg, Coordinate inputPt,
+ /**private */double segmentNearestMeasure(LineSegment seg, Coordinate inputPt,
                             double segmentStartMeasure)
   {
     // found new minimum, so compute location distance of point

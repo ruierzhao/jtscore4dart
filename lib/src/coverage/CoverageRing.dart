@@ -41,7 +41,7 @@ class CoverageRing extends BasicSegmentString {
     return rings;   
   }
 
-  private static void createRings(Polygon poly, List<CoverageRing> rings) {
+ /**private */static void createRings(Polygon poly, List<CoverageRing> rings) {
     if (poly.isEmpty())
       return;
     addRing(poly.getExteriorRing(), true, rings);
@@ -50,13 +50,13 @@ class CoverageRing extends BasicSegmentString {
     }
   }
 
-  private static void addRing(LinearRing ring, bool isShell, List<CoverageRing> rings) {
+ /**private */static void addRing(LinearRing ring, bool isShell, List<CoverageRing> rings) {
     if (ring.isEmpty())
       return;
     rings.add( createRing(ring, isShell));
   }
   
-  private static CoverageRing createRing(LinearRing ring, bool isShell) {
+ /**private */static CoverageRing createRing(LinearRing ring, bool isShell) {
     List<Coordinate> pts = ring.getCoordinates();
     if (CoordinateArrays.hasRepeatedOrInvalidPoints(pts)) {
       pts = CoordinateArrays.removeRepeatedOrInvalidPoints(pts);
@@ -81,11 +81,11 @@ class CoverageRing extends BasicSegmentString {
     return true;
   }
   
-  private bool isInteriorOnRight;
-  private bool[] isInvalid;
-  private bool[] isMatched;
+ /**private */bool isInteriorOnRight;
+ /**private */bool[] isInvalid;
+ /**private */bool[] isMatched;
 
-  private CoverageRing(List<Coordinate> pts, bool isInteriorOnRight) {
+ /**private */CoverageRing(List<Coordinate> pts, bool isInteriorOnRight) {
     super(pts, null);
     this.isInteriorOnRight = isInteriorOnRight;
     isInvalid = new bool[size() - 1];
@@ -268,14 +268,14 @@ class CoverageRing extends BasicSegmentString {
     }
   }
 
-  private int findInvalidStart(int index) {
+ /**private */int findInvalidStart(int index) {
     while (! isInvalid(index)) {
       index = nextMarkIndex(index);
     }
     return index;
   }
 
-  private int findInvalidEnd(int index) {
+ /**private */int findInvalidEnd(int index) {
     index = nextMarkIndex(index);
     while (isInvalid(index)) {
       index = nextMarkIndex(index);
@@ -283,7 +283,7 @@ class CoverageRing extends BasicSegmentString {
     return index;
   }
   
-  private int nextMarkIndex(int index) {
+ /**private */int nextMarkIndex(int index) {
     if (index >= isInvalid.length - 1) {
       return 0;
     }
@@ -299,14 +299,14 @@ class CoverageRing extends BasicSegmentString {
    * @param geomFactory
    * @return a line representing the section
    */
-  private LineString createLine(int startIndex, int endIndex, GeometryFactory geomFactory) {
+ /**private */LineString createLine(int startIndex, int endIndex, GeometryFactory geomFactory) {
     List<Coordinate> pts = endIndex < startIndex ?
           extractSectionWrap(startIndex, endIndex)
         : extractSection(startIndex, endIndex);    
     return geomFactory.createLineString(pts);
   }
 
-  private List<Coordinate> extractSection(int startIndex, int endIndex) {
+ /**private */List<Coordinate> extractSection(int startIndex, int endIndex) {
     int size = endIndex - startIndex + 1;
     List<Coordinate> pts = new Coordinate[size];
     int ipts = 0;
@@ -316,7 +316,7 @@ class CoverageRing extends BasicSegmentString {
     return pts;
   }
 
-  private List<Coordinate> extractSectionWrap(int startIndex, int endIndex) {
+ /**private */List<Coordinate> extractSectionWrap(int startIndex, int endIndex) {
     int size = endIndex + (size() - startIndex);
     List<Coordinate> pts = new Coordinate[size];
     int index = startIndex;

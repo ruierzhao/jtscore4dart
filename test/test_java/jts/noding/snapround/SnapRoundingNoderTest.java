@@ -28,7 +28,7 @@ import test.jts.GeometryTestCase;
  */
 public class SnapRoundingNoderTest  extends GeometryTestCase {
   
-  private static Noder getSnapRounder(PrecisionModel pm) {
+ /**private */static Noder getSnapRounder(PrecisionModel pm) {
     return new SnapRoundingNoder(pm);
   }
   

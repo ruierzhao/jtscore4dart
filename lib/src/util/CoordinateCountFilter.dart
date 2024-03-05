@@ -21,7 +21,7 @@
  *@version 1.7
  */
 class CoordinateCountFilter implements CoordinateFilter {
-  private int n = 0;
+ /**private */int n = 0;
 
   CoordinateCountFilter() { }
 

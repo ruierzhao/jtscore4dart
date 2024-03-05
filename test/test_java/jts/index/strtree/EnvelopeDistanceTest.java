@@ -44,7 +44,7 @@ public class EnvelopeDistanceTest extends TestCase {
     checkEnvelopeDistance(new Envelope(0, 10, 4, 6), new Envelope(4, 6, 0, 10), 14.142135623730951);
   }
 
-  private void checkEnvelopeDistance(Envelope env1, Envelope env2, double expected) {
+ /**private */void checkEnvelopeDistance(Envelope env1, Envelope env2, double expected) {
     double result = EnvelopeDistance.maximumDistance(env1, env2);
     assertEquals(expected, result);
   }

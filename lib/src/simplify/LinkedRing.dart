@@ -16,12 +16,12 @@
 
 class LinkedRing {
   
-  private static final int NO_COORD_INDEX = -1;
+ /**private */static final int NO_COORD_INDEX = -1;
 
-  private final List<Coordinate> coord;
-  private int[] next = null;
-  private int[] prev = null;
-  private int size;
+ /**private */final List<Coordinate> coord;
+ /**private */int[] next = null;
+ /**private */int[] prev = null;
+ /**private */int size;
   
   LinkedRing(List<Coordinate> pts) {
     coord = pts;
@@ -30,7 +30,7 @@ class LinkedRing {
     prev = createPrevLinks(size);
   }
 
-  private static int[] createNextLinks(int size) {
+ /**private */static int[] createNextLinks(int size) {
     int[] next = new int[size];
     for (int i = 0; i < size; i++) {
       next[i] = i + 1;
@@ -39,7 +39,7 @@ class LinkedRing {
     return next;
   }
   
-  private static int[] createPrevLinks(int size) {
+ /**private */static int[] createPrevLinks(int size) {
     int[] prev = new int[size];
     for (int i = 0; i < size; i++) {
       prev[i] = i - 1;

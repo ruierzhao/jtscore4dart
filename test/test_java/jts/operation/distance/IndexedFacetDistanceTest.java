@@ -15,7 +15,7 @@ public class IndexedFacetDistanceTest extends BaseDistanceTest {
     super(name);
   }
 
-  protected Coordinate[] nearestPoints(Geometry g1, Geometry g2) {
+ /**protected */Coordinate[] nearestPoints(Geometry g1, Geometry g2) {
     return IndexedFacetDistance.nearestPoints(g1, g2);
   }
 
@@ -24,12 +24,12 @@ public class IndexedFacetDistanceTest extends BaseDistanceTest {
   }
 
   @Override
-  protected double distance(Geometry g1, Geometry g2) {
+ /**protected */double distance(Geometry g1, Geometry g2) {
     return IndexedFacetDistance.distance(g1,g2);
   }
 
   @Override
-  protected boolean isWithinDistance(Geometry g1, Geometry g2, double distance) {
+ /**protected */boolean isWithinDistance(Geometry g1, Geometry g2, double distance) {
     return IndexedFacetDistance.isWithinDistance(g1,g2, distance);
   }
 }

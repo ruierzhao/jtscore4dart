@@ -63,9 +63,9 @@ class VWSimplifier
     return simp.getResultGeometry();
   }
 
-  private Geometry inputGeom;
-  private double distanceTolerance;
-  private bool isEnsureValidTopology = true;
+ /**private */Geometry inputGeom;
+ /**private */double distanceTolerance;
+ /**private */bool isEnsureValidTopology = true;
 
   /**
    * Creates a simplifier for a given geometry.
@@ -127,8 +127,8 @@ class VWSimplifier
 
   static class VWTransformer extends GeometryTransformer
   {
-    private bool isEnsureValidTopology = true;
-    private double distanceTolerance;
+   /**private */bool isEnsureValidTopology = true;
+   /**private */double distanceTolerance;
 
     VWTransformer(bool isEnsureValidTopology, double distanceTolerance)
     {
@@ -136,7 +136,7 @@ class VWSimplifier
       this.distanceTolerance = distanceTolerance;
     }
 
-    protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
+   /**protected */CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
     {
       List<Coordinate> inputPts = coords.toCoordinateArray();
       List<Coordinate> newPts = null;
@@ -152,7 +152,7 @@ class VWSimplifier
     /**
      * Simplifies a polygon, fixing it if required.
      */
-    protected Geometry transformPolygon(Polygon geom, Geometry parent)
+   /**protected */Geometry transformPolygon(Polygon geom, Geometry parent)
     {
       // empty geometries are simply removed
       if (geom.isEmpty())
@@ -171,7 +171,7 @@ class VWSimplifier
      * 
      * @return null if the simplification results in a degenerate ring
      */
-    protected Geometry transformLinearRing(LinearRing geom, Geometry parent)
+   /**protected */Geometry transformLinearRing(LinearRing geom, Geometry parent)
     {
       bool removeDegenerateRings = parent is Polygon;
       Geometry simpResult = super.transformLinearRing(geom, parent);
@@ -184,7 +184,7 @@ class VWSimplifier
     /**
      * Simplifies a MultiPolygon, fixing it if required.
      */
-    protected Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent)
+   /**protected */Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent)
     {
       Geometry rawGeom = super.transformMultiPolygon(geom, parent);
       return createValidArea(rawGeom);
@@ -202,7 +202,7 @@ class VWSimplifier
      *          an area geometry possibly containing self-intersections
      * @return a valid area geometry
      */
-    private Geometry createValidArea(Geometry rawAreaGeom)
+   /**private */Geometry createValidArea(Geometry rawAreaGeom)
     {
       // if geometry is invalid then make it valid
       if (isEnsureValidTopology && ! rawAreaGeom.isValid())

@@ -20,7 +20,7 @@ import test.jts.GeometryTestCase;
 
 public class RectangleTest extends GeometryTestCase 
 {
-  private static final double TOL = 1e-10;
+ /**private */static final double TOL = 1e-10;
   
   public static void main(String args[]) {
     TestRunner.run(RectangleTest.class);
@@ -43,7 +43,7 @@ public class RectangleTest extends GeometryTestCase
         "POLYGON ((0.2352941176470591 4.0588235294117645, 3.2352941176470598 9.058823529411764, 10 5, 7 0, 0.2352941176470591 4.0588235294117645))");
   }
   
-  private void checkRectangle(String wkt, String wktExpected) {
+ /**private */void checkRectangle(String wkt, String wktExpected) {
     LineString line = (LineString) read(wkt);
     Coordinate baseRightPt = line.getCoordinateN(0);
     Coordinate baseLeftPt = line.getCoordinateN(1);

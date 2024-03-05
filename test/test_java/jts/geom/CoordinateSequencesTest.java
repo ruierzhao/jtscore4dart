@@ -26,11 +26,11 @@ import java.util.Random;
  */
 public class CoordinateSequencesTest extends TestCase {
 
-  private PrecisionModel precisionModel = new PrecisionModel();
-  private GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+ /**private */PrecisionModel precisionModel = new PrecisionModel();
+ /**private */GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
   WKTReader reader = new WKTReader(geometryFactory);
 
-  private static final double[][] ordinateValues = {
+ /**private */static final double[][] ordinateValues = {
           {75.76,77.43},{41.35,90.75},{73.74,41.67},{20.87,86.49},{17.49,93.59},{67.75,80.63},
           {63.01,52.57},{32.9,44.44},{79.36,29.8},{38.17,88.0},{19.31,49.71},{57.03,19.28},
           {63.76,77.35},{45.26,85.15},{51.71,50.38},{92.16,19.85},{64.18,27.7},{64.74,65.1},
@@ -148,7 +148,7 @@ public class CoordinateSequencesTest extends TestCase {
     assertTrue(true);
   }
 
-  private static CoordinateSequence createSequenceFromOrdinates(CoordinateSequenceFactory csFactory, int dim) {
+ /**private */static CoordinateSequence createSequenceFromOrdinates(CoordinateSequenceFactory csFactory, int dim) {
     CoordinateSequence sequence = csFactory.create(ordinateValues.length, dim);
     for (int i = 0; i < ordinateValues.length; i++) {
       sequence.setOrdinate(i, 0, ordinateValues[i][0]);
@@ -157,7 +157,7 @@ public class CoordinateSequencesTest extends TestCase {
     return fillNonPlanarDimensions(sequence);
   }
 
-  private static CoordinateSequence createTestSequence(CoordinateSequenceFactory csFactory, int size, int dim)
+ /**private */static CoordinateSequence createTestSequence(CoordinateSequenceFactory csFactory, int size, int dim)
   {
     CoordinateSequence cs = csFactory.create(size,  dim);
     // initialize with a data signature where coords look like [1, 10, 100, ...]
@@ -172,7 +172,7 @@ public class CoordinateSequencesTest extends TestCase {
   /**
    * @deprecated only use to update in conjunction with {@link this.ttestCreateRandomOrdinates}
    */
-  private static CoordinateSequence createRandomTestSequence(CoordinateSequenceFactory csFactory, int size, int dim,
+ /**private */static CoordinateSequence createRandomTestSequence(CoordinateSequenceFactory csFactory, int size, int dim,
                                                    Random rnd, Envelope range, PrecisionModel pm)
   {
     CoordinateSequence cs = csFactory.create(size,  dim);
@@ -184,7 +184,7 @@ public class CoordinateSequencesTest extends TestCase {
     return fillNonPlanarDimensions(cs);
   }
 
-  private static void doTestReverse(CoordinateSequenceFactory factory, int dimension) {
+ /**private */static void doTestReverse(CoordinateSequenceFactory factory, int dimension) {
 
     // arrange
     CoordinateSequence sequence = createSequenceFromOrdinates(factory, dimension);
@@ -198,7 +198,7 @@ public class CoordinateSequencesTest extends TestCase {
       checkCoordinateAt(sequence, i, reversed, sequence.size() - i - 1, dimension);
   }
 
-  private static void doTestCopy(CoordinateSequenceFactory factory, int dimension) {
+ /**private */static void doTestCopy(CoordinateSequenceFactory factory, int dimension) {
 
     // arrange
     CoordinateSequence sequence = createSequenceFromOrdinates(factory, dimension);
@@ -224,7 +224,7 @@ public class CoordinateSequencesTest extends TestCase {
     // ToDo test if dimensions don't match
   }
 
-  private static void doTestIsRing(CoordinateSequenceFactory factory, int dimension) {
+ /**private */static void doTestIsRing(CoordinateSequenceFactory factory, int dimension) {
 
     // arrange
     CoordinateSequence ring = createCircle(factory, dimension, new Coordinate(), 5);
@@ -258,7 +258,7 @@ public class CoordinateSequencesTest extends TestCase {
     assertTrue(isRingIncomplete4b);
   }
 
-  private static void doTestIndexOf(CoordinateSequenceFactory factory, int dimension) {
+ /**private */static void doTestIndexOf(CoordinateSequenceFactory factory, int dimension) {
 
     // arrange
     CoordinateSequence sequence = createSequenceFromOrdinates(factory, dimension);
@@ -270,7 +270,7 @@ public class CoordinateSequencesTest extends TestCase {
 
   }
 
-  private static void doTestMinCoordinateIndex(CoordinateSequenceFactory factory, int dimension) {
+ /**private */static void doTestMinCoordinateIndex(CoordinateSequenceFactory factory, int dimension) {
 
     CoordinateSequence sequence = createSequenceFromOrdinates(factory, dimension);
     if (sequence.size() <= 6) {
@@ -288,7 +288,7 @@ public class CoordinateSequencesTest extends TestCase {
 
   }
 
-  private static void doTestScroll(CoordinateSequenceFactory factory, int dimension) {
+ /**private */static void doTestScroll(CoordinateSequenceFactory factory, int dimension) {
 
     // arrange
     CoordinateSequence sequence = createCircularString(factory, dimension, new Coordinate(20, 20), 7d,
@@ -307,7 +307,7 @@ public class CoordinateSequencesTest extends TestCase {
     }
   }
 
-  private static void doTestScrollRing(CoordinateSequenceFactory factory, int dimension) {
+ /**private */static void doTestScrollRing(CoordinateSequenceFactory factory, int dimension) {
 
     // arrange
     //System.out.println("Testing '" + factory.getClass().getSimpleName() + "' with dim=" +dimension );
@@ -327,7 +327,7 @@ public class CoordinateSequencesTest extends TestCase {
     checkCoordinateAt(scrolled, 0, scrolled, scrolled.size()-1, dimension);
   }
 
-  private static void checkCoordinateAt(CoordinateSequence seq1, int pos1,
+ /**private */static void checkCoordinateAt(CoordinateSequence seq1, int pos1,
                                         CoordinateSequence seq2, int pos2, int dim) {
     assertEquals("unexpected x-ordinate at pos " + pos2,
             seq1.getOrdinate(pos1, 0), seq2.getOrdinate(pos2, 0));
@@ -341,7 +341,7 @@ public class CoordinateSequencesTest extends TestCase {
     }
   }
 
-  private static CoordinateSequence createAlmostRing(CoordinateSequenceFactory factory, int dimension, int num) {
+ /**private */static CoordinateSequence createAlmostRing(CoordinateSequenceFactory factory, int dimension, int num) {
 
     if (num > 4) num = 4;
 
@@ -366,7 +366,7 @@ public class CoordinateSequencesTest extends TestCase {
 
   }
 
-  private static CoordinateSequence fillNonPlanarDimensions(CoordinateSequence seq) {
+ /**private */static CoordinateSequence fillNonPlanarDimensions(CoordinateSequence seq) {
 
     if (seq.getDimension() < 3)
       return seq;
@@ -378,7 +378,7 @@ public class CoordinateSequencesTest extends TestCase {
     return seq;
   }
 
-  private static CoordinateSequence createCircle(CoordinateSequenceFactory factory, int dimension,
+ /**private */static CoordinateSequence createCircle(CoordinateSequenceFactory factory, int dimension,
                                                  Coordinate center, double radius) {
     // Get a complete circular string
     CoordinateSequence res = createCircularString(factory, dimension, center, radius, 0d,49);
@@ -389,7 +389,7 @@ public class CoordinateSequencesTest extends TestCase {
 
     return res;
   }
-  private static CoordinateSequence createCircularString(CoordinateSequenceFactory factory, int dimension,
+ /**private */static CoordinateSequence createCircularString(CoordinateSequenceFactory factory, int dimension,
                                                          Coordinate center, double radius, double startAngle,
                                                          int numPoints) {
     final int numSegmentsCircle = 48;

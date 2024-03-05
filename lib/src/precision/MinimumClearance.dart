@@ -131,9 +131,9 @@ class MinimumClearance
     return rp.getLine();
   }
   
-  private Geometry inputGeom;
-  private double minClearance;
-  private List<Coordinate> minClearancePts;
+ /**private */Geometry inputGeom;
+ /**private */double minClearance;
+ /**private */List<Coordinate> minClearancePts;
   
   /**
    * Creates an object to compute the Minimum Clearance
@@ -182,7 +182,7 @@ class MinimumClearance
     return inputGeom.getFactory().createLineString(minClearancePts);
   }
   
-  private void compute()
+ /**private */void compute()
   {
     // already computed
     if (minClearancePts != null) return;
@@ -225,11 +225,11 @@ class MinimumClearance
    * @author Martin Davis
    *
    */
-  private static class MinClearanceDistance
+ /**private */static class MinClearanceDistance
   implements ItemDistance
   {
-    private double minDist = Double.MAX_VALUE;
-    private List<Coordinate> minPts = new Coordinate[2];
+   /**private */double minDist = Double.MAX_VALUE;
+   /**private */List<Coordinate> minPts = new Coordinate[2];
     
     List<Coordinate> getCoordinates()
     {
@@ -256,7 +256,7 @@ class MinimumClearance
       return minDist;
     }
     
-    private double vertexDistance(FacetSequence fs1, FacetSequence fs2) {
+   /**private */double vertexDistance(FacetSequence fs1, FacetSequence fs2) {
       for (int i1 = 0; i1 < fs1.size(); i1++) {
         for (int i2 = 0; i2 < fs2.size(); i2++) {
           Coordinate p1 = fs1.getCoordinate(i1);
@@ -276,7 +276,7 @@ class MinimumClearance
       return minDist;
      }
       
-     private double segmentDistance(FacetSequence fs1, FacetSequence fs2) {
+    /**private */double segmentDistance(FacetSequence fs1, FacetSequence fs2) {
         for (int i1 = 0; i1 < fs1.size(); i1++) {
           for (int i2 = 1; i2 < fs2.size(); i2++) {
             
@@ -299,7 +299,7 @@ class MinimumClearance
         return minDist;
        }
      
-     private void updatePts(Coordinate p, Coordinate seg0, Coordinate seg1)
+    /**private */void updatePts(Coordinate p, Coordinate seg0, Coordinate seg1)
      {
        minPts[0] = p;
        LineSegment seg = new LineSegment(seg0, seg1);

@@ -29,8 +29,8 @@
 class BasicSegmentString
 	implements SegmentString 
 {
-  private List<Coordinate> pts;
-  private Object data;
+ /**private */List<Coordinate> pts;
+ /**private */Object data;
 
   /**
    * Creates a new segment string from a list of vertices.

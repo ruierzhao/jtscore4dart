@@ -83,7 +83,7 @@ class GeometryCombiner
 	 * @param obj1
 	 * @return a List containing the two items
 	 */
-  private static List createList(Object obj0, Object obj1)
+ /**private */static List createList(Object obj0, Object obj1)
   {
 		List list = new ArrayList();
 		list.add(obj0);
@@ -98,7 +98,7 @@ class GeometryCombiner
 	 * @param obj1
 	 * @return a List containing the two items
 	 */
-  private static List createList(Object obj0, Object obj1, Object obj2)
+ /**private */static List createList(Object obj0, Object obj1, Object obj2)
   {
 		List list = new ArrayList();
 		list.add(obj0);
@@ -159,7 +159,7 @@ class GeometryCombiner
     return geomFactory.buildGeometry(elems);
   }
   
-  private void extractElements(Geometry geom, List elems)
+ /**private */void extractElements(Geometry geom, List elems)
   {
     if (geom == null)
       return;

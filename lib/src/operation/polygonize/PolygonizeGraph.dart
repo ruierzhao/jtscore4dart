@@ -42,7 +42,7 @@ class PolygonizeGraph
     extends PlanarGraph
 {
 
-  private static int getDegreeNonDeleted(Node node)
+ /**private */static int getDegreeNonDeleted(Node node)
   {
     List<DirectedEdge> edges = node.getOutEdges().getEdges();
     int degree = 0;
@@ -53,7 +53,7 @@ class PolygonizeGraph
     return degree;
   }
 
-  private static int getDegree(Node node, long label)
+ /**private */static int getDegree(Node node, long label)
   {
     List<DirectedEdge> edges = node.getOutEdges().getEdges();
     int degree = 0;
@@ -79,7 +79,7 @@ class PolygonizeGraph
     }
   }
 
-  private GeometryFactory factory;
+ /**private */GeometryFactory factory;
 
   //private List labelledRings;
  
@@ -115,7 +115,7 @@ class PolygonizeGraph
     add(edge);
   }
 
-  private Node getNode(Coordinate pt)
+ /**private */Node getNode(Coordinate pt)
   {
     Node node = findNode(pt);
     if (node == null) {
@@ -126,7 +126,7 @@ class PolygonizeGraph
     return node;
   }
 
-  private void computeNextCWEdges()
+ /**private */void computeNextCWEdges()
   {
     // set the next pointers for the edges around each node
     for (Iterator<?> iNode = nodeIterator(); iNode.hasNext(); ) {
@@ -141,7 +141,7 @@ class PolygonizeGraph
    *
    * @param ringEdges the list of start edges for the edgeRings to convert.
    */
-  private void convertMaximalToMinimalEdgeRings(List<PolygonizeDirectedEdge> ringEdges)
+ /**private */void convertMaximalToMinimalEdgeRings(List<PolygonizeDirectedEdge> ringEdges)
   {
     for (PolygonizeDirectedEdge de : ringEdges) {
       long label = de.getLabel();
@@ -162,7 +162,7 @@ class PolygonizeGraph
    * @return the list of intersection nodes found,
    * or <code>null</code> if no intersection nodes were found
    */
-  private static List<Node> findIntersectionNodes(PolygonizeDirectedEdge startDE, long label)
+ /**private */static List<Node> findIntersectionNodes(PolygonizeDirectedEdge startDE, long label)
   {
     PolygonizeDirectedEdge de = startDE;
     List<Node> intNodes = null;
@@ -217,7 +217,7 @@ class PolygonizeGraph
    * @param dirEdges a List of the DirectedEdges in the graph
    * @return a List of DirectedEdges, one for each edge ring found
    */
-  private static List<PolygonizeDirectedEdge> findLabeledEdgeRings(Collection<PolygonizeDirectedEdge> dirEdges)
+ /**private */static List<PolygonizeDirectedEdge> findLabeledEdgeRings(Collection<PolygonizeDirectedEdge> dirEdges)
   {
     List<PolygonizeDirectedEdge> edgeRingStarts = new ArrayList<PolygonizeDirectedEdge>();
     // label the edge rings formed
@@ -270,14 +270,14 @@ class PolygonizeGraph
     return cutLines;
   }
 
-  private static void label(Collection<?> dirEdges, long label)
+ /**private */static void label(Collection<?> dirEdges, long label)
   {
     for (Iterator<?> i = dirEdges.iterator(); i.hasNext(); ) {
       PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.next();
       de.setLabel(label);
     }
   }
-  private static void computeNextCWEdges(Node node)
+ /**private */static void computeNextCWEdges(Node node)
   {
     DirectedEdgeStar deStar = node.getOutEdges();
     PolygonizeDirectedEdge startDE = null;
@@ -306,7 +306,7 @@ class PolygonizeGraph
    * given edgering label.
    * This algorithm has the effect of converting maximal edgerings into minimal edgerings
    */
-  private static void computeNextCCWEdges(Node node, long label)
+ /**private */static void computeNextCCWEdges(Node node, long label)
   {
     DirectedEdgeStar deStar = node.getOutEdges();
     //PolyDirectedEdge lastInDE = null;
@@ -346,7 +346,7 @@ class PolygonizeGraph
     }
   }
 
-  private EdgeRing findEdgeRing(PolygonizeDirectedEdge startDE)
+ /**private */EdgeRing findEdgeRing(PolygonizeDirectedEdge startDE)
   {
     EdgeRing er = new EdgeRing(factory);
     er.build(startDE);

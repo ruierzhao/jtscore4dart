@@ -20,10 +20,10 @@ class SweepLineEvent
   static final int INSERT = 1;
   static final int DELETE = 2;
 
-  private double xValue;
-  private int eventType;
-  private SweepLineEvent insertEvent; // null if this is an INSERT event
-  private int deleteEventIndex;
+ /**private */double xValue;
+ /**private */int eventType;
+ /**private */SweepLineEvent insertEvent; // null if this is an INSERT event
+ /**private */int deleteEventIndex;
 
   SweepLineInterval sweepInt;
   SweepLineEvent(double x, SweepLineEvent insertEvent, SweepLineInterval sweepInt)

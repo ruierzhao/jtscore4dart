@@ -26,7 +26,7 @@ import junit.textui.TestRunner;
  */
 public class PointLocatorTest extends TestCase {
 
-  private WKTReader reader = new WKTReader();
+ /**private */WKTReader reader = new WKTReader();
 
   public static void main(String args[]) {
     TestRunner.run(PointLocatorTest.class);
@@ -77,7 +77,7 @@ public class PointLocatorTest extends TestCase {
     runPtLocator(Location.BOUNDARY, pt, wkt, BoundaryNodeRule.MULTIVALENT_ENDPOINT_BOUNDARY_RULE);
   }
 
-  private void runPtLocator(int expected, Coordinate pt, String wkt)
+ /**private */void runPtLocator(int expected, Coordinate pt, String wkt)
       throws Exception
   {
     Geometry geom = reader.read(wkt);
@@ -86,7 +86,7 @@ public class PointLocatorTest extends TestCase {
     assertEquals(expected, loc);
   }
 
-  private void runPtLocator(int expected, Coordinate pt, String wkt,
+ /**private */void runPtLocator(int expected, Coordinate pt, String wkt,
       BoundaryNodeRule bnr)
       throws Exception
   {

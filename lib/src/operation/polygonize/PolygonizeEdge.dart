@@ -22,7 +22,7 @@
 class PolygonizeEdge
     extends Edge
 {
-  private LineString line;
+ /**private */LineString line;
 
   PolygonizeEdge(LineString line)
   {

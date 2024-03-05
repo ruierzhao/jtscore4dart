@@ -24,8 +24,8 @@
 
 class MaximalEdgeRing {
 
-  private static final int STATE_FIND_INCOMING = 1;
-  private static final int STATE_LINK_OUTGOING = 2;
+ /**private */static final int STATE_FIND_INCOMING = 1;
+ /**private */static final int STATE_LINK_OUTGOING = 2;
 
   /**
    * Traverses the star of edges originating at a node
@@ -105,14 +105,14 @@ class MaximalEdgeRing {
     }    
   }
 
-  private OverlayEdge startEdge;
+ /**private */OverlayEdge startEdge;
 
   MaximalEdgeRing(OverlayEdge e) {
     this.startEdge = e;
     attachEdges(e);
   }
 
-  private void attachEdges(OverlayEdge startEdge) {
+ /**private */void attachEdges(OverlayEdge startEdge) {
     OverlayEdge edge = startEdge;
     do {
       if (edge == null)
@@ -143,7 +143,7 @@ class MaximalEdgeRing {
     return minEdgeRings;
   }
   
-  private void linkMinimalRings() {
+ /**private */void linkMinimalRings() {
     OverlayEdge e = startEdge;
     do {
       linkMinRingEdgesAtNode(e, this);
@@ -165,7 +165,7 @@ class MaximalEdgeRing {
    * @param nodeEdge an edge originating at this node
    * @param maxRing the maximal ring to link
    */
-  private static void linkMinRingEdgesAtNode(OverlayEdge nodeEdge, MaximalEdgeRing maxRing)
+ /**private */static void linkMinRingEdgesAtNode(OverlayEdge nodeEdge, MaximalEdgeRing maxRing)
   {
     //Assert.isTrue(nodeEdge.isInResult(), "Attempt to link non-result edge");
 
@@ -206,13 +206,13 @@ class MaximalEdgeRing {
    * @param maxRing the maximal edgering
    * @return true if the edge has already been linked into a minimal edgering.
    */
-  private static bool isAlreadyLinked(OverlayEdge edge, MaximalEdgeRing maxRing) {
+ /**private */static bool isAlreadyLinked(OverlayEdge edge, MaximalEdgeRing maxRing) {
     bool isLinked = edge.getEdgeRingMax() == maxRing
         && edge.isResultLinked();
     return isLinked;
   }
 
-  private static OverlayEdge selectMaxOutEdge(OverlayEdge currOut, MaximalEdgeRing maxEdgeRing) {
+ /**private */static OverlayEdge selectMaxOutEdge(OverlayEdge currOut, MaximalEdgeRing maxEdgeRing) {
     // select if currOut edge is part of this max ring
     if (currOut.getEdgeRingMax() ==  maxEdgeRing)
       return currOut;
@@ -220,7 +220,7 @@ class MaximalEdgeRing {
     return null;
   }
 
-  private static OverlayEdge linkMaxInEdge(OverlayEdge currOut, 
+ /**private */static OverlayEdge linkMaxInEdge(OverlayEdge currOut, 
       OverlayEdge currMaxRingOut, 
       MaximalEdgeRing maxEdgeRing) 
   {
@@ -242,7 +242,7 @@ class MaximalEdgeRing {
     return WKTWriter.toLineString(pts);
   }
 
-  private List<Coordinate> getCoordinates() {
+ /**private */List<Coordinate> getCoordinates() {
     CoordinateList coords = new CoordinateList();
     OverlayEdge edge = startEdge;
     do {

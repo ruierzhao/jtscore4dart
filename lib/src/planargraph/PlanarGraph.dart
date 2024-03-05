@@ -36,9 +36,9 @@
  */
 abstract class PlanarGraph
 {
-  protected Set edges = new HashSet();
-  protected Set dirEdges = new HashSet();
-  protected NodeMap nodeMap = new NodeMap();
+ /**protected */Set edges = new HashSet();
+ /**protected */Set dirEdges = new HashSet();
+ /**protected */NodeMap nodeMap = new NodeMap();
 
   /**
    * Constructs a empty graph.
@@ -66,7 +66,7 @@ abstract class PlanarGraph
    * 
    * @param node the node to add
    */
-  protected void add(Node node)
+ /**protected */void add(Node node)
   {
     nodeMap.add(node);
   }
@@ -76,7 +76,7 @@ abstract class PlanarGraph
    * Assumes that the Edge has already been created with its associated DirectEdges.
    * Only subclasses can add Edges, to ensure the edges added are of the right class.
    */
-  protected void add(Edge edge)
+ /**protected */void add(Edge edge)
   {
     edges.add(edge);
     add(edge.getDirEdge(0));
@@ -87,7 +87,7 @@ abstract class PlanarGraph
    * Adds the Edge to this PlanarGraph; only subclasses can add DirectedEdges,
    * to ensure the edges added are of the right class.
    */
-  protected void add(DirectedEdge dirEdge)
+ /**protected */void add(DirectedEdge dirEdge)
   {
     dirEdges.add(dirEdge);
   }

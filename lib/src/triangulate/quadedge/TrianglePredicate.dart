@@ -103,7 +103,7 @@ class TrianglePredicate
    * @param b a vertex of the triangle
    * @param c a vertex of the triangle
    */
-  private static double triArea(Coordinate a, Coordinate b, Coordinate c) {
+ /**private */static double triArea(Coordinate a, Coordinate b, Coordinate c) {
       return (b.x - a.x) * (c.y - a.y) 
            - (b.y - a.y) * (c.x - a.x);
   }
@@ -280,7 +280,7 @@ class TrianglePredicate
    * @param p the point to test
    */
   /*
-  private static void checkRobustInCircle(Coordinate a, Coordinate b, Coordinate c,
+ /**private */static void checkRobustInCircle(Coordinate a, Coordinate b, Coordinate c,
       Coordinate p) 
   {
     bool nonRobustInCircle = isInCircleNonRobust(a, b, c, p);

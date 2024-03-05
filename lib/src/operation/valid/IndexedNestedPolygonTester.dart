@@ -34,10 +34,10 @@
  */
 class IndexedNestedPolygonTester
 {
-  private MultiPolygon multiPoly;
-  private SpatialIndex index;
-  private IndexedPointInAreaLocator[] locators;
-  private Coordinate nestedPt;
+ /**private */MultiPolygon multiPoly;
+ /**private */SpatialIndex index;
+ /**private */IndexedPointInAreaLocator[] locators;
+ /**private */Coordinate nestedPt;
 
   IndexedNestedPolygonTester(MultiPolygon multiPoly)
   {
@@ -45,7 +45,7 @@ class IndexedNestedPolygonTester
     loadIndex();
   }
 
-  private void loadIndex()
+ /**private */void loadIndex()
   {
     index = new STRtree();
 
@@ -56,7 +56,7 @@ class IndexedNestedPolygonTester
     }
   }
 
-  private IndexedPointInAreaLocator getLocator(int polyIndex) {
+ /**private */IndexedPointInAreaLocator getLocator(int polyIndex) {
     if (locators == null) {
       locators = new IndexedPointInAreaLocator[multiPoly.getNumGeometries()];
     }
@@ -115,7 +115,7 @@ class IndexedNestedPolygonTester
    * @param locator the locator for the outer polygon
    * @return a nested point, if one exists, or null
    */
-  private Coordinate findNestedPoint(LinearRing shell, 
+ /**private */Coordinate findNestedPoint(LinearRing shell, 
       Polygon possibleOuterPoly, IndexedPointInAreaLocator locator) 
   {    
     /**
@@ -152,7 +152,7 @@ class IndexedNestedPolygonTester
    * @param poly the polygon to test against
    * @return an interior segment point, or null if the shell is nested correctly
    */
-  private static Coordinate findIncidentSegmentNestedPoint(LinearRing shell, Polygon poly)
+ /**private */static Coordinate findIncidentSegmentNestedPoint(LinearRing shell, Polygon poly)
   {
     LinearRing polyShell = poly.getExteriorRing();
     if (polyShell.isEmpty()) return null;

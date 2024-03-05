@@ -41,17 +41,17 @@ import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 abstract class PackedCoordinateSequence
     implements CoordinateSequence
 {
-  // private static final long serialVersionUID = -3151899011275603L;
+  ///**private */static final long serialVersionUID = -3151899011275603L;
   /// The dimensions of the coordinates held in the packed array
-  /** protected */ int dimension;
+  /**/**protected */*/ int dimension;
   
   /// The number of measures of the coordinates held in the packed array.
-  /** protected */ int measures;
+  /**/**protected */*/ int measures;
 
   /// Creates an instance of this class
   /// @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
   /// @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
-  /** protected */ PackedCoordinateSequence(int _dimension, int _measures ) {
+  /**/**protected */*/ PackedCoordinateSequence(int _dimension, int _measures ) {
       if (_dimension - _measures < 2) {
          throw ArgumentError("Must have at least 2 spatial dimensions");
       }
@@ -61,7 +61,7 @@ abstract class PackedCoordinateSequence
   
   /// A soft reference to the List<Coordinate> representation of this sequence.
   /// Makes repeated coordinate array accesses more efficient.
-  /** protected transient 不序列化某个变量 */  SoftReference<List<Coordinate>> coordRef;
+  /**/**protected */transient 不序列化某个变量 */  SoftReference<List<Coordinate>> coordRef;
 
   /// @see CoordinateSequence#getDimension()
   int getDimension() {
@@ -115,7 +115,7 @@ abstract class PackedCoordinateSequence
     return coords;
   }
 
-  private List<Coordinate> getCachedCoords() {
+ /**private */List<Coordinate> getCachedCoords() {
     if (coordRef != null) {
       List<Coordinate> coords = (List<Coordinate>) coordRef.get();
       if (coords != null) {
@@ -168,7 +168,7 @@ abstract class PackedCoordinateSequence
     return CoordinateSequences.toString(this);
   }
 
-  protected Object readResolve() throws ObjectStreamException {
+ /**protected */Object readResolve() throws ObjectStreamException {
     coordRef = null;
     return this;
   }
@@ -178,7 +178,7 @@ abstract class PackedCoordinateSequence
   ///
   /// @param index  the coordinate index
   /// @return  the {@link Coordinate} at the given index
-  protected abstract Coordinate getCoordinateInternal(int index);
+ /**protected */abstract Coordinate getCoordinateInternal(int index);
 
   /// @see java.lang.Object#clone()
   /// @see CoordinateSequence#clone()
@@ -205,7 +205,7 @@ abstract class PackedCoordinateSequence
    * Packed coordinate sequence implementation based on doubles
    */
   static class Double extends PackedCoordinateSequence {
-    private static final long serialVersionUID = 5777450686367912719L;
+   /**private */static final long serialVersionUID = 5777450686367912719L;
     /**
      * The packed coordinate array
      */
@@ -391,7 +391,7 @@ abstract class PackedCoordinateSequence
    * Packed coordinate sequence implementation based on floats
    */
   static class Float extends PackedCoordinateSequence {
-    private static final long serialVersionUID = -2902252401427938986L;
+   /**private */static final long serialVersionUID = -2902252401427938986L;
     /**
      * The packed coordinate array
      */

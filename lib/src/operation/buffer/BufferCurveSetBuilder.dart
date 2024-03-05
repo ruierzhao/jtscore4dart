@@ -47,13 +47,13 @@
  */
 class BufferCurveSetBuilder {
   
-  private Geometry inputGeom;
-  private double distance;
-  private OffsetCurveBuilder curveBuilder;
+ /**private */Geometry inputGeom;
+ /**private */double distance;
+ /**private */OffsetCurveBuilder curveBuilder;
 
-  private List curveList = new ArrayList();
+ /**private */List curveList = new ArrayList();
 
-  private bool isInvertOrientation = false;
+ /**private */bool isInvertOrientation = false;
 
   BufferCurveSetBuilder(
       Geometry inputGeom,
@@ -91,7 +91,7 @@ class BufferCurveSetBuilder {
    * @param coord the ring coordinates
    * @return true if the ring is CCW
    */
-  private bool isRingCCW(List<Coordinate> coord) {
+ /**private */bool isRingCCW(List<Coordinate> coord) {
     bool isCCW = Orientation.isCCWArea(coord);
     //--- invert orientation if required
     if (isInvertOrientation) return ! isCCW;
@@ -120,7 +120,7 @@ class BufferCurveSetBuilder {
    * <br>Left: Location.EXTERIOR
    * <br>Right: Location.INTERIOR
    */
-  private void addCurve(List<Coordinate> coord, int leftLoc, int rightLoc)
+ /**private */void addCurve(List<Coordinate> coord, int leftLoc, int rightLoc)
   {
     // don't add null or trivial curves
     if (coord == null || coord.length < 2) return;
@@ -131,7 +131,7 @@ class BufferCurveSetBuilder {
   }
 
 
-  private void add(Geometry g)
+ /**private */void add(Geometry g)
   {
     if (g.isEmpty()) return;
 
@@ -145,7 +145,7 @@ class BufferCurveSetBuilder {
     else if (g is GeometryCollection) addCollection((GeometryCollection) g);
     else  throw new UnsupportedOperationException(g.getClass().getName());
   }
-  private void addCollection(GeometryCollection gc)
+ /**private */void addCollection(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       Geometry g = gc.getGeometryN(i);
@@ -155,7 +155,7 @@ class BufferCurveSetBuilder {
   /**
    * Add a Point to the graph.
    */
-  private void addPoint(Point p)
+ /**private */void addPoint(Point p)
   {
     // a zero or negative width buffer of a point is empty
     if (distance <= 0.0) 
@@ -168,7 +168,7 @@ class BufferCurveSetBuilder {
     addCurve(curve, Location.EXTERIOR, Location.INTERIOR);
   }
   
-  private void addLineString(LineString line)
+ /**private */void addLineString(LineString line)
   {
     if (curveBuilder.isLineOffsetEmpty(distance)) return;
     
@@ -200,11 +200,11 @@ class BufferCurveSetBuilder {
    * @param coordinates the coordinates to clean
    * @return an array of clean coordinates
    */
-  private static List<Coordinate> clean(List<Coordinate> coords) {
+ /**private */static List<Coordinate> clean(List<Coordinate> coords) {
     return CoordinateArrays.removeRepeatedOrInvalidPoints(coords);
   }
 
-  private void addPolygon(Polygon p)
+ /**private */void addPolygon(Polygon p)
   {
     double offsetDistance = distance;
     int offsetSide = Position.LEFT;
@@ -252,7 +252,7 @@ class BufferCurveSetBuilder {
     }
   }
   
-  private void addRingBothSides(List<Coordinate> coord, double distance)
+ /**private */void addRingBothSides(List<Coordinate> coord, double distance)
   {
     addRingSide(coord, distance,
       Position.LEFT, 
@@ -278,7 +278,7 @@ class BufferCurveSetBuilder {
    * @param cwLeftLoc the location on the L side of the ring (if it is CW)
    * @param cwRightLoc the location on the R side of the ring (if it is CW)
    */
-  private void addRingSide(List<Coordinate> coord, double offsetDistance, int side, int cwLeftLoc, int cwRightLoc)
+ /**private */void addRingSide(List<Coordinate> coord, double offsetDistance, int side, int cwLeftLoc, int cwRightLoc)
   {
     // don't bother adding ring if it is "flat" and will disappear in the output
     if (offsetDistance == 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE)
@@ -306,9 +306,9 @@ class BufferCurveSetBuilder {
     addCurve(curve, leftLoc, rightLoc);
   }
 
-  private static final int MAX_INVERTED_RING_SIZE = 9;
-  private static final int INVERTED_CURVE_VERTEX_FACTOR = 4;
-  private static final double NEARNESS_FACTOR = 0.99;
+ /**private */static final int MAX_INVERTED_RING_SIZE = 9;
+ /**private */static final int INVERTED_CURVE_VERTEX_FACTOR = 4;
+ /**private */static final double NEARNESS_FACTOR = 0.99;
 
   /**
    * Tests whether the offset curve for a ring is fully inverted. 
@@ -332,7 +332,7 @@ class BufferCurveSetBuilder {
    * @param curvePts the generated offset curve
    * @return true if the offset curve is inverted
    */
-  private static bool isRingCurveInverted(List<Coordinate> inputPts, double distance, List<Coordinate> curvePts) {
+ /**private */static bool isRingCurveInverted(List<Coordinate> inputPts, double distance, List<Coordinate> curvePts) {
     if (distance == 0.0) return false;
     /**
      * Only proper rings can invert.
@@ -369,7 +369,7 @@ class BufferCurveSetBuilder {
    * @param line the linestring vertices
    * @return the maximum distance
    */
-  private static double maxDistance(List<Coordinate> pts, List<Coordinate> line) {
+ /**private */static double maxDistance(List<Coordinate> pts, List<Coordinate> line) {
     double maxDistance = 0;
     for (Coordinate p : pts) {
       double dist = Distance.pointToSegmentString(p, line);
@@ -392,7 +392,7 @@ class BufferCurveSetBuilder {
    * @param offsetDistance
    * @return
    */
-  private static bool isErodedCompletely(LinearRing ring, double bufferDistance)
+ /**private */static bool isErodedCompletely(LinearRing ring, double bufferDistance)
   {
     List<Coordinate> ringCoord = ring.getCoordinates();
     // degenerate ring has no area
@@ -431,7 +431,7 @@ class BufferCurveSetBuilder {
    * @param bufferDistance
    * @return
    */
-  private static bool isTriangleErodedCompletely(
+ /**private */static bool isTriangleErodedCompletely(
       List<Coordinate> triangleCoord,
       double bufferDistance)
   {

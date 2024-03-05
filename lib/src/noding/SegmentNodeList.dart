@@ -31,8 +31,8 @@
  */
 class SegmentNodeList
 {
-  private Map nodeMap = new TreeMap();
-  private NodedSegmentString edge;  // the parent edge
+ /**private */Map nodeMap = new TreeMap();
+ /**private */NodedSegmentString edge;  // the parent edge
 
   SegmentNodeList(NodedSegmentString edge)
   {
@@ -81,7 +81,7 @@ class SegmentNodeList
   /**
    * Adds nodes for the first and last points of the edge
    */
-  private void addEndpoints()
+ /**private */void addEndpoints()
   {
     int maxSegIndex = edge.size() - 1;
     add(edge.getCoordinate(0), 0);
@@ -95,7 +95,7 @@ class SegmentNodeList
    * In order to provide the correct fully noded semantics,
    * the vertex at the base of a collapsed pair must also be added as a node.
    */
-  private void addCollapsedNodes()
+ /**private */void addCollapsedNodes()
   {
     List collapsedVertexIndexes = new ArrayList();
 
@@ -113,7 +113,7 @@ class SegmentNodeList
    * Adds nodes for any collapsed edge pairs
    * which are pre-existing in the vertex list.
    */
-  private void findCollapsesFromExistingVertices(List collapsedVertexIndexes)
+ /**private */void findCollapsesFromExistingVertices(List collapsedVertexIndexes)
   {
     for (int i = 0; i < edge.size() - 2; i++) {
       Coordinate p0 = edge.getCoordinate(i);
@@ -133,7 +133,7 @@ class SegmentNodeList
    * To provide the correct fully noded semantics,
    * the vertex must be added as a node as well.
    */
-  private void findCollapsesFromInsertedNodes(List collapsedVertexIndexes)
+ /**private */void findCollapsesFromInsertedNodes(List collapsedVertexIndexes)
   {
     int[] collapsedVertexIndex = new int[1];
     Iterator it = iterator();
@@ -149,7 +149,7 @@ class SegmentNodeList
     }
   }
 
-  private bool findCollapseIndex(SegmentNode ei0, SegmentNode ei1, int[] collapsedVertexIndex)
+ /**private */bool findCollapseIndex(SegmentNode ei0, SegmentNode ei1, int[] collapsedVertexIndex)
   {
     // only looking for equal nodes
     if (! ei0.coord.equals2D(ei1.coord)) return false;
@@ -202,7 +202,7 @@ class SegmentNodeList
    *
    * @param splitEdges the split edges for this edge (in order)
    */
-  private void checkSplitEdgesCorrectness(List splitEdges)
+ /**private */void checkSplitEdgesCorrectness(List splitEdges)
   {
     List<Coordinate> edgePts = edge.getCoordinates();
 
@@ -224,7 +224,7 @@ class SegmentNodeList
    * (and including) the two intersections.
    * The label for the new edge is the same as the label for the parent edge.
    */
-  private SegmentString createSplitEdge(SegmentNode ei0, SegmentNode ei1)
+ /**private */SegmentString createSplitEdge(SegmentNode ei0, SegmentNode ei1)
   {
     List<Coordinate> pts = createSplitEdgePts(ei0, ei1);
     return new NodedSegmentString(pts, edge.getData());
@@ -240,7 +240,7 @@ class SegmentNodeList
    * @param ei1 the end node of the split edge
    * @return the points for the split edge
    */
-  private List<Coordinate> createSplitEdgePts(SegmentNode ei0, SegmentNode ei1) {
+ /**private */List<Coordinate> createSplitEdgePts(SegmentNode ei0, SegmentNode ei1) {
 //Debug.println("\ncreateSplitEdge"); Debug.print(ei0); Debug.print(ei1);
     int npts = ei1.segmentIndex - ei0.segmentIndex + 2;
 
@@ -298,7 +298,7 @@ class SegmentNodeList
     return coordList.toCoordinateArray();
   }
 
-  private void addEdgeCoordinates(SegmentNode ei0, SegmentNode ei1,
+ /**private */void addEdgeCoordinates(SegmentNode ei0, SegmentNode ei1,
       CoordinateList coordList) {
     List<Coordinate> pts = createSplitEdgePts(ei0, ei1);
     coordList.add(pts, false);
@@ -318,12 +318,12 @@ class SegmentNodeList
 class NodeVertexIterator
     implements Iterator
 {
-  private SegmentNodeList nodeList;
-  private NodedSegmentString edge;
-  private Iterator nodeIt;
-  private SegmentNode currNode = null;
-  private SegmentNode nextNode = null;
-  private int currSegIndex = 0;
+ /**private */SegmentNodeList nodeList;
+ /**private */NodedSegmentString edge;
+ /**private */Iterator nodeIt;
+ /**private */SegmentNode currNode = null;
+ /**private */SegmentNode nextNode = null;
+ /**private */int currSegIndex = 0;
 
   NodeVertexIterator(SegmentNodeList nodeList)
   {
@@ -362,7 +362,7 @@ class NodeVertexIterator
     return null;
   }
 
-  private void readNextNode()
+ /**private */void readNextNode()
   {
     if (nodeIt.hasNext())
       nextNode = (SegmentNode) nodeIt.next();

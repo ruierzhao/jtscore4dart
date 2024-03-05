@@ -21,7 +21,7 @@ class MultiPoint
   implements Puntal
 {
 
-  private static final long serialVersionUID = -8048474874175355449L;
+ /**private */static final long serialVersionUID = -8048474874175355449L;
 
   ///  Constructs a <code>MultiPoint</code>.
   ///
@@ -74,7 +74,7 @@ class MultiPoint
     return (MultiPoint) super.reverse();
   }
   
-  protected MultiPoint reverseInternal() {
+ /**protected */MultiPoint reverseInternal() {
     Point[] points = new Point[this.geometries.length];
     for (int i = 0; i < points.length; i++) {
       points[i] = (Point) this.geometries[i].copy();
@@ -94,11 +94,11 @@ class MultiPoint
   ///@param  n  the index of the <code>Coordinate</code> to retrieve, beginning
   ///      at 0
   ///@return    the <code>n</code>th <code>Coordinate</code>
-  protected Coordinate getCoordinate(int n) {
+ /**protected */Coordinate getCoordinate(int n) {
     return ((Point) geometries[n]).getCoordinate();
   }
   
-  protected MultiPoint copyInternal() {
+ /**protected */MultiPoint copyInternal() {
     Point[] points = new Point[this.geometries.length];
     for (int i = 0; i < points.length; i++) {
       points[i] = (Point) this.geometries[i].copy();
@@ -106,7 +106,7 @@ class MultiPoint
     return new MultiPoint(points, factory);
   }
   
-  protected int getTypeCode() {
+ /**protected */int getTypeCode() {
     return Geometry.TYPECODE_MULTIPOINT;
   }
 

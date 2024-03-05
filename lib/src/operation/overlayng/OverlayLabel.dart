@@ -85,10 +85,10 @@
  */
 class OverlayLabel {
   
-  private static final char SYM_UNKNOWN = '#';
-  private static final char SYM_BOUNDARY = 'B';
-  private static final char SYM_COLLAPSE = 'C';
-  private static final char SYM_LINE = 'L';
+ /**private */static final char SYM_UNKNOWN = '#';
+ /**private */static final char SYM_BOUNDARY = 'B';
+ /**private */static final char SYM_COLLAPSE = 'C';
+ /**private */static final char SYM_LINE = 'L';
   
   /**
    * The dimension of an input geometry which is not known
@@ -124,17 +124,17 @@ class OverlayLabel {
   static int LOC_UNKNOWN = Location.NONE;
   
   
-  private int aDim = DIM_NOT_PART;
-  private bool aIsHole = false;
-  private int aLocLeft = LOC_UNKNOWN;
-  private int aLocRight = LOC_UNKNOWN;
-  private int aLocLine = LOC_UNKNOWN;
+ /**private */int aDim = DIM_NOT_PART;
+ /**private */bool aIsHole = false;
+ /**private */int aLocLeft = LOC_UNKNOWN;
+ /**private */int aLocRight = LOC_UNKNOWN;
+ /**private */int aLocLine = LOC_UNKNOWN;
   
-  private int bDim = DIM_NOT_PART;
-  private bool bIsHole = false;
-  private int bLocLeft = LOC_UNKNOWN;
-  private int bLocRight = LOC_UNKNOWN;
-  private int bLocLine = LOC_UNKNOWN;
+ /**private */int bDim = DIM_NOT_PART;
+ /**private */bool bIsHole = false;
+ /**private */int bLocLeft = LOC_UNKNOWN;
+ /**private */int bLocRight = LOC_UNKNOWN;
+ /**private */int bLocLine = LOC_UNKNOWN;
 
   
   /**
@@ -669,7 +669,7 @@ class OverlayLabel {
     return buf.toString();
   }
 
-  private String locationString(int index, bool isForward) {
+ /**private */String locationString(int index, bool isForward) {
     StringBuilder buf = new StringBuilder();
     if (isBoundary(index)) {
       buf.append( Location.toLocationSymbol( getLocation(index, Position.LEFT, isForward) ) );

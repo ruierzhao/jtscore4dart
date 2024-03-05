@@ -29,10 +29,10 @@
  */
 class FacetSequence
 {
-  private Geometry geom = null;
-  private CoordinateSequence pts;
-  private int start;
-  private int end;
+ /**private */Geometry geom = null;
+ /**private */CoordinateSequence pts;
+ /**private */int start;
+ /**private */int end;
   
   /**
    * Creates a new sequence of facets based on a {@link CoordinateSequence}
@@ -171,7 +171,7 @@ class FacetSequence
     return locs;    
   }
 
-  private double computeDistanceLineLine(FacetSequence facetSeq, GeometryLocation[] locs)
+ /**private */double computeDistanceLineLine(FacetSequence facetSeq, GeometryLocation[] locs)
   {
     // both linear - compute minimum segment-segment distance
     double minDistance = Double.MAX_VALUE;
@@ -194,7 +194,7 @@ class FacetSequence
     return minDistance;
   }
 
-  private void updateNearestLocationsLineLine(int i, Coordinate p0, Coordinate p1, FacetSequence facetSeq, int j,
+ /**private */void updateNearestLocationsLineLine(int i, Coordinate p0, Coordinate p1, FacetSequence facetSeq, int j,
       Coordinate q0, Coordinate q1, GeometryLocation[] locs) {
     LineSegment seg0 = new LineSegment(p0, p1);
     LineSegment seg1 = new LineSegment(q0, q1);
@@ -203,7 +203,7 @@ class FacetSequence
     locs[1] = new GeometryLocation(facetSeq.geom, j, new Coordinate(closestPt[1]));    
   }
   
-  private double computeDistancePointLine(Coordinate pt, FacetSequence facetSeq, GeometryLocation[] locs) 
+ /**private */double computeDistancePointLine(Coordinate pt, FacetSequence facetSeq, GeometryLocation[] locs) 
   {
     double minDistance = Double.MAX_VALUE;
 
@@ -220,7 +220,7 @@ class FacetSequence
     return minDistance;
   }
   
-  private void updateNearestLocationsPointLine(Coordinate pt, 
+ /**private */void updateNearestLocationsPointLine(Coordinate pt, 
       FacetSequence facetSeq, int i, Coordinate q0, Coordinate q1, 
       GeometryLocation[] locs) {
     locs[0] = new GeometryLocation(geom, start, new Coordinate(pt));

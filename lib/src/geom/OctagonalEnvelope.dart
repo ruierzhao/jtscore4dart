@@ -28,27 +28,27 @@ class OctagonalEnvelope
     return (new OctagonalEnvelope(geom)).toGeometry(geom.getFactory());
   }
   
-  private static double computeA(double x, double y)
+ /**private */static double computeA(double x, double y)
   {
     return x + y;
   }
 
-  private static double computeB(double x, double y)
+ /**private */static double computeB(double x, double y)
   {
     return x - y;
   }
 
-  private static double SQRT2 = math.sqrt(2.0);
+ /**private */static double SQRT2 = math.sqrt(2.0);
   
   // initialize in the null state
-  private double minX = double.nan;
-  private double maxX;
-  private double minY;
-  private double maxY;
-  private double minA;
-  private double maxA;
-  private double minB;
-  private double maxB;
+ /**private */double minX = double.nan;
+ /**private */double maxX;
+ /**private */double minY;
+ /**private */double maxY;
+ /**private */double minA;
+ /**private */double maxA;
+ /**private */double minB;
+ /**private */double maxB;
 
   /// Creates a new null bounding octagon
   OctagonalEnvelope()
@@ -215,7 +215,7 @@ class OctagonalEnvelope
   /// Tests if the extremal values for this octagon are valid.
   ///
   /// @return <code>true</code> if this object has valid values
-  private bool isValid()
+ /**private */bool isValid()
   {
     if (isNull()) return true;
     return minX <= maxX
@@ -320,7 +320,7 @@ class OctagonalEnvelope
     return geomFactory.createPolygon(geomFactory.createLinearRing(pts));
   }
 
-  private static class BoundingOctagonComponentFilter
+ /**private */static class BoundingOctagonComponentFilter
   implements GeometryComponentFilter
   {
     OctagonalEnvelope oe;

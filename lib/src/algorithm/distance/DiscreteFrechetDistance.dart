@@ -64,9 +64,9 @@ class DiscreteFrechetDistance {
     return dist.distance();
   }
 
-  private final Geometry g0;
-  private final Geometry g1;
-  private PointPairDistance ptDist;
+ /**private */final Geometry g0;
+ /**private */final Geometry g1;
+ /**private */PointPairDistance ptDist;
 
   /**
    * Creates an instance of this class using the provided geometries.
@@ -84,7 +84,7 @@ class DiscreteFrechetDistance {
    *
    * @return the Discrete Fréchet Distance
    */
-  private double distance() {
+ /**private */double distance() {
     List<Coordinate> coords0 = g0.getCoordinates();
     List<Coordinate> coords1 = g1.getCoordinates();
 
@@ -105,7 +105,7 @@ class DiscreteFrechetDistance {
    * @param cols the number of columns
    * @return a matrix storage
    */
-  private static MatrixStorage createMatrixStorage(int rows, int cols) {
+ /**private */static MatrixStorage createMatrixStorage(int rows, int cols) {
 
     int max = math.max(rows, cols);
     // NOTE: these constraints need to be verified
@@ -137,7 +137,7 @@ class DiscreteFrechetDistance {
    * @param distanceToPair a lookup for coordinate pairs based on a distance
    *
    */
-  private static PointPairDistance computeFrechet(List<Coordinate> coords0, List<Coordinate> coords1, int[] diagonal,
+ /**private */static PointPairDistance computeFrechet(List<Coordinate> coords0, List<Coordinate> coords1, int[] diagonal,
                                                   MatrixStorage distances, Map<Double, int[]> distanceToPair) {
     for (int d = 0; d < diagonal.length; d += 2) {
       int i0 = diagonal[d];
@@ -183,7 +183,7 @@ class DiscreteFrechetDistance {
    * @param j the row index
    * @return the minimum distance
    */
-  private static double getMinDistanceAtCorner(MatrixStorage matrix, int i, int j) {
+ /**private */static double getMinDistanceAtCorner(MatrixStorage matrix, int i, int j) {
     if (i > 0 && j > 0) {
       double d0 = matrix.get(i - 1, j - 1);
       double d1 = matrix.get(i - 1, j);
@@ -210,7 +210,7 @@ class DiscreteFrechetDistance {
    * @param distances the distance matrix
    * @param distanceToPair a lookup for coordinate pairs based on a distance
    */
-  private void computeCoordinateDistances(List<Coordinate> coords0, List<Coordinate> coords1, int[] diagonal,
+ /**private */void computeCoordinateDistances(List<Coordinate> coords0, List<Coordinate> coords1, int[] diagonal,
                                           MatrixStorage distances, Map<Double, int[]> distanceToPair) {
     int numDiag = diagonal.length;
     double maxDistOnDiag = 0d;
@@ -329,9 +329,9 @@ class DiscreteFrechetDistance {
    */
   abstract static class MatrixStorage {
 
-    protected final int numRows;
-    protected final int numCols;
-    protected final double defaultValue;
+   /**protected */final int numRows;
+   /**protected */final int numCols;
+   /**protected */final double defaultValue;
 
     /**
      * Creates an instance of this class
@@ -398,7 +398,7 @@ class DiscreteFrechetDistance {
    */
   final static class RectMatrix extends MatrixStorage {
 
-    private final double[] matrix;
+   /**private */final double[] matrix;
 
     /**
      * Creates an instance of this matrix using the given number of rows and columns.
@@ -434,9 +434,9 @@ class DiscreteFrechetDistance {
    */
   final static class CsrMatrix extends MatrixStorage {
 
-    private double[] v;
-    private final int[] ri;
-    private int[] ci;
+   /**private */double[] v;
+   /**private */final int[] ri;
+   /**private */int[] ci;
 
     CsrMatrix(int numRows, int numCols, double defaultValue) {
       this(numRows, numCols, defaultValue, expectedValuesHeuristic(numRows, numCols));
@@ -454,12 +454,12 @@ class DiscreteFrechetDistance {
      * @param numCols the number of columns
      * @return the expected number of values in the sparse matrix
      */
-    private static int expectedValuesHeuristic(int numRows, int numCols) {
+   /**private */static int expectedValuesHeuristic(int numRows, int numCols) {
       int max = math.max(numRows, numCols);
       return max * max / 10;
     }
 
-    private int indexOf(int i, int j) {
+   /**private */int indexOf(int i, int j) {
       int cLow = this.ri[i];
       int cHigh = this.ri[i+1];
       if (cHigh <= cLow) return ~cLow;
@@ -522,7 +522,7 @@ class DiscreteFrechetDistance {
      * Ensures that the column index vector (ci) and value vector (v) are sufficiently large.
      * @param required the number of items to store in the matrix
      */
-    private void ensureCapacity(int required) {
+   /**private */void ensureCapacity(int required) {
       if (required < this.v.length)
         return;
 
@@ -537,7 +537,7 @@ class DiscreteFrechetDistance {
    */
   final static class MapMatrix extends MatrixStorage {
 
-    private final Map<Long, Double> matrix;
+   /**private */final Map<Long, Double> matrix;
 
     /**
      * Creates an instance of this class

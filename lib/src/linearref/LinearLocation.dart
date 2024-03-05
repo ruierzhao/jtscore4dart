@@ -68,9 +68,9 @@ class LinearLocation
     return new Coordinate(x, y, z);
   }
 
-  private int componentIndex = 0;
-  private int segmentIndex = 0;
-  private double segmentFraction = 0.0;
+ /**private */int componentIndex = 0;
+ /**private */int segmentIndex = 0;
+ /**private */double segmentFraction = 0.0;
 
   /**
    * Creates a location referring to the start of a linear geometry
@@ -91,7 +91,7 @@ class LinearLocation
     normalize();
   }
 
-  private LinearLocation(int componentIndex, int segmentIndex, double segmentFraction, bool doNormalize)
+ /**private */LinearLocation(int componentIndex, int segmentIndex, double segmentFraction, bool doNormalize)
   {
     this.componentIndex = componentIndex;
     this.segmentIndex = segmentIndex;
@@ -119,7 +119,7 @@ class LinearLocation
    *
    * @see clamp
    */
-  private void normalize()
+ /**private */void normalize()
   {
     if (segmentFraction < 0.0) {
       segmentFraction = 0.0;
@@ -483,7 +483,7 @@ class LinearLocation
    * @param line a LineString
    * @return the number of segments
    */
-  private static int numSegments(LineString line) {
+ /**private */static int numSegments(LineString line) {
     int npts = line.getNumPoints();
     if (npts <= 1) return 0;
     return npts - 1;

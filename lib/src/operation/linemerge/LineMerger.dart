@@ -48,9 +48,9 @@
  */
 class LineMerger 
 {
-  private LineMergeGraph graph = new LineMergeGraph();
-  private Collection mergedLineStrings = null;
-  private GeometryFactory factory = null;
+ /**private */LineMergeGraph graph = new LineMergeGraph();
+ /**private */Collection mergedLineStrings = null;
+ /**private */GeometryFactory factory = null;
   
   /**
    * Creates a new line merger.
@@ -92,16 +92,16 @@ class LineMerger
       add(geometry);
     }
   }
-  private void add(LineString lineString) {
+ /**private */void add(LineString lineString) {
     if (factory == null) {
       this.factory = lineString.getFactory();
     }
     graph.addEdge(lineString);
   }
   
-  private Collection edgeStrings = null;
+ /**private */Collection edgeStrings = null;
   
-  private void merge() 
+ /**private */void merge() 
   {
     if (mergedLineStrings != null) { return; }
     
@@ -119,15 +119,15 @@ class LineMerger
     }    
   }
   
-  private void buildEdgeStringsForObviousStartNodes() {
+ /**private */void buildEdgeStringsForObviousStartNodes() {
     buildEdgeStringsForNonDegree2Nodes();
   }
   
-  private void buildEdgeStringsForIsolatedLoops() {
+ /**private */void buildEdgeStringsForIsolatedLoops() {
     buildEdgeStringsForUnprocessedNodes();
   }  
   
-  private void buildEdgeStringsForUnprocessedNodes() {
+ /**private */void buildEdgeStringsForUnprocessedNodes() {
     for (Iterator i = graph.getNodes().iterator(); i.hasNext(); ) {
       Node node = (Node) i.next();
       if (!node.isMarked()) { 
@@ -137,7 +137,7 @@ class LineMerger
       }
     }
   }  
-  private void buildEdgeStringsForNonDegree2Nodes() {
+ /**private */void buildEdgeStringsForNonDegree2Nodes() {
     for (Iterator i = graph.getNodes().iterator(); i.hasNext(); ) {
       Node node = (Node) i.next();
       if (node.getDegree() != 2) { 
@@ -146,7 +146,7 @@ class LineMerger
       }
     }
   }
-  private void buildEdgeStringsStartingAt(Node node) {
+ /**private */void buildEdgeStringsStartingAt(Node node) {
     for (Iterator i = node.getOutEdges().iterator(); i.hasNext(); ) {
       LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.next();
       if (directedEdge.getEdge().isMarked()) { continue; }
@@ -154,7 +154,7 @@ class LineMerger
     }
   }
   
-  private EdgeString buildEdgeStringStartingWith(LineMergeDirectedEdge start) {    
+ /**private */EdgeString buildEdgeStringStartingWith(LineMergeDirectedEdge start) {    
     EdgeString edgeString = new EdgeString(factory);
     LineMergeDirectedEdge current = start;
     do {

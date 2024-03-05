@@ -78,7 +78,7 @@ class MarkHalfEdge extends HalfEdge
     ((MarkHalfEdge) e.sym()).mark();
   }
   
-  private bool isMarked = false;
+ /**private */bool isMarked = false;
 
   /**
    * Creates a new marked edge.

@@ -127,15 +127,15 @@ class PolygonRing {
     return null;
   }
   
-  private int id;
-  private PolygonRing shell;
-  private LinearRing ring;
+ /**private */int id;
+ /**private */PolygonRing shell;
+ /**private */LinearRing ring;
   
   /**
    * The root of the touch graph tree containing this ring.
    * Serves as the id for the graph partition induced by the touch relation.
    */
-  private PolygonRing touchSetRoot = null;
+ /**private */PolygonRing touchSetRoot = null;
   
   // lazily created
   /**
@@ -150,13 +150,13 @@ class PolygonRing {
    * since more than one touch between two rings 
    * indicates interior disconnection as well.
    */
-  private Map<Integer, PolygonRingTouch> touches = null;
+ /**private */Map<Integer, PolygonRingTouch> touches = null;
   
   /**
    * The set of self-nodes in this ring.
    * This supports checking valid ring self-touch topology.
    */
-  private ArrayList<PolygonRingSelfNode> selfNodes = null;
+ /**private */ArrayList<PolygonRingSelfNode> selfNodes = null;
 
   /**
    * Creates a ring for a polygon shell.
@@ -188,27 +188,27 @@ class PolygonRing {
     return shell == this;
   }
   
-  private bool isInTouchSet() {
+ /**private */bool isInTouchSet() {
     return touchSetRoot != null;
   }
   
-  private void setTouchSetRoot(PolygonRing ring) {
+ /**private */void setTouchSetRoot(PolygonRing ring) {
     touchSetRoot = ring;
   }
 
-  private PolygonRing getTouchSetRoot() {
+ /**private */PolygonRing getTouchSetRoot() {
     return touchSetRoot;
   }
 
-  private bool hasTouches() {
+ /**private */bool hasTouches() {
     return touches != null && ! touches.isEmpty();
   }
 
-  private Collection<PolygonRingTouch> getTouches() {
+ /**private */Collection<PolygonRingTouch> getTouches() {
     return touches.values();
   }
 
-  private void addTouch(PolygonRing ring, Coordinate pt) {
+ /**private */void addTouch(PolygonRing ring, Coordinate pt) {
     if (touches == null) {
       touches = new Map<Integer, PolygonRingTouch>();
     }
@@ -233,7 +233,7 @@ class PolygonRing {
    * @param pt the touch point
    * @return true if the rings touch only at the given point
    */
-  private bool isOnlyTouch(PolygonRing ring, Coordinate pt) {
+ /**private */bool isOnlyTouch(PolygonRing ring, Coordinate pt) {
     //--- no touches for this ring
     if (touches == null) return true;
     //--- no touches for other ring
@@ -251,7 +251,7 @@ class PolygonRing {
    * 
    * @return a vertex in a hole cycle, or null if no cycle found
    */
-  private Coordinate findHoleCycleLocation() {
+ /**private */Coordinate findHoleCycleLocation() {
     //--- the touch set including this ring is already processed
     if (isInTouchSet()) return null;
     
@@ -276,7 +276,7 @@ class PolygonRing {
     return null;
   }
 
-  private static void init(PolygonRing root, 
+ /**private */static void init(PolygonRing root, 
       Deque<PolygonRingTouch> touchStack)
   {
     for (PolygonRingTouch touch : root.getTouches()) {
@@ -293,7 +293,7 @@ class PolygonRing {
    * @param touchStack the stack of touches to scan
    * @return a vertex in a hole cycle if found, or null
    */
-  private Coordinate scanForHoleCycle(PolygonRingTouch currentTouch, 
+ /**private */Coordinate scanForHoleCycle(PolygonRingTouch currentTouch, 
       PolygonRing root, 
       Deque<PolygonRingTouch> touchStack) {
     PolygonRing ring = currentTouch.getRing();
@@ -372,8 +372,8 @@ class PolygonRing {
  *
  */
 class PolygonRingTouch {
-  private PolygonRing ring;
-  private Coordinate touchPt;
+ /**private */PolygonRing ring;
+ /**private */Coordinate touchPt;
 
   PolygonRingTouch(PolygonRing ring, Coordinate pt) {
     this.ring = ring;
@@ -404,10 +404,10 @@ class PolygonRingTouch {
  *
  */
 class PolygonRingSelfNode {
-  private Coordinate nodePt;
-  private Coordinate e00;
-  private Coordinate e01;
-  private Coordinate e10;
+ /**private */Coordinate nodePt;
+ /**private */Coordinate e00;
+ /**private */Coordinate e01;
+ /**private */Coordinate e10;
   //private Coordinate e11;
 
   PolygonRingSelfNode(Coordinate nodePt, 

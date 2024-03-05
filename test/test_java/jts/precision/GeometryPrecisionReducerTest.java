@@ -234,19 +234,19 @@ public class GeometryPrecisionReducerTest
   
   //=======================================
   
-  private void checkReduce( 
+ /**private */void checkReduce( 
       String wkt,
       String wktExpected) {
     checkReduce(1, wkt, wktExpected);
   }
   
-  private void checkReduce(double scaleFactor, String wkt, String wktExpected) {
+ /**private */void checkReduce(double scaleFactor, String wkt, String wktExpected) {
     PrecisionModel pm = new PrecisionModel(scaleFactor);
     GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(pm);
     checkReduce(reducer, wkt, wktExpected);
   }
   
-  private void checkReduceKeepCollapsed( 
+ /**private */void checkReduceKeepCollapsed( 
       double scaleFactor, 
       String wkt,
       String wktExpected) {
@@ -256,7 +256,7 @@ public class GeometryPrecisionReducerTest
     checkReduce(reducer, wkt, wktExpected);
   }
   
-  private void checkReduce( 
+ /**private */void checkReduce( 
       GeometryPrecisionReducer reducer,
       String wkt,
       String wktExpected) {

@@ -35,7 +35,7 @@
  */
 class OrdinateFormat
 {
-  private static final String DECIMAL_PATTERN = "0";
+ /**private */static final String DECIMAL_PATTERN = "0";
 
   /**
    * The output representation of {@link Double#POSITIVE_INFINITY}
@@ -75,7 +75,7 @@ class OrdinateFormat
     return new OrdinateFormat(maximumFractionDigits);
   }
   
-  private DecimalFormat format;
+ /**private */DecimalFormat format;
 
   /**
    * Creates an OrdinateFormat using the default maximum number of fraction digits.
@@ -93,7 +93,7 @@ class OrdinateFormat
     format = createFormat(maximumFractionDigits);
   }
 
-  private static DecimalFormat createFormat(int maximumFractionDigits) {
+ /**private */static DecimalFormat createFormat(int maximumFractionDigits) {
     // ensure format uses standard WKY number format
     NumberFormat nf = NumberFormat.getInstance(Locale.US);
     // This is expected to succeed for Locale.US

@@ -30,8 +30,8 @@ class DirectedEdgeStar
   /**
    * The underlying list of outgoing DirectedEdges
    */
-  protected List<DirectedEdge> outEdges = new ArrayList<>();
-  private bool sorted = false;
+ /**protected */List<DirectedEdge> outEdges = new ArrayList<>();
+ /**private */bool sorted = false;
 
   /**
    * Constructs a DirectedEdgeStar with no edges.
@@ -87,7 +87,7 @@ class DirectedEdgeStar
     return outEdges;
   }
 
-  private void sortEdges()
+ /**private */void sortEdges()
   {
     if (! sorted) {
       Collections.sort(outEdges);

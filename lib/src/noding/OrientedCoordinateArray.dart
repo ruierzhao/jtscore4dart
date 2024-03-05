@@ -24,8 +24,8 @@
 class OrientedCoordinateArray
     implements Comparable
 {
-  private List<Coordinate> pts;
-  private bool orientation;
+ /**private */List<Coordinate> pts;
+ /**private */bool orientation;
 
   /**
    * Creates a new {@link OrientedCoordinateArray}
@@ -46,7 +46,7 @@ class OrientedCoordinateArray
    * @return <code>true</code> if the points are oriented forwards
    * or <code>false</code if the points are oriented in reverse
    */
-  private static bool orientation(List<Coordinate> pts)
+ /**private */static bool orientation(List<Coordinate> pts)
   {
     return CoordinateArrays.increasingDirection(pts) == 1;
   }
@@ -79,7 +79,7 @@ class OrientedCoordinateArray
     return comp;
   }
 
-  private static int compareOriented(List<Coordinate> pts1,
+ /**private */static int compareOriented(List<Coordinate> pts1,
                                      bool orientation1,
                                      List<Coordinate> pts2,
                                      bool orientation2)

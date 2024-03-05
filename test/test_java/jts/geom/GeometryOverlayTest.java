@@ -45,7 +45,7 @@ public class GeometryOverlayTest extends GeometryTestCase {
     checkIntersectionPM(pmFloat, expected);
   }
 
-  private void checkIntersectionPM(PrecisionModel pmFixed, Geometry expected) {
+ /**private */void checkIntersectionPM(PrecisionModel pmFixed, Geometry expected) {
     GeometryFactory geomFactFixed = new GeometryFactory(pmFixed);
     Geometry a = read(geomFactFixed, "POLYGON ((1 1, 1 2, 5 1, 1 1))");
     Geometry b = read(geomFactFixed, "POLYGON ((0 3, 4 3, 4 0, 0 0, 0 3))");
@@ -64,7 +64,7 @@ public class GeometryOverlayTest extends GeometryTestCase {
     checkIntersectionSucceeds();
   }
 
-  private void checkIntersectionFails() {
+ /**private */void checkIntersectionFails() {
     try {
       tryIntersection();
       fail("Intersection operation should have failed but did not");
@@ -74,7 +74,7 @@ public class GeometryOverlayTest extends GeometryTestCase {
     }
   }
 
-  private void checkIntersectionSucceeds() {
+ /**private */void checkIntersectionSucceeds() {
     try {
       tryIntersection();
     }
@@ -83,7 +83,7 @@ public class GeometryOverlayTest extends GeometryTestCase {
     }
   }
 
-  private void tryIntersection() {
+ /**private */void tryIntersection() {
     Geometry a = read("POLYGON ((-1120500.000000126 850931.058865365, -1120500.0000001257 851343.3885007716, -1120500.0000001257 851342.2386007707, -1120399.762684411 851199.4941312922, -1120500.000000126 850931.058865365))");
     Geometry b = read("POLYGON ((-1120500.000000126 851253.4627870625, -1120500.0000001257 851299.8179383819, -1120492.1498410008 851293.8417889411, -1120500.000000126 851253.4627870625))");
     Geometry result = a.intersection(b);

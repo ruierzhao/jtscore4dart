@@ -79,8 +79,8 @@ class CoverageSimplifier {
     return simplifier.simplifyInner(tolerance);
   }
   
-  private List<Geometry> input;
-  private GeometryFactory geomFactory;
+ /**private */List<Geometry> input;
+ /**private */GeometryFactory geomFactory;
   
   /**
    * Create a new coverage simplifier instance.
@@ -124,7 +124,7 @@ class CoverageSimplifier {
     return result;
   }
 
-  private void simplifyEdges(List<CoverageEdge> edges, MultiLineString constraints, double tolerance) {
+ /**private */void simplifyEdges(List<CoverageEdge> edges, MultiLineString constraints, double tolerance) {
     MultiLineString lines = CoverageEdge.createLines(edges, geomFactory);
     BitSet freeRings = getFreeRings(edges);
     MultiLineString linesSimp = TPVWSimplifier.simplify(lines, freeRings, constraints, tolerance);
@@ -133,13 +133,13 @@ class CoverageSimplifier {
     setCoordinates(edges, linesSimp);
   }
 
-  private void setCoordinates(List<CoverageEdge> edges, MultiLineString lines) {
+ /**private */void setCoordinates(List<CoverageEdge> edges, MultiLineString lines) {
     for (int i = 0; i < edges.size(); i++) {
       edges.get(i).setCoordinates(lines.getGeometryN(i).getCoordinates());
     }
   }
 
-  private BitSet getFreeRings(List<CoverageEdge> edges) {
+ /**private */BitSet getFreeRings(List<CoverageEdge> edges) {
     BitSet freeRings = new BitSet(edges.size());
     for (int i = 0 ; i < edges.size() ; i++) {
       freeRings.set(i, edges.get(i).isFreeRing());

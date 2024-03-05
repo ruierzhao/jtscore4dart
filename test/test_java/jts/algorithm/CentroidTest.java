@@ -7,7 +7,7 @@ import org.locationtech.jts.io.WKTReader;
 
 public class CentroidTest extends TestCase {
 
-    private static final double TOLERANCE = 1e-10;
+   /**private */static final double TOLERANCE = 1e-10;
 
     public CentroidTest(String name) {
         super(name);
@@ -19,7 +19,7 @@ public class CentroidTest extends TestCase {
      * @param g a polygonal geometry
      * @return Coordinate of the geometry's centroid
      */
-    private static Coordinate areaWeightedCentroid(Geometry g) {
+   /**private */static Coordinate areaWeightedCentroid(Geometry g) {
         double totalArea = g.getArea();
         double cx = 0;
         double cy = 0;

@@ -46,11 +46,11 @@
 class BufferSubgraph
   implements Comparable
 {
-  private RightmostEdgeFinder finder;
-  private List dirEdgeList  = new ArrayList();
-  private List nodes        = new ArrayList();
-  private Coordinate rightMostCoord = null;
-  private Envelope env = null;
+ /**private */RightmostEdgeFinder finder;
+ /**private */List dirEdgeList  = new ArrayList();
+ /**private */List nodes        = new ArrayList();
+ /**private */Coordinate rightMostCoord = null;
+ /**private */Envelope env = null;
 
   BufferSubgraph()
   {
@@ -109,7 +109,7 @@ class BufferSubgraph
    *
    * @param node a node known to be in the subgraph
    */
-  private void addReachable(Node startNode)
+ /**private */void addReachable(Node startNode)
   {
     Stack nodeStack = new Stack();
     nodeStack.add(startNode);
@@ -124,7 +124,7 @@ class BufferSubgraph
    * @param node the node to add
    * @param nodeStack the current set of nodes being traversed
    */
-  private void add(Node node, Stack nodeStack)
+ /**private */void add(Node node, Stack nodeStack)
   {
     node.setVisited(true);
     nodes.add(node);
@@ -142,7 +142,7 @@ class BufferSubgraph
     }
   }
 
-  private void clearVisitedEdges()
+ /**private */void clearVisitedEdges()
   {
     for (Iterator it = dirEdgeList.iterator(); it.hasNext(); ) {
       DirectedEdge de = (DirectedEdge) it.next();
@@ -170,7 +170,7 @@ class BufferSubgraph
    * @param startEdge edge to start processing with
    */
   // <FIX> MD - use iteration & queue rather than recursion, for speed and robustness
-  private void computeDepths(DirectedEdge startEdge)
+ /**private */void computeDepths(DirectedEdge startEdge)
   {
     Set nodesVisited = new HashSet();
     LinkedList nodeQueue = new LinkedList();
@@ -202,7 +202,7 @@ class BufferSubgraph
     }
   }
 
-  private void computeNodeDepth(Node n)
+ /**private */void computeNodeDepth(Node n)
   {
     // find a visited dirEdge to start at
     DirectedEdge startEdge = null;
@@ -230,7 +230,7 @@ class BufferSubgraph
     }
   }
 
-  private void copySymDepths(DirectedEdge de)
+ /**private */void copySymDepths(DirectedEdge de)
   {
     DirectedEdge sym = de.getSym();
     sym.setDepth(Position.LEFT, de.getDepth(Position.RIGHT));
@@ -290,8 +290,8 @@ class BufferSubgraph
 
 /*
 // DEBUGGING only - comment out
-  private static final String SAVE_DIREDGES = "saveDirEdges";
-  private static int saveCount = 0;
+ /**private */static final String SAVE_DIREDGES = "saveDirEdges";
+ /**private */static int saveCount = 0;
   void saveDirEdges()
   {
     GeometryFactory fact = new GeometryFactory();

@@ -27,7 +27,7 @@ class MultiPolygon
 	extends GeometryCollection
 	implements Polygonal
 {
-  private static final long serialVersionUID = -551033529766975875L;
+ /**private */static final long serialVersionUID = -551033529766975875L;
   ///  Constructs a <code>MultiPolygon</code>.
   ///
   ///@param  polygons        the <code>Polygon</code>s for this <code>MultiPolygon</code>
@@ -116,7 +116,7 @@ class MultiPolygon
     return (MultiPolygon) super.reverse();
   }
 
-  protected MultiPolygon reverseInternal() {
+ /**protected */MultiPolygon reverseInternal() {
     List<Polygon> polygons = new Polygon[this.geometries.length];
     for (int i = 0; i < polygons.length; i++) {
       polygons[i] = (Polygon) this.geometries[i].reverse();
@@ -124,7 +124,7 @@ class MultiPolygon
     return new MultiPolygon(polygons, factory);
   }
   
-  protected MultiPolygon copyInternal() {
+ /**protected */MultiPolygon copyInternal() {
     List<Polygon> polygons = new Polygon[this.geometries.length];
     for (int i = 0; i < polygons.length; i++) {
       polygons[i] = (Polygon) this.geometries[i].copy();
@@ -132,7 +132,7 @@ class MultiPolygon
     return new MultiPolygon(polygons, factory);
   }
 
-  protected int getTypeCode() {
+ /**protected */int getTypeCode() {
     return Geometry.TYPECODE_MULTIPOLYGON;
   }
 }

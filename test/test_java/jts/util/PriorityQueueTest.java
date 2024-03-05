@@ -44,14 +44,14 @@ public class PriorityQueueTest
     checkOrder(q);
   }
   
-  private void addRandomItems(PriorityQueue q, int num)
+ /**private */void addRandomItems(PriorityQueue q, int num)
   {
     for (int i = 0 ; i < num; i++) {
       q.add(new Integer((int) (num * Math.random())));
     }
   }
   
-  private void checkOrder(PriorityQueue q)
+ /**private */void checkOrder(PriorityQueue q)
   {
     Comparable curr = null;
     

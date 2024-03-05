@@ -37,7 +37,7 @@
  */
 class EdgeGraph 
 {
-  private Map vertexMap = new Map();
+ /**private */Map vertexMap = new Map();
   
   EdgeGraph() {
   }
@@ -49,7 +49,7 @@ class EdgeGraph
    * @param orig the origin location
    * @return a new HalfEdge with the given origin
    */
-  protected HalfEdge createEdge(Coordinate orig)
+ /**protected */HalfEdge createEdge(Coordinate orig)
   {
     return new HalfEdge(orig);
   }
@@ -61,7 +61,7 @@ class EdgeGraph
    * @param p1
    * @return
    */
-  private HalfEdge create(Coordinate p0, Coordinate p1)
+ /**private */HalfEdge create(Coordinate p0, Coordinate p1)
   {
     HalfEdge e0 = createEdge(p0);
     HalfEdge e1 = createEdge(p1);
@@ -122,7 +122,7 @@ class EdgeGraph
    * @param eAdj an existing edge with same orig (if any)
    * @return the created edge
    */
-  private HalfEdge insert(Coordinate orig, Coordinate dest, HalfEdge eAdj) {
+ /**private */HalfEdge insert(Coordinate orig, Coordinate dest, HalfEdge eAdj) {
     // edge does not exist, so create it and insert in graph
     HalfEdge e = create(orig, dest);
     if (eAdj != null) {

@@ -43,7 +43,7 @@ public class NodedSegmentStringTest extends GeometryTestCase {
         "MULTILINESTRING ((655014.8317182435 1794941.5196832407, 655016.2022581929 1794940.1099794197), (655016.2022581929 1794940.1099794197, 655016.20226 1794940.10998), (655016.20226 1794940.10998, 655016.2022653183 1794940.1099718122), (655016.2022653183 1794940.1099718122, 655016.2961505133 1794939.965427252), (655016.2961505133 1794939.965427252, 655103.6628454948 1794805.456674405))");
   }
   
-  private void checkNoding(String wktLine, String wktNodes, int[] segmentIndex, String wktExpected) {
+ /**private */void checkNoding(String wktLine, String wktNodes, int[] segmentIndex, String wktExpected) {
     Geometry line = read(wktLine);
     Geometry pts = read(wktNodes);
     

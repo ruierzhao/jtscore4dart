@@ -44,7 +44,7 @@ public class SegmentStringTest  extends GeometryTestCase {
     checkEqualXY(ss.prevInRing(3), new Coordinate(3, 1));
   }
 
-  private SegmentString create(String wkt) {
+ /**private */SegmentString create(String wkt) {
     Geometry geom = read(wkt);
     return new BasicSegmentString(geom.getCoordinates(), null);
   }

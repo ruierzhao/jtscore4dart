@@ -26,7 +26,7 @@ import junit.textui.TestRunner;
  */
 public class IndexedPointInAreaLocatorTest extends AbstractPointInRingTest {
 
-  private WKTReader reader = new WKTReader();
+ /**private */WKTReader reader = new WKTReader();
 
   public static void main(String args[]) {
     TestRunner.run(IndexedPointInAreaLocatorTest.class);
@@ -35,7 +35,7 @@ public class IndexedPointInAreaLocatorTest extends AbstractPointInRingTest {
   public IndexedPointInAreaLocatorTest(String name) { super(name); }
 
 
-   protected void runPtInRing(int expectedLoc, Coordinate pt, String wkt)
+  /**protected */void runPtInRing(int expectedLoc, Coordinate pt, String wkt)
       throws Exception
   {
     Geometry geom = reader.read(wkt);

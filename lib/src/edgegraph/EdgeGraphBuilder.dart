@@ -35,7 +35,7 @@ class EdgeGraphBuilder
     return builder.getGraph();
   }
 
-  private EdgeGraph graph = new EdgeGraph();
+ /**private */EdgeGraph graph = new EdgeGraph();
 
   EdgeGraphBuilder()
   {
@@ -79,7 +79,7 @@ class EdgeGraphBuilder
     }
   }
   
-  private void add(LineString lineString) {
+ /**private */void add(LineString lineString) {
     CoordinateSequence seq = lineString.getCoordinateSequence();
     for (int i = 1; i < seq.size(); i++) {
       graph.addEdge(seq.getCoordinate(i-1), seq.getCoordinate(i));

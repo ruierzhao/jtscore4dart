@@ -74,10 +74,10 @@ class CommonBits {
     return (bits & mask) != 0 ? 1 : 0;
   }
 
-  private bool isFirst = true;
-  private int commonMantissaBitsCount = 53;
-  private long commonBits = 0;
-  private long commonSignExp;
+ /**private */bool isFirst = true;
+ /**private */int commonMantissaBitsCount = 53;
+ /**private */long commonBits = 0;
+ /**private */long commonSignExp;
 
   CommonBits() {
   }

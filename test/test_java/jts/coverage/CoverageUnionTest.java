@@ -40,7 +40,7 @@ public class CoverageUnionTest extends GeometryTestCase
             );
   }
 
-  private void checkUnion(String wktCoverage, String wktExpected) {
+ /**private */void checkUnion(String wktCoverage, String wktExpected) {
     Geometry covGeom = read(wktCoverage);
     Geometry[] coverage = toArray(covGeom);
     Geometry actual = CoverageUnion.union(coverage);
@@ -52,7 +52,7 @@ public class CoverageUnionTest extends GeometryTestCase
     checkEqual(expected, actual);
   }
 
-  private static Geometry[] toArray(Geometry geom) {
+ /**private */static Geometry[] toArray(Geometry geom) {
     Geometry[] geoms = new Geometry[geom.getNumGeometries()];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       geoms[i]= geom.getGeometryN(i);

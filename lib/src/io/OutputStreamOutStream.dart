@@ -20,7 +20,7 @@
 class OutputStreamOutStream
 	implements OutStream
 {
-  private OutputStream os;
+ /**private */OutputStream os;
 
   OutputStreamOutStream(OutputStream os)
   {

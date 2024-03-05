@@ -18,13 +18,13 @@
 
 class LinkedLine {
   
-  private static final int NO_COORD_INDEX = -1;
+ /**private */static final int NO_COORD_INDEX = -1;
 
-  private final List<Coordinate> coord;
-  private bool isRing;
-  private int size;
-  private int[] next = null;
-  private int[] prev = null;
+ /**private */final List<Coordinate> coord;
+ /**private */bool isRing;
+ /**private */int size;
+ /**private */int[] next = null;
+ /**private */int[] prev = null;
 
   LinkedLine(List<Coordinate> pts) {
     coord = pts;
@@ -45,7 +45,7 @@ class LinkedLine {
     return true;
   }
   
-  private int[] createNextLinks(int size) {
+ /**private */int[] createNextLinks(int size) {
     int[] next = new int[size];
     for (int i = 0; i < size; i++) {
       next[i] = i + 1;
@@ -54,7 +54,7 @@ class LinkedLine {
     return next;
   }
   
-  private int[] createPrevLinks(int size) {
+ /**private */int[] createPrevLinks(int size) {
     int[] prev = new int[size];
     for (int i = 0; i < size; i++) {
       prev[i] = i - 1;

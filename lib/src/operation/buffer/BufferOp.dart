@@ -108,7 +108,7 @@ class BufferOp
    * 
    * This value should be less than the decimal precision of double-precision values (16).
    */
-  private static int MAX_PRECISION_DIGITS = 12;
+ /**private */static int MAX_PRECISION_DIGITS = 12;
 
   /**
    * Compute a scale factor to limit the precision of
@@ -127,7 +127,7 @@ class BufferOp
    *
    * @return a scale factor for the buffer computation
    */
-  private static double precisionScaleFactor(Geometry g,
+ /**private */static double precisionScaleFactor(Geometry g,
       double distance,
     int maxPrecisionDigits)
   {
@@ -151,7 +151,7 @@ class BufferOp
   }
 
   /*
-  private static double OLDprecisionScaleFactor(Geometry g,
+ /**private */static double OLDprecisionScaleFactor(Geometry g,
       double distance,
     int maxPrecisionDigits)
   {
@@ -283,7 +283,7 @@ class BufferOp
    * @param poly1 a polygonal geometry (which may be empty)
    * @return a combined polygonal geometry
    */
-  private static Geometry combine(Geometry poly0, Geometry poly1) {
+ /**private */static Geometry combine(Geometry poly0, Geometry poly1) {
     // short-circuit - handles case where geometry is valid
     if (poly1.isEmpty()) return poly0;
     if (poly0.isEmpty()) return poly1;
@@ -295,20 +295,20 @@ class BufferOp
     return poly0.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polys));
   }
 
-  private static void extractPolygons(Geometry poly0, List<Polygon> polys) {
+ /**private */static void extractPolygons(Geometry poly0, List<Polygon> polys) {
     for (int i = 0; i < poly0.getNumGeometries(); i++) {
       polys.add((Polygon) poly0.getGeometryN(i));
     }
   }
 
-  private Geometry argGeom;
-  private double distance;
+ /**private */Geometry argGeom;
+ /**private */double distance;
   
-  private BufferParameters bufParams = new BufferParameters();
+ /**private */BufferParameters bufParams = new BufferParameters();
 
-  private Geometry resultGeometry = null;
-  private RuntimeException saveException;   // debugging only
-  private bool isInvertOrientation = false;
+ /**private */Geometry resultGeometry = null;
+ /**private */RuntimeException saveException;   // debugging only
+ /**private */bool isInvertOrientation = false;
 
   /**
    * Initializes a buffer computation for the given geometry
@@ -367,7 +367,7 @@ class BufferOp
     return resultGeometry;
   }
 
-  private void computeGeometry()
+ /**private */void computeGeometry()
   {
     bufferOriginalPrecision();
     if (resultGeometry != null) return;
@@ -379,7 +379,7 @@ class BufferOp
       bufferReducedPrecision();
   }
 
-  private void bufferReducedPrecision()
+ /**private */void bufferReducedPrecision()
   {
     // try and compute with decreasing precision
     for (int precDigits = MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
@@ -398,7 +398,7 @@ class BufferOp
     throw saveException;
   }
 
-  private void bufferReducedPrecision(int precisionDigits)
+ /**private */void bufferReducedPrecision(int precisionDigits)
   {
     double sizeBasedScaleFactor = precisionScaleFactor(argGeom, distance, precisionDigits);
 //    System.out.println("recomputing with precision scale factor = " + sizeBasedScaleFactor);
@@ -407,7 +407,7 @@ class BufferOp
     bufferFixedPrecision(fixedPM);
   }
   
-  private void bufferOriginalPrecision()
+ /**private */void bufferOriginalPrecision()
   {
     try {
       // use fast noding by default
@@ -423,13 +423,13 @@ class BufferOp
     }
   }
 
-  private BufferBuilder createBufferBullder() {
+ /**private */BufferBuilder createBufferBullder() {
     BufferBuilder bufBuilder = new BufferBuilder(bufParams);
     bufBuilder.setInvertOrientation(isInvertOrientation);
     return bufBuilder;
   }
 
-  private void bufferFixedPrecision(PrecisionModel fixedPM)
+ /**private */void bufferFixedPrecision(PrecisionModel fixedPM)
   {
     //System.out.println("recomputing with precision scale factor = " + fixedPM);
 

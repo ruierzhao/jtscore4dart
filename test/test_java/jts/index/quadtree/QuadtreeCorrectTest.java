@@ -147,7 +147,7 @@ public class QuadtreeCorrectTest {
       throw new RuntimeException("queries do not match");
   }
 
-  private List getOverlapping(List items, Envelope searchEnv)
+ /**private */List getOverlapping(List items, Envelope searchEnv)
   {
     List result = new ArrayList();
     for (int i = 0; i < items.size(); i++) {

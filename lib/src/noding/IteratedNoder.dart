@@ -36,10 +36,10 @@ class IteratedNoder
 {
   static final int MAX_ITER = 5;
 
-  private PrecisionModel pm;
-  private LineIntersector li;
-  private Collection nodedSegStrings;
-  private int maxIter = MAX_ITER;
+ /**private */PrecisionModel pm;
+ /**private */LineIntersector li;
+ /**private */Collection nodedSegStrings;
+ /**private */int maxIter = MAX_ITER;
 
   IteratedNoder(PrecisionModel pm)
   {
@@ -107,7 +107,7 @@ class IteratedNoder
  * Node the input segment strings once
  * and create the split edges between the nodes
  */
-  private void node(Collection segStrings, int[] numInteriorIntersections)
+ /**private */void node(Collection segStrings, int[] numInteriorIntersections)
   {
     IntersectionAdder si = new IntersectionAdder(li);
     MCIndexNoder noder = new MCIndexNoder();

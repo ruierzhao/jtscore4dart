@@ -80,14 +80,14 @@ public class CascadedPolygonUnionTest extends TestCase
   
   // TODO: add some synthetic tests
   
-  private static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
+ /**private */static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
   
-  private void runTest(Collection geoms, double minimumMeasure) 
+ /**private */void runTest(Collection geoms, double minimumMeasure) 
   {
   	assertTrue(tester.test(geoms, minimumMeasure));
   }
   
-  private Collection createDiscs(int num, double radius)
+ /**private */Collection createDiscs(int num, double radius)
   {
   	List geoms = new ArrayList();
   	for (int i = 0; i < num; i++) {

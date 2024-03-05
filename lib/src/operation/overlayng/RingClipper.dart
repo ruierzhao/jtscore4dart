@@ -45,16 +45,16 @@
  */
 class RingClipper {
   
-  private static final int BOX_LEFT = 3;
-  private static final int BOX_TOP = 2;
-  private static final int BOX_RIGHT = 1;
-  private static final int BOX_BOTTOM = 0;
+ /**private */static final int BOX_LEFT = 3;
+ /**private */static final int BOX_TOP = 2;
+ /**private */static final int BOX_RIGHT = 1;
+ /**private */static final int BOX_BOTTOM = 0;
   
-  private Envelope clipEnv;
-  private double clipEnvMinY;
-  private double clipEnvMaxY;
-  private double clipEnvMinX;
-  private double clipEnvMaxX;
+ /**private */Envelope clipEnv;
+ /**private */double clipEnvMinY;
+ /**private */double clipEnvMaxY;
+ /**private */double clipEnvMinX;
+ /**private */double clipEnvMaxX;
 
   /**
    * Creates a new clipper for the given envelope.
@@ -92,7 +92,7 @@ class RingClipper {
    * @param closeRing 
    * @return
    */
-  private List<Coordinate> clipToBoxEdge(List<Coordinate> pts, int edgeIndex, bool closeRing) {
+ /**private */List<Coordinate> clipToBoxEdge(List<Coordinate> pts, int edgeIndex, bool closeRing) {
     // TODO: is it possible to avoid copying array 4 times?
     CoordinateList ptsClip = new CoordinateList();
 
@@ -136,7 +136,7 @@ class RingClipper {
    * @param edgeIndex index of box edge
    * @return the intersection point with the box edge
    */
-  private Coordinate intersection(Coordinate a, Coordinate b, int edgeIndex) {
+ /**private */Coordinate intersection(Coordinate a, Coordinate b, int edgeIndex) {
     Coordinate intPt;
     switch (edgeIndex) {
     case BOX_BOTTOM:
@@ -155,19 +155,19 @@ class RingClipper {
     return intPt;
   }
 
-  private double intersectionLineY(Coordinate a, Coordinate b, double y) {
+ /**private */double intersectionLineY(Coordinate a, Coordinate b, double y) {
     double m = (b.x - a.x) / (b.y - a.y);
     double intercept = (y - a.y) * m;
     return a.x + intercept;
   }
 
-  private double intersectionLineX(Coordinate a, Coordinate b, double x) {
+ /**private */double intersectionLineX(Coordinate a, Coordinate b, double x) {
     double m = (b.y - a.y) / (b.x - a.x);
     double intercept = (x - a.x) * m;
     return a.y + intercept;
   }
 
-  private bool isInsideEdge(Coordinate p, int edgeIndex) {
+ /**private */bool isInsideEdge(Coordinate p, int edgeIndex) {
     bool isInside = false;
     switch (edgeIndex) {
     case BOX_BOTTOM: // bottom

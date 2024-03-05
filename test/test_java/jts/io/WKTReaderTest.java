@@ -43,12 +43,12 @@ import test.jts.GeometryTestCase;
 public class WKTReaderTest extends GeometryTestCase {
 
   // WKT readers used throughout this test
-  private final WKTReader readerXY;
-  private final WKTReader readerXYOld;
-  private final WKTReader readerXYZ;
-  private final WKTReader readerXYM;
-  private final WKTReader readerXYZM;
-  private WKTReader readerXYZCloseRings;
+ /**private */final WKTReader readerXY;
+ /**private */final WKTReader readerXYOld;
+ /**private */final WKTReader readerXYZ;
+ /**private */final WKTReader readerXYM;
+ /**private */final WKTReader readerXYZM;
+ /**private */WKTReader readerXYZCloseRings;
 
   public static void main(String args[]) {
     TestRunner.run(suite());
@@ -488,29 +488,29 @@ public class WKTReaderTest extends GeometryTestCase {
   
 
 
-  private void checkCS(CoordinateSequence cs, Geometry geom) {
+ /**private */void checkCS(CoordinateSequence cs, Geometry geom) {
     assertTrue( isEqual( cs, extractCS(geom)));
   }
 
-  private CoordinateSequence extractCS(Geometry geom) {
+ /**private */CoordinateSequence extractCS(Geometry geom) {
     if (geom instanceof Point) return ((Point)geom).getCoordinateSequence();
     if (geom instanceof LineString) return ((LineString)geom).getCoordinateSequence();
     throw new IllegalArgumentException("Can't extract coordinate sequence from geometry of type " + geom.getGeometryType());
   }
   
-  private void checkEmpty(Geometry geom) {
+ /**private */void checkEmpty(Geometry geom) {
     assertTrue(geom.isEmpty());
     if (geom instanceof GeometryCollection) {
       assertTrue(geom.getNumGeometries() == 0);
     }
   }
   
-  private void checkCSDim(CoordinateSequence cs, int expectedCoordDim) {
+ /**private */void checkCSDim(CoordinateSequence cs, int expectedCoordDim) {
     int dim = cs.getDimension();
     assertEquals(expectedCoordDim, dim);
   }
   
-  private static CoordinateSequence[] createSequences(EnumSet<Ordinate> ordinateFlags, double[][] xyarray) {
+ /**private */static CoordinateSequence[] createSequences(EnumSet<Ordinate> ordinateFlags, double[][] xyarray) {
     CoordinateSequence[] csarray = new CoordinateSequence[xyarray.length];
     for (int i = 0; i < xyarray.length; i++) {
       csarray[i] = createSequence(ordinateFlags, xyarray[i]);
@@ -518,7 +518,7 @@ public class WKTReaderTest extends GeometryTestCase {
     return csarray;
   }
 
-  private static CoordinateSequence createSequence(EnumSet<Ordinate> ordinateFlags, double[] xy) {
+ /**private */static CoordinateSequence createSequence(EnumSet<Ordinate> ordinateFlags, double[] xy) {
 
     // get the number of dimension to verify size of provided ordinate values array
     int dimension = requiredDimension(ordinateFlags);
@@ -547,13 +547,13 @@ public class WKTReaderTest extends GeometryTestCase {
     return res;
   }
 
-  private static int requiredDimension(EnumSet<Ordinate> ordinateFlags)
+ /**private */static int requiredDimension(EnumSet<Ordinate> ordinateFlags)
   {
     return ordinateFlags.size();
   }
 
 
-  private static double[] injectZM(EnumSet<Ordinate> ordinateFlags, double[] xy) {
+ /**private */static double[] injectZM(EnumSet<Ordinate> ordinateFlags, double[] xy) {
     int size = xy.length / 2;
     int dimension = requiredDimension(ordinateFlags);
     double[] res = new double[size * dimension];

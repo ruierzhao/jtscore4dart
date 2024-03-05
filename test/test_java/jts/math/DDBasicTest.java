@@ -65,7 +65,7 @@ public class DDBasicTest
   	checkSqrt(new DD(999.0), 1e-28);
   }
 
-  private void checkSqrt(DD x, double errBound)
+ /**private */void checkSqrt(DD x, double errBound)
   {
   	DD sqrt = x.sqrt();
   	DD x2 = sqrt.multiply(sqrt);
@@ -84,7 +84,7 @@ public class DDBasicTest
   	checkTrunc(DD.valueOf(-999.999), DD.valueOf(-999));
   }
 
-  private void checkTrunc(DD x, DD expected)
+ /**private */void checkTrunc(DD x, DD expected)
   {
   	DD trunc = x.trunc();
   	boolean isEqual = trunc.equals(expected);
@@ -125,12 +125,12 @@ public class DDBasicTest
     checkDeterminantDD(1.0e9, 1.0e9 - 1, 1.0e9 - 1, 1.0e9 - 2, -1, 0);
   }
   
-  private void checkDeterminant(double x1, double y1, double x2, double y2, double expected, double errBound) {
+ /**private */void checkDeterminant(double x1, double y1, double x2, double y2, double expected, double errBound) {
     DD det = DD.determinant(x1, y1, x2, y2);
     checkErrorBound("Determinant", det, DD.valueOf(expected), errBound);
   }
 
-  private void checkDeterminantDD(double x1, double y1, double x2, double y2, double expected, double errBound) {
+ /**private */void checkDeterminantDD(double x1, double y1, double x2, double y2, double expected, double errBound) {
     DD det = DD.determinant(
         DD.valueOf(x1), DD.valueOf(y1), 
         DD.valueOf(x2), DD.valueOf(y2));
@@ -155,31 +155,31 @@ public class DDBasicTest
   	checkBinomialSquare(5e14, 345291.0);
   }
 
-  private void checkAddMult2(DD dd)
+ /**private */void checkAddMult2(DD dd)
   {
   	DD sum = dd.add(dd);
   	DD prod = dd.multiply(new DD(2.0));
   	checkErrorBound("AddMult2", sum, prod, 0.0);
   }
 
-  private void checkMultiplyDivide(DD a, DD b, double errBound)
+ /**private */void checkMultiplyDivide(DD a, DD b, double errBound)
   {
   	DD a2 = a.multiply(b).divide(b);
   	checkErrorBound("MultiplyDivide", a, a2, errBound);
   }
 
-  private void checkDivideMultiply(DD a, DD b, double errBound)
+ /**private */void checkDivideMultiply(DD a, DD b, double errBound)
   {
   	DD a2 = a.divide(b).multiply(b);
   	checkErrorBound("DivideMultiply", a, a2, errBound);
   }
 
-  private DD delta(DD x, DD y)
+ /**private */DD delta(DD x, DD y)
   {
   	return x.subtract(y).abs();
   }
   
-  private void checkErrorBound(String tag, DD x, DD y, double errBound)
+ /**private */void checkErrorBound(String tag, DD x, DD y, double errBound)
   {
   	DD err = x.subtract(y).abs();
   	//System.out.println(tag + " err=" + err);
@@ -297,7 +297,7 @@ public class DDBasicTest
   }
   
 
-  private void checkReciprocal(double x, double errBound)
+ /**private */void checkReciprocal(double x, double errBound)
   {
   	DD xdd = new DD(x);
   	DD rr = xdd.reciprocal().reciprocal();
@@ -311,7 +311,7 @@ public class DDBasicTest
   	assertTrue(err <= errBound);
   }
  
-  private void checkPow(double x, int exp, double errBound)
+ /**private */void checkPow(double x, int exp, double errBound)
   {
   	DD xdd = new DD(x);
   	DD pow = xdd.pow(exp);

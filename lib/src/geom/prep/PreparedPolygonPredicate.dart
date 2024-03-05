@@ -33,7 +33,7 @@
 abstract class PreparedPolygonPredicate 
 {
 	protected PreparedPolygon prepPoly;
-  private PointOnGeometryLocator targetPointLocator;
+ /**private */PointOnGeometryLocator targetPointLocator;
 
   /**
    * Creates an instance of this operation.
@@ -113,7 +113,7 @@ abstract class PreparedPolygonPredicate
    * @param geom a Pointal geometry to test
    * @return true if all points of the argument are contained in the target geometry
    */
-  protected bool isAllTestPointsInTarget(Geometry testGeom)
+ /**protected */bool isAllTestPointsInTarget(Geometry testGeom)
   {
     for (int i = 0; i < testGeom.getNumGeometries(); i++) {
       Point pt = (Point) testGeom.getGeometryN(i);

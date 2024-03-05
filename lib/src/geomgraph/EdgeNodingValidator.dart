@@ -56,7 +56,7 @@ class EdgeNodingValidator
     return segStrings;
   }
 
-  private FastNodingValidator nv;
+ /**private */FastNodingValidator nv;
 
   /**
    * Creates a new validator for the given collection of {@link Edge}s.

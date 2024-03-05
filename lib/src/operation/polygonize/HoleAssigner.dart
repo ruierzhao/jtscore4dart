@@ -39,8 +39,8 @@ class HoleAssigner
     assigner.assignHolesToShells(holes);
   }
   
-  private List<EdgeRing> shells;
-  private SpatialIndex shellIndex;
+ /**private */List<EdgeRing> shells;
+ /**private */SpatialIndex shellIndex;
   
   /**
    * Creates a new hole assigner.
@@ -52,7 +52,7 @@ class HoleAssigner
     buildIndex();
   }
   
-  private void buildIndex() {
+ /**private */void buildIndex() {
     shellIndex = new STRtree();
     for (EdgeRing shell : shells) {
       shellIndex.insert(shell.getRing().getEnvelopeInternal(), shell);
@@ -71,7 +71,7 @@ class HoleAssigner
     }
   }
   
-  private void assignHoleToShell(EdgeRing holeER)
+ /**private */void assignHoleToShell(EdgeRing holeER)
   {
     EdgeRing shell = findShellContaining(holeER);
     if (shell != null) {
@@ -80,7 +80,7 @@ class HoleAssigner
   }
   
   @SuppressWarnings("unchecked")
-  private List<EdgeRing> queryOverlappingShells(Envelope ringEnv) {
+ /**private */List<EdgeRing> queryOverlappingShells(Envelope ringEnv) {
     return (List<EdgeRing>) shellIndex.query(ringEnv);
   }
   
@@ -98,7 +98,7 @@ class HoleAssigner
    * @return containing shell EdgeRing, if there is one
    * or null if no containing EdgeRing is found
    */
-  private EdgeRing findShellContaining(EdgeRing testEr)
+ /**private */EdgeRing findShellContaining(EdgeRing testEr)
   {
     Envelope testEnv = testEr.getRing().getEnvelopeInternal();   
     List<EdgeRing> candidateShells = queryOverlappingShells(testEnv);

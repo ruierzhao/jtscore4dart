@@ -21,7 +21,7 @@
  * @version 1.7
  */
 class LineMergeEdge extends Edge {
-  private LineString line;
+ /**private */LineString line;
   /**
    * Constructs a LineMergeEdge with vertices given by the specified LineString.
    */

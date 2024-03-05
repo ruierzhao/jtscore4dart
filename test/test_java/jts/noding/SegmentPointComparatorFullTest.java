@@ -30,7 +30,7 @@ public class SegmentPointComparatorFullTest
  extends TestCase
 {
 
-  private PrecisionModel pm = new PrecisionModel(1.0);
+ /**private */PrecisionModel pm = new PrecisionModel(1.0);
 
   public SegmentPointComparatorFullTest(String name) {
     super(name);
@@ -73,7 +73,7 @@ public class SegmentPointComparatorFullTest
     checkSegment(-100, -150);
   }
 
-  private void checkSegment(double x, double y)
+ /**private */void checkSegment(double x, double y)
   {
     Coordinate seg0 = new Coordinate(0, 0);
     Coordinate seg1 = new Coordinate(x, y);
@@ -91,7 +91,7 @@ public class SegmentPointComparatorFullTest
     }
   }
 
-  private Coordinate computePoint(LineSegment seg, double dist)
+ /**private */Coordinate computePoint(LineSegment seg, double dist)
   {
     double dx = seg.p1.x - seg.p0.x;
     double dy = seg.p1.y - seg.p0.y;
@@ -101,7 +101,7 @@ public class SegmentPointComparatorFullTest
     return pt;
   }
 
-  private void checkPointsAtDistance(LineSegment seg, double dist0, double dist1)
+ /**private */void checkPointsAtDistance(LineSegment seg, double dist0, double dist1)
   {
     Coordinate p0 = computePoint(seg, dist0);
     Coordinate p1 = computePoint(seg, dist1);
@@ -114,7 +114,7 @@ public class SegmentPointComparatorFullTest
     }
   }
 
-  private void checkNodePosition(LineSegment seg, Coordinate p0, Coordinate p1, int expectedPositionValue)
+ /**private */void checkNodePosition(LineSegment seg, Coordinate p0, Coordinate p1, int expectedPositionValue)
   {
     int octant = Octant.octant(seg.p0, seg.p1);
     int posValue = SegmentPointComparator.compare(octant, p0, p1);

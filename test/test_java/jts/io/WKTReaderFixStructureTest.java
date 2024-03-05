@@ -9,8 +9,8 @@ public class WKTReaderFixStructureTest extends GeometryTestCase {
     TestRunner.run(WKTReaderFixStructureTest.class);
   }
 
-  private WKTReader readerFix;
-  private WKTReader reader;
+ /**private */WKTReader readerFix;
+ /**private */WKTReader reader;
 
   public WKTReaderFixStructureTest(String name) {
     super(name);
@@ -48,17 +48,17 @@ public class WKTReaderFixStructureTest extends GeometryTestCase {
     checkFixStructure("GEOMETRYCOLLECTION (LINESTRING (0 0), LINEARRING (0 0, 0 1), POLYGON ((0 0, 0 10, 10 0, 0 0), (0 0, 1 0, 0 1)) )");
   }
   
-  private void checkFixStructure(String wkt) throws ParseException {
+ /**private */void checkFixStructure(String wkt) throws ParseException {
     checkHasBadStructure(wkt);
     checkFixed(wkt);
   }
   
-  private void checkFixed(String wkt) throws ParseException {
+ /**private */void checkFixed(String wkt) throws ParseException {
     // if not fixed will fail with IllegalArgumentException 
     readerFix.read(wkt);
   }
   
-  private void checkHasBadStructure(String wkt) throws ParseException {
+ /**private */void checkHasBadStructure(String wkt) throws ParseException {
     try {
       reader.read(wkt);
       fail("Input does not have non-closed rings");

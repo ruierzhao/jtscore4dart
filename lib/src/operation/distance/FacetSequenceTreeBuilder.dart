@@ -26,10 +26,10 @@
 
 class FacetSequenceTreeBuilder {
   // 6 seems to be a good facet sequence size
-  private static final int FACET_SEQUENCE_SIZE = 6;
+ /**private */static final int FACET_SEQUENCE_SIZE = 6;
 
   // Seems to be better to use a minimum node capacity
-  private static final int STR_TREE_NODE_CAPACITY = 4;
+ /**private */static final int STR_TREE_NODE_CAPACITY = 4;
 
   static STRtree build(Geometry g) {
     STRtree tree = new STRtree(STR_TREE_NODE_CAPACITY);
@@ -48,7 +48,7 @@ class FacetSequenceTreeBuilder {
    * @param g
    * @return List<GeometryFacetSequence>
    */
-  private static List computeFacetSequences(Geometry g) {
+ /**private */static List computeFacetSequences(Geometry g) {
     final List sections = new ArrayList();
 
     g.apply(new GeometryComponentFilter() {
@@ -68,7 +68,7 @@ class FacetSequenceTreeBuilder {
     return sections;
   }
 
-  private static void addFacetSequences(Geometry geom, CoordinateSequence pts, List sections) {
+ /**private */static void addFacetSequences(Geometry geom, CoordinateSequence pts, List sections) {
     int i = 0;
     int size = pts.size();
     while (i <= size - 1) {

@@ -24,9 +24,9 @@
 ///@version 1.7
 class GeometryCollection extends Geometry {
 //  With contributions from Markus Schaber [schabios@logi-track.com] 2004-03-26
-  private static final long serialVersionUID = -5694727726395021467L;
+ /**private */static final long serialVersionUID = -5694727726395021467L;
   ///  Internal representation of this <code>GeometryCollection</code>.
-  protected List<Geometry> geometries;
+ /**protected */List<Geometry> geometries;
 
   /// @deprecated Use GeometryFactory instead
   GeometryCollection(List<Geometry> geometries, PrecisionModel precisionModel, int SRID) {
@@ -218,7 +218,7 @@ class GeometryCollection extends Geometry {
     return copy();
   }
 
-  protected GeometryCollection copyInternal() {
+ /**protected */GeometryCollection copyInternal() {
     List<Geometry> geometries = new Geometry[this.geometries.length];
     for (int i = 0; i < geometries.length; i++) {
       geometries[i] = this.geometries[i].copy();
@@ -233,7 +233,7 @@ class GeometryCollection extends Geometry {
     Arrays.sort(geometries);
   }
 
-  protected Envelope computeEnvelopeInternal() {
+ /**protected */Envelope computeEnvelopeInternal() {
     Envelope envelope = new Envelope();
     for (int i = 0; i < geometries.length; i++) {
       envelope.expandToInclude(geometries[i].getEnvelopeInternal());
@@ -241,13 +241,13 @@ class GeometryCollection extends Geometry {
     return envelope;
   }
 
-  protected int compareToSameClass(Object o) {
+ /**protected */int compareToSameClass(Object o) {
     TreeSet theseElements = new TreeSet(Arrays.asList(geometries));
     TreeSet otherElements = new TreeSet(Arrays.asList(((GeometryCollection) o).geometries));
     return compare(theseElements, otherElements);
   }
 
-  protected int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
+ /**protected */int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
     GeometryCollection gc = (GeometryCollection) o;
 
     int n1 = getNumGeometries();
@@ -266,7 +266,7 @@ class GeometryCollection extends Geometry {
 
   }
   
-  protected int getTypeCode() {
+ /**protected */int getTypeCode() {
     return Geometry.TYPECODE_GEOMETRYCOLLECTION;
   }
 
@@ -279,7 +279,7 @@ class GeometryCollection extends Geometry {
     return (GeometryCollection) super.reverse();
   }
 
-  protected GeometryCollection reverseInternal()
+ /**protected */GeometryCollection reverseInternal()
   {
     List<Geometry> geometries = new Geometry[this.geometries.length];
     for (int i = 0; i < geometries.length; i++) {

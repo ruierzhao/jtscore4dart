@@ -56,8 +56,8 @@ class Debug {
     }
   }
 
-  private static Stopwatch stopwatch = new Stopwatch();
-  private static long lastTimePrinted;
+ /**private */static Stopwatch stopwatch = new Stopwatch();
+ /**private */static long lastTimePrinted;
 
   /// Prints the status of debugging to <tt>System.out</tt>
   ///
@@ -68,14 +68,14 @@ class Debug {
                        (debugOn ? "ON" : "OFF") );
   }
 
-  private static final Debug debug = new Debug();
-  private static final GeometryFactory fact = new GeometryFactory();
-  private static final String DEBUG_LINE_TAG = "D! ";
+ /**private */static final Debug debug = new Debug();
+ /**private */static final GeometryFactory fact = new GeometryFactory();
+ /**private */static final String DEBUG_LINE_TAG = "D! ";
 
-  private PrintStream out;
-  private Class[] printArgs;
-  private Object watchObj = null;
-  private Object[] args = new Object[1];
+ /**private */PrintStream out;
+ /**private */Class[] printArgs;
+ /**private */Object watchObj = null;
+ /**private */Object[] args = new Object[1];
 
   static bool isDebugging() { return debugOn; }
 
@@ -144,7 +144,7 @@ class Debug {
     lastTimePrinted = time;
   }
   
-  private static String formatField(String s, int fieldLen)
+ /**private */static String formatField(String s, int fieldLen)
   {
     int nPad = fieldLen - s.length();
     if (nPad <= 0) return s;
@@ -152,7 +152,7 @@ class Debug {
     return padStr.substring(padStr.length() - fieldLen);
   }
   
-  private static String spaces(int n)
+ /**private */static String spaces(int n)
   {
     char[] ch = new char[n];
     for (int i = 0; i < n; i++) {
@@ -197,7 +197,7 @@ class Debug {
     if (p0.distance(p1) <= tolerance) doBreak();
   }
   
-  private static void doBreak()
+ /**private */static void doBreak()
   {
     // Put breakpoint on following statement to break here
     return; 
@@ -210,11 +210,11 @@ class Debug {
     return filter.hasSegment();
   }
   
-  private static class SegmentFindingFilter
+ /**private */static class SegmentFindingFilter
   implements CoordinateSequenceFilter
   {
-    private Coordinate p0, p1;
-    private bool hasSegment = false;
+   /**private */Coordinate p0, p1;
+   /**private */bool hasSegment = false;
     
     SegmentFindingFilter(Coordinate p0, Coordinate p1)
     {
@@ -242,7 +242,7 @@ class Debug {
     }
   }
   
-  private Debug() {
+ /**private */Debug() {
     out = System.out;
     printArgs = new Class[1];
     try {
@@ -308,11 +308,11 @@ class Debug {
     out.println();
   }
 
-  private void instanceAddWatch(Object obj) {
+ /**private */void instanceAddWatch(Object obj) {
     watchObj = obj;
   }
 
-  private void instancePrint(String str) {
+ /**private */void instancePrint(String str) {
     out.print(DEBUG_LINE_TAG);
     out.print(str);
   }

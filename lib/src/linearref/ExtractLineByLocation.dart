@@ -42,7 +42,7 @@ class ExtractLineByLocation
     return ls.extract(start, end);
   }
 
-  private Geometry line;
+ /**private */Geometry line;
 
   ExtractLineByLocation(Geometry line) {
     this.line = line;
@@ -64,7 +64,7 @@ class ExtractLineByLocation
     return computeLinear(start, end);
   }
 
-  private Geometry reverse(Geometry linear)
+ /**private */Geometry reverse(Geometry linear)
   {
     if (linear is Lineal)
       return linear.reverse();
@@ -79,7 +79,7 @@ class ExtractLineByLocation
    * @param end
    * @return a linear geometry
    */
-  private LineString computeLine(LinearLocation start, LinearLocation end)
+ /**private */LineString computeLine(LinearLocation start, LinearLocation end)
   {
     List<Coordinate> coordinates = line.getCoordinates();
     CoordinateList newCoordinates = new CoordinateList();
@@ -126,7 +126,7 @@ class ExtractLineByLocation
    * @param end
    * @return a linear geometry
    */
-  private Geometry computeLinear(LinearLocation start, LinearLocation end)
+ /**private */Geometry computeLinear(LinearLocation start, LinearLocation end)
   {
     LinearGeometryBuilder builder = new LinearGeometryBuilder(line.getFactory());
     builder.setFixInvalidLines(true);
@@ -156,7 +156,7 @@ class ExtractLineByLocation
    * (I.e. segmentFractions of 1.0 are converted to the next highest coordinate index)
    */
   /*
-  private LinearLocation normalize(LinearLocation loc)
+ /**private */LinearLocation normalize(LinearLocation loc)
   {
     int componentIndex = loc.getComponentIndex();
     int segmentIndex = loc.getSegmentIndex();

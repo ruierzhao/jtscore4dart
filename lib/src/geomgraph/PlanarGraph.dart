@@ -62,9 +62,9 @@ class PlanarGraph
     }
   }
 
-  protected List edges        = new ArrayList();
-  protected NodeMap nodes;
-  protected List edgeEndList  = new ArrayList();
+ /**protected */List edges        = new ArrayList();
+ /**protected */NodeMap nodes;
+ /**protected */List edgeEndList  = new ArrayList();
 
   PlanarGraph(NodeFactory nodeFact) {
     nodes = new NodeMap(nodeFact);
@@ -85,7 +85,7 @@ class PlanarGraph
     if (label != null && label.getLocation(geomIndex) == Location.BOUNDARY) return true;
     return false;
   }
-  protected void insertEdge(Edge e)
+ /**protected */void insertEdge(Edge e)
   {
     edges.add(e);
   }
@@ -219,7 +219,7 @@ class PlanarGraph
    * E.g. the segments are parallel and in the same quadrant
    * (as opposed to parallel and opposite!).
    */
-  private bool matchInSameDirection(Coordinate p0, Coordinate p1, Coordinate ep0, Coordinate ep1)
+ /**private */bool matchInSameDirection(Coordinate p0, Coordinate p1, Coordinate ep0, Coordinate ep1)
   {
     if (! p0.equals(ep0))
       return false;

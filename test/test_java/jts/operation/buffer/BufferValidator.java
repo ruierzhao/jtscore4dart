@@ -48,8 +48,8 @@ public class BufferValidator
   }
 
 
-  private static abstract class Test implements Comparable {
-    private String name;
+ /**private */static abstract class Test implements Comparable {
+   /**private */String name;
     public Test(String name) {
       this(name, 2);
     }
@@ -64,22 +64,22 @@ public class BufferValidator
       return getName();
     }
     public abstract void test() throws Exception;
-    private int priority;
+   /**private */int priority;
     public int compareTo(Object o) {
       return priority - ((Test) o).priority;
     }
   }
 
-  private Geometry original;
-  private double bufferDistance;
-  private Map nameToTestMap = new HashMap();
-  private Geometry buffer;
-  private static final int QUADRANT_SEGMENTS_1 = 100;
-  private static final int QUADRANT_SEGMENTS_2 = 50;
-  private String wkt;
-  private GeometryFactory geomFact = new GeometryFactory();
-  private WKTWriter wktWriter = new WKTWriter();
-  private WKTReader wktReader;
+ /**private */Geometry original;
+ /**private */double bufferDistance;
+ /**private */Map nameToTestMap = new HashMap();
+ /**private */Geometry buffer;
+ /**private */static final int QUADRANT_SEGMENTS_1 = 100;
+ /**private */static final int QUADRANT_SEGMENTS_2 = 50;
+ /**private */String wkt;
+ /**private */GeometryFactory geomFact = new GeometryFactory();
+ /**private */WKTWriter wktWriter = new WKTWriter();
+ /**private */WKTReader wktReader;
 
 
   public BufferValidator(double bufferDistance, String wkt)
@@ -112,7 +112,7 @@ public class BufferValidator
         supplement(e.toString()) + StringUtil.getStackTrace(e));
     }
   }
-  private String supplement(String message) throws ParseException {
+ /**private */String supplement(String message) throws ParseException {
     String newMessage = "\n" + message + "\n";
     newMessage += "Original: " + wktWriter.writeFormatted(getOriginal()) + "\n";
     newMessage += "Buffer Distance: " + bufferDistance + "\n";
@@ -120,7 +120,7 @@ public class BufferValidator
     return newMessage.substring(0, newMessage.length() - 1);
   }
 
-  private BufferValidator addTest(Test test) {
+ /**private */BufferValidator addTest(Test test) {
     nameToTestMap.put(test.getName(), test);
     return this;
   }
@@ -167,7 +167,7 @@ public class BufferValidator
               + "to have holes"),
           hasHoles(getBuffer()) == bufferHolesExpected);
       }
-      private boolean hasHoles(Geometry buffer) {
+     /**private */boolean hasHoles(Geometry buffer) {
         if (buffer.isEmpty()) {
           return false;
         }
@@ -185,7 +185,7 @@ public class BufferValidator
     });
   }
 
-  private Geometry getOriginal() throws ParseException {
+ /**private */Geometry getOriginal() throws ParseException {
     if (original == null) {
       original = wktReader.read(wkt);
     }
@@ -203,7 +203,7 @@ public class BufferValidator
     return this;
   }
 
-  private Geometry getBuffer() throws ParseException {
+ /**private */Geometry getBuffer() throws ParseException {
     if (buffer == null) {
       buffer = getOriginal().buffer(bufferDistance, QUADRANT_SEGMENTS_1);
       if (getBuffer().getClass() == GeometryCollection.class && getBuffer().isEmpty()) {
@@ -219,7 +219,7 @@ public class BufferValidator
     return buffer;
   }
 
-  private void addContainsTest() {
+ /**private */void addContainsTest() {
     addTest(new Test("Contains Test") {
       public void test() throws Exception {
         if (getOriginal().getClass() == GeometryCollection.class) {
@@ -236,7 +236,7 @@ public class BufferValidator
             contains(getOriginal(), getBuffer()));
         }
       }
-      private boolean contains(Geometry a, Geometry b) {
+     /**private */boolean contains(Geometry a, Geometry b) {
         //JTS doesn't currently handle empty geometries correctly [Jon Aquino
         // 10/29/2003]
         if (b.isEmpty()) {
@@ -248,7 +248,7 @@ public class BufferValidator
     });
   }
 
-  private void addBufferResultValidatorTest() {
+ /**private */void addBufferResultValidatorTest() {
     addTest(new Test("BufferResultValidator Test") {
       public void test() throws Exception {
         if (getOriginal().getClass() == GeometryCollection.class) {

@@ -34,26 +34,26 @@ class TriangulationBuilder {
     new TriangulationBuilder(triList);
   }
   
-  private Map<TriEdge, Tri> triMap;
+ /**private */Map<TriEdge, Tri> triMap;
 
   /**
    * Computes the triangulation of a set of {@link Tri}s.
    * 
    * @param triList the list of Tris
    */
-  private TriangulationBuilder(List<? extends Tri> triList) {
+ /**private */TriangulationBuilder(List<? extends Tri> triList) {
     triMap = new Map<TriEdge, Tri>();
     for (Tri tri : triList) {
       add(tri);
     }
   }
 
-  private Tri find(Coordinate p0, Coordinate p1) {
+ /**private */Tri find(Coordinate p0, Coordinate p1) {
     TriEdge e = new TriEdge(p0, p1);
     return triMap.get(e);
   }
   
-  private void add(Tri tri) {
+ /**private */void add(Tri tri) {
     Coordinate p0 = tri.getCoordinate(0);
     Coordinate p1 = tri.getCoordinate(1);
     Coordinate p2 = tri.getCoordinate(2);
@@ -69,7 +69,7 @@ class TriangulationBuilder {
     addAdjacent(tri, n2, p2, p0);
   }
   
-  private void addAdjacent(Tri tri, Tri adj, Coordinate p0, Coordinate p1) {
+ /**private */void addAdjacent(Tri tri, Tri adj, Coordinate p0, Coordinate p1) {
     /**
      * If adjacent is null, this tri is first one to be recorded for edge
      */

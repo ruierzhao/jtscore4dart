@@ -44,21 +44,21 @@ class HotPixel
   // testing only
 //  static int nTests = 0;
   
-  private static final double TOLERANCE = 0.5;
+ /**private */static final double TOLERANCE = 0.5;
 
-  private Coordinate originalPt;
-  private double scaleFactor;
+ /**private */Coordinate originalPt;
+ /**private */double scaleFactor;
   
   /**
    * The scaled ordinates of the hot pixel point
    */
-  private double hpx;
-  private double hpy;
+ /**private */double hpx;
+ /**private */double hpy;
   
   /**
    * Indicates if this hot pixel must be a node in the output.
    */
-  private bool isNode = false;
+ /**private */bool isNode = false;
   
   /**
    * Creates a new hot pixel centered on a rounded point, using a given scale factor.
@@ -125,7 +125,7 @@ class HotPixel
     isNode = true;
   }
   
-  private double scaleRound(double val)
+ /**private */double scaleRound(double val)
   {
     return (double) math.round(val * scaleFactor);
   }
@@ -140,7 +140,7 @@ class HotPixel
    * @param val
    * @return
    */
-  private double scale(double val)
+ /**private */double scale(double val)
   {
     return val * scaleFactor;
   }
@@ -184,7 +184,7 @@ class HotPixel
     return intersectsScaled(sp0x, sp0y, sp1x, sp1y);
   }
 
-  private bool intersectsScaled(double p0x, double p0y,
+ /**private */bool intersectsScaled(double p0x, double p0y,
       double p1x, double p1y) {
     // determine oriented segment pointing in positive X direction
     double px = p0x;
@@ -296,10 +296,10 @@ class HotPixel
     return false;
   }
   
-  private static final int UPPER_RIGHT = 0;
-  private static final int UPPER_LEFT = 1;
-  private static final int LOWER_LEFT = 2;
-  private static final int LOWER_RIGHT = 3;
+ /**private */static final int UPPER_RIGHT = 0;
+ /**private */static final int UPPER_LEFT = 1;
+ /**private */static final int LOWER_LEFT = 2;
+ /**private */static final int LOWER_RIGHT = 3;
 
   /**
    * Test whether a segment intersects
@@ -313,7 +313,7 @@ class HotPixel
    * @param p1 the end point of a line segment
    * @return <code>true</code> if the segment intersects the closure of the pixel's tolerance square
    */
-  private bool intersectsPixelClosure(Coordinate p0, Coordinate p1)
+ /**private */bool intersectsPixelClosure(Coordinate p0, Coordinate p1)
   {
     double minx = hpx - TOLERANCE;
     double maxx = hpx + TOLERANCE;

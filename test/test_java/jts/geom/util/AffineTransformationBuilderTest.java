@@ -186,9 +186,9 @@ public class AffineTransformationBuilderTest
     assertEquals(trans, null);
   }
 
-  private Coordinate ctl0 = new Coordinate(-10, -10);
-  private Coordinate ctl1 = new Coordinate(10, 20);
-  private Coordinate ctl2 = new Coordinate(10, -20);
+ /**private */Coordinate ctl0 = new Coordinate(-10, -10);
+ /**private */Coordinate ctl1 = new Coordinate(10, 20);
+ /**private */Coordinate ctl2 = new Coordinate(10, -20);
   
   public void testTransform1()
   {
@@ -210,7 +210,7 @@ public class AffineTransformationBuilderTest
     runTransform(trans, ctl0, ctl1, ctl2);
   }
   
-  private void runTransform(AffineTransformation trans,
+ /**private */void runTransform(AffineTransformation trans,
       Coordinate p0,
       Coordinate p1, 
       Coordinate p2)
@@ -231,7 +231,7 @@ public class AffineTransformationBuilderTest
   }
   
   
-  private void assertEqualPoint(Coordinate p, Coordinate q)
+ /**private */void assertEqualPoint(Coordinate p, Coordinate q)
   {
     assertEquals(p.x, q.x, 0.00005);
     assertEquals(p.y, q.y, 0.00005);

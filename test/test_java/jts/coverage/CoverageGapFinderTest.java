@@ -34,7 +34,7 @@ public class CoverageGapFinderTest extends GeometryTestCase
             );
   }
 
-  private void checkGaps(String wktCoverage, double gapWidth, String wktExpected) {
+ /**private */void checkGaps(String wktCoverage, double gapWidth, String wktExpected) {
     Geometry covGeom = read(wktCoverage);
     Geometry[] coverage = toArray(covGeom);
     Geometry actual = CoverageGapFinder.findGaps(coverage, gapWidth);
@@ -42,7 +42,7 @@ public class CoverageGapFinderTest extends GeometryTestCase
     checkEqual(expected, actual);
   }
 
-  private static Geometry[] toArray(Geometry geom) {
+ /**private */static Geometry[] toArray(Geometry geom) {
     Geometry[] geoms = new Geometry[geom.getNumGeometries()];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       geoms[i]= geom.getGeometryN(i);

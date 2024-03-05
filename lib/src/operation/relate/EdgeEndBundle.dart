@@ -34,8 +34,8 @@
 class EdgeEndBundle
   extends EdgeEnd
 {
-//  private BoundaryNodeRule boundaryNodeRule;
-  private List edgeEnds = new ArrayList();
+// /**private */BoundaryNodeRule boundaryNodeRule;
+ /**private */List edgeEnds = new ArrayList();
 
   EdgeEndBundle(BoundaryNodeRule boundaryNodeRule, EdgeEnd e)
   {
@@ -111,7 +111,7 @@ class EdgeEndBundle
    * <li> otherwise, the attribute is NULL.
    * </ul>
    */
-  private void computeLabelOn(int geomIndex, BoundaryNodeRule boundaryNodeRule)
+ /**private */void computeLabelOn(int geomIndex, BoundaryNodeRule boundaryNodeRule)
   {
     // compute the ON location value
     int boundaryCount = 0;
@@ -134,7 +134,7 @@ class EdgeEndBundle
   /**
    * Compute the labelling for each side
    */
-  private void computeLabelSides(int geomIndex)
+ /**private */void computeLabelSides(int geomIndex)
   {
     computeLabelSide(geomIndex, Position.LEFT);
     computeLabelSide(geomIndex, Position.RIGHT);
@@ -154,7 +154,7 @@ class EdgeEndBundle
    *  along an edge.  This is the reason for Interior-primacy rule above - it
    *  results in the summary label having the Geometry interior on <b>both</b> sides.
    */
-  private void computeLabelSide(int geomIndex, int side)
+ /**private */void computeLabelSide(int geomIndex, int side)
   {
     for (Iterator it = iterator(); it.hasNext(); ) {
       EdgeEnd e = (EdgeEnd) it.next();

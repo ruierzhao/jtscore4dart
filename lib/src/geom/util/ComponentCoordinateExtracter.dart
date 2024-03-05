@@ -48,7 +48,7 @@ class ComponentCoordinateExtracter
     return coords;
   }
 
-  private List coords;
+ /**private */List coords;
 
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.

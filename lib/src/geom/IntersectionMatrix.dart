@@ -54,7 +54,7 @@
 ///@version 1.7
 class IntersectionMatrix implements Cloneable {
   ///  Internal representation of this <code>IntersectionMatrix</code>.
-  private int[][] matrix;
+ /**private */int[][] matrix;
 
   ///  Creates an <code>IntersectionMatrix</code> with <code>FALSE</code>
   ///  dimension values.

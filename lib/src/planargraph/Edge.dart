@@ -29,7 +29,7 @@ class Edge
    * The two DirectedEdges associated with this Edge.
    * Index 0 is forward, 1 is reverse.
    */
-  protected DirectedEdge[] dirEdge;
+ /**protected */DirectedEdge[] dirEdge;
 
   /**
    * Constructs an Edge whose DirectedEdges are not yet set. Be sure to call

@@ -30,7 +30,7 @@ class NodeMap
 
 {
 
-  private Map nodeMap = new TreeMap();
+ /**private */Map nodeMap = new TreeMap();
   
   /**
    * Constructs a NodeMap without any Nodes.

@@ -160,8 +160,8 @@ class LinearComponentExtracter
   }
 
 
-  private Collection lines;
-  private bool isForcedToLineString = false;
+ /**private */Collection lines;
+ /**private */bool isForcedToLineString = false;
   
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.

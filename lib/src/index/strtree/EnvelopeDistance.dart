@@ -41,7 +41,7 @@ class EnvelopeDistance
     return distance(minx, miny, maxx, maxy);
   }
   
-  private static double distance(double x1, double y1, double x2, double y2) {
+ /**private */static double distance(double x1, double y1, double x2, double y2) {
     double dx = x2 - x1;
     double dy = y2 - y1;
     return math.hypot(dx, dy);    
@@ -109,7 +109,7 @@ class EnvelopeDistance
    * @param by2 y ordinate of second endpoint of segment 2
    * @return maximum distance between the segments
    */
-  private static double maxDistance(double ax1, double ay1, double ax2, double ay2, 
+ /**private */static double maxDistance(double ax1, double ay1, double ax2, double ay2, 
       double bx1, double by1, double bx2, double by2) {
     double dist = distance(ax1, ay1, bx1, by1);
     dist = math.max(dist, distance(ax1, ay1, bx2, by2));

@@ -117,7 +117,7 @@ public class PolygonTriangulatorTest extends GeometryTestCase {
         );
   }
   
-  private void checkTri(String wkt, String wktExpected) {
+ /**private */void checkTri(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = PolygonTriangulator.triangulate(geom);
     Geometry expected = read(wktExpected);
@@ -128,7 +128,7 @@ public class PolygonTriangulatorTest extends GeometryTestCase {
    * Check union of result equals original geom
    * @param wkt
    */
-  private void checkTri(String wkt) {
+ /**private */void checkTri(String wkt) {
     Geometry geom = read(wkt);
     Geometry actual = PolygonTriangulator.triangulate(geom);
     Geometry actualUnion = actual.union();

@@ -35,7 +35,7 @@
 class BufferCurveMaximumDistanceFinder 
 {
 	private Geometry inputGeom;
-  private PointPairDistance maxPtDist = new PointPairDistance();
+ /**private */PointPairDistance maxPtDist = new PointPairDistance();
 
 	BufferCurveMaximumDistanceFinder(Geometry inputGeom)
 	{

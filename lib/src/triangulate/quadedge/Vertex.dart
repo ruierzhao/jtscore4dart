@@ -44,8 +44,8 @@ class Vertex
     static final int ORIGIN      = 5;
     static final int DESTINATION = 6;
 
-    private Coordinate      p;
-    // private int edgeNumber = -1;
+   /**private */Coordinate      p;
+    ///**private */int edgeNumber = -1;
 
     Vertex(double _x, double _y) {
         p = new Coordinate(_x, _y);
@@ -229,7 +229,7 @@ class Vertex
         return isCCW(e.orig(), e.dest());
     }
 
-    private HCoordinate bisector(Vertex a, Vertex b) {
+   /**private */HCoordinate bisector(Vertex a, Vertex b) {
         // returns the perpendicular bisector of the line segment ab
         double dx = b.getX() - a.getX();
         double dy = b.getY() - a.getY();
@@ -238,7 +238,7 @@ class Vertex
         return new HCoordinate(l1, l2);
     }
 
-    private double distance(Vertex v1, Vertex v2) {
+   /**private */double distance(Vertex v1, Vertex v2) {
         return math.sqrt(Math.pow(v2.getX() - v1.getX(), 2.0)
                 + math.pow(v2.getY() - v1.getY(), 2.0));
     }

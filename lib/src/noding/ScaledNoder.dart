@@ -37,11 +37,11 @@
 class ScaledNoder
     implements Noder
 {
-  private Noder noder;
-  private double scaleFactor;
-  private double offsetX;
-  private double offsetY;
-  private bool isScaled = false;
+ /**private */Noder noder;
+ /**private */double scaleFactor;
+ /**private */double offsetX;
+ /**private */double offsetY;
+ /**private */bool isScaled = false;
 
   ScaledNoder(Noder noder, double scaleFactor) {
     this(noder, scaleFactor, 0, 0);
@@ -71,7 +71,7 @@ class ScaledNoder
     noder.computeNodes(intSegStrings);
   }
 
-  private Collection scale(Collection segStrings)
+ /**private */Collection scale(Collection segStrings)
   {
     List nodedSegmentStrings = new ArrayList(segStrings.size());
     for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
@@ -81,7 +81,7 @@ class ScaledNoder
     return nodedSegmentStrings;
   }
 
-  private List<Coordinate> scale(List<Coordinate> pts)
+ /**private */List<Coordinate> scale(List<Coordinate> pts)
   {
     List<Coordinate> roundPts = new Coordinate[pts.length];
     for (int i = 0; i < pts.length; i++) {
@@ -97,7 +97,7 @@ class ScaledNoder
 
   //private double scale(double val) { return (double) math.round(val * scaleFactor); }
 
-  private void rescale(Collection segStrings)
+ /**private */void rescale(Collection segStrings)
   {
     for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
       SegmentString ss = (SegmentString) i.next();
@@ -105,7 +105,7 @@ class ScaledNoder
     }
   }
 
-  private void rescale(List<Coordinate> pts)
+ /**private */void rescale(List<Coordinate> pts)
   {
     for (int i = 0; i < pts.length; i++) {
       pts[i].x = pts[i].x / scaleFactor + offsetX;

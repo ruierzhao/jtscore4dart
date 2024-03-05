@@ -35,7 +35,7 @@
  */
 class ConsistentPolygonRingChecker
 {
-  private PlanarGraph graph;
+ /**private */PlanarGraph graph;
 
   ConsistentPolygonRingChecker(PlanarGraph graph) {
     this.graph = graph;
@@ -62,7 +62,7 @@ class ConsistentPolygonRingChecker
     }
   }
 
-  private List getPotentialResultAreaEdges(DirectedEdgeStar deStar, int opCode)
+ /**private */List getPotentialResultAreaEdges(DirectedEdgeStar deStar, int opCode)
   {
 //print(System.out);
     List resultAreaEdgeList = new ArrayList();
@@ -74,7 +74,7 @@ class ConsistentPolygonRingChecker
     return resultAreaEdgeList;
   }
 
-  private bool isPotentialResultAreaEdge(DirectedEdge de, int opCode)
+ /**private */bool isPotentialResultAreaEdge(DirectedEdge de, int opCode)
   {
     // mark all dirEdges with the appropriate label
     Label label = de.getLabel();
@@ -91,10 +91,10 @@ class ConsistentPolygonRingChecker
       return false;
     }
 
-  private static final int SCANNING_FOR_INCOMING = 1;
-  private static final int LINKING_TO_OUTGOING = 2;
+ /**private */static final int SCANNING_FOR_INCOMING = 1;
+ /**private */static final int LINKING_TO_OUTGOING = 2;
 
-  private void testLinkResultDirectedEdges(DirectedEdgeStar deStar, int opCode)
+ /**private */void testLinkResultDirectedEdges(DirectedEdgeStar deStar, int opCode)
   {
     // make sure edges are copied to resultAreaEdges list
     List ringEdges = getPotentialResultAreaEdges(deStar, opCode);

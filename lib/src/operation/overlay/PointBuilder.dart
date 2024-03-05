@@ -27,9 +27,9 @@
  * @version 1.7
  */
 class PointBuilder {
-  private OverlayOp op;
-  private GeometryFactory geometryFactory;
-  private List resultPointList = new ArrayList();
+ /**private */OverlayOp op;
+ /**private */GeometryFactory geometryFactory;
+ /**private */List resultPointList = new ArrayList();
 
   PointBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
     this.op = op;
@@ -62,7 +62,7 @@ class PointBuilder {
    *
    * @param opCode the overlay operation
    */
-  private void extractNonCoveredResultNodes(int opCode)
+ /**private */void extractNonCoveredResultNodes(int opCode)
   {
     // testing only
     //if (true) return resultNodeList;
@@ -100,7 +100,7 @@ class PointBuilder {
    *
    * @param n the node to test
    */
-  private void filterCoveredNodeToPoint(Node n)
+ /**private */void filterCoveredNodeToPoint(Node n)
   {
     Coordinate coord = n.getCoordinate();
     if (! op.isCoveredByLA(coord)) {

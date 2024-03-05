@@ -57,7 +57,7 @@ class SimpleSweepLineIntersector
     computeIntersections(si);
   }
 
-  private void add(List edges)
+ /**private */void add(List edges)
   {
     for (Iterator i = edges.iterator(); i.hasNext(); ) {
       Edge edge = (Edge) i.next();
@@ -65,7 +65,7 @@ class SimpleSweepLineIntersector
       add(edge, edge);
     }
   }
-  private void add(List edges, Object edgeSet)
+ /**private */void add(List edges, Object edgeSet)
   {
     for (Iterator i = edges.iterator(); i.hasNext(); ) {
       Edge edge = (Edge) i.next();
@@ -74,7 +74,7 @@ class SimpleSweepLineIntersector
   }
 
 
-  private void add(Edge edge, Object edgeSet)
+ /**private */void add(Edge edge, Object edgeSet)
   {
     List<Coordinate> pts = edge.getCoordinates();
     for (int i = 0; i < pts.length - 1; i++) {
@@ -90,7 +90,7 @@ class SimpleSweepLineIntersector
    * it is possible to compute exactly the range of events which must be
    * compared to a given INSERT event object.
    */
-  private void prepareEvents()
+ /**private */void prepareEvents()
   {
     Collections.sort(events);
     // set DELETE event indexes
@@ -103,7 +103,7 @@ class SimpleSweepLineIntersector
     }
   }
 
-  private void computeIntersections(SegmentIntersector si)
+ /**private */void computeIntersections(SegmentIntersector si)
   {
     nOverlaps = 0;
     prepareEvents();
@@ -117,7 +117,7 @@ class SimpleSweepLineIntersector
     }
   }
 
-  private void processOverlaps(int start, int end, SweepLineEvent ev0, SegmentIntersector si)
+ /**private */void processOverlaps(int start, int end, SweepLineEvent ev0, SegmentIntersector si)
   {
     SweepLineSegment ss0 = (SweepLineSegment) ev0.getObject();
     /**

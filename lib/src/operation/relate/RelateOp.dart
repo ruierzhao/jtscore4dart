@@ -71,7 +71,7 @@ class RelateOp
     return im;
   }
 
-  private RelateComputer relate;
+ /**private */RelateComputer relate;
 
   /**
    * Creates a new Relate operation, using the default (OGC SFS) Boundary Node Rule.

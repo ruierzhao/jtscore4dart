@@ -83,7 +83,7 @@ public class PrecisionUtilTest extends GeometryTestCase {
         1e7, 1e8, 1e7 );    
   }
   
-  private void checkRobustScale(String wktA, String wktB, double scaleExpected,
+ /**private */void checkRobustScale(String wktA, String wktB, double scaleExpected,
       double safeScaleExpected, double inherentScaleExpected ) {
     Geometry a = read(wktA);
     Geometry b = null;

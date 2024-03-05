@@ -36,9 +36,9 @@ class GeometryLocation
    */
   static final int INSIDE_AREA = -1;
 
-  private Geometry component = null;
-  private int segIndex;
-  private Coordinate pt = null;
+ /**private */Geometry component = null;
+ /**private */int segIndex;
+ /**private */Coordinate pt = null;
 
   /**
    * Constructs a GeometryLocation specifying a point on a geometry, as well as the 

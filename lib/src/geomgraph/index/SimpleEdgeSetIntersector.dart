@@ -66,7 +66,7 @@ class SimpleEdgeSetIntersector
    * This has n^2 performance, and is about 100 times slower than using
    * monotone chains.
    */
-  private void computeIntersects(Edge e0, Edge e1, SegmentIntersector si)
+ /**private */void computeIntersects(Edge e0, Edge e1, SegmentIntersector si)
   {
    List<Coordinate> pts0 = e0.getCoordinates();
     List<Coordinate> pts1 = e1.getCoordinates();

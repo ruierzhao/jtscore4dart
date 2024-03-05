@@ -18,7 +18,7 @@ import test.jts.GeometryTestCase;
 public class VariableBufferTest extends GeometryTestCase {
 
   //-- low tolerance reduces expected geometry literal size
-  private static final double DEFAULT_TOLERANCE = 1.0e-2;
+ /**private */static final double DEFAULT_TOLERANCE = 1.0e-2;
 
   public VariableBufferTest(String name) {
     super(name);
@@ -89,7 +89,7 @@ public class VariableBufferTest extends GeometryTestCase {
         );
   }
 
-  private void checkBuffer(String wkt, double startDist, double endDist, 
+ /**private */void checkBuffer(String wkt, double startDist, double endDist, 
       String wktExpected) {
     Geometry geom = read(wkt);
     Geometry result = VariableBuffer.buffer(geom, startDist, endDist);
@@ -97,7 +97,7 @@ public class VariableBufferTest extends GeometryTestCase {
     checkBuffer(result, wktExpected);
   }
 
-  private void checkBuffer(String wkt, double[] dist, 
+ /**private */void checkBuffer(String wkt, double[] dist, 
       String wktExpected) {
     Geometry geom = read(wkt);
     Geometry result = VariableBuffer.buffer(geom, dist);
@@ -105,7 +105,7 @@ public class VariableBufferTest extends GeometryTestCase {
     checkBuffer(result, wktExpected);
   }
 
-  private void checkBuffer(Geometry actual, String wktExpected) {
+ /**private */void checkBuffer(Geometry actual, String wktExpected) {
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual, DEFAULT_TOLERANCE);
   }

@@ -30,11 +30,11 @@
 class TaggedLineString
 {
 
-  private LineString parentLine;
-  private TaggedLineSegment[] segs;
-  private List<LineSegment> resultSegs = new ArrayList<LineSegment>();
-  private int minimumSize;
-  private bool isRing = true;
+ /**private */LineString parentLine;
+ /**private */TaggedLineSegment[] segs;
+ /**private */List<LineSegment> resultSegs = new ArrayList<LineSegment>();
+ /**private */int minimumSize;
+ /**private */bool isRing = true;
 
   TaggedLineString(LineString parentLine, int minimumSize, bool isRing) {
     this.parentLine = parentLine;
@@ -86,7 +86,7 @@ class TaggedLineString
     return (LineSegment) resultSegs.get(index);
   }
 
-  private void init()
+ /**private */void init()
   {
     List<Coordinate> pts = parentLine.getCoordinates();
     segs = new TaggedLineSegment[pts.length - 1];
@@ -120,7 +120,7 @@ class TaggedLineString
     return parentLine.getFactory().createLinearRing(extractCoordinates(resultSegs));
   }
 
-  private static List<Coordinate> extractCoordinates(List<LineSegment> segs)
+ /**private */static List<Coordinate> extractCoordinates(List<LineSegment> segs)
   {
     List<Coordinate> pts = new Coordinate[segs.size() + 1];
     LineSegment seg = null;

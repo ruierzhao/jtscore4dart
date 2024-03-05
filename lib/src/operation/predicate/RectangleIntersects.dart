@@ -58,9 +58,9 @@ class RectangleIntersects
     return rp.intersects(b);
   }
 
-  private Polygon rectangle;
+ /**private */Polygon rectangle;
 
-  private Envelope rectEnv;
+ /**private */Envelope rectEnv;
 
   /**
    * Create a new intersects computer for a rectangle.
@@ -124,9 +124,9 @@ class RectangleIntersects
  */
 class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
 {
-  private Envelope rectEnv;
+ /**private */Envelope rectEnv;
 
-  private bool intersects = false;
+ /**private */bool intersects = false;
 
   EnvelopeIntersectsVisitor(Envelope rectEnv)
   {
@@ -145,7 +145,7 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
     return intersects;
   }
 
-  protected void visit(Geometry element)
+ /**protected */void visit(Geometry element)
   {
     Envelope elementEnv = element.getEnvelopeInternal();
 
@@ -179,7 +179,7 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
     }
   }
 
-  protected bool isDone()
+ /**protected */bool isDone()
   {
     return intersects;
   }
@@ -195,11 +195,11 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
  */
 class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
 {
-  private CoordinateSequence rectSeq;
+ /**private */CoordinateSequence rectSeq;
 
-  private Envelope rectEnv;
+ /**private */Envelope rectEnv;
 
-  private bool containsPoint = false;
+ /**private */bool containsPoint = false;
 
   GeometryContainsPointVisitor(Polygon rectangle)
   {
@@ -219,7 +219,7 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
     return containsPoint;
   }
 
-  protected void visit(Geometry geom)
+ /**protected */void visit(Geometry geom)
   {
     // if test geometry is not polygonal this check is not needed
     if (!(geom is Polygon))
@@ -246,7 +246,7 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
     }
   }
 
-  protected bool isDone()
+ /**protected */bool isDone()
   {
     return containsPoint;
   }
@@ -262,10 +262,10 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
  */
 class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
 {
-  private Envelope rectEnv;
-  private RectangleLineIntersector rectIntersector;
+ /**private */Envelope rectEnv;
+ /**private */RectangleLineIntersector rectIntersector;
 
-  private bool hasIntersection = false;
+ /**private */bool hasIntersection = false;
 
   /**
    * Creates a visitor for checking rectangle intersection
@@ -290,7 +290,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
     return hasIntersection;
   }
 
-  protected void visit(Geometry geom)
+ /**protected */void visit(Geometry geom)
   {
     /**
      * It may be the case that the rectangle and the 
@@ -308,7 +308,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
     checkIntersectionWithLineStrings(lines);
   }
 
-  private void checkIntersectionWithLineStrings(List lines)
+ /**private */void checkIntersectionWithLineStrings(List lines)
   {
     for (Iterator i = lines.iterator(); i.hasNext(); ) {
       LineString testLine = (LineString) i.next();
@@ -318,7 +318,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
     }
   }
 
-  private void checkIntersectionWithSegments(LineString testLine)
+ /**private */void checkIntersectionWithSegments(LineString testLine)
   {
     CoordinateSequence seq1 = testLine.getCoordinateSequence();
     Coordinate p0 = seq1.createCoordinate();
@@ -334,7 +334,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
     }
   }
 
-  protected bool isDone()
+ /**protected */bool isDone()
   {
     return hasIntersection;
   }

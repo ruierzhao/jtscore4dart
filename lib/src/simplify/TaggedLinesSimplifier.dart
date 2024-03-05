@@ -23,10 +23,10 @@
  */
 class TaggedLinesSimplifier
 {
-  private LineSegmentIndex inputIndex = new LineSegmentIndex();
-  private LineSegmentIndex outputIndex = new LineSegmentIndex();
+ /**private */LineSegmentIndex inputIndex = new LineSegmentIndex();
+ /**private */LineSegmentIndex outputIndex = new LineSegmentIndex();
   
-  private double distanceTolerance = 0.0;
+ /**private */double distanceTolerance = 0.0;
 
   TaggedLinesSimplifier()
   {

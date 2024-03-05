@@ -43,7 +43,7 @@ public class SameStructureTester {
     return false;
   }
 
-  private static boolean isSameStructureCollection(GeometryCollection g1, GeometryCollection g2)
+ /**private */static boolean isSameStructureCollection(GeometryCollection g1, GeometryCollection g2)
   {
     if (g1.getNumGeometries() != g2.getNumGeometries())
         return false;
@@ -54,7 +54,7 @@ public class SameStructureTester {
     return true;
   }
 
-  private static boolean isSameStructurePolygon(Polygon g1, Polygon g2)
+ /**private */static boolean isSameStructurePolygon(Polygon g1, Polygon g2)
   {
     if (g1.getNumInteriorRing() != g2.getNumInteriorRing())
         return false;
@@ -62,18 +62,18 @@ public class SameStructureTester {
     return true;
   }
 
-  private static boolean isSameStructureLineString(LineString g1, LineString g2)
+ /**private */static boolean isSameStructureLineString(LineString g1, LineString g2)
   {
     // could check for both empty or nonempty here
     return true;
   }
 
-  private static boolean isSameStructurePoint(Point g1, Point g2)
+ /**private */static boolean isSameStructurePoint(Point g1, Point g2)
   {
     // could check for both empty or nonempty here
     return true;
   }
 
-  private SameStructureTester() {
+ /**private */SameStructureTester() {
   }
 }

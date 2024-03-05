@@ -46,14 +46,14 @@ extends TestCase
  */
 class RectangleLineIntersectorValidator
 {
-  private GeometryFactory geomFact = new GeometryFactory();
+ /**private */GeometryFactory geomFact = new GeometryFactory();
   
-  private double baseX = 0;
-  private double baseY = 0;
-  private double rectSize = 100;
-  private Envelope rectEnv;
-  private Coordinate[] pts;
-  private boolean isValid = true; 
+ /**private */double baseX = 0;
+ /**private */double baseY = 0;
+ /**private */double rectSize = 100;
+ /**private */Envelope rectEnv;
+ /**private */Coordinate[] pts;
+ /**private */boolean isValid = true; 
     
   public RectangleLineIntersectorValidator()
   {
@@ -98,14 +98,14 @@ class RectangleLineIntersectorValidator
     }
   }
   
-  private Coordinate[] createTestPoints(int nPts)
+ /**private */Coordinate[] createTestPoints(int nPts)
   {
     Point pt = geomFact.createPoint(new Coordinate(baseX, baseY));
     Geometry circle = pt.buffer(2 * rectSize, nPts/4);
     return circle.getCoordinates();
   }
   
-  private Envelope createRectangle()
+ /**private */Envelope createRectangle()
   {
      Envelope rectEnv = new Envelope(
         new Coordinate(baseX, baseY),
@@ -118,15 +118,15 @@ class RectangleLineIntersectorValidator
 class SimpleRectangleIntersector
 {
   // for intersection testing, don't need to set precision model
-  private LineIntersector li = new RobustLineIntersector();
+ /**private */LineIntersector li = new RobustLineIntersector();
 
-  private Envelope rectEnv;
+ /**private */Envelope rectEnv;
   /**
    * The corners of the rectangle, in the order:
    *  10
    *  23
    */
-  private Coordinate[] corner = new Coordinate[4];
+ /**private */Coordinate[] corner = new Coordinate[4];
 
   public SimpleRectangleIntersector(Envelope rectEnv)
   {
@@ -134,7 +134,7 @@ class SimpleRectangleIntersector
     initCorners(rectEnv);
   }
   
-  private void initCorners(Envelope rectEnv)
+ /**private */void initCorners(Envelope rectEnv)
   {
     corner[0] = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
     corner[1] = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());

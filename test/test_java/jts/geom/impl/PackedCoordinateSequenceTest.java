@@ -233,7 +233,7 @@ public class PackedCoordinateSequenceTest
     }    
   }
   
-  private void initProgression(CoordinateSequence seq) {
+ /**private */void initProgression(CoordinateSequence seq) {
     for (int index = 0; index < seq.size(); index++) {
        for( int ordinateIndex = 0; ordinateIndex < seq.getDimension(); ordinateIndex++) {
          seq.setOrdinate(index, ordinateIndex, (double) index);

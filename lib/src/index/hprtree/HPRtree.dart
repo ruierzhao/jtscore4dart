@@ -60,29 +60,29 @@
 class HPRtree
   implements SpatialIndex
 {
-  private static final int ENV_SIZE = 4;
+ /**private */static final int ENV_SIZE = 4;
 
-  private static final int HILBERT_LEVEL = 12;
+ /**private */static final int HILBERT_LEVEL = 12;
 
-  private static final int DEFAULT_NODE_CAPACITY = 16;
+ /**private */static final int DEFAULT_NODE_CAPACITY = 16;
   
-  private List<Item> itemsToLoad = new ArrayList<>();
+ /**private */List<Item> itemsToLoad = new ArrayList<>();
 
-  private final int nodeCapacity;
+ /**private */final int nodeCapacity;
 
-  private int numItems = 0;
+ /**private */int numItems = 0;
 
-  private final Envelope totalExtent = new Envelope();
+ /**private */final Envelope totalExtent = new Envelope();
 
-  private int[] layerStartIndex;
+ /**private */int[] layerStartIndex;
 
-  private double[] nodeBounds;
+ /**private */double[] nodeBounds;
 
-  private double[] itemBounds;
+ /**private */double[] itemBounds;
 
-  private Object[] itemValues;
+ /**private */Object[] itemValues;
 
-  private volatile bool isBuilt = false;
+ /**private */volatile bool isBuilt = false;
 
   /**
    * Creates a new index with the default node capacity.
@@ -144,7 +144,7 @@ class HPRtree
     }
   }
 
-  private void queryTopLayer(Envelope searchEnv, ItemVisitor visitor) {
+ /**private */void queryTopLayer(Envelope searchEnv, ItemVisitor visitor) {
     int layerIndex = layerStartIndex.length - 2;
     int layerSize = layerSize(layerIndex);
     // query each node in layer
@@ -153,7 +153,7 @@ class HPRtree
     }
   }
 
-  private void queryNode(int layerIndex, int nodeOffset, Envelope searchEnv, ItemVisitor visitor) {
+ /**private */void queryNode(int layerIndex, int nodeOffset, Envelope searchEnv, ItemVisitor visitor) {
     int layerStart = layerStartIndex[layerIndex];
     int nodeIndex = layerStart + nodeOffset;
     if (! intersects(nodeBounds, nodeIndex, searchEnv)) return;
@@ -167,7 +167,7 @@ class HPRtree
     }
   }
 
-  private static bool intersects(double[] bounds, int nodeIndex, Envelope env) {
+ /**private */static bool intersects(double[] bounds, int nodeIndex, Envelope env) {
     bool isBeyond = (env.getMaxX() < bounds[nodeIndex])
     || (env.getMaxY() < bounds[nodeIndex+1])
     || (env.getMinX() > bounds[nodeIndex+2])
@@ -175,7 +175,7 @@ class HPRtree
     return ! isBeyond;
   }
   
-  private void queryNodeChildren(int layerIndex, int blockOffset, Envelope searchEnv, ItemVisitor visitor) {
+ /**private */void queryNodeChildren(int layerIndex, int blockOffset, Envelope searchEnv, ItemVisitor visitor) {
     int layerStart = layerStartIndex[layerIndex];
     int layerEnd = layerStartIndex[layerIndex + 1];
     for (int i = 0; i < nodeCapacity; i++) {
@@ -187,7 +187,7 @@ class HPRtree
     }
   }
 
-  private void queryItems(int blockStart, Envelope searchEnv, ItemVisitor visitor) {
+ /**private */void queryItems(int blockStart, Envelope searchEnv, ItemVisitor visitor) {
     for (int i = 0; i < nodeCapacity; i++) {
       int itemIndex = blockStart + i;
       // don't query past end of items
@@ -198,7 +198,7 @@ class HPRtree
     }    
   }
   
-  private int layerSize(int layerIndex) {
+ /**private */int layerSize(int layerIndex) {
     int layerStart = layerStartIndex[layerIndex];
     int layerEnd = layerStartIndex[layerIndex + 1];
     return layerEnd - layerStart;
@@ -226,7 +226,7 @@ class HPRtree
     }
   }
 
-  private void prepareIndex() {
+ /**private */void prepareIndex() {
     // don't need to build an empty or very small tree
     if (itemsToLoad.size() <= nodeCapacity) return;
 
@@ -244,7 +244,7 @@ class HPRtree
     }
   }
 
-  private void prepareItems() {
+ /**private */void prepareItems() {
     // copy item contents out to arrays for querying
     int boundsIndex = 0;
     int valueIndex = 0;
@@ -262,7 +262,7 @@ class HPRtree
     itemsToLoad = null;
   }
 
-  private static double[] createBoundsArray(int size) {
+ /**private */static double[] createBoundsArray(int size) {
     double[] a = new double[4*size];
     for (int i = 0; i < size; i++) {
       int index = 4*i;
@@ -274,7 +274,7 @@ class HPRtree
     return a;
   }
 
-  private void computeLayerNodes(int layerIndex) {
+ /**private */void computeLayerNodes(int layerIndex) {
     int layerStart = layerStartIndex[layerIndex];
     int childLayerStart = layerStartIndex[layerIndex - 1];
     int layerSize = layerSize(layerIndex);
@@ -285,7 +285,7 @@ class HPRtree
     }
   }
 
-  private void computeNodeBounds(int nodeIndex, int blockStart, int nodeMaxIndex) {
+ /**private */void computeNodeBounds(int nodeIndex, int blockStart, int nodeMaxIndex) {
     for (int i = 0; i <= nodeCapacity; i++ ) {
       int index = blockStart + 4 * i;
       if (index >= nodeMaxIndex) break;
@@ -293,13 +293,13 @@ class HPRtree
     } 
   }
 
-  private void computeLeafNodes(int layerSize) {
+ /**private */void computeLeafNodes(int layerSize) {
     for (int i = 0; i < layerSize; i += ENV_SIZE) {
       computeLeafNodeBounds(i, nodeCapacity * i/4);
     }
   }
 
-  private void computeLeafNodeBounds(int nodeIndex, int blockStart) {
+ /**private */void computeLeafNodeBounds(int nodeIndex, int blockStart) {
     for (int i = 0; i <= nodeCapacity; i++ ) {
       int itemIndex = blockStart + i;
       if (itemIndex >= itemsToLoad.size()) break;
@@ -308,14 +308,14 @@ class HPRtree
     }
   }
 
-  private void updateNodeBounds(int nodeIndex, double minX, double minY, double maxX, double maxY) {
+ /**private */void updateNodeBounds(int nodeIndex, double minX, double minY, double maxX, double maxY) {
     if (minX < nodeBounds[nodeIndex]) nodeBounds[nodeIndex] = minX;
     if (minY < nodeBounds[nodeIndex+1]) nodeBounds[nodeIndex+1] = minY;
     if (maxX > nodeBounds[nodeIndex+2]) nodeBounds[nodeIndex+2] = maxX;
     if (maxY > nodeBounds[nodeIndex+3]) nodeBounds[nodeIndex+3] = maxY;
   }
   
-  private static int[] computeLayerIndices(int itemSize, int nodeCapacity) {
+ /**private */static int[] computeLayerIndices(int itemSize, int nodeCapacity) {
     IntArrayList layerIndexList = new IntArrayList();
     int layerSize = itemSize;
     int index = 0;
@@ -335,7 +335,7 @@ class HPRtree
    * @param nodeCapacity
    * @return the number of nodes needed to cover the children
    */
-  private static int numNodesToCover(int nChild, int nodeCapacity) {
+ /**private */static int numNodesToCover(int nChild, int nodeCapacity) {
     int mult = nChild / nodeCapacity;
     int total = mult * nodeCapacity;
     if (total == nChild) return mult;
@@ -359,7 +359,7 @@ class HPRtree
     return bounds;
   }
   
-  private void sortItems() {
+ /**private */void sortItems() {
     HilbertEncoder encoder = new HilbertEncoder(HILBERT_LEVEL, totalExtent);
     int[] hilbertValues = new int[itemsToLoad.size()];
     int pos = 0;
@@ -369,7 +369,7 @@ class HPRtree
     quickSortItemsIntoNodes(hilbertValues, 0, itemsToLoad.size() - 1);
   }
 
-  private void quickSortItemsIntoNodes(int[] values, int lo, int hi) {
+ /**private */void quickSortItemsIntoNodes(int[] values, int lo, int hi) {
     // stop sorting when left/right pointers are within the same node
     // because queryItems just searches through them all sequentially
     if (lo / nodeCapacity < hi / nodeCapacity) {
@@ -379,7 +379,7 @@ class HPRtree
     }
   }
 
-  private int hoarePartition(int[] values, int lo, int hi) {
+ /**private */int hoarePartition(int[] values, int lo, int hi) {
     int pivot = values[(lo + hi) >> 1];
     int i = lo - 1;
     int j = hi + 1;
@@ -392,7 +392,7 @@ class HPRtree
     }
   }
 
-  private void swapItems(int[] values, int i, int j) {
+ /**private */void swapItems(int[] values, int i, int j) {
     Item tmpItemp = itemsToLoad.get(i);
     itemsToLoad.set(i, itemsToLoad.get(j));
     itemsToLoad.set(j, tmpItemp);

@@ -25,7 +25,7 @@ import junit.textui.TestRunner;
  */
 public class PointInRingTest extends AbstractPointInRingTest {
 
-  private WKTReader reader = new WKTReader();
+ /**private */WKTReader reader = new WKTReader();
 
   public static void main(String args[]) {
     TestRunner.run(PointInRingTest.class);
@@ -34,7 +34,7 @@ public class PointInRingTest extends AbstractPointInRingTest {
   public PointInRingTest(String name) { super(name); }
 
 
-   protected void runPtInRing(int expectedLoc, Coordinate pt, String wkt)
+  /**protected */void runPtInRing(int expectedLoc, Coordinate pt, String wkt)
       throws Exception
   {
   	 // isPointInRing is not defined for pts on boundary

@@ -26,8 +26,8 @@
  */
 class CommonBitsOp {
 
-  private bool returnToOriginalPrecision = true;
-  private CommonBitsRemover cbr;
+ /**private */bool returnToOriginalPrecision = true;
+ /**private */CommonBitsRemover cbr;
 
   /**
    * Creates a new instance of class, which reshifts result {@link Geometry}s.
@@ -120,7 +120,7 @@ class CommonBitsOp {
    * @param result the result Geometry to modify
    * @return the result Geometry with the required precision
    */
-  private Geometry computeResultPrecision(Geometry result)
+ /**private */Geometry computeResultPrecision(Geometry result)
   {
     if (returnToOriginalPrecision)
       cbr.addCommonBits(result);
@@ -133,7 +133,7 @@ class CommonBitsOp {
    * @param geom0 the Geometry to remove common bits from
    * @return a copy of the input Geometry with common bits removed
    */
-  private Geometry removeCommonBits(Geometry geom0)
+ /**private */Geometry removeCommonBits(Geometry geom0)
   {
     cbr = new CommonBitsRemover();
     cbr.add(geom0);
@@ -149,7 +149,7 @@ class CommonBitsOp {
    * @return an array containing copies
    * of the input Geometry's with common bits removed
    */
-  private List<Geometry> removeCommonBits(Geometry geom0, Geometry geom1)
+ /**private */List<Geometry> removeCommonBits(Geometry geom0, Geometry geom1)
   {
     cbr = new CommonBitsRemover();
     cbr.add(geom0);

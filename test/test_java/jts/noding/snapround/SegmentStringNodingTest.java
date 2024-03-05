@@ -64,7 +64,7 @@ public class SegmentStringNodingTest  extends TestCase {
     checkNodedStrings(wkt, pm);
   }
   
-  private void checkNodedStrings(String wkt, PrecisionModel pm) throws ParseException {
+ /**private */void checkNodedStrings(String wkt, PrecisionModel pm) throws ParseException {
     Geometry g = new WKTReader().read(wkt);
     List<NodedSegmentString> strings = new ArrayList<>();
     strings.add(new NodedSegmentString(g.getCoordinates(), null));
@@ -86,7 +86,7 @@ public class SegmentStringNodingTest  extends TestCase {
    * @param s a segmentString
    * @return true if the segmentString is collapsed
    */
-  private boolean isCollapsed(SegmentString s) {
+ /**private */boolean isCollapsed(SegmentString s) {
     if (s.size() != 3) return false;
     boolean isEndsEqual = s.getCoordinate(0).equals2D(s.getCoordinate(2));
     boolean isMiddleDifferent = ! s.getCoordinate(0).equals2D(s.getCoordinate(1));

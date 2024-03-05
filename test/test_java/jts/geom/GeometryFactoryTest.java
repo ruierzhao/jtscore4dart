@@ -65,7 +65,7 @@ public class GeometryFactoryTest extends TestCase {
     checkEmpty( geometryFactory.createGeometryCollection(), GeometryCollection.class);
   }
   
-  private void checkEmpty(Geometry geom, Class clz) {
+ /**private */void checkEmpty(Geometry geom, Class clz) {
     assertTrue(geom.isEmpty());
     assertTrue( geom.getClass() == clz );
   }
@@ -116,14 +116,14 @@ public class GeometryFactoryTest extends TestCase {
 
   }
   
-  private void checkCreateGeometryExact(String wkt) throws ParseException
+ /**private */void checkCreateGeometryExact(String wkt) throws ParseException
   {
     Geometry g = read(wkt);
     Geometry g2 = geometryFactory.createGeometry(g);
     assertTrue(g.equalsExact(g2));
   }
   
-  private Geometry read(String wkt) throws ParseException
+ /**private */Geometry read(String wkt) throws ParseException
   {
     return reader.read(wkt);
   }

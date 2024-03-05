@@ -73,32 +73,32 @@ class GeometryTransformer
    * getParent() method to return immediate parent e.g. of LinearRings in Polygons
    */
 
-  private Geometry inputGeom;
+ /**private */Geometry inputGeom;
 
-  protected GeometryFactory factory = null;
+ /**protected */GeometryFactory factory = null;
 
   // these could eventually be exposed to clients
   /**
    * <code>true</code> if empty geometries should not be included in the result
    */
-  private bool pruneEmptyGeometry = true;
+ /**private */bool pruneEmptyGeometry = true;
 
   /**
    * <code>true</code> if a homogenous collection result
    * from a {@link GeometryCollection} should still
    * be a general GeometryCollection
    */
-  private bool preserveGeometryCollectionType = true;
+ /**private */bool preserveGeometryCollectionType = true;
 
   /**
    * <code>true</code> if the output from a collection argument should still be a collection
    */
-  private bool preserveCollections = false;
+ /**private */bool preserveCollections = false;
 
   /**
    * <code>true</code> if the type of the input should be preserved
    */
-  private bool preserveType = false;
+ /**private */bool preserveType = false;
 
   GeometryTransformer() {
   }
@@ -142,7 +142,7 @@ class GeometryTransformer
    * @param coords the coordinate array to copy
    * @return a coordinate sequence for the array
    */
-  protected final CoordinateSequence createCoordinateSequence(List<Coordinate> coords)
+ /**protected */final CoordinateSequence createCoordinateSequence(List<Coordinate> coords)
   {
     return factory.getCoordinateSequenceFactory().create(coords);
   }
@@ -152,7 +152,7 @@ class GeometryTransformer
    * @param seq the sequence to copy
    * @return a deep copy of the sequence
    */
-  protected final CoordinateSequence copy(CoordinateSequence seq)
+ /**protected */final CoordinateSequence copy(CoordinateSequence seq)
   {
     return seq.copy();
   }
@@ -169,17 +169,17 @@ class GeometryTransformer
    * @param parent the parent geometry
    * @return the transformed coordinates
    */
-  protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
+ /**protected */CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
   {
     return copy(coords);
   }
 
-  protected Geometry transformPoint(Point geom, Geometry parent) {
+ /**protected */Geometry transformPoint(Point geom, Geometry parent) {
     return factory.createPoint(
         transformCoordinates(geom.getCoordinateSequence(), geom));
   }
 
-  protected Geometry transformMultiPoint(MultiPoint geom, Geometry parent) {
+ /**protected */Geometry transformMultiPoint(MultiPoint geom, Geometry parent) {
     List transGeomList = new ArrayList();
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry transformGeom = transformPoint((Point) geom.getGeometryN(i), geom);
@@ -206,7 +206,7 @@ class GeometryTransformer
    * @return a LinearRing if the transformation resulted in a structurally valid ring
    * @return a LineString if the transformation caused the LinearRing to collapse to 3 or fewer points
    */
-  protected Geometry transformLinearRing(LinearRing geom, Geometry parent) {
+ /**protected */Geometry transformLinearRing(LinearRing geom, Geometry parent) {
     CoordinateSequence seq = transformCoordinates(geom.getCoordinateSequence(), geom);
     if (seq == null) 
       return factory.createLinearRing((CoordinateSequence) null);
@@ -224,13 +224,13 @@ class GeometryTransformer
    * @param parent
    * @return
    */
-  protected Geometry transformLineString(LineString geom, Geometry parent) {
+ /**protected */Geometry transformLineString(LineString geom, Geometry parent) {
     // should check for 1-point sequences and downgrade them to points
     return factory.createLineString(
         transformCoordinates(geom.getCoordinateSequence(), geom));
   }
 
-  protected Geometry transformMultiLineString(MultiLineString geom, Geometry parent) {
+ /**protected */Geometry transformMultiLineString(MultiLineString geom, Geometry parent) {
     List transGeomList = new ArrayList();
     for (int i = 0; i < geom.getNumGeometries(); i++) {  
       Geometry transformGeom = transformLineString((LineString) geom.getGeometryN(i), geom);
@@ -244,7 +244,7 @@ class GeometryTransformer
     return factory.buildGeometry(transGeomList);
   }
 
-  protected Geometry transformPolygon(Polygon geom, Geometry parent) {
+ /**protected */Geometry transformPolygon(Polygon geom, Geometry parent) {
     bool isAllValidLinearRings = true;
     Geometry shell = transformLinearRing(geom.getExteriorRing(), geom);
 
@@ -280,7 +280,7 @@ class GeometryTransformer
     }
   }
 
-  protected Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
+ /**protected */Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
     List transGeomList = new ArrayList();
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry transformGeom = transformPolygon((Polygon) geom.getGeometryN(i), geom);
@@ -294,7 +294,7 @@ class GeometryTransformer
     return factory.buildGeometry(transGeomList);
   }
 
-  protected Geometry transformGeometryCollection(GeometryCollection geom, Geometry parent) {
+ /**protected */Geometry transformGeometryCollection(GeometryCollection geom, Geometry parent) {
     List transGeomList = new ArrayList();
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry transformGeom = transform(geom.getGeometryN(i));

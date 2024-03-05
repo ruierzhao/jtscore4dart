@@ -132,14 +132,14 @@ class LineSequencer
     return true;
   }
 
-  private LineMergeGraph graph = new LineMergeGraph();
+ /**private */LineMergeGraph graph = new LineMergeGraph();
   // initialize with default, in case no lines are input
-  private GeometryFactory factory = new GeometryFactory();
-  private int lineCount = 0;
+ /**private */GeometryFactory factory = new GeometryFactory();
+ /**private */int lineCount = 0;
 
-  private bool isRun = false;
-  private Geometry sequencedGeometry = null;
-  private bool isSequenceable = false;
+ /**private */bool isRun = false;
+ /**private */Geometry sequencedGeometry = null;
+ /**private */bool isSequenceable = false;
 
   /**
    * Adds a {@link Collection} of {@link Geometry}s to be sequenced.
@@ -173,7 +173,7 @@ class LineSequencer
     });
   }
 
-  private void addLine(LineString lineString) {
+ /**private */void addLine(LineString lineString) {
     if (factory == null) {
       this.factory = lineString.getFactory();
     }
@@ -204,7 +204,7 @@ class LineSequencer
     return sequencedGeometry;
   }
 
-  private void computeSequence() {
+ /**private */void computeSequence() {
     if (isRun) { return; }
     isRun = true;
 
@@ -222,7 +222,7 @@ class LineSequencer
                   "Result is not lineal");
   }
 
-  private List findSequences()
+ /**private */List findSequences()
   {
     List sequences = new ArrayList();
     ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(graph);
@@ -248,7 +248,7 @@ class LineSequencer
    * @param graph the subgraph containing the edges
    * @return <code>true</code> if a sequence exists
    */
-  private bool hasSequence(Subgraph graph)
+ /**private */bool hasSequence(Subgraph graph)
   {
     int oddDegreeCount = 0;
     for (Iterator i = graph.nodeIterator(); i.hasNext(); ) {
@@ -259,7 +259,7 @@ class LineSequencer
     return oddDegreeCount <= 2;
   }
 
-  private List findSequence(Subgraph graph)
+ /**private */List findSequence(Subgraph graph)
   {
     GraphComponent.setVisited(graph.edgeIterator(), false);
 
@@ -293,7 +293,7 @@ class LineSequencer
    * @param node the node to examine
    * @return the dirEdge found, or <code>null</code> if none were unvisited
    */
-  private static DirectedEdge findUnvisitedBestOrientedDE(Node node)
+ /**private */static DirectedEdge findUnvisitedBestOrientedDE(Node node)
   {
     DirectedEdge wellOrientedDE = null;
     DirectedEdge unvisitedDE = null;
@@ -310,7 +310,7 @@ class LineSequencer
     return unvisitedDE;
   }
 
-  private void addReverseSubpath(DirectedEdge de, ListIterator lit, bool expectedClosed)
+ /**private */void addReverseSubpath(DirectedEdge de, ListIterator lit, bool expectedClosed)
   {
     // trace an unvisited path *backwards* from this de
     Node endNode = de.getToNode();
@@ -332,7 +332,7 @@ class LineSequencer
     }
   }
 
-  private static Node findLowestDegreeNode(Subgraph graph)
+ /**private */static Node findLowestDegreeNode(Subgraph graph)
   {
     int minDegree = Integer.MAX_VALUE;
     Node minDegreeNode = null;
@@ -364,7 +364,7 @@ class LineSequencer
    * @param seq a List of DirectedEdges
    * @return a List of DirectedEdges oriented appropriately
    */
-  private List orient(List seq)
+ /**private */List orient(List seq)
   {
     DirectedEdge startEdge = (DirectedEdge) seq.get(0);
     DirectedEdge endEdge = (DirectedEdge) seq.get(seq.size() - 1);
@@ -416,7 +416,7 @@ class LineSequencer
    * @param seq a List of DirectedEdges, in sequential order
    * @return the reversed sequence
    */
-  private List reverse(List seq)
+ /**private */List reverse(List seq)
   {
     LinkedList newSeq = new LinkedList();
     for (Iterator i = seq.iterator(); i.hasNext(); ) {
@@ -434,7 +434,7 @@ class LineSequencer
    *   LineMergeEdges as their parent edges.
    * @return the sequenced geometry, or <code>null</code> if no sequence exists
    */
-  private Geometry buildSequencedGeometry(List sequences)
+ /**private */Geometry buildSequencedGeometry(List sequences)
   {
     List lines = new ArrayList();
 
@@ -457,7 +457,7 @@ class LineSequencer
     return factory.buildGeometry(lines);
   }
 
-  private static LineString reverse(LineString line)
+ /**private */static LineString reverse(LineString line)
   {
     List<Coordinate> pts = line.getCoordinates();
     List<Coordinate> revPts = new Coordinate[pts.length];

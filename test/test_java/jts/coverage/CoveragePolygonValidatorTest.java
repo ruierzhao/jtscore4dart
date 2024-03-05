@@ -187,7 +187,7 @@ public class CoveragePolygonValidatorTest extends GeometryTestCase {
 
   //----------------------------------------------------------------------
   
-  private void checkInvalid(String wktTarget, String wktAdj, String wktExpected) {
+ /**private */void checkInvalid(String wktTarget, String wktAdj, String wktExpected) {
     Geometry target = read(wktTarget);
     Geometry adj = read(wktAdj);
     Geometry[] adjPolygons = extractPolygons(adj);
@@ -197,7 +197,7 @@ public class CoveragePolygonValidatorTest extends GeometryTestCase {
     checkEqual(expected, actual);
   }
   
-  private void checkInvalidGap(String wktTarget, String wktAdj, 
+ /**private */void checkInvalidGap(String wktTarget, String wktAdj, 
       double gapWidth, String wktExpected) {
     Geometry target = read(wktTarget);
     Geometry adj = read(wktAdj);
@@ -208,7 +208,7 @@ public class CoveragePolygonValidatorTest extends GeometryTestCase {
     checkEqual(expected, actual);
   }
   
-  private void checkValid(String wktTarget, String wktAdj) {
+ /**private */void checkValid(String wktTarget, String wktAdj) {
     Geometry target = read(wktTarget);
     Geometry adj = read(wktAdj);
     Geometry[] adjPolygons = extractPolygons(adj);
@@ -217,7 +217,7 @@ public class CoveragePolygonValidatorTest extends GeometryTestCase {
     checkEqual(expected, actual);
   }
 
-  private Geometry[] extractPolygons(Geometry geom) {
+ /**private */Geometry[] extractPolygons(Geometry geom) {
     List<Polygon> polygons = PolygonExtracter.getPolygons(geom);
     return GeometryFactory.toPolygonArray(polygons);
   }

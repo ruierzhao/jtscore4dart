@@ -92,7 +92,7 @@ public class OverlayNGSnappingNoderTest extends GeometryTestCase {
     return OverlayNG.overlay(a, b, DIFFERENCE, null, noder );
   }
 
-  private static Noder getNoder(double tolerance) {
+ /**private */static Noder getNoder(double tolerance) {
     SnappingNoder snapNoder = new SnappingNoder(tolerance);
     return new ValidatingNoder(snapNoder);
   }

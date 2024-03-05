@@ -220,7 +220,7 @@ public class CoordinateTest extends TestCase
     doTestCoordinateHash(false, new Coordinate(1, 2), new Coordinate(2, 1));
   }
 
-  private void doTestCoordinateHash(boolean equal, Coordinate a, Coordinate b) {
+ /**private */void doTestCoordinateHash(boolean equal, Coordinate a, Coordinate b) {
     assertEquals(equal, a.equals(b));
     assertEquals(equal, a.hashCode() == b.hashCode());
   }
@@ -228,7 +228,7 @@ public class CoordinateTest extends TestCase
   /**
    * Confirm the z field is not supported by getZ and setZ.
    */
-  private void checkZUnsupported(Coordinate coord )
+ /**private */void checkZUnsupported(Coordinate coord )
   {
       try {
           coord.setZ(0.0);
@@ -243,7 +243,7 @@ public class CoordinateTest extends TestCase
   /**
    * Confirm the z field is not supported by getZ and setZ.
    */
-  private void checkMUnsupported(Coordinate coord )
+ /**private */void checkMUnsupported(Coordinate coord )
   {
       try {
           coord.setM(0.0);

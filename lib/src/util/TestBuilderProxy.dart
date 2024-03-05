@@ -32,12 +32,12 @@
  */
 class TestBuilderProxy {
   
-  private static final String CLASS_FUNCTIONS_UTIL = "org.locationtech.jtstest.function.FunctionsUtil";
-  private static Class<?> tbClass;
-  private static Method methodShowIndicator;
-  private static Method methodShowIndicatorLine;
+ /**private */static final String CLASS_FUNCTIONS_UTIL = "org.locationtech.jtstest.function.FunctionsUtil";
+ /**private */static Class<?> tbClass;
+ /**private */static Method methodShowIndicator;
+ /**private */static Method methodShowIndicatorLine;
 
-  private static void init() {
+ /**private */static void init() {
     if (tbClass != null) return;
     try {
       tbClass = TestBuilderProxy.class.getClassLoader().loadClass(CLASS_FUNCTIONS_UTIL);

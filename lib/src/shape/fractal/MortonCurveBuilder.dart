@@ -87,7 +87,7 @@ extends GeometricShapeBuilder
     return geomFactory.createLineString(pts);
   }
   
-  private static double transform(double val, double scale, double offset) {
+ /**private */static double transform(double val, double scale, double offset) {
     return val * scale + offset;
   }
 

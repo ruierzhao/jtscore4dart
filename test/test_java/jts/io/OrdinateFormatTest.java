@@ -62,24 +62,24 @@ public class OrdinateFormatTest extends TestCase {
     checkFormat(Double.NEGATIVE_INFINITY, "-Inf");
   }
 
-  private void checkFormat(double d, String expected) {
+ /**private */void checkFormat(double d, String expected) {
     String actual = OrdinateFormat.DEFAULT.format(d);
     assertEquals(expected, actual);
   }
   
-  private void checkFormat(double d, int maxFractionDigits, String expected) {
+ /**private */void checkFormat(double d, int maxFractionDigits, String expected) {
     OrdinateFormat format = OrdinateFormat.create(maxFractionDigits);
     String actual = format.format(d);
     assertEquals(expected, actual);
   }
   
-  private void checkFormatAllLocales(double d, int maxFractionDigits, String expected) {
+ /**private */void checkFormatAllLocales(double d, int maxFractionDigits, String expected) {
     OrdinateFormat format = OrdinateFormat.create(maxFractionDigits);
     String actual = format.format(d);
     assertEquals(expected, actual);
   }
   
-  private void checkFormatLocales(Locale locale, double d, int maxFractionDigits, String expected) {
+ /**private */void checkFormatLocales(Locale locale, double d, int maxFractionDigits, String expected) {
     OrdinateFormat format = OrdinateFormat.create(maxFractionDigits);
     String actual = format.format(d);
     assertEquals(expected, actual);

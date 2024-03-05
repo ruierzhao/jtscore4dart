@@ -66,9 +66,9 @@ class NodedSegmentString
     }
   }
 
-  private SegmentNodeList nodeList = new SegmentNodeList(this);
-  private List<Coordinate> pts;
-  private Object data;
+ /**private */SegmentNodeList nodeList = new SegmentNodeList(this);
+ /**private */List<Coordinate> pts;
+ /**private */Object data;
 
   /**
    * Creates a instance from a list of vertices and optional data object.
@@ -148,7 +148,7 @@ class NodedSegmentString
 //    return Octant.octant(getCoordinate(index), getCoordinate(index + 1));
   }
 
-  private int safeOctant(Coordinate p0, Coordinate p1)
+ /**private */int safeOctant(Coordinate p0, Coordinate p1)
   {
   	if (p0.equals2D(p1)) return 0;
   	return Octant.octant(p0, p1);

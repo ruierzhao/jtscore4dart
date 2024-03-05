@@ -40,13 +40,13 @@ class Edge
   }
 
   List<Coordinate> pts;
-  private Envelope env;
+ /**private */Envelope env;
   EdgeIntersectionList eiList = new EdgeIntersectionList(this);
-  private String name;
-  private MonotoneChainEdge mce;
-  private bool isIsolated = true;
-  private Depth depth = new Depth();
-  private int depthDelta = 0;   // the change in area depth from the R to L side of this edge
+ /**private */String name;
+ /**private */MonotoneChainEdge mce;
+ /**private */bool isIsolated = true;
+ /**private */Depth depth = new Depth();
+ /**private */int depthDelta = 0;   // the change in area depth from the R to L side of this edge
 
   Edge(List<Coordinate> pts, Label label)
   {

@@ -39,7 +39,7 @@
  */
 class Tri {
   
-  private static final String INVALID_TRI_INDEX = "Invalid Tri index";
+ /**private */static final String INVALID_TRI_INDEX = "Invalid Tri index";
 
   /**
    * Creates a {@link GeometryCollection} of {@link Polygon}s
@@ -107,17 +107,17 @@ class Tri {
     return new Tri(pts[0], pts[1], pts[2]);
   }
   
-  protected Coordinate p0;
-  protected Coordinate p1;
-  protected Coordinate p2;
+ /**protected */Coordinate p0;
+ /**protected */Coordinate p1;
+ /**protected */Coordinate p2;
   
   /**
    * triN is the adjacent triangle across the edge pN - pNN.
    * pNN is the next vertex CW from pN.
    */
-  protected Tri tri0;
-  protected Tri tri1;
-  protected Tri tri2;
+ /**protected */Tri tri0;
+ /**protected */Tri tri1;
+ /**protected */Tri tri2;
 
   /**
    * Creates a triangle with the given vertices.
@@ -181,7 +181,7 @@ class Tri {
     throw new ArgumentError(INVALID_TRI_INDEX);
   }
 
-  private void setCoordinates(Coordinate p0, Coordinate p1, Coordinate p2) {
+ /**private */void setCoordinates(Coordinate p0, Coordinate p1, Coordinate p2) {
     this.p0 = p0;
     this.p1 = p1;
     this.p2 = p2;
@@ -227,7 +227,7 @@ class Tri {
     flip(tri, index, index1, adj0, adj1, opp0, opp1);
   }
   
-  private void flip(Tri tri, int index0, int index1, Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
+ /**private */void flip(Tri tri, int index0, int index1, Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
     //System.out.println("Flipping: " + this + " -> " + tri);
     
     //validate();
@@ -259,7 +259,7 @@ class Tri {
    * @param triOld an adjacent triangle
    * @param triNew the triangle to replace it with
    */
-  private void replace(Tri triOld, Tri triNew) {
+ /**private */void replace(Tri triOld, Tri triNew) {
     if ( tri0 != null && tri0 == triOld ) {
       tri0 = triNew;
     } else if ( tri1 != null && tri1 == triOld ) {
@@ -312,7 +312,7 @@ class Tri {
     remove(2);
   }
 
-  private void remove(int index) {
+ /**private */void remove(int index) {
     Tri adj = getAdjacent(index);
     if (adj == null) return;
     adj.setTri(adj.getIndex(this), null);
@@ -332,7 +332,7 @@ class Tri {
    * @param index1 the index of the common edge in the adjacent triangle
    * @return
    */
-  private Tri[] getAdjacentTris(Tri triAdj, int index, int indexAdj) {
+ /**private */Tri[] getAdjacentTris(Tri triAdj, int index, int indexAdj) {
     Tri[] adj = new Tri[4];
     adj[0] = getAdjacent(prev(index));
     adj[1] = getAdjacent(next(index));

@@ -22,10 +22,10 @@
 
 class PolygonBuilder {
 
-  private GeometryFactory geometryFactory;
-  private List<OverlayEdgeRing> shellList = new ArrayList<OverlayEdgeRing>();
-  private List<OverlayEdgeRing> freeHoleList = new ArrayList<OverlayEdgeRing>();
-  private bool isEnforcePolygonal = true;
+ /**private */GeometryFactory geometryFactory;
+ /**private */List<OverlayEdgeRing> shellList = new ArrayList<OverlayEdgeRing>();
+ /**private */List<OverlayEdgeRing> freeHoleList = new ArrayList<OverlayEdgeRing>();
+ /**private */bool isEnforcePolygonal = true;
 
   PolygonBuilder(List<OverlayEdge> resultAreaEdges, GeometryFactory geomFact) {
     this(resultAreaEdges, geomFact, true);
@@ -45,7 +45,7 @@ class PolygonBuilder {
     return shellList;  
   }
 
-  private List<Polygon> computePolygons(List<OverlayEdgeRing> shellList)
+ /**private */List<Polygon> computePolygons(List<OverlayEdgeRing> shellList)
   {
     List<Polygon> resultPolyList = new ArrayList<Polygon>();
     // add Polygons for all shells
@@ -56,7 +56,7 @@ class PolygonBuilder {
     return resultPolyList;
   }
   
-  private void buildRings(List<OverlayEdge> resultAreaEdges)
+ /**private */void buildRings(List<OverlayEdge> resultAreaEdges)
   {
     linkResultAreaEdgesMax(resultAreaEdges);
     List<MaximalEdgeRing> maxRings = buildMaximalRings(resultAreaEdges);
@@ -65,7 +65,7 @@ class PolygonBuilder {
     //Assert: every hole on freeHoleList has a shell assigned to it
   }
   
-  private void linkResultAreaEdgesMax(List<OverlayEdge> resultEdges) {
+ /**private */void linkResultAreaEdgesMax(List<OverlayEdge> resultEdges) {
     for (OverlayEdge edge : resultEdges ) {
       //Assert.isTrue(edge.isInResult());
       // TODO: find some way to skip nodes which are already linked
@@ -76,7 +76,7 @@ class PolygonBuilder {
   /**
    * For all OverlayEdges in result, form them into MaximalEdgeRings
    */
-  private static List<MaximalEdgeRing> buildMaximalRings(Collection<OverlayEdge> edges)
+ /**private */static List<MaximalEdgeRing> buildMaximalRings(Collection<OverlayEdge> edges)
   {
     List<MaximalEdgeRing> edgeRings = new ArrayList<MaximalEdgeRing>();
     for (OverlayEdge e : edges) {
@@ -91,7 +91,7 @@ class PolygonBuilder {
     return edgeRings;
   }
 
-  private void buildMinimalRings(List<MaximalEdgeRing> maxRings)
+ /**private */void buildMinimalRings(List<MaximalEdgeRing> maxRings)
   {
     for (MaximalEdgeRing erMax : maxRings) {
       List<OverlayEdgeRing> minRings = erMax.buildMinimalRings(geometryFactory);
@@ -99,7 +99,7 @@ class PolygonBuilder {
     }
   }
 
-  private void assignShellsAndHoles(List<OverlayEdgeRing> minRings) {
+ /**private */void assignShellsAndHoles(List<OverlayEdgeRing> minRings) {
     /**
      * Two situations may occur:
      * - the rings are a shell and some holes
@@ -127,7 +127,7 @@ class PolygonBuilder {
    * @return the shell ring, if there is one
    * or null, if all rings are holes
    */
-  private OverlayEdgeRing findSingleShell(List<OverlayEdgeRing> edgeRings)
+ /**private */OverlayEdgeRing findSingleShell(List<OverlayEdgeRing> edgeRings)
   {
     int shellCount = 0;
     OverlayEdgeRing shell = null;
@@ -152,7 +152,7 @@ class PolygonBuilder {
    * PIP test
    * </ul>
    */
-  private static void assignHoles(OverlayEdgeRing shell, List<OverlayEdgeRing> edgeRings)
+ /**private */static void assignHoles(OverlayEdgeRing shell, List<OverlayEdgeRing> edgeRings)
   {
     for (OverlayEdgeRing er : edgeRings) {
       if (er.isHole()) {
@@ -173,7 +173,7 @@ class PolygonBuilder {
    *
    * @throws TopologyException if a hole cannot be assigned to a shell
    */
-  private void placeFreeHoles(List<OverlayEdgeRing> shellList, List<OverlayEdgeRing> freeHoleList)
+ /**private */void placeFreeHoles(List<OverlayEdgeRing> shellList, List<OverlayEdgeRing> freeHoleList)
   {
     // TODO: use a spatial index to improve performance
     for (OverlayEdgeRing hole : freeHoleList ) {

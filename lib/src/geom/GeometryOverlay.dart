@@ -45,7 +45,7 @@ class GeometryOverlay
    */
   static bool OVERLAY_NG_DEFAULT = false;
 
-  private static bool isOverlayNG = OVERLAY_NG_DEFAULT;
+ /**private */static bool isOverlayNG = OVERLAY_NG_DEFAULT;
 
   static {
     setOverlayImpl(System.getProperty(OVERLAY_PROPERTY_NAME));
@@ -68,7 +68,7 @@ class GeometryOverlay
       isOverlayNG = true;
   }
   
-  private static Geometry overlay(Geometry a, Geometry b, int opCode) {
+ /**private */static Geometry overlay(Geometry a, Geometry b, int opCode) {
     if (isOverlayNG) {
       return OverlayNGRobust.overlay(a, b, opCode);
     }

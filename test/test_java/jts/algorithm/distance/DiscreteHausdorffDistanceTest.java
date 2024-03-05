@@ -57,9 +57,9 @@ extends TestCase
     runTest("LINESTRING (130 0, 0 0, 0 150)", "LINESTRING (10 10, 10 150, 130 10)", 0.5, 70.0);
   }
   
-  private static final double TOLERANCE = 0.00001;
+ /**private */static final double TOLERANCE = 0.00001;
   
-  private void runTest(String wkt1, String wkt2, double expectedDistance) 
+ /**private */void runTest(String wkt1, String wkt2, double expectedDistance) 
   throws ParseException
   {
     Geometry g1 = IOUtil.readWKT(wkt1);
@@ -68,7 +68,7 @@ extends TestCase
     double distance = DiscreteHausdorffDistance.distance(g1, g2);
     assertEquals(distance, expectedDistance, TOLERANCE);
   }
-  private void runTest(String wkt1, String wkt2, double densifyFrac, double expectedDistance) 
+ /**private */void runTest(String wkt1, String wkt2, double densifyFrac, double expectedDistance) 
   throws ParseException
   {
     Geometry g1 = IOUtil.readWKT(wkt1);

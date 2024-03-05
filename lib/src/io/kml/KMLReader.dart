@@ -40,20 +40,20 @@ import javax.xml.stream.XMLStreamReader;
  * Works only with KML geometry elements and may also parse attributes within these elements
  */
 class KMLReader {
-    private final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    private final GeometryFactory geometryFactory;
-    private final Set<String> attributeNames;
+   /**private */final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+   /**private */final GeometryFactory geometryFactory;
+   /**private */final Set<String> attributeNames;
 
-    private static final String POINT = "Point";
-    private static final String LINESTRING = "LineString";
-    private static final String POLYGON = "Polygon";
-    private static final String MULTIGEOMETRY = "MultiGeometry";
+   /**private */static final String POINT = "Point";
+   /**private */static final String LINESTRING = "LineString";
+   /**private */static final String POLYGON = "Polygon";
+   /**private */static final String MULTIGEOMETRY = "MultiGeometry";
 
-    private static final String COORDINATES = "coordinates";
-    private static final String OUTER_BOUNDARY_IS = "outerBoundaryIs";
-    private static final String INNER_BOUNDARY_IS = "innerBoundaryIs";
+   /**private */static final String COORDINATES = "coordinates";
+   /**private */static final String OUTER_BOUNDARY_IS = "outerBoundaryIs";
+   /**private */static final String INNER_BOUNDARY_IS = "innerBoundaryIs";
 
-    private static final String NO_ELEMENT_ERROR = "No element %s found in %s";
+   /**private */static final String NO_ELEMENT_ERROR = "No element %s found in %s";
 
     /**
      * Creates a reader that creates objects using the default {@link GeometryFactory}.
@@ -113,7 +113,7 @@ class KMLReader {
         }
     }
 
-    private List<Coordinate> parseKMLCoordinates(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
+   /**private */List<Coordinate> parseKMLCoordinates(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
         String coordinates = xmlStreamReader.getElementText();
 
         if (coordinates.isEmpty()) {
@@ -160,7 +160,7 @@ class KMLReader {
         return coordinateList.toArray(new List<Coordinate>{});
     }
 
-    private KMLCoordinatesAndAttributes parseKMLCoordinatesAndAttributes(XMLStreamReader xmlStreamReader, String objectNodeName) throws XMLStreamException, ParseException {
+   /**private */KMLCoordinatesAndAttributes parseKMLCoordinatesAndAttributes(XMLStreamReader xmlStreamReader, String objectNodeName) throws XMLStreamException, ParseException {
         List<Coordinate> coordinates = null;
         Map<String, String> attributes = null;
 
@@ -189,7 +189,7 @@ class KMLReader {
         return new KMLCoordinatesAndAttributes(coordinates, attributes);
     }
 
-    private Geometry parseKMLPoint(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
+   /**private */Geometry parseKMLPoint(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
         KMLCoordinatesAndAttributes kmlCoordinatesAndAttributes = parseKMLCoordinatesAndAttributes(xmlStreamReader, POINT);
 
         Point point = geometryFactory.createPoint(kmlCoordinatesAndAttributes.coordinates[0]);
@@ -198,7 +198,7 @@ class KMLReader {
         return point;
     }
 
-    private Geometry parseKMLLineString(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
+   /**private */Geometry parseKMLLineString(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
         KMLCoordinatesAndAttributes kmlCoordinatesAndAttributes = parseKMLCoordinatesAndAttributes(xmlStreamReader, LINESTRING);
 
         LineString lineString = geometryFactory.createLineString(kmlCoordinatesAndAttributes.coordinates);
@@ -207,7 +207,7 @@ class KMLReader {
         return lineString;
     }
 
-    private Geometry parseKMLPolygon(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
+   /**private */Geometry parseKMLPolygon(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
         LinearRing shell = null;
         ArrayList<LinearRing> holes = null;
         Map<String, String> attributes = null;
@@ -248,7 +248,7 @@ class KMLReader {
         return polygon;
     }
 
-    private Geometry parseKMLMultiGeometry(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
+   /**private */Geometry parseKMLMultiGeometry(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
         List<Geometry> geometries = new ArrayList<>();
         String firstParsedType = null;
         bool allTypesAreSame = true;
@@ -300,7 +300,7 @@ class KMLReader {
         }
     }
 
-    private Geometry parseKML(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
+   /**private */Geometry parseKML(XMLStreamReader xmlStreamReader) throws XMLStreamException, ParseException {
         bool hasElement = false;
 
         while (xmlStreamReader.hasNext()) {
@@ -333,7 +333,7 @@ class KMLReader {
         return null;
     }
 
-    private void moveToElement(XMLStreamReader xmlStreamReader, String elementName, String endElementName) throws XMLStreamException, ParseException {
+   /**private */void moveToElement(XMLStreamReader xmlStreamReader, String elementName, String endElementName) throws XMLStreamException, ParseException {
         bool elementFound = false;
 
         while (xmlStreamReader.hasNext() && !(xmlStreamReader.isEndElement() && xmlStreamReader.getLocalName().equals(endElementName))) {
@@ -350,17 +350,17 @@ class KMLReader {
         }
     }
 
-    private void raiseParseError(String template, Object... parameters) throws ParseException {
+   /**private */void raiseParseError(String template, Object... parameters) throws ParseException {
         throw new ParseException(String.format(template, parameters));
     }
 
-    private <T> T[] prepareTypedArray(List<Geometry> geometryList, Class<T> geomClass) {
+   /**private */<T> T[] prepareTypedArray(List<Geometry> geometryList, Class<T> geomClass) {
         return geometryList.toArray((T[]) Array.newInstance(geomClass, geometryList.size()));
     }
 
-    private static class KMLCoordinatesAndAttributes {
-        private final List<Coordinate> coordinates;
-        private final Map<String, String> attributes;
+   /**private */static class KMLCoordinatesAndAttributes {
+       /**private */final List<Coordinate> coordinates;
+       /**private */final Map<String, String> attributes;
 
         KMLCoordinatesAndAttributes(List<Coordinate> coordinates, Map<String, String> attributes) {
 

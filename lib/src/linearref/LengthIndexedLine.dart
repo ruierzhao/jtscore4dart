@@ -28,7 +28,7 @@
  */
 class LengthIndexedLine
 {
-  private Geometry linearGeom;
+ /**private */Geometry linearGeom;
 
   /**
    * Constructs an object which allows a linear {@link Geometry}
@@ -103,12 +103,12 @@ class LengthIndexedLine
     return ExtractLineByLocation.extract(linearGeom, startLoc, endLoc);
   }
 
-  private LinearLocation locationOf(double index)
+ /**private */LinearLocation locationOf(double index)
   {
     return LengthLocationMap.getLocation(linearGeom, index);
   }
 
-  private LinearLocation locationOf(double index, bool resolveLower)
+ /**private */LinearLocation locationOf(double index, bool resolveLower)
   {
     return LengthLocationMap.getLocation(linearGeom, index, resolveLower);
   }
@@ -244,7 +244,7 @@ class LengthIndexedLine
     return posIndex;
   }
   
-  private double positiveIndex(double index)
+ /**private */double positiveIndex(double index)
   {
     if (index >= 0.0) return index;
     return linearGeom.getLength() + index;

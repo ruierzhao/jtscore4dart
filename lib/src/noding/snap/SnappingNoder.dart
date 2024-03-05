@@ -50,9 +50,9 @@
 class SnappingNoder
     implements Noder
 {
-  private SnappingPointIndex snapIndex;
-  private double snapTolerance;
-  private List<NodedSegmentString> nodedResult;
+ /**private */SnappingPointIndex snapIndex;
+ /**private */double snapTolerance;
+ /**private */List<NodedSegmentString> nodedResult;
 
   /**
    * Creates a snapping noder using the given snap distance tolerance.
@@ -85,7 +85,7 @@ class SnappingNoder
     nodedResult = (List<NodedSegmentString>) snapIntersections(snappedSS);
   }
 
-  private List<NodedSegmentString> snapVertices(Collection<SegmentString> segStrings) {
+ /**private */List<NodedSegmentString> snapVertices(Collection<SegmentString> segStrings) {
     //Stopwatch sw = new Stopwatch(); sw.start();
     seedSnapIndex(segStrings);
     
@@ -106,7 +106,7 @@ class SnappingNoder
    *  
    * @param segStrings the segStrings to be noded
    */
-  private void seedSnapIndex(Collection<SegmentString> segStrings) {
+ /**private */void seedSnapIndex(Collection<SegmentString> segStrings) {
     final int SEED_SIZE_FACTOR = 100;
       
     for (SegmentString ss : segStrings) {
@@ -121,12 +121,12 @@ class SnappingNoder
     }
   }
   
-  private NodedSegmentString snapVertices(SegmentString ss) {
+ /**private */NodedSegmentString snapVertices(SegmentString ss) {
     List<Coordinate> snapCoords = snap(ss.getCoordinates());
     return new NodedSegmentString(snapCoords, ss.getData());
   }
   
-  private List<Coordinate> snap(List<Coordinate> coords) {
+ /**private */List<Coordinate> snap(List<Coordinate> coords) {
     CoordinateList snapCoords = new CoordinateList();
     for (int i = 0 ; i < coords.length; i++) {
       Coordinate pt = snapIndex.snap(coords[i]);
@@ -143,7 +143,7 @@ class SnappingNoder
    *
    * @return a list of Coordinates for the intersections
    */
-  private Collection snapIntersections(List<NodedSegmentString> inputSS)
+ /**private */Collection snapIntersections(List<NodedSegmentString> inputSS)
   {
     SnappingIntersectionAdder intAdder = new SnappingIntersectionAdder(snapTolerance, snapIndex);
     /**

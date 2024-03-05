@@ -76,7 +76,7 @@ class LengthLocationMap
     return locater.getLength(loc);
   }
 
-  private final Geometry linearGeom;
+ /**private */final Geometry linearGeom;
 
   LengthLocationMap(Geometry linearGeom)
   {
@@ -123,7 +123,7 @@ class LengthLocationMap
     return resolveHigher(loc);
   }
 
-  private LinearLocation getLocationForward(double length)
+ /**private */LinearLocation getLocationForward(double length)
   {
     if (length <= 0.0)
       return new LinearLocation();
@@ -168,7 +168,7 @@ class LengthLocationMap
     return LinearLocation.getEndLocation(linearGeom);
   }
 
-  private LinearLocation resolveHigher(LinearLocation loc)
+ /**private */LinearLocation resolveHigher(LinearLocation loc)
   {
     if (! loc.isEndpoint(linearGeom))
       return loc;

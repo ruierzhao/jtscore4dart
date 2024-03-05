@@ -90,7 +90,7 @@ class SimplePointInAreaLocator
     return Location.EXTERIOR != locate(p, geom);
   }
   
-  private static int locateInGeometry(Coordinate p, Geometry geom)
+ /**private */static int locateInGeometry(Coordinate p, Geometry geom)
   {
     if (geom is Polygon) {
       return locatePointInPolygon(p, (Polygon) geom);
@@ -166,7 +166,7 @@ class SimplePointInAreaLocator
    * @param ring a linear ring
    * @return true if the point lies inside the ring
    */
-  private static int locatePointInRing(Coordinate p, LinearRing ring)
+ /**private */static int locatePointInRing(Coordinate p, LinearRing ring)
   {
   	// short-circuit if point is not in ring envelope
   	if (! ring.getEnvelopeInternal().intersects(p))

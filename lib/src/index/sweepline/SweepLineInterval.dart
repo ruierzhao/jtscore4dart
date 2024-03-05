@@ -16,8 +16,8 @@
  */
 class SweepLineInterval {
 
-  private double min, max;
-  private Object item;
+ /**private */double min, max;
+ /**private */Object item;
 
   SweepLineInterval(double min, double max)
   {

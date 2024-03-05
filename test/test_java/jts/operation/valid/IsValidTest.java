@@ -25,8 +25,8 @@ import test.jts.GeometryTestCase;
  */
 public class IsValidTest extends GeometryTestCase {
 
-  private PrecisionModel precisionModel = new PrecisionModel();
-  private GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+ /**private */PrecisionModel precisionModel = new PrecisionModel();
+ /**private */GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
   WKTReader reader = new WKTReader(geometryFactory);
 
   public static void main(String args[]) {
@@ -179,22 +179,22 @@ public class IsValidTest extends GeometryTestCase {
   
   //=============================================
   
-  private void checkValid(String wkt) {
+ /**private */void checkValid(String wkt) {
     checkValid(true, wkt);
   }
  
   
-  private void checkValid(boolean isExpectedValid, String wkt) {
+ /**private */void checkValid(boolean isExpectedValid, String wkt) {
     Geometry geom = read(wkt);
     boolean isValid = geom.isValid();
     assertEquals( isExpectedValid, isValid );
   }
 
-  private void checkInvalid(String wkt) {
+ /**private */void checkInvalid(String wkt) {
     checkValid(false, wkt);
   }
   
-  private void checkInvalid(int exepctedErrType, String wkt) {
+ /**private */void checkInvalid(int exepctedErrType, String wkt) {
     Geometry geom = read(wkt);
     IsValidOp validOp = new IsValidOp(geom);
     TopologyValidationError err = validOp.getValidationError();

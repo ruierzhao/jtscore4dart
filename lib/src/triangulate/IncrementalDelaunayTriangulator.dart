@@ -34,7 +34,7 @@ class IncrementalDelaunayTriangulator
 {
 	private QuadEdgeSubdivision subdiv;
 	private bool isUsingTolerance = false;
-  private bool isForceConvex = true;
+ /**private */bool isForceConvex = true;
 
 	/**
 	 * Creates a new triangulator using the given {@link QuadEdgeSubdivision}.
@@ -171,7 +171,7 @@ class IncrementalDelaunayTriangulator
 	 * @param e the edge to test
 	 * @return true if the triangulation boundary is concave at the edge
 	 */
-  private bool isConcaveBoundary(QuadEdge e) {
+ /**private */bool isConcaveBoundary(QuadEdge e) {
     if (subdiv.isFrameVertex(e.dest())) {
       return isConcaveAtOrigin(e);
     }
@@ -187,7 +187,7 @@ class IncrementalDelaunayTriangulator
    * @param e
    * @return
    */
-  private static bool isConcaveAtOrigin(QuadEdge e) {
+ /**private */static bool isConcaveAtOrigin(QuadEdge e) {
     Coordinate p = e.orig().getCoordinate();
     Coordinate pp = e.oPrev().dest().getCoordinate();
     Coordinate pn = e.oNext().dest().getCoordinate();
@@ -203,7 +203,7 @@ class IncrementalDelaunayTriangulator
    * @param vInsert the inserted vertex
    * @return true if the edge is between the frame and inserted vertex
    */
-  private bool isBetweenFrameAndInserted(QuadEdge e, Vertex vInsert) {
+ /**private */bool isBetweenFrameAndInserted(QuadEdge e, Vertex vInsert) {
     Vertex v1 = e.oNext().dest();
     Vertex v2 = e.oPrev().dest();
     return (v1 == vInsert && subdiv.isFrameVertex(v2))

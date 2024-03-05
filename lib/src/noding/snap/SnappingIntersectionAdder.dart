@@ -28,11 +28,11 @@
 class SnappingIntersectionAdder
     implements SegmentIntersector
 {
-  private LineIntersector li = new RobustLineIntersector();;
+ /**private */LineIntersector li = new RobustLineIntersector();;
 
-  private double snapTolerance;
+ /**private */double snapTolerance;
 
-  private SnappingPointIndex snapPointIndex;
+ /**private */SnappingPointIndex snapPointIndex;
 
   /**
    * Creates an intersector which finds intersections, snaps them,
@@ -118,7 +118,7 @@ class SnappingIntersectionAdder
    * @param p0
    * @param p1
    */
-  private void processNearVertex(SegmentString srcSS, int srcIndex, Coordinate p, SegmentString ss, int segIndex, Coordinate p0, Coordinate p1) 
+ /**private */void processNearVertex(SegmentString srcSS, int srcIndex, Coordinate p, SegmentString ss, int segIndex, Coordinate p0, Coordinate p1) 
   {
     /**
      * Don't add intersection if candidate vertex is near endpoints of segment.
@@ -143,7 +143,7 @@ class SnappingIntersectionAdder
    * Closed segStrings require a check for the point shared by the beginning
    * and end segments.
    */
-  private static bool isAdjacent(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1)
+ /**private */static bool isAdjacent(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1)
   {
     if (ss0 != ss1) return false;
     

@@ -25,7 +25,7 @@
  */
 class DissolveHalfEdge extends MarkHalfEdge
 {
-  private bool isStart = false;
+ /**private */bool isStart = false;
   
   DissolveHalfEdge(Coordinate orig) {
     super(orig);

@@ -67,7 +67,7 @@ class Bintree
     return new Interval(min, max);
   }
 
-  private Root root;
+ /**private */Root root;
   /**
   *  Statistics
   *
@@ -78,7 +78,7 @@ class Bintree
   * a zero extent in both directions.  This value may be non-optimal, but
   * only one feature will be inserted with this value.
   **/
-  private double minExtent = 1.0;
+ /**private */double minExtent = 1.0;
 
   Bintree()
   {
@@ -179,7 +179,7 @@ if (newSize <= oldSize) {
     root.addAllItemsFromOverlapping(interval, foundItems);
   }
 
-  private void collectStats(Interval interval)
+ /**private */void collectStats(Interval interval)
   {
     double del = interval.getWidth();
     if (del < minExtent && del > 0.0)

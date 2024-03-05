@@ -36,8 +36,8 @@ public class RelateBoundaryNodeRuleTest
     TestRunner.run(RelateBoundaryNodeRuleTest.class);
   }
 
-  private GeometryFactory fact = new GeometryFactory();
-  private WKTReader rdr = new WKTReader(fact);
+ /**private */GeometryFactory fact = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader(fact);
 
   public RelateBoundaryNodeRuleTest(String name)
   {

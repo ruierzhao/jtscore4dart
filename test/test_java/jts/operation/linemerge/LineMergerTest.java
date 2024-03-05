@@ -29,7 +29,7 @@ import junit.framework.TestCase;
  * @version 1.7
  */
 public class LineMergerTest extends TestCase {
-  private static WKTReader reader = new WKTReader();
+ /**private */static WKTReader reader = new WKTReader();
 
   public LineMergerTest(String name) {
     super(name);
@@ -81,7 +81,7 @@ public class LineMergerTest extends TestCase {
   }    
   
 
-  private void doTest(String[] inputWKT, String[] expectedOutputWKT) {
+ /**private */void doTest(String[] inputWKT, String[] expectedOutputWKT) {
     doTest(inputWKT, expectedOutputWKT, true);
   }
   
@@ -102,7 +102,7 @@ public class LineMergerTest extends TestCase {
     }
   }
 
-  private static boolean contains(Collection geometries, Geometry g, boolean exact) {
+ /**private */static boolean contains(Collection geometries, Geometry g, boolean exact) {
     for (Iterator i = geometries.iterator(); i.hasNext();) {
       Geometry element = (Geometry) i.next();
       if (exact && element.equalsExact(g)) {

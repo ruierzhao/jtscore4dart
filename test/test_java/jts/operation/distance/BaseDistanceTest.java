@@ -87,9 +87,9 @@ public abstract class BaseDistanceTest extends GeometryTestCase {
     checkDistanceNearestPoints("POLYGON ((76 185, 125 283, 331 276, 324 122, 177 70, 184 155, 69 123, 76 185), (267 237, 148 248, 135 185, 223 189, 251 151, 286 183, 267 237))", "LINESTRING (120 215, 185 224, 209 207, 238 222, 254 186)", 0.0, new Coordinate(120, 215), new Coordinate(120, 215));
   }
 
-  private static final double TOLERANCE = 1E-10;
+ /**private */static final double TOLERANCE = 1E-10;
   
-  private void checkDistanceNearestPoints(String wkt0, String wkt1, double distance, 
+ /**private */void checkDistanceNearestPoints(String wkt0, String wkt1, double distance, 
                                    Coordinate p0, Coordinate p1) throws ParseException {
     Geometry g0 = read(wkt0);
     Geometry g1 = read(wkt1);
@@ -103,9 +103,9 @@ public abstract class BaseDistanceTest extends GeometryTestCase {
     assertEquals(p1.y, nearestPoints[1].y, TOLERANCE);    
   }  
 
-  protected abstract double distance(Geometry g1, Geometry g2);
+ /**protected */abstract double distance(Geometry g1, Geometry g2);
   
-  protected abstract boolean isWithinDistance(Geometry g1, Geometry g2, double distance);
+ /**protected */abstract boolean isWithinDistance(Geometry g1, Geometry g2, double distance);
 
-  protected abstract Coordinate[] nearestPoints(Geometry g1, Geometry g2);
+ /**protected */abstract Coordinate[] nearestPoints(Geometry g1, Geometry g2);
 }

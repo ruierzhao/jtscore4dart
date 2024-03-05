@@ -28,17 +28,17 @@
  */
 class OffsetSegmentString 
 {
-  private static final List<Coordinate> COORDINATE_ARRAY_TYPE = new Coordinate[0];
+ /**private */static final List<Coordinate> COORDINATE_ARRAY_TYPE = new Coordinate[0];
 
-  private ArrayList ptList;
-  private PrecisionModel precisionModel = null;
+ /**private */ArrayList ptList;
+ /**private */PrecisionModel precisionModel = null;
   
   /**
    * The distance below which two adjacent points on the curve 
    * are considered to be coincident.
    * This is chosen to be a small fraction of the offset distance.
    */
-  private double minimimVertexDistance = 0.0;
+ /**private */double minimimVertexDistance = 0.0;
 
   OffsetSegmentString()
   {
@@ -88,7 +88,7 @@ class OffsetSegmentString
    * @param pt
    * @return true if the point is redundant
    */
-  private bool isRedundant(Coordinate pt)
+ /**private */bool isRedundant(Coordinate pt)
   {
     if (ptList.size() < 1)
     	return false;

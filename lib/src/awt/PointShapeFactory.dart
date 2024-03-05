@@ -44,7 +44,7 @@ abstract class PointShapeFactory {
      */
     static final double DEFAULT_SIZE = 3.0;
 
-    protected double size = DEFAULT_SIZE;
+   /**protected */double size = DEFAULT_SIZE;
 
     /**
      * Creates a new factory for points with default size.

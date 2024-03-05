@@ -26,7 +26,7 @@ class Root
 {
 
   // the singleton root node is centred at the origin.
-  private static final double origin = 0.0;
+ /**private */static final double origin = 0.0;
 
   Root()
   {
@@ -70,7 +70,7 @@ class Root
    * the given Node.  Lower levels of the tree will be created
    * if necessary to hold the item.
    */
-  private void insertContained(Node tree, Interval itemInterval, Object item)
+ /**private */void insertContained(Node tree, Interval itemInterval, Object item)
   {
     Assert.isTrue(tree.getInterval().contains(itemInterval));
    /**
@@ -90,7 +90,7 @@ class Root
   /**
    * The root node matches all searches
    */
-  protected bool isSearchMatch(Interval interval)
+ /**protected */bool isSearchMatch(Interval interval)
   {
     return true;
   }

@@ -103,7 +103,7 @@ class Densifier {
 	/**
 	 * Indicates whether areas should be topologically validated.
 	 */
-  private bool isValidated = true;
+ /**private */bool isValidated = true;
 
 	/**
 	 * Creates a new densifier instance.
@@ -148,7 +148,7 @@ class Densifier {
 
 	static class DensifyTransformer extends GeometryTransformer {
 	  double distanceTolerance;
-    private bool isValidated;
+   /**private */bool isValidated;
 	  
 	  DensifyTransformer(double distanceTolerance, bool isValidated) {
 	    this.distanceTolerance = distanceTolerance;

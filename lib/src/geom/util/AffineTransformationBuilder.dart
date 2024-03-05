@@ -42,15 +42,15 @@
  */
 class AffineTransformationBuilder
 {
-  private Coordinate src0;
-  private Coordinate src1;
-  private Coordinate src2;
-  private Coordinate dest0;
-  private Coordinate dest1;
-  private Coordinate dest2;
+ /**private */Coordinate src0;
+ /**private */Coordinate src1;
+ /**private */Coordinate src2;
+ /**private */Coordinate dest0;
+ /**private */Coordinate dest1;
+ /**private */Coordinate dest2;
   
   // the matrix entries for the transformation
-  private double m00, m01, m02, m10, m11, m12;
+ /**private */double m00, m01, m02, m10, m11, m12;
   
  
   /**
@@ -104,7 +104,7 @@ class AffineTransformationBuilder
    * 
    * @return true if the transformation matrix is solvable
    */
-  private bool compute()
+ /**private */bool compute()
   {
     double[] bx = new double[] { dest0.x, dest1.x, dest2.x };
     double[] row0 = solve(bx);
@@ -129,7 +129,7 @@ class AffineTransformationBuilder
    * @param b the vector for the right-hand side of the system
    * @return the solution vector, or <code>null</code> if no solution could be determined
    */
-  private double[] solve(double[] b)
+ /**private */double[] solve(double[] b)
   {
     double[][] a = new double[][] {
         { src0.x, src0.y, 1 },

@@ -34,8 +34,8 @@
 class PolygonShape implements Shape 
 {
   // use a GeneralPath with a winding rule, since it supports floating point coordinates
-    private GeneralPath polygonPath;
-    private GeneralPath ringPath;
+   /**private */GeneralPath polygonPath;
+   /**private */GeneralPath ringPath;
     
     /**
      * Creates a new polygon {@link Shape}.
@@ -89,7 +89,7 @@ class PolygonShape implements Shape
      * @param coordinates a coordinate sequence
      * @return the path for the coordinate sequence
      */
-    private GeneralPath toPath(List<Coordinate> coordinates) {
+   /**private */GeneralPath toPath(List<Coordinate> coordinates) {
       GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, coordinates.length);
 
       if (coordinates.length > 0) {

@@ -35,7 +35,7 @@
  */
 class SortedPackedIntervalRTree 
 {
-  private final List leaves = new ArrayList();
+ /**private */final List leaves = new ArrayList();
   
   /**
    * If root is null that indicates
@@ -66,7 +66,7 @@ class SortedPackedIntervalRTree
     leaves.add(new IntervalRTreeLeafNode(min, max, item));
 	}
 	
-  private synchronized void init()
+ /**private */synchronized void init()
   {
     // already built
     if (root != null) return;
@@ -80,7 +80,7 @@ class SortedPackedIntervalRTree
     buildRoot();
   }
   
-  private void buildRoot()
+ /**private */void buildRoot()
   {
     if (root != null) return;
     root = buildTree();
@@ -131,7 +131,7 @@ class SortedPackedIntervalRTree
 		}
 	}
 
-  // private void printNode(IntervalRTreeNode node)
+  ///**private */void printNode(IntervalRTreeNode node)
   // {
   //   System.out.println(WKTWriter.toLineString(new Coordinate(node.min, level), new Coordinate(node.max, level)));
   // }

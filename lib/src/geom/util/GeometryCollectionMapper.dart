@@ -36,7 +36,7 @@ class GeometryCollectionMapper
     return mapper.map(gc);
   }
   
-  private MapOp mapOp = null;
+ /**private */MapOp mapOp = null;
   
   GeometryCollectionMapper(MapOp mapOp) {
     this.mapOp = mapOp;

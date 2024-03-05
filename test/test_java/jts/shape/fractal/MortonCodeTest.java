@@ -67,21 +67,21 @@ extends TestCase
     checkDecodeEncodeForLevel(5);
   }
   
-  private void checkDecode(int index, int x, int y) {
+ /**private */void checkDecode(int index, int x, int y) {
     Coordinate p = decode(index);
     //System.out.println(p);
     assertEquals( (int) p.getX(), x);
     assertEquals( (int) p.getY(), y);
   }
   
-  private void checkDecodeEncodeForLevel(int level) {
+ /**private */void checkDecodeEncodeForLevel(int level) {
     int n = size(level);
     for (int i = 0; i < n; i++) {
       checkDecodeEncode(level, i);
     }
   }
 
-  private void checkDecodeEncode(int level, int index) {
+ /**private */void checkDecodeEncode(int level, int index) {
     Coordinate p = decode(index);
     int encode = encode((int) p.getX(), (int) p.getY() );
     assertEquals( index, encode);

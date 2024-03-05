@@ -27,7 +27,7 @@
 class PreparedLineString
   extends BasicPreparedGeometry
 {
-  private FastSegmentSetIntersectionFinder segIntFinder = null;
+ /**private */FastSegmentSetIntersectionFinder segIntFinder = null;
 
   PreparedLineString(Lineal line) {
     super((Geometry) line);

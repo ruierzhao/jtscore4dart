@@ -44,33 +44,33 @@ class OffsetSegmentGenerator
    * reduces the number of offset curve vertices.
    * and improves the robustness of mitre construction.
    */
-  private static final double OFFSET_SEGMENT_SEPARATION_FACTOR = .05;
+ /**private */static final double OFFSET_SEGMENT_SEPARATION_FACTOR = .05;
   
   /**
    * Factor controlling how close curve vertices on inside turns can be to be snapped 
    */
-  private static final double INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3;
+ /**private */static final double INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3;
 
   /**
    * Factor which controls how close curve vertices can be to be snapped
    */
-  private static final double CURVE_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-6;
+ /**private */static final double CURVE_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-6;
 
   /**
    * Factor which determines how short closing segs can be for round buffers
    */
-  private static final int MAX_CLOSING_SEG_LEN_FACTOR = 80;
+ /**private */static final int MAX_CLOSING_SEG_LEN_FACTOR = 80;
 
   /**
    * the max error of approximation (distance) between a quad segment and the true fillet curve
    */
-  private double maxCurveSegmentError = 0.0;
+ /**private */double maxCurveSegmentError = 0.0;
 
   /**
    * The angle quantum with which to approximate a fillet curve
    * (based on the input # of quadrant segments)
    */
-  private double filletAngleQuantum;
+ /**private */double filletAngleQuantum;
 
   /**
    * The Closing Segment Length Factor controls how long
@@ -87,21 +87,21 @@ class OffsetSegmentGenerator
    * (this option is reasonable for the very common default situation of round joins
    * and quadrantSegs >= 8)
    */
-  private int closingSegLengthFactor = 1;
+ /**private */int closingSegLengthFactor = 1;
 
-  private OffsetSegmentString segList;
-  private double distance = 0.0;
-  private PrecisionModel precisionModel;
-  private BufferParameters bufParams;
-  private LineIntersector li;
+ /**private */OffsetSegmentString segList;
+ /**private */double distance = 0.0;
+ /**private */PrecisionModel precisionModel;
+ /**private */BufferParameters bufParams;
+ /**private */LineIntersector li;
 
-  private Coordinate s0, s1, s2;
-  private LineSegment seg0 = new LineSegment();
-  private LineSegment seg1 = new LineSegment();
-  private LineSegment offset0 = new LineSegment();
-  private LineSegment offset1 = new LineSegment();
-  private int side = 0;
-  private bool hasNarrowConcaveAngle = false;
+ /**private */Coordinate s0, s1, s2;
+ /**private */LineSegment seg0 = new LineSegment();
+ /**private */LineSegment seg1 = new LineSegment();
+ /**private */LineSegment offset0 = new LineSegment();
+ /**private */LineSegment offset1 = new LineSegment();
+ /**private */int side = 0;
+ /**private */bool hasNarrowConcaveAngle = false;
 
   OffsetSegmentGenerator(PrecisionModel precisionModel,
       BufferParameters bufParams, double distance) {
@@ -144,7 +144,7 @@ class OffsetSegmentGenerator
     return hasNarrowConcaveAngle;
   }
   
-  private void init(double distance)
+ /**private */void init(double distance)
   {
     this.distance = (distance).abs();
     maxCurveSegmentError = this.distance * (1 - math.cos(filletAngleQuantum / 2.0));
@@ -228,7 +228,7 @@ class OffsetSegmentGenerator
     }
   }
   
-  private void addCollinear(bool addStartPoint)
+ /**private */void addCollinear(bool addStartPoint)
   {
     /**
      * This test could probably be done more efficiently,
@@ -268,7 +268,7 @@ class OffsetSegmentGenerator
    * @param orientation
    * @param addStartPoint
    */
-  private void addOutsideTurn(int orientation, bool addStartPoint)
+ /**private */void addOutsideTurn(int orientation, bool addStartPoint)
   {
     /**
      * Heuristic: If offset endpoints are very close together,
@@ -310,7 +310,7 @@ class OffsetSegmentGenerator
    * @param orientation
    * @param addStartPoint
    */
-  private void addInsideTurn(int orientation, bool addStartPoint) {
+ /**private */void addInsideTurn(int orientation, bool addStartPoint) {
     /**
      * add intersection point of offset segments (if any)
      */
@@ -468,7 +468,7 @@ class OffsetSegmentGenerator
    * @param offset1 the second offset segment
    * @param distance the offset distance
    */
-  private void addMitreJoin(Coordinate cornerPt, 
+ /**private */void addMitreJoin(Coordinate cornerPt, 
       LineSegment offset0, 
       LineSegment offset1,
       double distance)
@@ -514,7 +514,7 @@ class OffsetSegmentGenerator
    * @param distance the offset distance
    * @param mitreLimitDistance the mitre limit distance
    */
-  private void addLimitedMitreJoin( 
+ /**private */void addLimitedMitreJoin( 
       LineSegment offset0, 
       LineSegment offset1,
       double distance,
@@ -566,7 +566,7 @@ class OffsetSegmentGenerator
    * @param dir the direction angle (in radians)
    * @return the projected point
    */
-  private static Coordinate project(Coordinate pt, double d, double dir) {
+ /**private */static Coordinate project(Coordinate pt, double d, double dir) {
     double x = pt.x + d * Angle.cosSnap(dir);
     double y = pt.y + d * Angle.sinSnap(dir);
     return new Coordinate(x, y);
@@ -579,7 +579,7 @@ class OffsetSegmentGenerator
    * @param offset0 the first offset segment
    * @param offset1 the second offset segment
    */
-  private void addBevelJoin( 
+ /**private */void addBevelJoin( 
       LineSegment offset0, 
       LineSegment offset1)
   {
@@ -597,7 +597,7 @@ class OffsetSegmentGenerator
    * @param direction the orientation of the fillet
    * @param radius the radius of the fillet
    */
-  private void addCornerFillet(Coordinate p, Coordinate p0, Coordinate p1, int direction, double radius)
+ /**private */void addCornerFillet(Coordinate p, Coordinate p0, Coordinate p1, int direction, double radius)
   {
     double dx0 = p0.x - p.x;
     double dy0 = p0.y - p.y;
@@ -626,7 +626,7 @@ class OffsetSegmentGenerator
    * @param direction is -1 for a CW angle, 1 for a CCW angle
    * @param radius the radius of the fillet
    */
-  private void addDirectedFillet(Coordinate p, double startAngle, double endAngle, int direction, double radius)
+ /**private */void addDirectedFillet(Coordinate p, double startAngle, double endAngle, int direction, double radius)
   {
     int directionFactor = direction == Orientation.CLOCKWISE ? -1 : 1;
 

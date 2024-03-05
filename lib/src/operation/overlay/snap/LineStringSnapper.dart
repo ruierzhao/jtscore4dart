@@ -29,12 +29,12 @@
  */
 class LineStringSnapper
 {
-  private double snapTolerance = 0.0;
+ /**private */double snapTolerance = 0.0;
 
-  private List<Coordinate> srcPts;
-  private LineSegment seg = new LineSegment(); // for reuse during snapping
-  private bool allowSnappingToSourceVertices = false;
-  private bool isClosed = false;
+ /**private */List<Coordinate> srcPts;
+ /**private */LineSegment seg = new LineSegment(); // for reuse during snapping
+ /**private */bool allowSnappingToSourceVertices = false;
+ /**private */bool isClosed = false;
 
   /**
    * Creates a new snapper using the points in the given {@link LineString}
@@ -66,7 +66,7 @@ class LineStringSnapper
   {
     this.allowSnappingToSourceVertices = allowSnappingToSourceVertices;
   }
-  private static bool isClosed(List<Coordinate> pts)
+ /**private */static bool isClosed(List<Coordinate> pts)
   {
     if (pts.length <= 1) return false;
     return pts[0].equals2D(pts[pts.length - 1]);
@@ -95,7 +95,7 @@ class LineStringSnapper
    * @param srcCoords the points to snap
    * @param snapPts the points to snap to
    */
-  private void snapVertices(CoordinateList srcCoords, List<Coordinate> snapPts)
+ /**private */void snapVertices(CoordinateList srcCoords, List<Coordinate> snapPts)
   {
     // try snapping vertices
     // if src is a ring then don't snap final vertex
@@ -113,7 +113,7 @@ class LineStringSnapper
     }
   }
 
-  private Coordinate findSnapForVertex(Coordinate pt, List<Coordinate> snapPts)
+ /**private */Coordinate findSnapForVertex(Coordinate pt, List<Coordinate> snapPts)
   {
     for (int i = 0; i < snapPts.length; i++) {
       // if point is already equal to a src pt, don't snap
@@ -139,7 +139,7 @@ class LineStringSnapper
    * @param srcCoords the coordinates of the source linestring to be snapped
    * @param snapPts the target snap vertices
    */
-  private void snapSegments(CoordinateList srcCoords, List<Coordinate> snapPts)
+ /**private */void snapSegments(CoordinateList srcCoords, List<Coordinate> snapPts)
   {
     // guard against empty input
     if (snapPts.length == 0) return;
@@ -186,7 +186,7 @@ class LineStringSnapper
    * @return the index of the snapped segment
    * or -1 if no segment snaps to the snap point
    */
-  private int findSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
+ /**private */int findSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
   {
     double minDist = Double.MAX_VALUE;
     int snapIndex = -1;

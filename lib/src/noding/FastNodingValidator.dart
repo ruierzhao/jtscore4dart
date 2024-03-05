@@ -63,12 +63,12 @@ class FastNodingValidator
     return nv.getIntersections();
   }
   
-  private LineIntersector li = new RobustLineIntersector();
+ /**private */LineIntersector li = new RobustLineIntersector();
 
-  private Collection segStrings;
-  private bool findAllIntersections = false;
-  private NodingIntersectionFinder segInt = null;
-  private bool isValid = true;
+ /**private */Collection segStrings;
+ /**private */bool findAllIntersections = false;
+ /**private */NodingIntersectionFinder segInt = null;
+ /**private */bool isValid = true;
   
   /**
    * Creates a new noding validator for a given set of linework.
@@ -139,14 +139,14 @@ class FastNodingValidator
   		throw new TopologyException(getErrorMessage(), segInt.getIntersection());
   }
 
-  private void execute()
+ /**private */void execute()
   {
   	if (segInt != null) 
   		return;
     checkInteriorIntersections();
   }
 
-  private void checkInteriorIntersections()
+ /**private */void checkInteriorIntersections()
   {
   	/**
   	 * MD - It may even be reliable to simply check whether 

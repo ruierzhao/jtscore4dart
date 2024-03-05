@@ -29,7 +29,7 @@
 class RepeatedPointTester {
 
   // save the repeated coord found (if any)
-  private Coordinate repeatedCoord;
+ /**private */Coordinate repeatedCoord;
 
   RepeatedPointTester() {
   }
@@ -58,7 +58,7 @@ class RepeatedPointTester {
     }
     return false;
   }
-  private bool hasRepeatedPoint(Polygon p)
+ /**private */bool hasRepeatedPoint(Polygon p)
   {
     if (hasRepeatedPoint(p.getExteriorRing().getCoordinates())) return true;
     for (int i = 0; i < p.getNumInteriorRing(); i++) {
@@ -66,7 +66,7 @@ class RepeatedPointTester {
     }
     return false;
   }
-  private bool hasRepeatedPoint(GeometryCollection gc)
+ /**private */bool hasRepeatedPoint(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       Geometry g = gc.getGeometryN(i);

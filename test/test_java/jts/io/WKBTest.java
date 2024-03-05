@@ -36,8 +36,8 @@ public class WKBTest
     TestRunner.run(WKBTest.class);
   }
 
-  private GeometryFactory geomFactory = new GeometryFactory();
-  private WKTReader rdr = new WKTReader(geomFactory);
+ /**private */GeometryFactory geomFactory = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader(geomFactory);
 
   public WKBTest(String name)
   {
@@ -152,7 +152,7 @@ public class WKBTest
     runWKBTest("GEOMETRYCOLLECTION EMPTY");
   }
 
-  private void runWKBTest(String wkt) throws IOException, ParseException 
+ /**private */void runWKBTest(String wkt) throws IOException, ParseException 
   {
   	runWKBTestCoordinateArray(wkt);
   	runWKBTestPackedCoordinate(wkt);
@@ -198,7 +198,7 @@ public class WKBTest
 	  runGeometry(g, dimension, byteOrder, toHex, -1);
 	}
 
-  private void setZ(Geometry g)
+ /**private */void setZ(Geometry g)
   {
     g.apply(new AverageZFilter());
   }

@@ -122,7 +122,7 @@ System.out.println(finalList.size());
       throw new RuntimeException("queries do not match");
   }
 
-  private List getOverlapping(List items, Interval searchInterval)
+ /**private */List getOverlapping(List items, Interval searchInterval)
   {
     List result = new ArrayList();
     for (int i = 0; i < items.size(); i++) {

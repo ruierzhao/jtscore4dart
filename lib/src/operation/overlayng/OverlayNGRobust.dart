@@ -97,7 +97,7 @@ class OverlayNGRobust
     return op.union();
   }
   
-  private static UnionStrategy OVERLAY_UNION = new UnionStrategy() {
+ /**private */static UnionStrategy OVERLAY_UNION = new UnionStrategy() {
 
     Geometry union(Geometry g0, Geometry g1) {
        return overlay(g0, g1, OverlayNG.UNION );
@@ -167,7 +167,7 @@ class OverlayNGRobust
     throw exOriginal;
   }
 
-  private static final int NUM_SNAP_TRIES = 5;
+ /**private */static final int NUM_SNAP_TRIES = 5;
 
   /**
    * Attempt overlay using snapping with repeated tries with increasing snap tolerances.
@@ -177,7 +177,7 @@ class OverlayNGRobust
    * @param opCode
    * @return the computed overlay result, or null if the overlay fails
    */
-  private static Geometry overlaySnapTries(Geometry geom0, Geometry geom1, int opCode) {
+ /**private */static Geometry overlaySnapTries(Geometry geom0, Geometry geom1, int opCode) {
     Geometry result;
     double snapTol = snapTolerance(geom0, geom1);
     
@@ -209,7 +209,7 @@ class OverlayNGRobust
    * @param snapTol
    * @return the computed overlay result, or null if the overlay fails
    */
-  private static Geometry overlaySnapping(Geometry geom0, Geometry geom1, int opCode, double snapTol) {
+ /**private */static Geometry overlaySnapping(Geometry geom0, Geometry geom1, int opCode, double snapTol) {
     try {
       return overlaySnapTol(geom0, geom1, opCode, snapTol);
     }
@@ -231,7 +231,7 @@ class OverlayNGRobust
    * @param snapTol
    * @return the computed overlay result, or null if the overlay fails
    */
-  private static Geometry overlaySnapBoth(Geometry geom0, Geometry geom1, int opCode, double snapTol) {
+ /**private */static Geometry overlaySnapBoth(Geometry geom0, Geometry geom1, int opCode, double snapTol) {
     try {
       Geometry snap0 = snapSelf(geom0, snapTol);
       Geometry snap1 = snapSelf(geom1, snapTol); 
@@ -256,7 +256,7 @@ class OverlayNGRobust
    * @param snapTol snap tolerance
    * @return the snapped geometry (homogeneous)
    */
-  private static Geometry snapSelf(Geometry geom, double snapTol) {
+ /**private */static Geometry snapSelf(Geometry geom, double snapTol) {
     OverlayNG ov = new OverlayNG(geom, null);
     SnappingNoder snapNoder = new SnappingNoder(snapTol);
     ov.setNoder(snapNoder);
@@ -269,7 +269,7 @@ class OverlayNGRobust
     return ov.getResult();
   }
   
-  private static Geometry overlaySnapTol(Geometry geom0, Geometry geom1, int opCode, double snapTol) {
+ /**private */static Geometry overlaySnapTol(Geometry geom0, Geometry geom1, int opCode, double snapTol) {
     SnappingNoder snapNoder = new SnappingNoder(snapTol);
     return OverlayNG.overlay(geom0, geom1, opCode, snapNoder);
   }
@@ -280,7 +280,7 @@ class OverlayNGRobust
    * A factor for a snapping tolerance distance which 
    * should allow noding to be computed robustly.
    */
-  private static final double SNAP_TOL_FACTOR = 1e12;
+ /**private */static final double SNAP_TOL_FACTOR = 1e12;
 
   /**
    * Computes a heuristic snap tolerance distance
@@ -290,14 +290,14 @@ class OverlayNGRobust
    * @param geom1
    * @return the snap tolerance
    */
-  private static double snapTolerance(Geometry geom0, Geometry geom1) {
+ /**private */static double snapTolerance(Geometry geom0, Geometry geom1) {
     double tol0 = snapTolerance(geom0);
     double tol1 = snapTolerance(geom1);
     double snapTol = math.max(tol0,  tol1);
     return snapTol;
   }
   
-  private static double snapTolerance(Geometry geom) {
+ /**private */static double snapTolerance(Geometry geom) {
     double magnitude = ordinateMagnitude(geom);
     return magnitude / SNAP_TOL_FACTOR;
   }
@@ -309,7 +309,7 @@ class OverlayNGRobust
    * @param geom a geometry
    * @return the magnitude of the largest ordinate
    */
-  private static double ordinateMagnitude(Geometry geom) {
+ /**private */static double ordinateMagnitude(Geometry geom) {
     if (geom == null || geom.isEmpty()) return 0;
     Envelope env = geom.getEnvelopeInternal();
     double magMax = math.max(
@@ -321,7 +321,7 @@ class OverlayNGRobust
   
   //===============================================
   /*
-  private static void log(String msg, Geometry geom0, Geometry geom1) {
+ /**private */static void log(String msg, Geometry geom0, Geometry geom1) {
     System.out.println(msg);
     System.out.println(geom0);
     System.out.println(geom1);
@@ -337,7 +337,7 @@ class OverlayNGRobust
    * @param opCode
    * @return the computed overlay result, or null if the overlay fails
    */
-  private static Geometry overlaySR(Geometry geom0, Geometry geom1, int opCode)
+ /**private */static Geometry overlaySR(Geometry geom0, Geometry geom1, int opCode)
   {
     Geometry result;
     try {

@@ -22,7 +22,7 @@
  * @version 1.0
  */
 class EdgeConnectedTriangleTraversal {
-    private LinkedList triQueue = new LinkedList();
+   /**private */LinkedList triQueue = new LinkedList();
 
     EdgeConnectedTriangleTraversal() {}
 
@@ -46,7 +46,7 @@ class EdgeConnectedTriangleTraversal {
      * @param tri a triangle
      */
     /*
-     * protected void addLast(QuadEdgeTriangle tri) { triQueue.addLast(tri); }
+     */**protected */void addLast(QuadEdgeTriangle tri) { triQueue.addLast(tri); }
      */
 
     /**
@@ -59,7 +59,7 @@ class EdgeConnectedTriangleTraversal {
         }
     }
 
-    private void process(QuadEdgeTriangle currTri, TraversalVisitor visitor) {
+   /**private */void process(QuadEdgeTriangle currTri, TraversalVisitor visitor) {
         currTri.getNeighbours();
         for (int i = 0; i < 3; i++) {
             QuadEdgeTriangle neighTri = (QuadEdgeTriangle) currTri.getEdge(i).sym().getData();

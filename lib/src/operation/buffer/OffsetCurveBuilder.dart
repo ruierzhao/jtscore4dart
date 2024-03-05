@@ -36,9 +36,9 @@
  */
 class OffsetCurveBuilder 
 {  
-  private double distance = 0.0;
-  private PrecisionModel precisionModel;
-  private BufferParameters bufParams;
+ /**private */double distance = 0.0;
+ /**private */PrecisionModel precisionModel;
+ /**private */BufferParameters bufParams;
   
   OffsetCurveBuilder(
                 PrecisionModel precisionModel,
@@ -163,7 +163,7 @@ class OffsetCurveBuilder
     return curvePts;
   }
   
-  private static List<Coordinate> copyCoordinates(List<Coordinate> pts)
+ /**private */static List<Coordinate> copyCoordinates(List<Coordinate> pts)
   {
     List<Coordinate> copy = new Coordinate[pts.length];
     for (int i = 0; i < copy.length; i++) {
@@ -172,7 +172,7 @@ class OffsetCurveBuilder
     return copy;
   }
     
-  private OffsetSegmentGenerator getSegGen(double distance)
+ /**private */OffsetSegmentGenerator getSegGen(double distance)
   {
     return new OffsetSegmentGenerator(precisionModel, bufParams, distance);
   }
@@ -184,12 +184,12 @@ class OffsetCurveBuilder
    * @param bufDistance the buffer distance
    * @return the simplification tolerance
    */
-  private double simplifyTolerance(double bufDistance)
+ /**private */double simplifyTolerance(double bufDistance)
   {
     return bufDistance * bufParams.getSimplifyFactor();
   }
   
-  private void computePointCurve(Coordinate pt, OffsetSegmentGenerator segGen) {
+ /**private */void computePointCurve(Coordinate pt, OffsetSegmentGenerator segGen) {
     switch (bufParams.getEndCapStyle()) {
       case BufferParameters.CAP_ROUND:
         segGen.createCircle(pt);
@@ -201,7 +201,7 @@ class OffsetCurveBuilder
     }
   }
 
-  private void computeLineBufferCurve(List<Coordinate> inputPts, OffsetSegmentGenerator segGen)
+ /**private */void computeLineBufferCurve(List<Coordinate> inputPts, OffsetSegmentGenerator segGen)
   {
     double distTol = simplifyTolerance(distance);
     
@@ -239,7 +239,7 @@ class OffsetCurveBuilder
     segGen.closeRing();
   }
   
-  private void computeSingleSidedBufferCurve(List<Coordinate> inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
+ /**private */void computeSingleSidedBufferCurve(List<Coordinate> inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
   {
     double distTol = simplifyTolerance(distance);
     
@@ -282,7 +282,7 @@ class OffsetCurveBuilder
     segGen.closeRing();
   }
 
-  private void computeOffsetCurve(List<Coordinate> inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
+ /**private */void computeOffsetCurve(List<Coordinate> inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
   {
     double distTol = simplifyTolerance((distance).abs());
     
@@ -318,7 +318,7 @@ class OffsetCurveBuilder
     segGen.addLastSegment();
   }
 
-  private void computeRingBufferCurve(List<Coordinate> inputPts, int side, OffsetSegmentGenerator segGen)
+ /**private */void computeRingBufferCurve(List<Coordinate> inputPts, int side, OffsetSegmentGenerator segGen)
   {
     // simplify input line to improve performance
     double distTol = simplifyTolerance(distance);

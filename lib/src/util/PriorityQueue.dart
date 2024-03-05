@@ -21,8 +21,8 @@
  */
 class PriorityQueue 
 {
-  private int size; // Number of elements in queue
-  private ArrayList items; // The queue binary heap array
+ /**private */int size; // Number of elements in queue
+ /**private */ArrayList items; // The queue binary heap array
 
   /**
    * Creates a new empty priority queue
@@ -62,7 +62,7 @@ class PriorityQueue
    * Establish heap from an arbitrary arrangement of items. 
    */
   /*
-   private void buildHeap( ) {
+  /**private */void buildHeap( ) {
    for( int i = currentSize / 2; i > 0; i-- )
    reorder( i );
    }
@@ -121,7 +121,7 @@ class PriorityQueue
    * 
    * @param hole the index at which the percolate begins.
    */
-  private void reorder(int hole) 
+ /**private */void reorder(int hole) 
   {
     int child;
     Object tmp = items.get(hole);

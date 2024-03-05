@@ -34,9 +34,9 @@ public class WKBReaderTest  extends TestCase
     TestRunner.run(WKBReaderTest.class);
   }
 
-  private GeometryFactory geomFactory = new GeometryFactory();
-  private WKTReader rdr = new WKTReader(geomFactory);
-  private WKTReader rdrM =
+ /**private */GeometryFactory geomFactory = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader(geomFactory);
+ /**private */WKTReader rdrM =
           new WKTReader(new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
 
   public WKBReaderTest(String name) {
@@ -260,7 +260,7 @@ public class WKBReaderTest  extends TestCase
   
   //======================================
   
-  private void checkWKBParseException(String wkbHex) 
+ /**private */void checkWKBParseException(String wkbHex) 
   {
     try {
       checkWKBGeometry(wkbHex, "");
@@ -272,9 +272,9 @@ public class WKBReaderTest  extends TestCase
     fail();
   }
 
-  private static CoordinateSequenceComparator comp2 = new CoordinateSequenceComparator(2);
+ /**private */static CoordinateSequenceComparator comp2 = new CoordinateSequenceComparator(2);
 
-  private void checkWKBGeometry(String wkbHex, String expectedWKT) throws ParseException
+ /**private */void checkWKBGeometry(String wkbHex, String expectedWKT) throws ParseException
   {
     WKBReader wkbReader = new WKBReader(geomFactory);
     byte[] wkb = WKBReader.hexToBytes(wkbHex);
@@ -294,7 +294,7 @@ public class WKBReaderTest  extends TestCase
 
  }
 
-  private void checkSRID(String wkbHex, int expectedSrid) throws ParseException {
+ /**private */void checkSRID(String wkbHex, int expectedSrid) throws ParseException {
     WKBReader wkbReader = new WKBReader(geomFactory);
     Geometry geometry = wkbReader.read(WKBReader.hexToBytes(wkbHex));
 

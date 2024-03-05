@@ -19,8 +19,8 @@ package org.locationtech.jts.geom;
  */
 public class SegmentDensifier
 {
-  private LineString inputLine;
-  private CoordinateList newCoords;
+ /**private */LineString inputLine;
+ /**private */CoordinateList newCoords;
 
   public SegmentDensifier(LineString line) {
     this.inputLine = line;
@@ -46,7 +46,7 @@ public class SegmentDensifier
     return inputLine.getFactory().createLineString(newPts);
   }
 
-  private void densify(Coordinate p0, Coordinate p1, double segLength)
+ /**private */void densify(Coordinate p0, Coordinate p1, double segLength)
   {
     double origLen = p1.distance(p0);
     int nPtsToAdd = (int) Math.floor(origLen / segLength);

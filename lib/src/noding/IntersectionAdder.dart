@@ -33,16 +33,16 @@ class IntersectionAdder
    * These variables keep track of what types of intersections were
    * found during ALL edges that have been intersected.
    */
-  private bool hasIntersection = false;
-  private bool hasProper = false;
-  private bool hasProperInterior = false;
-  private bool hasInterior = false;
+ /**private */bool hasIntersection = false;
+ /**private */bool hasProper = false;
+ /**private */bool hasProperInterior = false;
+ /**private */bool hasInterior = false;
 
   // the proper intersection point found
-  private Coordinate properIntersectionPoint = null;
+ /**private */Coordinate properIntersectionPoint = null;
 
-  private LineIntersector li;
-  private bool isSelfIntersection;
+ /**private */LineIntersector li;
+ /**private */bool isSelfIntersection;
   //private bool intersectionFound;
   int numIntersections = 0;
   int numInteriorIntersections = 0;
@@ -89,7 +89,7 @@ class IntersectionAdder
    * Note that closed edges require a special check for the point shared by the beginning
    * and end segments.
    */
-  private bool isTrivialIntersection(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
+ /**private */bool isTrivialIntersection(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
   {
     if (e0 == e1) {
       if (li.getIntersectionNum() == 1) {

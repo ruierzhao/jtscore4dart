@@ -51,11 +51,11 @@
  */
 class LineBuilder {
   
-  private GeometryFactory geometryFactory;
-  private OverlayGraph graph;
-  private int opCode;
-  private int inputAreaIndex;
-  private bool hasResultArea;
+ /**private */GeometryFactory geometryFactory;
+ /**private */OverlayGraph graph;
+ /**private */int opCode;
+ /**private */int inputAreaIndex;
+ /**private */bool hasResultArea;
   
   /**
    * Indicates whether intersections are allowed to produce
@@ -63,17 +63,17 @@ class LineBuilder {
    * This does not control inclusion of touches along collapses.
    * True provides the original JTS semantics.
    */
-  private bool isAllowMixedResult = ! OverlayNG.STRICT_MODE_DEFAULT;
+ /**private */bool isAllowMixedResult = ! OverlayNG.STRICT_MODE_DEFAULT;
   
   /**
    * Allow lines created by area topology collapses
    * to appear in the result.
    * True provides the original JTS semantics.
    */
-  private bool isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
+ /**private */bool isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
 
   
-  private List<LineString> lines = new ArrayList<LineString>();
+ /**private */List<LineString> lines = new ArrayList<LineString>();
   
   /**
    * Creates a builder for linear elements which may be present 
@@ -104,7 +104,7 @@ class LineBuilder {
     return lines;
   }
 
-  private void markResultLines() {
+ /**private */void markResultLines() {
     Collection<OverlayEdge> edges = graph.getEdges();
     for (OverlayEdge edge : edges) {
       /**
@@ -133,7 +133,7 @@ class LineBuilder {
    * @param lbl the label for an edge
    * @return true if the edge should be included in the result
    */
-  private bool isResultLine(OverlayLabel lbl) {
+ /**private */bool isResultLine(OverlayLabel lbl) {
     /**
      * Omit edge which is a boundary of a single geometry
      * (i.e. not a collapse or line edge as well).
@@ -214,7 +214,7 @@ class LineBuilder {
    * 
    * @return the effective location of the line
    */
-  private static int effectiveLocation(OverlayLabel lbl, int geomIndex) {
+ /**private */static int effectiveLocation(OverlayLabel lbl, int geomIndex) {
     if (lbl.isCollapse(geomIndex))
       return Location.INTERIOR;
     if (lbl.isLine(geomIndex))
@@ -222,7 +222,7 @@ class LineBuilder {
     return lbl.getLineLocation(geomIndex);
   }
   
-  private void addResultLines() {
+ /**private */void addResultLines() {
     Collection<OverlayEdge> edges = graph.getEdges();
     for (OverlayEdge edge : edges) {
       if (! edge.isInResultLine()) continue;
@@ -233,7 +233,7 @@ class LineBuilder {
     }
   }
   
-  private LineString toLine(OverlayEdge edge) {
+ /**private */LineString toLine(OverlayEdge edge) {
     bool isForward = edge.isForward();
     CoordinateList pts = new CoordinateList();
     pts.add(edge.orig(), false);
@@ -255,12 +255,12 @@ class LineBuilder {
    */
   /// FUTURE: enable merging via an option switch on OverlayNG
   
-  private void addResultLinesMerged() {
+ /**private */void addResultLinesMerged() {
     addResultLinesForNodes();
     addResultLinesRings();
   }
   
-  private void addResultLinesForNodes() {
+ /**private */void addResultLinesForNodes() {
     Collection<OverlayEdge> edges = graph.getEdges();
     for (OverlayEdge edge : edges) {
       if (! edge.isInResultLine()) continue;
@@ -282,7 +282,7 @@ class LineBuilder {
   /**
    * Adds lines which form rings (i.e. have only degree-2 vertices).
    */
-  private void addResultLinesRings() {
+ /**private */void addResultLinesRings() {
     // TODO: an ordering could be imposed on the endpoints to make this more repeatable
     
     // TODO: preserve input LinearRings if possible?  Would require marking them as such
@@ -316,7 +316,7 @@ class LineBuilder {
    * @param node
    * @return 
    */
-  private LineString buildLine(OverlayEdge node) {
+ /**private */LineString buildLine(OverlayEdge node) {
     CoordinateList pts = new CoordinateList();
     pts.add(node.orig(), false);
     
@@ -349,7 +349,7 @@ class LineBuilder {
    * @param node a line edge originating at the node to be scanned
    * @return the next line edge, or null if there is none
    */
-  private static OverlayEdge nextLineEdgeUnvisited(OverlayEdge node) {
+ /**private */static OverlayEdge nextLineEdgeUnvisited(OverlayEdge node) {
     OverlayEdge e = node;
     do {
       e = e.oNextOE();
@@ -366,7 +366,7 @@ class LineBuilder {
    * @param node node to compute degree for
    * @return degree of the node line edges
    */
-  private static int degreeOfLines(OverlayEdge node) {
+ /**private */static int degreeOfLines(OverlayEdge node) {
     int degree = 0;
     OverlayEdge e = node;
     do {

@@ -29,13 +29,13 @@
 
 class OverlayEdgeRing {
   
-  private OverlayEdge startEdge;
-  private LinearRing ring;
-  private bool isHole;
-  private List<Coordinate> ringPts;
-  private IndexedPointInAreaLocator locator;
-  private OverlayEdgeRing shell;
-  private List<OverlayEdgeRing> holes = new ArrayList<OverlayEdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
+ /**private */OverlayEdge startEdge;
+ /**private */LinearRing ring;
+ /**private */bool isHole;
+ /**private */List<Coordinate> ringPts;
+ /**private */IndexedPointInAreaLocator locator;
+ /**private */OverlayEdgeRing shell;
+ /**private */List<OverlayEdgeRing> holes = new ArrayList<OverlayEdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
 
   OverlayEdgeRing(OverlayEdge start, GeometryFactory geometryFactory) {
     startEdge = start;
@@ -47,7 +47,7 @@ class OverlayEdgeRing {
     return ring;
   }
   
-  private Envelope getEnvelope() {
+ /**private */Envelope getEnvelope() {
     return ring.getEnvelopeInternal();
   }
   
@@ -91,7 +91,7 @@ class OverlayEdgeRing {
 
   void addHole(OverlayEdgeRing ring) { holes.add(ring); }
 
-  private List<Coordinate> computeRingPts(OverlayEdge start) {
+ /**private */List<Coordinate> computeRingPts(OverlayEdge start) {
     OverlayEdge edge = start;
     CoordinateList pts = new CoordinateList();
     do {
@@ -116,7 +116,7 @@ class OverlayEdgeRing {
     return pts.toCoordinateArray();
   }
   
-  private void computeRing(List<Coordinate> ringPts, GeometryFactory geometryFactory) {
+ /**private */void computeRing(List<Coordinate> ringPts, GeometryFactory geometryFactory) {
     if (ring != null) return;   // don't compute more than once
     ring = geometryFactory.createLinearRing(ringPts);
     isHole = Orientation.isCCW(ring.getCoordinates());
@@ -128,7 +128,7 @@ class OverlayEdgeRing {
    *
    * @return an array of the {@link Coordinate}s in this ring
    */
-  private List<Coordinate> getCoordinates()
+ /**private */List<Coordinate> getCoordinates()
   {
     return ringPts;
   }
@@ -166,7 +166,7 @@ class OverlayEdgeRing {
     return minContainingRing;
   }
 
-  private PointOnGeometryLocator getLocator() {
+ /**private */PointOnGeometryLocator getLocator() {
     if (locator == null) {
       locator = new IndexedPointInAreaLocator(getRing());
     }
@@ -188,7 +188,7 @@ class OverlayEdgeRing {
    * @param ring ring to test
    * @return true if ring is properly contained
    */
-  private bool contains(OverlayEdgeRing ring) {
+ /**private */bool contains(OverlayEdgeRing ring) {
     // the test envelope must be properly contained
     // (guards against testing rings against themselves)
     Envelope env = getEnvelope();
@@ -198,7 +198,7 @@ class OverlayEdgeRing {
     return isPointInOrOut(ring);
   }
   
-  private bool isPointInOrOut(OverlayEdgeRing ring) {
+ /**private */bool isPointInOrOut(OverlayEdgeRing ring) {
     // in most cases only one or two points will be checked
     for (Coordinate pt : ring.getCoordinates()) {
       int loc = locate(pt);

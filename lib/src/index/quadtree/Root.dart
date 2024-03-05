@@ -26,7 +26,7 @@ class Root
 {
 
   // the singleton root quad is centred at the origin.
-  private static final Coordinate origin = new Coordinate(0.0, 0.0);
+ /**private */static final Coordinate origin = new Coordinate(0.0, 0.0);
 
   Root()
   {
@@ -71,7 +71,7 @@ class Root
    * the given QuadNode root.  Lower levels of the tree will be created
    * if necessary to hold the item.
    */
-  private void insertContained(Node tree, Envelope itemEnv, Object item)
+ /**private */void insertContained(Node tree, Envelope itemEnv, Object item)
   {
     Assert.isTrue(tree.getEnvelope().contains(itemEnv));
    /**
@@ -89,7 +89,7 @@ class Root
     node.add(item);
   }
 
-  protected bool isSearchMatch(Envelope searchEnv)
+ /**protected */bool isSearchMatch(Envelope searchEnv)
   {
     return true;
   }

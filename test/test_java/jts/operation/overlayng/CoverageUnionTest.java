@@ -69,7 +69,7 @@ public class CoverageUnionTest extends GeometryTestCase
         "MULTILINESTRING ((1 9, 3.1 8), (2 3, 4 3), (3.1 8, 5 7), (4 3, 5 3), (5 3, 5 7), (5 3, 7 4), (5 3, 8 1), (5 7, 7 8), (7 4, 9 5), (7 8, 9 9))");
   }
 
-  private void checkUnion(String wkt, String wktExpected) {
+ /**private */void checkUnion(String wkt, String wktExpected) {
     Geometry coverage = read(wkt);
     Geometry expected = read(wktExpected);
     Geometry result = CoverageUnion.union(coverage);

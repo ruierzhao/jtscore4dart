@@ -27,7 +27,7 @@ public class OrientationIndexTest
     extends TestCase
 {
 
-  private static WKTReader reader = new WKTReader();
+ /**private */static WKTReader reader = new WKTReader();
   //private CGAlgorithms rcga = new CGAlgorithms();
 
   public static void main(String args[]) {

@@ -90,7 +90,7 @@ public class NonRobustLineIntersector
     result = POINT_INTERSECTION;
   }
 
-  protected int computeIntersect(
+ /**protected */int computeIntersect(
       Coordinate p1,
       Coordinate p2,
       Coordinate p3,
@@ -214,7 +214,7 @@ public class NonRobustLineIntersector
    *  DO_INTERSECT		: the inputLines intersect in a single point
    *  only, pa
    */
-  private int computeCollinearIntersection(
+ /**private */int computeCollinearIntersection(
       Coordinate p1,
       Coordinate p2,
       Coordinate p3,
@@ -277,7 +277,7 @@ public class NonRobustLineIntersector
    *  of the line from p1 to p2.
    *  This is equal to the 'distance' of p along p1-p2
    */
-  private double rParameter(Coordinate p1, Coordinate p2, Coordinate p) {
+ /**private */double rParameter(Coordinate p1, Coordinate p2, Coordinate p) {
     double r;
     // compute maximum delta, for numerical stability
     // also handle case of p1-p2 being vertical or horizontal

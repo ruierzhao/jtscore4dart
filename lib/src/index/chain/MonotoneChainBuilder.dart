@@ -72,7 +72,7 @@ class MonotoneChainBuilder {
    * @return the index of the last point in the monotone chain 
    * starting at <code>start</code>.
    */
-  private static int findChainEnd(List<Coordinate> pts, int start)
+ /**private */static int findChainEnd(List<Coordinate> pts, int start)
   {
   	int safeStart = start;
   	// skip any zero-length segments at the start of the sequence

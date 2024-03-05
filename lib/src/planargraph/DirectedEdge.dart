@@ -47,14 +47,14 @@ class DirectedEdge
     return edges;
   }
 
-  protected Edge parentEdge;
-  protected Node from;
-  protected Node to;
-  protected Coordinate p0, p1;
-  protected DirectedEdge sym = null;  // optional
-  protected bool edgeDirection;
-  protected int quadrant;
-  protected double angle;
+ /**protected */Edge parentEdge;
+ /**protected */Node from;
+ /**protected */Node to;
+ /**protected */Coordinate p0, p1;
+ /**protected */DirectedEdge sym = null;  // optional
+ /**protected */bool edgeDirection;
+ /**protected */int quadrant;
+ /**protected */double angle;
 
   /**
    * Constructs a DirectedEdge connecting the <code>from</code> node to the

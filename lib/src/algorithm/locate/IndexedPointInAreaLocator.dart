@@ -54,8 +54,8 @@ class IndexedPointInAreaLocator
   implements PointOnGeometryLocator
 {
   
-  private Geometry geom;
-  private volatile IntervalIndexedGeometry index = null;
+ /**private */Geometry geom;
+ /**private */volatile IntervalIndexedGeometry index = null;
   
   /**
    * Creates a new locator for a given {@link Geometry}.
@@ -97,7 +97,7 @@ class IndexedPointInAreaLocator
   /**
    * Creates the indexed geometry, creating it if necessary.
    */
-  private synchronized void createIndex() {
+ /**private */synchronized void createIndex() {
     if (index == null) {
       index = new IntervalIndexedGeometry(geom);
       // no need to hold onto geom
@@ -105,10 +105,10 @@ class IndexedPointInAreaLocator
     }
   }
   
-  private static class SegmentVisitor
+ /**private */static class SegmentVisitor
     implements ItemVisitor
   {
-    private final RayCrossingCounter counter;
+   /**private */final RayCrossingCounter counter;
     
     SegmentVisitor(RayCrossingCounter counter)
     {
@@ -122,10 +122,10 @@ class IndexedPointInAreaLocator
     }
   }
   
-  private static class IntervalIndexedGeometry
+ /**private */static class IntervalIndexedGeometry
   {
-    private final bool isEmpty;
-    private final SortedPackedIntervalRTree index= new SortedPackedIntervalRTree();
+   /**private */final bool isEmpty;
+   /**private */final SortedPackedIntervalRTree index= new SortedPackedIntervalRTree();
 
     IntervalIndexedGeometry(Geometry geom)
     {
@@ -137,7 +137,7 @@ class IndexedPointInAreaLocator
       }
     }
     
-    private void init(Geometry geom)
+   /**private */void init(Geometry geom)
     {
       List lines = LinearComponentExtracter.getLines(geom);
       for (Iterator i = lines.iterator(); i.hasNext(); ) {
@@ -151,7 +151,7 @@ class IndexedPointInAreaLocator
       }
     }
     
-    private void addLine(List<Coordinate> pts)
+   /**private */void addLine(List<Coordinate> pts)
     {
       for (int i = 1; i < pts.length; i++) {
         LineSegment seg = new LineSegment(pts[i-1], pts[i]);

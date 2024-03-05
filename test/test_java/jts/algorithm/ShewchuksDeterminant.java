@@ -236,7 +236,7 @@ public class ShewchuksDeterminant
     return 2;
   }
 
-  private static int signum(double x)
+ /**private */static int signum(double x)
   {
     if (x > 0) return 1;
     if (x < 0) return -1;
@@ -266,7 +266,7 @@ public class ShewchuksDeterminant
     return 0;
   }
 
-  private static double orient2d(Coordinate pa, Coordinate pb, Coordinate pc)
+ /**private */static double orient2d(Coordinate pa, Coordinate pb, Coordinate pc)
   {
     double detsum;
 
@@ -322,7 +322,7 @@ public class ShewchuksDeterminant
   /*                                                                           */
   /*****************************************************************************/
 
-  private static double orient2dadapt(Coordinate pa, Coordinate pb,
+ /**private */static double orient2dadapt(Coordinate pa, Coordinate pb,
       Coordinate pc, double detsum)
   {
 
@@ -416,35 +416,35 @@ public class ShewchuksDeterminant
   }
 
 
-  private static final double epsilon;
+ /**private */static final double epsilon;
 
-  private static final double splitter;
+ /**private */static final double splitter;
 
-  private static final double resulterrbound;
+ /**private */static final double resulterrbound;
 
-  private static final double ccwerrboundA;
+ /**private */static final double ccwerrboundA;
 
-  private static final double ccwerrboundB;
+ /**private */static final double ccwerrboundB;
 
-  private static final double ccwerrboundC;
+ /**private */static final double ccwerrboundC;
 
-  private static final double o3derrboundA;
+ /**private */static final double o3derrboundA;
 
-  private static final double o3derrboundB;
+ /**private */static final double o3derrboundB;
 
-  private static final double o3derrboundC;
+ /**private */static final double o3derrboundC;
 
-  private static final double iccerrboundA;
+ /**private */static final double iccerrboundA;
 
-  private static final double iccerrboundB;
+ /**private */static final double iccerrboundB;
 
-  private static final double iccerrboundC;
+ /**private */static final double iccerrboundC;
 
-  private static final double isperrboundA;
+ /**private */static final double isperrboundA;
 
-  private static final double isperrboundB;
+ /**private */static final double isperrboundB;
 
-  private static final double isperrboundC;
+ /**private */static final double isperrboundC;
 
   /*****************************************************************************/
   /*                                                                           */
@@ -510,12 +510,12 @@ public class ShewchuksDeterminant
     splitter = splitter_temp;
   }
 
-  private static double Absolute(double a)
+ /**private */static double Absolute(double a)
   {
     return ((a) >= 0.0 ? (a) : -(a));
   }
 
-  private static double Fast_Two_Sum_Tail(double a, double b, double x)
+ /**private */static double Fast_Two_Sum_Tail(double a, double b, double x)
   {
     double bvirt = x - a;
     double y = b - bvirt;
@@ -523,14 +523,14 @@ public class ShewchuksDeterminant
     return y;
   }
 
-  private static double Fast_Two_Sum_Head(double a, double b)
+ /**private */static double Fast_Two_Sum_Head(double a, double b)
   {
     double x = (double) (a + b);
 
     return x;
   }
 
-  private static double Two_Sum_Tail(double a, double b, double x)
+ /**private */static double Two_Sum_Tail(double a, double b, double x)
   {
     double bvirt = (double) (x - a);
     double avirt = x - bvirt;
@@ -542,14 +542,14 @@ public class ShewchuksDeterminant
     return y;
   }
 
-  private static double Two_Sum_Head(double a, double b)
+ /**private */static double Two_Sum_Head(double a, double b)
   {
     double x = (double) (a + b);
 
     return x;
   }
 
-  private static double Two_Diff_Tail(double a, double b, double x)
+ /**private */static double Two_Diff_Tail(double a, double b, double x)
   {
     double bvirt = (double) (a - x); // porting issue: why this cast?
     double avirt = x + bvirt;
@@ -560,14 +560,14 @@ public class ShewchuksDeterminant
     return y;
   }
 
-  private static double Two_Diff_Head(double a, double b)
+ /**private */static double Two_Diff_Head(double a, double b)
   {
     double x = (double) (a - b);
 
     return x;
   }
 
-  private static double SplitLo(double a)
+ /**private */static double SplitLo(double a)
   {
     double c = (double) (splitter * a); // porting issue: why this cast?
     double abig = (double) (c - a); // porting issue: why this cast?
@@ -577,7 +577,7 @@ public class ShewchuksDeterminant
     return alo;
   }
 
-  private static double SplitHi(double a)
+ /**private */static double SplitHi(double a)
   {
     double c = (double) (splitter * a); // porting issue: why this cast?
     double abig = (double) (c - a); // porting issue: why this cast?
@@ -586,7 +586,7 @@ public class ShewchuksDeterminant
     return ahi;
   }
 
-  private static double Two_Product_Tail(double a, double b, double x)
+ /**private */static double Two_Product_Tail(double a, double b, double x)
   {
     double ahi = SplitHi(a);
     double alo = SplitLo(a);
@@ -601,7 +601,7 @@ public class ShewchuksDeterminant
     return y;
   }
 
-  private static double Two_Product_Head(double a, double b)
+ /**private */static double Two_Product_Head(double a, double b)
   {
     double x = (double) (a * b);
 
@@ -609,7 +609,7 @@ public class ShewchuksDeterminant
   }
 
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
-  private static double Two_One_Diff__x0(double a1, double a0, double b)
+ /**private */static double Two_One_Diff__x0(double a1, double a0, double b)
   {
     double _i = Two_Diff_Head(a0, b);
     double x0 = Two_Diff_Tail(a0, b, _i);
@@ -618,7 +618,7 @@ public class ShewchuksDeterminant
   }
 
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
-  private static double Two_One_Diff__x1(double a1, double a0, double b)
+ /**private */static double Two_One_Diff__x1(double a1, double a0, double b)
   {
     double _i = Two_Diff_Head(a0, b);
     double x2 = Two_Sum_Head(a1, _i);
@@ -628,7 +628,7 @@ public class ShewchuksDeterminant
   }
 
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
-  private static double Two_One_Diff__x2(double a1, double a0, double b)
+ /**private */static double Two_One_Diff__x2(double a1, double a0, double b)
   {
     double _i = Two_Diff_Head(a0, b);
     double x2 = Two_Sum_Head(a1, _i);
@@ -637,7 +637,7 @@ public class ShewchuksDeterminant
   }
 
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
-  private static double Two_Two_Diff__x0(double a1, double a0, double b1,
+ /**private */static double Two_Two_Diff__x0(double a1, double a0, double b1,
       double b0)
   {
     double x0 = Two_One_Diff__x0(a1, a0, b0);
@@ -646,7 +646,7 @@ public class ShewchuksDeterminant
   }
 
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
-  private static double Two_Two_Diff__x1(double a1, double a0, double b1,
+ /**private */static double Two_Two_Diff__x1(double a1, double a0, double b1,
       double b0)
   {
     double _j = Two_One_Diff__x2(a1, a0, b0);
@@ -658,7 +658,7 @@ public class ShewchuksDeterminant
   }
 
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
-  private static double Two_Two_Diff__x2(double a1, double a0, double b1,
+ /**private */static double Two_Two_Diff__x2(double a1, double a0, double b1,
       double b0)
   {
     double _j = Two_One_Diff__x2(a1, a0, b0);
@@ -670,7 +670,7 @@ public class ShewchuksDeterminant
   }
 
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
-  private static double Two_Two_Diff__x3(double a1, double a0, double b1,
+ /**private */static double Two_Two_Diff__x3(double a1, double a0, double b1,
       double b0)
   {
     double _j = Two_One_Diff__x2(a1, a0, b0);
@@ -695,7 +695,7 @@ public class ShewchuksDeterminant
   /*                                                                           */
   /*****************************************************************************/
 
-  private static int fast_expansion_sum_zeroelim(int elen, double[] e,
+ /**private */static int fast_expansion_sum_zeroelim(int elen, double[] e,
       int flen, double[] f, double[] h) /* h cannot be e or f. */
   {
     double Q;
@@ -781,7 +781,7 @@ public class ShewchuksDeterminant
   /*                                                                           */
   /*****************************************************************************/
 
-  private static double estimate(int elen, double[] e)
+ /**private */static double estimate(int elen, double[] e)
   {
     double Q;
     int eindex;

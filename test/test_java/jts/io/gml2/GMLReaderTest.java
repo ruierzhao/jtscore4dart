@@ -13,8 +13,8 @@ import junit.textui.TestRunner;
 import test.jts.GeometryTestCase;
 
 public class GMLReaderTest extends GeometryTestCase {
-  private static final int DEFAULT_SRID = 9876;
-  private static final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), DEFAULT_SRID);
+ /**private */static final int DEFAULT_SRID = 9876;
+ /**private */static final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), DEFAULT_SRID);
 
   public static void main(String args[]) {
     TestRunner.run(GMLReaderTest.class);
@@ -109,11 +109,11 @@ public class GMLReaderTest extends GeometryTestCase {
         "LINESTRING (45.67 88.56, 55.56 89.44)");
   }
 
-  private void checkRead(String gml, String wktExpected) {
+ /**private */void checkRead(String gml, String wktExpected) {
     checkRead(gml, wktExpected, DEFAULT_SRID);
   } 
   
-  private void checkRead(String gml, String wktExpected, int srid) {
+ /**private */void checkRead(String gml, String wktExpected, int srid) {
     GMLReader gr = new GMLReader();
     Geometry g = null;
     try {

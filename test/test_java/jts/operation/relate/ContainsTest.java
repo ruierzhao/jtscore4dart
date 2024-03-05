@@ -33,8 +33,8 @@ public class ContainsTest
     TestRunner.run(ContainsTest.class);
   }
 
-  private GeometryFactory fact = new GeometryFactory();
-  private WKTReader rdr = new WKTReader(fact);
+ /**private */GeometryFactory fact = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader(fact);
 
   public ContainsTest(String name)
   {
@@ -83,14 +83,14 @@ public class ContainsTest
     checkContains(a, b);
   }
   
-  private void checkContains(String wktA, String wktB) {
+ /**private */void checkContains(String wktA, String wktB) {
     Geometry geomA = read(wktA);
     Geometry geomB = read(wktB);
     boolean actual = geomA.contains(geomB);
     assertTrue(actual);
   }
   
-  private void checkContainsError(String wktA, String wktB) {
+ /**private */void checkContainsError(String wktA, String wktB) {
     Geometry geomA = read(wktA);
     Geometry geomB = read(wktB);
     boolean actual = geomA.contains(geomB);

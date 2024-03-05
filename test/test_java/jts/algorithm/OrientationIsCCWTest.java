@@ -108,24 +108,24 @@ public class OrientationIsCCWTest extends GeometryTestCase {
     checkCCWArea(true, "POLYGON ((10 10, 50 10, 25 35, 35 35, 10 10))");
   }
   
-  private void checkCCW(boolean expectedCCW, String wkt) {
+ /**private */void checkCCW(boolean expectedCCW, String wkt) {
     Coordinate[] pts2x = getCoordinates(wkt);
     assertEquals("Coordinate array isCCW: ", expectedCCW, Orientation.isCCW(pts2x) );
     CoordinateSequence seq2x = getCoordinateSequence(wkt);
     assertEquals("CoordinateSequence isCCW: ", expectedCCW, Orientation.isCCW(seq2x) );
   }
 
-  private void checkCCWArea(boolean expectedCCW, String wkt) {
+ /**private */void checkCCWArea(boolean expectedCCW, String wkt) {
     Coordinate[] pts = getCoordinates(wkt);
     assertEquals("Coordinate array isCCW: ", expectedCCW, Orientation.isCCWArea(pts) );
   }
   
-  private Coordinate[] getCoordinates(String wkt)
+ /**private */Coordinate[] getCoordinates(String wkt)
   {
     Geometry geom = read(wkt);
     return geom.getCoordinates();
   }
-  private CoordinateSequence getCoordinateSequence(String wkt)
+ /**private */CoordinateSequence getCoordinateSequence(String wkt)
   {
     Geometry geom = read(wkt);
     if (geom.getGeometryType() != "Polygon")

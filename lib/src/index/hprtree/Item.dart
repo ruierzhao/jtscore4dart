@@ -15,8 +15,8 @@
 
 class Item {
 
-  private Envelope env;
-  private Object item;
+ /**private */Envelope env;
+ /**private */Object item;
 
   Item(Envelope env, Object item) {
     this.env = env;

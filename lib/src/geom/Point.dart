@@ -40,9 +40,9 @@ class Point
 	extends Geometry
 	implements Puntal
 {
-  // private static final long serialVersionUID = 4902022702746614570L;
+  ///**private */static final long serialVersionUID = 4902022702746614570L;
   ///  The <code>Coordinate</code> wrapped by this <code>Point</code>.
-  /** private */ CoordinateSequence coordinates;
+  /**/**private */*/ CoordinateSequence coordinates;
 
   ///  Constructs a <code>Point</code> with the given coordinate.
   ///

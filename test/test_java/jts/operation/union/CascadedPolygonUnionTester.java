@@ -65,7 +65,7 @@ public class CascadedPolygonUnionTester
   }
 
   /*
-  private void OLDdoTest(String filename, double distanceTolerance) 
+ /**private */void OLDdoTest(String filename, double distanceTolerance) 
   throws IOException, ParseException
   {
     WKTFileReader fileRdr = new WKTFileReader(filename, wktRdr);

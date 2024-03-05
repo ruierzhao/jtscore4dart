@@ -94,7 +94,7 @@ class HilbertCode
     return level;
   }
   
-  private static void checkLevel(int level) {
+ /**private */static void checkLevel(int level) {
     if (level > MAX_LEVEL) {
       throw new ArgumentError("Level must be in range 0 to " + MAX_LEVEL);
     }
@@ -183,7 +183,7 @@ class HilbertCode
    * @param level the level of a Hilbert curve
    * @return a valid level
    */
-  private static int levelClamp(int level) {
+ /**private */static int levelClamp(int level) {
     // clamp order to [1, 16]
     int lvl = level < 1 ? 1 : level;
     lvl = lvl > MAX_LEVEL ? MAX_LEVEL : lvl;
@@ -222,7 +222,7 @@ class HilbertCode
     return new Coordinate(x, y);
   }
 
-  private static long prefixScan(long x) {
+ /**private */static long prefixScan(long x) {
     x = (x >> 8) ^ x;
     x = (x >> 4) ^ x;
     x = (x >> 2) ^ x;
@@ -230,7 +230,7 @@ class HilbertCode
     return x;
   }
 
-  private static long deinterleave(int x) {
+ /**private */static long deinterleave(int x) {
     x = x & 0x55555555;
     x = (x | (x >> 1)) & 0x33333333;
     x = (x | (x >> 2)) & 0x0F0F0F0F;

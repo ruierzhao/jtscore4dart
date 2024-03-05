@@ -61,9 +61,9 @@ class DouglasPeuckerSimplifier
     return tss.getResultGeometry();
   }
 
-  private Geometry inputGeom;
-  private double distanceTolerance;
-  private bool isEnsureValidTopology = true;
+ /**private */Geometry inputGeom;
+ /**private */double distanceTolerance;
+ /**private */bool isEnsureValidTopology = true;
   
   /**
    * Creates a simplifier for a given geometry.
@@ -124,8 +124,8 @@ class DouglasPeuckerSimplifier
 static class DPTransformer
     extends GeometryTransformer
 {
-  private bool isEnsureValidTopology = true;
-  private double distanceTolerance;
+ /**private */bool isEnsureValidTopology = true;
+ /**private */double distanceTolerance;
 
 	DPTransformer(bool isEnsureValidTopology, double distanceTolerance)
 	{
@@ -133,7 +133,7 @@ static class DPTransformer
 		this.distanceTolerance = distanceTolerance;
 	}
 	
-  protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
+ /**protected */CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
   {
     bool isPreserveEndpoint = ! (parent is LinearRing);
     List<Coordinate> inputPts = coords.toCoordinateArray();
@@ -150,7 +150,7 @@ static class DPTransformer
   /**
    * Simplifies a polygon, fixing it if required.
    */
-  protected Geometry transformPolygon(Polygon geom, Geometry parent) {
+ /**protected */Geometry transformPolygon(Polygon geom, Geometry parent) {
     // empty geometries are simply removed
     if (geom.isEmpty())
       return null;
@@ -169,7 +169,7 @@ static class DPTransformer
    * @return null if the simplification results in a degenerate ring
    */
   //*
-  protected Geometry transformLinearRing(LinearRing geom, Geometry parent) 
+ /**protected */Geometry transformLinearRing(LinearRing geom, Geometry parent) 
   {
   	bool removeDegenerateRings = parent is Polygon;
   	Geometry simpResult = super.transformLinearRing(geom, parent);
@@ -182,7 +182,7 @@ static class DPTransformer
   /**
    * Simplifies a MultiPolygon, fixing it if required.
    */
-  protected Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
+ /**protected */Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
     Geometry rawGeom = super.transformMultiPolygon(geom, parent);
     return createValidArea(rawGeom);
   }
@@ -202,7 +202,7 @@ static class DPTransformer
    * @param rawAreaGeom an area geometry possibly containing self-intersections
    * @return a valid area geometry
    */
-  private Geometry createValidArea(Geometry rawAreaGeom)
+ /**private */Geometry createValidArea(Geometry rawAreaGeom)
   {
     bool isValidArea = rawAreaGeom.getDimension() == 2 && rawAreaGeom.isValid();
     // if geometry is invalid then make it valid

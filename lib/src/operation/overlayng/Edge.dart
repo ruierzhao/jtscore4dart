@@ -58,15 +58,15 @@ class Edge {
     return false;
   }
   
-  private List<Coordinate> pts;
+ /**private */List<Coordinate> pts;
   
-  private int aDim = OverlayLabel.DIM_UNKNOWN;
-  private int aDepthDelta = 0;
-  private bool aIsHole = false;
+ /**private */int aDim = OverlayLabel.DIM_UNKNOWN;
+ /**private */int aDepthDelta = 0;
+ /**private */bool aIsHole = false;
   
-  private int bDim = OverlayLabel.DIM_UNKNOWN;
-  private int bDepthDelta = 0;
-  private bool bIsHole = false;
+ /**private */int bDim = OverlayLabel.DIM_UNKNOWN;
+ /**private */int bDepthDelta = 0;
+ /**private */bool bIsHole = false;
 
   Edge(List<Coordinate> pts, EdgeSourceInfo info) {
     this.pts = pts;
@@ -159,7 +159,7 @@ class Edge {
    * @param dim
    * @param depthDelta
    */
-  private static void initLabel(OverlayLabel lbl, int geomIndex, int dim, int depthDelta, bool isHole) {
+ /**private */static void initLabel(OverlayLabel lbl, int geomIndex, int dim, int depthDelta, bool isHole) {
     int dimLabel = labelDim(dim, depthDelta);
     
     switch (dimLabel) {
@@ -178,7 +178,7 @@ class Edge {
     }
   }
 
-  private static int labelDim(int dim, int depthDelta) {
+ /**private */static int labelDim(int dim, int depthDelta) {
     if (dim == Dimension.FALSE) 
       return OverlayLabel.DIM_NOT_PART;
 
@@ -199,14 +199,14 @@ class Edge {
    * @param geomIndex the index of the geometry
    * @return true if this edge is a boundary and part of a shell
    */
-  private bool isShell(int geomIndex) {
+ /**private */bool isShell(int geomIndex) {
     if (geomIndex == 0) {
       return aDim == OverlayLabel.DIM_BOUNDARY && ! aIsHole;
     }
     return bDim == OverlayLabel.DIM_BOUNDARY && ! bIsHole;
   }
   
-  private static int locationRight(int depthDelta) {
+ /**private */static int locationRight(int depthDelta) {
     int delSign = delSign(depthDelta);
     switch (delSign) {
     case 0: return OverlayLabel.LOC_UNKNOWN;
@@ -216,7 +216,7 @@ class Edge {
     return OverlayLabel.LOC_UNKNOWN;
   }
 
-  private static int locationLeft(int depthDelta) {
+ /**private */static int locationLeft(int depthDelta) {
     // TODO: is it always safe to ignore larger depth deltas?
     int delSign = delSign(depthDelta);
     switch (delSign) {
@@ -227,13 +227,13 @@ class Edge {
     return OverlayLabel.LOC_UNKNOWN;
   }
 
-  private static int delSign(int depthDel) {
+ /**private */static int delSign(int depthDel) {
     if(depthDel > 0) return 1;
     if (depthDel < 0) return -1;
     return 0;
   }
 
-  private void copyInfo(EdgeSourceInfo info) {
+ /**private */void copyInfo(EdgeSourceInfo info) {
     if (info.getIndex() == 0) {
       aDim = info.getDimension();
       aIsHole = info.isHole();
@@ -275,7 +275,7 @@ class Edge {
     */
   }
 
-  private static bool isHoleMerged(int geomIndex, Edge edge1, Edge edge2) {
+ /**private */static bool isHoleMerged(int geomIndex, Edge edge1, Edge edge2) {
     // TOD: this might be clearer with tri-state logic for isHole?
     bool isShell1 = edge1.isShell(geomIndex);
     bool isShell2 = edge2.isShell(geomIndex);
@@ -299,7 +299,7 @@ class Edge {
     return WKTWriter.toLineString(pts);
   }
 
-  private static String toStringPts(List<Coordinate> pts) {
+ /**private */static String toStringPts(List<Coordinate> pts) {
     Coordinate orig = pts[0];
     Coordinate dest = pts[pts.length - 1];
     String dirPtStr = (pts.length > 2)
@@ -319,12 +319,12 @@ class Edge {
         + Integer.toString(depthDelta);  // force to string
   }
   
-  private static String ringRoleSymbol(int dim, bool isHole) {
+ /**private */static String ringRoleSymbol(int dim, bool isHole) {
     if (hasAreaParent(dim)) return "" + OverlayLabel.ringRoleSymbol(isHole);
     return "";
   }
   
-  private static bool hasAreaParent(int dim) {
+ /**private */static bool hasAreaParent(int dim) {
     return dim == OverlayLabel.DIM_BOUNDARY || dim == OverlayLabel.DIM_COLLAPSE;
   }
 }

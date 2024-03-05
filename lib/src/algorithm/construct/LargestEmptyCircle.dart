@@ -114,23 +114,23 @@ class LargestEmptyCircle {
     return lec.getRadiusLine();
   }
   
-  private Geometry obstacles;
-  private Geometry boundary;
-  private double tolerance;
+ /**private */Geometry obstacles;
+ /**private */Geometry boundary;
+ /**private */double tolerance;
 
-  private GeometryFactory factory;
-  private IndexedDistanceToPoint obstacleDistance;
-  private IndexedPointInAreaLocator boundaryPtLocater;
-  private IndexedFacetDistance boundaryDistance;
-  private Envelope gridEnv;
-  private Cell farthestCell;
+ /**private */GeometryFactory factory;
+ /**private */IndexedDistanceToPoint obstacleDistance;
+ /**private */IndexedPointInAreaLocator boundaryPtLocater;
+ /**private */IndexedFacetDistance boundaryDistance;
+ /**private */Envelope gridEnv;
+ /**private */Cell farthestCell;
   
-  private Cell centerCell = null;
-  private Coordinate centerPt;
-  private Point centerPoint = null;
-  private Coordinate radiusPt;
-  private Point radiusPoint = null;
-  private Geometry bounds;
+ /**private */Cell centerCell = null;
+ /**private */Coordinate centerPt;
+ /**private */Point centerPoint = null;
+ /**private */Coordinate radiusPt;
+ /**private */Point radiusPoint = null;
+ /**private */Geometry bounds;
 
   /// Creates a new instance of a Largest Empty Circle construction,
   /// interior-disjoint to a set of obstacle geometries 
@@ -199,7 +199,7 @@ class LargestEmptyCircle {
   /// 
   /// @param p the point to compute the distance for
   /// @return the signed distance to the constraints (negative indicates outside the boundary)
-  private double distanceToConstraints(Point p) {
+ /**private */double distanceToConstraints(Point p) {
     bool isOutide = Location.EXTERIOR == boundaryPtLocater.locate(p.getCoordinate());
     if (isOutide) {
       double boundaryDist = boundaryDistance.distance(p);
@@ -209,13 +209,13 @@ class LargestEmptyCircle {
     return dist;
   }
 
-  private double distanceToConstraints(double x, double y) {
+ /**private */double distanceToConstraints(double x, double y) {
     Coordinate coord = new Coordinate(x, y);
     Point pt = factory.createPoint(coord);
     return distanceToConstraints(pt);
   }
   
-  private void initBoundary() {
+ /**private */void initBoundary() {
     bounds = this.boundary;
     if (bounds == null || bounds.isEmpty()) {
       bounds = obstacles.convexHull();
@@ -229,7 +229,7 @@ class LargestEmptyCircle {
     }
   }
   
-  private void compute() {
+ /**private */void compute() {
     initBoundary();
     
     // check if already computed
@@ -306,7 +306,7 @@ class LargestEmptyCircle {
   /// 
   /// @param cell the cell to test
   /// @return true if the cell might contain the circle center
-  private bool mayContainCircleCenter(Cell cell) {
+ /**private */bool mayContainCircleCenter(Cell cell) {
     /**
      * Every point in the cell lies outside the boundary,
      * so they cannot be the center point
@@ -339,7 +339,7 @@ class LargestEmptyCircle {
   /// 
   /// @param env the area extent to cover
   /// @param cellQueue the queue to initialize
-  private void createInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue) {
+ /**private */void createInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue) {
     double cellSize = math.max(env.getWidth(), env.getHeight());
     double hSide = cellSize / 2.0;
 
@@ -351,12 +351,12 @@ class LargestEmptyCircle {
     cellQueue.add(createCell(centre.x, centre.y, hSide));   
   }
 
-  private Cell createCell(double x, double y, double h) {
+ /**private */Cell createCell(double x, double y, double h) {
     return new Cell(x, y, h, distanceToConstraints(x, y));
   }
 
   // create a cell centered on area centroid
-  private Cell createCentroidCell(Geometry geom) {
+ /**private */Cell createCentroidCell(Geometry geom) {
     Point p = geom.getCentroid();
     return new Cell(p.getX(), p.getY(), 0, distanceToConstraints(p));
   }
@@ -368,15 +368,15 @@ class LargestEmptyCircle {
   /// constraints can be computed.
   /// This is used as the ordering and upper-bound function in
   /// the branch-and-bound algorithm. 
-  private static class Cell implements Comparable<Cell> {
+ /**private */static class Cell implements Comparable<Cell> {
 
-    private static final double SQRT2 = 1.4142135623730951;
+   /**private */static final double SQRT2 = 1.4142135623730951;
 
-    private double x;
-    private double y;
-    private double hSide;
-    private double distance;
-    private double maxDist;
+   /**private */double x;
+   /**private */double y;
+   /**private */double hSide;
+   /**private */double distance;
+   /**private */double maxDist;
 
     Cell(double x, double y, double hSide, double distanceToConstraints) {
       this.x = x; // cell center x

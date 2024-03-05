@@ -105,7 +105,7 @@ public class PolygonHoleJoinerTest extends GeometryTestCase {
         );
   }
   
-  private void checkJoin(String wkt, String wktExpected) {
+ /**private */void checkJoin(String wkt, String wktExpected) {
     Polygon geom = (Polygon) read(wkt);
     Geometry actual = PolygonHoleJoiner.joinAsPolygon(geom);
     if (wktExpected == null) {

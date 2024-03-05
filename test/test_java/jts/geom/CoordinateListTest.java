@@ -24,7 +24,7 @@ public class CoordinateListTest extends TestCase {
     checkValue(coordList().toCoordinateArray(false) );
   }
 
-  private void checkValue(Coordinate[] coordArray, double ... ords) {
+ /**private */void checkValue(Coordinate[] coordArray, double ... ords) {
     
     assertEquals( coordArray.length * 2, ords.length);
     
@@ -35,7 +35,7 @@ public class CoordinateListTest extends TestCase {
     }
   }
 
-  private CoordinateList coordList(double ... ords) {
+ /**private */CoordinateList coordList(double ... ords) {
     CoordinateList cl = new CoordinateList();
     for (int i = 0 ; i < ords.length; i += 2) {
       cl.add(new Coordinate(ords[i], ords[i+1]), false);

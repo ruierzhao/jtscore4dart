@@ -47,7 +47,7 @@
  */
 class RelateNodeGraph {
 
-  private NodeMap nodes = new NodeMap(new RelateNodeFactory());
+ /**private */NodeMap nodes = new NodeMap(new RelateNodeFactory());
 
   RelateNodeGraph() {
   }

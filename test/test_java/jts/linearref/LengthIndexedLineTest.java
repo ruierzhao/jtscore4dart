@@ -173,7 +173,7 @@ public class LengthIndexedLineTest
       "LINESTRING (0 50, 0 60)");
   }
 
-  private void checkExtractLine(String wkt, double start, double end, String expected)
+ /**private */void checkExtractLine(String wkt, double start, double end, String expected)
   {
     Geometry linearGeom = read(wkt);
     LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
@@ -181,7 +181,7 @@ public class LengthIndexedLineTest
     checkExpected(result, expected);
   }
 
-  protected Geometry indicesOfThenExtract(Geometry linearGeom, Geometry subLine)
+ /**protected */Geometry indicesOfThenExtract(Geometry linearGeom, Geometry subLine)
   {
     LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
     double[] loc = indexedLine.indicesOf(subLine);
@@ -189,7 +189,7 @@ public class LengthIndexedLineTest
     return result;
   }
 
-  protected boolean indexOfAfterCheck(Geometry linearGeom, Coordinate testPt)
+ /**protected */boolean indexOfAfterCheck(Geometry linearGeom, Coordinate testPt)
   {
     LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
 
@@ -207,7 +207,7 @@ public class LengthIndexedLineTest
     return true;
   }
 
-  protected boolean indexOfAfterCheck(Geometry linearGeom, Coordinate testPt, Coordinate checkPt)
+ /**protected */boolean indexOfAfterCheck(Geometry linearGeom, Coordinate testPt, Coordinate checkPt)
   {
     LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
 
@@ -219,7 +219,7 @@ public class LengthIndexedLineTest
     return true;
   }
 
-  protected Coordinate extractOffsetAt(Geometry linearGeom, Coordinate testPt, double offsetDistance)
+ /**protected */Coordinate extractOffsetAt(Geometry linearGeom, Coordinate testPt, double offsetDistance)
   {
     LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
     double index = indexedLine.indexOf(testPt);

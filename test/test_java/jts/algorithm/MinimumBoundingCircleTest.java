@@ -27,8 +27,8 @@ import test.jts.GeometryTestCase;
  */
 public class MinimumBoundingCircleTest extends GeometryTestCase {
 
-  private PrecisionModel precisionModel = new PrecisionModel(1);
-  private GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+ /**private */PrecisionModel precisionModel = new PrecisionModel(1);
+ /**private */GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
   WKTReader reader = new WKTReader(geometryFactory);
 
   public static void main(String args[]) {
@@ -86,7 +86,7 @@ public class MinimumBoundingCircleTest extends GeometryTestCase {
   
   static final double TOLERANCE = 1.0e-5;
   
-  private void doMaxDiameterTest(String wkt, String expectedWKT) {
+ /**private */void doMaxDiameterTest(String wkt, String expectedWKT) {
     MinimumBoundingCircle mbc = new MinimumBoundingCircle(read(wkt));
     Geometry diamActual = mbc.getMaximumDiameter();
     Geometry expected = read(expectedWKT);
@@ -94,12 +94,12 @@ public class MinimumBoundingCircleTest extends GeometryTestCase {
     checkEqual(expected, diamActual);
   }
 
-  private void doMinimumBoundingCircleTest(String wkt, String expectedWKT) throws ParseException 
+ /**private */void doMinimumBoundingCircleTest(String wkt, String expectedWKT) throws ParseException 
   {
   	doMinimumBoundingCircleTest(wkt, expectedWKT, null, -1);
   }
   
-  private void doMinimumBoundingCircleTest(String wkt, String expectedWKT,
+ /**private */void doMinimumBoundingCircleTest(String wkt, String expectedWKT,
   		Coordinate expectedCentre, double expectedRadius)
   {
   	MinimumBoundingCircle mbc = new MinimumBoundingCircle(read(wkt));

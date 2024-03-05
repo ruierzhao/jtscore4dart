@@ -41,15 +41,15 @@ class PrecisionReducerTransformer extends GeometryTransformer {
     return trans.transform(geom);
   }
   
-  private PrecisionModel targetPM;
-  private bool isRemoveCollapsed = false;
+ /**private */PrecisionModel targetPM;
+ /**private */bool isRemoveCollapsed = false;
   
   PrecisionReducerTransformer(PrecisionModel targetPM, bool isRemoveCollapsed) {
     this.targetPM = targetPM;
     this.isRemoveCollapsed  = isRemoveCollapsed;
   }
   
-  protected CoordinateSequence transformCoordinates(
+ /**protected */CoordinateSequence transformCoordinates(
       CoordinateSequence coordinates, Geometry parent) {
     if (coordinates.size() == 0)
       return null;
@@ -84,7 +84,7 @@ class PrecisionReducerTransformer extends GeometryTransformer {
     return factory.getCoordinateSequenceFactory().create(coordsReduce);
   }
 
-  private List<Coordinate> extend(List<Coordinate> coords, int minLength) {
+ /**private */List<Coordinate> extend(List<Coordinate> coords, int minLength) {
     if (coords.length >= minLength)
       return coords;
     List<Coordinate> exCoords = new Coordinate[minLength];
@@ -95,7 +95,7 @@ class PrecisionReducerTransformer extends GeometryTransformer {
     return exCoords;
   }
 
-  private List<Coordinate> reduceCompress(CoordinateSequence coordinates) {
+ /**private */List<Coordinate> reduceCompress(CoordinateSequence coordinates) {
     CoordinateList noRepeatCoordList = new CoordinateList();
     // copy coordinates and reduce
     for (int i = 0; i < coordinates.size(); i++) {
@@ -108,15 +108,15 @@ class PrecisionReducerTransformer extends GeometryTransformer {
     return noRepeatCoords;
   }
 
-  protected Geometry transformPolygon(Polygon geom, Geometry parent) {
+ /**protected */Geometry transformPolygon(Polygon geom, Geometry parent) {
     return reduceArea(geom);
   }
 
-  protected Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
+ /**protected */Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
     return reduceArea(geom);
   }
 
-  private Geometry reduceArea(Geometry geom) {
+ /**private */Geometry reduceArea(Geometry geom) {
     Geometry reduced = PrecisionReducer.reducePrecision(geom, targetPM);
     return reduced;
   }

@@ -19,7 +19,7 @@ public class GeometryReverseTest  extends GeometryTestCase {
     }
   }
 
-  private void checkReverse(final Geometry g) {
+ /**private */void checkReverse(final Geometry g) {
     int SRID = 123;
     g.setSRID(SRID );
 
@@ -35,7 +35,7 @@ public class GeometryReverseTest  extends GeometryTestCase {
     assertTrue( g.getGeometryType() +": Sequences are not opposite", checkSequences(g, reverse) );
   }
 
-  private boolean checkSequences(Geometry g1, Geometry g2) {
+ /**private */boolean checkSequences(Geometry g1, Geometry g2) {
     int numGeometries = g1.getNumGeometries();
     if (numGeometries != g2.getNumGeometries())
       return false;
@@ -78,7 +78,7 @@ public class GeometryReverseTest  extends GeometryTestCase {
     return true;
   }
 
-  private boolean checkSequences(CoordinateSequence c1, CoordinateSequence c2) {
+ /**private */boolean checkSequences(CoordinateSequence c1, CoordinateSequence c2) {
 
     if (c1.size() != c2.size())
       return false;

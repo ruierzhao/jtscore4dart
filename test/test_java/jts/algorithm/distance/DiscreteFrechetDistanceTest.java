@@ -73,9 +73,9 @@ public class DiscreteFrechetDistanceTest extends GeometryTestCase {
       "LINESTRING (0 0, 50 100, 100 0)", 141.4213562373095);
   }
   
-  private static final double TOLERANCE = 0.00001;
+ /**private */static final double TOLERANCE = 0.00001;
 
-  private void runTest(String wkt1, String wkt2, double expectedDistance) {
+ /**private */void runTest(String wkt1, String wkt2, double expectedDistance) {
     Geometry g1 = read(wkt1);
     Geometry g2 = read(wkt2);
 

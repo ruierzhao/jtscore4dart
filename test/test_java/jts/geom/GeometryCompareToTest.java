@@ -54,7 +54,7 @@ public class GeometryCompareToTest extends GeometryTestCase{
     checkCompareTo(-1, GeometryTestData.WKT_POLY,GeometryTestData.WKT_MULTIPOLYGON);    
     checkCompareTo(-1, GeometryTestData.WKT_MULTIPOLYGON,GeometryTestData.WKT_GC);    
   }
-  private void checkCompareTo(int compExpected, String wkt1, String wkt2 ) {
+ /**private */void checkCompareTo(int compExpected, String wkt1, String wkt2 ) {
     Geometry g1 = read(wkt1);
     Geometry g2 = read(wkt2);
     int comp = g1.compareTo(g2);

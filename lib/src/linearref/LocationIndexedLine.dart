@@ -24,7 +24,7 @@
  */
 class LocationIndexedLine
 {
-  private Geometry linearGeom;
+ /**private */Geometry linearGeom;
 
   /**
    * Constructs an object which allows linear referencing along
@@ -38,7 +38,7 @@ class LocationIndexedLine
     checkGeometryType();
   }
 
-  private void checkGeometryType()
+ /**private */void checkGeometryType()
   {
     if (! (linearGeom is LineString || linearGeom is MultiLineString))
       throw new ArgumentError("Input geometry must be linear");

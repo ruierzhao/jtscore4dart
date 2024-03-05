@@ -25,7 +25,7 @@
  */
 class IndexedPointOnLineLocator implements PointOnGeometryLocator {
 
-  private Geometry inputGeom;
+ /**private */Geometry inputGeom;
 
   IndexedPointOnLineLocator(Geometry geomLinear) {
     this.inputGeom = geomLinear;

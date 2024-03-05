@@ -32,12 +32,12 @@
  * @version 1.7
  */
 class LineBuilder {
-  private OverlayOp op;
-  private GeometryFactory geometryFactory;
-  private PointLocator ptLocator;
+ /**private */OverlayOp op;
+ /**private */GeometryFactory geometryFactory;
+ /**private */PointLocator ptLocator;
 
-  private List lineEdgesList    = new ArrayList();
-  private List resultLineList   = new ArrayList();
+ /**private */List lineEdgesList    = new ArrayList();
+ /**private */List resultLineList   = new ArrayList();
 
   LineBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
     this.op = op;
@@ -62,7 +62,7 @@ class LineBuilder {
    * L edges at nodes which do not have A edges can be checked by doing a
    * point-in-polygon test with the previously computed result areas.
    */
-  private void findCoveredLineEdges()
+ /**private */void findCoveredLineEdges()
   {
     // first set covered for all L edges at nodes which have A edges too
     for (Iterator nodeit = op.getGraph().getNodes().iterator(); nodeit.hasNext(); ) {
@@ -85,7 +85,7 @@ class LineBuilder {
     }
   }
 
-  private void collectLines(int opCode)
+ /**private */void collectLines(int opCode)
   {
     for (Iterator it = op.getGraph().getEdgeEnds().iterator(); it.hasNext(); ) {
       DirectedEdge de = (DirectedEdge) it.next();
@@ -104,7 +104,7 @@ class LineBuilder {
    * @param opCode the overlap operation
    * @param edges the list of included line edges
    */
-  private void collectLineEdge(DirectedEdge de, int opCode, List edges)
+ /**private */void collectLineEdge(DirectedEdge de, int opCode, List edges)
   {
     Label label = de.getLabel();
     Edge e = de.getEdge();
@@ -130,7 +130,7 @@ class LineBuilder {
    * <li> OR as a result of a dimensional collapse.
    * </ul>
    */
-  private void collectBoundaryTouchEdge(DirectedEdge de, int opCode, List edges)
+ /**private */void collectBoundaryTouchEdge(DirectedEdge de, int opCode, List edges)
   {
     Label label = de.getLabel();
     if (de.isLineEdge()) return;  // only interested in area edges
@@ -150,7 +150,7 @@ class LineBuilder {
     }
   }
 
-  private void buildLines(int opCode)
+ /**private */void buildLines(int opCode)
   {
     for (Iterator it = lineEdgesList.iterator(); it.hasNext(); ) {
       Edge e = (Edge) it.next();
@@ -161,7 +161,7 @@ class LineBuilder {
     }
   }
 
-  private void labelIsolatedLines(List edgesList)
+ /**private */void labelIsolatedLines(List edgesList)
   {
     for (Iterator it = edgesList.iterator(); it.hasNext(); ) {
       Edge e = (Edge) it.next();
@@ -178,7 +178,7 @@ class LineBuilder {
   /**
    * Label an isolated node with its relationship to the target geometry.
    */
-  private void labelIsolatedLine(Edge e, int targetIndex)
+ /**private */void labelIsolatedLine(Edge e, int targetIndex)
   {
     int loc = ptLocator.locate(e.getCoordinate(), op.getArgGeometry(targetIndex));
     e.getLabel().setLocation(targetIndex, loc);

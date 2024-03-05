@@ -95,7 +95,7 @@ class MortonCode
     return level;
   }
   
-  private static void checkLevel(int level) {
+ /**private */static void checkLevel(int level) {
     if (level > MAX_LEVEL) {
       throw new ArgumentError("Level must be in range 0 to " + MAX_LEVEL);
     }
@@ -112,7 +112,7 @@ class MortonCode
     return (interleave(y) << 1) + interleave(x);
   }
   
-  private static int interleave(int x) {
+ /**private */static int interleave(int x) {
     x &= 0x0000ffff;                  // x = ---- ---- ---- ---- fedc ba98 7654 3210
     x = (x ^ (x << 8)) & 0x00ff00ff; // x = ---- ---- fedc ba98 ---- ---- 7654 3210
     x = (x ^ (x << 4)) & 0x0f0f0f0f; // x = ---- fedc ---- ba98 ---- 7654 ---- 3210
@@ -134,7 +134,7 @@ class MortonCode
     return new Coordinate(x, y);
   }
 
-  private static long deinterleave(int x) {
+ /**private */static long deinterleave(int x) {
     x = x & 0x55555555;
     x = (x | (x >> 1)) & 0x33333333;
     x = (x | (x >> 2)) & 0x0F0F0F0F;

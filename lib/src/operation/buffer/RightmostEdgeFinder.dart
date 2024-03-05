@@ -35,10 +35,10 @@
 class RightmostEdgeFinder {
 
   //private Coordinate extremeCoord;
-  private int minIndex = -1;
-  private Coordinate minCoord = null;
-  private DirectedEdge minDe = null;
-  private DirectedEdge orientedDe = null;
+ /**private */int minIndex = -1;
+ /**private */Coordinate minCoord = null;
+ /**private */DirectedEdge minDe = null;
+ /**private */DirectedEdge orientedDe = null;
   /**
    * A RightmostEdgeFinder finds the DirectedEdge with the rightmost coordinate.
    * The DirectedEdge returned is guaranteed to have the R of the world on its RHS.
@@ -84,7 +84,7 @@ class RightmostEdgeFinder {
       orientedDe = minDe.getSym();
     }
   }
-  private void findRightmostEdgeAtNode()
+ /**private */void findRightmostEdgeAtNode()
   {
       Node node = minDe.getNode();
       DirectedEdgeStar star = (DirectedEdgeStar) node.getEdges();
@@ -96,7 +96,7 @@ class RightmostEdgeFinder {
         minIndex = minDe.getEdge().getCoordinates().length - 1;
       }
   }
-  private void findRightmostEdgeAtVertex()
+ /**private */void findRightmostEdgeAtVertex()
   {
       /**
        * The rightmost point is an interior vertex, so it has a segment on either side of it.
@@ -124,7 +124,7 @@ class RightmostEdgeFinder {
         minIndex = minIndex - 1;
       }
   }
-  private void checkForRightmostCoordinate(DirectedEdge de)
+ /**private */void checkForRightmostCoordinate(DirectedEdge de)
   {
     List<Coordinate> coord = de.getEdge().getCoordinates();
     for (int i = 0; i < coord.length - 1; i++) {
@@ -139,7 +139,7 @@ class RightmostEdgeFinder {
     }
   }
 
-  private int getRightmostSide(DirectedEdge de, int index)
+ /**private */int getRightmostSide(DirectedEdge de, int index)
   {
     int side = getRightmostSideOfSegment(de, index);
     if (side < 0)
@@ -154,7 +154,7 @@ class RightmostEdgeFinder {
     return side;
   }
 
-  private int getRightmostSideOfSegment(DirectedEdge de, int i)
+ /**private */int getRightmostSideOfSegment(DirectedEdge de, int i)
   {
     Edge e = de.getEdge();
     Coordinate coord[] = e.getCoordinates();

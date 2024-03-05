@@ -34,7 +34,7 @@
  */
 class BoundarySegmentNoder implements Noder {
 
-  private List<SegmentString> segList;
+ /**private */List<SegmentString> segList;
   
   /**
    * Creates a new segment-dissolving noder.
@@ -50,13 +50,13 @@ class BoundarySegmentNoder implements Noder {
     segList = extractSegments(segSet);
   }
 
-  private static void addSegments(Collection<SegmentString> segStrings, HashSet<Segment> segSet) {
+ /**private */static void addSegments(Collection<SegmentString> segStrings, HashSet<Segment> segSet) {
     for (SegmentString ss : segStrings) {
       addSegments( ss, segSet );
     }
   }
   
-  private static void addSegments(SegmentString segString, HashSet<Segment> segSet) {
+ /**private */static void addSegments(SegmentString segString, HashSet<Segment> segSet) {
     for (int i = 0; i < segString.size() - 1; i++) {
       Coordinate p0 = segString.getCoordinate(i);
       Coordinate p1 = segString.getCoordinate(i + 1);
@@ -70,7 +70,7 @@ class BoundarySegmentNoder implements Noder {
     }
   }
   
-  private static List<SegmentString> extractSegments(HashSet<Segment> segSet) {
+ /**private */static List<SegmentString> extractSegments(HashSet<Segment> segSet) {
     List<SegmentString> segList = new ArrayList<SegmentString>();
     for (Segment seg : segSet) {
       SegmentString ss = seg.getSegmentString();
@@ -89,8 +89,8 @@ class BoundarySegmentNoder implements Noder {
   }
 
   static class Segment extends LineSegment {
-    private SegmentString segStr;
-    private int index;
+   /**private */SegmentString segStr;
+   /**private */int index;
 
     Segment(Coordinate p0, Coordinate p1, 
         SegmentString segStr, int index) {

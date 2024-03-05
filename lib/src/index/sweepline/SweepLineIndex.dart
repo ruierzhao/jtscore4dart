@@ -24,9 +24,9 @@
 class SweepLineIndex {
 
   List events = new ArrayList();
-  private bool indexBuilt;
+ /**private */bool indexBuilt;
   // statistics information
-  private int nOverlaps;
+ /**private */int nOverlaps;
 
   SweepLineIndex() {
   }
@@ -43,7 +43,7 @@ class SweepLineIndex {
    * it is possible to compute exactly the range of events which must be
    * compared to a given Insert event object.
    */
-  private void buildIndex()
+ /**private */void buildIndex()
   {
     if (indexBuilt) return;
     Collections.sort(events);
@@ -71,7 +71,7 @@ class SweepLineIndex {
     }
   }
 
-  private void processOverlaps(int start, int end, SweepLineInterval s0, SweepLineOverlapAction action)
+ /**private */void processOverlaps(int start, int end, SweepLineInterval s0, SweepLineOverlapAction action)
   {
     /**
      * Since we might need to test for self-intersections,

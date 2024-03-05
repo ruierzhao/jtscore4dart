@@ -39,7 +39,7 @@ import 'package:jtscore4dart/src/geom/Envelope.dart';
 /// @version 1.7
 class CoordinateArraySequence extends CoordinateSequence{
   //With contributions from Markus Schaber [schabios@logi-track.com] 2004-03-26
-  // private static final long serialVersionUID = -915438501601840650L;
+  ///**private */static final long serialVersionUID = -915438501601840650L;
 
   /// The actual dimension of the coordinates in the sequence.
   /// Allowable values are 2, 3 or 4.

@@ -69,14 +69,14 @@ class DiscreteHausdorffDistance
     return dist.distance();
   }
 
-  private Geometry g0;
-  private Geometry g1;
-  private PointPairDistance ptDist = new PointPairDistance();
+ /**private */Geometry g0;
+ /**private */Geometry g1;
+ /**private */PointPairDistance ptDist = new PointPairDistance();
   
   /**
    * Value of 0.0 indicates that no densification should take place
    */
-  private double densifyFrac = 0.0;
+ /**private */double densifyFrac = 0.0;
 
   DiscreteHausdorffDistance(Geometry g0, Geometry g1)
   {
@@ -115,13 +115,13 @@ class DiscreteHausdorffDistance
 
   List<Coordinate> getCoordinates() { return ptDist.getCoordinates(); }
 
-  private void compute(Geometry g0, Geometry g1)
+ /**private */void compute(Geometry g0, Geometry g1)
   {
     computeOrientedDistance(g0, g1, ptDist);
     computeOrientedDistance(g1, g0, ptDist);
   }
 
-  private void computeOrientedDistance(Geometry discreteGeom, Geometry geom, PointPairDistance ptDist)
+ /**private */void computeOrientedDistance(Geometry discreteGeom, Geometry geom, PointPairDistance ptDist)
   {
     MaxPointDistanceFilter distFilter = new MaxPointDistanceFilter(geom);
     discreteGeom.apply(distFilter);
@@ -138,9 +138,9 @@ class DiscreteHausdorffDistance
   static class MaxPointDistanceFilter
       implements CoordinateFilter
   {
-    private PointPairDistance maxPtDist = new PointPairDistance();
-    private PointPairDistance minPtDist = new PointPairDistance();
-    private Geometry geom;
+   /**private */PointPairDistance maxPtDist = new PointPairDistance();
+   /**private */PointPairDistance minPtDist = new PointPairDistance();
+   /**private */Geometry geom;
 
     MaxPointDistanceFilter(Geometry geom)
     {
@@ -160,10 +160,10 @@ class DiscreteHausdorffDistance
   static class MaxDensifiedByFractionDistanceFilter 
   implements CoordinateSequenceFilter 
   {
-  private PointPairDistance maxPtDist = new PointPairDistance();
-  private PointPairDistance minPtDist = new PointPairDistance();
-  private Geometry geom;
-  private int numSubSegs = 0;
+ /**private */PointPairDistance maxPtDist = new PointPairDistance();
+ /**private */PointPairDistance minPtDist = new PointPairDistance();
+ /**private */Geometry geom;
+ /**private */int numSubSegs = 0;
 
   MaxDensifiedByFractionDistanceFilter(Geometry geom, double fraction) {
     this.geom = geom;

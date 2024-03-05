@@ -29,9 +29,9 @@
  * @version 1.7
  */
 class EdgeString {
-  private GeometryFactory factory;
-  private List directedEdges = new ArrayList();
-  private List<Coordinate> coordinates = null;
+ /**private */GeometryFactory factory;
+ /**private */List directedEdges = new ArrayList();
+ /**private */List<Coordinate> coordinates = null;
   /**
    * Constructs an EdgeString with the given factory used to convert this EdgeString
    * to a LineString
@@ -47,7 +47,7 @@ class EdgeString {
     directedEdges.add(directedEdge);
   }
 
-  private List<Coordinate> getCoordinates() {
+ /**private */List<Coordinate> getCoordinates() {
     if (coordinates == null) {
       int forwardDirectedEdges = 0;
       int reverseDirectedEdges = 0;

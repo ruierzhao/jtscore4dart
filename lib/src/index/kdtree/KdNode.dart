@@ -22,11 +22,11 @@
  */
 class KdNode {
 
-    private Coordinate p = null;
-    private Object     data;
-    private KdNode     left;
-    private KdNode     right;
-    private int        count;
+   /**private */Coordinate p = null;
+   /**private */Object     data;
+   /**private */KdNode     left;
+   /**private */KdNode     right;
+   /**private */int        count;
 
     /**
      * Creates a new KdNode.

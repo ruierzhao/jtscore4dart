@@ -23,11 +23,11 @@ import org.locationtech.jts.geom.Envelope;
  */
 public class SpatialIndexTester 
 {
-  private static boolean VERBOSE = false;
+ /**private */static boolean VERBOSE = false;
   
-  private SpatialIndex index;
-  private ArrayList sourceData;
-  private boolean isSuccess = true;
+ /**private */SpatialIndex index;
+ /**private */ArrayList sourceData;
+ /**private */boolean isSuccess = true;
   
   public SpatialIndexTester() {
   }
@@ -69,21 +69,21 @@ public class SpatialIndexTester
     doTest(index, QUERY_ENVELOPE_EXTENT_2, sourceData);
   }
 
-  private void insert(List sourceData, SpatialIndex index) {
+ /**private */void insert(List sourceData, SpatialIndex index) {
     for (Iterator i = sourceData.iterator(); i.hasNext(); ) {
       Envelope envelope = (Envelope) i.next();
       index.insert(envelope, envelope);
     }
   }
 
-  private static final double CELL_EXTENT = 20.31;
-  private static final int CELLS_PER_GRID_SIDE = 10;
-  private static final double FEATURE_EXTENT = 10.1;
-  private static final double OFFSET = 5.03;
-  private static final double QUERY_ENVELOPE_EXTENT_1 = 1.009;
-  private static final double QUERY_ENVELOPE_EXTENT_2 = 11.7;
+ /**private */static final double CELL_EXTENT = 20.31;
+ /**private */static final int CELLS_PER_GRID_SIDE = 10;
+ /**private */static final double FEATURE_EXTENT = 10.1;
+ /**private */static final double OFFSET = 5.03;
+ /**private */static final double QUERY_ENVELOPE_EXTENT_1 = 1.009;
+ /**private */static final double QUERY_ENVELOPE_EXTENT_2 = 11.7;
 
-  private void addSourceData(double offset, List sourceData) {
+ /**private */void addSourceData(double offset, List sourceData) {
     for (int i = 0; i < CELLS_PER_GRID_SIDE; i++) {
       double minx = (i * CELL_EXTENT) + offset;
       double maxx = minx + FEATURE_EXTENT;
@@ -96,7 +96,7 @@ public class SpatialIndexTester
     }
   }
 
-  private void doTest(SpatialIndex index, double queryEnvelopeExtent, List sourceData) {
+ /**private */void doTest(SpatialIndex index, double queryEnvelopeExtent, List sourceData) {
    int extraMatchCount = 0;
     int expectedMatchCount = 0;
     int actualMatchCount = 0;
@@ -130,7 +130,7 @@ public class SpatialIndexTester
     }
   }
 
-  private void compare(List expectedEnvelopes, List actualEnvelopes) {
+ /**private */void compare(List expectedEnvelopes, List actualEnvelopes) {
     //Don't use #containsAll because we want to check using
     //==, not #equals. [Jon Aquino]
     for (Iterator i = expectedEnvelopes.iterator(); i.hasNext(); ) {
@@ -148,7 +148,7 @@ public class SpatialIndexTester
     }
   }
 
-  private List intersectingEnvelopes(Envelope queryEnvelope, List envelopes) {
+ /**private */List intersectingEnvelopes(Envelope queryEnvelope, List envelopes) {
     ArrayList intersectingEnvelopes = new ArrayList();
     for (Iterator i = envelopes.iterator(); i.hasNext(); ) {
       Envelope candidate = (Envelope) i.next();

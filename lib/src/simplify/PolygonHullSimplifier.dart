@@ -101,11 +101,11 @@ class PolygonHullSimplifier {
     return hull.getResult();
   }
   
-  private Geometry inputGeom;
-  private bool isOuter;
-  private double vertexNumFraction = -1;
-  private double areaDeltaRatio = -1;
-  private GeometryFactory geomFactory;
+ /**private */Geometry inputGeom;
+ /**private */bool isOuter;
+ /**private */double vertexNumFraction = -1;
+ /**private */double areaDeltaRatio = -1;
+ /**private */GeometryFactory geomFactory;
   
   /**
    * Creates a new instance
@@ -187,7 +187,7 @@ class PolygonHullSimplifier {
    * @param multiPoly the MultiPolygon to process
    * @return the hull geometry
    */
-  private Geometry computeMultiPolygonAll(MultiPolygon multiPoly) {
+ /**private */Geometry computeMultiPolygonAll(MultiPolygon multiPoly) {
     RingHullIndex hullIndex = new RingHullIndex();
     int nPoly = multiPoly.getNumGeometries();
     @SuppressWarnings("unchecked")
@@ -212,7 +212,7 @@ class PolygonHullSimplifier {
     return geomFactory.createMultiPolygon(GeometryFactory.toPolygonArray(polys));
   }
 
-  private Geometry computeMultiPolygonEach(MultiPolygon multiPoly) {
+ /**private */Geometry computeMultiPolygonEach(MultiPolygon multiPoly) {
     List<Polygon> polys = new ArrayList<Polygon>();
     for (int i = 0 ; i < multiPoly.getNumGeometries(); i++) {
       Polygon poly = (Polygon) multiPoly.getGeometryN(i);
@@ -222,7 +222,7 @@ class PolygonHullSimplifier {
     return geomFactory.createMultiPolygon(GeometryFactory.toPolygonArray(polys));
   }
 
-  private Polygon computePolygon(Polygon poly) {
+ /**private */Polygon computePolygon(Polygon poly) {
     RingHullIndex hullIndex = null;
     /**
      * For a single polygon overlaps are only possible for inner hulls
@@ -243,7 +243,7 @@ class PolygonHullSimplifier {
    * @param hullIndex the hull index if present, or null
    * @return the list of ring hulls
    */
-  private List<RingHull> initPolygon(Polygon poly, RingHullIndex hullIndex) {
+ /**private */List<RingHull> initPolygon(Polygon poly, RingHullIndex hullIndex) {
     List<RingHull> hulls = new ArrayList<RingHull>();
     if (poly.isEmpty()) 
       return hulls;
@@ -260,7 +260,7 @@ class PolygonHullSimplifier {
     return hulls;
   }
   
-  private double ringArea(Polygon poly) {
+ /**private */double ringArea(Polygon poly) {
     double area = Area.ofRing( poly.getExteriorRing().getCoordinateSequence());
     for (int i = 0; i < poly.getNumInteriorRing(); i++) {
       area += Area.ofRing( poly.getInteriorRingN(i).getCoordinateSequence());
@@ -268,7 +268,7 @@ class PolygonHullSimplifier {
     return area;
   }
 
-  private RingHull createRingHull(LinearRing ring, bool isOuter, double areaTotal, RingHullIndex hullIndex) {
+ /**private */RingHull createRingHull(LinearRing ring, bool isOuter, double areaTotal, RingHullIndex hullIndex) {
     RingHull ringHull = new RingHull(ring, isOuter);
     if (vertexNumFraction >= 0) {
       int targetVertexCount = (int) math.ceil(vertexNumFraction * (ring.getNumPoints() - 1));
@@ -284,7 +284,7 @@ class PolygonHullSimplifier {
     return ringHull;
   }
 
-  private Polygon polygonHull(Polygon poly, List<RingHull> ringHulls, RingHullIndex hullIndex) {
+ /**private */Polygon polygonHull(Polygon poly, List<RingHull> ringHulls, RingHullIndex hullIndex) {
     if (poly.isEmpty()) 
       return geomFactory.createPolygon();
     

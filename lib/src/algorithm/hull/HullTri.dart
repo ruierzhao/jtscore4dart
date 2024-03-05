@@ -34,8 +34,8 @@
 class HullTri extends Tri 
     implements Comparable<HullTri> 
 {
-  private double size;
-  private bool isMarked = false;
+ /**private */double size;
+ /**private */bool isMarked = false;
   
   HullTri(Coordinate p0, Coordinate p1, Coordinate p2) {
     super(p0, p1, p2);
@@ -213,7 +213,7 @@ class HullTri extends Tri
     return false;
   }
   
-  private bool isBoundaryTouch(int index) {
+ /**private */bool isBoundaryTouch(int index) {
     //-- If vertex is in a boundary edge it is not a touch
     if (isBoundary(index)) return false;
     if (isBoundary(prev(index))) return false;

@@ -152,16 +152,16 @@ public class CoverageValidatorTest extends GeometryTestCase
   
   //------------------------------------------------------------
   
-  private void checkValid(Geometry[] coverage) {
+ /**private */void checkValid(Geometry[] coverage) {
     assertTrue(CoverageValidator.isValid(coverage));
   }
 
-  private void checkInvalid(Geometry[] coverage, Geometry[] expected) {
+ /**private */void checkInvalid(Geometry[] coverage, Geometry[] expected) {
     Geometry[] actual = CoverageValidator.validate(coverage);
     checkEqual(expected, actual);
   }
   
-  private void checkInvalidWithGaps(Geometry[] coverage, double gapWidth, Geometry[] expected) {
+ /**private */void checkInvalidWithGaps(Geometry[] coverage, double gapWidth, Geometry[] expected) {
     Geometry[] actual = CoverageValidator.validate(coverage, gapWidth);
     checkEqual(expected, actual);
   }

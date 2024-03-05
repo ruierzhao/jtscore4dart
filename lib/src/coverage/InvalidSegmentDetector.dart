@@ -33,7 +33,7 @@
  */
 class InvalidSegmentDetector implements SegmentIntersector {
 
-  private double distanceTol;
+ /**private */double distanceTol;
 
   /**
    * Creates an invalid segment detector.
@@ -90,7 +90,7 @@ class InvalidSegmentDetector implements SegmentIntersector {
     }
   }
 
-  private bool isEqual(Coordinate t0, Coordinate t1, Coordinate adj0, Coordinate adj1) {
+ /**private */bool isEqual(Coordinate t0, Coordinate t1, Coordinate adj0, Coordinate adj1) {
     if (t0.equals2D(adj0) && t1.equals2D(adj1))
       return true;
     if (t0.equals2D(adj1) && t1.equals2D(adj0))
@@ -98,7 +98,7 @@ class InvalidSegmentDetector implements SegmentIntersector {
     return false;
   }
 
-  private bool isInvalid(Coordinate tgt0, Coordinate tgt1, 
+ /**private */bool isInvalid(Coordinate tgt0, Coordinate tgt1, 
       Coordinate adj0, Coordinate adj1, CoverageRing adj, int indexAdj) {
 
     //-- segments that are collinear (but not matching) or are interior are invalid
@@ -125,7 +125,7 @@ class InvalidSegmentDetector implements SegmentIntersector {
    * @param adj1
    * @return
    */
-  private bool isCollinearOrInterior(Coordinate tgt0, Coordinate tgt1, 
+ /**private */bool isCollinearOrInterior(Coordinate tgt0, Coordinate tgt1, 
       Coordinate adj0, Coordinate adj1, CoverageRing adj, int indexAdj) {
     RobustLineIntersector li = new RobustLineIntersector();
     li.computeIntersection(tgt0, tgt1, adj0, adj1);
@@ -156,7 +156,7 @@ class InvalidSegmentDetector implements SegmentIntersector {
     return isInterior;
   }
 
-  private bool isInteriorSegment(Coordinate intVertex, Coordinate tgt0, Coordinate tgt1, 
+ /**private */bool isInteriorSegment(Coordinate intVertex, Coordinate tgt0, Coordinate tgt1, 
       CoverageRing adj, int indexAdj) {
     //-- find target segment endpoint which is not the intersection point
     Coordinate tgtEnd = intVertex.equals2D(tgt0) ? tgt1 : tgt0;
@@ -181,7 +181,7 @@ class InvalidSegmentDetector implements SegmentIntersector {
     return isInterior;
   }
 
-  private static bool isNearlyParallel(Coordinate p00, Coordinate p01, 
+ /**private */static bool isNearlyParallel(Coordinate p00, Coordinate p01, 
       Coordinate p10, Coordinate p11, double distanceTol) {
     LineSegment line0 = new LineSegment(p00, p01);
     LineSegment line1 = new LineSegment(p10, p11);

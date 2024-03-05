@@ -375,20 +375,20 @@ public class OffsetCurveTest extends GeometryTestCase {
   
   //=======================================
   
-  private static final double EQUALS_TOL = 0.05;
+ /**private */static final double EQUALS_TOL = 0.05;
 
-  private void checkOffsetCurve(String wkt, double distance, String wktExpected) {
+ /**private */void checkOffsetCurve(String wkt, double distance, String wktExpected) {
     checkOffsetCurve(wkt, distance, wktExpected, 0.05);
   }
   
-  private void checkOffsetCurve(String wkt, double distance, 
+ /**private */void checkOffsetCurve(String wkt, double distance, 
       int quadSegs, int joinStyle, double mitreLimit,
       String wktExpected) 
   {
     checkOffsetCurve(wkt, distance, quadSegs, joinStyle, mitreLimit, wktExpected, EQUALS_TOL);
   }
   
-  private void checkOffsetCurveJoined(String wkt, double distance, String wktExpected) {
+ /**private */void checkOffsetCurveJoined(String wkt, double distance, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry result = OffsetCurve.getCurveJoined(geom, distance);
     //System.out.println(result);
@@ -400,7 +400,7 @@ public class OffsetCurveTest extends GeometryTestCase {
     checkEqual(expected, result, EQUALS_TOL);
   }
   
-  private void checkOffsetCurve(String wkt, double distance, String wktExpected, double tolerance) {
+ /**private */void checkOffsetCurve(String wkt, double distance, String wktExpected, double tolerance) {
     Geometry geom = read(wkt);
     Geometry result = OffsetCurve.getCurve(geom, distance);
     //System.out.println(result);
@@ -412,7 +412,7 @@ public class OffsetCurveTest extends GeometryTestCase {
     checkEqual(expected, result, tolerance);
   }
   
-  private void checkOffsetCurve(String wkt, double distance, 
+ /**private */void checkOffsetCurve(String wkt, double distance, 
       int quadSegs, int joinStyle, double mitreLimit,
       String wktExpected, double tolerance) {
     Geometry geom = read(wkt);

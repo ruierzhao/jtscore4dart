@@ -184,17 +184,17 @@ public class OrientationIndexFailureTest
     checkOriginalJTS(pts, false);
   }
 
-  private void checkShewchuk(Coordinate[] pts, boolean expected)
+ /**private */void checkShewchuk(Coordinate[] pts, boolean expected)
   {
     assertTrue("Shewchuk", expected == isAllOrientationsEqualSD(pts));
   }
 
-  private void checkOriginalJTS(Coordinate[] pts, boolean expected)
+ /**private */void checkOriginalJTS(Coordinate[] pts, boolean expected)
   {
     assertTrue("JTS RobustDeterminant FAIL", expected == isAllOrientationsEqualRD(pts));
   }
 
-  private void checkDD(Coordinate[] pts, boolean expected)
+ /**private */void checkDD(Coordinate[] pts, boolean expected)
   {
     assertTrue("DD", expected == isAllOrientationsEqualDD(pts));
   }

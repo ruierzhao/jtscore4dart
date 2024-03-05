@@ -72,7 +72,7 @@ public class GeometryPrecisionReducerPointwiseTest
 
   //=======================================
   
-  private void checkReducePointwise(String wkt, String wktExpected) {
+ /**private */void checkReducePointwise(String wkt, String wktExpected) {
     Geometry g  =        read(wkt);
     Geometry gExpected = read(wktExpected);
     PrecisionModel pm = new PrecisionModel(1);
@@ -80,7 +80,7 @@ public class GeometryPrecisionReducerPointwiseTest
     assertEqualsExactAndHasSameFactory(gExpected, gReduce);
   }
   
-  private void assertEqualsExactAndHasSameFactory(Geometry expected, Geometry actual)
+ /**private */void assertEqualsExactAndHasSameFactory(Geometry expected, Geometry actual)
   {
     checkEqual(expected, actual);
     assertTrue("Factories are not the same", expected.getFactory() == actual.getFactory());

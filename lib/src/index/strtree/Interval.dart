@@ -31,8 +31,8 @@ class Interval {
     this.max = max;
   }
 
-  private double min;
-  private double max;
+ /**private */double min;
+ /**private */double max;
 
   double getCentre() { return (min+max)/2; }
 

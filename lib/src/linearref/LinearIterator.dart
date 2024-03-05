@@ -37,22 +37,22 @@
  */
 class LinearIterator
 {
-  private static int segmentEndVertexIndex(LinearLocation loc)
+ /**private */static int segmentEndVertexIndex(LinearLocation loc)
   {
     if (loc.getSegmentFraction() > 0.0)
       return loc.getSegmentIndex() + 1;
     return loc.getSegmentIndex();
   }
 
-  private Geometry linearGeom;
-  private final int numLines;
+ /**private */Geometry linearGeom;
+ /**private */final int numLines;
 
   /**
    * Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
    */
-  private LineString currentLine;
-  private int componentIndex = 0;
-  private int vertexIndex = 0;
+ /**private */LineString currentLine;
+ /**private */int componentIndex = 0;
+ /**private */int vertexIndex = 0;
 
   /**
    * Creates an iterator initialized to the start of a linear {@link Geometry}
@@ -96,7 +96,7 @@ class LinearIterator
     loadCurrentLine();
   }
 
-  private void loadCurrentLine()
+ /**private */void loadCurrentLine()
   {
     if (componentIndex >= numLines) {
       currentLine = null;

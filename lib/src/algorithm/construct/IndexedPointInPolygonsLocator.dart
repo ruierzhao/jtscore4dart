@@ -31,14 +31,14 @@
  */
 class IndexedPointInPolygonsLocator implements PointOnGeometryLocator {
 
-  private Geometry geom;
-  private STRtree index;
+ /**private */Geometry geom;
+ /**private */STRtree index;
 
   IndexedPointInPolygonsLocator(Geometry geom) {
     this.geom = geom;
   }
   
-  private void init() {
+ /**private */void init() {
     if (index != null)
       return;
     List<Geometry> polys = PolygonalExtracter.getPolygonals(geom);

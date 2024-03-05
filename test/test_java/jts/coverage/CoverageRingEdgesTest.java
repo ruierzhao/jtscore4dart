@@ -67,7 +67,7 @@ public class CoverageRingEdgesTest  extends GeometryTestCase {
     );
   }
   
-  private void checkEdges(String wkt, String wktExpected) {
+ /**private */void checkEdges(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry[] polygons = toArray(geom);
     List<CoverageEdge> edges = CoverageRingEdges.create(polygons).getEdges();
@@ -76,7 +76,7 @@ public class CoverageRingEdgesTest  extends GeometryTestCase {
     checkEqual(expected, edgeLines);
   }
 
-  private void checkEdgesSelected(String wkt, int ringCount, String wktExpected) {
+ /**private */void checkEdgesSelected(String wkt, int ringCount, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry[] polygons = toArray(geom);
     CoverageRingEdges covEdges = CoverageRingEdges.create(polygons);
@@ -86,7 +86,7 @@ public class CoverageRingEdgesTest  extends GeometryTestCase {
     checkEqual(expected, edgeLines);
   }
 
-  private MultiLineString toArray(List<CoverageEdge> edges, GeometryFactory geomFactory) {
+ /**private */MultiLineString toArray(List<CoverageEdge> edges, GeometryFactory geomFactory) {
     LineString[] lines = new LineString[edges.size()];
     for (int i = 0; i < edges.size(); i++) {
       lines[i] = edges.get(i).toLineString(geomFactory);
@@ -95,7 +95,7 @@ public class CoverageRingEdgesTest  extends GeometryTestCase {
 
   }
 
-  private static Geometry[] toArray(Geometry geom) {
+ /**private */static Geometry[] toArray(Geometry geom) {
     Geometry[] geoms = new Geometry[geom.getNumGeometries()];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       geoms[i] = geom.getGeometryN(i);

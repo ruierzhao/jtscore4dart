@@ -22,8 +22,8 @@
 class PrecisionReducerCoordinateOperation extends
 		GeometryEditor.CoordinateOperation 
 {
-  private PrecisionModel targetPM;
-  private bool removeCollapsed = true;
+ /**private */PrecisionModel targetPM;
+ /**private */bool removeCollapsed = true;
 
 	PrecisionReducerCoordinateOperation(PrecisionModel targetPM, bool removeCollapsed)
 	{

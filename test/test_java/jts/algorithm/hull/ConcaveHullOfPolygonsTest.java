@@ -93,28 +93,28 @@ public class ConcaveHullOfPolygonsTest extends GeometryTestCase {
         "POLYGON ((6 9, 8 9, 9 5, 8 0, 6 0, 5 0, 1 0, 1 4, 1 5, 1 9, 5 9, 6 9))");
   }
   
-  private void checkHull(String wkt, double maxLen, String wktExpected) {
+ /**private */void checkHull(String wkt, double maxLen, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHullOfPolygons.concaveHullByLength(geom, maxLen);
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual);
   }
   
-  private void checkHullByLenRatio(String wkt, double lenRatio, String wktExpected) {
+ /**private */void checkHullByLenRatio(String wkt, double lenRatio, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHullOfPolygons.concaveHullByLengthRatio(geom, lenRatio);
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual);
   }
   
-  private void checkHullTight(String wkt, double maxLen, String wktExpected) {
+ /**private */void checkHullTight(String wkt, double maxLen, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHullOfPolygons.concaveHullByLength(geom, maxLen, true, false);
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual);
   }
   
-  private void checkHullWithHoles(String wkt, double maxLen, String wktExpected) {
+ /**private */void checkHullWithHoles(String wkt, double maxLen, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = ConcaveHullOfPolygons.concaveHullByLength(geom, maxLen, false, true);
     Geometry expected = read(wktExpected);

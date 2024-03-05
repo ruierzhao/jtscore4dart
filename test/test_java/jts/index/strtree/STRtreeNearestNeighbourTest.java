@@ -30,8 +30,8 @@ import test.jts.GeometryTestCase;
  */
 public class STRtreeNearestNeighbourTest extends GeometryTestCase {
   
-  private static final String POINTS_B = "MULTIPOINT( 5 5, 15 15, 5 15, 15 5, 8 8)";
-  private static final String POINTS_A = "MULTIPOINT( 0 0, 10 10, 0 10, 10 0, 9 9)";
+ /**private */static final String POINTS_B = "MULTIPOINT( 5 5, 15 15, 5 15, 15 5, 8 8)";
+ /**private */static final String POINTS_A = "MULTIPOINT( 0 0, 10 10, 0 10, 10 0, 9 9)";
   
   public STRtreeNearestNeighbourTest(String Name_) {
     super(Name_);
@@ -93,7 +93,7 @@ public class STRtreeNearestNeighbourTest extends GeometryTestCase {
     assertTrue(nn.length == 0);
   }
   
-  private void checkNN(String wktItems, String wktExpected) {
+ /**private */void checkNN(String wktItems, String wktExpected) {
     Geometry items = read(wktItems);
      
     STRtree tree = createTree( items );
@@ -108,7 +108,7 @@ public class STRtreeNearestNeighbourTest extends GeometryTestCase {
     assertTrue(isFound);
   }
   
-  private void checkNN(String wktItems1, String wktItems2, 
+ /**private */void checkNN(String wktItems1, String wktItems2, 
       String wktExpected1, String wktExpected2) {
     Geometry items1 = read(wktItems1);
     Geometry items2 = read(wktItems2);
@@ -124,7 +124,7 @@ public class STRtreeNearestNeighbourTest extends GeometryTestCase {
     assertTrue(isFound);
   }
 
-  private void checkWithinDistance(String wktItems1, String wktItems2, 
+ /**private */void checkWithinDistance(String wktItems1, String wktItems2, 
       double distance, boolean expected) {
     Geometry items1 = read(wktItems1);
     Geometry items2 = read(wktItems2);
@@ -137,18 +137,18 @@ public class STRtreeNearestNeighbourTest extends GeometryTestCase {
     assertEquals(result, expected);
   }
 
-  private boolean isEqualUnordered(Object[] items, Geometry g1, Geometry g2) {
+ /**private */boolean isEqualUnordered(Object[] items, Geometry g1, Geometry g2) {
     return (isEqual(items, g1, g2) || isEqual(items, g2, g1));
   }
 
-  private boolean isEqual(Object[] items, Geometry g1, Geometry g2) {
+ /**private */boolean isEqual(Object[] items, Geometry g1, Geometry g2) {
     if (g1.equalsExact((Geometry) items[0]) 
         && g2.equalsExact((Geometry) items[1]) ) 
       return true;
     return false;
   }
 
-  private STRtree createTree(Geometry items) {
+ /**private */STRtree createTree(Geometry items) {
     STRtree tree = new STRtree(); 
     for (int i = 0; i < items.getNumGeometries(); i++) {
       Geometry item = items.getGeometryN(i);

@@ -25,7 +25,7 @@
  */
 class DissolveEdgeGraph extends EdgeGraph
 {
-  protected HalfEdge createEdge(Coordinate p0)
+ /**protected */HalfEdge createEdge(Coordinate p0)
   {
     return new DissolveHalfEdge(p0);
   }

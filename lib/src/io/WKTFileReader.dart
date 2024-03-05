@@ -34,13 +34,13 @@
 class WKTFileReader 
 {
 	private File file = null;
-  private Reader reader;
-//  private Reader fileReader = new FileReader(file);
+ /**private */Reader reader;
+// /**private */Reader fileReader = new FileReader(file);
 	private WKTReader wktReader;
 	private int count = 0;
 	private int limit = -1;
 	private int offset = 0;
-  private bool isStrictParsing = true;
+ /**private */bool isStrictParsing = true;
 	
   /**
    * Creates a new <tt>WKTFileReader</tt> given the <tt>File</tt> to read from 
@@ -139,7 +139,7 @@ class WKTFileReader
 		}
 	}
 	
-  private List read(BufferedReader bufferedReader) 
+ /**private */List read(BufferedReader bufferedReader) 
       throws IOException, ParseException {
     List geoms = new ArrayList();
     try {
@@ -153,7 +153,7 @@ class WKTFileReader
     return geoms;
   }
 
-  private void read(BufferedReader bufferedReader, List geoms) 
+ /**private */void read(BufferedReader bufferedReader, List geoms) 
       throws IOException, ParseException {
     while (!isAtEndOfFile(bufferedReader) && !isAtLimit(geoms)) {
       Geometry g = wktReader.read(bufferedReader);
@@ -173,7 +173,7 @@ class WKTFileReader
   /**
 	 * Tests if reader is at EOF, and skips any leading whitespace
 	 */
-  private bool isAtEndOfFile(BufferedReader bufferedReader) throws IOException {
+ /**private */bool isAtEndOfFile(BufferedReader bufferedReader) throws IOException {
     // skip whitespace
     int ch;
     do {

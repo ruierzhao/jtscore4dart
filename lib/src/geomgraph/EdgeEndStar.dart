@@ -39,15 +39,15 @@ abstract class EdgeEndStar
   /**
    * A map which maintains the edges in sorted order around the node
    */
-  protected Map edgeMap = new TreeMap();
+ /**protected */Map edgeMap = new TreeMap();
   /**
    * A list of all outgoing edges in the result, in CCW order
    */
-  protected List edgeList;
+ /**protected */List edgeList;
   /**
    * The location of the point for this star in Geometry i Areas
    */
-  private int[] ptInAreaLocation = { Location.NONE, Location.NONE };
+ /**private */int[] ptInAreaLocation = { Location.NONE, Location.NONE };
 
   EdgeEndStar()
   {
@@ -66,7 +66,7 @@ abstract class EdgeEndStar
    * @param e EdgeEnd
    * @param obj Object
    */
-  protected void insertEdgeEnd(EdgeEnd e, Object obj)
+ /**protected */void insertEdgeEnd(EdgeEnd e, Object obj)
   {
     edgeMap.put(e, obj);
     edgeList = null;  // edge list has changed - clear the cache
@@ -191,7 +191,7 @@ abstract class EdgeEndStar
 //Debug.printIfWatch(this);
   }
 
-  private void computeEdgeEndLabels(BoundaryNodeRule boundaryNodeRule)
+ /**private */void computeEdgeEndLabels(BoundaryNodeRule boundaryNodeRule)
   {
     // Compute edge label for each EdgeEnd
     for (Iterator it = iterator(); it.hasNext(); ) {
@@ -200,7 +200,7 @@ abstract class EdgeEndStar
     }
   }
   
-  private int getLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
+ /**private */int getLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
   {
     // compute location only on demand
     if (ptInAreaLocation[geomIndex] == Location.NONE) {
@@ -215,7 +215,7 @@ abstract class EdgeEndStar
     return checkAreaLabelsConsistent(0);
   }
 
-  private bool checkAreaLabelsConsistent(int geomIndex)
+ /**private */bool checkAreaLabelsConsistent(int geomIndex)
   {
     // Since edges are stored in CCW order around the node,
     // As we move around the ring we move from the right to the left side of the edge

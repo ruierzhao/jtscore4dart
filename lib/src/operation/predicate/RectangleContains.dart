@@ -49,7 +49,7 @@ class RectangleContains {
     return rc.contains(b);
   }
 
-  private Envelope rectEnv;
+ /**private */Envelope rectEnv;
 
   /**
    * Create a new contains computer for two geometries.
@@ -76,7 +76,7 @@ class RectangleContains {
     return true;
   }
 
-  private bool isContainedInBoundary(Geometry geom)
+ /**private */bool isContainedInBoundary(Geometry geom)
   {
     // polygons can never be wholely contained in the boundary
     if (geom is Polygon) return false;
@@ -91,7 +91,7 @@ class RectangleContains {
     return true;
   }
 
-  private bool isPointContainedInBoundary(Point point)
+ /**private */bool isPointContainedInBoundary(Point point)
   {
     return isPointContainedInBoundary(point.getCoordinate());
   }
@@ -102,7 +102,7 @@ class RectangleContains {
    * @param pt the point to test
    * @return true if the point is contained in the boundary
    */
-  private bool isPointContainedInBoundary(Coordinate pt)
+ /**private */bool isPointContainedInBoundary(Coordinate pt)
   {
     /**
      * contains = false if the point is properly contained in the rectangle.
@@ -120,7 +120,7 @@ class RectangleContains {
    * @param line the linestring to test
    * @return true if the linestring is contained in the boundary
    */
-  private bool isLineStringContainedInBoundary(LineString line)
+ /**private */bool isLineStringContainedInBoundary(LineString line)
   {
     CoordinateSequence seq = line.getCoordinateSequence();
     Coordinate p0 = new Coordinate();
@@ -141,7 +141,7 @@ class RectangleContains {
    * @param p1 an endpoint of the segment
    * @return true if the line segment is contained in the boundary
    */
-  private bool isLineSegmentContainedInBoundary(Coordinate p0, Coordinate p1)
+ /**private */bool isLineSegmentContainedInBoundary(Coordinate p0, Coordinate p1)
   {
     if (p0.equals(p1))
       return isPointContainedInBoundary(p0);

@@ -162,7 +162,7 @@ import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 
 abstract class Geometry{
   // TODO: ruier edit. unused
-  // private static final long serialVersionUID = 8763622679187376702L;
+  ///**private */static final long serialVersionUID = 8763622679187376702L;
     
   static const int TYPECODE_POINT = 0;
   static const int TYPECODE_MULTIPOINT = 1;
@@ -1722,7 +1722,7 @@ abstract class Geometry{
     return a.distance(b) <= tolerance;
   }
 
-  /**abstract protected */ int getTypeCode();
+  /**abstract/**protected */*/ int getTypeCode();
 
   /**private */ Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
   {

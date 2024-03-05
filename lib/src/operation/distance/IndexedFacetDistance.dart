@@ -50,7 +50,7 @@
  */
 class IndexedFacetDistance 
 {
-  private static final FacetSequenceDistance FACET_SEQ_DIST = new FacetSequenceDistance();
+ /**private */static final FacetSequenceDistance FACET_SEQ_DIST = new FacetSequenceDistance();
 
   /**
    * Computes the distance between facets of two geometries.
@@ -94,8 +94,8 @@ class IndexedFacetDistance
     return dist.nearestPoints(g2);
   }
   
-  private STRtree cachedTree;
-  private Geometry baseGeometry;
+ /**private */STRtree cachedTree;
+ /**private */Geometry baseGeometry;
   
   /**
    * Creates a new distance-finding instance for a given target {@link Geometry}.
@@ -163,7 +163,7 @@ class IndexedFacetDistance
     return nearestPts;
   }
 
-  private static List<Coordinate> toPoints(GeometryLocation[] locations) {
+ /**private */static List<Coordinate> toPoints(GeometryLocation[] locations) {
     if (locations == null) 
       return null;
     List<Coordinate> nearestPts = new List<Coordinate> {
@@ -191,7 +191,7 @@ class IndexedFacetDistance
         FACET_SEQ_DIST, maxDistance);
   }  
  
-  private static class FacetSequenceDistance
+ /**private */static class FacetSequenceDistance
   implements ItemDistance
   {
     double distance(ItemBoundable item1, ItemBoundable item2) {

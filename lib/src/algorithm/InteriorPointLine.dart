@@ -43,10 +43,10 @@ class InteriorPointLine {
     return intPt.getInteriorPoint();
   }
   
-  private Coordinate centroid;
-  private double minDistance = Double.MAX_VALUE;
+ /**private */Coordinate centroid;
+ /**private */double minDistance = Double.MAX_VALUE;
 
-  private Coordinate interiorPoint = null;
+ /**private */Coordinate interiorPoint = null;
 
   InteriorPointLine(Geometry g)
   {
@@ -67,7 +67,7 @@ class InteriorPointLine {
    * If a Geometry is not of dimension 1 it is not tested.
    * @param geom the geometry to add
    */
-  private void addInterior(Geometry geom)
+ /**private */void addInterior(Geometry geom)
   {
     if (geom.isEmpty())
       return;
@@ -82,7 +82,7 @@ class InteriorPointLine {
       }
     }
   }
-  private void addInterior(List<Coordinate> pts)
+ /**private */void addInterior(List<Coordinate> pts)
   {
     for (int i = 1; i < pts.length - 1; i++) {
       add(pts[i]);
@@ -94,7 +94,7 @@ class InteriorPointLine {
    * If a Geometry is not of dimension 1 it is not tested.
    * @param geom the geometry to add
    */
-  private void addEndpoints(Geometry geom)
+ /**private */void addEndpoints(Geometry geom)
   {
     if (geom.isEmpty())
       return;
@@ -109,13 +109,13 @@ class InteriorPointLine {
       }
     }
   }
-  private void addEndpoints(List<Coordinate> pts)
+ /**private */void addEndpoints(List<Coordinate> pts)
   {
     add(pts[0]);
     add(pts[pts.length - 1]);
   }
 
-  private void add(Coordinate point)
+ /**private */void add(Coordinate point)
   {
     double dist = point.distance(centroid);
     if (dist < minDistance) {

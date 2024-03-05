@@ -43,7 +43,7 @@
  */
 class BufferDistanceValidator 
 {
-  private static bool VERBOSE = false;
+ /**private */static bool VERBOSE = false;
 	/**
 	 * Maximum allowable fraction of buffer distance the 
 	 * actual distance can differ by.
@@ -51,20 +51,20 @@ class BufferDistanceValidator
 	 */
 	private static final double MAX_DISTANCE_DIFF_FRAC = .012;
 
-  private Geometry input;
-  private double bufDistance;
-  private Geometry result;
+ /**private */Geometry input;
+ /**private */double bufDistance;
+ /**private */Geometry result;
   
-  private double minValidDistance;
-  private double maxValidDistance;
+ /**private */double minValidDistance;
+ /**private */double maxValidDistance;
   
-  private double minDistanceFound;
-  private double maxDistanceFound;
+ /**private */double minDistanceFound;
+ /**private */double maxDistanceFound;
   
-  private bool isValid = true;
-  private String errMsg = null;
-  private Coordinate errorLocation = null;
-  private Geometry errorIndicator = null;
+ /**private */bool isValid = true;
+ /**private */String errMsg = null;
+ /**private */Coordinate errorLocation = null;
+ /**private */Geometry errorIndicator = null;
   
   BufferDistanceValidator(Geometry input, double bufDistance, Geometry result)
   {
@@ -124,7 +124,7 @@ class BufferDistanceValidator
     return errorIndicator;
   }
   
-  private void checkPositiveValid()
+ /**private */void checkPositiveValid()
   {
   	Geometry bufCurve = result.getBoundary();
   	checkMinimumDistance(input, bufCurve, minValidDistance);
@@ -133,7 +133,7 @@ class BufferDistanceValidator
   	checkMaximumDistance(input, bufCurve, maxValidDistance);
   }
   
-  private void checkNegativeValid()
+ /**private */void checkNegativeValid()
   {
   	// Assert: only polygonal inputs can be checked for negative buffers
   	
@@ -151,7 +151,7 @@ class BufferDistanceValidator
   	checkMaximumDistance(inputCurve, result, maxValidDistance);
   }
   
-  private Geometry getPolygonLines(Geometry g)
+ /**private */Geometry getPolygonLines(Geometry g)
   {
   	List lines = new ArrayList();
   	LinearComponentExtracter lineExtracter = new LinearComponentExtracter(lines);
@@ -170,7 +170,7 @@ class BufferDistanceValidator
    * @param g2 a geometry
    * @param minDist the minimum distance the geometries should be separated by
    */
-  private void checkMinimumDistance(Geometry g1, Geometry g2, double minDist)
+ /**private */void checkMinimumDistance(Geometry g1, Geometry g2, double minDist)
   {
   	DistanceOp distOp = new DistanceOp(g1, g2, minDist);
   	minDistanceFound = distOp.distance();
@@ -198,7 +198,7 @@ class BufferDistanceValidator
    * @param bufCurve a geometry
    * @param maxDist the maximum distance that a buffer result can be from the input
    */
-  private void checkMaximumDistance(Geometry input, Geometry bufCurve, double maxDist)
+ /**private */void checkMaximumDistance(Geometry input, Geometry bufCurve, double maxDist)
   {
 //    BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
 //    maxDistanceFound = maxDistFinder.findDistance(bufCurve);
@@ -219,7 +219,7 @@ class BufferDistanceValidator
   }
   
   /*
-  private void OLDcheckMaximumDistance(Geometry input, Geometry bufCurve, double maxDist)
+ /**private */void OLDcheckMaximumDistance(Geometry input, Geometry bufCurve, double maxDist)
   {
     BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
     maxDistanceFound = maxDistFinder.findDistance(bufCurve);

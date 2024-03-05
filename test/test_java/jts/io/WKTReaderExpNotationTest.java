@@ -32,8 +32,8 @@ public class WKTReaderExpNotationTest
     TestRunner.run(WKTReaderExpNotationTest.class);
   }
 
-  private GeometryFactory fact = new GeometryFactory();
-  private WKTReader rdr = new WKTReader(fact);
+ /**private */GeometryFactory fact = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader(fact);
 
   public WKTReaderExpNotationTest(String name)
   {
@@ -65,7 +65,7 @@ public class WKTReaderExpNotationTest
     readBad("POINT ( +1e+01 1X02)");
   }
 
-  private void readGoodCheckCoordinate(String wkt, double x, double y)
+ /**private */void readGoodCheckCoordinate(String wkt, double x, double y)
       throws IOException, ParseException
   {
     Geometry g = rdr.read(wkt);
@@ -74,7 +74,7 @@ public class WKTReaderExpNotationTest
     assertEquals(pt.y, y, 0.0001);
   }
 
-  private void readBad(String wkt)
+ /**private */void readBad(String wkt)
       throws IOException
   {
     boolean threwParseEx = false;

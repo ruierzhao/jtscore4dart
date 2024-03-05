@@ -158,7 +158,7 @@ class MinimumBoundingCircle
    * @param pts the array of extremal points
    * @return the pair of farthest points
    */
-  private static List<Coordinate> farthestPoints(List<Coordinate> pts) {
+ /**private */static List<Coordinate> farthestPoints(List<Coordinate> pts) {
     double dist01 = pts[0].distance(pts[1]);
     double dist12 = pts[1].distance(pts[2]);
     double dist20 = pts[2].distance(pts[0]);

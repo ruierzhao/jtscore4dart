@@ -35,8 +35,8 @@
  */
 class SubgraphDepthLocater
 {
-  private Collection subgraphs;
-  private LineSegment seg = new LineSegment();
+ /**private */Collection subgraphs;
+ /**private */LineSegment seg = new LineSegment();
 
   SubgraphDepthLocater(List subgraphs)
   {
@@ -60,7 +60,7 @@ class SubgraphDepthLocater
    * @param stabbingRayLeftPt the left-hand origin of the stabbing line
    * @return a List of {@link DepthSegments} intersecting the stabbing line
    */
-  private List findStabbedSegments(Coordinate stabbingRayLeftPt)
+ /**private */List findStabbedSegments(Coordinate stabbingRayLeftPt)
   {
     List stabbedSegments = new ArrayList();
     for (Iterator i = subgraphs.iterator(); i.hasNext(); ) {
@@ -85,7 +85,7 @@ class SubgraphDepthLocater
    * @param stabbingRayLeftPt the left-hand origin of the stabbing line
    * @param stabbedSegments the current list of {@link DepthSegments} intersecting the stabbing line
    */
-  private void findStabbedSegments(Coordinate stabbingRayLeftPt,
+ /**private */void findStabbedSegments(Coordinate stabbingRayLeftPt,
                                    List dirEdges,
                                    List stabbedSegments)
   {
@@ -109,7 +109,7 @@ class SubgraphDepthLocater
    * @param stabbingRayLeftPt the left-hand origin of the stabbing line
    * @param stabbedSegments the current list of {@link DepthSegments} intersecting the stabbing line
    */
-  private void findStabbedSegments(Coordinate stabbingRayLeftPt,
+ /**private */void findStabbedSegments(Coordinate stabbingRayLeftPt,
                                    DirectedEdge dirEdge,
                                    List stabbedSegments)
   {
@@ -157,8 +157,8 @@ class SubgraphDepthLocater
   static class DepthSegment
       implements Comparable
   {
-    private LineSegment upwardSeg;
-    private int leftDepth;
+   /**private */LineSegment upwardSeg;
+   /**private */int leftDepth;
 
     DepthSegment(LineSegment seg, int depth)
     {

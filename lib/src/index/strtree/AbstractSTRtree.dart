@@ -45,13 +45,13 @@ abstract class AbstractSTRtree implements Serializable {
   /**
    * 
    */
-  private static final long serialVersionUID = -3886435814360241337L;
+ /**private */static final long serialVersionUID = -3886435814360241337L;
 
   /**
    * A test for intersection between two bounds, necessary because subclasses
    * of AbstractSTRtree have different implementations of bounds.
    */
-  protected static abstract class IntersectsOp {
+ /**protected */static abstract class IntersectsOp {
     /**
      * For STRtrees, the bounds will be Envelopes; for SIRtrees, Intervals;
      * for other subclasses of AbstractSTRtree, some other class.
@@ -62,17 +62,17 @@ abstract class AbstractSTRtree implements Serializable {
     bool intersects(Object aBounds, Object bBounds);
   }
 
-  protected AbstractNode root;
+ /**protected */AbstractNode root;
 
-  private bool built = false;
+ /**private */bool built = false;
   /**
    * Set to <tt>null</tt> when index is built, to avoid retaining memory.
    */
-  private ArrayList itemBoundables = new ArrayList();
+ /**private */ArrayList itemBoundables = new ArrayList();
   
-  private int nodeCapacity;
+ /**private */int nodeCapacity;
 
-  private static final int DEFAULT_NODE_CAPACITY = 10;
+ /**private */static final int DEFAULT_NODE_CAPACITY = 10;
 
   /**
    * Constructs an AbstractSTRtree with the 
@@ -132,13 +132,13 @@ abstract class AbstractSTRtree implements Serializable {
     built = true;
   }
 
-  protected abstract AbstractNode createNode(int level);
+ /**protected */abstract AbstractNode createNode(int level);
 
   /**
    * Sorts the childBoundables then divides them into groups of size M, where
    * M is the node capacity.
    */
-  protected List createParentBoundables(List childBoundables, int newLevel) {
+ /**protected */List createParentBoundables(List childBoundables, int newLevel) {
     Assert.isTrue(!childBoundables.isEmpty());
     ArrayList parentBoundables = new ArrayList();
     parentBoundables.add(createNode(newLevel));
@@ -154,11 +154,11 @@ abstract class AbstractSTRtree implements Serializable {
     return parentBoundables;
   }
 
-  protected AbstractNode lastNode(List nodes) {
+ /**protected */AbstractNode lastNode(List nodes) {
     return (AbstractNode) nodes.get(nodes.size() - 1);
   }
 
-  protected static int compareDoubles(double a, double b) {
+ /**protected */static int compareDoubles(double a, double b) {
     return a > b ? 1
          : a < b ? -1
          : 0;
@@ -174,7 +174,7 @@ abstract class AbstractSTRtree implements Serializable {
    *            boundables (that is, below level 0)
    * @return the root, which may be a ParentNode or a LeafNode
    */
-  private AbstractNode createHigherLevels(List boundablesOfALevel, int level) {
+ /**private */AbstractNode createHigherLevels(List boundablesOfALevel, int level) {
     Assert.isTrue(!boundablesOfALevel.isEmpty());
     List parentBoundables = createParentBoundables(boundablesOfALevel, level + 1);
     if (parentBoundables.size() == 1) {
@@ -214,7 +214,7 @@ abstract class AbstractSTRtree implements Serializable {
     return root.isEmpty();
   }
   
-  protected int size() {
+ /**protected */int size() {
     if (isEmpty()) {
       return 0;
     }
@@ -222,7 +222,7 @@ abstract class AbstractSTRtree implements Serializable {
     return size(root);
   }
 
-  protected int size(AbstractNode node)
+ /**protected */int size(AbstractNode node)
   {
     int size = 0;
     for (Iterator i = node.getChildBoundables().iterator(); i.hasNext(); ) {
@@ -237,7 +237,7 @@ abstract class AbstractSTRtree implements Serializable {
     return size;
   }
 
-  protected int depth() {
+ /**protected */int depth() {
     if (isEmpty()) {
       return 0;
     }
@@ -245,7 +245,7 @@ abstract class AbstractSTRtree implements Serializable {
     return depth(root);
   }
 
-  protected int depth(AbstractNode node)
+ /**protected */int depth(AbstractNode node)
   {
     int maxChildDepth = 0;
     for (Iterator i = node.getChildBoundables().iterator(); i.hasNext(); ) {
@@ -260,7 +260,7 @@ abstract class AbstractSTRtree implements Serializable {
   }
 
 
-  protected void insert(Object bounds, Object item) {
+ /**protected */void insert(Object bounds, Object item) {
     Assert.isTrue(!built, "Cannot insert items into an STR packed R-tree after it has been built.");
     itemBoundables.add(new ItemBoundable(bounds, item));
   }
@@ -268,7 +268,7 @@ abstract class AbstractSTRtree implements Serializable {
   /**
    *  Also builds the tree, if necessary.
    */
-  protected List query(Object searchBounds) {
+ /**protected */List query(Object searchBounds) {
     build();
     ArrayList matches = new ArrayList();
     if (isEmpty()) {
@@ -284,7 +284,7 @@ abstract class AbstractSTRtree implements Serializable {
   /**
    *  Also builds the tree, if necessary.
    */
-  protected void query(Object searchBounds, ItemVisitor visitor) {
+ /**protected */void query(Object searchBounds, ItemVisitor visitor) {
     build();
     if (isEmpty()) {
       // nothing in tree, so return
@@ -301,9 +301,9 @@ abstract class AbstractSTRtree implements Serializable {
    * of AbstractSTRtree have different implementations of bounds.
    * @see IntersectsOp
    */
-  protected abstract IntersectsOp getIntersectsOp();
+ /**protected */abstract IntersectsOp getIntersectsOp();
 
-  private void queryInternal(Object searchBounds, AbstractNode node, List matches) {
+ /**private */void queryInternal(Object searchBounds, AbstractNode node, List matches) {
     List childBoundables = node.getChildBoundables();
     for (int i = 0; i < childBoundables.size(); i++) {
       Boundable childBoundable = (Boundable) childBoundables.get(i);
@@ -322,7 +322,7 @@ abstract class AbstractSTRtree implements Serializable {
     }
   }
 
-  private void queryInternal(Object searchBounds, AbstractNode node, ItemVisitor visitor) {
+ /**private */void queryInternal(Object searchBounds, AbstractNode node, ItemVisitor visitor) {
     List childBoundables = node.getChildBoundables();
     for (int i = 0; i < childBoundables.size(); i++) {
       Boundable childBoundable = (Boundable) childBoundables.get(i);
@@ -363,7 +363,7 @@ abstract class AbstractSTRtree implements Serializable {
     return valuesTree;
   }
   
-  private List itemsTree(AbstractNode node) 
+ /**private */List itemsTree(AbstractNode node) 
   {
     List valuesTreeForNode = new ArrayList();
     for (Iterator i = node.getChildBoundables().iterator(); i.hasNext(); ) {
@@ -390,7 +390,7 @@ abstract class AbstractSTRtree implements Serializable {
    * Removes an item from the tree.
    * (Builds the tree, if necessary.)
    */
-  protected bool remove(Object searchBounds, Object item) {
+ /**protected */bool remove(Object searchBounds, Object item) {
     build();
     if (getIntersectsOp().intersects(root.getBounds(), searchBounds)) {
       return remove(searchBounds, root, item);
@@ -398,7 +398,7 @@ abstract class AbstractSTRtree implements Serializable {
     return false;
   }
 
-  private bool removeItem(AbstractNode node, Object item)
+ /**private */bool removeItem(AbstractNode node, Object item)
   {
     Boundable childToRemove = null;
     for (Iterator i = node.getChildBoundables().iterator(); i.hasNext(); ) {
@@ -415,7 +415,7 @@ abstract class AbstractSTRtree implements Serializable {
     return false;
   }
 
-  private bool remove(Object searchBounds, AbstractNode node, Object item) {
+ /**private */bool remove(Object searchBounds, AbstractNode node, Object item) {
     // first try removing item from this node
     bool found = removeItem(node, item);
     if (found)
@@ -446,7 +446,7 @@ abstract class AbstractSTRtree implements Serializable {
     return found;
   }
 
-  protected List boundablesAtLevel(int level) {
+ /**protected */List boundablesAtLevel(int level) {
     ArrayList boundables = new ArrayList();
     boundablesAtLevel(level, root, boundables);
     return boundables;
@@ -455,7 +455,7 @@ abstract class AbstractSTRtree implements Serializable {
   /**
    * @param level -1 to get items
    */
-  private void boundablesAtLevel(int level, AbstractNode top, Collection boundables) {
+ /**private */void boundablesAtLevel(int level, AbstractNode top, Collection boundables) {
     Assert.isTrue(level > -2);
     if (top.getLevel() == level) {
       boundables.add(top);
@@ -474,7 +474,7 @@ abstract class AbstractSTRtree implements Serializable {
     return;
   }
 
-  protected abstract Comparator getComparator();
+ /**protected */abstract Comparator getComparator();
 
   ArrayList getItemBoundables()
   {

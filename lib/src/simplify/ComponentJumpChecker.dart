@@ -28,7 +28,7 @@
 class ComponentJumpChecker {
   
   //TODO: use a spatial index?
-  private Collection<TaggedLineString> components;
+ /**private */Collection<TaggedLineString> components;
 
   ComponentJumpChecker(Collection<TaggedLineString> taggedLines) {
     components = taggedLines;
@@ -91,34 +91,34 @@ class ComponentJumpChecker {
     return false;
   }
 
-  private static bool hasJumpAtComponent(Coordinate compPt, TaggedLineString line, int start, int end, LineSegment seg) {
+ /**private */static bool hasJumpAtComponent(Coordinate compPt, TaggedLineString line, int start, int end, LineSegment seg) {
     int sectionCount = crossingCount(compPt, line, start, end);
     int segCount = crossingCount(compPt, seg);
     bool hasJump = sectionCount % 2 != segCount % 2;
     return hasJump;
   }
   
-  private static bool hasJumpAtComponent(Coordinate compPt, LineSegment seg1, LineSegment seg2, LineSegment seg) {
+ /**private */static bool hasJumpAtComponent(Coordinate compPt, LineSegment seg1, LineSegment seg2, LineSegment seg) {
     int sectionCount = crossingCount(compPt, seg1, seg2);
     int segCount = crossingCount(compPt, seg);
     bool hasJump = sectionCount % 2 != segCount % 2;
     return hasJump;
   }
 
-  private static int crossingCount(Coordinate compPt, LineSegment seg) {
+ /**private */static int crossingCount(Coordinate compPt, LineSegment seg) {
     RayCrossingCounter rcc = new RayCrossingCounter(compPt);
     rcc.countSegment(seg.p0,  seg.p1);
     return rcc.getCount();
   }  
   
-  private static int crossingCount(Coordinate compPt, LineSegment seg1, LineSegment seg2) {
+ /**private */static int crossingCount(Coordinate compPt, LineSegment seg1, LineSegment seg2) {
     RayCrossingCounter rcc = new RayCrossingCounter(compPt);
     rcc.countSegment(seg1.p0,  seg1.p1);
     rcc.countSegment(seg2.p0,  seg2.p1);
     return rcc.getCount();
   }
 
-  private static int crossingCount(Coordinate compPt, TaggedLineString line, int start, int end) {
+ /**private */static int crossingCount(Coordinate compPt, TaggedLineString line, int start, int end) {
     RayCrossingCounter rcc = new RayCrossingCounter(compPt);
     for (int i = start; i < end; i++) {
       rcc.countSegment(line.getCoordinate(i), line.getCoordinate(i + 1));
@@ -126,7 +126,7 @@ class ComponentJumpChecker {
     return rcc.getCount();
   }
 
-  private static Envelope computeEnvelope(LineSegment seg1, LineSegment seg2) {
+ /**private */static Envelope computeEnvelope(LineSegment seg1, LineSegment seg2) {
     Envelope env = new Envelope();
     env.expandToInclude(seg1.p0);
     env.expandToInclude(seg1.p1);
@@ -135,7 +135,7 @@ class ComponentJumpChecker {
     return env;
   }  
   
-  private static Envelope computeEnvelope(TaggedLineString line, int start, int end) {
+ /**private */static Envelope computeEnvelope(TaggedLineString line, int start, int end) {
     Envelope env = new Envelope();
     for (int i = start; i <= end; i++) {
       env.expandToInclude(line.getCoordinate(i)); 

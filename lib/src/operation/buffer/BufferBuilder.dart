@@ -63,7 +63,7 @@ class BufferBuilder
   /**
    * Compute the change in depth as an edge is crossed from R to L
    */
-  private static int depthDelta(Label label)
+ /**private */static int depthDelta(Label label)
   {
     int lLoc = label.getLocation(0, Position.LEFT);
     int rLoc = label.getLocation(0, Position.RIGHT);
@@ -74,15 +74,15 @@ class BufferBuilder
     return 0;
   }
 
-  private BufferParameters bufParams;
+ /**private */BufferParameters bufParams;
 
-  private PrecisionModel workingPrecisionModel;
-  private Noder workingNoder;
-  private GeometryFactory geomFact;
-  private PlanarGraph graph;
-  private EdgeList edgeList     = new EdgeList();
+ /**private */PrecisionModel workingPrecisionModel;
+ /**private */Noder workingNoder;
+ /**private */GeometryFactory geomFact;
+ /**private */PlanarGraph graph;
+ /**private */EdgeList edgeList     = new EdgeList();
 
-  private bool isInvertOrientation = false;
+ /**private */bool isInvertOrientation = false;
 
   /**
    * Creates a new BufferBuilder,
@@ -184,7 +184,7 @@ class BufferBuilder
     return resultGeom;
   }
 
-  private Noder getNoder(PrecisionModel precisionModel)
+ /**private */Noder getNoder(PrecisionModel precisionModel)
   {
     if (workingNoder != null) return workingNoder;
 
@@ -201,7 +201,7 @@ class BufferBuilder
 //                                  precisionModel.getScale());
   }
 
-  private void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
+ /**private */void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
   {
     Noder noder = getNoder(precisionModel);
     noder.computeNodes(bufferSegStrList);
@@ -239,7 +239,7 @@ class BufferBuilder
    * If so, the edge is not inserted, but its label is merged
    * with the existing edge.
    */
-  protected void insertUniqueEdge(Edge e)
+ /**protected */void insertUniqueEdge(Edge e)
   {
 //<FIX> MD 8 Oct 03  speed up identical edge lookup
     // fast lookup
@@ -272,7 +272,7 @@ class BufferBuilder
     }
   }
 
-  private List createSubgraphs(PlanarGraph graph)
+ /**private */List createSubgraphs(PlanarGraph graph)
   {
     List subgraphList = new ArrayList();
     for (Iterator i = graph.getNodes().iterator(); i.hasNext(); ) {
@@ -301,7 +301,7 @@ class BufferBuilder
    * @param subgraphList the subgraphs to build
    * @param polyBuilder the PolygonBuilder which will build the final polygons
    */
-  private void buildSubgraphs(List subgraphList, PolygonBuilder polyBuilder)
+ /**private */void buildSubgraphs(List subgraphList, PolygonBuilder polyBuilder)
   {
     List processedGraphs = new ArrayList();
     for (Iterator i = subgraphList.iterator(); i.hasNext(); ) {
@@ -326,7 +326,7 @@ class BufferBuilder
     }
   }
   
-  private static Geometry convertSegStrings(Iterator it)
+ /**private */static Geometry convertSegStrings(Iterator it)
   {
   	GeometryFactory fact = new GeometryFactory();
   	List lines = new ArrayList();
@@ -345,7 +345,7 @@ class BufferBuilder
    * 
    * @return the empty result geometry
    */
-  private Geometry createEmptyResultGeometry()
+ /**private */Geometry createEmptyResultGeometry()
   {
     Geometry emptyGeom = geomFact.createPolygon();
     return emptyGeom;

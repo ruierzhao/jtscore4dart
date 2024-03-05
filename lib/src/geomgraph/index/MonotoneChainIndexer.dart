@@ -94,7 +94,7 @@ class MonotoneChainIndexer {
   /**
    * @return the index of the last point in the monotone chain
    */
-  private int findChainEnd(List<Coordinate> pts, int start)
+ /**private */int findChainEnd(List<Coordinate> pts, int start)
   {
     // determine quadrant for chain
     int chainQuad = Quadrant.quadrant(pts[start], pts[start + 1]);

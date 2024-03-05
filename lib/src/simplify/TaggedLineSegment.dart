@@ -24,8 +24,8 @@
 class TaggedLineSegment
     extends LineSegment
 {
-  private Geometry parent;
-  private int index;
+ /**private */Geometry parent;
+ /**private */int index;
 
   TaggedLineSegment(Coordinate p0, Coordinate p1, Geometry parent, int index) {
     super(p0, p1);

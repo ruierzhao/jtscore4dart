@@ -43,9 +43,9 @@
  */
 class GeometryNoder
 {
-  private GeometryFactory geomFact;
-  private PrecisionModel pm;
-  private bool isValidityChecked = false;
+ /**private */GeometryFactory geomFact;
+ /**private */PrecisionModel pm;
+ /**private */bool isValidityChecked = false;
 
   /**
    * Creates a new noder which snap-rounds to a grid specified
@@ -93,7 +93,7 @@ class GeometryNoder
     return toLineStrings(nodedLines);
   }
 
-  private List toLineStrings(Collection segStrings)
+ /**private */List toLineStrings(Collection segStrings)
   {
     List lines = new ArrayList();
     for (Iterator it = segStrings.iterator(); it.hasNext(); ) {
@@ -106,7 +106,7 @@ class GeometryNoder
     return lines;
   }
 
-  private List extractLines(Collection geoms)
+ /**private */List extractLines(Collection geoms)
   {
     List lines = new ArrayList();
     LinearComponentExtracter lce = new LinearComponentExtracter(lines);
@@ -117,7 +117,7 @@ class GeometryNoder
     return lines;
   }
 
-  private List toSegmentStrings(Collection lines)
+ /**private */List toSegmentStrings(Collection lines)
   {
     List segStrings = new ArrayList();
     for (Iterator it = lines.iterator(); it.hasNext(); ) {

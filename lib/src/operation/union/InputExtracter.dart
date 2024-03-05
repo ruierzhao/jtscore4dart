@@ -62,15 +62,15 @@ class InputExtracter implements GeometryFilter
     return extracter;
   }
   
-  private GeometryFactory geomFactory = null;
-  private List<Polygon> polygons = new ArrayList<Polygon>();
-  private List<LineString> lines = new ArrayList<LineString>();
-  private List<Point> points = new ArrayList<Point>();
+ /**private */GeometryFactory geomFactory = null;
+ /**private */List<Polygon> polygons = new ArrayList<Polygon>();
+ /**private */List<LineString> lines = new ArrayList<LineString>();
+ /**private */List<Point> points = new ArrayList<Point>();
   
   /**
    * The default dimension for an empty GeometryCollection
    */
-  private int dimension = Dimension.FALSE;
+ /**private */int dimension = Dimension.FALSE;
   
   InputExtracter() {
     
@@ -123,13 +123,13 @@ class InputExtracter implements GeometryFilter
     return null;
   }
   
-  private void add(Collection<Geometry> geoms) {
+ /**private */void add(Collection<Geometry> geoms) {
     for (Geometry geom : geoms) {
       add(geom);
     }
   }
   
-  private void add(Geometry geom) {
+ /**private */void add(Geometry geom) {
     if (geomFactory == null)
       geomFactory = geom.getFactory();
     
@@ -164,7 +164,7 @@ class InputExtracter implements GeometryFilter
     Assert.shouldNeverReachHere("Unhandled geometry type: " + geom.getGeometryType());
   }
 
-  private void recordDimension(int dim) {
+ /**private */void recordDimension(int dim) {
     if (dim > dimension )
       dimension = dim;
   }

@@ -126,25 +126,25 @@ public class BufferParameterTest extends GeometryTestCase {
         "POLYGON ((-4.14213562373095 -10, -10 -4.14213562373095, -10 104.14213562373095, -4.14213562373095 110, 104.14213562373095 110, 110 104.14213562373095, 110 -4.142135623730951, 104.14213562373095 -10, -4.14213562373095 -10))");
   }
   
-  private void checkBuffer(String wkt, double dist, int quadSegs, String wktExpected) {
+ /**private */void checkBuffer(String wkt, double dist, int quadSegs, String wktExpected) {
     checkBuffer( wkt, dist, quadSegs, BufferParameters.JOIN_ROUND, wktExpected);
   }
   
-  private void checkBuffer(String wkt, double dist, int quadSegs, int joinStyle, String wktExpected) {
+ /**private */void checkBuffer(String wkt, double dist, int quadSegs, int joinStyle, String wktExpected) {
     BufferParameters param = new BufferParameters();
     param.setQuadrantSegments(quadSegs);
     param.setJoinStyle(joinStyle);
     checkBuffer(wkt, dist, param, wktExpected);
   }
 
-  private void checkBuffer(String wkt, double dist, BufferParameters param, String wktExpected) {
+ /**private */void checkBuffer(String wkt, double dist, BufferParameters param, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry result = BufferOp.bufferOp(geom, dist, param);
     Geometry expected = read(wktExpected);
     checkEqual(expected, result, 0.00001);
   }
 
-  private static BufferParameters bufParamFlatMitre(double mitreLimit) {
+ /**private */static BufferParameters bufParamFlatMitre(double mitreLimit) {
     BufferParameters param = new BufferParameters();
     param.setJoinStyle(BufferParameters.JOIN_MITRE);
     param.setMitreLimit(mitreLimit);

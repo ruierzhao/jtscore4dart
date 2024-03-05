@@ -23,10 +23,10 @@
  * @author Martin Davis
  */
 class ShapeCollectionPathIterator implements PathIterator {
-    private Iterator shapeIterator;
+   /**private */Iterator shapeIterator;
     
     // initialize with a no-op iterator
-    private PathIterator currentPathIterator = new PathIterator() {
+   /**private */PathIterator currentPathIterator = new PathIterator() {
             int getWindingRule() {
                 throw new UnsupportedOperationException();
             }
@@ -47,8 +47,8 @@ class ShapeCollectionPathIterator implements PathIterator {
             }
         };
 
-    private AffineTransform affineTransform;
-    private bool done = false;
+   /**private */AffineTransform affineTransform;
+   /**private */bool done = false;
 
     /**
      * Creates a new path iterator for a collection of {@link Shape}s.

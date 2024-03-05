@@ -32,8 +32,8 @@ class VWLineSimplifier
     return simp.simplify();
   }
 
-  private List<Coordinate> pts;
-  private double tolerance;
+ /**private */List<Coordinate> pts;
+ /**private */double tolerance;
 
   VWLineSimplifier(List<Coordinate> pts, double distanceTolerance)
   {
@@ -56,7 +56,7 @@ class VWLineSimplifier
     return simp;
   }
 
-  private double simplifyVertex(VWLineSimplifier.VWVertex vwLine)
+ /**private */double simplifyVertex(VWLineSimplifier.VWVertex vwLine)
   {
     /**
      * Scan vertices in line and remove the one with smallest effective area.
@@ -103,11 +103,11 @@ class VWLineSimplifier
     
     static double MAX_AREA = Double.MAX_VALUE;
     
-    private Coordinate pt;
-    private VWLineSimplifier.VWVertex prev;
-    private VWLineSimplifier.VWVertex next;
-    private double area = MAX_AREA;
-    private bool isLive = true;
+   /**private */Coordinate pt;
+   /**private */VWLineSimplifier.VWVertex prev;
+   /**private */VWLineSimplifier.VWVertex next;
+   /**private */double area = MAX_AREA;
+   /**private */bool isLive = true;
 
     VWVertex(Coordinate pt)
     {

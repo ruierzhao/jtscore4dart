@@ -43,7 +43,7 @@ import 'package:jtscore4dart/src/utils.dart';
 ///
 /// @version 1.16
 class Coordinate implements Comparable<Coordinate> {
-  // private static final long serialVersionUID = 6683108902428366910L;
+  ///**private */static final long serialVersionUID = 6683108902428366910L;
 
   /// The value used to indicate a null or missing ordinate value.
   /// In particular, used for the value of ordinates for dimensions
@@ -450,7 +450,7 @@ class DimensionalComparator
       return 0;
     }
 
-    private int dimensionsToTest = 2;
+   /**private */int dimensionsToTest = 2;
 
     /// Creates a comparator for 2 dimensional coordinates.
     DimensionalComparator()

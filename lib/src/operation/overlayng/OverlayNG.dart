@@ -326,17 +326,17 @@ class OverlayNG
     return geomOv;
   }
   
-  private int opCode;
-  private InputGeometry inputGeom;
-  private GeometryFactory geomFact;
-  private PrecisionModel pm;
-  private Noder noder;
-  private bool isStrictMode = STRICT_MODE_DEFAULT;
-  private bool isOptimized = true;
-  private bool isAreaResultOnly = false;
-  private bool isOutputEdges = false;
-  private bool isOutputResultEdges = false;
-  private bool isOutputNodedEdges = false;
+ /**private */int opCode;
+ /**private */InputGeometry inputGeom;
+ /**private */GeometryFactory geomFact;
+ /**private */PrecisionModel pm;
+ /**private */Noder noder;
+ /**private */bool isStrictMode = STRICT_MODE_DEFAULT;
+ /**private */bool isOptimized = true;
+ /**private */bool isAreaResultOnly = false;
+ /**private */bool isOutputEdges = false;
+ /**private */bool isOutputResultEdges = false;
+ /**private */bool isOutputNodedEdges = false;
 
   /**
    * Creates an overlay operation on the given geometries,
@@ -492,7 +492,7 @@ class OverlayNG
     return result;
   }
   
-  private Geometry computeEdgeOverlay() 
+ /**private */Geometry computeEdgeOverlay() 
   {
     
     List<Edge> edges = nodeEdges();
@@ -525,7 +525,7 @@ class OverlayNG
     return result;
   }
 
-  private List<Edge> nodeEdges() {
+ /**private */List<Edge> nodeEdges() {
     /**
      * Node the edges, using whatever noder is being used
      */
@@ -556,7 +556,7 @@ class OverlayNG
     return mergedEdges;
   }
 
-  private OverlayGraph buildGraph(Collection<Edge> edges) {
+ /**private */OverlayGraph buildGraph(Collection<Edge> edges) {
     OverlayGraph graph = new OverlayGraph();
     for (Edge e : edges) {
       graph.addEdge(e.getCoordinates(), e.createLabel());
@@ -564,7 +564,7 @@ class OverlayNG
     return graph;
   }
   
-  private void labelGraph(OverlayGraph graph) {
+ /**private */void labelGraph(OverlayGraph graph) {
     OverlayLabeller labeller = new OverlayLabeller(graph, inputGeom);
     labeller.computeLabelling();
     labeller.markResultAreaEdges(opCode);
@@ -589,7 +589,7 @@ class OverlayNG
    * @param graph the topology graph
    * @return the result geometry
    */
-  private Geometry extractResult(int opCode, OverlayGraph graph) {
+ /**private */Geometry extractResult(int opCode, OverlayGraph graph) {
     bool isAllowMixedIntResult = ! isStrictMode;
     
     //--- Build polygons
@@ -635,11 +635,11 @@ class OverlayNG
     return resultGeom;
   }
 
-  private static bool isEmpty(List list) {
+ /**private */static bool isEmpty(List list) {
     return list == null || list.size() == 0;
   }
   
-  private Geometry createEmptyResult() {
+ /**private */Geometry createEmptyResult() {
     return OverlayUtil.createEmptyResult(
         OverlayUtil.resultDimension(opCode, 
             inputGeom.getDimension(0), 

@@ -122,7 +122,7 @@ class PrecisionUtil
    * @param env an envelope
    * @return the value of the maximum bound magnitude
    */
-  private static double maxBoundMagnitude(Envelope env) {
+ /**private */static double maxBoundMagnitude(Envelope env) {
     return MathUtil.max(
         (env.getMaxX().abs()), 
         (env.getMaxY().abs()), 
@@ -150,7 +150,7 @@ class PrecisionUtil
    * 
    * @see PrecisionModel.round
    */
-  private static double precisionScale(
+ /**private */static double precisionScale(
       double value, int precisionDigits)
   {
     // the smallest power of 10 greater than the value
@@ -230,7 +230,7 @@ class PrecisionUtil
   
   /*
   // this doesn't work
-  private static int BADnumDecimals(double value) {
+ /**private */static int BADnumDecimals(double value) {
     double val = (value).abs();
     double frac = val - math.floor(val);
     int numDec = 0;
@@ -255,7 +255,7 @@ class PrecisionUtil
    * @param value a numeric value
    * @return the number of decimal places in the value
    */
-  private static int numberOfDecimals(double value) {
+ /**private */static int numberOfDecimals(double value) {
     /**
      * Ensure that scientific notation is NOT used
      * (it would skew the number of fraction digits)
@@ -279,9 +279,9 @@ class PrecisionUtil
    * @author Martin Davis
    *
    */
-  private static class InherentScaleFilter implements CoordinateFilter {
+ /**private */static class InherentScaleFilter implements CoordinateFilter {
     
-    private double scale  = 0;
+   /**private */double scale  = 0;
 
     double getScale() {
       return scale;
@@ -293,7 +293,7 @@ class PrecisionUtil
       updateScaleMax(coord.getY());
     }
     
-    private void updateScaleMax(double value) {
+   /**private */void updateScaleMax(double value) {
       double scaleVal = PrecisionUtil.inherentScale( value );
       if (scaleVal > scale) {
         //System.out.println("Value " + value + " has scale: " + scaleVal);
@@ -356,7 +356,7 @@ class PrecisionUtil
     return robustScale(inherentScale, safeScale);
   }
   
-  private static double robustScale(double inherentScale, double safeScale) {
+ /**private */static double robustScale(double inherentScale, double safeScale) {
     /**
      * Use safe scale if lower, 
      * since it is important to preserve some precision for robustness

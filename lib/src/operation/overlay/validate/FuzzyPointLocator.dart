@@ -41,11 +41,11 @@
  */
 class FuzzyPointLocator
 {
-  private Geometry g;
-  private double boundaryDistanceTolerance;
-  private MultiLineString linework;
-  private PointLocator ptLocator = new PointLocator();
-  private LineSegment seg = new LineSegment();
+ /**private */Geometry g;
+ /**private */double boundaryDistanceTolerance;
+ /**private */MultiLineString linework;
+ /**private */PointLocator ptLocator = new PointLocator();
+ /**private */LineSegment seg = new LineSegment();
   
   FuzzyPointLocator(Geometry g, double boundaryDistanceTolerance)
   {
@@ -76,7 +76,7 @@ class FuzzyPointLocator
    * @param g the geometry from which to extract
    * @return a lineal geometry containing the extracted linework
    */
-  private MultiLineString extractLinework(Geometry g)
+ /**private */MultiLineString extractLinework(Geometry g)
   {
   	PolygonalLineworkExtracter extracter = new PolygonalLineworkExtracter();
   	g.apply(extracter);
@@ -85,7 +85,7 @@ class FuzzyPointLocator
   	return g.getFactory().createMultiLineString(lines);
   }
   
-  private bool isWithinToleranceOfBoundary(Coordinate pt)
+ /**private */bool isWithinToleranceOfBoundary(Coordinate pt)
   {
   	for (int i = 0; i < linework.getNumGeometries(); i++) {
   		LineString line = (LineString) linework.getGeometryN(i);

@@ -17,7 +17,7 @@ import junit.textui.TestRunner;
 
 public class Vector2DTest extends TestCase {
 
-  private static final double TOLERANCE = 1E-5;
+ /**private */static final double TOLERANCE = 1E-5;
   
   public static void main(String args[]) {
     TestRunner.run(Vector2DTest.class);

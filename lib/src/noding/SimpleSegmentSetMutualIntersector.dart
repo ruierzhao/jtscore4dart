@@ -26,7 +26,7 @@
  */
 class SimpleSegmentSetMutualIntersector implements SegmentSetMutualIntersector
 {
-  private final Collection baseSegStrings;
+ /**private */final Collection baseSegStrings;
 
   /**
    * Constructs a new intersector for a given set of {@link SegmentString}s.
@@ -66,7 +66,7 @@ class SimpleSegmentSetMutualIntersector implements SegmentSetMutualIntersector
    * @param ss1 a segment string
    * @param segInt the segment intersector to use
    */
-  private void intersect(SegmentString ss0, SegmentString ss1, SegmentIntersector segInt)
+ /**private */void intersect(SegmentString ss0, SegmentString ss1, SegmentIntersector segInt)
   {
     List<Coordinate> pts0 = ss0.getCoordinates();
     List<Coordinate> pts1 = ss1.getCoordinates();

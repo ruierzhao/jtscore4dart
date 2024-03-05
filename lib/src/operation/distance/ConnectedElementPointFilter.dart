@@ -44,7 +44,7 @@ class ConnectedElementPointFilter
     return pts;
   }
 
-  private List pts;
+ /**private */List pts;
 
   ConnectedElementPointFilter(List pts)
   {

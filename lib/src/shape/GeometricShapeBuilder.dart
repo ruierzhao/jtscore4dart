@@ -83,7 +83,7 @@ abstract class GeometricShapeBuilder
 
   abstract Geometry getGeometry();
 
-  protected Coordinate createCoord(double x, double y)
+ /**protected */Coordinate createCoord(double x, double y)
   {
   	Coordinate pt = new Coordinate(x, y);
   	geomFactory.getPrecisionModel().makePrecise(pt);

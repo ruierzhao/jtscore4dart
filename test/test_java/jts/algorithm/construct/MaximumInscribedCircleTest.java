@@ -95,7 +95,7 @@ public class MaximumInscribedCircleTest extends GeometryTestCase {
    * @param wkt
    * @param tolerance
    */
-  private void checkCircle(String wkt, double tolerance) {
+ /**private */void checkCircle(String wkt, double tolerance) {
     Geometry geom = read(wkt);
     MaximumInscribedCircle mic = new MaximumInscribedCircle(geom, tolerance); 
     Geometry centerPoint = mic.getCenter();
@@ -103,12 +103,12 @@ public class MaximumInscribedCircleTest extends GeometryTestCase {
     assertTrue(dist < 2 * tolerance);
   }
   
-  private void checkCircle(String wkt, double tolerance, 
+ /**private */void checkCircle(String wkt, double tolerance, 
       double x, double y, double expectedRadius) {
     checkCircle(read(wkt), tolerance, x, y, expectedRadius);
   }
   
-  private void checkCircle(Geometry geom, double tolerance, 
+ /**private */void checkCircle(Geometry geom, double tolerance, 
       double x, double y, double expectedRadius) {
     MaximumInscribedCircle mic = new MaximumInscribedCircle(geom, tolerance); 
     Geometry centerPoint = mic.getCenter();

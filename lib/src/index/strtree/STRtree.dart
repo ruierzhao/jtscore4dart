@@ -61,7 +61,7 @@ implements SpatialIndex, Serializable
       super(level);
     }
 
-    protected Object computeBounds() {
+   /**protected */Object computeBounds() {
       Envelope bounds = null;
       for (Iterator i = getChildBoundables().iterator(); i.hasNext(); ) {
         Boundable childBoundable = (Boundable) i.next();
@@ -79,9 +79,9 @@ implements SpatialIndex, Serializable
   /**
    * 
    */
-  private static final long serialVersionUID = 259274702368956900L;
+ /**private */static final long serialVersionUID = 259274702368956900L;
   
-  private static Comparator xComparator =
+ /**private */static Comparator xComparator =
     new Comparator() {
       int compare(Object o1, Object o2) {
         return compareDoubles(
@@ -89,7 +89,7 @@ implements SpatialIndex, Serializable
             centreX((Envelope)((Boundable)o2).getBounds()));
       }
     };
-  private static Comparator yComparator =
+ /**private */static Comparator yComparator =
     new Comparator() {
       int compare(Object o1, Object o2) {
         return compareDoubles(
@@ -98,17 +98,17 @@ implements SpatialIndex, Serializable
       }
     };
 
-  private static double centreX(Envelope e) {
+ /**private */static double centreX(Envelope e) {
     return avg(e.getMinX(), e.getMaxX());
   }
 
-  private static double centreY(Envelope e) {
+ /**private */static double centreY(Envelope e) {
     return avg(e.getMinY(), e.getMaxY());
   }
 
-  private static double avg(double a, double b) { return (a + b) / 2d; }
+ /**private */static double avg(double a, double b) { return (a + b) / 2d; }
 
-  private static IntersectsOp intersectsOp = new IntersectsOp() {
+ /**private */static IntersectsOp intersectsOp = new IntersectsOp() {
     bool intersects(Object aBounds, Object bBounds) {
       return ((Envelope)aBounds).intersects((Envelope)bBounds);
     }
@@ -121,7 +121,7 @@ implements SpatialIndex, Serializable
    * group them into runs of size M (the node capacity). For each run, creates
    * a new (parent) node.
    */
-  protected List createParentBoundables(List childBoundables, int newLevel) {
+ /**protected */List createParentBoundables(List childBoundables, int newLevel) {
     Assert.isTrue(!childBoundables.isEmpty());
     int minLeafCount = (int) math.ceil((childBoundables.size() / (double) getNodeCapacity()));
     ArrayList sortedChildBoundables = new ArrayList(childBoundables);
@@ -131,7 +131,7 @@ implements SpatialIndex, Serializable
     return createParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
   }
 
-  private List createParentBoundablesFromVerticalSlices(List[] verticalSlices, int newLevel) {
+ /**private */List createParentBoundablesFromVerticalSlices(List[] verticalSlices, int newLevel) {
     Assert.isTrue(verticalSlices.length > 0);
     List parentBoundables = new ArrayList();
     for (int i = 0; i < verticalSlices.length; i++) {
@@ -141,14 +141,14 @@ implements SpatialIndex, Serializable
     return parentBoundables;
   }
 
-  protected List createParentBoundablesFromVerticalSlice(List childBoundables, int newLevel) {
+ /**protected */List createParentBoundablesFromVerticalSlice(List childBoundables, int newLevel) {
     return super.createParentBoundables(childBoundables, newLevel);
   }
 
   /**
    * @param childBoundables Must be sorted by the x-value of the envelope midpoints
    */
-  protected List[] verticalSlices(List childBoundables, int sliceCount) {
+ /**protected */List[] verticalSlices(List childBoundables, int sliceCount) {
     int sliceCapacity = (int) math.ceil(childBoundables.size() / (double) sliceCount);
     List[] slices = new List[sliceCount];
     Iterator i = childBoundables.iterator();
@@ -164,7 +164,7 @@ implements SpatialIndex, Serializable
     return slices;
   }
 
-  private static final int DEFAULT_NODE_CAPACITY = 10;
+ /**private */static final int DEFAULT_NODE_CAPACITY = 10;
   
   /**
    * Constructs an STRtree with the default node capacity.
@@ -207,11 +207,11 @@ implements SpatialIndex, Serializable
     super(nodeCapacity, itemBoundables);
   }
 
-  protected AbstractNode createNode(int level) {
+ /**protected */AbstractNode createNode(int level) {
     return new STRtreeNode(level);
   }
 
-  protected IntersectsOp getIntersectsOp() {
+ /**protected */IntersectsOp getIntersectsOp() {
     return intersectsOp;
   }
 
@@ -272,7 +272,7 @@ implements SpatialIndex, Serializable
     return super.depth();
   }
 
-  protected Comparator getComparator() {
+ /**protected */Comparator getComparator() {
     return yComparator;
   }
 
@@ -350,7 +350,7 @@ implements SpatialIndex, Serializable
     return nearestNeighbour(bp);
   }
   
-  private Object[] nearestNeighbour(BoundablePair initBndPair) 
+ /**private */Object[] nearestNeighbour(BoundablePair initBndPair) 
   {
     double distanceLowerBound = Double.POSITIVE_INFINITY;
     BoundablePair minPair = null;
@@ -434,7 +434,7 @@ implements SpatialIndex, Serializable
    * @param maxDistance the maximum distance to search for
    * @return true if two items lie within the given distance
    */
-  private bool isWithinDistance(BoundablePair initBndPair, double maxDistance) 
+ /**private */bool isWithinDistance(BoundablePair initBndPair, double maxDistance) 
   {
     double distanceUpperBound = Double.POSITIVE_INFINITY;
     
@@ -531,12 +531,12 @@ implements SpatialIndex, Serializable
     return nearestNeighbourK(bp,k);
   }
 
-  private Object[] nearestNeighbourK(BoundablePair initBndPair, int k) 
+ /**private */Object[] nearestNeighbourK(BoundablePair initBndPair, int k) 
   {
     return nearestNeighbourK(initBndPair, Double.POSITIVE_INFINITY,k);
   }
   
-  private Object[] nearestNeighbourK(BoundablePair initBndPair, double maxDistance, int k) 
+ /**private */Object[] nearestNeighbourK(BoundablePair initBndPair, double maxDistance, int k) 
   {
     double distanceLowerBound = maxDistance;
     
@@ -605,7 +605,7 @@ implements SpatialIndex, Serializable
 
     return getItems(kNearestNeighbors);
   }
-  private static Object[] getItems(PriorityQueue kNearestNeighbors)
+ /**private */static Object[] getItems(PriorityQueue kNearestNeighbors)
   {
 	  /** 
 	   * Iterate the K Nearest Neighbour Queue and retrieve the item from each BoundablePair

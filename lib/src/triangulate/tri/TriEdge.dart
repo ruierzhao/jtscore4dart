@@ -34,7 +34,7 @@ class TriEdge {
     normalize();
   }
 
-  private void normalize() {
+ /**private */void normalize() {
     if ( p0.compareTo(p1) < 0 ) {
       Coordinate tmp = p0;
       p0 = p1;

@@ -30,7 +30,7 @@ import test.jts.GeometryTestCase;
 public class IsSimpleTest
     extends GeometryTestCase
 {
-  private static final double TOLERANCE = 0.00005;
+ /**private */static final double TOLERANCE = 0.00005;
 
   public static void main(String args[]) {
     TestRunner.run(IsSimpleTest.class);
@@ -154,12 +154,12 @@ public class IsSimpleTest
       "MULTIPOINT((50 20), (50 30), (1 2), (1 4), (1 5))");
   }
 
-  private void checkIsSimple(String wkt, BoundaryNodeRule bnRule, boolean expectedResult)
+ /**private */void checkIsSimple(String wkt, BoundaryNodeRule bnRule, boolean expectedResult)
   {
     checkIsSimple(wkt, bnRule, expectedResult, null);
   }
 
-  private void checkIsSimple(String wkt, BoundaryNodeRule bnRule, boolean expectedResult, Coordinate expectedLocation)
+ /**private */void checkIsSimple(String wkt, BoundaryNodeRule bnRule, boolean expectedResult, Coordinate expectedLocation)
   {
     Geometry g = read(wkt);
     IsSimpleOp op = new IsSimpleOp(g, bnRule);
@@ -176,7 +176,7 @@ public class IsSimpleTest
     }
   }
 
-  private void checkIsSimpleAll(String wkt, BoundaryNodeRule bnRule,
+ /**private */void checkIsSimpleAll(String wkt, BoundaryNodeRule bnRule,
       String wktExpectedPts)
   {
     Geometry g = read(wkt);

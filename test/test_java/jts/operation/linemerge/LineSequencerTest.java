@@ -30,7 +30,7 @@ import junit.framework.TestCase;
 public class LineSequencerTest
     extends TestCase
 {
-  private static WKTReader rdr = new WKTReader();
+ /**private */static WKTReader rdr = new WKTReader();
 
   public LineSequencerTest(String name) {
     super(name);
@@ -199,7 +199,7 @@ public class LineSequencerTest
 
 //==========================================================
 
-  private void runLineSequencer(String[] inputWKT, String expectedWKT)
+ /**private */void runLineSequencer(String[] inputWKT, String expectedWKT)
       throws ParseException
   {
     List inputGeoms = fromWKT(inputWKT);
@@ -225,7 +225,7 @@ public class LineSequencerTest
     }
   }
 
-  private void runIsSequenced(String inputWKT, boolean expected)
+ /**private */void runIsSequenced(String inputWKT, boolean expected)
       throws ParseException
   {
     Geometry g = rdr.read(inputWKT);

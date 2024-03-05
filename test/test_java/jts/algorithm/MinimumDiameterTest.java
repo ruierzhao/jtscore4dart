@@ -26,8 +26,8 @@ import junit.textui.TestRunner;
  */
 public class MinimumDiameterTest extends TestCase {
 
-  private PrecisionModel precisionModel = new PrecisionModel(1);
-  private GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+ /**private */PrecisionModel precisionModel = new PrecisionModel(1);
+ /**private */GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
   WKTReader reader = new WKTReader(geometryFactory);
 
   public static void main(String args[]) {
@@ -55,7 +55,7 @@ public class MinimumDiameterTest extends TestCase {
     doMinimumDiameterTest(false, "LINESTRING ( 39 119, 162 197, 135 70, 95 35, 33 66, 111 82, 97 131, 48 160, -4 182, 57 195, 94 202, 90 174, 75 134, 47 114, 0 100, 59 81, 123 60, 136 43, 163 75, 145 114, 93 136, 92 159, 105 175 )", new Coordinate(64.46262341325811, 196.41184767277855), new Coordinate(95, 35));
   }  
 
-  private void doMinimumDiameterTest(boolean convex, String wkt, Coordinate c0, Coordinate c1) throws ParseException {
+ /**private */void doMinimumDiameterTest(boolean convex, String wkt, Coordinate c0, Coordinate c1) throws ParseException {
     Coordinate[] minimumDiameter = new MinimumDiameter(new WKTReader().read(wkt), convex).getDiameter().getCoordinates();
     double tolerance = 1E-10;
     assertEquals(c0.x, minimumDiameter[0].x, tolerance);

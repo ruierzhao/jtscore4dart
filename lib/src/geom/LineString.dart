@@ -33,14 +33,14 @@ class LineString
 	extends Geometry
 	implements Lineal
 {
-  private static final long serialVersionUID = 3110669828065365560L;
+ /**private */static final long serialVersionUID = 3110669828065365560L;
   
   /// The minimum number of vertices allowed in a valid non-empty linestring.
   /// Empty linestrings with 0 vertices are also valid.
   static final int MINIMUM_VALID_SIZE = 2;
   
   ///  The points of this <code>LineString</code>.
-  protected CoordinateSequence points;
+ /**protected */CoordinateSequence points;
 
   /**
    *  Constructs a <code>LineString</code> with the given points.
@@ -71,7 +71,7 @@ class LineString
     init(points);
   }
 
-  private void init(CoordinateSequence points)
+ /**private */void init(CoordinateSequence points)
   {
     if (points == null) {
       points = getFactory().getCoordinateSequenceFactory().create(new List<Coordinate>{});
@@ -178,7 +178,7 @@ class LineString
     return (LineString) super.reverse();
   }
 
-  protected LineString reverseInternal()
+ /**protected */LineString reverseInternal()
   {
     CoordinateSequence seq = points.copy();
     CoordinateSequences.reverse(seq);
@@ -199,7 +199,7 @@ class LineString
     return false;
   }
 
-  protected Envelope computeEnvelopeInternal() {
+ /**protected */Envelope computeEnvelopeInternal() {
     if (isEmpty()) {
       return new Envelope();
     }
@@ -258,7 +258,7 @@ class LineString
     return copy();
   }
 
-  protected LineString copyInternal() {
+ /**protected */LineString copyInternal() {
     return new LineString(points.copy(), factory);
   }
 
@@ -281,11 +281,11 @@ class LineString
       }
   }
 
-  protected bool isEquivalentClass(Geometry other) {
+ /**protected */bool isEquivalentClass(Geometry other) {
     return other is LineString;
   }
 
-  protected int compareToSameClass(Object o)
+ /**protected */int compareToSameClass(Object o)
   {
     LineString line = (LineString) o;
     // MD - optimized implementation
@@ -308,13 +308,13 @@ class LineString
     return 0;
   }
 
-  protected int compareToSameClass(Object o, CoordinateSequenceComparator comp)
+ /**protected */int compareToSameClass(Object o, CoordinateSequenceComparator comp)
   {
     LineString line = (LineString) o;
     return comp.compare(this.points, line.points);
   }
   
-  protected int getTypeCode() {
+ /**protected */int getTypeCode() {
     return Geometry.TYPECODE_LINESTRING;
   }
 

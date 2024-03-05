@@ -28,7 +28,7 @@ class SimpleNoder
     extends SinglePassNoder
 {
 
-  private Collection nodedSegStrings;
+ /**private */Collection nodedSegStrings;
 
   SimpleNoder() {
   }
@@ -50,7 +50,7 @@ class SimpleNoder
     }
   }
 
-  private void computeIntersects(SegmentString e0, SegmentString e1)
+ /**private */void computeIntersects(SegmentString e0, SegmentString e1)
   {
     List<Coordinate> pts0 = e0.getCoordinates();
     List<Coordinate> pts1 = e1.getCoordinates();

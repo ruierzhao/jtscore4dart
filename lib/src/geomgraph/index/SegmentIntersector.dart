@@ -38,23 +38,23 @@ class SegmentIntersector
    * These variables keep track of what types of intersections were
    * found during ALL edges that have been intersected.
    */
-  private bool hasIntersection = false;
-  private bool hasProper = false;
-  private bool hasProperInterior = false;
+ /**private */bool hasIntersection = false;
+ /**private */bool hasProper = false;
+ /**private */bool hasProperInterior = false;
   // the proper intersection point found
-  private Coordinate properIntersectionPoint = null;
+ /**private */Coordinate properIntersectionPoint = null;
 
-  private LineIntersector li;
-  private bool includeProper;
-  private bool recordIsolated;
-  private bool isSelfIntersection;
+ /**private */LineIntersector li;
+ /**private */bool includeProper;
+ /**private */bool recordIsolated;
+ /**private */bool isSelfIntersection;
   //private bool intersectionFound;
-  private int numIntersections = 0;
+ /**private */int numIntersections = 0;
 
   // testing only
   int numTests = 0;
 
-  private Collection[] bdyNodes;
+ /**private */Collection[] bdyNodes;
 
   SegmentIntersector(LineIntersector li,  bool includeProper, bool recordIsolated)
   {
@@ -111,7 +111,7 @@ class SegmentIntersector
    * @param segIndex1 segment index 1
    * @return indicates a trivial intersection, a point shared by adjacent line segments
    */
-  private bool isTrivialIntersection(Edge e0, int segIndex0, Edge e1, int segIndex1)
+ /**private */bool isTrivialIntersection(Edge e0, int segIndex0, Edge e1, int segIndex1)
   {
     if (e0 == e1) {
       if (li.getIntersectionNum() == 1) {
@@ -190,7 +190,7 @@ class SegmentIntersector
     }
   }
 
-  private bool isBoundaryPoint(LineIntersector li, Collection[] bdyNodes)
+ /**private */bool isBoundaryPoint(LineIntersector li, Collection[] bdyNodes)
   {
     if (bdyNodes == null) return false;
     if (isBoundaryPointInternal(li, bdyNodes[0])) return true;
@@ -198,7 +198,7 @@ class SegmentIntersector
     return false;
   }
 
-  private bool isBoundaryPointInternal(LineIntersector li, Collection bdyNodes)
+ /**private */bool isBoundaryPointInternal(LineIntersector li, Collection bdyNodes)
   {
     for (Iterator i = bdyNodes.iterator(); i.hasNext(); ) {
       Node node = (Node) i.next();

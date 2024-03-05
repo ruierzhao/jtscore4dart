@@ -76,13 +76,13 @@ class OffsetCurve {
   /**
    * The nearness tolerance for matching the the raw offset linework and the buffer curve.
    */
-  private static final int MATCH_DISTANCE_FACTOR = 10000;
+ /**private */static final int MATCH_DISTANCE_FACTOR = 10000;
   
   /**
    * A QuadSegs minimum value that will prevent generating
    * unwanted offset curve artifacts near end caps.
    */
-  private static final int MIN_QUADRANT_SEGMENTS = 8;
+ /**private */static final int MIN_QUADRANT_SEGMENTS = 8;
 
   /**
    * Computes the offset curve of a geometry at a given distance.
@@ -130,13 +130,13 @@ class OffsetCurve {
     return oc.getCurve();
   }
   
-  private Geometry inputGeom;
-  private double distance;
-  private bool isJoined = false;
+ /**private */Geometry inputGeom;
+ /**private */double distance;
+ /**private */bool isJoined = false;
   
-  private BufferParameters bufferParams;
-  private double matchDistance;
-  private GeometryFactory geomFactory;
+ /**private */BufferParameters bufferParams;
+ /**private */double matchDistance;
+ /**private */GeometryFactory geomFactory;
 
   /**
    * Creates a new instance for computing an offset curve for a geometry at a given distance.
@@ -219,7 +219,7 @@ class OffsetCurve {
        * @param geom a geometry which may be a LinearRing
        * @return a geometry which will be a LineString or MultiLineString
        */
-      private Geometry toLineString(Geometry geom) {
+     /**private */Geometry toLineString(Geometry geom) {
         if (geom is LinearRing) {
           LinearRing ring = (LinearRing) geom;
           return geom.getFactory().createLineString(ring.getCoordinateSequence());
@@ -266,7 +266,7 @@ class OffsetCurve {
     return rawOffset(line, distance, new BufferParameters());
   }
 
-  private Geometry computeCurve(LineString lineGeom, double distance) {
+ /**private */Geometry computeCurve(LineString lineGeom, double distance) {
     //-- first handle simple cases
     //-- empty or single-point line
     if (lineGeom.getNumPoints() < 2 || lineGeom.getLength() == 0.0) {
@@ -293,7 +293,7 @@ class OffsetCurve {
     return offsetCurve;
   }
 
-  private List<OffsetCurveSection> computeSections(LineString lineGeom, double distance) {
+ /**private */List<OffsetCurveSection> computeSections(LineString lineGeom, double distance) {
     List<Coordinate> rawCurve = rawOffset(lineGeom, distance, bufferParams);
     List<OffsetCurveSection> sections = new ArrayList<OffsetCurveSection>();
     if (rawCurve.length == 0) {
@@ -322,12 +322,12 @@ class OffsetCurve {
     return sections;
   }
 
-  private LineString offsetSegment(List<Coordinate> pts, double distance) {
+ /**private */LineString offsetSegment(List<Coordinate> pts, double distance) {
     LineSegment offsetSeg = (new LineSegment(pts[0], pts[1])).offset(distance);
     return geomFactory.createLineString(new List<Coordinate> { offsetSeg.p0, offsetSeg.p1 });
   }
 
-  private static Polygon getBufferOriented(LineString geom, double distance, BufferParameters bufParams) {
+ /**private */static Polygon getBufferOriented(LineString geom, double distance, BufferParameters bufParams) {
     Geometry buffer = BufferOp.bufferOp(geom, (distance).abs(), bufParams);
     Polygon bufferPoly = extractMaxAreaPolygon(buffer);
     //-- for negative distances (Right of input) reverse buffer direction to match offset curve
@@ -345,7 +345,7 @@ class OffsetCurve {
    * @param geom a geometry
    * @return the polygon element of largest area
    */
-  private static Polygon extractMaxAreaPolygon(Geometry geom) {
+ /**private */static Polygon extractMaxAreaPolygon(Geometry geom) {
     if (geom.getNumGeometries() == 1)
       return (Polygon) geom;
     
@@ -362,9 +362,9 @@ class OffsetCurve {
     return maxPoly;
   }
   
-  private static final double NOT_IN_CURVE = -1;
+ /**private */static final double NOT_IN_CURVE = -1;
   
-  private void computeCurveSections(List<Coordinate> bufferRingPts, 
+ /**private */void computeCurveSections(List<Coordinate> bufferRingPts, 
       List<Coordinate> rawCurve, List<OffsetCurveSection> sections) {
     double[] rawPosition = new double[bufferRingPts.length - 1];
     for (int i = 0; i < rawPosition.length; i++) {
@@ -402,7 +402,7 @@ class OffsetCurve {
    * @param rawCurvePos the raw curve positions of the buffer ring segments
    * @return the index of the minimum matched buffer segment
    */
-  private int matchSegments(Coordinate raw0, Coordinate raw1, int rawCurveIndex,
+ /**private */int matchSegments(Coordinate raw0, Coordinate raw1, int rawCurveIndex,
       SegmentMCIndex bufferSegIndex, List<Coordinate> bufferPts, 
       double[] rawCurvePos) {
     Envelope matchEnv = new Envelope(raw0, raw1);
@@ -419,18 +419,18 @@ class OffsetCurve {
    * 
    * @author Martin Davis
    */
-  private static class MatchCurveSegmentAction 
+ /**private */static class MatchCurveSegmentAction 
     extends MonotoneChainSelectAction
   {
-    private Coordinate raw0;
-    private Coordinate raw1;
-    private double rawLen;
-    private int rawCurveIndex;
-    private List<Coordinate> bufferRingPts;
-    private double matchDistance;
-    private double[] rawCurveLoc;
-    private double minRawLocation = -1;
-    private int bufferRingMinIndex = -1;
+   /**private */Coordinate raw0;
+   /**private */Coordinate raw1;
+   /**private */double rawLen;
+   /**private */int rawCurveIndex;
+   /**private */List<Coordinate> bufferRingPts;
+   /**private */double matchDistance;
+   /**private */double[] rawCurveLoc;
+   /**private */double minRawLocation = -1;
+   /**private */int bufferRingMinIndex = -1;
     
     MatchCurveSegmentAction(Coordinate raw0, Coordinate raw1, 
         int rawCurveIndex,
@@ -479,7 +479,7 @@ class OffsetCurve {
       }    
     }
   
-    private double segmentMatchFrac(Coordinate buf0, Coordinate buf1, 
+   /**private */double segmentMatchFrac(Coordinate buf0, Coordinate buf1, 
         Coordinate raw0, Coordinate raw1, double matchDistance) {
       if (! isMatch(buf0, buf1, raw0, raw1, matchDistance))
       return -1;
@@ -489,7 +489,7 @@ class OffsetCurve {
       return seg.segmentFraction(buf0);
   }
   
-    private bool isMatch(Coordinate buf0, Coordinate buf1, Coordinate raw0, Coordinate raw1, double matchDistance) {
+   /**private */bool isMatch(Coordinate buf0, Coordinate buf1, Coordinate raw0, Coordinate raw1, double matchDistance) {
       double bufSegLen = buf0.distance(buf1);
       if (rawLen <= bufSegLen) {
         if (matchDistance < Distance.pointToSegment(raw0, buf0, buf1))
@@ -519,7 +519,7 @@ class OffsetCurve {
    * @param startIndex the index of the start of a section
    * @param sections the list of extracted offset curve sections
    */
-  private void extractSections(List<Coordinate> ringPts, double[] rawCurveLoc, 
+ /**private */void extractSections(List<Coordinate> ringPts, double[] rawCurveLoc, 
       int startIndex, List<OffsetCurveSection> sections) {
     int sectionStart = startIndex;
     int sectionCount = 0;
@@ -540,7 +540,7 @@ class OffsetCurve {
     } while (sectionStart != startIndex && sectionEnd != startIndex);
   }
   
-  private int findSectionStart(double[] loc, int end) {
+ /**private */int findSectionStart(double[] loc, int end) {
     int start = end;
     do {
       int next = next(start, loc.length);
@@ -569,7 +569,7 @@ class OffsetCurve {
     return start;
   }
   
-  private int findSectionEnd(double[] loc, int start, int firstStartIndex) {
+ /**private */int findSectionEnd(double[] loc, int start, int firstStartIndex) {
     // assert: pos[start] is IN CURVE
     int end = start;
     int next;
@@ -592,12 +592,12 @@ class OffsetCurve {
     return end;
   }
   
-  private static int next(int i, int size) {
+ /**private */static int next(int i, int size) {
     i += 1;
     return (i < size) ? i : 0; 
   }
   
-  private static int prev(int i, int size) {
+ /**private */static int prev(int i, int size) {
     i -= 1;
     return (i < 0) ? size - 1 : i; 
   }

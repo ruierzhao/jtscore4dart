@@ -61,25 +61,25 @@ public class TPVWSimplifierTest extends GeometryTestCase {
         "MULTILINESTRING ((6 8, 2 8, 2 2, 6 2, 5.9 5, 6 8))");
   }
     
-  private void checkNoop(String wkt, double tolerance) {
+ /**private */void checkNoop(String wkt, double tolerance) {
     MultiLineString geom = (MultiLineString) read(wkt);
     Geometry actual = TPVWSimplifier.simplify(geom, tolerance);
     checkEqual(geom, actual);
   }
   
-  private void checkSimplify(String wkt, double tolerance, String wktExpected) {
+ /**private */void checkSimplify(String wkt, double tolerance, String wktExpected) {
     MultiLineString geom = (MultiLineString) read(wkt);
     Geometry actual = TPVWSimplifier.simplify(geom, tolerance);
     Geometry expected = read(wktExpected);
     checkEqual(expected, actual);
   }
   
-  private void checkSimplify(String wkt, int[] freeRingIndex, 
+ /**private */void checkSimplify(String wkt, int[] freeRingIndex, 
       double tolerance, String wktExpected) {
     checkSimplify(wkt, freeRingIndex, null, tolerance, wktExpected);
   }
   
-  private void checkSimplify(String wkt, int[] freeRingIndex, 
+ /**private */void checkSimplify(String wkt, int[] freeRingIndex, 
       String wktConstraints,
       double tolerance, String wktExpected) {
     MultiLineString lines = (MultiLineString) read(wkt);

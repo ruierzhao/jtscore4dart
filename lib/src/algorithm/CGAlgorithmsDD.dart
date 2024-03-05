@@ -25,7 +25,7 @@ import 'package:jtscore4dart/src/math/DD.dart';
 abstract class CGAlgorithmsDD
 {
   // TODO: ruier edit.
-  // private CGAlgorithmsDD() {}
+  ///**private */CGAlgorithmsDD() {}
 
 
   /// Returns the index of the direction of the point [q] relative to

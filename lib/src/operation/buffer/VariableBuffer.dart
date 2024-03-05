@@ -103,7 +103,7 @@ class VariableBuffer {
    * @param endValue the end value
    * @return the array of interpolated values
    */
-  private static double[] interpolate(LineString line, 
+ /**private */static double[] interpolate(LineString line, 
       double startValue,
       double endValue) {
     startValue = (startValue).abs();
@@ -140,7 +140,7 @@ class VariableBuffer {
    * @param endValue the end value
    * @return the array of interpolated values
    */
-  private static double[] interpolate(LineString line, 
+ /**private */static double[] interpolate(LineString line, 
       double startValue,
       double midValue,
       double endValue) 
@@ -182,7 +182,7 @@ class VariableBuffer {
     return values;
   }
   
-  private static int indexAtLength(List<Coordinate> pts, double targetLen) {
+ /**private */static int indexAtLength(List<Coordinate> pts, double targetLen) {
     double len  = 0;
     for (int i = 1; i < pts.length; i++) {
       len += pts[i].distance(pts[i-1]);
@@ -192,7 +192,7 @@ class VariableBuffer {
     return pts.length - 1;
   }
 
-  private static double length(List<Coordinate> pts, int i1, int i2) {
+ /**private */static double length(List<Coordinate> pts, int i1, int i2) {
     double len = 0;
     for (int i = i1 + 1; i <= i2; i++) {
       len += pts[i].distance(pts[i-1]);
@@ -200,10 +200,10 @@ class VariableBuffer {
     return len;
   }
 
-  private LineString line;
-  private double[] distance;
-  private GeometryFactory geomFactory;
-  private int quadrantSegs = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
+ /**private */LineString line;
+ /**private */double[] distance;
+ /**private */GeometryFactory geomFactory;
+ /**private */int quadrantSegs = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
 
   /**
    * Creates a generator for a variable-distance line buffer.
@@ -267,7 +267,7 @@ class VariableBuffer {
    * @param dist1 the buffer distance at the end point
    * @return the segment buffer, or null if void
    */
-  private Polygon segmentBuffer(Coordinate p0, Coordinate p1,
+ /**private */Polygon segmentBuffer(Coordinate p0, Coordinate p1,
       double dist0, double dist1) {
     /**
      * Skip polygon if both distances are zero
@@ -335,7 +335,7 @@ class VariableBuffer {
    * @param radius the radius 
    * @return a polygon, or null if the radius is 0
    */
-  private Polygon circle(Coordinate center, double radius) {
+ /**private */Polygon circle(Coordinate center, double radius) {
     if (radius <= 0) 
       return null;
     int nPts = 4 * quadrantSegs; 
@@ -357,7 +357,7 @@ class VariableBuffer {
    * @param t2 the ending point of the cap
    * @param coords the coordinate list to add to
    */
-  private void addCap(Coordinate p, double r, Coordinate t1, Coordinate t2, CoordinateList coords) {
+ /**private */void addCap(Coordinate p, double r, Coordinate t1, Coordinate t2, CoordinateList coords) {
     //-- handle zero-width at vertex
     if (r == 0) {
       coords.add(p.copy(), false);
@@ -385,7 +385,7 @@ class VariableBuffer {
    * @param index the fillet angle index
    * @return
    */
-  private double capAngle(int index) {
+ /**private */double capAngle(int index) {
     double capSegAng = math.PI / 2 / quadrantSegs;
     return index * capSegAng;
   }
@@ -405,7 +405,7 @@ class VariableBuffer {
    * @param ang the angle 
    * @return the index for the angle.
    */
-  private int capAngleIndex(double ang) {
+ /**private */int capAngleIndex(double ang) {
     double capSegAng = math.PI / 2 / quadrantSegs;
     int index = (int) (ang / capSegAng);
     return index;
@@ -423,7 +423,7 @@ class VariableBuffer {
    * @param r2 the center of circle 2
    * @return the outer tangent line segment, or null if none exists
    */
-  private static LineSegment outerTangent(Coordinate c1, double r1, Coordinate c2, double r2) {
+ /**private */static LineSegment outerTangent(Coordinate c1, double r1, Coordinate c2, double r2) {
     /**
      * If distances are inverted then flip to compute and flip result back.
      */
@@ -458,13 +458,13 @@ class VariableBuffer {
   }
 
 
-  private static Coordinate projectPolar(Coordinate p, double r, double ang) {
+ /**private */static Coordinate projectPolar(Coordinate p, double r, double ang) {
     double x = p.getX() + r * snapTrig(Math.cos(ang));
     double y = p.getY() + r * snapTrig(Math.sin(ang));
     return new Coordinate(x, y);
   }
   
-  private static final double SNAP_TRIG_TOL = 1e-6;
+ /**private */static final double SNAP_TRIG_TOL = 1e-6;
   
   /**
    * Snap trig values to integer values for better consistency.
@@ -472,7 +472,7 @@ class VariableBuffer {
    * @param x the result of a trigonometric function
    * @return x snapped to the integer interval
    */
-  private static double snapTrig(double x) {
+ /**private */static double snapTrig(double x) {
     if (x > (1 - SNAP_TRIG_TOL)) return 1;
     if (x < (-1 + SNAP_TRIG_TOL)) return -1;
     if ((x).abs() < SNAP_TRIG_TOL) return 0;

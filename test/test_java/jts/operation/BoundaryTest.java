@@ -30,14 +30,14 @@ import test.jts.GeometryTestCase;
 public class BoundaryTest
     extends GeometryTestCase
 {
-  private static final double TOLERANCE = 0.00005;
+ /**private */static final double TOLERANCE = 0.00005;
 
   public static void main(String args[]) {
     TestRunner.run(BoundaryTest.class);
   }
 
-  private GeometryFactory fact = new GeometryFactory();
-  private WKTReader rdr = new WKTReader(fact);
+ /**private */GeometryFactory fact = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader(fact);
 
   public BoundaryTest(String name)
   {
@@ -163,7 +163,7 @@ public class BoundaryTest
     checkHasBoundary( "POLYGON EMPTY", false);
   }
   
-  private void runBoundaryTest(String wkt, BoundaryNodeRule bnRule, String wktExpected)
+ /**private */void runBoundaryTest(String wkt, BoundaryNodeRule bnRule, String wktExpected)
       throws ParseException
   {
     Geometry g = rdr.read(wkt);
@@ -176,17 +176,17 @@ public class BoundaryTest
     assertTrue(boundary.equalsExact(expected));
   }
 
-  private void checkHasBoundary(String wkt)
+ /**private */void checkHasBoundary(String wkt)
   {
     checkHasBoundary(wkt, BoundaryNodeRule.MOD2_BOUNDARY_RULE, true);
   }
   
-  private void checkHasBoundary(String wkt, boolean expected)
+ /**private */void checkHasBoundary(String wkt, boolean expected)
   {
     checkHasBoundary(wkt, BoundaryNodeRule.MOD2_BOUNDARY_RULE, expected);
   }
   
-  private void checkHasBoundary(String wkt, BoundaryNodeRule bnRule, boolean expected)
+ /**private */void checkHasBoundary(String wkt, BoundaryNodeRule bnRule, boolean expected)
   {
     Geometry g = read(wkt);
     assertEquals(expected, BoundaryOp.hasBoundary(g, bnRule));

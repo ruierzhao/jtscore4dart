@@ -27,10 +27,10 @@
  *
  */
 class EdgeSourceInfo {
-  private int index;
-  private int dim = -999;
-  private bool isHole = false;
-  private int depthDelta = 0;
+ /**private */int index;
+ /**private */int dim = -999;
+ /**private */bool isHole = false;
+ /**private */int depthDelta = 0;
   
   EdgeSourceInfo(int index, int depthDelta, bool isHole) {
     this.index = index;

@@ -48,7 +48,7 @@
  */
 class PolygonEarClipper {
   
-  private static final int NO_VERTEX_INDEX = -1;
+ /**private */static final int NO_VERTEX_INDEX = -1;
 
   /**
    * Triangulates a polygon via ear-clipping.
@@ -61,22 +61,22 @@ class PolygonEarClipper {
     return clipper.compute();
   }
   
-  private bool isFlatCornersSkipped = false;
+ /**private */bool isFlatCornersSkipped = false;
 
   /**
    * The polygon vertices are provided in CW orientation. 
    * Thus for convex interior angles 
    * the vertices forming the angle are in CW orientation.
    */
-  private final List<Coordinate> vertex;
+ /**private */final List<Coordinate> vertex;
   
-  private final int[] vertexNext;
-  private int vertexSize;
+ /**private */final int[] vertexNext;
+ /**private */int vertexSize;
   // first available vertex index
-  private int vertexFirst;
+ /**private */int vertexFirst;
   
   // indices for current corner
-  private int[] cornerIndex;
+ /**private */int[] cornerIndex;
   
   /**
    * Indexing vertices improves ear intersection testing performance.
@@ -84,7 +84,7 @@ class PolygonEarClipper {
    * Note that a KDtree cannot be used because the vertex indices must be stored
    * and duplicates must be stored.
    */
-  private VertexSequencePackedRtree vertexCoordIndex;
+ /**private */VertexSequencePackedRtree vertexCoordIndex;
 
   /**
    * Creates a new ear-clipper instance.
@@ -102,7 +102,7 @@ class PolygonEarClipper {
     vertexCoordIndex = new VertexSequencePackedRtree(vertex);
   }
 
-  private static int[] createNextLinks(int size) {
+ /**private */static int[] createNextLinks(int size) {
     int[] next = new int[size];
     for (int i = 0; i < size; i++) {
       next[i] = i + 1;
@@ -196,7 +196,7 @@ class PolygonEarClipper {
     }
   }
   
-  private bool isValidEar(int cornerIndex, List<Coordinate> corner) {
+ /**private */bool isValidEar(int cornerIndex, List<Coordinate> corner) {
     int intApexIndex = findIntersectingVertex(cornerIndex, corner);
     //--- no intersections found
     if (intApexIndex == NO_VERTEX_INDEX)
@@ -222,7 +222,7 @@ class PolygonEarClipper {
    * @param corner the corner vertices
    * @return the index of an intersecting or duplicate vertex, or {@link #NO_VERTEX_INDEX} if none
    */
-  private int findIntersectingVertex(int cornerIndex, List<Coordinate> corner) {
+ /**private */int findIntersectingVertex(int cornerIndex, List<Coordinate> corner) {
     Envelope cornerEnv = envelope(corner);
     int[] result = vertexCoordIndex.query(cornerEnv);
     
@@ -271,7 +271,7 @@ class PolygonEarClipper {
    * @param corner the corner vertices
    * @return true if the corner ia a valid ear
    */
-  private bool isValidEarScan(int cornerIndex, List<Coordinate> corner) {
+ /**private */bool isValidEarScan(int cornerIndex, List<Coordinate> corner) {
     double cornerAngle = Angle.angleBetweenOriented(corner[0], corner[1], corner[2]);
     
     int currIndex = nextIndex(vertexFirst);
@@ -311,7 +311,7 @@ class PolygonEarClipper {
     return true;
   }
   
-  private static Envelope envelope(List<Coordinate> corner) {
+ /**private */static Envelope envelope(List<Coordinate> corner) {
     Envelope cornerEnv = new Envelope(corner[0], corner[1]);
     cornerEnv.expandToInclude(corner[2]);
     return cornerEnv;
@@ -320,7 +320,7 @@ class PolygonEarClipper {
   /**
    * Remove the corner apex vertex and update the candidate corner location.
    */
-  private void removeCorner() {
+ /**private */void removeCorner() {
     int cornerApexIndex = cornerIndex[1];
     if ( vertexFirst ==  cornerApexIndex) {
       vertexFirst = vertexNext[cornerApexIndex];
@@ -334,11 +334,11 @@ class PolygonEarClipper {
     cornerIndex[2] = nextIndex(cornerIndex[1]);
   }
 
-  private bool isRemoved(int vertexIndex) {
+ /**private */bool isRemoved(int vertexIndex) {
     return NO_VERTEX_INDEX == vertexNext[vertexIndex];
   }
   
-  private void initCornerIndex() {
+ /**private */void initCornerIndex() {
     cornerIndex = new int[3];
     cornerIndex[0] = 0;
     cornerIndex[1] = 1;
@@ -350,7 +350,7 @@ class PolygonEarClipper {
    * 
    * @param corner an array for the corner vertices
    */
-  private void fetchCorner(List<Coordinate> cornerVertex) {
+ /**private */void fetchCorner(List<Coordinate> cornerVertex) {
     cornerVertex[0] = vertex[cornerIndex[0]]; 
     cornerVertex[1] = vertex[cornerIndex[1]]; 
     cornerVertex[2] = vertex[cornerIndex[2]]; 
@@ -359,7 +359,7 @@ class PolygonEarClipper {
   /**
    * Move to next corner.
    */
-  private void nextCorner(List<Coordinate> cornerVertex) {
+ /**private */void nextCorner(List<Coordinate> cornerVertex) {
     if ( vertexSize < 3 ) {
       return;
     }
@@ -376,15 +376,15 @@ class PolygonEarClipper {
    * @param index candidate position
    * @return index of the next available shell coordinate
    */
-  private int nextIndex(int index) {
+ /**private */int nextIndex(int index) {
     return vertexNext[index];
   }
 
-  private static bool isConvex(List<Coordinate> pts) {
+ /**private */static bool isConvex(List<Coordinate> pts) {
     return Orientation.CLOCKWISE == Orientation.index(pts[0], pts[1], pts[2]);
   }
   
-  private static bool isFlat(List<Coordinate> pts) {
+ /**private */static bool isFlat(List<Coordinate> pts) {
     return Orientation.COLLINEAR == Orientation.index(pts[0], pts[1], pts[2]);
   }
   
@@ -393,7 +393,7 @@ class PolygonEarClipper {
    * @param pts the corner points
    * @return true if the corner is flat or collapsed
    */
-  private static bool isCornerInvalid(List<Coordinate> pts) {
+ /**private */static bool isCornerInvalid(List<Coordinate> pts) {
     return pts[1].equals2D(pts[0]) || pts[1].equals2D(pts[2]) || pts[0].equals2D(pts[2]);
   }
   

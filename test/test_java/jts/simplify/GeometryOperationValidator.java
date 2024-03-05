@@ -22,10 +22,10 @@ import org.locationtech.jts.io.WKTReader;
  */
 public class GeometryOperationValidator
 {
-  private static WKTReader rdr = new WKTReader();
-  private Geometry[] ioGeometry;
-  private boolean expectedSameStructure = false;
-  private String wktExpected = null;
+ /**private */static WKTReader rdr = new WKTReader();
+ /**private */Geometry[] ioGeometry;
+ /**private */boolean expectedSameStructure = false;
+ /**private */String wktExpected = null;
 
   public GeometryOperationValidator(Geometry[] ioGeometry)
   {
@@ -90,7 +90,7 @@ public class GeometryOperationValidator
 		return this;
 	}
 
-  private void testExpectedResult()
+ /**private */void testExpectedResult()
       throws Exception
   {
     if (wktExpected == null) return;

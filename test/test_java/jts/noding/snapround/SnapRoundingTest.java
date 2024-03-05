@@ -161,7 +161,7 @@ public class SnapRoundingTest  extends TestCase {
     return true;
   }
 
-  private boolean isSnapped(Coordinate v, List lines)
+ /**private */boolean isSnapped(Coordinate v, List lines)
   {
     for (int i = 0; i < lines.size(); i++) {
       LineString line = (LineString) lines.get(i);
@@ -174,7 +174,7 @@ public class SnapRoundingTest  extends TestCase {
     return true;
   }
 
-  private boolean isSnapped(Coordinate v, Coordinate p0, Coordinate p1)
+ /**private */boolean isSnapped(Coordinate v, Coordinate p0, Coordinate p1)
   {
     if (v.equals2D(p0)) return true;
     if (v.equals2D(p1)) return true;

@@ -127,12 +127,12 @@ public class KMLWriterTest extends TestCase
   }
 
 
-  private void checkEqual(String wkt, String expectedKML) {
+ /**private */void checkEqual(String wkt, String expectedKML) {
     KMLWriter kmlWriter = new KMLWriter();
     checkEqual(kmlWriter, wkt, expectedKML);
   }
 
-  private void checkEqual(KMLWriter kmlWriter, String wkt, String expectedKML) {
+ /**private */void checkEqual(KMLWriter kmlWriter, String wkt, String expectedKML) {
     try {
       Geometry geom = rdr.read(wkt);
       checkEqual(kmlWriter, geom, expectedKML);
@@ -141,7 +141,7 @@ public class KMLWriterTest extends TestCase
     }
   }
 
-  private void checkEqual(KMLWriter kmlWriter, Geometry geom, String expectedKML) {
+ /**private */void checkEqual(KMLWriter kmlWriter, Geometry geom, String expectedKML) {
     String kml = kmlWriter.write(geom);
     String kmlNorm = normalizeKML(kml);
     String expectedKMLNorm = normalizeKML(expectedKML);
@@ -158,7 +158,7 @@ public class KMLWriterTest extends TestCase
    * @param expectedKML
    * @return
    */
-  private String normalizeKML(String kml) {
+ /**private */String normalizeKML(String kml) {
     String condenseSpace = kml.replaceAll("\\s+", " ").trim();
     String removeRedundantSpace = condenseSpace.replaceAll("> <", "><");
     return removeRedundantSpace;

@@ -23,7 +23,7 @@ class ByteArrayInStream
 	 * Implementation improvement suggested by Andrea Aime - Dec 15 2007
 	 */
 	
-  private byte[] buffer;
+ /**private */byte[] buffer;
 	private int position;
 
 	/**

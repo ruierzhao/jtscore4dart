@@ -28,7 +28,7 @@ class FastSegmentSetIntersectionFinder
 {
 	private final SegmentSetMutualIntersector segSetMutInt; 
 	// for testing purposes
-	// private SimpleSegmentSetMutualIntersector mci;  
+	///**private */SimpleSegmentSetMutualIntersector mci;  
 
 	/**
 	 * Creates an intersection finder against a given set of segment strings.

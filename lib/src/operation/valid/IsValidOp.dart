@@ -30,8 +30,8 @@
  */
 class IsValidOp
 {
-  private static final int MIN_SIZE_LINESTRING = 2;
-  private static final int MIN_SIZE_RING = 4;
+ /**private */static final int MIN_SIZE_LINESTRING = 2;
+ /**private */static final int MIN_SIZE_RING = 4;
 
   /**
    * Tests whether a {@link Geometry} is valid.
@@ -64,14 +64,14 @@ class IsValidOp
   /**
    * The geometry being validated
    */
-  private Geometry inputGeometry;  
+ /**private */Geometry inputGeometry;  
   /**
    * If the following condition is TRUE JTS will validate inverted shells and exverted holes
    * (the ESRI SDE model)
    */
-  private bool isInvertedRingValid = false;
+ /**private */bool isInvertedRingValid = false;
   
-  private TopologyValidationError validErr;
+ /**private */TopologyValidationError validErr;
 
   /**
    * Creates a new validator for a geometry.
@@ -141,16 +141,16 @@ class IsValidOp
     return validErr;
   }
   
-  private void logInvalid(int code, Coordinate pt) {
+ /**private */void logInvalid(int code, Coordinate pt) {
     validErr = new TopologyValidationError(code, pt);   
   }
   
-  private bool hasInvalidError() {
+ /**private */bool hasInvalidError() {
     return validErr != null;
     
   }
   
-  private bool isValidGeometry(Geometry g)
+ /**private */bool isValidGeometry(Geometry g)
   {
     validErr = null;
 
@@ -172,7 +172,7 @@ class IsValidOp
   /**
    * Tests validity of a Point.
    */
-  private bool isValid(Point g)
+ /**private */bool isValid(Point g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -182,7 +182,7 @@ class IsValidOp
   /**
    * Tests validity of a MultiPoint.
    */
-  private bool isValid(MultiPoint g)
+ /**private */bool isValid(MultiPoint g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -193,7 +193,7 @@ class IsValidOp
    * Tests validity of a LineString.  
    * Almost anything goes for linestrings!
    */
-  private bool isValid(LineString g)
+ /**private */bool isValid(LineString g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -205,7 +205,7 @@ class IsValidOp
   /**
    * Tests validity of a LinearRing.
    */
-  private bool isValid(LinearRing g)
+ /**private */bool isValid(LinearRing g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -224,7 +224,7 @@ class IsValidOp
    * Tests the validity of a polygon.
    * Sets the validErr flag.
    */
-  private bool isValid(Polygon g)
+ /**private */bool isValid(Polygon g)
   {
     checkCoordinatesValid(g);
     if (hasInvalidError()) return false;
@@ -258,7 +258,7 @@ class IsValidOp
    * @param g
    * @return
    */
-  private bool isValid(MultiPolygon g)
+ /**private */bool isValid(MultiPolygon g)
   {
     for (int i = 0; i < g.getNumGeometries(); i++) {
       Polygon p = (Polygon) g.getGeometryN(i);
@@ -301,7 +301,7 @@ class IsValidOp
    * @param gc
    * @return
    */
-  private bool isValid(GeometryCollection gc)
+ /**private */bool isValid(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       if (! isValidGeometry( gc.getGeometryN(i) )) 
@@ -310,7 +310,7 @@ class IsValidOp
     return true;
   }
 
-  private void checkCoordinatesValid(List<Coordinate> coords)
+ /**private */void checkCoordinatesValid(List<Coordinate> coords)
   {
     for (int i = 0; i < coords.length; i++) {
       if (! isValid(coords[i])) {
@@ -320,7 +320,7 @@ class IsValidOp
     }
   }
 
-  private void checkCoordinatesValid(Polygon poly)
+ /**private */void checkCoordinatesValid(Polygon poly)
   {
     checkCoordinatesValid(poly.getExteriorRing().getCoordinates());
     if (hasInvalidError()) return;
@@ -330,7 +330,7 @@ class IsValidOp
     }
   }
 
-  private void checkRingClosed(LinearRing ring)
+ /**private */void checkRingClosed(LinearRing ring)
   {
     if (ring.isEmpty()) return;
     if (! ring.isClosed() ) {
@@ -340,7 +340,7 @@ class IsValidOp
     }
   }
   
-  private void checkRingsClosed(Polygon poly)
+ /**private */void checkRingsClosed(Polygon poly)
   {
     checkRingClosed(poly.getExteriorRing());
     if (hasInvalidError()) return;
@@ -350,7 +350,7 @@ class IsValidOp
     }
   }
 
-  private void checkRingsPointSize(Polygon poly)
+ /**private */void checkRingsPointSize(Polygon poly)
   {
     checkRingPointSize(poly.getExteriorRing());
     if (hasInvalidError()) return;
@@ -360,7 +360,7 @@ class IsValidOp
     }
   }
 
-  private void checkRingPointSize(LinearRing ring) {
+ /**private */void checkRingPointSize(LinearRing ring) {
     if (ring.isEmpty()) return;
     checkPointSize(ring, MIN_SIZE_RING);
   }
@@ -371,7 +371,7 @@ class IsValidOp
    * @param line
    * @param minSize
    */
-  private void checkPointSize(LineString line, int minSize) {
+ /**private */void checkPointSize(LineString line, int minSize) {
     if (! isNonRepeatedSizeAtLeast(line, minSize) ) {
       Coordinate pt = line.getNumPoints() >= 1 ? line.getCoordinateN(0) : null;
       logInvalid(TopologyValidationError.TOO_FEW_POINTS, pt);
@@ -386,7 +386,7 @@ class IsValidOp
    * @param minSize the minimum line size
    * @return true if the line has the required number of non-repeated points
    */
-  private bool isNonRepeatedSizeAtLeast(LineString line, int minSize) {
+ /**private */bool isNonRepeatedSizeAtLeast(LineString line, int minSize) {
     int numPts = 0;
     Coordinate prevPt = null;
     for (int i = 0; i < line.getNumPoints(); i++) {
@@ -399,7 +399,7 @@ class IsValidOp
     return numPts >= minSize;
   }
 
-  private void checkAreaIntersections(PolygonTopologyAnalyzer areaAnalyzer) {
+ /**private */void checkAreaIntersections(PolygonTopologyAnalyzer areaAnalyzer) {
     if (areaAnalyzer.hasInvalidIntersection()) {
       logInvalid(areaAnalyzer.getInvalidCode(),
                  areaAnalyzer.getInvalidLocation());
@@ -412,7 +412,7 @@ class IsValidOp
    *
    * @param ring the linear ring to check
    */
-  private void checkRingSimple(LinearRing ring)
+ /**private */void checkRingSimple(LinearRing ring)
   {
     Coordinate intPt = PolygonTopologyAnalyzer.findSelfIntersection(ring);
     if (intPt != null) {
@@ -431,7 +431,7 @@ class IsValidOp
    *
    * @param poly the polygon to be tested for hole inclusion
    */
-  private void checkHolesInShell(Polygon poly)
+ /**private */void checkHolesInShell(Polygon poly)
   {
     // skip test if no holes are present
     if (poly.getNumInteriorRing() <= 0) return;
@@ -469,7 +469,7 @@ class IsValidOp
    * @param shell the polygon shell to test against
    * @return a hole point outside the shell, or null if it is inside
    */
-  private Coordinate findHoleOutsideShellPoint(LinearRing hole, LinearRing shell) {
+ /**private */Coordinate findHoleOutsideShellPoint(LinearRing hole, LinearRing shell) {
     Coordinate holePt0 = hole.getCoordinateN(0);
     /**
      * If hole envelope is not covered by shell, it must be outside
@@ -491,7 +491,7 @@ class IsValidOp
    * 
    * @param poly the polygon with holes to test
    */
-  private void checkHolesNotNested(Polygon poly)
+ /**private */void checkHolesNotNested(Polygon poly)
   {
     // skip test if no holes are present
     if (poly.getNumInteriorRing() <= 0) return;
@@ -514,7 +514,7 @@ class IsValidOp
    * </ul>
    * These have been confirmed by the {@link PolygonTopologyAnalyzer}.
    */
-  private void checkShellsNotNested(MultiPolygon mp)
+ /**private */void checkShellsNotNested(MultiPolygon mp)
   {
     // skip test if only one shell present
     if (mp.getNumGeometries() <= 1) return;
@@ -526,7 +526,7 @@ class IsValidOp
     }
   }  
  
-  private void checkInteriorConnected(PolygonTopologyAnalyzer analyzer) {
+ /**private */void checkInteriorConnected(PolygonTopologyAnalyzer analyzer) {
     if (analyzer.isInteriorDisconnected()) {
       logInvalid(TopologyValidationError.DISCONNECTED_INTERIOR,
           analyzer.getDisconnectionLocation());

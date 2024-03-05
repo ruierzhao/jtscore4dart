@@ -28,8 +28,8 @@ public class WKTReaderParseErrorTest
     TestRunner.run(WKTReaderParseErrorTest.class);
   }
 
-  private GeometryFactory fact = new GeometryFactory();
-  private WKTReader rdr = new WKTReader(fact);
+ /**private */GeometryFactory fact = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader(fact);
 
   public WKTReaderParseErrorTest(String name)
   {
@@ -99,7 +99,7 @@ public class WKTReaderParseErrorTest
     readWithParseException("LINESTRINGABCZM ( 0 0 0 0, 1 1 1 1 )");
   }
 
-  private void readWithParseException(String wkt)
+ /**private */void readWithParseException(String wkt)
       throws IOException
   {
     boolean threwParseEx = false;

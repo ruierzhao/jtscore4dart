@@ -34,8 +34,8 @@
 class BasicPreparedGeometry 
   implements PreparedGeometry
 {
-  private final Geometry baseGeom;
-  private final List representativePts;  // List<Coordinate>
+ /**private */final Geometry baseGeom;
+ /**private */final List representativePts;  // List<Coordinate>
 
   BasicPreparedGeometry(Geometry geom) 
   {
@@ -86,7 +86,7 @@ class BasicPreparedGeometry
    * @param g a Geometry
    * @return true if the envelopes intersect
    */
-  protected bool envelopesIntersect(Geometry g)
+ /**protected */bool envelopesIntersect(Geometry g)
   {
     if (! baseGeom.getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
       return false;
@@ -101,7 +101,7 @@ class BasicPreparedGeometry
    * @param g a Geometry
    * @return true if g is contained in this envelope
    */
-  protected bool envelopeCovers(Geometry g)
+ /**protected */bool envelopeCovers(Geometry g)
   {
     if (! baseGeom.getEnvelopeInternal().covers(g.getEnvelopeInternal()))
       return false;

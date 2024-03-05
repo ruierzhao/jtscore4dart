@@ -238,7 +238,7 @@ public class TopologyPreservingSimplifierTest
         "MULTIPOLYGON (((0.63 0.2, 0.35 0, 0.73 0.66, 0.63 0.2)), ((1.42 4.01, 3.45 0.7, 1.79 1.47, 0 0.57, 1.42 4.01)))");
   }
   
-  private void checkTPS(String wkt, double tolerance, String wktExpected) {
+ /**private */void checkTPS(String wkt, double tolerance, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = TopologyPreservingSimplifier.simplify(geom, tolerance);
     Geometry expected = read(wktExpected);
@@ -247,7 +247,7 @@ public class TopologyPreservingSimplifierTest
     checkEqual(expected, actual);
   }
   
-  private void checkTPSNoChange(String wkt, double tolerance) {
+ /**private */void checkTPSNoChange(String wkt, double tolerance) {
     checkTPS(wkt, tolerance, wkt);
   }
 }

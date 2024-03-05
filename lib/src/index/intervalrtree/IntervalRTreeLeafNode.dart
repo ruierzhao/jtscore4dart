@@ -16,7 +16,7 @@
 class IntervalRTreeLeafNode 
 extends IntervalRTreeNode
 {
-  private Object item;
+ /**private */Object item;
 	
 	IntervalRTreeLeafNode(double min, double max, Object item)
 	{

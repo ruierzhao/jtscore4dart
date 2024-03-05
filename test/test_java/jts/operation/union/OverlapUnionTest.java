@@ -63,7 +63,7 @@ public class OverlapUnionTest extends GeometryTestCase {
    * @param scaleFactor
    * @throws ParseException
    */
-  private void checkUnionWithTopologyFailure(String wktA, String wktB, double scaleFactor) throws ParseException {
+ /**private */void checkUnionWithTopologyFailure(String wktA, String wktB, double scaleFactor) throws ParseException {
     PrecisionModel pm = new PrecisionModel(scaleFactor);
     GeometryFactory geomFact = new GeometryFactory(pm);
     WKTReader rdr = new WKTReader(geomFact);
@@ -90,15 +90,15 @@ public class OverlapUnionTest extends GeometryTestCase {
     assertTrue( "OverlapUnion result is invalid", result.isValid());
   }
   
-  private void checkUnion(String wktA, String wktB) throws ParseException {
+ /**private */void checkUnion(String wktA, String wktB) throws ParseException {
     checkUnion(wktA, wktB, false);
   }
   
-  private void checkUnionOptimized(String wktA, String wktB) throws ParseException {
+ /**private */void checkUnionOptimized(String wktA, String wktB) throws ParseException {
     checkUnion(wktA, wktB, true);
   }
   
-  private void checkUnion(String wktA, String wktB, boolean isCheckOptimized) throws ParseException {
+ /**private */void checkUnion(String wktA, String wktB, boolean isCheckOptimized) throws ParseException {
     PrecisionModel pm = new PrecisionModel();
     GeometryFactory geomFact = new GeometryFactory(pm);
     WKTReader rdr = new WKTReader(geomFact);

@@ -28,7 +28,7 @@
  */
 class LineSegmentIndex
 {
-  private Quadtree index = new Quadtree();
+ /**private */Quadtree index = new Quadtree();
 
   LineSegmentIndex()
   {
@@ -77,8 +77,8 @@ class LineSegmentVisitor
 {
 // MD - only seems to make about a 10% difference in overall time.
 
-  private LineSegment querySeg;
-  private ArrayList<Object> items = new ArrayList<Object>();
+ /**private */LineSegment querySeg;
+ /**private */ArrayList<Object> items = new ArrayList<Object>();
 
   LineSegmentVisitor(LineSegment querySeg) {
     this.querySeg = querySeg;

@@ -46,7 +46,7 @@ class RobustLineIntersector
     result = NO_INTERSECTION;
   }
 
-  protected int computeIntersect(
+ /**protected */int computeIntersect(
                 Coordinate p1, Coordinate p2,
                 Coordinate q1, Coordinate q2  ) {
     isProper = false;
@@ -161,7 +161,7 @@ class RobustLineIntersector
     return POINT_INTERSECTION;
   }
 
-  private int computeCollinearIntersection(Coordinate p1, Coordinate p2,
+ /**private */int computeCollinearIntersection(Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2) {
     bool q1inP = Envelope.intersects(p1, p2, q1);
     bool q2inP = Envelope.intersects(p1, p2, q2);
@@ -205,11 +205,11 @@ class RobustLineIntersector
     return NO_INTERSECTION;
   }
 
-  private static Coordinate copyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
+ /**private */static Coordinate copyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
     return copyWithZ(p, zGetOrInterpolate(p, p1, p2));
   }
 
-  private static Coordinate copyWithZ(Coordinate p, double z) {
+ /**private */static Coordinate copyWithZ(Coordinate p, double z) {
     Coordinate pCopy = copy(p);
     if (!(z).isNaN) {
       pCopy.setZ( z );
@@ -217,7 +217,7 @@ class RobustLineIntersector
     return pCopy;
   }
   
-  private static Coordinate copy(Coordinate p) {
+ /**private */static Coordinate copy(Coordinate p) {
     return p.copy();
   }
   
@@ -225,7 +225,7 @@ class RobustLineIntersector
    * This method computes the actual value of the intersection point.
    * It is rounded to the precision model if being used.
    */
-  private Coordinate intersection(
+ /**private */Coordinate intersection(
     Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
   {
     Coordinate intPt = intersectionSafe(p1, p2, q1, q2);
@@ -248,7 +248,7 @@ class RobustLineIntersector
   }
 
   /*
-  private void checkDD(Coordinate p1, Coordinate p2, Coordinate q1,
+ /**private */void checkDD(Coordinate p1, Coordinate p2, Coordinate q1,
       Coordinate q2, Coordinate intPt)
   {
     Coordinate intPtDD = CGAlgorithmsDD.intersection(p1, p2, q1, q2);
@@ -272,7 +272,7 @@ class RobustLineIntersector
    * @param q2 a segment endpoint
    * @return the computed intersection point
    */
-  private Coordinate intersectionSafe(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+ /**private */Coordinate intersectionSafe(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
   {
     Coordinate intPt = Intersection.intersection(p1, p2, q1, q2);
     if (intPt == null)
@@ -290,7 +290,7 @@ class RobustLineIntersector
    *
    * @return <code>true</code> if the input point lies within both input segment envelopes
    */
-  private bool isInSegmentEnvelopes(Coordinate intPt)
+ /**private */bool isInSegmentEnvelopes(Coordinate intPt)
   {
     Envelope env0 = new Envelope(inputLines[0][0], inputLines[0][1]);
     Envelope env1 = new Envelope(inputLines[1][0], inputLines[1][1]);
@@ -316,7 +316,7 @@ class RobustLineIntersector
    * @param q2 an endpoint of segment Q
    * @return the nearest endpoint to the other segment
    */
-  private static Coordinate nearestEndpoint(Coordinate p1, Coordinate p2,
+ /**private */static Coordinate nearestEndpoint(Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2)
   {
     Coordinate nearestPt = p1;
@@ -348,7 +348,7 @@ class RobustLineIntersector
    * @param q a coordinate, possibly with Z
    * @return the Z value if present
    */
-  private static double zGet(Coordinate p, Coordinate q) {
+ /**private */static double zGet(Coordinate p, Coordinate q) {
     double z = p.getZ();
     if ((z).isNaN) {
       z = q.getZ(); // may be NaN
@@ -367,7 +367,7 @@ class RobustLineIntersector
    * @param p2 a segment endpoint, possibly with Z
    * @return the extracted or interpolated Z value (may be NaN)
    */
-  private static double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
+ /**private */static double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
     double z = p.getZ();
     if (! (z).isNaN) 
       return z;
@@ -386,7 +386,7 @@ class RobustLineIntersector
    * @param p2 a segment endpoint, possibly with Z
    * @return the interpolated Z value (may be NaN)
    */
-  private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
+ /**private */static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
     double p1z = p1.getZ();
     double p2z = p2.getZ();
     if ((p1z).isNaN) {
@@ -433,7 +433,7 @@ class RobustLineIntersector
    * @param q2 a segment endpoint, possibly with Z
    * @return the averaged interpolated Z value (may be NaN)
    */
-  private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
+ /**private */static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
     double zp = zInterpolate(p, p1, p2);
     double zq = zInterpolate(p, q1, q2);
     if ((zp).isNaN) {

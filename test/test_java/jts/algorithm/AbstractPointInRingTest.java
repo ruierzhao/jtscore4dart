@@ -106,7 +106,7 @@ public abstract class AbstractPointInRingTest extends GeometryTestCase {
     runPtInRing(Location.EXTERIOR, new Coordinate(3.166572116932842, 48.5390194687463), "POLYGON ((2.152214146946829 50.470470727186765, 18.381941666723034 19.567250592139274, 2.390837642830135 49.228045261718165, 2.152214146946829 50.470470727186765))");
   }
   
-  abstract protected void runPtInRing(int expectedLoc, Coordinate pt, String wkt)
+  abstract/**protected */void runPtInRing(int expectedLoc, Coordinate pt, String wkt)
       throws Exception;
 
 }

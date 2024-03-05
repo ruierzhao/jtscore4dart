@@ -84,6 +84,6 @@ class Octant {
     return octant(dx, dy);
   }
 
-  private Octant() {
+ /**private */Octant() {
   }
 }

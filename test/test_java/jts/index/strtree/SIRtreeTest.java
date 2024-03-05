@@ -29,10 +29,10 @@ public class SIRtreeTest extends TestCase {
     junit.textui.TestRunner.main(testCaseName);
   }
 
-  private static class TestTree extends SIRtree {
+ /**private */static class TestTree extends SIRtree {
     public TestTree(int nodeCapacity) { super(nodeCapacity); }
     public AbstractNode getRoot() { return super.getRoot(); }
-    protected List boundablesAtLevel(int level) { return super.boundablesAtLevel(level); }
+   /**protected */List boundablesAtLevel(int level) { return super.boundablesAtLevel(level); }
   }
 
   public void test() {

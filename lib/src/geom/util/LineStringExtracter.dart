@@ -74,7 +74,7 @@ class LineStringExtracter
     return geom.getFactory().buildGeometry(getLines(geom));
   }
 
-  private List comps;
+ /**private */List comps;
   
   /**
    * Constructs a filter with a list in which to store the elements found.

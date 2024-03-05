@@ -113,16 +113,16 @@ class NodingIntersectionFinder
     return finder;
   }
   
-  private bool findAllIntersections = false;
-  private bool isCheckEndSegmentsOnly = false;
-  private bool keepIntersections = true;
-  private bool isInteriorIntersectionsOnly = false;
+ /**private */bool findAllIntersections = false;
+ /**private */bool isCheckEndSegmentsOnly = false;
+ /**private */bool keepIntersections = true;
+ /**private */bool isInteriorIntersectionsOnly = false;
   
-  private LineIntersector li;
-  private Coordinate interiorIntersection = null;
-  private List<Coordinate> intSegments = null;
-  private List intersections = new ArrayList();
-  private int intersectionCount = 0;
+ /**private */LineIntersector li;
+ /**private */Coordinate interiorIntersection = null;
+ /**private */List<Coordinate> intSegments = null;
+ /**private */List intersections = new ArrayList();
+ /**private */int intersectionCount = 0;
 
   /**
    * Creates an intersection finder which finds an intersection
@@ -325,7 +325,7 @@ class NodingIntersectionFinder
    * @param isEnd11 true if vertex is a segmentString endpoint
    * @return true if an intersection is found
    */
-  private static bool isInteriorVertexIntersection(
+ /**private */static bool isInteriorVertexIntersection(
       Coordinate p00, Coordinate p01, 
       Coordinate p10, Coordinate p11,
       bool isEnd00, bool isEnd01,
@@ -347,7 +347,7 @@ class NodingIntersectionFinder
    * @param isEnd1 true if vertex is a segmentString endpoint
    * @return true if an intersection is found
    */
-  private static bool isInteriorVertexIntersection(
+ /**private */static bool isInteriorVertexIntersection(
       Coordinate p0, Coordinate p1,
       bool isEnd0, bool isEnd1) {
     
@@ -368,7 +368,7 @@ class NodingIntersectionFinder
    * @param index the index of a segment in the segment string
    * @return true if the segment is an end segment
    */
-  private static bool isEndSegment(SegmentString segStr, int index)
+ /**private */static bool isEndSegment(SegmentString segStr, int index)
   {
   	if (index == 0) return true;
   	if (index >= segStr.size() - 2) return true;

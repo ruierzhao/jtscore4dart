@@ -26,7 +26,7 @@ public class VoronoiDiagramBuilderTest extends GeometryTestCase {
     assertTrue(voronoi.getEnvelopeInternal().equals(clip.getEnvelopeInternal()));
   }
   
-  private static final double TRIANGULATION_TOLERANCE = 0.0;
+ /**private */static final double TRIANGULATION_TOLERANCE = 0.0;
 
   public static Geometry voronoiDiagram(Geometry sitesGeom, Geometry clipGeom)
   {

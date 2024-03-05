@@ -20,7 +20,7 @@
 class InputStreamInStream
 	implements InStream
 {
-  private InputStream is;
+ /**private */InputStream is;
 
   InputStreamInStream(InputStream is)
   {

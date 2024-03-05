@@ -128,18 +128,18 @@ public class LineDissolverTest  extends TestCase {
   }
 
 
-  private void checkDissolve(String wkt, String expectedWKT) throws ParseException {
+ /**private */void checkDissolve(String wkt, String expectedWKT) throws ParseException {
     checkDissolve(new String[] { wkt }, expectedWKT);
   }
 
-  private void checkDissolve(String[] wkt, String expectedWKT) throws ParseException {
+ /**private */void checkDissolve(String[] wkt, String expectedWKT) throws ParseException {
     List geoms = IOUtil.readWKT(wkt);
     Geometry expected = IOUtil.readWKT(expectedWKT);
     checkDissolve(geoms, expected);
   }
 
 
-  private void checkDissolve(List geoms, Geometry expected) {
+ /**private */void checkDissolve(List geoms, Geometry expected) {
     LineDissolver d = new LineDissolver();
     d.add(geoms);
     Geometry result = d.getResult();

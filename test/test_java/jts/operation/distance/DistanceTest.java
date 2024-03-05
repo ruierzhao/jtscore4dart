@@ -28,17 +28,17 @@ public class DistanceTest extends BaseDistanceTest {
   public DistanceTest(String name) { super(name); }
 
   @Override
-  protected double distance(Geometry g1, Geometry g2) {
+ /**protected */double distance(Geometry g1, Geometry g2) {
     return g1.distance(g2);
   }
 
   @Override
-  protected boolean isWithinDistance(Geometry g1, Geometry g2, double distance) {
+ /**protected */boolean isWithinDistance(Geometry g1, Geometry g2, double distance) {
     return g1.isWithinDistance(g2, distance);
   }
 
   @Override
-  protected Coordinate[] nearestPoints(Geometry g1, Geometry g2) {
+ /**protected */Coordinate[] nearestPoints(Geometry g1, Geometry g2) {
     return DistanceOp.nearestPoints(g1, g2);
   }  
 }

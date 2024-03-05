@@ -72,11 +72,11 @@
  */
 class MonotoneChain {
 
-  private List<Coordinate> pts;
-  private int start, end;
-  private Envelope env = null;
-  private Object context = null;// user-defined information
-  private int id;// useful for optimizing chain comparisons
+ /**private */List<Coordinate> pts;
+ /**private */int start, end;
+ /**private */Envelope env = null;
+ /**private */Object context = null;// user-defined information
+ /**private */int id;// useful for optimizing chain comparisons
   //private double overlapDistance;
 
   /**
@@ -220,7 +220,7 @@ class MonotoneChain {
     computeSelect(searchEnv, start, end, mcs);
   }
 
-  private void computeSelect(
+ /**private */void computeSelect(
     Envelope searchEnv,
     int start0, int end0,
     MonotoneChainSelectAction mcs )
@@ -299,7 +299,7 @@ class MonotoneChain {
    * @param overlapTolerance the overlap tolerance distance (may be 0)
    * @param mco the overlap action to execute on selected segments
    */
-  private void computeOverlaps(
+ /**private */void computeOverlaps(
     int start0, int end0,
     MonotoneChain mc,
     int start1, int end1,
@@ -347,7 +347,7 @@ class MonotoneChain {
    * @param overlapTolerance 
    * @return true if the section envelopes overlap
    */
-  private bool overlaps(
+ /**private */bool overlaps(
       int start0, int end0,
       MonotoneChain mc,
       int start1, int end1, 
@@ -359,7 +359,7 @@ class MonotoneChain {
     return Envelope.intersects(pts[start0], pts[end0], mc.pts[start1], mc.pts[end1]);
   }
   
-  private bool overlaps(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2, double overlapTolerance)
+ /**private */bool overlaps(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2, double overlapTolerance)
   {
     double minq = math.min(q1.x, q2.x);
     double maxq = math.max(q1.x, q2.x);

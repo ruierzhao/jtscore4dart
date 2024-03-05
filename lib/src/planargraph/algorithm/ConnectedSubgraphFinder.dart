@@ -33,7 +33,7 @@
 class ConnectedSubgraphFinder
 {
 
-  private PlanarGraph graph;
+ /**private */PlanarGraph graph;
 
   ConnectedSubgraphFinder(PlanarGraph graph) {
     this.graph = graph;
@@ -54,7 +54,7 @@ class ConnectedSubgraphFinder
     return subgraphs;
   }
 
-  private Subgraph findSubgraph(Node node)
+ /**private */Subgraph findSubgraph(Node node)
   {
     Subgraph subgraph = new Subgraph(graph);
     addReachable(node, subgraph);
@@ -67,7 +67,7 @@ class ConnectedSubgraphFinder
    *
    * @param node a node known to be in the subgraph
    */
-  private void addReachable(Node startNode, Subgraph subgraph)
+ /**private */void addReachable(Node startNode, Subgraph subgraph)
   {
     Stack nodeStack = new Stack();
     nodeStack.add(startNode);
@@ -82,7 +82,7 @@ class ConnectedSubgraphFinder
    * @param node the node to add
    * @param nodeStack the current set of nodes being traversed
    */
-  private void addEdges(Node node, Stack nodeStack, Subgraph subgraph)
+ /**private */void addEdges(Node node, Stack nodeStack, Subgraph subgraph)
   {
     node.setVisited(true);
     for (Iterator i = ((DirectedEdgeStar) node.getOutEdges()).iterator(); i.hasNext(); ) {

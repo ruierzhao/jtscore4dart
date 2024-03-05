@@ -113,7 +113,7 @@ extends GeometricShapeBuilder
     return geomFactory.createMultiPointFromCoords(pts);
   }
   
-  private Coordinate randomPointInCell(double orgX, double orgY, double xLen, double yLen)
+ /**private */Coordinate randomPointInCell(double orgX, double orgY, double xLen, double yLen)
   {
   	if (isConstrainedToCircle) {
   		return randomPointInCircle(
@@ -124,14 +124,14 @@ extends GeometricShapeBuilder
   	return randomPointInGridCell(orgX, orgY, xLen, yLen);
   }
   
-  private Coordinate randomPointInGridCell(double orgX, double orgY, double xLen, double yLen)
+ /**private */Coordinate randomPointInGridCell(double orgX, double orgY, double xLen, double yLen)
   {
     double x = orgX + xLen * math.random();
     double y = orgY + yLen * math.random();
     return createCoord(x, y);
   }
 
-  private static Coordinate randomPointInCircle(double orgX, double orgY, double width, double height)
+ /**private */static Coordinate randomPointInCircle(double orgX, double orgY, double width, double height)
   {
   	double centreX = orgX + width/2;
   	double centreY = orgY + height/2;

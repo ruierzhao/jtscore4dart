@@ -20,8 +20,8 @@
  * @version 1.7
  */
 class ItemBoundable implements Boundable, Serializable {
-  private Object bounds;
-  private Object item;
+ /**private */Object bounds;
+ /**private */Object item;
 
   ItemBoundable(Object bounds, Object item) {
     this.bounds = bounds;

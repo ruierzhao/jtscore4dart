@@ -70,13 +70,13 @@ class BufferInputLineSimplifier
     return simp.simplify(distanceTol);
   }
   
-  private static final int DELETE = 1;
+ /**private */static final int DELETE = 1;
   
-  private List<Coordinate> inputLine;
-  private double distanceTol;
-  private bool isRing;
-  private bool[] isDeleted;
-  private int angleOrientation = Orientation.COUNTERCLOCKWISE;
+ /**private */List<Coordinate> inputLine;
+ /**private */double distanceTol;
+ /**private */bool isRing;
+ /**private */bool[] isDeleted;
+ /**private */int angleOrientation = Orientation.COUNTERCLOCKWISE;
 
   
   BufferInputLineSimplifier(List<Coordinate> inputLine) {
@@ -119,7 +119,7 @@ class BufferInputLineSimplifier
    * 
    * @return true if any vertices were deleted
    */
-  private bool deleteShallowConcavities()
+ /**private */bool deleteShallowConcavities()
   {
     /**
      * Do not simplify end line segments of lines.
@@ -158,7 +158,7 @@ class BufferInputLineSimplifier
    * @return the next non-deleted index, if any
    * or inputLine.length if there are no more non-deleted indices
    */
-  private int nextIndex(int index)
+ /**private */int nextIndex(int index)
   {
     int next = index + 1;
     while (next < inputLine.length && isDeleted[next])
@@ -166,7 +166,7 @@ class BufferInputLineSimplifier
     return next;  
   }
   
-  private List<Coordinate> collapseLine()
+ /**private */List<Coordinate> collapseLine()
   {
     CoordinateList coordList = new CoordinateList();
     for (int i = 0; i < inputLine.length; i++) {
@@ -176,7 +176,7 @@ class BufferInputLineSimplifier
     return coordList.toCoordinateArray();
   }
   
-  private bool isDeletable(int i0, int i1, int i2, double distanceTol)
+ /**private */bool isDeletable(int i0, int i1, int i2, double distanceTol)
   {
   	Coordinate p0 = inputLine[i0];
   	Coordinate p1 = inputLine[i1];
@@ -188,7 +188,7 @@ class BufferInputLineSimplifier
   	return isShallowSampled(p0, p1, i0, i2, distanceTol);
   }
   
-  private static final int NUM_PTS_TO_CHECK = 10;
+ /**private */static final int NUM_PTS_TO_CHECK = 10;
   
   /**
    * Checks for shallowness over a sample of points in the given section.
@@ -202,7 +202,7 @@ class BufferInputLineSimplifier
    * @param distanceTol distance tolerance
    * @return
    */
-  private bool isShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
+ /**private */bool isShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
   {
     // check every n'th point to see if it is within tolerance
   	int inc = (i2 - i0) / NUM_PTS_TO_CHECK;
@@ -214,13 +214,13 @@ class BufferInputLineSimplifier
   	return true;
   }
   
-  private static bool isShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
+ /**private */static bool isShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
   {
     double dist = Distance.pointToSegment(p1, p0, p2);
     return dist < distanceTol;
   }
   
-  private bool isConcave(Coordinate p0, Coordinate p1, Coordinate p2)
+ /**private */bool isConcave(Coordinate p0, Coordinate p1, Coordinate p2)
   {
     int orientation = Orientation.index(p0, p1, p2);
     bool isConcave = (orientation == angleOrientation);

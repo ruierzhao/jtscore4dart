@@ -168,26 +168,26 @@ class ConcaveHullOfPolygons {
     return hull.getFill();
   }
   
-  private static final int FRAME_EXPAND_FACTOR = 4;
-  private static final int NOT_SPECIFIED = -1;
-  private static final int NOT_FOUND = -1;
+ /**private */static final int FRAME_EXPAND_FACTOR = 4;
+ /**private */static final int NOT_SPECIFIED = -1;
+ /**private */static final int NOT_FOUND = -1;
 
-  private Geometry inputPolygons;
-  private double maxEdgeLength = 0.0;
-  private double maxEdgeLengthRatio = NOT_SPECIFIED;
-  private bool isHolesAllowed = false;
-  private bool isTight = false;
+ /**private */Geometry inputPolygons;
+ /**private */double maxEdgeLength = 0.0;
+ /**private */double maxEdgeLengthRatio = NOT_SPECIFIED;
+ /**private */bool isHolesAllowed = false;
+ /**private */bool isTight = false;
   
-  private GeometryFactory geomFactory;
-  private List<LinearRing> polygonRings;
+ /**private */GeometryFactory geomFactory;
+ /**private */List<LinearRing> polygonRings;
   
-  private Set<Tri> hullTris;
-  private ArrayDeque<Tri> borderTriQue;
+ /**private */Set<Tri> hullTris;
+ /**private */ArrayDeque<Tri> borderTriQue;
   /**
    * Records the edge index of the longest border edge for border tris,
    * so it can be tested for length and possible removal.
    */
-  private Map<Tri, Integer> borderEdgeMap = new Map<Tri, Integer>();
+ /**private */Map<Tri, Integer> borderEdgeMap = new Map<Tri, Integer>();
   
   /**
    * Creates a new instance for a given geometry.
@@ -292,11 +292,11 @@ class ConcaveHullOfPolygons {
     return fill;
   }
   
-  private Geometry createEmptyHull() {
+ /**private */Geometry createEmptyHull() {
     return geomFactory.createPolygon();
   }
   
-  private void buildHullTris() {
+ /**private */void buildHullTris() {
     polygonRings = extractShellRings(inputPolygons);
     Polygon frame = createFrame(inputPolygons.getEnvelopeInternal(), polygonRings, geomFactory);
     ConstrainedDelaunayTriangulator cdt = new ConstrainedDelaunayTriangulator(frame);
@@ -314,7 +314,7 @@ class ConcaveHullOfPolygons {
     if (isHolesAllowed) removeHoleTris();
   }
 
-  private static double computeTargetEdgeLength(List<Tri> triList, 
+ /**private */static double computeTargetEdgeLength(List<Tri> triList, 
       List<Coordinate> frameCorners,
       double edgeLengthRatio) {
     if (edgeLengthRatio == 0) return 0;
@@ -344,13 +344,13 @@ class ConcaveHullOfPolygons {
     return edgeLengthRatio * (maxEdgeLen - minEdgeLen) + minEdgeLen;
   }
 
-  private static bool isFrameTri(Tri tri, List<Coordinate> frameCorners) {
+ /**private */static bool isFrameTri(Tri tri, List<Coordinate> frameCorners) {
     int index = vertexIndex(tri, frameCorners);
     bool isFrameTri = index >= 0;
     return isFrameTri;
   }
   
-  private Set<Tri> removeFrameCornerTris(List<Tri> tris, List<Coordinate> frameCorners) {
+ /**private */Set<Tri> removeFrameCornerTris(List<Tri> tris, List<Coordinate> frameCorners) {
     Set<Tri> hullTris = new HashSet<Tri>();
     borderTriQue = new ArrayDeque<Tri>();
     for (Tri tri : tris) {
@@ -388,7 +388,7 @@ class ConcaveHullOfPolygons {
    * @param pts the points to test
    * @return the vertex index of a point, or -1
    */
-  private static int vertexIndex(Tri tri, List<Coordinate> pts) {
+ /**private */static int vertexIndex(Tri tri, List<Coordinate> pts) {
     for (Coordinate p : pts) {
       int index = tri.getIndex(p);
       if (index >= 0) 
@@ -397,7 +397,7 @@ class ConcaveHullOfPolygons {
     return NOT_FOUND;
   }
   
-  private void removeBorderTris() {
+ /**private */void removeBorderTris() {
     while (! borderTriQue.isEmpty()) {
       Tri tri = borderTriQue.pop();
       //-- tri might have been removed already
@@ -412,7 +412,7 @@ class ConcaveHullOfPolygons {
     }
   }
 
-  private void removeHoleTris() {
+ /**private */void removeHoleTris() {
     while (true) {
       Tri holeTri = findHoleSeedTri(hullTris);
       if (holeTri == null)
@@ -423,7 +423,7 @@ class ConcaveHullOfPolygons {
     }
   }
   
-  private Tri findHoleSeedTri(Set<Tri> tris) {
+ /**private */Tri findHoleSeedTri(Set<Tri> tris) {
     for (Tri tri : tris) {
       if (isHoleSeedTri(tri))
         return tri;
@@ -431,7 +431,7 @@ class ConcaveHullOfPolygons {
     return null;
   }
 
-  private bool isHoleSeedTri(Tri tri) {
+ /**private */bool isHoleSeedTri(Tri tri) {
     if (isBorderTri(tri))
       return false;
     for (int i = 0; i < 3; i++) {
@@ -442,7 +442,7 @@ class ConcaveHullOfPolygons {
     return false;
   }
 
-  private bool isBorderTri(Tri tri) {
+ /**private */bool isBorderTri(Tri tri) {
     for (int i = 0; i < 3; i++) {
       if (! tri.hasAdjacent(i))
           return true;
@@ -450,7 +450,7 @@ class ConcaveHullOfPolygons {
     return false;
   }
 
-  private bool isRemovable(Tri tri) {
+ /**private */bool isRemovable(Tri tri) {
     //-- remove non-bridging tris if keeping hull boundary tight
     if (isTight && isTouchingSinglePolygon(tri))
       return true;
@@ -474,7 +474,7 @@ class ConcaveHullOfPolygons {
    * @param tri
    * @return true if the tri touches a single polygon
    */
-  private bool isTouchingSinglePolygon(Tri tri) {
+ /**private */bool isTouchingSinglePolygon(Tri tri) {
     Envelope envTri = envelope(tri);
     for (LinearRing ring : polygonRings) {
       //-- optimization heuristic: a touching tri must be in ring envelope
@@ -486,7 +486,7 @@ class ConcaveHullOfPolygons {
     return false;
   }
 
-  private void addBorderTris(Tri tri) {
+ /**private */void addBorderTris(Tri tri) {
     addBorderTri(tri, 0);
     addBorderTri(tri, 1);
     addBorderTri(tri, 2);
@@ -504,7 +504,7 @@ class ConcaveHullOfPolygons {
    * @param tri the tri adjacent to the tri to be added to the border
    * @param index the index of the adjacent tri
    */
-  private void addBorderTri(Tri tri, int index) {
+ /**private */void addBorderTri(Tri tri, int index) {
     Tri adj = tri.getAdjacent( index );
     if (adj == null) 
       return;
@@ -513,13 +513,13 @@ class ConcaveHullOfPolygons {
     borderEdgeMap.put(adj, borderEdgeIndex);
   }
 
-  private void removeBorderTri(Tri tri) {
+ /**private */void removeBorderTri(Tri tri) {
     tri.remove();
     hullTris.remove(tri);
     borderEdgeMap.remove(tri);
   }
   
-  private static bool hasAllVertices(LinearRing ring, Tri tri) {
+ /**private */static bool hasAllVertices(LinearRing ring, Tri tri) {
     for (int i = 0; i < 3; i++) {
       Coordinate v = tri.getCoordinate(i);
       if (! hasVertex(ring, v)) {
@@ -529,7 +529,7 @@ class ConcaveHullOfPolygons {
     return true;
   }
   
-  private static bool hasVertex(LinearRing ring, Coordinate v) {
+ /**private */static bool hasVertex(LinearRing ring, Coordinate v) {
     for(int i = 1; i < ring.getNumPoints(); i++) {
       if (v.equals2D(ring.getCoordinateN(i))) {
         return true;
@@ -538,13 +538,13 @@ class ConcaveHullOfPolygons {
     return false;
   }
 
-  private static Envelope envelope(Tri tri) {
+ /**private */static Envelope envelope(Tri tri) {
     Envelope env = new Envelope(tri.getCoordinate(0), tri.getCoordinate(1));
     env.expandToInclude(tri.getCoordinate(2));
     return env;
   }
 
-  private Geometry createHullGeometry(Set<Tri> hullTris, bool isIncludeInput) {
+ /**private */Geometry createHullGeometry(Set<Tri> hullTris, bool isIncludeInput) {
     if (! isIncludeInput && hullTris.isEmpty())
       return createEmptyHull();
     
@@ -579,7 +579,7 @@ class ConcaveHullOfPolygons {
    * @param geomFactory 
    * @return the frame polygon
    */
-  private static Polygon createFrame(Envelope polygonsEnv, List<LinearRing> polygonRings, GeometryFactory geomFactory) {
+ /**private */static Polygon createFrame(Envelope polygonsEnv, List<LinearRing> polygonRings, GeometryFactory geomFactory) {
     double diam = polygonsEnv.getDiameter();
     Envelope envFrame = polygonsEnv.copy();
     envFrame.expandBy(FRAME_EXPAND_FACTOR * diam);
@@ -589,7 +589,7 @@ class ConcaveHullOfPolygons {
     return frame;
   }
 
-  private static List<LinearRing> extractShellRings(Geometry polygons) {
+ /**private */static List<LinearRing> extractShellRings(Geometry polygons) {
     List<LinearRing> rings = new LinearRing[polygons.getNumGeometries()];
     for (int i = 0; i < polygons.getNumGeometries(); i++) {
       Polygon consPoly = (Polygon) polygons.getGeometryN(i);

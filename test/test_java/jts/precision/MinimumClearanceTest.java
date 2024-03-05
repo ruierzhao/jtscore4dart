@@ -25,8 +25,8 @@ public class MinimumClearanceTest extends TestCase {
     TestRunner.run(MinimumClearanceTest.class);
   }
   
-  private GeometryFactory geomFact = new GeometryFactory();
-  private WKTReader reader = new WKTReader();
+ /**private */GeometryFactory geomFact = new GeometryFactory();
+ /**private */WKTReader reader = new WKTReader();
 
   public MinimumClearanceTest(String name) { super(name); }
 
@@ -48,7 +48,7 @@ public class MinimumClearanceTest extends TestCase {
     runTest("POLYGON ((100 100, 300 100, 200 200, 100 100))", 100);
   }
   
-  private void runTest(String wkt, double expectedValue)
+ /**private */void runTest(String wkt, double expectedValue)
   throws ParseException
   {
     Geometry g = reader.read(wkt);

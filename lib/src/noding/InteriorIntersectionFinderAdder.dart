@@ -31,8 +31,8 @@
 class InteriorIntersectionFinderAdder
     implements SegmentIntersector
 {
-  private LineIntersector li;
-  private final List interiorIntersections;
+ /**private */LineIntersector li;
+ /**private */final List interiorIntersections;
 
 
   /**

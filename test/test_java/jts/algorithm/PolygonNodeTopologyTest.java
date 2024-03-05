@@ -50,15 +50,15 @@ public class PolygonNodeTopologyTest extends GeometryTestCase {
   }
   //-----------------------------------------------
   
-  private void checkCrossing(String wktA, String wktB) {
+ /**private */void checkCrossing(String wktA, String wktB) {
     checkCrossing(wktA, wktB, true);
   }
 
-  private void checkNonCrossing(String wktA, String wktB) {
+ /**private */void checkNonCrossing(String wktA, String wktB) {
     checkCrossing(wktA, wktB, false);
   }
 
-  private void checkCrossing(String wktA, String wktB, boolean isExpected) {
+ /**private */void checkCrossing(String wktA, String wktB, boolean isExpected) {
     Coordinate[] a = readPts(wktA);
     Coordinate[] b = readPts(wktB);
     // assert: a[1] = b[1]
@@ -66,15 +66,15 @@ public class PolygonNodeTopologyTest extends GeometryTestCase {
     assertTrue(isCrossing == isExpected);
   }
   
-  private void checkInterior(String wktA, String wktB) {
+ /**private */void checkInterior(String wktA, String wktB) {
     checkInteriorSegment(wktA, wktB, true);
   }
   
-  private void checkExterior(String wktA, String wktB) {
+ /**private */void checkExterior(String wktA, String wktB) {
     checkInteriorSegment(wktA, wktB, false);
   }
   
-  private void checkInteriorSegment(String wktA, String wktB, boolean isExpected) {
+ /**private */void checkInteriorSegment(String wktA, String wktB, boolean isExpected) {
     Coordinate[] a = readPts(wktA);
     Coordinate[] b = readPts(wktB);
     // assert: a[1] = b[1]
@@ -82,7 +82,7 @@ public class PolygonNodeTopologyTest extends GeometryTestCase {
     assertTrue(isInterior == isExpected);
   }
 
-  private Coordinate[] readPts(String wkt) {
+ /**private */Coordinate[] readPts(String wkt) {
     LineString line = (LineString) read(wkt);
     return line.getCoordinates();
   }

@@ -42,14 +42,14 @@ class TriDelaunayImprover {
     improver.improve();
   }
   
-  private static int MAX_ITERATION = 200;
-  private List<Tri> triList;
+ /**private */static int MAX_ITERATION = 200;
+ /**private */List<Tri> triList;
 
-  private TriDelaunayImprover(List<Tri> triList) {
+ /**private */TriDelaunayImprover(List<Tri> triList) {
     this.triList = triList;
   }
 
-  private void improve() {
+ /**private */void improve() {
     for (int i = 0; i < MAX_ITERATION; i++) {
       int improveCount = improveScan(triList);
       //System.out.println("improve #" + i + " - count = " + improveCount);
@@ -67,7 +67,7 @@ class TriDelaunayImprover {
    * 
    * @return the number of flips that were made
    */
-  private int improveScan(List<Tri> triList) {
+ /**private */int improveScan(List<Tri> triList) {
     int improveCount = 0;
     for (int i = 0; i < triList.size() - 1; i++) {
       Tri tri = triList.get(i);
@@ -90,7 +90,7 @@ class TriDelaunayImprover {
    * @param tri1 a Tri
    * @return true if the triangles were flipped
    */
-  private bool improveNonDelaunay(Tri tri, int index) {
+ /**private */bool improveNonDelaunay(Tri tri, int index) {
     if ( tri == null ) {
       return false;
     }
@@ -144,7 +144,7 @@ class TriDelaunayImprover {
    * @param opp1 corner vertex of triangle 1
    * @return true if the quadrilateral is convex
    */
-  private static bool isConvex(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
+ /**private */static bool isConvex(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
     int dir0 = Orientation.index(opp0, adj0, opp1);
     int dir1 = Orientation.index(opp1, adj1, opp0);
     bool isConvex = dir0 == dir1;
@@ -163,7 +163,7 @@ class TriDelaunayImprover {
    * @param opp1 corner vertex of triangle 1
    * @return true if the triangles are Delaunay
    */
-  private static bool isDelaunay(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
+ /**private */static bool isDelaunay(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1) {
     if (isInCircle(adj0, adj1, opp0, opp1)) return false; 
     if (isInCircle(adj1, adj0, opp1, opp0)) return false;
     return true;
@@ -179,7 +179,7 @@ class TriDelaunayImprover {
    * 
    * @return true if the point is in the circumcircle
    */
-  private static bool isInCircle(Coordinate a, Coordinate b, Coordinate c, Coordinate p) {
+ /**private */static bool isInCircle(Coordinate a, Coordinate b, Coordinate c, Coordinate p) {
     return TrianglePredicate.isInCircleRobust(a, c, b, p);
   }
 

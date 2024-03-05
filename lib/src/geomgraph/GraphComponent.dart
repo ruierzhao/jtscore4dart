@@ -23,14 +23,14 @@
  */
 abstract class GraphComponent {
 
-  protected Label label;
+ /**protected */Label label;
   /**
    * isInResult indicates if this component has already been included in the result
    */
-  private bool isInResult = false;
-  private bool isCovered = false;
-  private bool isCoveredSet = false;
-  private bool isVisited = false;
+ /**private */bool isInResult = false;
+ /**private */bool isCovered = false;
+ /**private */bool isCoveredSet = false;
+ /**private */bool isVisited = false;
 
   GraphComponent() {
   }
@@ -61,7 +61,7 @@ abstract class GraphComponent {
    *
    * @param im Intersection matrix
    */
-  abstract protected void computeIM(IntersectionMatrix im);
+  abstract/**protected */void computeIM(IntersectionMatrix im);
   /**
    * An isolated component is one that does not intersect or touch any other
    * component.  This is the case if the label has valid locations for

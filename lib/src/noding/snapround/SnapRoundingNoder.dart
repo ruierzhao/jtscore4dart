@@ -61,12 +61,12 @@ class SnapRoundingNoder
    * The division factor used to determine
    * nearness distance tolerance for intersection detection.
    */
-  private static final int NEARNESS_FACTOR = 100;
+ /**private */static final int NEARNESS_FACTOR = 100;
   
-  private final PrecisionModel pm;
-  private final HotPixelIndex pixelIndex;
+ /**private */final PrecisionModel pm;
+ /**private */final HotPixelIndex pixelIndex;
   
-  private List<NodedSegmentString> snappedResult;
+ /**private */List<NodedSegmentString> snappedResult;
 
   SnapRoundingNoder(PrecisionModel pm) {
     this.pm = pm;
@@ -93,7 +93,7 @@ class SnapRoundingNoder
     snappedResult = snapRound(inputSegmentStrings);
   }
   
-  private List<NodedSegmentString> snapRound(Collection<NodedSegmentString> segStrings)
+ /**private */List<NodedSegmentString> snapRound(Collection<NodedSegmentString> segStrings)
   {
     /**
      * Determine hot pixels for intersections and vertices.
@@ -115,7 +115,7 @@ class SnapRoundingNoder
    * 
    * @param segStrings the input NodedSegmentStrings
    */
-  private void addIntersectionPixels(Collection<NodedSegmentString> segStrings)
+ /**private */void addIntersectionPixels(Collection<NodedSegmentString> segStrings)
   {
     /**
      * nearness tolerance is a small fraction of the grid size.
@@ -139,14 +139,14 @@ class SnapRoundingNoder
    * 
    * @param segStrings the input NodedSegmentStrings
    */
-  private void addVertexPixels(Collection<NodedSegmentString> segStrings) {
+ /**private */void addVertexPixels(Collection<NodedSegmentString> segStrings) {
     for (SegmentString nss : segStrings) {
       List<Coordinate> pts = nss.getCoordinates();
       pixelIndex.add(pts);
     }
   }
 
-  private Coordinate round(Coordinate pt) {
+ /**private */Coordinate round(Coordinate pt) {
     Coordinate p2 = pt.copy();
     pm.makePrecise(p2);
     return p2;
@@ -159,7 +159,7 @@ class SnapRoundingNoder
    * @param pts the coordinates to round
    * @return array of rounded coordinates
    */
-  private List<Coordinate> round(List<Coordinate> pts) {
+ /**private */List<Coordinate> round(List<Coordinate> pts) {
     CoordinateList roundPts = new CoordinateList();
     
     for (int i = 0; i < pts.length; i++ ) {
@@ -175,7 +175,7 @@ class SnapRoundingNoder
    * @param segStrings segments to snap
    * @return the snapped segment strings
    */
-  private List<NodedSegmentString> computeSnaps(Collection<NodedSegmentString> segStrings)
+ /**private */List<NodedSegmentString> computeSnaps(Collection<NodedSegmentString> segStrings)
   {
     List<NodedSegmentString> snapped = new ArrayList<NodedSegmentString>();
     for (NodedSegmentString ss : segStrings ) {
@@ -201,7 +201,7 @@ class SnapRoundingNoder
    * @param ss the segment string to snap
    * @return the snapped segment string, or null if it collapses completely
    */
-  private NodedSegmentString computeSegmentSnaps(NodedSegmentString ss)
+ /**private */NodedSegmentString computeSegmentSnaps(NodedSegmentString ss)
   {
     //List<Coordinate> pts = ss.getCoordinates();
     /**
@@ -253,7 +253,7 @@ class SnapRoundingNoder
    * @param ss the segment string to add intersections to
    * @param segIndex the index of the segment
    */
-  private void snapSegment(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex) {
+ /**private */void snapSegment(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex) {
     pixelIndex.query(p0, p1, new KdNodeVisitor() {
 
       @Override
@@ -291,7 +291,7 @@ class SnapRoundingNoder
    * 
    * @param ss a noded segment string
    */
-  private void addVertexNodeSnaps(NodedSegmentString ss)
+ /**private */void addVertexNodeSnaps(NodedSegmentString ss)
   {
     List<Coordinate> pts = ss.getCoordinates();
     for (int i = 1; i < pts.length - 1; i++ ) {
@@ -300,7 +300,7 @@ class SnapRoundingNoder
     }
   }
 
-  private void snapVertexNode(Coordinate p0, NodedSegmentString ss, int segIndex) {
+ /**private */void snapVertexNode(Coordinate p0, NodedSegmentString ss, int segIndex) {
     pixelIndex.query(p0, p0, new KdNodeVisitor() {
 
       @Override

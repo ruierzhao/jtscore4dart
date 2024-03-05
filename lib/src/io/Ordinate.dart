@@ -37,10 +37,10 @@ enum Ordinate {
    */
   M;
 
-  private static final EnumSet<Ordinate> XY = EnumSet.of(X, Y);
-  private static final EnumSet<Ordinate> XYZ = EnumSet.of(X, Y, Z);
-  private static final EnumSet<Ordinate> XYM = EnumSet.of(X, Y, M);
-  private static final EnumSet<Ordinate> XYZM = EnumSet.of(X, Y, Z, M);
+ /**private */static final EnumSet<Ordinate> XY = EnumSet.of(X, Y);
+ /**private */static final EnumSet<Ordinate> XYZ = EnumSet.of(X, Y, Z);
+ /**private */static final EnumSet<Ordinate> XYM = EnumSet.of(X, Y, M);
+ /**private */static final EnumSet<Ordinate> XYZM = EnumSet.of(X, Y, Z, M);
 
   /**
    * EnumSet of X and Y ordinates, a copy is returned as EnumSets are not immutable.

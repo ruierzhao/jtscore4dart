@@ -56,12 +56,12 @@ class OverlayPoints {
     return overlay.getResult();
   }
 
-  private int opCode;
-  private Geometry geom0;
-  private Geometry geom1;
-  private PrecisionModel pm;
-  private GeometryFactory geometryFactory;
-  private ArrayList<Point> resultList;
+ /**private */int opCode;
+ /**private */Geometry geom0;
+ /**private */Geometry geom1;
+ /**private */PrecisionModel pm;
+ /**private */GeometryFactory geometryFactory;
+ /**private */ArrayList<Point> resultList;
 
   /**
    * Creates an instance of an overlay operation on inputs which are both point geometries.
@@ -110,7 +110,7 @@ class OverlayPoints {
     return geometryFactory.buildGeometry(resultList);
   }
 
-  private void computeIntersection(Map<Coordinate, Point> map0, Map<Coordinate, Point> map1, 
+ /**private */void computeIntersection(Map<Coordinate, Point> map0, Map<Coordinate, Point> map1, 
       ArrayList<Point> resultList) {
     for ( Entry<Coordinate, Point> entry : map0.entrySet()) {
       if (map1.containsKey(entry.getKey())) {
@@ -119,7 +119,7 @@ class OverlayPoints {
     }
   }
 
-  private void computeDifference(Map<Coordinate, Point> map0, Map<Coordinate, Point> map1, 
+ /**private */void computeDifference(Map<Coordinate, Point> map0, Map<Coordinate, Point> map1, 
       ArrayList<Point> resultList) {
     for ( Entry<Coordinate, Point> entry : map0.entrySet()) {
       if (! map1.containsKey(entry.getKey())) {
@@ -128,7 +128,7 @@ class OverlayPoints {
     }
   }
 
-  private void computeUnion(Map<Coordinate, Point> map0, Map<Coordinate, Point> map1, 
+ /**private */void computeUnion(Map<Coordinate, Point> map0, Map<Coordinate, Point> map1, 
       ArrayList<Point> resultList) {
     
     // copy all A points
@@ -143,7 +143,7 @@ class OverlayPoints {
     }
   }
 
-  private Point copyPoint(Point pt) {
+ /**private */Point copyPoint(Point pt) {
     // if pm is floating, the point coordinate is not changed
     if (OverlayUtil.isFloating(pm))
       return (Point) pt.copy();
@@ -156,7 +156,7 @@ class OverlayPoints {
     return geometryFactory.createPoint(seq2);
   }
 
-  private Map<Coordinate, Point> buildPointMap(Geometry geoms) {
+ /**private */Map<Coordinate, Point> buildPointMap(Geometry geoms) {
     Map<Coordinate, Point> map = new Map<Coordinate, Point>();
     geoms.apply(new GeometryComponentFilter() {
 

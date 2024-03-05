@@ -32,14 +32,14 @@
 class RectangleLineIntersector
 {
   // for intersection testing, don't need to set precision model
-  private LineIntersector li = new RobustLineIntersector();
+ /**private */LineIntersector li = new RobustLineIntersector();
 
-  private Envelope rectEnv;
+ /**private */Envelope rectEnv;
   
-  private Coordinate diagUp0;
-  private Coordinate diagUp1;
-  private Coordinate diagDown0;
-  private Coordinate diagDown1;
+ /**private */Coordinate diagUp0;
+ /**private */Coordinate diagUp1;
+ /**private */Coordinate diagDown0;
+ /**private */Coordinate diagDown1;
   
   /**
    * Creates a new intersector for the given query rectangle,

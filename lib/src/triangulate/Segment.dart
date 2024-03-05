@@ -25,8 +25,8 @@
  */
 class Segment 
 {
-    private LineSegment ls;
-    private Object data = null;
+   /**private */LineSegment ls;
+   /**private */Object data = null;
 
     /** 
      * Creates a new instance for the given ordinates.

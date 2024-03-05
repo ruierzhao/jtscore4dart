@@ -29,13 +29,13 @@
  *
  */
 class SegmentMCIndex {
-  private STRtree index;
+ /**private */STRtree index;
   
   SegmentMCIndex(List<Coordinate> segs) {
     index = buildIndex(segs);
   }
   
-  private STRtree buildIndex(List<Coordinate> segs) {
+ /**private */STRtree buildIndex(List<Coordinate> segs) {
     STRtree index = new STRtree();
     List<MonotoneChain> segChains = MonotoneChainBuilder.getChains(segs, segs);
     for (MonotoneChain mc : segChains ) {

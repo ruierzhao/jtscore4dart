@@ -80,7 +80,7 @@ class ConformingDelaunayTriangulator
 	private List segVertices; // List<Vertex>
 
 	// MD - using a Set doesn't seem to be much faster
-	// private Set segments = new HashSet();
+	///**private */Set segments = new HashSet();
 	private List segments = new ArrayList(); // List<Segment>
 	private QuadEdgeSubdivision subdiv = null;
 	private IncrementalDelaunayTriangulator incDel;
@@ -254,7 +254,7 @@ class ConformingDelaunayTriangulator
 	// * @param convexHullSegmentData the data object to attach to each convex
 	// hull segment
 	// */
-	// private void addConvexHullToConstraints(Object convexHullSegmentData) {
+	///**private */void addConvexHullToConstraints(Object convexHullSegmentData) {
 	// List<Coordinate> coords = convexHull.getCoordinates();
 	// for (int i = 1; i < coords.length; i++) {
 	// Segment s = new Segment(coords[i - 1], coords[i], convexHullSegmentData);
@@ -262,7 +262,7 @@ class ConformingDelaunayTriangulator
 	// }
 	// }
 
-	// private void addConstraintIfUnique(Segment r) {
+	///**private */void addConstraintIfUnique(Segment r) {
 	// bool exists = false;
 	// Iterator it = segments.iterator();
 	// Segment s = null;
@@ -411,7 +411,7 @@ class ConformingDelaunayTriangulator
 	}
 
 	/*
-	 * private List findMissingConstraints() { List missingSegs = new ArrayList();
+	 */**private */List findMissingConstraints() { List missingSegs = new ArrayList();
 	 * for (int i = 0; i < segments.size(); i++) { Segment s = (Segment)
 	 * segments.get(i); QuadEdge q = subdiv.locate(s.getStart(), s.getEnd()); if
 	 * (q == null) missingSegs.add(s); } return missingSegs; }

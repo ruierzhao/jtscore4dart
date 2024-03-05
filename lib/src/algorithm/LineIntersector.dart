@@ -136,22 +136,22 @@ abstract class LineIntersector
     return dist;
   }
 
-  protected int result;
-  protected List<Coordinate>[] inputLines = new Coordinate[2][2];
-  protected List<Coordinate> intPt = new Coordinate[2];
+ /**protected */int result;
+ /**protected */List<Coordinate>[] inputLines = new Coordinate[2][2];
+ /**protected */List<Coordinate> intPt = new Coordinate[2];
   /**
    * The indexes of the endpoints of the intersection lines, in order along
    * the corresponding line
    */
-  protected int[][] intLineIndex;
-  protected bool isProper;
-  protected Coordinate pa;
-  protected Coordinate pb;
+ /**protected */int[][] intLineIndex;
+ /**protected */bool isProper;
+ /**protected */Coordinate pa;
+ /**protected */Coordinate pb;
   /**
    * If makePrecise is true, computed intersection coordinates will be made precise
    * using Coordinate#makePrecise
    */
-  protected PrecisionModel precisionModel = null;
+ /**protected */PrecisionModel precisionModel = null;
 //int numIntersects = 0;
 
   LineIntersector() {
@@ -205,7 +205,7 @@ abstract class LineIntersector
         Coordinate p,
         Coordinate p1, Coordinate p2);
 
-  protected bool isCollinear() {
+ /**protected */bool isCollinear() {
     return result == COLLINEAR_INTERSECTION;
   }
 
@@ -225,7 +225,7 @@ abstract class LineIntersector
 //numIntersects++;
   }
 
-  protected abstract int computeIntersect(
+ /**protected */abstract int computeIntersect(
                 Coordinate p1, Coordinate p2,
                 Coordinate q1, Coordinate q2);
 
@@ -246,7 +246,7 @@ abstract class LineIntersector
                  + getTopologySummary();
   }
 
-  private String getTopologySummary()
+ /**private */String getTopologySummary()
   {
     StringBuilder catBuilder = new StringBuilder();
     if (isEndPoint()) catBuilder.append(" endpoint");
@@ -255,7 +255,7 @@ abstract class LineIntersector
     return catBuilder.toString();
   }
 
-  protected bool isEndPoint() {
+ /**protected */bool isEndPoint() {
     return hasIntersection() && !isProper;
   }
 
@@ -284,7 +284,7 @@ abstract class LineIntersector
    */
   Coordinate getIntersection(int intIndex)  { return intPt[intIndex]; }
 
-  protected void computeIntLineIndex() {
+ /**protected */void computeIntLineIndex() {
     if (intLineIndex == null) {
       intLineIndex = new int[2][2];
       computeIntLineIndex(0);
@@ -385,7 +385,7 @@ abstract class LineIntersector
     return intLineIndex[segmentIndex][intIndex];
   }
 
-  protected void computeIntLineIndex(int segmentIndex) {
+ /**protected */void computeIntLineIndex(int segmentIndex) {
     double dist0 = getEdgeDistance(segmentIndex, 0);
     double dist1 = getEdgeDistance(segmentIndex, 1);
     if (dist0 > dist1) {

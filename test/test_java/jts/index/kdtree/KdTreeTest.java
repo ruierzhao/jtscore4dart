@@ -103,7 +103,7 @@ public class KdTreeTest extends TestCase {
     assertTrue( depth <= size );
   }
   
-  private void testQuery(String wktInput, double tolerance,
+ /**private */void testQuery(String wktInput, double tolerance,
       Envelope queryEnv, String wktExpected) {
     KdTree index = build(wktInput, tolerance);
     testQuery(
@@ -112,7 +112,7 @@ public class KdTreeTest extends TestCase {
         IOUtil.read(wktExpected).getCoordinates());
   }
 
-  private void testQueryRepeated(String wktInput, double tolerance,
+ /**private */void testQueryRepeated(String wktInput, double tolerance,
       Envelope queryEnv, String wktExpected) {
     KdTree index = build(wktInput, tolerance);
     testQuery(
@@ -121,7 +121,7 @@ public class KdTreeTest extends TestCase {
         IOUtil.read(wktExpected).getCoordinates());
   }
 
-  private void testQuery(KdTree index,
+ /**private */void testQuery(KdTree index,
       Envelope queryEnv, Coordinate[] expectedCoord) {
     Coordinate[] result = KdTree.toCoordinates(index.query(queryEnv));
 
@@ -135,7 +135,7 @@ public class KdTreeTest extends TestCase {
     assertTrue("Expected result coordinates not found", isMatch);
   }
 
-  private void testQuery(KdTree index,
+ /**private */void testQuery(KdTree index,
       Envelope queryEnv, boolean includeRepeated, Coordinate[] expectedCoord) {
     Coordinate[] result = KdTree.toCoordinates(index.query(queryEnv), includeRepeated);
 
@@ -156,7 +156,7 @@ public class KdTreeTest extends TestCase {
     }
   }
 
-  private KdTree build(String wktInput, double tolerance) {
+ /**private */KdTree build(String wktInput, double tolerance) {
     final KdTree index = new KdTree(tolerance);
     Coordinate[] coords = IOUtil.read(wktInput).getCoordinates();
     for (int i = 0; i < coords.length; i++) {

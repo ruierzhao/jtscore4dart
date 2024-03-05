@@ -78,12 +78,12 @@ class BufferParameters
   static final double DEFAULT_SIMPLIFY_FACTOR = 0.01;
   
 
-  private int quadrantSegments = DEFAULT_QUADRANT_SEGMENTS;
-  private int endCapStyle = CAP_ROUND;
-  private int joinStyle = JOIN_ROUND;
-  private double mitreLimit = DEFAULT_MITRE_LIMIT;
-  private bool isSingleSided = false;
-  private double simplifyFactor = DEFAULT_SIMPLIFY_FACTOR;
+ /**private */int quadrantSegments = DEFAULT_QUADRANT_SEGMENTS;
+ /**private */int endCapStyle = CAP_ROUND;
+ /**private */int joinStyle = JOIN_ROUND;
+ /**private */double mitreLimit = DEFAULT_MITRE_LIMIT;
+ /**private */bool isSingleSided = false;
+ /**private */double simplifyFactor = DEFAULT_SIMPLIFY_FACTOR;
   
   /**
    * Creates a default set of parameters

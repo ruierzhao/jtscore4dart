@@ -309,17 +309,17 @@ public class CoverageSimplifierTest extends GeometryTestCase {
   //=================================
 
 
-  private void checkNoop(Geometry[] input) {
+ /**private */void checkNoop(Geometry[] input) {
     Geometry[] actual = CoverageSimplifier.simplify(input, 0);
     checkEqual(input, actual);
   }
   
-  private void checkResult(Geometry[] input, double tolerance, Geometry[] expected) {
+ /**private */void checkResult(Geometry[] input, double tolerance, Geometry[] expected) {
     Geometry[] actual = CoverageSimplifier.simplify(input, tolerance);
     checkEqual(expected, actual);
   }
   
-  private void checkResultInner(Geometry[] input, double tolerance, Geometry[] expected) {
+ /**private */void checkResultInner(Geometry[] input, double tolerance, Geometry[] expected) {
     Geometry[] actual = CoverageSimplifier.simplifyInner(input, tolerance);
     checkEqual(expected, actual);
   }

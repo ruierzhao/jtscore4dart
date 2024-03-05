@@ -160,14 +160,14 @@ public class DouglasPeuckerSimplifierTest
         );
   }
   
-  private void checkDP(String wkt, double tolerance, String wktExpected) {
+ /**private */void checkDP(String wkt, double tolerance, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry result = DouglasPeuckerSimplifier.simplify(geom, tolerance);
     Geometry expected = read(wktExpected);
     checkEqual(expected, result);
   }
   
-  private void checkDPNoChange(String wkt, double tolerance) {
+ /**private */void checkDPNoChange(String wkt, double tolerance) {
     checkDP(wkt, tolerance, wkt);
   }
 }

@@ -23,7 +23,7 @@
 class ObjectCounter 
 {
 
-  private Map counts = new Map();
+ /**private */Map counts = new Map();
   
   ObjectCounter() {
   }
@@ -48,7 +48,7 @@ class ObjectCounter
       return counter.count();
    
   }
-  private static class Counter
+ /**private */static class Counter
   {
     int count = 0;
     

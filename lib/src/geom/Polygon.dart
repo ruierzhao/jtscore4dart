@@ -49,7 +49,7 @@ class Polygon
 	extends Geometry
 	implements Polygonal
 {
-  // private static final long serialVersionUID = -3494792200821764533L;
+  ///**private */static final long serialVersionUID = -3494792200821764533L;
 
   ///  The exterior boundary,
   /// or <code>null</code> if this <code>Polygon</code>
@@ -259,7 +259,7 @@ class Polygon
     return getFactory().createMultiLineString(rings);
   }
 
-  protected Envelope computeEnvelopeInternal() {
+ /**protected */Envelope computeEnvelopeInternal() {
     return shell.getEnvelopeInternal();
   }
 
@@ -327,7 +327,7 @@ class Polygon
     return copy();
   }
 
-  protected Polygon copyInternal() {
+ /**protected */Polygon copyInternal() {
     LinearRing shellCopy = (LinearRing) shell.copy();
     List<LinearRing> holeCopies = new LinearRing[this.holes.length];
     for (int i = 0; i < holes.length; i++) {
@@ -348,7 +348,7 @@ class Polygon
     Arrays.sort(holes);
   }
 
-  protected int compareToSameClass(Object o) {
+ /**protected */int compareToSameClass(Object o) {
     Polygon poly = (Polygon) o;
 
     LinearRing thisShell = shell;
@@ -371,7 +371,7 @@ class Polygon
     return 0;
   }
 
-  protected int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
+ /**protected */int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
     Polygon poly = (Polygon) o;
 
     LinearRing thisShell = shell;
@@ -394,17 +394,17 @@ class Polygon
     return 0;
   }
   
-  protected int getTypeCode() {
+ /**protected */int getTypeCode() {
     return Geometry.TYPECODE_POLYGON;
   }
 
-  private LinearRing normalized(LinearRing ring, bool clockwise) {
+ /**private */LinearRing normalized(LinearRing ring, bool clockwise) {
     LinearRing res = (LinearRing) ring.copy();
     normalize(res, clockwise);
     return res;
   }
 
-  private void normalize(LinearRing ring, bool clockwise) {
+ /**private */void normalize(LinearRing ring, bool clockwise) {
     if (ring.isEmpty()) {
       return;
     }
@@ -420,7 +420,7 @@ class Polygon
     return (Polygon) super.reverse();
   }
 
-  protected Polygon reverseInternal()
+ /**protected */Polygon reverseInternal()
   {
     LinearRing shell = (LinearRing) getExteriorRing().reverse();
     List<LinearRing> holes = new LinearRing[getNumInteriorRing()];

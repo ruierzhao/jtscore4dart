@@ -19,11 +19,11 @@
 // import org.locationtech.jts.simplify.LinkedLine;
 
 class Corner implements Comparable<Corner> {
-  private LinkedLine edge;
-  private int index;
-  private int prev;
-  private int next;
-  private double area;
+ /**private */LinkedLine edge;
+ /**private */int index;
+ /**private */int prev;
+ /**private */int next;
+ /**private */double area;
 
   Corner(LinkedLine edge, int i) {
     this.edge = edge;
@@ -59,7 +59,7 @@ class Corner implements Comparable<Corner> {
     return edge.getCoordinate(next);  
   }
   
-  private static double area(LinkedLine edge, int index) {
+ /**private */static double area(LinkedLine edge, int index) {
     Coordinate pp = edge.prevCoordinate(index);
     Coordinate p = edge.getCoordinate(index);
     Coordinate pn = edge.nextCoordinate(index);
@@ -127,7 +127,7 @@ class Corner implements Comparable<Corner> {
     return toLineString().toString();
   }
 
-  private static Coordinate safeCoord(Coordinate p) {
+ /**private */static Coordinate safeCoord(Coordinate p) {
     if (p == null) return new Coordinate(double.nan, double.nan);
     return p;
   }

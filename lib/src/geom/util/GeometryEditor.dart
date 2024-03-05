@@ -78,8 +78,8 @@ class GeometryEditor
 {
   /// The factory used to create the modified Geometry.
   /// If <tt>null</tt> the GeometryFactory of the input is used.
-  private GeometryFactory factory = null;
-  private bool isUserDataCopied = false;
+ /**private */GeometryFactory factory = null;
+ /**private */bool isUserDataCopied = false;
 
   /// Creates a new GeometryEditor object which will create
   /// edited {@link Geometry}s with the same {@link GeometryFactory} as the input Geometry.
@@ -124,7 +124,7 @@ class GeometryEditor
     return result;
   }
   
-  private Geometry editInternal(Geometry geometry, GeometryEditorOperation operation)
+ /**private */Geometry editInternal(Geometry geometry, GeometryEditorOperation operation)
   {
     // if client did not supply a GeometryFactory, use the one from the input Geometry
     if (factory == null)
@@ -151,7 +151,7 @@ class GeometryEditor
     return null;
   }
 
-  private Polygon editPolygon(Polygon polygon,
+ /**private */Polygon editPolygon(Polygon polygon,
                               GeometryEditorOperation operation) {
     Polygon newPolygon = (Polygon) operation.edit(polygon, factory);
     // create one if needed
@@ -181,7 +181,7 @@ class GeometryEditor
                                  (List<LinearRing>) holes.toArray(new List<LinearRing> {  }));
   }
 
-  private GeometryCollection editGeometryCollection(
+ /**private */GeometryCollection editGeometryCollection(
       GeometryCollection collection, GeometryEditorOperation operation) {
     // first edit the entire collection
     // MD - not sure why this is done - could just check original collection?

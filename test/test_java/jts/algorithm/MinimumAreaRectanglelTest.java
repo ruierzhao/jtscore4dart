@@ -22,7 +22,7 @@ import test.jts.GeometryTestCase;
  */
 public class MinimumAreaRectanglelTest extends GeometryTestCase {
 
-  private static final double TOL = 1e-10;
+ /**private */static final double TOL = 1e-10;
 
   public static void main(String args[]) {
     TestRunner.run(MinimumAreaRectanglelTest.class);
@@ -85,7 +85,7 @@ public class MinimumAreaRectanglelTest extends GeometryTestCase {
         "POLYGON ((1.8583607388069103 50.41649058582797, -5.816631979932251 49.904263313964535, -6.395241388167441 58.57389735949991, 1.2797513305717105 59.08612463136336, 1.8583607388069103 50.41649058582797))");
   }  
 
-  private void checkMinRectangle(String wkt, String wktExpected) {
+ /**private */void checkMinRectangle(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry actual = MinimumAreaRectangle.getMinimumRectangle(geom);
     Geometry expected = read(wktExpected);

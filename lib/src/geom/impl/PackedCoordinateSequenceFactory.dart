@@ -27,7 +27,7 @@
 class PackedCoordinateSequenceFactory implements
     CoordinateSequenceFactory, Serializable
 {
-  private static final long serialVersionUID = -3558264771905224525L;
+ /**private */static final long serialVersionUID = -3558264771905224525L;
   
   /**
    * Type code for arrays of type <code>double</code>.
@@ -51,11 +51,11 @@ class PackedCoordinateSequenceFactory implements
   static final PackedCoordinateSequenceFactory FLOAT_FACTORY =
       new PackedCoordinateSequenceFactory(FLOAT);
 
-  private static final int DEFAULT_MEASURES = 0;
+ /**private */static final int DEFAULT_MEASURES = 0;
 
-  private static final int DEFAULT_DIMENSION = 3;
+ /**private */static final int DEFAULT_DIMENSION = 3;
 
-  private int type = DOUBLE;
+ /**private */int type = DOUBLE;
 
   /**
    * Creates a new PackedCoordinateSequenceFactory

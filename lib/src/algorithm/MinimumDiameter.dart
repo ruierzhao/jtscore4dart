@@ -81,14 +81,14 @@ class MinimumDiameter
     return (new MinimumDiameter(geom)).getDiameter();
   }
   
-  private final Geometry inputGeom;
-  private final bool isConvex;
+ /**private */final Geometry inputGeom;
+ /**private */final bool isConvex;
 
-  private List<Coordinate> convexHullPts = null;
-  private LineSegment minBaseSeg = new LineSegment();
-  private Coordinate minWidthPt = null;
-  private int minPtIndex;
-  private double minWidth = 0.0;
+ /**private */List<Coordinate> convexHullPts = null;
+ /**private */LineSegment minBaseSeg = new LineSegment();
+ /**private */Coordinate minWidthPt = null;
+ /**private */int minPtIndex;
+ /**private */double minWidth = 0.0;
 
   /**
    * Compute a minimum diameter for a given {@link Geometry}.
@@ -166,7 +166,7 @@ class MinimumDiameter
     return inputGeom.getFactory().createLineString(new List<Coordinate> { basePt, minWidthPt } );
   }
 
-  private void computeMinimumDiameter()
+ /**private */void computeMinimumDiameter()
   {
     // check if computation is cached
     if (minWidthPt != null)
@@ -180,7 +180,7 @@ class MinimumDiameter
     }
   }
 
-  private void computeWidthConvex(Geometry convexGeom)
+ /**private */void computeWidthConvex(Geometry convexGeom)
   {
 //System.out.println("Input = " + geom);
     if (convexGeom is Polygon)
@@ -216,7 +216,7 @@ class MinimumDiameter
    *
    * @param pts
    */
-  private void computeConvexRingMinDiameter(List<Coordinate> pts)
+ /**private */void computeConvexRingMinDiameter(List<Coordinate> pts)
   {
     // for each segment in the ring
     minWidth = Double.MAX_VALUE;
@@ -231,7 +231,7 @@ class MinimumDiameter
     }
   }
 
-  private int findMaxPerpDistance(List<Coordinate> pts, LineSegment seg, int startIndex)
+ /**private */int findMaxPerpDistance(List<Coordinate> pts, LineSegment seg, int startIndex)
   {
     double maxPerpDistance = seg.distancePerpendicular(pts[startIndex]);
     double nextPerpDistance = maxPerpDistance;
@@ -258,7 +258,7 @@ class MinimumDiameter
     return maxIndex;
   }
 
-  private static int nextIndex(List<Coordinate> pts, int index)
+ /**private */static int nextIndex(List<Coordinate> pts, int index)
   {
     index++;
     if (index >= pts.length) index = 0;
@@ -338,7 +338,7 @@ class MinimumDiameter
    * @param factory the geometry factory
    * @return the line of maximum extent
    */
-  private static LineString computeMaximumLine(List<Coordinate> pts, GeometryFactory factory) {
+ /**private */static LineString computeMaximumLine(List<Coordinate> pts, GeometryFactory factory) {
     //-- find max and min pts for X and Y
     Coordinate ptMinX = null;
     Coordinate ptMaxX = null;
@@ -360,12 +360,12 @@ class MinimumDiameter
     return factory.createLineString(new List<Coordinate> { p0.copy(), p1.copy() });
   }
 
-  private static double computeC(double a, double b, Coordinate p)
+ /**private */static double computeC(double a, double b, Coordinate p)
   {
     return a * p.y - b * p.x;
   }
   
-  private static LineSegment computeSegmentForLine(double a, double b, double c)
+ /**private */static LineSegment computeSegmentForLine(double a, double b, double c)
   {
     Coordinate p0;
     Coordinate p1;

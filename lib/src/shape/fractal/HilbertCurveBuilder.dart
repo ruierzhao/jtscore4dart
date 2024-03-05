@@ -34,7 +34,7 @@ import static org.locationtech.jts.shape.fractal.HilbertCode.size;
 class HilbertCurveBuilder
 extends GeometricShapeBuilder
 {
-  private int order = -1;
+ /**private */int order = -1;
 
   /**
    * Creates a new instance using the provided {@link GeometryFactory}.
@@ -85,7 +85,7 @@ extends GeometricShapeBuilder
     return geomFactory.createLineString(pts);
   }
   
-  private static double transform(double val, double scale, double offset) {
+ /**private */static double transform(double val, double scale, double offset) {
     return val * scale + offset;
   }
   

@@ -67,7 +67,7 @@ class PrecisionReducer {
     }
   }
 
-  private PrecisionReducer() {
+ /**private */PrecisionReducer() {
     // no instantiation for now
   }
 }

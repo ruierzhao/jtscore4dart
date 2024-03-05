@@ -96,7 +96,7 @@ public class EdgeGraphTest extends TestCase {
 
   //==================================================
   
-  private void checkEdgeRing(EdgeGraph graph, Coordinate p,
+ /**private */void checkEdgeRing(EdgeGraph graph, Coordinate p,
       Coordinate[] dest) {
     HalfEdge e = graph.findEdge(p, dest[0]);
     HalfEdge onext = e;
@@ -108,24 +108,24 @@ public class EdgeGraphTest extends TestCase {
    
   }
 
-  private void checkEdge(EdgeGraph graph, Coordinate p0, Coordinate p1) {
+ /**private */void checkEdge(EdgeGraph graph, Coordinate p0, Coordinate p1) {
     HalfEdge e = graph.findEdge(p0, p1);
     assertNotNull(e);
   }
 
-  private void checkNodeValid(EdgeGraph graph, Coordinate p0, Coordinate p1) {
+ /**private */void checkNodeValid(EdgeGraph graph, Coordinate p0, Coordinate p1) {
     HalfEdge e = graph.findEdge(p0, p1);
     boolean isNodeValid = e.isEdgesSorted();
     assertTrue("Found non-sorted edges around node " + e, isNodeValid); 
   }
 
 
-  private void checkNodeValid(HalfEdge e) {
+ /**private */void checkNodeValid(HalfEdge e) {
     boolean isNodeValid = e.isEdgesSorted();
     assertTrue("Found non-sorted edges around node " + e, isNodeValid); 
   }
   
-  private void checkNextPrev(EdgeGraph graph) {
+ /**private */void checkNextPrev(EdgeGraph graph) {
     Collection<HalfEdge> edges = graph.getVertexEdges();
     for (HalfEdge e: edges) {
       assertTrue(e.next().prev() == e);
@@ -134,32 +134,32 @@ public class EdgeGraphTest extends TestCase {
 
 
  
-  private void checkNext(EdgeGraph graph, double x1, double y1, double x2, double y2, double x3, double y3) {
+ /**private */void checkNext(EdgeGraph graph, double x1, double y1, double x2, double y2, double x3, double y3) {
     HalfEdge e1 = findEdge(graph, x1, y1, x2, y2);
     HalfEdge e2 = findEdge(graph, x2, y2, x3, y3);
     assertTrue(e1.next() == e2);
     assertTrue(e2.prev() == e1);
   }
   
-  private void checkNextPrev(EdgeGraph graph, double x1, double y1, double x2, double y2) {
+ /**private */void checkNextPrev(EdgeGraph graph, double x1, double y1, double x2, double y2) {
     HalfEdge e = findEdge(graph, x1, y1, x2, y2);
     assertTrue(e.next().prev() == e);
   }
 
-  private HalfEdge findEdge(EdgeGraph graph, double x1, double y1, double x2, double y2) {
+ /**private */HalfEdge findEdge(EdgeGraph graph, double x1, double y1, double x2, double y2) {
     return graph.findEdge(new Coordinate(x1, y1), new Coordinate(x2, y2));
   }
   
-  private EdgeGraph build(String wkt) throws ParseException {
+ /**private */EdgeGraph build(String wkt) throws ParseException {
     return build(new String[] { wkt });
   }
 
-  private EdgeGraph build(String[] wkt) throws ParseException {
+ /**private */EdgeGraph build(String[] wkt) throws ParseException {
     List geoms = IOUtil.readWKT(wkt);
     return EdgeGraphBuilder.build(geoms);
   }
 
-  private HalfEdge addEdge(EdgeGraph graph, double p0x, double p0y, double p1x, double p1y) {
+ /**private */HalfEdge addEdge(EdgeGraph graph, double p0x, double p0y, double p1x, double p1y) {
     return graph.addEdge(new Coordinate(p0x, p0y), new Coordinate(p1x, p1y));
   }
 

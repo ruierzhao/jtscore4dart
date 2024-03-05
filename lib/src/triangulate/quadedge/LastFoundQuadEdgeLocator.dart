@@ -22,19 +22,19 @@
  * @author Martin Davis
  */
 class LastFoundQuadEdgeLocator implements QuadEdgeLocator {
-    private QuadEdgeSubdivision subdiv;
-    private QuadEdge            lastEdge = null;
+   /**private */QuadEdgeSubdivision subdiv;
+   /**private */QuadEdge            lastEdge = null;
 
     LastFoundQuadEdgeLocator(QuadEdgeSubdivision subdiv) {
         this.subdiv = subdiv;
         init();
     }
 
-    private void init() {
+   /**private */void init() {
         lastEdge = findEdge();
     }
 
-    private QuadEdge findEdge() {
+   /**private */QuadEdge findEdge() {
         Collection edges = subdiv.getEdges();
         // assume there is an edge - otherwise will get an exception
         return (QuadEdge) edges.iterator().next();

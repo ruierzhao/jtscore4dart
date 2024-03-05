@@ -32,8 +32,8 @@
 class RandomPointsBuilder 
 extends GeometricShapeBuilder
 {
-  protected Geometry maskPoly = null;
-  private PointOnGeometryLocator extentLocator;
+ /**protected */Geometry maskPoly = null;
+ /**private */PointOnGeometryLocator extentLocator;
 
   /**
    * Create a shape factory which will create shapes using the default
@@ -83,21 +83,21 @@ extends GeometricShapeBuilder
   	return geomFactory.createMultiPointFromCoords(pts);
   }
   
-  protected bool isInExtent(Coordinate p)
+ /**protected */bool isInExtent(Coordinate p)
   {
   	if (extentLocator != null) 
   		return extentLocator.locate(p) != Location.EXTERIOR;
   	return getExtent().contains(p);
   }
   
-  protected Coordinate createCoord(double x, double y)
+ /**protected */Coordinate createCoord(double x, double y)
   {
   	Coordinate pt = new Coordinate(x, y);
   	geomFactory.getPrecisionModel().makePrecise(pt);
     return pt;
   }
   
-  protected Coordinate createRandomCoord(Envelope env)
+ /**protected */Coordinate createRandomCoord(Envelope env)
   {
     double x = env.getMinX() + env.getWidth() * math.random();
     double y = env.getMinY() + env.getHeight() * math.random();

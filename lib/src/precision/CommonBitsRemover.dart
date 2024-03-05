@@ -48,8 +48,8 @@
  */
 class CommonBitsRemover
 {
-  private Coordinate commonCoord;
-  private CommonCoordinateFilter ccFilter = new CommonCoordinateFilter();
+ /**private */Coordinate commonCoord;
+ /**private */CommonCoordinateFilter ccFilter = new CommonCoordinateFilter();
 
   CommonBitsRemover()
   {
@@ -110,8 +110,8 @@ class CommonBitsRemover
   static class CommonCoordinateFilter
       implements CoordinateFilter
   {
-    private CommonBits commonBitsX = new CommonBits();
-    private CommonBits commonBitsY = new CommonBits();
+   /**private */CommonBits commonBitsX = new CommonBits();
+   /**private */CommonBits commonBitsY = new CommonBits();
 
     void filter(Coordinate coord)
     {

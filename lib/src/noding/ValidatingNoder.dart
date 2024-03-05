@@ -30,8 +30,8 @@
  */
 class ValidatingNoder implements Noder {
 
-  private final Noder noder;
-  private Collection<SegmentString> nodedSS;
+ /**private */final Noder noder;
+ /**private */Collection<SegmentString> nodedSS;
   
   /**
    * Creates a noding validator wrapping the given Noder
@@ -56,7 +56,7 @@ class ValidatingNoder implements Noder {
     validate();
   }
 
-  private void validate() {
+ /**private */void validate() {
     FastNodingValidator nv = new FastNodingValidator( nodedSS );
     nv.checkValid();
   }

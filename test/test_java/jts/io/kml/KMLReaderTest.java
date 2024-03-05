@@ -29,7 +29,7 @@ public class KMLReaderTest extends TestCase {
         TestRunner.run(KMLWriterTest.class);
     }
 
-    private KMLReader kmlReader = new KMLReader(Arrays.asList("altitudeMode", "tesselate", "extrude"));
+   /**private */KMLReader kmlReader = new KMLReader(Arrays.asList("altitudeMode", "tesselate", "extrude"));
 
     public KMLReaderTest(String name) {
         super(name);
@@ -171,7 +171,7 @@ public class KMLReaderTest extends TestCase {
         checkExceptionThrown("<StrangePoint></StrangePoint>", "Unknown KML geometry type StrangePoint");
     }
 
-    private void checkExceptionThrown(String kmlString, String expectedError) {
+   /**private */void checkExceptionThrown(String kmlString, String expectedError) {
         try {
             kmlReader.read(kmlString);
             Assert.fail("Exception must be thrown");
@@ -180,7 +180,7 @@ public class KMLReaderTest extends TestCase {
         }
     }
 
-    private void checkParsingResult(String kmlString, String expectedWKT, Map<String, String>[] expectedAttributes) {
+   /**private */void checkParsingResult(String kmlString, String expectedWKT, Map<String, String>[] expectedAttributes) {
         try {
             Geometry parsedGeometry = kmlReader.read(kmlString);
             String wkt = parsedGeometry.toText();

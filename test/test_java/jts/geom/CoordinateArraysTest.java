@@ -27,8 +27,8 @@ public class CoordinateArraysTest extends GeometryTestCase {
     TestRunner.run(CoordinateArraysTest.class);
   }
 
-  private static Coordinate[] COORDS_1 = new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) };
-  private static Coordinate[] COORDS_EMPTY = new Coordinate[0];
+ /**private */static Coordinate[] COORDS_1 = new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) };
+ /**private */static Coordinate[] COORDS_EMPTY = new Coordinate[0];
 
   public CoordinateArraysTest(String name) { super(name); }
 
@@ -103,7 +103,7 @@ public class CoordinateArraysTest extends GeometryTestCase {
     checkReversed(pts);
   }
   
-  private void checkReversed(Coordinate[] pts) {
+ /**private */void checkReversed(Coordinate[] pts) {
     Coordinate[] ptsRev = CoordinateArrays.copyDeep(pts);
     CoordinateArrays.reverse(ptsRev);
     assertEquals(pts.length, ptsRev.length);
@@ -174,7 +174,7 @@ public class CoordinateArraysTest extends GeometryTestCase {
     assertTrue( array[1] != fixed[1] ); // processing needed to CoordinateXYZM
   }
 
-  private static void checkCoordinateAt(Coordinate[] seq1, int pos1,
+ /**private */static void checkCoordinateAt(Coordinate[] seq1, int pos1,
                                         Coordinate[] seq2, int pos2) {
     Coordinate c1 = seq1[pos1], c2 = seq2[pos2];
 
@@ -182,7 +182,7 @@ public class CoordinateArraysTest extends GeometryTestCase {
     assertEquals("unexpected y-ordinate at pos " + pos2, c1.getY(), c2.getY());
   }
 
-  private static Coordinate[] createCircle(Coordinate center, double radius) {
+ /**private */static Coordinate[] createCircle(Coordinate center, double radius) {
     // Get a complete circular string
     Coordinate[] res = createCircularString(center, radius, 0d,49);
 
@@ -191,7 +191,7 @@ public class CoordinateArraysTest extends GeometryTestCase {
 
     return res;
   }
-  private static Coordinate[] createCircularString(Coordinate center, double radius, double startAngle,
+ /**private */static Coordinate[] createCircularString(Coordinate center, double radius, double startAngle,
                                                    int numPoints) {
     final int numSegmentsCircle = 48;
     final double angleCircle = 2 * Math.PI;

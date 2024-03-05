@@ -39,7 +39,7 @@ class VertexRingCounter implements CoordinateSequenceFilter {
     return vertexRingCount;
   }
 
-  private Map<Coordinate, Integer> vertexRingCount;
+ /**private */Map<Coordinate, Integer> vertexRingCount;
   
   VertexRingCounter(Map<Coordinate, Integer> vertexRingCount) {
     this.vertexRingCount = vertexRingCount;

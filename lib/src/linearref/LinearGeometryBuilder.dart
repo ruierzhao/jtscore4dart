@@ -30,14 +30,14 @@
  */
 class LinearGeometryBuilder
 {
-  private GeometryFactory geomFact;
-  private List lines = new ArrayList();
-  private CoordinateList coordList = null;
+ /**private */GeometryFactory geomFact;
+ /**private */List lines = new ArrayList();
+ /**private */CoordinateList coordList = null;
 
-  private bool ignoreInvalidLines = false;
-  private bool fixInvalidLines = false;
+ /**private */bool ignoreInvalidLines = false;
+ /**private */bool fixInvalidLines = false;
 
-  private Coordinate lastPt = null;
+ /**private */Coordinate lastPt = null;
 
   LinearGeometryBuilder(GeometryFactory geomFact) {
     this.geomFact = geomFact;
@@ -122,7 +122,7 @@ class LinearGeometryBuilder
     if (line != null) lines.add(line);
   }
 
-  private List<Coordinate> validCoordinateSequence(List<Coordinate> pts)
+ /**private */List<Coordinate> validCoordinateSequence(List<Coordinate> pts)
   {
     if (pts.length >= 2) return pts;
     List<Coordinate> validPts = new List<Coordinate> { pts[0], pts[0]};

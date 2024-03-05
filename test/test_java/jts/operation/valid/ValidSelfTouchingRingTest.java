@@ -153,7 +153,7 @@ public class ValidSelfTouchingRingTest
     checkIsValidOGC(wkt, false);
   }
 
-  private void checkInvalidSTR(String wkt, int exepctedErrType) {
+ /**private */void checkInvalidSTR(String wkt, int exepctedErrType) {
     Geometry geom = read(wkt);
     IsValidOp validOp = new IsValidOp(geom);
     validOp.setSelfTouchingRingFormingHoleValid(true);
@@ -161,7 +161,7 @@ public class ValidSelfTouchingRingTest
     assertEquals( exepctedErrType, err.getErrorType() );
   }
 
-  private void checkIsValidOGC(String wkt, boolean expected)
+ /**private */void checkIsValidOGC(String wkt, boolean expected)
   {
     Geometry geom = read(wkt);
     IsValidOp validator = new IsValidOp(geom);
@@ -169,7 +169,7 @@ public class ValidSelfTouchingRingTest
     assertTrue(isValid == expected);
   }
 
-  private void checkIsValidSTR(String wkt, boolean expected)
+ /**private */void checkIsValidSTR(String wkt, boolean expected)
   {
     Geometry geom = read(wkt);
     IsValidOp validator = new IsValidOp(geom);

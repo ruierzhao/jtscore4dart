@@ -24,7 +24,7 @@ public class GeometryCopyTest extends GeometryTestCase {
     checkCopy( read( GeometryTestData.WKT_GC ));
   }
 
-  private void checkCopy(final Geometry g) {
+ /**private */void checkCopy(final Geometry g) {
     int SRID = 123;
     g.setSRID(SRID );
     

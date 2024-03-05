@@ -65,7 +65,7 @@ class SegmentPointComparator {
     return 0;
   }
 
-  private static int compareValue(int compareSign0, int compareSign1)
+ /**private */static int compareValue(int compareSign0, int compareSign1)
   {
     if (compareSign0 < 0) return -1;
     if (compareSign0 > 0) return 1;

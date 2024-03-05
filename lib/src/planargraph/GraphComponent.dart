@@ -81,9 +81,9 @@ abstract class GraphComponent
     return null;
   }
 
-  protected bool isMarked = false;
-  protected bool isVisited = false;
-  private Object data;
+ /**protected */bool isMarked = false;
+ /**protected */bool isVisited = false;
+ /**private */Object data;
 
   GraphComponent() {
   }

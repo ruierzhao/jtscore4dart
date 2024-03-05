@@ -67,8 +67,8 @@ class DoubleBits {
     return db1.getDouble();
   }
 
-  private double x;
-  private long xBits;
+ /**private */double x;
+ /**private */long xBits;
 
   DoubleBits(double x)
   {

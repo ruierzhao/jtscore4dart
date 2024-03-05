@@ -242,7 +242,7 @@ class Triangle
   /// @param m11
   ///          the [1,1] entry of the matrix
   /// @return the determinant
-  private static double det(double m00, double m01, double m10, double m11)
+ /**private */static double det(double m00, double m01, double m10, double m11)
   {
     return m00 * m11 - m01 * m10;
   }

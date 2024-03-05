@@ -22,9 +22,9 @@
  */
 class PointPairDistance {
 
-  private final List<Coordinate> pt = { new Coordinate(), new Coordinate() };
-  private double distance = double.nan;
-  private bool isNull = true;
+ /**private */final List<Coordinate> pt = { new Coordinate(), new Coordinate() };
+ /**private */double distance = double.nan;
+ /**private */bool isNull = true;
 
   /**
    * Creates an instance of this class

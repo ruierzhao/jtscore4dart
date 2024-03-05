@@ -30,7 +30,7 @@
  */
 class SIRtree extends AbstractSTRtree {
 
-  private Comparator comparator = new Comparator() {
+ /**private */Comparator comparator = new Comparator() {
     int compare(Object o1, Object o2) {
       return compareDoubles(
           ((Interval)((Boundable)o1).getBounds()).getCentre(),
@@ -38,7 +38,7 @@ class SIRtree extends AbstractSTRtree {
     }
   };
 
-  private IntersectsOp intersectsOp = new IntersectsOp() {
+ /**private */IntersectsOp intersectsOp = new IntersectsOp() {
     bool intersects(Object aBounds, Object bBounds) {
       return ((Interval)aBounds).intersects((Interval)bBounds);
     }
@@ -57,9 +57,9 @@ class SIRtree extends AbstractSTRtree {
     super(nodeCapacity);
   }
 
-  protected AbstractNode createNode(int level) {
+ /**protected */AbstractNode createNode(int level) {
     return new AbstractNode(level) {
-      protected Object computeBounds() {
+     /**protected */Object computeBounds() {
         Interval bounds = null;
         for (Iterator i = getChildBoundables().iterator(); i.hasNext(); ) {
           Boundable childBoundable = (Boundable) i.next();
@@ -97,11 +97,11 @@ class SIRtree extends AbstractSTRtree {
     return super.query(new Interval(Math.min(x1, x2), math.max(x1, x2)));
   }
 
-  protected IntersectsOp getIntersectsOp() {
+ /**protected */IntersectsOp getIntersectsOp() {
     return intersectsOp;
   }
 
-  protected Comparator getComparator() {
+ /**protected */Comparator getComparator() {
     return comparator;
   }
 

@@ -38,9 +38,9 @@
  */
 class IndexedNestedHoleTester
 {
-  private Polygon polygon;
-  private SpatialIndex index;
-  private Coordinate nestedPt;
+ /**private */Polygon polygon;
+ /**private */SpatialIndex index;
+ /**private */Coordinate nestedPt;
 
   IndexedNestedHoleTester(Polygon poly)
   {
@@ -48,7 +48,7 @@ class IndexedNestedHoleTester
     loadIndex();
   }
 
-  private void loadIndex()
+ /**private */void loadIndex()
   {
     index = new STRtree();
 

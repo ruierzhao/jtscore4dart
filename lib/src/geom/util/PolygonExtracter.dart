@@ -59,7 +59,7 @@ class PolygonExtracter
     return getPolygons(geom, new ArrayList());
   }
 
-  private List comps;
+ /**private */List comps;
   /**
    * Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
    */

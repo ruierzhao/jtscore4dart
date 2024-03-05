@@ -105,8 +105,8 @@ class CoverageValidator {
     return v.validate();
   }
   
-  private List<Geometry> coverage;
-  private double gapWidth;
+ /**private */List<Geometry> coverage;
+ /**private */double gapWidth;
 
   /**
    * Creates a new coverage validator
@@ -149,7 +149,7 @@ class CoverageValidator {
     return invalidLines;
   }
 
-  private Geometry validate(Geometry targetGeom, STRtree index) {
+ /**private */Geometry validate(Geometry targetGeom, STRtree index) {
     Envelope queryEnv = targetGeom.getEnvelopeInternal();
     queryEnv.expandBy(gapWidth);
     List<Geometry> nearGeomList = index.query(queryEnv);

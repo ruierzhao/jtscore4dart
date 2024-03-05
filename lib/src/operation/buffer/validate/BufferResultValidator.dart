@@ -34,7 +34,7 @@
  */
 class BufferResultValidator 
 {
-  private static bool VERBOSE = false;
+ /**private */static bool VERBOSE = false;
   
 	/**
 	 * Maximum allowable fraction of buffer distance the 
@@ -69,13 +69,13 @@ class BufferResultValidator
     return null;
   }
 
-  private Geometry input;
-  private double distance;
-  private Geometry result;
-  private bool isValid = true;
-  private String errorMsg = null;
-  private Coordinate errorLocation = null;
-  private Geometry errorIndicator = null;
+ /**private */Geometry input;
+ /**private */double distance;
+ /**private */Geometry result;
+ /**private */bool isValid = true;
+ /**private */String errorMsg = null;
+ /**private */Coordinate errorLocation = null;
+ /**private */Geometry errorIndicator = null;
   
   BufferResultValidator(Geometry input, double distance, Geometry result)
   {
@@ -123,14 +123,14 @@ class BufferResultValidator
     return errorIndicator;
   }
   
-  private void report(String checkName)
+ /**private */void report(String checkName)
   {
     if (! VERBOSE) return;
     Debug.println("Check " + checkName + ": " 
         + (isValid ? "passed" : "FAILED"));
   }
   
-  private void checkPolygonal()
+ /**private */void checkPolygonal()
   {
   	if (! (result is Polygon 
   			|| result is MultiPolygon))
@@ -140,7 +140,7 @@ class BufferResultValidator
     report("Polygonal");
   }
   
-  private void checkExpectedEmpty()
+ /**private */void checkExpectedEmpty()
   {
   	// can't check areal features
   	if (input.getDimension() >= 2) return;
@@ -156,7 +156,7 @@ class BufferResultValidator
     report("ExpectedEmpty");
   }
   
-  private void checkEnvelope()
+ /**private */void checkEnvelope()
   {
   	if (distance < 0.0) return;
   	
@@ -177,7 +177,7 @@ class BufferResultValidator
     report("Envelope");
   }
   
-  private void checkArea()
+ /**private */void checkArea()
   {
   	double inputArea = input.getArea();
   	double resultArea = result.getArea();
@@ -197,7 +197,7 @@ class BufferResultValidator
     report("Area");
   }
   
-  private void checkDistance()
+ /**private */void checkDistance()
   {
   	BufferDistanceValidator distValid = new BufferDistanceValidator(input, distance, result);
   	if (! distValid.isValid()) {

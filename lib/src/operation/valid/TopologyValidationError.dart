@@ -108,8 +108,8 @@ class TopologyValidationError {
     "Ring is not closed"
   };
 
-  private int errorType;
-  private Coordinate pt;
+ /**private */int errorType;
+ /**private */Coordinate pt;
 
   /**
    * Creates a validation error with the given type and location

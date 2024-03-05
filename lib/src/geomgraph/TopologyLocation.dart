@@ -74,7 +74,7 @@ class TopologyLocation {
       }
     }
   }
-  private void init(int size)
+ /**private */void init(int size)
   {
     location = new int[size];
     setAllLocations(Location.NONE);

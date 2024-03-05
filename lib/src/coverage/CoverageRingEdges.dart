@@ -58,9 +58,9 @@ class CoverageRingEdges {
     return edges;
   }
   
-  private List<Geometry> coverage;
-  private Map<LinearRing, List<CoverageEdge>> ringEdgesMap;
-  private List<CoverageEdge> edges;
+ /**private */List<Geometry> coverage;
+ /**private */Map<LinearRing, List<CoverageEdge>> ringEdgesMap;
+ /**private */List<CoverageEdge> edges;
   
   CoverageRingEdges(List<Geometry> coverage) {
     this.coverage = coverage;
@@ -89,7 +89,7 @@ class CoverageRingEdges {
     return result;
   }
   
-  private void build() {
+ /**private */void build() {
     Set<Coordinate> nodes = findMultiRingNodes(coverage);
     Set<LineSegment> boundarySegs = CoverageBoundarySegmentFinder.findBoundarySegments(coverage);
     nodes.addAll(findBoundaryNodes(boundarySegs));
@@ -117,7 +117,7 @@ class CoverageRingEdges {
     }
   }
 
-  private void addRingEdges(LinearRing ring, Set<Coordinate> nodes, Set<LineSegment> boundarySegs,
+ /**private */void addRingEdges(LinearRing ring, Set<Coordinate> nodes, Set<LineSegment> boundarySegs,
       Map<LineSegment, CoverageEdge> uniqueEdgeMap) {
     addBoundaryInnerNodes(ring, boundarySegs, nodes);
     List<CoverageEdge> ringEdges = extractRingEdges(ring, uniqueEdgeMap, nodes);
@@ -135,7 +135,7 @@ class CoverageRingEdges {
    * @param boundarySegs
    * @param nodes
    */
-  private void addBoundaryInnerNodes(LinearRing ring, Set<LineSegment> boundarySegs, Set<Coordinate> nodes) {
+ /**private */void addBoundaryInnerNodes(LinearRing ring, Set<LineSegment> boundarySegs, Set<Coordinate> nodes) {
     CoordinateSequence seq = ring.getCoordinateSequence();
     bool isBdyLast = CoverageBoundarySegmentFinder.isBoundarySegment(boundarySegs, seq, seq.size() - 2);
     bool isBdyPrev = isBdyLast;
@@ -149,7 +149,7 @@ class CoverageRingEdges {
     }
   }
 
-  private List<CoverageEdge> extractRingEdges(LinearRing ring, 
+ /**private */List<CoverageEdge> extractRingEdges(LinearRing ring, 
       Map<LineSegment, CoverageEdge> uniqueEdgeMap, 
       Set<Coordinate> nodes) {
  // System.out.println(ring);
@@ -181,7 +181,7 @@ class CoverageRingEdges {
     return ringEdges;
   }
 
-  private CoverageEdge createEdge(List<Coordinate> ring, Map<LineSegment, CoverageEdge> uniqueEdgeMap) {
+ /**private */CoverageEdge createEdge(List<Coordinate> ring, Map<LineSegment, CoverageEdge> uniqueEdgeMap) {
     CoverageEdge edge;
     LineSegment edgeKey = CoverageEdge.key(ring);
     if (uniqueEdgeMap.containsKey(edgeKey)) {
@@ -196,7 +196,7 @@ class CoverageRingEdges {
     return edge;
   }
   
-  private CoverageEdge createEdge(List<Coordinate> ring, int start, int end, Map<LineSegment, CoverageEdge> uniqueEdgeMap) {
+ /**private */CoverageEdge createEdge(List<Coordinate> ring, int start, int end, Map<LineSegment, CoverageEdge> uniqueEdgeMap) {
     CoverageEdge edge;
     LineSegment edgeKey = (end == start) ? CoverageEdge.key(ring) : CoverageEdge.key(ring, start, end);
     if (uniqueEdgeMap.containsKey(edgeKey)) {
@@ -211,7 +211,7 @@ class CoverageRingEdges {
     return edge;
   }
 
-  private int findNextNodeIndex(List<Coordinate> ring, int start, Set<Coordinate> nodes) {
+ /**private */int findNextNodeIndex(List<Coordinate> ring, int start, Set<Coordinate> nodes) {
     int index = start;
     bool isScanned0 = false;
     do {
@@ -229,7 +229,7 @@ class CoverageRingEdges {
     return -1;
   }
 
-  private static int next(int index, List<Coordinate> ring) {
+ /**private */static int next(int index, List<Coordinate> ring) {
     index = index + 1;
     if (index >= ring.length - 1)
       index = 0;
@@ -242,7 +242,7 @@ class CoverageRingEdges {
    * @param coverage a list of polygonal geometries
    * @return the set of nodes contained in 3 or more rings
    */
-  private Set<Coordinate> findMultiRingNodes(List<Geometry> coverage) {
+ /**private */Set<Coordinate> findMultiRingNodes(List<Geometry> coverage) {
     Map<Coordinate, Integer> vertexRingCount = VertexRingCounter.count(coverage);
     Set<Coordinate> nodes = new HashSet<Coordinate>();
     for (Coordinate v : vertexRingCount.keySet()) {
@@ -265,7 +265,7 @@ class CoverageRingEdges {
    * @param boundarySegments
    * @return a set of vertices which are nodes where two rings touch
    */
-  private Set<Coordinate> findBoundaryNodes(Set<LineSegment> boundarySegments) {
+ /**private */Set<Coordinate> findBoundaryNodes(Set<LineSegment> boundarySegments) {
     Map<Coordinate, Integer> counter = new Map<>();
     for (LineSegment seg : boundarySegments) {
       counter.put(seg.p0, counter.getOrDefault(seg.p0, 0) + 1);
@@ -289,7 +289,7 @@ class CoverageRingEdges {
     return result;
   }
 
-  private Geometry buildPolygonal(Geometry geom) {
+ /**private */Geometry buildPolygonal(Geometry geom) {
     if (geom is MultiPolygon) {
       return buildMultiPolygon((MultiPolygon) geom);
     }
@@ -298,7 +298,7 @@ class CoverageRingEdges {
     }
   }
 
-  private Geometry buildMultiPolygon(MultiPolygon geom) {
+ /**private */Geometry buildMultiPolygon(MultiPolygon geom) {
     List<Polygon> polys = new Polygon[geom.getNumGeometries()];
     for (int i = 0; i < polys.length; i++) {
       polys[i] = buildPolygon((Polygon) geom.getGeometryN(i));
@@ -306,7 +306,7 @@ class CoverageRingEdges {
     return geom.getFactory().createMultiPolygon(polys);
   }
 
-  private Polygon buildPolygon(Polygon polygon) {
+ /**private */Polygon buildPolygon(Polygon polygon) {
     LinearRing shell = buildRing(polygon.getExteriorRing());
 
     if (polygon.getNumInteriorRing() == 0) {
@@ -320,7 +320,7 @@ class CoverageRingEdges {
     return polygon.getFactory().createPolygon(shell, holes);
   }
 
-  private LinearRing buildRing(LinearRing ring) {
+ /**private */LinearRing buildRing(LinearRing ring) {
     List<CoverageEdge> ringEdges = ringEdgesMap.get(ring);
     //-- if ring is not in map, must have been invalid.  Just copy original
     if (ringEdges == null)
@@ -338,7 +338,7 @@ class CoverageRingEdges {
     return ring.getFactory().createLinearRing(pts);
   }
 
-  private bool isEdgeDirForward(List<CoverageEdge> ringEdges, int index, Coordinate prevPt) {
+ /**private */bool isEdgeDirForward(List<CoverageEdge> ringEdges, int index, Coordinate prevPt) {
     int size = ringEdges.size();
     if (size <= 1) return true;
     if (index == 0) {

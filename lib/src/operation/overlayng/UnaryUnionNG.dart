@@ -80,7 +80,7 @@ class UnaryUnionNG {
     return op.union();
   }
   
-  private static UnionStrategy createUnionStrategy(PrecisionModel pm) {
+ /**private */static UnionStrategy createUnionStrategy(PrecisionModel pm) {
     UnionStrategy unionSRFun = new UnionStrategy() {
 
       Geometry union(Geometry g0, Geometry g1) {
@@ -96,7 +96,7 @@ class UnaryUnionNG {
     return unionSRFun;
   }
   
-  private UnaryUnionNG() {
+ /**private */UnaryUnionNG() {
     // no instantiation for now
   }
 }

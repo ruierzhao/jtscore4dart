@@ -27,7 +27,7 @@
  */
 abstract class NodeBase implements Serializable {
 
-//DEBUG private static int itemCount = 0;  // debugging
+//DEBUG/**private */static int itemCount = 0;  // debugging
   
   /**
    * Gets the index of the subquad that wholly contains the given envelope.
@@ -50,7 +50,7 @@ abstract class NodeBase implements Serializable {
     return subnodeIndex;
   }
 
-  protected List items = Collections.synchronizedList(new ArrayList());
+ /**protected */List items = Collections.synchronizedList(new ArrayList());
 
   /**
    * subquads are numbered as follows:
@@ -60,7 +60,7 @@ abstract class NodeBase implements Serializable {
    *  0 | 1
    * </pre>
    */
-  protected Node[] subnode = new Node[4];
+ /**protected */Node[] subnode = new Node[4];
 
   NodeBase() {
   }
@@ -153,7 +153,7 @@ abstract class NodeBase implements Serializable {
     }
     return resultItems;
   }
-  protected abstract bool isSearchMatch(Envelope searchEnv);
+ /**protected */abstract bool isSearchMatch(Envelope searchEnv);
 
   void addAllItemsFromOverlapping(Envelope searchEnv, List resultItems)
   {
@@ -187,7 +187,7 @@ abstract class NodeBase implements Serializable {
     }
   }
 
-  private void visitItems(Envelope searchEnv, ItemVisitor visitor)
+ /**private */void visitItems(Envelope searchEnv, ItemVisitor visitor)
   {
     // would be nice to filter items based on search envelope, but can't until they contain an envelope
     synchronized (items) {

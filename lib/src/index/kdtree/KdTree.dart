@@ -92,9 +92,9 @@ class KdTree {
     return coord.toCoordinateArray();
   }
 
-  private KdNode root = null;
-  private long numberOfNodes;
-  private double tolerance;
+ /**private */KdNode root = null;
+ /**private */long numberOfNodes;
+ /**private */double tolerance;
 
   /**
    * Creates a new instance of a KdTree with a snapping tolerance of 0.0. (I.e.
@@ -192,18 +192,18 @@ class KdTree {
    * @return the best matching node
    * @return null if no match was found
    */
-  private KdNode findBestMatchNode(Coordinate p) {
+ /**private */KdNode findBestMatchNode(Coordinate p) {
     BestMatchVisitor visitor = new BestMatchVisitor(p, tolerance);
     query(visitor.queryEnvelope(), visitor);
     return visitor.getNode();
   }
 
-  static private class BestMatchVisitor implements KdNodeVisitor {
+  static/**private */class BestMatchVisitor implements KdNodeVisitor {
 
-    private double tolerance;
-    private KdNode matchNode = null;
-    private double matchDist = 0.0;
-    private Coordinate p;
+   /**private */double tolerance;
+   /**private */KdNode matchNode = null;
+   /**private */double matchDist = 0.0;
+   /**private */Coordinate p;
     
     BestMatchVisitor(Coordinate p, double tolerance) {
       this.p = p;
@@ -248,7 +248,7 @@ class KdTree {
    * @param data the data for the point
    * @return the created node
    */
-  private KdNode insertExact(Coordinate p, Object data) {
+ /**private */KdNode insertExact(Coordinate p, Object data) {
     KdNode currentNode = root;
     KdNode leafNode = root;
     bool isXLevel = true;
@@ -353,9 +353,9 @@ class KdTree {
     }
   }
 
-  private static class QueryStackFrame {
-    private KdNode node;
-    private bool isXLevel = false;
+ /**private */static class QueryStackFrame {
+   /**private */KdNode node;
+   /**private */bool isXLevel = false;
     
     QueryStackFrame(KdNode node, bool isXLevel) {
       this.node = node;
@@ -436,7 +436,7 @@ class KdTree {
     return depthNode(root);
   }
   
-  private int depthNode(KdNode currentNode) {
+ /**private */int depthNode(KdNode currentNode) {
     if (currentNode == null)
       return 0;
 
@@ -454,7 +454,7 @@ class KdTree {
     return sizeNode(root);
   }
   
-  private int sizeNode(KdNode currentNode) {
+ /**private */int sizeNode(KdNode currentNode) {
     if (currentNode == null)
       return 0;
 

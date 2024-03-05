@@ -23,6 +23,7 @@ delete:
 # new rule
 replace:
   - math.floor(next) -> next.floor()
+  - math.ceil(next) -> next.ceil()
   - Double.isInfinite(xInt) -> xInt.isInfinite
   - private -> /**private */ #startwith(" ")
   - protected -> /**protected */

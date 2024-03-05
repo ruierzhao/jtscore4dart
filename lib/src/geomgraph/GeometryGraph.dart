@@ -86,32 +86,32 @@ class GeometryGraph
         ? Location.BOUNDARY : Location.INTERIOR;
   }
 
-  private Geometry parentGeom;
+ /**private */Geometry parentGeom;
 
   /**
    * The lineEdgeMap is a map of the linestring components of the
    * parentGeometry to the edges which are derived from them.
    * This is used to efficiently perform findEdge queries
    */
-  private Map lineEdgeMap = new Map();
+ /**private */Map lineEdgeMap = new Map();
 
-  private BoundaryNodeRule boundaryNodeRule = null;
+ /**private */BoundaryNodeRule boundaryNodeRule = null;
 
   /**
    * If this flag is true, the Boundary Determination Rule will used when deciding
    * whether nodes are in the boundary or not
    */
-  private bool useBoundaryDeterminationRule = true;
-  private int argIndex;  // the index of this geometry as an argument to a spatial function (used for labelling)
-  private Collection boundaryNodes;
-  private bool hasTooFewPoints = false;
-  private Coordinate invalidPoint = null;
+ /**private */bool useBoundaryDeterminationRule = true;
+ /**private */int argIndex;  // the index of this geometry as an argument to a spatial function (used for labelling)
+ /**private */Collection boundaryNodes;
+ /**private */bool hasTooFewPoints = false;
+ /**private */Coordinate invalidPoint = null;
 
-  private PointOnGeometryLocator areaPtLocator = null;
+ /**private */PointOnGeometryLocator areaPtLocator = null;
   // for use if geometry is not Polygonal
-  private final PointLocator ptLocator = new PointLocator();
+ /**private */final PointLocator ptLocator = new PointLocator();
   
-  private EdgeSetIntersector createEdgeSetIntersector()
+ /**private */EdgeSetIntersector createEdgeSetIntersector()
   {
   // various options for computing intersections, from slowest to fastest
 
@@ -198,7 +198,7 @@ class GeometryGraph
       e.eiList.addSplitEdges(edgelist);
     }
   }
-  private void add(Geometry g)
+ /**private */void add(Geometry g)
   {
     if (g.isEmpty()) return;
 
@@ -218,7 +218,7 @@ class GeometryGraph
     else  throw new UnsupportedOperationException(g.getClass().getName());
   }
 
-  private void addCollection(GeometryCollection gc)
+ /**private */void addCollection(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       add(gc.getGeometryN(i));
@@ -228,7 +228,7 @@ class GeometryGraph
   /**
    * Add a Point to the graph.
    */
-  private void addPoint(Point p)
+ /**private */void addPoint(Point p)
   {
     Coordinate coord = p.getCoordinate();
     insertPoint(argIndex, coord, Location.INTERIOR);
@@ -242,7 +242,7 @@ class GeometryGraph
    * If the ring is in the opposite orientation,
    * the left and right locations must be interchanged.
    */
-  private void addPolygonRing(LinearRing lr, int cwLeft, int cwRight)
+ /**private */void addPolygonRing(LinearRing lr, int cwLeft, int cwRight)
   {
   	// don't bother adding empty holes
   	if (lr.isEmpty()) return;
@@ -270,7 +270,7 @@ class GeometryGraph
     insertPoint(argIndex, coord[0], Location.BOUNDARY);
   }
 
-  private void addPolygon(Polygon p)
+ /**private */void addPolygon(Polygon p)
   {
     addPolygonRing(
             p.getExteriorRing(),
@@ -290,7 +290,7 @@ class GeometryGraph
     }
   }
 
-  private void addLineString(LineString line)
+ /**private */void addLineString(LineString line)
   {
     List<Coordinate> coord = CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
 
@@ -385,7 +385,7 @@ Debug.print(e.getEdgeIntersectionList());
     return si;
   }
 
-  private void insertPoint(int argIndex, Coordinate coord, int onLocation)
+ /**private */void insertPoint(int argIndex, Coordinate coord, int onLocation)
   {
     Node n = nodes.addNode(coord);
     Label lbl = n.getLabel();
@@ -401,7 +401,7 @@ Debug.print(e.getEdgeIntersectionList());
    * This is used to add the boundary
    * points of dim-1 geometries (Curves/MultiCurves).
    */
-  private void insertBoundaryPoint(int argIndex, Coordinate coord)
+ /**private */void insertBoundaryPoint(int argIndex, Coordinate coord)
   {
     Node n = nodes.addNode(coord);
     // nodes always have labels
@@ -418,7 +418,7 @@ Debug.print(e.getEdgeIntersectionList());
     lbl.setLocation(argIndex, newLoc);
   }
 
-  private void addSelfIntersectionNodes(int argIndex)
+ /**private */void addSelfIntersectionNodes(int argIndex)
   {
     for (Iterator i = edges.iterator(); i.hasNext(); ) {
       Edge e = (Edge) i.next();
@@ -435,7 +435,7 @@ Debug.print(e.getEdgeIntersectionList());
    * is a boundary) then insert it as a potential boundary node.
    * Otherwise, just add it as a regular node.
    */
-  private void addSelfIntersectionNode(int argIndex, Coordinate coord, int loc)
+ /**private */void addSelfIntersectionNode(int argIndex, Coordinate coord, int loc)
   {
     // if this node is already a boundary node, don't change it
     if (isBoundaryNode(argIndex, coord)) return;

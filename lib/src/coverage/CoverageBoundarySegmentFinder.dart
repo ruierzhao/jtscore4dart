@@ -46,7 +46,7 @@ class CoverageBoundarySegmentFinder implements CoordinateSequenceFilter {
     return boundarySegs.contains(seg);
   }
   
-  private Set<LineSegment> boundarySegs;
+ /**private */Set<LineSegment> boundarySegs;
 
   CoverageBoundarySegmentFinder(Set<LineSegment> segs) {
     this.boundarySegs = segs;
@@ -71,7 +71,7 @@ class CoverageBoundarySegmentFinder implements CoordinateSequenceFilter {
     }
   }
 
-  private static LineSegment createSegment(CoordinateSequence seq, int i) {
+ /**private */static LineSegment createSegment(CoordinateSequence seq, int i) {
     LineSegment seg = new LineSegment(seq.getCoordinate(i), seq.getCoordinate(i + 1));
     seg.normalize();
     return seg;

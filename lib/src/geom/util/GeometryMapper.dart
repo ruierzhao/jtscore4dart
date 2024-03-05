@@ -91,7 +91,7 @@ class GeometryMapper
     return geom.getFactory().buildGeometry(mapped);
   }
   
-  private static void flatMap(Geometry geom, MapOp op, List<Geometry> mapped)
+ /**private */static void flatMap(Geometry geom, MapOp op, List<Geometry> mapped)
   {
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry g = geom.getGeometryN(i);
@@ -107,7 +107,7 @@ class GeometryMapper
     }
   }
   
-  private static void addFlat(Geometry geom, List<Geometry> geomList) {
+ /**private */static void addFlat(Geometry geom, List<Geometry> geomList) {
     if (geom.isEmpty()) return;
     if (geom is GeometryCollection) {
       for (int i = 0; i < geom.getNumGeometries(); i++) {

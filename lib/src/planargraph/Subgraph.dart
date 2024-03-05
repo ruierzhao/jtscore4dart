@@ -29,10 +29,10 @@
  */
 class Subgraph
 {
-  protected PlanarGraph parentGraph;
-  protected Set edges = new HashSet();
-  protected List dirEdges = new ArrayList();
-  protected NodeMap nodeMap = new NodeMap();
+ /**protected */PlanarGraph parentGraph;
+ /**protected */Set edges = new HashSet();
+ /**protected */List dirEdges = new ArrayList();
+ /**protected */NodeMap nodeMap = new NodeMap();
 
   /**
    * Creates a new subgraph of the given {@link PlanarGraph}

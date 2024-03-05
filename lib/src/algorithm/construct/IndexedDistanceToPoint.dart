@@ -26,15 +26,15 @@
 ///
 class IndexedDistanceToPoint {
   
-  private Geometry targetGeometry;
-  private IndexedFacetDistance facetDistance;
-  private IndexedPointInPolygonsLocator ptLocater;
+ /**private */Geometry targetGeometry;
+ /**private */IndexedFacetDistance facetDistance;
+ /**private */IndexedPointInPolygonsLocator ptLocater;
 
   IndexedDistanceToPoint(Geometry geom) {
     this.targetGeometry = geom;
   }
   
-  private void init() {
+ /**private */void init() {
     if (facetDistance != null)
       return;
     facetDistance = new IndexedFacetDistance(targetGeometry);
@@ -54,7 +54,7 @@ class IndexedDistanceToPoint {
     return facetDistance.distance(pt);
   }
   
-  private bool isInArea(Point pt) {
+ /**private */bool isInArea(Point pt) {
     return Location.EXTERIOR != ptLocater.locate(pt.getCoordinate());
   }
   

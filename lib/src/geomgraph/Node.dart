@@ -25,8 +25,8 @@
 class Node
   extends GraphComponent
 {
-  protected Coordinate coord; // only non-null if this node is precise
-  protected EdgeEndStar edges;
+ /**protected */Coordinate coord; // only non-null if this node is precise
+ /**protected */EdgeEndStar edges;
 
   Node(Coordinate coord, EdgeEndStar edges)
   {
@@ -63,7 +63,7 @@ class Node
   /**
    * Basic nodes do not compute IMs
    */
-  protected void computeIM(IntersectionMatrix im) {}
+ /**protected */void computeIM(IntersectionMatrix im) {}
   /**
    * Add the edge to the list of edges at this node.
    *

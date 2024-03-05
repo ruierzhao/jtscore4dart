@@ -57,7 +57,7 @@ class PointExtracter
     return getPoints(geom, new ArrayList());
   }
 
-  private List pts;
+ /**private */List pts;
   /// Constructs a PointExtracterFilter with a list in which to store Points found.
   PointExtracter(List pts)
   {

@@ -301,11 +301,11 @@ class ShapeWriter
 		return pointFactory.createPoint(viewPoint);
 	}
 
-  private Point2D transformPoint(Coordinate model) {
+ /**private */Point2D transformPoint(Coordinate model) {
 		return transformPoint(model, new Point2D.Double());
 	}
   
-  private Point2D transformPoint(Coordinate model, Point2D view) {
+ /**private */Point2D transformPoint(Coordinate model, Point2D view) {
 		pointTransformer.transform(model, view);
 		return view;
 	}

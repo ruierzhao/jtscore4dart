@@ -52,9 +52,9 @@ class PolygonTriangulator {
     return triangulator.getResult();
   }
   
-  private final GeometryFactory geomFact;
-  private final Geometry inputGeom;
-  private List<Tri> triList;
+ /**private */final GeometryFactory geomFact;
+ /**private */final Geometry inputGeom;
+ /**private */List<Tri> triList;
 
   /**
    * Constructs a new triangulator.
@@ -86,7 +86,7 @@ class PolygonTriangulator {
     return triList;
   }
   
-  private void compute() {
+ /**private */void compute() {
     @SuppressWarnings("unchecked")
     List<Polygon> polys = PolygonExtracter.getPolygons(inputGeom);
     triList = new ArrayList<Tri>();
@@ -102,7 +102,7 @@ class PolygonTriangulator {
    * 
    * @return GeometryCollection of triangular polygons
    */
-  private List<Tri> triangulatePolygon(Polygon poly) {
+ /**private */List<Tri> triangulatePolygon(Polygon poly) {
     List<Coordinate> polyShell = PolygonHoleJoiner.join(poly);
     
     List<Tri> triList = PolygonEarClipper.triangulate(polyShell);

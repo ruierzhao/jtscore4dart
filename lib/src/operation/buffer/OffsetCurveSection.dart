@@ -102,9 +102,9 @@ implements Comparable<OffsetCurveSection> {
     return new OffsetCurveSection(sectionPts, loc, locLast);
   }
   
-  private List<Coordinate> sectionPts;
-  private double location;
-  private double locLast;
+ /**private */List<Coordinate> sectionPts;
+ /**private */double location;
+ /**private */double locLast;
 
   OffsetCurveSection(List<Coordinate> pts, double loc, double locLast) {
     this.sectionPts = pts;
@@ -112,11 +112,11 @@ implements Comparable<OffsetCurveSection> {
     this.locLast = locLast;
   }
   
-  private List<Coordinate> getCoordinates() {
+ /**private */List<Coordinate> getCoordinates() {
     return sectionPts;
   }
 
-  private bool isEndInSameSegment(double nextLoc) {
+ /**private */bool isEndInSameSegment(double nextLoc) {
     int segIndex = (int) locLast;
     int nextIndex = (int) nextLoc;
     return segIndex == nextIndex;

@@ -23,8 +23,8 @@
  * @author Martin Davis
  */
 class ConstraintVertex extends Vertex {
-    private bool isOnConstraint;
-    private Object  constraint = null;
+   /**private */bool isOnConstraint;
+   /**private */Object  constraint = null;
 
     /**
      * Creates a new constraint vertex
@@ -79,7 +79,7 @@ class ConstraintVertex extends Vertex {
      * 
      * @param other the constraint vertex to merge
      */
-    protected void merge(ConstraintVertex other) {
+   /**protected */void merge(ConstraintVertex other) {
         if (other.isOnConstraint) {
             isOnConstraint = true;
             constraint = other.constraint;

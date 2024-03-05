@@ -38,8 +38,8 @@
  */
 class PolygonBuilder {
 
-  private GeometryFactory geometryFactory;
-  private List shellList        = new ArrayList();
+ /**private */GeometryFactory geometryFactory;
+ /**private */List shellList        = new ArrayList();
 
   PolygonBuilder(GeometryFactory geometryFactory)
   {
@@ -82,7 +82,7 @@ class PolygonBuilder {
   /**
    * for all DirectedEdges in result, form them into MaximalEdgeRings
    */
-  private List buildMaximalEdgeRings(Collection dirEdges)
+ /**private */List buildMaximalEdgeRings(Collection dirEdges)
   {
     List maxEdgeRings     = new ArrayList();
     for (Iterator it = dirEdges.iterator(); it.hasNext(); ) {
@@ -100,7 +100,7 @@ class PolygonBuilder {
     return maxEdgeRings;
   }
 
-  private List buildMinimalEdgeRings(List maxEdgeRings, List shellList, List freeHoleList)
+ /**private */List buildMinimalEdgeRings(List maxEdgeRings, List shellList, List freeHoleList)
   {
     List edgeRings = new ArrayList();
     for (Iterator it = maxEdgeRings.iterator(); it.hasNext(); ) {
@@ -135,7 +135,7 @@ class PolygonBuilder {
    * @return the shell EdgeRing, if there is one
    * or null, if all the rings are holes
    */
-  private EdgeRing findShell(List minEdgeRings)
+ /**private */EdgeRing findShell(List minEdgeRings)
   {
     int shellCount = 0;
     EdgeRing shell = null;
@@ -160,7 +160,7 @@ class PolygonBuilder {
    * PIP test
    * </ul>
    */
-  private void placePolygonHoles(EdgeRing shell, List minEdgeRings)
+ /**private */void placePolygonHoles(EdgeRing shell, List minEdgeRings)
   {
     for (Iterator it = minEdgeRings.iterator(); it.hasNext(); ) {
       MinimalEdgeRing er = (MinimalEdgeRing) it.next();
@@ -176,7 +176,7 @@ class PolygonBuilder {
    * Due to the way the DirectedEdges were linked,
    * a ring is a shell if it is oriented CW, a hole otherwise.
    */
-  private void sortShellsAndHoles(List edgeRings, List shellList, List freeHoleList)
+ /**private */void sortShellsAndHoles(List edgeRings, List shellList, List freeHoleList)
   {
     for (Iterator it = edgeRings.iterator(); it.hasNext(); ) {
       EdgeRing er = (EdgeRing) it.next();
@@ -202,7 +202,7 @@ class PolygonBuilder {
    *
    * @throws TopologyException if a hole cannot be assigned to a shell
    */
-  private void placeFreeHoles(List shellList, List freeHoleList)
+ /**private */void placeFreeHoles(List shellList, List freeHoleList)
   {
     for (Iterator it = freeHoleList.iterator(); it.hasNext(); ) {
       EdgeRing hole = (EdgeRing) it.next();
@@ -231,7 +231,7 @@ class PolygonBuilder {
    * @return containing EdgeRing, if there is one
    * or null if no containing EdgeRing is found
    */
-  private static EdgeRing findEdgeRingContaining(EdgeRing testEr, List shellList)
+ /**private */static EdgeRing findEdgeRingContaining(EdgeRing testEr, List shellList)
   {
     LinearRing testRing = testEr.getLinearRing();
     Envelope testEnv = testRing.getEnvelopeInternal();
@@ -265,7 +265,7 @@ class PolygonBuilder {
     }
     return minShell;
   }
-  private List computePolygons(List shellList)
+ /**private */List computePolygons(List shellList)
   {
     List resultPolyList   = new ArrayList();
     // add Polygons for all shells

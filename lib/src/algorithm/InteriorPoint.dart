@@ -71,15 +71,15 @@ class InteriorPoint {
     return interiorPt;
   }
 
-  private static int dimensionNonEmpty(Geometry geom) {
+ /**private */static int dimensionNonEmpty(Geometry geom) {
     DimensionNonEmptyFilter dimFilter = new DimensionNonEmptyFilter();
     geom.apply(dimFilter);
     return dimFilter.getDimension();
   }
   
-  private static class DimensionNonEmptyFilter implements GeometryFilter
+ /**private */static class DimensionNonEmptyFilter implements GeometryFilter
   {
-    private int dim = -1;
+   /**private */int dim = -1;
     
     int getDimension() {
       return dim;

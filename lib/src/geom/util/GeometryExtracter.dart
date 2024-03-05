@@ -49,7 +49,7 @@ class GeometryExtracter
   /**
    * @deprecated
    */
-  private static String toGeometryType(Class clz) {
+ /**private */static String toGeometryType(Class clz) {
 	if (clz == null)
 	  return null;
 	else if (clz.isAssignableFrom(Point.class))
@@ -109,8 +109,8 @@ class GeometryExtracter
     return extract(geom, geometryType, new ArrayList());
   }
 
-  private String geometryType;
-  private List comps;
+ /**private */String geometryType;
+ /**private */List comps;
   
   /**
    * Constructs a filter with a list in which to store the elements found.
@@ -137,7 +137,7 @@ class GeometryExtracter
     this.comps = comps;
   }
   
-  protected static bool isOfType(Geometry geom, String geometryType) {
+ /**protected */static bool isOfType(Geometry geom, String geometryType) {
     if (geom.getGeometryType() == geometryType) return true;
     if (geometryType == Geometry.TYPENAME_LINESTRING
       && geom.getGeometryType() == Geometry.TYPENAME_LINEARRING) return true;

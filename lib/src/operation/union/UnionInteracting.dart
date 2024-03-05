@@ -109,7 +109,7 @@ class UnionInteracting
 		return interactsWithAny;
 	}
 	
-  private Geometry extractElements(Geometry geom, 
+ /**private */Geometry extractElements(Geometry geom, 
   		bool[] interacts, bool isInteracting)
   {
   	List extractedGeoms = new ArrayList();

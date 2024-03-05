@@ -72,7 +72,7 @@ public class VWSimplifierTest
 
 class VWSimplifierResult
 {
-  private static WKTReader rdr = new WKTReader();
+ /**private */static WKTReader rdr = new WKTReader();
 
   public static Geometry[] getResult(String wkt, double tolerance)
     throws ParseException

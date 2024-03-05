@@ -40,8 +40,8 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
   * {@link org.locationtech.jts.index.quadtree.Quadtree}
   * or {@link STRtree}.
   */
-  private STRtree index = new STRtree();
-  private double overlapTolerance = 0.0;
+ /**private */STRtree index = new STRtree();
+ /**private */double overlapTolerance = 0.0;
 
   /**
    * Constructs a new intersector for a given set of {@link SegmentString}s.
@@ -68,7 +68,7 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
    */
   SpatialIndex getIndex() { return index; }
 
-  private void initBaseSegments(Collection<SegmentString> segStrings)
+ /**private */void initBaseSegments(Collection<SegmentString> segStrings)
   {
     for (SegmentString ss : segStrings) {
       if (ss.size() == 0)
@@ -79,7 +79,7 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
     index.build();
   }
   
-  private void addToIndex(SegmentString segStr)
+ /**private */void addToIndex(SegmentString segStr)
   {
     List segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
     for (Iterator i = segChains.iterator(); i.hasNext(); ) {
@@ -107,7 +107,7 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
 //    System.out.println("MCIndexBichromaticIntersector: # oct chain overlaps = " + nOctOverlaps);
   }
 
-  private void addToMonoChains(SegmentString segStr, List monoChains)
+ /**private */void addToMonoChains(SegmentString segStr, List monoChains)
   {
     if (segStr.size() == 0)
       return;
@@ -118,7 +118,7 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
     }
   }
 
-  private void intersectChains(List monoChains, SegmentIntersector segInt)
+ /**private */void intersectChains(List monoChains, SegmentIntersector segInt)
   {
     MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(segInt);
 
@@ -137,7 +137,7 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
   static class SegmentOverlapAction
       extends MonotoneChainOverlapAction
   {
-    private SegmentIntersector si = null;
+   /**private */SegmentIntersector si = null;
 
     SegmentOverlapAction(SegmentIntersector si)
     {

@@ -24,7 +24,7 @@ import junit.textui.TestRunner;
 public class DDTest 
   extends TestCase
 {
-  private static final double VALUE_DBL = 2.2;
+ /**private */static final double VALUE_DBL = 2.2;
   
   public static void main(String args[]) {
       TestRunner.run(DDTest.class);

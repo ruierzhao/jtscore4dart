@@ -33,10 +33,10 @@ class DouglasPeuckerLineSimplifier
     return simp.simplify();
   }
 
-  private List<Coordinate> pts;
-  private bool[] usePt;
-  private double distanceTolerance;
-  private bool isPreserveEndpoint = false;
+ /**private */List<Coordinate> pts;
+ /**private */bool[] usePt;
+ /**private */double distanceTolerance;
+ /**private */bool isPreserveEndpoint = false;
 
   DouglasPeuckerLineSimplifier(List<Coordinate> pts)
   {
@@ -53,7 +53,7 @@ class DouglasPeuckerLineSimplifier
     this.distanceTolerance = distanceTolerance;
   }
 
-  private void setPreserveEndpoint(bool isPreserveEndpoint) {
+ /**private */void setPreserveEndpoint(bool isPreserveEndpoint) {
     this.isPreserveEndpoint  = isPreserveEndpoint;
   }
   
@@ -78,7 +78,7 @@ class DouglasPeuckerLineSimplifier
    return coordList.toCoordinateArray();
   }
 
-  private void simplifyRingEndpoint(CoordinateList pts) {
+ /**private */void simplifyRingEndpoint(CoordinateList pts) {
     //-- avoid collapsing triangles
     if (pts.size() < 4)
       return;
@@ -93,9 +93,9 @@ class DouglasPeuckerLineSimplifier
     }
   }
 
-  private LineSegment seg = new LineSegment();
+ /**private */LineSegment seg = new LineSegment();
 
-  private void simplifySection(int i, int j)
+ /**private */void simplifySection(int i, int j)
   {
     if((i+1) == j) {
       return;

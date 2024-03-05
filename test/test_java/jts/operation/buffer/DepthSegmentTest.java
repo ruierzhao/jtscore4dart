@@ -64,7 +64,7 @@ public class DepthSegmentTest extends TestCase {
     checkCompare(ds0, ds0, 0);
   }
   
-  private void checkCompare(
+ /**private */void checkCompare(
      SubgraphDepthLocater.DepthSegment ds0,
      SubgraphDepthLocater.DepthSegment ds1, 
      int expectedComp) 
@@ -79,7 +79,7 @@ public class DepthSegmentTest extends TestCase {
     assertTrue( comp0 == -comp1);
   }
 
-  private SubgraphDepthLocater.DepthSegment depthSeg(double x0, double y0, double x1, double y1) {
+ /**private */SubgraphDepthLocater.DepthSegment depthSeg(double x0, double y0, double x1, double y1) {
     return new SubgraphDepthLocater.DepthSegment(new LineSegment(x0,y0,x1,y1), 0);
   }
 

@@ -58,8 +58,8 @@ class SegmentStringDissolver
     void merge(SegmentString mergeTarget, SegmentString ssToMerge, bool isSameOrientation);
   }
 
-  private SegmentStringMerger merger;
-  private Map ocaMap = new TreeMap();
+ /**private */SegmentStringMerger merger;
+ /**private */Map ocaMap = new TreeMap();
 
   // testing only
   //private List testAddedSS = new ArrayList();
@@ -91,7 +91,7 @@ class SegmentStringDissolver
     }
   }
 
-  private void add(OrientedCoordinateArray oca, SegmentString segString)
+ /**private */void add(OrientedCoordinateArray oca, SegmentString segString)
   {
     ocaMap.put(oca, segString);
     //testAddedSS.add(oca);
@@ -118,7 +118,7 @@ class SegmentStringDissolver
     }
   }
 
-  private SegmentString findMatching(OrientedCoordinateArray oca,
+ /**private */SegmentString findMatching(OrientedCoordinateArray oca,
                                     SegmentString segString)
   {
     SegmentString matchSS = (SegmentString) ocaMap.get(oca);
@@ -133,7 +133,7 @@ class SegmentStringDissolver
 
 /*
 
-  private bool checkAdded(OrientedCoordinateArray oca)
+ /**private */bool checkAdded(OrientedCoordinateArray oca)
   {
     for (Iterator i = testAddedSS.iterator(); i.hasNext(); ) {
       OrientedCoordinateArray addedOCA = (OrientedCoordinateArray) i.next();

@@ -88,18 +88,18 @@ class CubicBezierCurve {
     return curve.getResult();
   }
   
-  private double minSegmentLength = 0.0;
-  private int numVerticesPerSegment = 16;
+ /**private */double minSegmentLength = 0.0;
+ /**private */int numVerticesPerSegment = 16;
 
-  private Geometry inputGeom;
-  private double alpha =-1;
-  private double skew = 0;
-  private Geometry controlPoints = null;
-  private final GeometryFactory geomFactory;
+ /**private */Geometry inputGeom;
+ /**private */double alpha =-1;
+ /**private */double skew = 0;
+ /**private */Geometry controlPoints = null;
+ /**private */final GeometryFactory geomFactory;
   
-  private List<Coordinate> bezierCurvePts;
-  private double[][] interpolationParam;
-  private int controlPointIndex = 0;
+ /**private */List<Coordinate> bezierCurvePts;
+ /**private */double[][] interpolationParam;
+ /**private */int controlPointIndex = 0;
 
   /**
    * Creates a new instance producing a Bezier curve defined by a geometry
@@ -175,21 +175,21 @@ class CubicBezierCurve {
     });
   }
   
-  private LineString bezierLine(LineString ls) {
+ /**private */LineString bezierLine(LineString ls) {
     List<Coordinate> coords = ls.getCoordinates();
     CoordinateList curvePts = bezierCurve(coords, false);
     curvePts.add(coords[coords.length - 1].copy(), false);
     return geomFactory.createLineString(curvePts.toCoordinateArray());
   }
 
-  private LinearRing bezierRing(LinearRing ring) {
+ /**private */LinearRing bezierRing(LinearRing ring) {
     List<Coordinate> coords = ring.getCoordinates();
     CoordinateList curvePts = bezierCurve(coords, true);
     curvePts.closeRing();
     return geomFactory.createLinearRing(curvePts.toCoordinateArray());
   }
   
-  private Polygon bezierPolygon(Polygon poly) {
+ /**private */Polygon bezierPolygon(Polygon poly) {
     LinearRing shell = bezierRing(poly.getExteriorRing());
     List<LinearRing> holes = null;
     if (poly.getNumInteriorRing() > 0) {
@@ -201,7 +201,7 @@ class CubicBezierCurve {
     return geomFactory.createPolygon(shell, holes);
   }
   
-  private CoordinateList bezierCurve(List<Coordinate> coords, bool isRing) {
+ /**private */CoordinateList bezierCurve(List<Coordinate> coords, bool isRing) {
     List<Coordinate> control = controlPoints(coords, isRing);
     CoordinateList curvePts = new CoordinateList();
     for (int i = 0; i < coords.length - 1; i++) {
@@ -211,7 +211,7 @@ class CubicBezierCurve {
     return curvePts;
   }
   
-  private List<Coordinate> controlPoints(List<Coordinate> coords, bool isRing) {
+ /**private */List<Coordinate> controlPoints(List<Coordinate> coords, bool isRing) {
     if (controlPoints != null) {
       if (controlPointIndex >= controlPoints.getNumGeometries()) {
         throw new ArgumentError("Too few control point elements");
@@ -232,7 +232,7 @@ class CubicBezierCurve {
     return controlPoints(coords, isRing, alpha, skew);
   }
 
-  private void addCurve(Coordinate p0, Coordinate p1,
+ /**private */void addCurve(Coordinate p0, Coordinate p1,
       Coordinate ctrl0, Coordinate crtl1,
       CoordinateList curvePts) {
     double len = p0.distance(p1);
@@ -250,7 +250,7 @@ class CubicBezierCurve {
   }
   
   //-- chosen to make curve at right-angle corners roughly circular
-  private static final double CIRCLE_LEN_FACTOR = 3.0 / 8.0;
+ /**private */static final double CIRCLE_LEN_FACTOR = 3.0 / 8.0;
   
   /**
    * Creates control points for each vertex of curve.
@@ -271,7 +271,7 @@ class CubicBezierCurve {
    * @param alpha determines the curviness
    * @return the control point array
    */
-  private List<Coordinate> controlPoints(List<Coordinate> coords, bool isRing, double alpha, double skew) {
+ /**private */List<Coordinate> controlPoints(List<Coordinate> coords, bool isRing, double alpha, double skew) {
     int N = coords.length;
     int start = 1; 
     int end = N - 1;
@@ -344,7 +344,7 @@ class CubicBezierCurve {
    * @param coords
    * @param ctrl
    */
-  private void setLineEndControlPoints(List<Coordinate> coords, List<Coordinate> ctrl) {
+ /**private */void setLineEndControlPoints(List<Coordinate> coords, List<Coordinate> ctrl) {
     int N = ctrl.length;
     ctrl[0] = mirrorControlPoint(ctrl[1], coords[1], coords[0]);
     ctrl[N - 1] = mirrorControlPoint(ctrl[N - 2], 
@@ -361,13 +361,13 @@ class CubicBezierCurve {
    * @param p0
    * @return
    */
-  private static Coordinate aimedControlPoint(Coordinate c, Coordinate p1, Coordinate p0) {
+ /**private */static Coordinate aimedControlPoint(Coordinate c, Coordinate p1, Coordinate p0) {
     double len = p1.distance(c);
     double ang = Angle.angle(p0, p1);
     return Angle.project(p0, ang, len);
   }
 
-  private static Coordinate mirrorControlPoint(Coordinate c, Coordinate p0, Coordinate p1) {
+ /**private */static Coordinate mirrorControlPoint(Coordinate c, Coordinate p0, Coordinate p1) {
     double vlinex = p1.x - p0.x;
     double vliney = p1.y - p0.y;
     // rotate line vector by 90
@@ -380,7 +380,7 @@ class CubicBezierCurve {
     return reflectPointInLine(c, new Coordinate(midx, midy), new Coordinate(midx + vrotx, midy + vroty));
   }
 
-  private static Coordinate reflectPointInLine(Coordinate p, Coordinate p0, Coordinate p1) {
+ /**private */static Coordinate reflectPointInLine(Coordinate p, Coordinate p0, Coordinate p1) {
     double vx = p1.x - p0.x;
     double vy = p1.y - p0.y;
     double x = p0.x - p.x;
@@ -401,7 +401,7 @@ class CubicBezierCurve {
    * @param param interpolation parameters
    * @param curve array to hold generated points
    */
-  private void cubicBezier(final Coordinate p0, 
+ /**private */void cubicBezier(final Coordinate p0, 
       final Coordinate p1, final Coordinate ctrl1, 
       final Coordinate ctrl2, double[][] param, 
       List<Coordinate> curve) {
@@ -429,7 +429,7 @@ class CubicBezierCurve {
    * @param n number of vertices
    * @return array of double[4] holding the parameter values
    */
-  private static double[][] computeIterpolationParameters(int n) {
+ /**private */static double[][] computeIterpolationParameters(int n) {
     double[][] param = new double[n][4];
     for (int i = 0; i < n; i++) {
       double t = (double) i / (n - 1);

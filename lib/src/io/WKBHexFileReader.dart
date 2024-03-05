@@ -36,7 +36,7 @@
 class WKBHexFileReader 
 {
 	private File file = null;
-  private Reader reader;
+ /**private */Reader reader;
 	private WKBReader wkbReader;
 	private int count = 0;
 	private int limit = -1;
@@ -149,7 +149,7 @@ class WKBHexFileReader
 		return true;
 	}
 	
-  private static final int MAX_LOOKAHEAD = 1000;
+ /**private */static final int MAX_LOOKAHEAD = 1000;
   
   /**
 	 * Tests if reader is at EOF.

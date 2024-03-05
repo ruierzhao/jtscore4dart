@@ -22,7 +22,7 @@
 ///
 abstract class CGAlgorithms3D 
 {
-	// private CGAlgorithms3D() {}
+	///**private */CGAlgorithms3D() {}
 
 	static double distance(Coordinate p0, Coordinate p1)
 	{

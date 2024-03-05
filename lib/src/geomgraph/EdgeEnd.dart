@@ -32,15 +32,15 @@
 class EdgeEnd
   implements Comparable
 {
-  protected Edge edge;  // the parent edge of this edge end
-  protected Label label;
+ /**protected */Edge edge;  // the parent edge of this edge end
+ /**protected */Label label;
 
-  private Node node;          // the node this edge end originates at
-  private Coordinate p0, p1;  // points of initial line segment
-  private double dx, dy;      // the direction vector for this edge from its starting point
-  private int quadrant;
+ /**private */Node node;          // the node this edge end originates at
+ /**private */Coordinate p0, p1;  // points of initial line segment
+ /**private */double dx, dy;      // the direction vector for this edge from its starting point
+ /**private */int quadrant;
 
-  protected EdgeEnd(Edge edge)
+ /**protected */EdgeEnd(Edge edge)
   {
     this.edge = edge;
   }
@@ -53,7 +53,7 @@ class EdgeEnd
     this.label = label;
   }
 
-  protected void init(Coordinate p0, Coordinate p1)
+ /**protected */void init(Coordinate p0, Coordinate p1)
   {
     this.p0 = p0;
     this.p1 = p1;

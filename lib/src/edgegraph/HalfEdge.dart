@@ -65,9 +65,9 @@ class HalfEdge {
     return e0;
   }
   
-  private Coordinate orig;
-  private HalfEdge sym;
-  private HalfEdge next;
+ /**private */Coordinate orig;
+ /**private */HalfEdge sym;
+ /**private */HalfEdge next;
 
   /**
    * Creates a half-edge originating from a given coordinate.
@@ -130,7 +130,7 @@ class HalfEdge {
    * 
    * @return the direction point for the edge
    */
-  protected Coordinate directionPt() {
+ /**protected */Coordinate directionPt() {
     // default is to assume edges have only 2 vertices
     // subclasses may override to provide an internal direction point
     return dest();
@@ -151,7 +151,7 @@ class HalfEdge {
    * 
    * @param e the sym edge to set
    */
-  private void setSym(HalfEdge e) {
+ /**private */void setSym(HalfEdge e) {
     sym = e;
   }
 
@@ -160,7 +160,7 @@ class HalfEdge {
    * 
    * @param e the next edge
    */
-  private void setNext(HalfEdge e)
+ /**private */void setNext(HalfEdge e)
   {
     next = e;
   }
@@ -274,7 +274,7 @@ class HalfEdge {
    * @param eAdd the edge being added
    * @return the edge to insert after
    */
-  private HalfEdge insertionEdge(HalfEdge eAdd) {
+ /**private */HalfEdge insertionEdge(HalfEdge eAdd) {
     HalfEdge ePrev = this;
     do {
       HalfEdge eNext = ePrev.oNext();
@@ -313,7 +313,7 @@ class HalfEdge {
    * 
    * @param e the edge to insert (with same origin)
    */
-  private void insertAfter(HalfEdge e) {
+ /**private */void insertAfter(HalfEdge e) {
     Assert.equals(orig, e.orig());
     HalfEdge save = oNext();
     sym.setNext(e);
@@ -352,7 +352,7 @@ class HalfEdge {
    * 
    * @return the lowest edge around the origin
    */
-  private HalfEdge findLowest() {
+ /**private */HalfEdge findLowest() {
     HalfEdge lowest = this;
     HalfEdge e = this.oNext();
     do {

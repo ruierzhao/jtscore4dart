@@ -63,9 +63,9 @@ class FontGlyphReader
   static final String FONT_MONOSPACED = "Monospaced";
 	
   // a flatness factor empirically determined to provide good results
-  private static final double FLATNESS_FACTOR = 400;
+ /**private */static final double FLATNESS_FACTOR = 400;
 
-  private FontGlyphReader() {}
+ /**private */FontGlyphReader() {}
 
   /**
    * Converts text rendered in the given font and pointsize to a {@link Geometry}

@@ -47,7 +47,7 @@ public class LocationIndexedLineTest
         "MULTILINESTRING ((10 10, 10 10), (20 20, 25 25))");
   }
 
-  private void runExtractLine(String wkt,
+ /**private */void runExtractLine(String wkt,
                                LinearLocation start, LinearLocation end, String expected)
   {
     Geometry geom = read(wkt);
@@ -57,7 +57,7 @@ public class LocationIndexedLineTest
     checkExpected(result, expected);
   }
 
-  protected Geometry indicesOfThenExtract(Geometry input, Geometry subLine)
+ /**protected */Geometry indicesOfThenExtract(Geometry input, Geometry subLine)
   {
     LocationIndexedLine indexedLine = new LocationIndexedLine(input);
     LinearLocation[] loc = indexedLine.indicesOf(subLine);
@@ -65,7 +65,7 @@ public class LocationIndexedLineTest
     return result;
   }
 
-  protected boolean indexOfAfterCheck(Geometry linearGeom, Coordinate testPt)
+ /**protected */boolean indexOfAfterCheck(Geometry linearGeom, Coordinate testPt)
   {
     LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
     
@@ -83,7 +83,7 @@ public class LocationIndexedLineTest
     return true;
   }
 
-  protected boolean indexOfAfterCheck(Geometry linearGeom, Coordinate testPt, Coordinate afterPt)
+ /**protected */boolean indexOfAfterCheck(Geometry linearGeom, Coordinate testPt, Coordinate afterPt)
   {
     LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
     
@@ -95,7 +95,7 @@ public class LocationIndexedLineTest
     return true;
   }
 
-  protected Coordinate extractOffsetAt(Geometry linearGeom, Coordinate testPt, double offsetDistance)
+ /**protected */Coordinate extractOffsetAt(Geometry linearGeom, Coordinate testPt, double offsetDistance)
   {
   	LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
   	LinearLocation index = indexedLine.indexOf(testPt);

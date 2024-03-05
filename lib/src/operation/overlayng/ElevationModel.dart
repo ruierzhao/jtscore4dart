@@ -45,7 +45,7 @@
  */
 class ElevationModel {
   
-  private static final int DEFAULT_CELL_NUM = 3;
+ /**private */static final int DEFAULT_CELL_NUM = 3;
 
   /**
    * Creates an elevation model from two geometries (which may be null).
@@ -65,15 +65,15 @@ class ElevationModel {
     return model;
   }
   
-  private Envelope extent;
-  private int numCellX;
-  private int numCellY;
-  private double cellSizeX;
-  private double cellSizeY;
-  private ElevationCell[][] cells;
-  private bool isInitialized = false;
-  private bool hasZValue = false;
-  private double averageZ = double.nan;
+ /**private */Envelope extent;
+ /**private */int numCellX;
+ /**private */int numCellY;
+ /**private */double cellSizeX;
+ /**private */double cellSizeY;
+ /**private */ElevationCell[][] cells;
+ /**private */bool isInitialized = false;
+ /**private */bool hasZValue = false;
+ /**private */double averageZ = double.nan;
 
   /**
    * Creates a new elevation model covering an extent by a grid of given dimensions.
@@ -106,7 +106,7 @@ class ElevationModel {
   void add(Geometry geom) {
     geom.apply(new CoordinateSequenceFilter() {
 
-      private bool hasZ = true;
+     /**private */bool hasZ = true;
 
       @Override
       void filter(CoordinateSequence seq, int i) {
@@ -134,7 +134,7 @@ class ElevationModel {
     });
   }
   
-  protected void add(double x, double y, double z) {
+ /**protected */void add(double x, double y, double z) {
     if ((z).isNaN)
       return;
     hasZValue = true;
@@ -142,7 +142,7 @@ class ElevationModel {
     cell.add(z);
   }
   
-  private void init() {
+ /**private */void init() {
     isInitialized = true;
     int numCells = 0;
     double sumZ = 0.0;
@@ -201,7 +201,7 @@ class ElevationModel {
     
     geom.apply(new CoordinateSequenceFilter() {
 
-      private bool isDone = false;
+     /**private */bool isDone = false;
 
       @Override
       void filter(CoordinateSequence seq, int i) {
@@ -232,7 +232,7 @@ class ElevationModel {
     });
   }
   
-  private ElevationCell getCell(double x, double y, bool isCreateIfMissing) {
+ /**private */ElevationCell getCell(double x, double y, bool isCreateIfMissing) {
     int ix = 0;
     if (numCellX > 1) {
       ix = (int) ((x - extent.getMinX()) / cellSizeX);
@@ -253,9 +253,9 @@ class ElevationModel {
 
   static class ElevationCell {
 
-    private int numZ = 0;
-    private double sumZ = 0.0;
-    private double avgZ;
+   /**private */int numZ = 0;
+   /**private */double sumZ = 0.0;
+   /**private */double avgZ;
 
     void add(double z) {
       numZ++;

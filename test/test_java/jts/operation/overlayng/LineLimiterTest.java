@@ -83,13 +83,13 @@ public class LineLimiterTest extends GeometryTestCase {
         );
   }
 
-  private void checkLimit(String wkt, String wktBox, String wktExpected) {
+ /**private */void checkLimit(String wkt, String wktBox, String wktExpected) {
     Geometry box = read(wktBox);
     Envelope clipEnv = box.getEnvelopeInternal();
     checkLimit(wkt, clipEnv, wktExpected);
   }
 
-  private void checkLimit(String wkt, Envelope clipEnv, String wktExpected) {
+ /**private */void checkLimit(String wkt, Envelope clipEnv, String wktExpected) {
     Geometry line = read(wkt);
     Geometry expected = read(wktExpected);
     
@@ -100,7 +100,7 @@ public class LineLimiterTest extends GeometryTestCase {
     checkEqual(expected, result);
   }
   
-  private static Geometry toLines(List<Coordinate[]> sections, GeometryFactory factory) {
+ /**private */static Geometry toLines(List<Coordinate[]> sections, GeometryFactory factory) {
     LineString[] lines = new LineString[sections.size()];
     int i = 0;
     for (Coordinate[] pts : sections) {

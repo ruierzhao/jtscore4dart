@@ -46,21 +46,21 @@ class OverlayResultValidator
     return validator.isValid(overlayOp);
   }
 
-  private static double computeBoundaryDistanceTolerance(Geometry g0, Geometry g1)
+ /**private */static double computeBoundaryDistanceTolerance(Geometry g0, Geometry g1)
   {
   	return math.min(GeometrySnapper.computeSizeBasedSnapTolerance(g0),
   			GeometrySnapper.computeSizeBasedSnapTolerance(g1));
   }
   
-  private static final double TOLERANCE = 0.000001;
+ /**private */static final double TOLERANCE = 0.000001;
 
-  private List<Geometry> geom;
-  private FuzzyPointLocator[] locFinder;
-  private int[] location = new int[3] ;
-  private Coordinate invalidLocation = null;
-  private double boundaryDistanceTolerance = TOLERANCE;
+ /**private */List<Geometry> geom;
+ /**private */FuzzyPointLocator[] locFinder;
+ /**private */int[] location = new int[3] ;
+ /**private */Coordinate invalidLocation = null;
+ /**private */double boundaryDistanceTolerance = TOLERANCE;
 
-  private List testCoords = new ArrayList();
+ /**private */List testCoords = new ArrayList();
 
   OverlayResultValidator(Geometry a, Geometry b, Geometry result) 
   {
@@ -98,13 +98,13 @@ class OverlayResultValidator
 
   Coordinate getInvalidLocation() { return invalidLocation; }
 
-  private void addTestPts(Geometry g)
+ /**private */void addTestPts(Geometry g)
   {
     OffsetPointGenerator ptGen = new OffsetPointGenerator(g);
     testCoords.addAll(ptGen.getPoints(5 * boundaryDistanceTolerance));
   }
 
-  private bool checkValid(int overlayOp)
+ /**private */bool checkValid(int overlayOp)
   {
     for (int i = 0; i < testCoords.size(); i++) {
       Coordinate pt = (Coordinate) testCoords.get(i);
@@ -116,7 +116,7 @@ class OverlayResultValidator
     return true;
   }
 
-  private bool checkValid(int overlayOp, Coordinate pt)
+ /**private */bool checkValid(int overlayOp, Coordinate pt)
   {
     location[0] = locFinder[0].getLocation(pt);
     location[1] = locFinder[1].getLocation(pt);
@@ -131,7 +131,7 @@ class OverlayResultValidator
     return isValidResult(overlayOp, location);
   }
 
-  private static bool hasLocation(int[] location, int loc)
+ /**private */static bool hasLocation(int[] location, int loc)
   {
     for (int i = 0; i < 3; i ++) {
       if (location[i] == loc)
@@ -140,7 +140,7 @@ class OverlayResultValidator
     return false;
   }
 
-  private bool isValidResult(int overlayOp, int[] location)
+ /**private */bool isValidResult(int overlayOp, int[] location)
   {
     bool expectedInterior = OverlayOp.isResultOfOp(location[0], location[1], overlayOp);
 
@@ -153,7 +153,7 @@ class OverlayResultValidator
     return isValid;
  }
 
-  private void reportResult(int overlayOp, int[] location, bool expectedInterior)
+ /**private */void reportResult(int overlayOp, int[] location, bool expectedInterior)
   {
   	Debug.println(
   			"Overlay result invalid - A:" + Location.toLocationSymbol(location[0])

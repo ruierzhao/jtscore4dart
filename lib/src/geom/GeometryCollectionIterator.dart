@@ -27,19 +27,19 @@
 class GeometryCollectionIterator implements Iterator {
 
   ///  The <code>Geometry</code> being iterated over.
-  private Geometry parent;
+ /**private */Geometry parent;
   ///  Indicates whether or not the first element 
   ///  (the root <code>GeometryCollection</code>) has been returned.
-  private bool atStart;
+ /**private */bool atStart;
   ///  The number of <code>Geometry</code>s in the the <code>GeometryCollection</code>.
-  private int max;
+ /**private */int max;
   ///  The index of the <code>Geometry</code> that will be returned when <code>next</code>
   ///  is called.
-  private int index;
+ /**private */int index;
   ///  The iterator over a nested <code>Geometry</code>, or <code>null</code>
   ///  if this <code>GeometryCollectionIterator</code> is not currently iterating
   ///  over a nested <code>GeometryCollection</code>.
-  private GeometryCollectionIterator subcollectionIterator;
+ /**private */GeometryCollectionIterator subcollectionIterator;
 
   ///  Constructs an iterator over the given <code>Geometry</code>.
   ///
@@ -102,7 +102,7 @@ class GeometryCollectionIterator implements Iterator {
     return obj;
   }
 
-  private static bool isAtomic(Geometry geom)
+ /**private */static bool isAtomic(Geometry geom)
   {
     return ! (geom is GeometryCollection);
   }

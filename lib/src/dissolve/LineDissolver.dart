@@ -68,10 +68,10 @@ class LineDissolver
     return d.getResult();
   }
   
-  private Geometry result;
-  private GeometryFactory factory;
-  private final DissolveEdgeGraph graph;
-  private final List lines = new ArrayList();
+ /**private */Geometry result;
+ /**private */GeometryFactory factory;
+ /**private */final DissolveEdgeGraph graph;
+ /**private */final List lines = new ArrayList();
 
   LineDissolver()
   {
@@ -110,7 +110,7 @@ class LineDissolver
     }
   }
   
-  private void add(LineString lineString) {
+ /**private */void add(LineString lineString) {
     if (factory == null) {
       this.factory = lineString.getFactory();
     }
@@ -143,7 +143,7 @@ class LineDissolver
     return result;
   }
 
-  private void computeResult() {
+ /**private */void computeResult() {
     Collection edges = graph.getVertexEdges();
     for (Iterator i = edges.iterator(); i.hasNext(); ) {
       HalfEdge e = (HalfEdge) i.next();
@@ -153,9 +153,9 @@ class LineDissolver
     result = factory.buildGeometry(lines);
   }
 
-  private final Stack nodeEdgeStack = new Stack();
+ /**private */final Stack nodeEdgeStack = new Stack();
   
-  private void process(HalfEdge e) {
+ /**private */void process(HalfEdge e) {
     HalfEdge eNode = e.prevNode();
     // if edge is in a ring, just process this edge
     if (eNode == null)
@@ -170,7 +170,7 @@ class LineDissolver
    * (which must originate at a node)
    * extracts the line it initiates.
    */
-  private void buildLines() {
+ /**private */void buildLines() {
     while (! nodeEdgeStack.empty()) {
       HalfEdge e = (HalfEdge) nodeEdgeStack.pop();
       if (MarkHalfEdge.isMarked(e))
@@ -179,7 +179,7 @@ class LineDissolver
     }
   }
   
-  private DissolveHalfEdge ringStartEdge;
+ /**private */DissolveHalfEdge ringStartEdge;
   
   /**
    * Updates the tracked ringStartEdge
@@ -196,7 +196,7 @@ class LineDissolver
    * 
    * @param e
    */
-  private void updateRingStartEdge(DissolveHalfEdge e)
+ /**private */void updateRingStartEdge(DissolveHalfEdge e)
   {
     if (! e.isStart()) {
       e = (DissolveHalfEdge) e.sym();
@@ -225,7 +225,7 @@ class LineDissolver
    * 
    * @param eStart
    */
-  private void buildLine(HalfEdge eStart) {
+ /**private */void buildLine(HalfEdge eStart) {
     CoordinateList line = new CoordinateList();
     DissolveHalfEdge e = (DissolveHalfEdge) eStart;
     ringStartEdge = null;
@@ -255,7 +255,7 @@ class LineDissolver
     addLine(line);
   }
 
-  private void buildRing(HalfEdge eStartRing) {
+ /**private */void buildRing(HalfEdge eStartRing) {
     CoordinateList line = new CoordinateList();
     HalfEdge e = eStartRing;
     
@@ -278,7 +278,7 @@ class LineDissolver
     addLine(line);
   }
 
-  private void addLine(CoordinateList line) {
+ /**private */void addLine(CoordinateList line) {
     lines.add(factory.createLineString(line.toCoordinateArray()));
   }
 
@@ -287,7 +287,7 @@ class LineDissolver
    * 
    * @param node
    */
-  private void stackEdges(HalfEdge node) {
+ /**private */void stackEdges(HalfEdge node) {
     HalfEdge e = node;
     do {
       if (! MarkHalfEdge.isMarked(e))

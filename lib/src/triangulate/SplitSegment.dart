@@ -31,17 +31,17 @@ class SplitSegment {
      * @param segmentLengthFraction the fraction of the segment length along the line
      * @return the point at that distance
      */
-    private static Coordinate pointAlongReverse(LineSegment seg, double segmentLengthFraction) {
+   /**private */static Coordinate pointAlongReverse(LineSegment seg, double segmentLengthFraction) {
         Coordinate coord = new Coordinate();
         coord.x = seg.p1.x - segmentLengthFraction * (seg.p1.x - seg.p0.x);
         coord.y = seg.p1.y - segmentLengthFraction * (seg.p1.y - seg.p0.y);
         return coord;
     }
 
-    private LineSegment seg;
-    private double      segLen;
-    private Coordinate  splitPt;
-    private double      minimumLen = 0.0;
+   /**private */LineSegment seg;
+   /**private */double      segLen;
+   /**private */Coordinate  splitPt;
+   /**private */double      minimumLen = 0.0;
 
     SplitSegment(LineSegment seg) {
         this.seg = seg;
@@ -80,7 +80,7 @@ class SplitSegment {
         splitPt = pt;
     }
 
-    private double getConstrainedLength(double len) {
+   /**private */double getConstrainedLength(double len) {
         if (len < minimumLen)
             return minimumLen;
         return len;

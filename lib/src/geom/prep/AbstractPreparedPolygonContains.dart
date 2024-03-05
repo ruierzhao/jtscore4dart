@@ -54,8 +54,8 @@ abstract class AbstractPreparedPolygonContains
 	
 	// information about geometric situation
 	private bool hasSegmentIntersection = false;
-  private bool hasProperIntersection = false;
-  private bool hasNonProperIntersection = false;
+ /**private */bool hasProperIntersection = false;
+ /**private */bool hasNonProperIntersection = false;
 	
   /**
    * Creates an instance of this operation.
@@ -186,7 +186,7 @@ abstract class AbstractPreparedPolygonContains
     return true;
   }
 
-  private bool isProperIntersectionImpliesNotContainedSituation(Geometry testGeom)
+ /**private */bool isProperIntersectionImpliesNotContainedSituation(Geometry testGeom)
 	{
     /**
      * If the test geometry is polygonal we have the A/A situation.

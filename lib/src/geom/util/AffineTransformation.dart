@@ -240,12 +240,12 @@ class AffineTransformation
   
   // affine matrix entries
   // (bottom row is always [ 0 0 1 ])
-  private double m00;
-  private double m01;
-  private double m02;
-  private double m10;
-  private double m11;
-  private double m12;
+ /**private */double m00;
+ /**private */double m01;
+ /**private */double m02;
+ /**private */double m10;
+ /**private */double m11;
+ /**private */double m12;
   
   /**
    * Constructs a new identity transformation

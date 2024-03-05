@@ -34,8 +34,8 @@
  */
 class PolygonNoder {
 
-  private bool[] isHoleTouching;
-  private List<NodedSegmentString> nodedRings;
+ /**private */bool[] isHoleTouching;
+ /**private */List<NodedSegmentString> nodedRings;
 
   PolygonNoder(List<Coordinate> shellRing, List<Coordinate>[] holeRings) {
     nodedRings = createNodedSegmentStrings(shellRing, holeRings);
@@ -78,7 +78,7 @@ class PolygonNoder {
     return segStr;
   }
   
-  private static NodedSegmentString createNodedSegString(List<Coordinate> ringPts, int i) {
+ /**private */static NodedSegmentString createNodedSegString(List<Coordinate> ringPts, int i) {
     return new NodedSegmentString(ringPts, i);
   }
   
@@ -90,10 +90,10 @@ class PolygonNoder {
    * @author mdavis
    *
    */
-  private static class NodeAdder implements SegmentIntersector {
+ /**private */static class NodeAdder implements SegmentIntersector {
 
-    private LineIntersector li = new RobustLineIntersector();
-    private bool[] isHoleTouching;
+   /**private */LineIntersector li = new RobustLineIntersector();
+   /**private */bool[] isHoleTouching;
 
     NodeAdder(bool[] isHoleTouching) {
       this.isHoleTouching = isHoleTouching;
@@ -128,7 +128,7 @@ class PolygonNoder {
       }     
     }
     
-    private void addTouch(SegmentString ss) {
+   /**private */void addTouch(SegmentString ss) {
       int holeIndex = (int) ss.getData();
       if (holeIndex >= 0) {
         isHoleTouching[holeIndex] = true;

@@ -37,16 +37,16 @@
  */
 class IntersectionPointBuilder {
 
-  private GeometryFactory geometryFactory;
-  private OverlayGraph graph;
-  private List<Point> points = new ArrayList<Point>();
+ /**private */GeometryFactory geometryFactory;
+ /**private */OverlayGraph graph;
+ /**private */List<Point> points = new ArrayList<Point>();
   
   /**
    * Controls whether lines created by area topology collapses
    * to participate in the result computation.
    * True provides the original JTS semantics.
    */
-  private bool isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
+ /**private */bool isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
   
   IntersectionPointBuilder(OverlayGraph graph,
       GeometryFactory geomFact) {
@@ -63,7 +63,7 @@ class IntersectionPointBuilder {
     return points;
   }
 
-  private void addResultPoints() {
+ /**private */void addResultPoints() {
     for (OverlayEdge nodeEdge : graph.getNodeEdges()) {
       if (isResultPoint(nodeEdge)) {
         Point pt = geometryFactory.createPoint(nodeEdge.getCoordinate().copy());
@@ -80,7 +80,7 @@ class IntersectionPointBuilder {
    * @param nodeEdge an edge originating at the node
    * @return true if this node is a result point
    */
-  private bool isResultPoint(OverlayEdge nodeEdge) {
+ /**private */bool isResultPoint(OverlayEdge nodeEdge) {
     bool isEdgeOfA = false;
     bool isEdgeOfB = false;
     
@@ -96,7 +96,7 @@ class IntersectionPointBuilder {
     return isNodeInBoth;
   }
 
-  private bool isEdgeOf(OverlayLabel label, int i) {
+ /**private */bool isEdgeOf(OverlayLabel label, int i) {
     if (! isAllowCollapseLines && label.isBoundaryCollapse())
       return false;
     return label.isBoundary(i) || label.isLine(i);

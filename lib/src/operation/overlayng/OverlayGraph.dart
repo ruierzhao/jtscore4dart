@@ -32,8 +32,8 @@
  */
 class OverlayGraph {
   
-  private List<OverlayEdge> edges = new ArrayList<OverlayEdge>();
-  private Map<Coordinate, OverlayEdge> nodeMap = new Map<Coordinate, OverlayEdge>();
+ /**private */List<OverlayEdge> edges = new ArrayList<OverlayEdge>();
+ /**private */Map<Coordinate, OverlayEdge> nodeMap = new Map<Coordinate, OverlayEdge>();
   
   /**
    * Creates an empty graph.
@@ -115,7 +115,7 @@ class OverlayGraph {
    * 
    * @param e the half-edge to insert
    */
-  private void insert(OverlayEdge e) {
+ /**private */void insert(OverlayEdge e) {
     edges.add(e);
     
     /**

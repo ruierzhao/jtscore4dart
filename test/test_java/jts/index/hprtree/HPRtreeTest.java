@@ -30,7 +30,7 @@ import junit.framework.TestCase;
  * @version 1.17
  */
 public class HPRtreeTest extends TestCase {
-  private GeometryFactory factory = new GeometryFactory();
+ /**private */GeometryFactory factory = new GeometryFactory();
 
   public HPRtreeTest(String name) {
     super(name);
@@ -143,7 +143,7 @@ public class HPRtreeTest extends TestCase {
     queryGrid( 100, new HPRtree(2) );
   }
 
-  private void queryGrid(int size, HPRtree t) {
+ /**private */void queryGrid(int size, HPRtree t) {
     for (int i = 0; i < size; i++ ) {
       t.insert(new Envelope(i, i+1, i, i+1), i);
     }

@@ -38,10 +38,10 @@
  * @see RingClipper
  */
 class LineLimiter {
-  private Envelope limitEnv;
-  private CoordinateList ptList;
-  private Coordinate lastOutside = null;
-  private List<List<Coordinate>> sections = null;
+ /**private */Envelope limitEnv;
+ /**private */CoordinateList ptList;
+ /**private */Coordinate lastOutside = null;
+ /**private */List<List<Coordinate>> sections = null;
 
   /**
    * Creates a new limiter for a given envelope.
@@ -76,13 +76,13 @@ class LineLimiter {
     return sections;
   }
 
-  private void addPoint(Coordinate p) {
+ /**private */void addPoint(Coordinate p) {
     if (p == null) return;
     startSection();
     ptList.add(p, false);
   }
 
-  private void addOutside(Coordinate p) {
+ /**private */void addOutside(Coordinate p) {
     bool segIntersects = isLastSegmentIntersecting(p);
     if ( ! segIntersects  ) {
       finishSection();
@@ -94,7 +94,7 @@ class LineLimiter {
     lastOutside = p;
   }
   
-  private bool isLastSegmentIntersecting(Coordinate p) {
+ /**private */bool isLastSegmentIntersecting(Coordinate p) {
     if (lastOutside == null) {
       // last point must have been inside
       if (isSectionOpen())
@@ -104,11 +104,11 @@ class LineLimiter {
     return limitEnv.intersects(lastOutside, p);
   }
 
-  private bool isSectionOpen() {
+ /**private */bool isSectionOpen() {
     return ptList != null;
   }
 
-  private void startSection() {
+ /**private */void startSection() {
     if (ptList == null) {
       ptList = new CoordinateList();
     }
@@ -118,7 +118,7 @@ class LineLimiter {
     lastOutside = null;
   }  
   
-  private void finishSection() {
+ /**private */void finishSection() {
     if (ptList == null) 
       return;
     // finish off this section

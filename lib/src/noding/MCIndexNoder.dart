@@ -39,13 +39,13 @@
 class MCIndexNoder
     extends SinglePassNoder
 {
-  private List monoChains = new ArrayList();
-  private SpatialIndex index= new HPRtree();
-  private int idCounter = 0;
-  private Collection nodedSegStrings;
+ /**private */List monoChains = new ArrayList();
+ /**private */SpatialIndex index= new HPRtree();
+ /**private */int idCounter = 0;
+ /**private */Collection nodedSegStrings;
   // statistics
-  private int nOverlaps = 0;
-  private double overlapTolerance = 0;
+ /**private */int nOverlaps = 0;
+ /**private */double overlapTolerance = 0;
 
   MCIndexNoder()
   {
@@ -88,7 +88,7 @@ class MCIndexNoder
 //System.out.println("MCIndexNoder: # chain overlaps = " + nOverlaps);
   }
 
-  private void intersectChains()
+ /**private */void intersectChains()
   {
     MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(segInt);
 
@@ -113,7 +113,7 @@ class MCIndexNoder
     }
   }
 
-  private void add(SegmentString segStr)
+ /**private */void add(SegmentString segStr)
   {
     List segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
     for (Iterator i = segChains.iterator(); i.hasNext(); ) {
@@ -128,7 +128,7 @@ class MCIndexNoder
   static class SegmentOverlapAction
       extends MonotoneChainOverlapAction
   {
-    private SegmentIntersector si = null;
+   /**private */SegmentIntersector si = null;
 
     SegmentOverlapAction(SegmentIntersector si)
     {

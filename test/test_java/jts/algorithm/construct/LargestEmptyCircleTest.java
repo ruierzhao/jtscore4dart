@@ -134,7 +134,7 @@ public class LargestEmptyCircleTest extends GeometryTestCase {
    * @param wkt
    * @param tolerance
    */
-  private void checkCircle(String wkt, double tolerance) {
+ /**private */void checkCircle(String wkt, double tolerance) {
     Geometry geom = read(wkt);
     LargestEmptyCircle lec = new LargestEmptyCircle(geom, null, tolerance); 
     Geometry centerPoint = lec.getCenter();
@@ -144,17 +144,17 @@ public class LargestEmptyCircleTest extends GeometryTestCase {
     assertTrue(Math.abs(actualRadius - dist) < 2 * tolerance);
   }
   
-  private void checkCircle(String wktObstacles, double tolerance, 
+ /**private */void checkCircle(String wktObstacles, double tolerance, 
       double x, double y, double expectedRadius) {
     checkCircle(read(wktObstacles), null, tolerance, x, y, expectedRadius);
   }
   
-  private void checkCircle(String wktObstacles, String wktBoundary, double tolerance, 
+ /**private */void checkCircle(String wktObstacles, String wktBoundary, double tolerance, 
       double x, double y, double expectedRadius) {
     checkCircle(read(wktObstacles), read(wktBoundary), tolerance, x, y, expectedRadius);
   }
   
-  private void checkCircle(Geometry obstacles, Geometry boundary, double tolerance, 
+ /**private */void checkCircle(Geometry obstacles, Geometry boundary, double tolerance, 
       double x, double y, double expectedRadius) {
     LargestEmptyCircle lec = new LargestEmptyCircle(obstacles, boundary, tolerance); 
     Geometry centerPoint = lec.getCenter();
@@ -171,11 +171,11 @@ public class LargestEmptyCircleTest extends GeometryTestCase {
     checkEqualXY("Radius line endpoint point: ", radiusPt, radiusLine.getCoordinateN(1));
   }
   
-  private void checkCircleZeroRadius(String wkt, double tolerance) {
+ /**private */void checkCircleZeroRadius(String wkt, double tolerance) {
     checkCircleZeroRadius(read(wkt), tolerance);
   }
 
-  private void checkCircleZeroRadius(Geometry geom, double tolerance) {
+ /**private */void checkCircleZeroRadius(Geometry geom, double tolerance) {
     LargestEmptyCircle lec = new LargestEmptyCircle(geom, null, tolerance); 
 
     LineString radiusLine = lec.getRadiusLine();

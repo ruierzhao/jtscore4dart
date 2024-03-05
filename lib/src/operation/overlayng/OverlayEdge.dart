@@ -68,32 +68,32 @@ class OverlayEdge extends HalfEdge {
     };
   }
   
-  private List<Coordinate> pts;
+ /**private */List<Coordinate> pts;
   
   /**
    * <code>true</code> indicates direction is forward along segString
    * <code>false</code> is reverse direction
    * The label must be interpreted accordingly.
    */
-  private bool direction;
-  private Coordinate dirPt;
-  private OverlayLabel label;
+ /**private */bool direction;
+ /**private */Coordinate dirPt;
+ /**private */OverlayLabel label;
 
-  private bool isInResultArea = false;
-  private bool isInResultLine = false;
-  private bool isVisited = false;
+ /**private */bool isInResultArea = false;
+ /**private */bool isInResultLine = false;
+ /**private */bool isVisited = false;
 
   /**
    * Link to next edge in the result ring.
    * The origin of the edge is the dest of this edge.
    */
-  private OverlayEdge nextResultEdge;
+ /**private */OverlayEdge nextResultEdge;
 
-  private OverlayEdgeRing edgeRing;
+ /**private */OverlayEdgeRing edgeRing;
 
-  private MaximalEdgeRing maxEdgeRing;
+ /**private */MaximalEdgeRing maxEdgeRing;
 
-  private OverlayEdge nextResultMaxEdge;
+ /**private */OverlayEdge nextResultMaxEdge;
 
 
   OverlayEdge(Coordinate orig, Coordinate dirPt, bool direction, OverlayLabel label, List<Coordinate> pts) {
@@ -253,7 +253,7 @@ class OverlayEdge extends HalfEdge {
     return isVisited;
   }
   
-  private void markVisited() {
+ /**private */void markVisited() {
     isVisited = true;
   }
   
@@ -296,7 +296,7 @@ class OverlayEdge extends HalfEdge {
         ;
   }
   
-  private String resultSymbol() {
+ /**private */String resultSymbol() {
     if (isInResultArea) return " resA";
     if (isInResultLine) return " resL";
     return "";

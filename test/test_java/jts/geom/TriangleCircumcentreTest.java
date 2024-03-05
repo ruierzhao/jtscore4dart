@@ -42,20 +42,20 @@ public class TriangleCircumcentreTest extends GeometryTestCase {
     checkCCEqual(cc1,  cc2);
   }
 
-  private static Coordinate circumcentre(double ax, double ay, double bx, double by, double cx, double cy) {
+ /**private */static Coordinate circumcentre(double ax, double ay, double bx, double by, double cx, double cy) {
     Coordinate a = new Coordinate(ax, ay);
     Coordinate b = new Coordinate(bx, by);
     Coordinate c = new Coordinate(cx, cy);
     return Triangle.circumcentre(a, b, c);
   }
-  private static Coordinate circumcentreDD(double ax, double ay, double bx, double by, double cx, double cy) {
+ /**private */static Coordinate circumcentreDD(double ax, double ay, double bx, double by, double cx, double cy) {
     Coordinate a = new Coordinate(ax, ay);
     Coordinate b = new Coordinate(bx, by);
     Coordinate c = new Coordinate(cx, cy);
     return Triangle.circumcentreDD(a, b, c);
   }
   
-  private void checkCCEqual(Coordinate cc1, Coordinate cc2) {
+ /**private */void checkCCEqual(Coordinate cc1, Coordinate cc2) {
     boolean isEqual = cc1.equals2D(cc2);
     if (! isEqual) {
       System.out.println("Triangle circumcentres are not equal!");

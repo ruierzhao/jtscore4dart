@@ -25,13 +25,13 @@
  */
 class GeometryGraphOperation
 {
-  protected final LineIntersector li = new RobustLineIntersector();
-  protected PrecisionModel resultPrecisionModel;
+ /**protected */final LineIntersector li = new RobustLineIntersector();
+ /**protected */PrecisionModel resultPrecisionModel;
 
   /**
    * The operation args into an array so they can be accessed by index
    */
-  protected GeometryGraph[] arg;  // the arg(s) of the operation
+ /**protected */GeometryGraph[] arg;  // the arg(s) of the operation
 
   GeometryGraphOperation(Geometry g0, Geometry g1)
   {
@@ -63,7 +63,7 @@ class GeometryGraphOperation
 
   Geometry getArgGeometry(int i) { return arg[i].getGeometry(); }
 
-  protected void setComputationPrecision(PrecisionModel pm)
+ /**protected */void setComputationPrecision(PrecisionModel pm)
   {
     resultPrecisionModel = pm;
     li.setPrecisionModel(resultPrecisionModel);

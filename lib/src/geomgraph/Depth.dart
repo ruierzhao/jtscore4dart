@@ -21,7 +21,7 @@
  */
 class Depth {
 
-  private final static int NULL_VALUE = -1;
+ /**private */final static int NULL_VALUE = -1;
 
   static int depthAtLocation(int location)
   {
@@ -30,7 +30,7 @@ class Depth {
     return NULL_VALUE;
   }
 
-  private int[][] depth = new int[2][3];
+ /**private */int[][] depth = new int[2][3];
 
   Depth() {
     // initialize depth array to a sentinel value

@@ -107,14 +107,14 @@ public class OverlayNGRobustTest extends GeometryTestCase {
         "GEOMETRYCOLLECTION EMPTY");
   }
 
-  private void checkUnaryUnion(String wkt, String wktExpected) {
+ /**private */void checkUnaryUnion(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry expected = read(wktExpected);
     Geometry result = OverlayNGRobust.union(geom);
     checkEqual(expected, result);
   }
   
-  private void checkUnaryUnion(String[] wkt,String wktExpected) {
+ /**private */void checkUnaryUnion(String[] wkt,String wktExpected) {
     List geoms = readList(wkt);
     Geometry expected = read(wktExpected);
     Geometry result;

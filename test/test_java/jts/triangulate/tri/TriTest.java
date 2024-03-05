@@ -15,10 +15,10 @@ public class TriTest extends GeometryTestCase {
     TestRunner.run(TriTest.class);
   }
   
-  private static Tri triCentre = createSimpleTriangulation();
-  private static Tri tri0;
-  private static Tri tri1;
-  private static Tri tri2;
+ /**private */static Tri triCentre = createSimpleTriangulation();
+ /**private */static Tri tri0;
+ /**private */static Tri tri1;
+ /**private */static Tri tri2;
   
   public TriTest(String name) {
     super(name);
@@ -44,7 +44,7 @@ public class TriTest extends GeometryTestCase {
     assertEquals(2, tri.getIndex(new Coordinate(10,0)));
   }
 
-  private static Tri tri(double x0, double y0, double x1, double y1, double x2, double y2) {
+ /**private */static Tri tri(double x0, double y0, double x1, double y1, double x2, double y2) {
     Tri tri = Tri.create(
         new Coordinate(x0, y0),
         new Coordinate(x1, y1),
@@ -54,7 +54,7 @@ public class TriTest extends GeometryTestCase {
     return tri;
   }
   
-  private static Tri createSimpleTriangulation() {
+ /**private */static Tri createSimpleTriangulation() {
     Tri tri = tri(10,10,  10,20, 20,10  );
     tri0 = tri(10,20,  10,10, 0,10  );
     tri1 = tri(20,10,  10,20, 20,20  );
@@ -63,7 +63,7 @@ public class TriTest extends GeometryTestCase {
     return tri;
   }
 
-  private static void build(Tri... tri) {
+ /**private */static void build(Tri... tri) {
     List<Tri> triList = new ArrayList<Tri>();
     for (int i = 0; i < tri.length; i++) {
       triList.add(tri[i]);

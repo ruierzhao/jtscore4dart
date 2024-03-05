@@ -138,16 +138,16 @@ class OverlayOp
     return false;
   }
 
-  private final PointLocator ptLocator = new PointLocator();
-  private GeometryFactory geomFact;
-  private Geometry resultGeom;
+ /**private */final PointLocator ptLocator = new PointLocator();
+ /**private */GeometryFactory geomFact;
+ /**private */Geometry resultGeom;
 
-  private PlanarGraph graph;
-  private EdgeList edgeList     = new EdgeList();
+ /**private */PlanarGraph graph;
+ /**private */EdgeList edgeList     = new EdgeList();
 
-  private List resultPolyList   = new ArrayList();
-  private List resultLineList   = new ArrayList();
-  private List resultPointList  = new ArrayList();
+ /**private */List resultPolyList   = new ArrayList();
+ /**private */List resultLineList   = new ArrayList();
+ /**private */List resultPointList  = new ArrayList();
 
   /**
    * Constructs an instance to compute a single overlay operation
@@ -189,7 +189,7 @@ class OverlayOp
    */
   PlanarGraph getGraph() { return graph; }
 
-  private void computeOverlay(int opCode)
+ /**private */void computeOverlay(int opCode)
   {
     // copy points from input Geometries.
     // This ensures that any Point geometries
@@ -258,7 +258,7 @@ class OverlayOp
     resultGeom = computeGeometry(resultPointList, resultLineList, resultPolyList, opCode);
   }
 
-  private void insertUniqueEdges(List edges)
+ /**private */void insertUniqueEdges(List edges)
   {
     for (Iterator i = edges.iterator(); i.hasNext(); ) {
       Edge e = (Edge) i.next();
@@ -272,7 +272,7 @@ class OverlayOp
    * If so, the edge is not inserted, but its label is merged
    * with the existing edge.
    */
-  protected void insertUniqueEdge(Edge e)
+ /**protected */void insertUniqueEdge(Edge e)
   {
 //<FIX> MD 8 Oct 03  speed up identical edge lookup
     // fast lookup
@@ -317,7 +317,7 @@ class OverlayOp
    * In this case, convert the label for that Geometry to a Line label
    */
    /* NOT NEEDED?
-  private void checkDimensionalCollapse(Label labelToMerge, Label existingLabel)
+ /**private */void checkDimensionalCollapse(Label labelToMerge, Label existingLabel)
   {
     if (existingLabel.isArea() && labelToMerge.isArea()) {
       for (int i = 0; i < 2; i++) {
@@ -341,7 +341,7 @@ class OverlayOp
    * (i.e. a depth of 0 corresponds to a Location of EXTERIOR,
    * a depth of 1 corresponds to INTERIOR)
    */
-  private void computeLabelsFromDepths()
+ /**private */void computeLabelsFromDepths()
   {
     for (Iterator it = edgeList.iterator(); it.hasNext(); ) {
       Edge e = (Edge) it.next();
@@ -386,7 +386,7 @@ class OverlayOp
    * If edges which have undergone dimensional collapse are found,
    * replace them with a new edge which is a L edge
    */
-  private void replaceCollapsedEdges()
+ /**private */void replaceCollapsedEdges()
   {
     List newEdges = new ArrayList();
     for (Iterator it = edgeList.iterator(); it.hasNext(); ) {
@@ -408,7 +408,7 @@ class OverlayOp
    * but in the original arg Geometry it is actually
    * in the interior due to the Boundary Determination Rule)
    */
-  private void copyPoints(int argIndex)
+ /**private */void copyPoints(int argIndex)
   {
     for (Iterator i = arg[argIndex].getNodeIterator(); i.hasNext(); ) {
       Node graphNode = (Node) i.next();
@@ -424,7 +424,7 @@ class OverlayOp
    * only if they
    * are incident on a node which has edges for both Geometries
    */
-  private void computeLabelling()
+ /**private */void computeLabelling()
   {
     for (Iterator nodeit = graph.getNodes().iterator(); nodeit.hasNext(); ) {
       Node node = (Node) nodeit.next();
@@ -440,7 +440,7 @@ class OverlayOp
    * Geometry.  However, the sym dirEdge may have a labelling for the other
    * Geometry, so merge the two labels.
    */
-  private void mergeSymLabels()
+ /**private */void mergeSymLabels()
   {
     for (Iterator nodeit = graph.getNodes().iterator(); nodeit.hasNext(); ) {
       Node node = (Node) nodeit.next();
@@ -448,7 +448,7 @@ class OverlayOp
 //node.print(System.out);
     }
   }
-  private void updateNodeLabelling()
+ /**private */void updateNodeLabelling()
   {
     // update the labels for nodes
     // The label for a node is updated from the edges incident on it
@@ -476,7 +476,7 @@ class OverlayOp
    * When each node labelling is completed, the labelling of the incident
    * edges is updated, to complete their labelling as well.
    */
-  private void labelIncompleteNodes()
+ /**private */void labelIncompleteNodes()
   {
   	// int nodeCount = 0;
     for (Iterator ni = graph.getNodes().iterator(); ni.hasNext(); ) {
@@ -505,7 +505,7 @@ class OverlayOp
   /**
    * Label an isolated node with its relationship to the target geometry.
    */
-  private void labelIncompleteNode(Node n, int targetIndex)
+ /**private */void labelIncompleteNode(Node n, int targetIndex)
   {
     int loc = ptLocator.locate(n.getCoordinate(), arg[targetIndex].getGeometry());
   	
@@ -522,7 +522,7 @@ class OverlayOp
    * Interior Area edges are the result of dimensional collapses.
    * They do not form part of the result area boundary.
    */
-  private void findResultAreaEdges(int opCode)
+ /**private */void findResultAreaEdges(int opCode)
   {
     for (Iterator it = graph.getEdgeEnds().iterator(); it.hasNext(); ) {
       DirectedEdge de = (DirectedEdge) it.next();
@@ -543,7 +543,7 @@ class OverlayOp
    * If both a dirEdge and its sym are marked as being in the result, cancel
    * them out.
    */
-  private void cancelDuplicateResultEdges()
+ /**private */void cancelDuplicateResultEdges()
   {
     // remove any dirEdges whose sym is also included
     // (they "cancel each other out")
@@ -584,7 +584,7 @@ class OverlayOp
    * @return true if the coord is located in the interior or boundary of
    * a geometry in the list.
    */
-  private bool isCovered(Coordinate coord, List geomList)
+ /**private */bool isCovered(Coordinate coord, List geomList)
   {
     for (Iterator it = geomList.iterator(); it.hasNext(); ) {
       Geometry geom = (Geometry) it.next();
@@ -594,7 +594,7 @@ class OverlayOp
     return false;
   }
 
-  private Geometry computeGeometry( List resultPointList,
+ /**private */Geometry computeGeometry( List resultPointList,
                                         List resultLineList,
                                         List resultPolyList,
                                         int opcode)
@@ -646,7 +646,7 @@ class OverlayOp
     return result =  geomFact.createEmpty(resultDim);
   }
   
-  private static int resultDimension(int opCode, Geometry g0, Geometry g1)
+ /**private */static int resultDimension(int opCode, Geometry g0, Geometry g1)
   {
   	int dim0 = g0.getDimension();
   	int dim1 = g1.getDimension();

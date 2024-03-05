@@ -31,8 +31,8 @@ import junit.textui.TestRunner;
 public class RectanglePredicateSyntheticTest
      extends TestCase
 {
-  private WKTReader rdr = new WKTReader();
-  private GeometryFactory fact = new GeometryFactory();
+ /**private */WKTReader rdr = new WKTReader();
+ /**private */GeometryFactory fact = new GeometryFactory();
 
   double baseX  = 10;
   double baseY  = 10;
@@ -85,7 +85,7 @@ public class RectanglePredicateSyntheticTest
     }
   }
 
-  private List getTestGeometries()
+ /**private */List getTestGeometries()
   {
     Envelope testEnv = new Envelope(rectEnv.getMinX() - bufSize, rectEnv.getMaxX() + bufSize,
                                     rectEnv.getMinY() - bufSize, rectEnv.getMaxY() + bufSize);
@@ -93,7 +93,7 @@ public class RectanglePredicateSyntheticTest
     return testGeoms;
   }
 
-  private void runRectanglePredicates(Geometry rect, Geometry testGeom) {
+ /**private */void runRectanglePredicates(Geometry rect, Geometry testGeom) {
     boolean intersectsValue = rect.intersects(testGeom);
     boolean relateIntersectsValue = rect.relate(testGeom).isIntersects();
     boolean intersectsOK = intersectsValue == relateIntersectsValue;

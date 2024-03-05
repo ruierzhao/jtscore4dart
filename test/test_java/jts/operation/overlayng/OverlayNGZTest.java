@@ -112,18 +112,18 @@ public class OverlayNGZTest extends GeometryTestCase
 
   //=================================================
   
-  private void checkIntersection(String wktA, String wktB, String wktExpected) {
+ /**private */void checkIntersection(String wktA, String wktB, String wktExpected) {
     checkOverlay(OverlayNG.INTERSECTION, wktA, wktB, wktExpected);
   }
-  private void checkDifference(String wktA, String wktB, String wktExpected) {
+ /**private */void checkDifference(String wktA, String wktB, String wktExpected) {
     checkOverlay(OverlayNG.DIFFERENCE, wktA, wktB, wktExpected);
   }
   
-  private void checkUnion(String wktA, String wktB, String wktExpected) {
+ /**private */void checkUnion(String wktA, String wktB, String wktExpected) {
     checkOverlay(OverlayNG.UNION, wktA, wktB, wktExpected);
   }
   
-  private void checkOverlay(int opCode, String wktA, String wktB, String wktExpected) {
+ /**private */void checkOverlay(int opCode, String wktA, String wktB, String wktExpected) {
     Geometry a = read(wktA);
     Geometry b = read(wktB);
     Geometry result = OverlayNG.overlay(a, b, opCode);

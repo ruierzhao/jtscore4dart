@@ -40,9 +40,9 @@ class Node
     return largerNode;
   }
 
-  private Interval interval;
-  private double centre;
-  private int level;
+ /**private */Interval interval;
+ /**private */double centre;
+ /**private */int level;
 
   Node(Interval interval, int level)
   {
@@ -53,7 +53,7 @@ class Node
 
   Interval getInterval() { return interval; }
 
-  protected bool isSearchMatch(Interval itemInterval)
+ /**protected */bool isSearchMatch(Interval itemInterval)
   {
 //    System.out.println(itemInterval + " overlaps " + interval + " : "
 //                       + itemInterval.overlaps(interval));
@@ -118,7 +118,7 @@ class Node
    * get the subnode for the index.
    * If it doesn't exist, create it
    */
-  private Node getSubnode(int index)
+ /**private */Node getSubnode(int index)
   {
     if (subnode[index] == null) {
       subnode[index] = createSubnode(index);
@@ -126,7 +126,7 @@ class Node
     return subnode[index];
   }
 
-  private Node createSubnode(int index)
+ /**private */Node createSubnode(int index)
   {
         // create a new subnode in the appropriate interval
 

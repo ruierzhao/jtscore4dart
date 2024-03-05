@@ -49,12 +49,12 @@
 class MCIndexSnapRounder
     implements Noder
 {
-  private final PrecisionModel pm;
-  private LineIntersector li;
-  private final double scaleFactor;
-  private MCIndexNoder noder;
-  private MCIndexPointSnapper pointSnapper;
-  private Collection nodedSegStrings;
+ /**private */final PrecisionModel pm;
+ /**private */LineIntersector li;
+ /**private */final double scaleFactor;
+ /**private */MCIndexNoder noder;
+ /**private */MCIndexPointSnapper pointSnapper;
+ /**private */Collection nodedSegStrings;
 
   MCIndexSnapRounder(PrecisionModel pm) {
     this.pm = pm;
@@ -80,7 +80,7 @@ class MCIndexSnapRounder
   }
 
   /*
-  private void checkCorrectness(Collection inputSegmentStrings)
+ /**private */void checkCorrectness(Collection inputSegmentStrings)
   {
     Collection resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings);
     NodingValidator nv = new NodingValidator(resultSegStrings);
@@ -92,7 +92,7 @@ class MCIndexSnapRounder
   }
 */
   
-  private void snapRound(Collection segStrings, LineIntersector li)
+ /**private */void snapRound(Collection segStrings, LineIntersector li)
   {
     List intersections = findInteriorIntersections(segStrings, li);
     computeIntersectionSnaps(intersections);
@@ -107,7 +107,7 @@ class MCIndexSnapRounder
    *
    * @return a list of Coordinates for the intersections
    */
-  private List findInteriorIntersections(Collection segStrings, LineIntersector li)
+ /**private */List findInteriorIntersections(Collection segStrings, LineIntersector li)
   {
     InteriorIntersectionFinderAdder intFinderAdder = new InteriorIntersectionFinderAdder(li);
     noder.setSegmentIntersector(intFinderAdder);
@@ -118,7 +118,7 @@ class MCIndexSnapRounder
   /**
    * Snaps segments to nodes created by segment intersections.
    */
-  private void computeIntersectionSnaps(Collection snapPts)
+ /**private */void computeIntersectionSnaps(Collection snapPts)
   {
     for (Iterator it = snapPts.iterator(); it.hasNext(); ) {
       Coordinate snapPt = (Coordinate) it.next();
@@ -143,7 +143,7 @@ class MCIndexSnapRounder
   /**
    * Snaps segments to the vertices of a Segment String.  
    */
-  private void computeVertexSnaps(NodedSegmentString e)
+ /**private */void computeVertexSnaps(NodedSegmentString e)
   {
     List<Coordinate> pts0 = e.getCoordinates();
     for (int i = 0; i < pts0.length ; i++) {

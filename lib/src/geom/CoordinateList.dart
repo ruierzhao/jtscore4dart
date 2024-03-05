@@ -24,10 +24,10 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 /// @version 1.7
 class CoordinateList  /** extends ArrayList<Coordinate> */
 {
-  // private static final long serialVersionUID = -1626110935756089896L;
+  ///**private */static final long serialVersionUID = -1626110935756089896L;
   //With contributions from Markus Schaber [schabios@logi-track.com]
   //[Jon Aquino 2004-03-25]
-  // private final static List<Coordinate> coordArrayType = new Coordinate[0];
+  ///**private */final static List<Coordinate> coordArrayType = new Coordinate[0];
 
   /// Constructs a new list without any coordinates
   CoordinateList();

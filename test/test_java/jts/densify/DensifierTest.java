@@ -21,7 +21,7 @@ import junit.textui.TestRunner;
 import test.jts.GeometryTestCase;
 
 public class DensifierTest extends GeometryTestCase {
-  private static final double TOLERANCE = 1e-6;
+ /**private */static final double TOLERANCE = 1e-6;
 
   public static void main(String args[]) {
     TestRunner.run(DensifierTest.class);
@@ -95,14 +95,14 @@ public class DensifierTest extends GeometryTestCase {
   }
 
 
-  private void checkDensify(String wkt, double distanceTolerance, String wktExpected) {
+ /**private */void checkDensify(String wkt, double distanceTolerance, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry expected = read(wktExpected);
     Geometry actual = Densifier.densify(geom, distanceTolerance);
     checkEqual(expected, actual, TOLERANCE);
   }
 
-  private void checkDensifyXYZ(String wkt, double distanceTolerance, String wktExpected) {
+ /**private */void checkDensifyXYZ(String wkt, double distanceTolerance, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry expected = read(wktExpected);
     Geometry actual = Densifier.densify(geom, distanceTolerance);
@@ -116,7 +116,7 @@ public class DensifierTest extends GeometryTestCase {
    * @param distanceTolerance
    * @param wktExpected
    */
-  private void checkDensifyNoValidate(String wkt, double distanceTolerance, String wktExpected) {
+ /**private */void checkDensifyNoValidate(String wkt, double distanceTolerance, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry expected = read(wktExpected);
     Densifier den = new Densifier(geom);

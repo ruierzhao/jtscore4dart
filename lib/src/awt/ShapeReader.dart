@@ -44,7 +44,7 @@
  */
 class ShapeReader 
 {
-  private static final AffineTransform INVERT_Y = AffineTransform.getScaleInstance(1, -1);
+ /**private */static final AffineTransform INVERT_Y = AffineTransform.getScaleInstance(1, -1);
 
   /**
    * Converts a flat path to a {@link Geometry}.
@@ -73,7 +73,7 @@ class ShapeReader
     return ShapeReader.read(pathIt, geomFact);
   }
 
-  private GeometryFactory geometryFactory;
+ /**private */GeometryFactory geometryFactory;
   
   ShapeReader(GeometryFactory geometryFactory) {
     this.geometryFactory = geometryFactory;
@@ -112,7 +112,7 @@ class ShapeReader
     return geometryFactory.buildGeometry(polys);
   }
   
-  private bool isHole(List<Coordinate> pts)
+ /**private */bool isHole(List<Coordinate> pts)
   {
     return Orientation.isCCW(pts);
   }
@@ -137,7 +137,7 @@ class ShapeReader
     return coordArrays;
   }
   
-  private static List<Coordinate> nextCoordinateArray(PathIterator pathIt)
+ /**private */static List<Coordinate> nextCoordinateArray(PathIterator pathIt)
   {
     double[] pathPt = new double[6];
     CoordinateList coordList = null;

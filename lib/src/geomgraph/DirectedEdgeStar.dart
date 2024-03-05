@@ -36,8 +36,8 @@ class DirectedEdgeStar
   /**
    * A list of all outgoing edges in the result, in CCW order
    */
-  private List resultAreaEdgeList;
-  private Label label;
+ /**private */List resultAreaEdgeList;
+ /**private */Label label;
 
   DirectedEdgeStar() {
   }
@@ -152,7 +152,7 @@ class DirectedEdgeStar
     }
   }
 
-  private List getResultAreaEdges()
+ /**private */List getResultAreaEdges()
   {
 //print(System.out);
     if (resultAreaEdgeList != null) return resultAreaEdgeList;
@@ -165,8 +165,8 @@ class DirectedEdgeStar
     return resultAreaEdgeList;
   }
 
-  private static final int SCANNING_FOR_INCOMING = 1;
-  private static final int LINKING_TO_OUTGOING = 2;
+ /**private */static final int SCANNING_FOR_INCOMING = 1;
+ /**private */static final int LINKING_TO_OUTGOING = 2;
   /**
    * Traverse the star of DirectedEdges, linking the included edges together.
    * To link two dirEdges, the <code>next</code> pointer for an incoming dirEdge
@@ -361,7 +361,7 @@ class DirectedEdgeStar
    *
    * @return the last depth assigned (from the R side of the last edge visited)
    */
-  private int computeDepths(int startIndex, int endIndex, int startDepth)
+ /**private */int computeDepths(int startIndex, int endIndex, int startDepth)
   {
     int currDepth = startDepth;
     for (int i = startIndex; i < endIndex ; i++) {

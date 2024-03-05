@@ -94,7 +94,7 @@ class OverlayUtil {
    * @param pm
    * @return the result envelope, or null if the full extent
    */
-  private static Envelope resultEnvelope(int opCode, InputGeometry inputGeom, PrecisionModel pm) {
+ /**private */static Envelope resultEnvelope(int opCode, InputGeometry inputGeom, PrecisionModel pm) {
     Envelope overlapEnv = null;
     switch (opCode) {
     case OverlayNG.INTERSECTION:
@@ -119,18 +119,18 @@ class OverlayUtil {
    * @param pm the precision model
    * @return a safe envelope to use for clipping
    */
-  private static Envelope safeEnv(Envelope env, PrecisionModel pm) {
+ /**private */static Envelope safeEnv(Envelope env, PrecisionModel pm) {
     double envExpandDist = safeExpandDistance(env, pm);
     Envelope safeEnv = env.copy();
     safeEnv.expandBy(envExpandDist);
     return safeEnv;
   }
   
-  private static final double SAFE_ENV_BUFFER_FACTOR = 0.1;
+ /**private */static final double SAFE_ENV_BUFFER_FACTOR = 0.1;
 
-  private static final int SAFE_ENV_GRID_FACTOR = 3;
+ /**private */static final int SAFE_ENV_GRID_FACTOR = 3;
 
-  private static double safeExpandDistance(Envelope env, PrecisionModel pm) {
+ /**private */static double safeExpandDistance(Envelope env, PrecisionModel pm) {
     double envExpandDist;
     if (isFloating(pm)) {
       // if PM is FLOAT then there is no scale factor, so add 10%
@@ -179,7 +179,7 @@ class OverlayUtil {
     return false;
   }
   
-  private static bool isEmpty(Geometry geom) {
+ /**private */static bool isEmpty(Geometry geom) {
     return geom == null || geom.isEmpty();
   }
 
@@ -211,7 +211,7 @@ class OverlayUtil {
    * @param pm the precision model
    * @return true if the envelopes are disjoint
    */
-  private static bool isDisjoint(Envelope envA, Envelope envB, PrecisionModel pm) {
+ /**private */static bool isDisjoint(Envelope envA, Envelope envB, PrecisionModel pm) {
     if (pm.makePrecise(envB.getMinX()) > pm.makePrecise(envA.getMaxX())) return true;
     if (pm.makePrecise(envB.getMaxX()) < pm.makePrecise(envA.getMinX())) return true;
     if (pm.makePrecise(envB.getMinY()) > pm.makePrecise(envA.getMaxY())) return true;
@@ -337,7 +337,7 @@ class OverlayUtil {
     return geomFact.buildGeometry(lines);
   }
 
-  private static String labelForResult(OverlayEdge edge) {
+ /**private */static String labelForResult(OverlayEdge edge) {
     return edge.getLabel().toString(edge.isForward())
         + (edge.isInResultArea() ? " Res" : "");
   }
@@ -370,7 +370,7 @@ class OverlayUtil {
     return p;
   }
   
-  private static final double AREA_HEURISTIC_TOLERANCE = 0.1;
+ /**private */static final double AREA_HEURISTIC_TOLERANCE = 0.1;
 
   /**
    * A heuristic check for overlay result correctness
@@ -429,18 +429,18 @@ class OverlayUtil {
    * 
    * @return true if the difference area is consistent.
    */
-  private static bool isDifferenceAreaConsistent(double areaA, double areaB, double areaResult, double tolFrac) {
+ /**private */static bool isDifferenceAreaConsistent(double areaA, double areaB, double areaResult, double tolFrac) {
     if (! isLess(areaResult, areaA, tolFrac))
       return false;
     double areaDiffMin = areaA - areaB - tolFrac * areaA;
     return areaResult > areaDiffMin;
   }
 
-  private static bool isLess(double v1, double v2, double tol) {
+ /**private */static bool isLess(double v1, double v2, double tol) {
     return v1 <= v2 * (1 + tol);
   }
   
-  private static bool isGreater(double v1, double v2, double tol) {
+ /**private */static bool isGreater(double v1, double v2, double tol) {
     return v1 >= v2 * (1 - tol);
   }
   

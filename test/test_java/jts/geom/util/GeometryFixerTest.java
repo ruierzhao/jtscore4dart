@@ -50,7 +50,7 @@ public class GeometryFixerTest extends GeometryTestCase {
     checkFix( createPoint(0, Double.POSITIVE_INFINITY), "POINT EMPTY");
   }
 
-  private Point createPoint(double x, double y) {
+ /**private */Point createPoint(double x, double y) {
     Coordinate p = new Coordinate(x, y);
     Point pt = getGeometryFactory().createPoint(p);
     return pt;
@@ -367,36 +367,36 @@ public class GeometryFixerTest extends GeometryTestCase {
 
   //================================================
 
-  private void checkFix(String wkt) {
+ /**private */void checkFix(String wkt) {
     Geometry geom = read(wkt);
     Geometry fix = GeometryFixer.fix(geom);
     assertTrue("Result is invalid", fix.isValid());
   }
 
-  private void checkFix(String wkt, String wktExpected) {
+ /**private */void checkFix(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     checkFix(geom, false, true, wktExpected);
   }
 
-  private void checkFix(String wkt, String wktExpected, boolean keepMulti) {
+ /**private */void checkFix(String wkt, String wktExpected, boolean keepMulti) {
     Geometry geom = read(wkt);
     checkFix(geom, false, keepMulti, wktExpected);
   }
 
-  private void checkFixKeepCollapse(String wkt, String wktExpected) {
+ /**private */void checkFixKeepCollapse(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     checkFix(geom, true, true, wktExpected);
   }
 
-  private void checkFix(Geometry input, String wktExpected) {
+ /**private */void checkFix(Geometry input, String wktExpected) {
     checkFix(input, false, true, wktExpected);
   }
 
-  private void checkFixKeepCollapse(Geometry input, String wktExpected) {
+ /**private */void checkFixKeepCollapse(Geometry input, String wktExpected) {
     checkFix(input, true, true, wktExpected);
   }
 
-  private void checkFix(Geometry input, boolean keepCollapse, boolean keepMulti, String wktExpected) {
+ /**private */void checkFix(Geometry input, boolean keepCollapse, boolean keepMulti, String wktExpected) {
     Geometry actual;
     if (keepCollapse) {
       GeometryFixer fixer = new GeometryFixer(input);
@@ -416,7 +416,7 @@ public class GeometryFixerTest extends GeometryTestCase {
     checkEqual(expected, actual);
   }
 
-  private boolean checkDeepCopy(Geometry geom1, Geometry geom2) {
+ /**private */boolean checkDeepCopy(Geometry geom1, Geometry geom2) {
     Coordinate[] pts1 = geom1.getCoordinates();
     Coordinate[] pts2 = geom2.getCoordinates();
     for (Coordinate p2 : pts2) {
@@ -427,24 +427,24 @@ public class GeometryFixerTest extends GeometryTestCase {
     return true;
   }
 
-  private boolean isIn(Coordinate p, Coordinate[] pts) {
+ /**private */boolean isIn(Coordinate p, Coordinate[] pts) {
     for (int i = 0; i < pts.length; i++) {
       if (p == pts[i]) return true;
     }
     return false;
   }
 
-  private void checkFixZ(String wkt, String wktExpected) {
+ /**private */void checkFixZ(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     checkFixZ(geom, false, wktExpected);
   }
 
-  private void checkFixZKeepCollapse(String wkt, String wktExpected) {
+ /**private */void checkFixZKeepCollapse(String wkt, String wktExpected) {
     Geometry geom = read(wkt);
     checkFixZ(geom, true, wktExpected);
   }
 
-  private void checkFixZ(Geometry input, boolean keepCollapse, String wktExpected) {
+ /**private */void checkFixZ(Geometry input, boolean keepCollapse, String wktExpected) {
     Geometry actual;
     if (keepCollapse) {
       GeometryFixer fixer = new GeometryFixer(input);

@@ -17,8 +17,8 @@ class FastOverlayFilter {
   // superceded by overlap clipping?
   // TODO: perhaps change this to RectangleClipping, with fast/looser semantics?
   
-  private Geometry targetGeom;
-  private bool isTargetRectangle;
+ /**private */Geometry targetGeom;
+ /**private */bool isTargetRectangle;
 
   FastOverlayFilter(Geometry geom) {
     this.targetGeom = geom;
@@ -43,7 +43,7 @@ class FastOverlayFilter {
     return intersection(geom);
   }
 
-  private Geometry intersection(Geometry geom) {
+ /**private */Geometry intersection(Geometry geom) {
     // handle rectangle case
     Geometry resultForRect = intersectionRectangle(geom);
     if (resultForRect != null)
@@ -57,12 +57,12 @@ class FastOverlayFilter {
     return null;
   }
 
-  private Geometry createEmpty(Geometry geom) {
+ /**private */Geometry createEmpty(Geometry geom) {
     // empty result has dimension of non-rectangle input
     return OverlayUtil.createEmptyResult(geom.getDimension(), geom.getFactory());
   }
 
-  private Geometry intersectionRectangle(Geometry geom) {
+ /**private */Geometry intersectionRectangle(Geometry geom) {
     if (! isTargetRectangle)
       return null;
     
@@ -75,11 +75,11 @@ class FastOverlayFilter {
     return null;
   }
 
-  private bool isEnvelopeIntersects(Geometry a, Geometry b) {
+ /**private */bool isEnvelopeIntersects(Geometry a, Geometry b) {
     return a.getEnvelopeInternal().intersects( b.getEnvelopeInternal() );
   }
 
-  private bool isEnvelopeCovers(Geometry a, Geometry b) {
+ /**private */bool isEnvelopeCovers(Geometry a, Geometry b) {
     return a.getEnvelopeInternal().covers( b.getEnvelopeInternal() );
   }
 }

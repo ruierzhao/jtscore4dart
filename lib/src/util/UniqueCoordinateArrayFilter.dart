@@ -40,9 +40,9 @@ class UniqueCoordinateArrayFilter implements CoordinateFilter
     return filter.getCoordinates();
   }
   
-  private Set<Coordinate> coordSet = new HashSet<Coordinate>();
+ /**private */Set<Coordinate> coordSet = new HashSet<Coordinate>();
   // Use an auxiliary list as well in order to preserve coordinate order
-  private List<Coordinate> list = new ArrayList<Coordinate>();
+ /**private */List<Coordinate> list = new ArrayList<Coordinate>();
 
   UniqueCoordinateArrayFilter() { }
 

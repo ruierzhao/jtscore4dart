@@ -80,13 +80,13 @@ public class RingClipperTest extends GeometryTestCase {
         );
   }
 
-  private void checkClip(String wkt, String wktBox, String wktExpected) {
+ /**private */void checkClip(String wkt, String wktBox, String wktExpected) {
     Geometry box = read(wktBox);
     Envelope clipEnv = box.getEnvelopeInternal();
     checkClip(wkt, clipEnv, wktExpected);
   }
 
-  private void checkClip(String wkt, Envelope clipEnv, String wktExpected) {
+ /**private */void checkClip(String wkt, Envelope clipEnv, String wktExpected) {
     Geometry line = read(wkt);
     Geometry expected = read(wktExpected);
     

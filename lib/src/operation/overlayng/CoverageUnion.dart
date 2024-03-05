@@ -80,7 +80,7 @@ class CoverageUnion
     return OverlayNG.union(coverage, null, noder );
   }
 
-  private CoverageUnion() {
+ /**private */CoverageUnion() {
     // No instantiation for now
   }
 }

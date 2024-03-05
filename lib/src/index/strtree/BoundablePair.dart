@@ -34,10 +34,10 @@
 class BoundablePair
   implements Comparable
 {
-  private Boundable boundable1;
-  private Boundable boundable2;
-  private double distance;
-  private ItemDistance itemDistance;
+ /**private */Boundable boundable1;
+ /**private */Boundable boundable2;
+ /**private */double distance;
+ /**private */ItemDistance itemDistance;
   //private double maxDistance = -1.0;
   
   BoundablePair(Boundable boundable1, Boundable boundable2, ItemDistance itemDistance)
@@ -83,7 +83,7 @@ class BoundablePair
    * 
    * @return
    */
-  private double distance()
+ /**private */double distance()
   {
     // if items, compute exact distance
     if (isLeaves()) {
@@ -133,7 +133,7 @@ class BoundablePair
     return (item is AbstractNode); 
   }
   
-  private static double area(Boundable b)
+ /**private */static double area(Boundable b)
   {
     return ((Envelope) b.getBounds()).getArea();
   }
@@ -188,7 +188,7 @@ class BoundablePair
     throw new ArgumentError("neither boundable is composite");
   }
   
-  private void expand(Boundable bndComposite, Boundable bndOther, bool isFlipped,
+ /**private */void expand(Boundable bndComposite, Boundable bndOther, bool isFlipped,
       PriorityQueue priQ, double minDistance)
   {
     List children = ((AbstractNode) bndComposite).getChildBoundables();

@@ -54,9 +54,9 @@ class SimpleGeometryPrecisionReducer
 		return reducer.reduce(g);
 	}
 	
-  private PrecisionModel newPrecisionModel;
-  private bool removeCollapsed = true;
-  private bool changePrecisionModel = false;
+ /**private */PrecisionModel newPrecisionModel;
+ /**private */bool removeCollapsed = true;
+ /**private */bool changePrecisionModel = false;
 
   SimpleGeometryPrecisionReducer(PrecisionModel pm)
   {
@@ -105,7 +105,7 @@ class SimpleGeometryPrecisionReducer
     return geomEdit.edit(geom, new PrecisionReducerCoordinateOperation());
   }
 
-  private class PrecisionReducerCoordinateOperation
+ /**private */class PrecisionReducerCoordinateOperation
       extends GeometryEditor.CoordinateOperation
   {
     List<Coordinate> edit(List<Coordinate> coordinates, Geometry geom)

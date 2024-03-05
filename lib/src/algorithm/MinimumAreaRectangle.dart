@@ -53,8 +53,8 @@ class MinimumAreaRectangle
     return (new MinimumAreaRectangle(geom)).getMinimumRectangle();
   }
   
-  private final Geometry inputGeom;
-  private final bool isConvex;
+ /**private */final Geometry inputGeom;
+ /**private */final bool isConvex;
 
   /**
    * Compute a minimum-area rectangle for a given {@link Geometry}.
@@ -81,7 +81,7 @@ class MinimumAreaRectangle
     this.isConvex = isConvex;
   }
 
-  private Geometry getMinimumRectangle()
+ /**private */Geometry getMinimumRectangle()
   {
     if (inputGeom.isEmpty()) {
       return inputGeom.getFactory().createPolygon();
@@ -93,7 +93,7 @@ class MinimumAreaRectangle
     return computeConvex(convexGeom);
   }
 
-  private Geometry computeConvex(Geometry convexGeom)
+ /**private */Geometry computeConvex(Geometry convexGeom)
   {
 //System.out.println("Input = " + geom);
     List<Coordinate> convexHullPts = null;
@@ -124,7 +124,7 @@ class MinimumAreaRectangle
    *
    * @param ring the convex ring to scan
    */
-  private Polygon computeConvexRing(List<Coordinate> ring)
+ /**private */Polygon computeConvexRing(List<Coordinate> ring)
   {
     // Assert: ring is oriented CW
     
@@ -179,7 +179,7 @@ class MinimumAreaRectangle
         inputGeom.getFactory());
   }
 
-  private int findFurthestVertex(List<Coordinate> pts, LineSegment baseSeg, int startIndex, int orient)
+ /**private */int findFurthestVertex(List<Coordinate> pts, LineSegment baseSeg, int startIndex, int orient)
   {
     double maxDistance = orientedDistance(baseSeg, pts[startIndex], orient);
     double nextDistance = maxDistance;
@@ -198,7 +198,7 @@ class MinimumAreaRectangle
     return maxIndex;
   }
 
-  private bool isFurtherOrEqual(double d1, double d2, int orient) {
+ /**private */bool isFurtherOrEqual(double d1, double d2, int orient) {
     switch (orient) {
     case 0: return (d1).abs() >= (d2).abs();
     case 1: return d1 >= d2;
@@ -207,7 +207,7 @@ class MinimumAreaRectangle
     throw new ArgumentError("Invalid orientation index: " + orient);
   }
 
-  private static double orientedDistance(LineSegment seg, Coordinate p, int orient) {
+ /**private */static double orientedDistance(LineSegment seg, Coordinate p, int orient) {
     double dist = seg.distancePerpendicularOriented(p);
     if (orient == 0) {
       return (dist).abs();
@@ -215,7 +215,7 @@ class MinimumAreaRectangle
     return dist;
   }
 
-  private static int nextIndex(List<Coordinate> ring, int index)
+ /**private */static int nextIndex(List<Coordinate> ring, int index)
   {
     index++;
     if (index >= ring.length - 1) index = 0;
@@ -228,7 +228,7 @@ class MinimumAreaRectangle
    * @param factory the geometry factory
    * @return the line of maximum extent
    */
-  private static LineString computeMaximumLine(List<Coordinate> pts, GeometryFactory factory) {
+ /**private */static LineString computeMaximumLine(List<Coordinate> pts, GeometryFactory factory) {
     //-- find max and min pts for X and Y
     Coordinate ptMinX = null;
     Coordinate ptMaxX = null;

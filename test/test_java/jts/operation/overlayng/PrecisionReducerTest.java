@@ -92,7 +92,7 @@ public class PrecisionReducerTest extends GeometryTestCase
         1, "MULTILINESTRING ((1 1, 2 2), (2 2, 3 3), (3 3, 5 5), (5 5, 9 9))");
   }
   
-  private void checkReduce(String wkt, double scaleFactor, String wktExpected) {
+ /**private */void checkReduce(String wkt, double scaleFactor, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry expected = read(wktExpected);
     PrecisionModel pm = new PrecisionModel(scaleFactor);

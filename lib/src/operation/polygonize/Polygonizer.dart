@@ -54,7 +54,7 @@ class Polygonizer
   /**
    * Adds every linear element in a {@link Geometry} into the polygonizer graph.
    */
-  private static class LineStringAdder
+ /**private */static class LineStringAdder
       implements GeometryComponentFilter
   {
     Polygonizer p;
@@ -70,22 +70,22 @@ class Polygonizer
   }
 
   // default factory
-  private LineStringAdder lineStringAdder = new LineStringAdder(this);
+ /**private */LineStringAdder lineStringAdder = new LineStringAdder(this);
 
-  protected PolygonizeGraph graph;
+ /**protected */PolygonizeGraph graph;
   // initialize with empty collections, in case nothing is computed
-  protected Collection<LineString> dangles = new ArrayList<LineString>();
-  protected List<LineString> cutEdges = new ArrayList<LineString>();
-  protected List<LineString> invalidRingLines = new ArrayList<LineString>();
+ /**protected */Collection<LineString> dangles = new ArrayList<LineString>();
+ /**protected */List<LineString> cutEdges = new ArrayList<LineString>();
+ /**protected */List<LineString> invalidRingLines = new ArrayList<LineString>();
 
-  protected List<EdgeRing> holeList = null;
-  protected List<EdgeRing> shellList = null;
-  protected List<Polygon> polyList = null;
+ /**protected */List<EdgeRing> holeList = null;
+ /**protected */List<EdgeRing> shellList = null;
+ /**protected */List<Polygon> polyList = null;
 
-  private bool isCheckingRingsValid = true;
-  private bool extractOnlyPolygonal;
+ /**private */bool isCheckingRingsValid = true;
+ /**private */bool extractOnlyPolygonal;
 
-  private GeometryFactory geomFactory = null;
+ /**private */GeometryFactory geomFactory = null;
 
   /**
    * Creates a polygonizer that extracts all polygons.
@@ -142,7 +142,7 @@ class Polygonizer
    *
    * @param line the {@link LineString} to add
    */
-  private void add(LineString line)
+ /**private */void add(LineString line)
   {
     // record the geometry factory for later use
     geomFactory  = line.getFactory();
@@ -225,7 +225,7 @@ class Polygonizer
   /**
    * Performs the polygonization, if it has not already been carried out.
    */
-  private void polygonize()
+ /**private */void polygonize()
   {
     // check if already computed
     if (polyList != null) return;
@@ -268,7 +268,7 @@ class Polygonizer
   }
 
 
-  private void findValidRings(List<EdgeRing> edgeRingList, List<EdgeRing> validEdgeRingList, List<EdgeRing> invalidRingList)
+ /**private */void findValidRings(List<EdgeRing> edgeRingList, List<EdgeRing> validEdgeRingList, List<EdgeRing> invalidRingList)
   {
     for (EdgeRing er : edgeRingList) {
       er.computeValid();
@@ -279,7 +279,7 @@ class Polygonizer
     }
   }
 
-  private void findShellsAndHoles(List<EdgeRing> edgeRingList)
+ /**private */void findShellsAndHoles(List<EdgeRing> edgeRingList)
   {
     holeList = new ArrayList<EdgeRing>();
     shellList = new ArrayList<EdgeRing>();
@@ -292,7 +292,7 @@ class Polygonizer
     }
   }
 
-  private static void findDisjointShells(List<EdgeRing> shellList) {
+ /**private */static void findDisjointShells(List<EdgeRing> shellList) {
     findOuterShells(shellList);
     
     bool isMoreToScan;
@@ -315,7 +315,7 @@ class Polygonizer
    *  
    * @param shellList the list of shell EdgeRings
    */
-  private static void findOuterShells(List<EdgeRing> shellList) {
+ /**private */static void findOuterShells(List<EdgeRing> shellList) {
 
     for (EdgeRing er : shellList) {
       EdgeRing outerHoleER = er.getOuterHole();
@@ -334,7 +334,7 @@ class Polygonizer
    * @param invalidRings
    * @return
    */
-  private List<LineString> extractInvalidLines(List<EdgeRing> invalidRings) {
+ /**private */List<LineString> extractInvalidLines(List<EdgeRing> invalidRings) {
     /**
      * Sort rings by increasing envelope area.
      * This causes inner rings to be processed before the outer rings
@@ -372,7 +372,7 @@ class Polygonizer
    * @param invalidRing the ring to test
    * @return true if the ring should be included
    */
-  private bool isIncludedInvalid(EdgeRing invalidRing) {
+ /**private */bool isIncludedInvalid(EdgeRing invalidRing) {
     for (PolygonizeDirectedEdge de : invalidRing.getEdges()) {
       PolygonizeDirectedEdge deAdj = (PolygonizeDirectedEdge) de.getSym();
       EdgeRing erAdj = deAdj.getRing();
@@ -386,7 +386,7 @@ class Polygonizer
     return false;
   }
 
-  private static List<Polygon> extractPolygons(List<EdgeRing> shellList, bool includeAll) {
+ /**private */static List<Polygon> extractPolygons(List<EdgeRing> shellList, bool includeAll) {
     List<Polygon> polyList = new ArrayList<Polygon>();
     for (EdgeRing er : shellList) {
       if (includeAll || er.isIncluded()) {

@@ -51,7 +51,7 @@ public class BufferTest extends GeometryTestCase {
     checkPointBufferSegmentCount(g, 80, 129);
   }
   
-  private void checkPointBufferSegmentCount(Geometry g, double dist, int quadSegs) {
+ /**private */void checkPointBufferSegmentCount(Geometry g, double dist, int quadSegs) {
     Geometry buf = g.buffer(dist, quadSegs);
     int segsExpected = 4 * quadSegs + 1;
     assertEquals(segsExpected, buf.getNumPoints());
@@ -609,39 +609,39 @@ public class BufferTest extends GeometryTestCase {
   
   //===================================================
   
-  private static BufferParameters bufParamRoundMitre(double mitreLimit) {
+ /**private */static BufferParameters bufParamRoundMitre(double mitreLimit) {
     BufferParameters param = new BufferParameters();
     param.setJoinStyle(BufferParameters.JOIN_MITRE);
     param.setMitreLimit(mitreLimit);
     return param;
   }
   
-  private void checkBuffer(String wkt, double dist, BufferParameters param, String wktExpected) {
+ /**private */void checkBuffer(String wkt, double dist, BufferParameters param, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry result = BufferOp.bufferOp(geom, dist, param);
     Geometry expected = read(wktExpected);
     checkEqual(expected, result, 0.01);
   }
   
-  private void checkBufferEmpty(String wkt, double dist, boolean isEmptyExpected) {
+ /**private */void checkBufferEmpty(String wkt, double dist, boolean isEmptyExpected) {
     Geometry a = read(wkt);
     Geometry result = a.buffer(dist);
     assertTrue(isEmptyExpected == result.isEmpty());
   }
 
-  private void checkBufferHasHole(String wkt, double dist, boolean isHoleExpected) {
+ /**private */void checkBufferHasHole(String wkt, double dist, boolean isHoleExpected) {
     Geometry a = read(wkt);
     Geometry result = a.buffer(dist);
     assertTrue(isHoleExpected == hasHole(result));
   }
 
-  private void checkBufferNumGeometries(String wkt, double dist, int numExpected) {
+ /**private */void checkBufferNumGeometries(String wkt, double dist, int numExpected) {
     Geometry a = read(wkt);
     Geometry result = a.buffer(dist);
     assertTrue(numExpected == result.getNumGeometries());
   }
 
-  private boolean hasHole(Geometry geom) {
+ /**private */boolean hasHole(Geometry geom) {
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Polygon poly = (Polygon) geom.getGeometryN(i);
       if (poly.getNumInteriorRing() > 0) return true;

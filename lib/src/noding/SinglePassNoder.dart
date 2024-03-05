@@ -26,7 +26,7 @@ abstract class SinglePassNoder
     implements Noder
 {
 
-  protected SegmentIntersector segInt;
+ /**protected */SegmentIntersector segInt;
 
   SinglePassNoder() {
   }

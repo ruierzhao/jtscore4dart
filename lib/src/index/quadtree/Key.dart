@@ -33,10 +33,10 @@ class Key {
   }
 
   // the fields which make up the key
-  private Coordinate pt = new Coordinate();
-  private int level = 0;
+ /**private */Coordinate pt = new Coordinate();
+ /**private */int level = 0;
   // auxiliary data which is derived from the key for use in computation
-  private Envelope env = null;
+ /**private */Envelope env = null;
 
   Key(Envelope itemEnv)
   {
@@ -70,7 +70,7 @@ class Key {
     }
   }
 
-  private void computeKey(int level, Envelope itemEnv)
+ /**private */void computeKey(int level, Envelope itemEnv)
   {
     double quadSize = DoubleBits.powerOf2(level);
     pt.x = math.floor(itemEnv.getMinX() / quadSize) * quadSize;

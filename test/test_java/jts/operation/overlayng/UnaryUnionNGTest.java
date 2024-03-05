@@ -64,7 +64,7 @@ public class UnaryUnionNGTest extends GeometryTestCase
         "GEOMETRYCOLLECTION EMPTY");
   }
 
-  private void checkUnaryUnion(String wkt, double scaleFactor, String wktExpected) {
+ /**private */void checkUnaryUnion(String wkt, double scaleFactor, String wktExpected) {
     Geometry geom = read(wkt);
     Geometry expected = read(wktExpected);
     PrecisionModel pm = new PrecisionModel(scaleFactor);
@@ -72,7 +72,7 @@ public class UnaryUnionNGTest extends GeometryTestCase
     checkEqual(expected, result);
   }
   
-  private void checkUnaryUnion(String[] wkt, double scaleFactor, String wktExpected) {
+ /**private */void checkUnaryUnion(String[] wkt, double scaleFactor, String wktExpected) {
     List geoms = readList(wkt);
     Geometry expected = read(wktExpected);
     PrecisionModel pm = new PrecisionModel(scaleFactor);

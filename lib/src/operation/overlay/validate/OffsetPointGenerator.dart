@@ -37,9 +37,9 @@
  */
 class OffsetPointGenerator
 {
-  private Geometry g;
-  private bool doLeft = true; 
-  private bool doRight = true;
+ /**private */Geometry g;
+ /**private */bool doLeft = true; 
+ /**private */bool doRight = true;
   
   OffsetPointGenerator(Geometry g)
   {
@@ -75,7 +75,7 @@ class OffsetPointGenerator
     return offsetPts;
   }
 
-  private void extractPoints(LineString line, double offsetDistance, List offsetPts)
+ /**private */void extractPoints(LineString line, double offsetDistance, List offsetPts)
   {
     List<Coordinate> pts = line.getCoordinates();
     for (int i = 0; i < pts.length - 1; i++) {
@@ -91,7 +91,7 @@ class OffsetPointGenerator
    * @param p0 the first point of the segment to offset from
    * @param p1 the second point of the segment to offset from
    */
-  private void computeOffsetPoints(Coordinate p0, Coordinate p1, double offsetDistance, List offsetPts)
+ /**private */void computeOffsetPoints(Coordinate p0, Coordinate p1, double offsetDistance, List offsetPts)
   {
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;

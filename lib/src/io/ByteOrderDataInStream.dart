@@ -21,15 +21,15 @@
 class ByteOrderDataInStream
 {
  
-  private int byteOrder = ByteOrderValues.BIG_ENDIAN;
-  private InStream stream;
+ /**private */int byteOrder = ByteOrderValues.BIG_ENDIAN;
+ /**private */InStream stream;
   // buffers to hold primitive datatypes
-  private byte[] buf1 = new byte[1];
-  private byte[] buf4 = new byte[4];
-  private byte[] buf8 = new byte[8];
-  private byte[] bufLast = null;
+ /**private */byte[] buf1 = new byte[1];
+ /**private */byte[] buf4 = new byte[4];
+ /**private */byte[] buf8 = new byte[8];
+ /**private */byte[] bufLast = null;
   
-  private long count = 0;
+ /**private */long count = 0;
 
   ByteOrderDataInStream()
   {
@@ -136,7 +136,7 @@ class ByteOrderDataInStream
     return ByteOrderValues.getDouble(buf8, byteOrder);
   }
 
-  private void read(byte[] buf) throws IOException, ParseException {
+ /**private */void read(byte[] buf) throws IOException, ParseException {
     int num = stream.read(buf);
     if (num < buf.length) 
       throw new ParseException("Attempt to read past end of input");

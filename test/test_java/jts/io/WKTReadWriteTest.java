@@ -11,14 +11,14 @@ import junit.textui.TestRunner;
 public class WKTReadWriteTest extends TestCase {
 
   // We deliberately chose a coordinate sequence factory that can handle 4 dimensions
-  private final CoordinateSequenceFactory csFactory =
+ /**private */final CoordinateSequenceFactory csFactory =
           PackedCoordinateSequenceFactory.DOUBLE_FACTORY;
-  private final GeometryFactory geometryFactory =
+ /**private */final GeometryFactory geometryFactory =
           new GeometryFactory(csFactory);
-  private final WKTReader reader =
+ /**private */final WKTReader reader =
           new WKTReader(geometryFactory);
 
-  private final WKTWriter writer =
+ /**private */final WKTWriter writer =
           new WKTWriter(4);
 
   public static void main(String[] args) {

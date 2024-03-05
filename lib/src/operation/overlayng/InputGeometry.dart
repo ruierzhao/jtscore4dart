@@ -30,10 +30,10 @@ class InputGeometry {
   
   //private static final PointLocator ptLocator = new PointLocator();
 
-  private List<Geometry> geom = new Geometry[2];
-  private PointOnGeometryLocator ptLocatorA;
-  private PointOnGeometryLocator ptLocatorB;
-  private bool[] isCollapsed = new bool[2];
+ /**private */List<Geometry> geom = new Geometry[2];
+ /**private */PointOnGeometryLocator ptLocatorA;
+ /**private */PointOnGeometryLocator ptLocatorB;
+ /**private */bool[] isCollapsed = new bool[2];
   
   InputGeometry(Geometry geomA, Geometry geomB) {
     geom = new List<Geometry> { geomA, geomB };
@@ -133,7 +133,7 @@ class InputGeometry {
     //*/
   }
 
-  private PointOnGeometryLocator getLocator(int geomIndex) {
+ /**private */PointOnGeometryLocator getLocator(int geomIndex) {
     if (geomIndex == 0) {
       if (ptLocatorA == null)
         ptLocatorA = new IndexedPointInAreaLocator(getGeometry(geomIndex));

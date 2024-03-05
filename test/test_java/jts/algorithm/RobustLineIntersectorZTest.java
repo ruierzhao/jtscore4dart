@@ -144,7 +144,7 @@ public class RobustLineIntersectorZTest extends GeometryTestCase {
   
   //======================================================
 
-  private void checkIntersection(LineSegment line1, LineSegment line2, 
+ /**private */void checkIntersection(LineSegment line1, LineSegment line2, 
       Coordinate p1, Coordinate p2) {
     checkIntersectionDir(line1, line2, p1, p2);
     checkIntersectionDir(line2, line1, p1, p2);
@@ -154,7 +154,7 @@ public class RobustLineIntersectorZTest extends GeometryTestCase {
     checkIntersectionDir(line2Rev, line1Rev, p1, p2);
   }
 
-  private void checkIntersectionDir(LineSegment line1, LineSegment line2, Coordinate p1, Coordinate p2) {
+ /**private */void checkIntersectionDir(LineSegment line1, LineSegment line2, Coordinate p1, Coordinate p2) {
     LineIntersector li = new RobustLineIntersector();
     li.computeIntersection(
         line1.p0, line1.p1,
@@ -174,7 +174,7 @@ public class RobustLineIntersectorZTest extends GeometryTestCase {
     checkEqualXYZ( p2, actual2 );
   }
 
-  private void checkIntersection(LineSegment line1, LineSegment line2, Coordinate pt) {
+ /**private */void checkIntersection(LineSegment line1, LineSegment line2, Coordinate pt) {
     checkIntersectionDir(line1, line2, pt);
     checkIntersectionDir(line2, line1, pt);
     LineSegment line1Rev = new LineSegment(line1.p1, line1.p0);
@@ -183,7 +183,7 @@ public class RobustLineIntersectorZTest extends GeometryTestCase {
     checkIntersectionDir(line2Rev, line1Rev, pt);
   }
   
-  private void checkIntersectionDir(LineSegment line1, LineSegment line2, Coordinate pt) {
+ /**private */void checkIntersectionDir(LineSegment line1, LineSegment line2, Coordinate pt) {
     LineIntersector li = new RobustLineIntersector();
     li.computeIntersection(
         line1.p0, line1.p1,
@@ -193,20 +193,20 @@ public class RobustLineIntersectorZTest extends GeometryTestCase {
     checkEqualXYZ( pt, actual );
   }
 
-  private static Coordinate pt(double x, double y, double z) {
+ /**private */static Coordinate pt(double x, double y, double z) {
     return new Coordinate(x, y, z);
   }
 
-  private static Coordinate pt(double x, double y) {
+ /**private */static Coordinate pt(double x, double y) {
     return pt(x, y, Double.NaN);
   }
 
-  private static LineSegment line(double x1, double y1, double z1,
+ /**private */static LineSegment line(double x1, double y1, double z1,
       double x2, double y2, double z2) {
     return new LineSegment(new Coordinate(x1, y1, z1),
         new Coordinate(x2, y2, z2));
   }
-  private static LineSegment line(double x1, double y1,
+ /**private */static LineSegment line(double x1, double y1,
       double x2, double y2) {
     return new LineSegment(new Coordinate(x1, y1),
         new Coordinate(x2, y2));

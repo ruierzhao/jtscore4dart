@@ -80,10 +80,10 @@ class QuadEdgeSubdivision {
 
 	private final static double EDGE_COINCIDENCE_TOL_FACTOR = 1000;
 	
-  private static final double FRAME_SIZE_FACTOR = 10.0;
+ /**private */static final double FRAME_SIZE_FACTOR = 10.0;
 
 	// debugging only - preserve current subdiv statically
-	// private static QuadEdgeSubdivision currentSubdiv;
+	///**private */static QuadEdgeSubdivision currentSubdiv;
 
 	// used for edge extraction to ensure edge uniqueness
 	private int visitedKey = 0;

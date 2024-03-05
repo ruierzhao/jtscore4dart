@@ -74,7 +74,7 @@ class _BidirectionalComparator implements Comparable /**Comparator */ {
 /// @version 1.7
 /// 工具类
 abstract class CoordinateArrays {
-  // private final static List<Coordinate> coordArrayType = new Coordinate[0];
+  ///**private */final static List<Coordinate> coordArrayType = new Coordinate[0];
 
   /// Determine dimension based on subclass of {@link Coordinate}.
   ///

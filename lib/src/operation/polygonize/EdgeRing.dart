@@ -92,22 +92,22 @@ class EdgeRing {
     return edges;
   }
   
-  private GeometryFactory factory;
+ /**private */GeometryFactory factory;
 
-  private List<PolygonizeDirectedEdge> deList = new ArrayList<PolygonizeDirectedEdge>();
+ /**private */List<PolygonizeDirectedEdge> deList = new ArrayList<PolygonizeDirectedEdge>();
   
   // cache the following data for efficiency
-  private LinearRing ring = null;
-  private IndexedPointInAreaLocator locator;
+ /**private */LinearRing ring = null;
+ /**private */IndexedPointInAreaLocator locator;
   
-  private List<Coordinate> ringPts = null;
-  private List<LinearRing> holes;
-  private EdgeRing shell;
-  private bool isHole;
-  private bool isValid = false;
-  private bool isProcessed = false;
-  private bool isIncludedSet = false;
-  private bool isIncluded = false;
+ /**private */List<Coordinate> ringPts = null;
+ /**private */List<LinearRing> holes;
+ /**private */EdgeRing shell;
+ /**private */bool isHole;
+ /**private */bool isValid = false;
+ /**private */bool isProcessed = false;
+ /**private */bool isIncludedSet = false;
+ /**private */bool isIncluded = false;
 
 
   EdgeRing(GeometryFactory factory)
@@ -130,7 +130,7 @@ class EdgeRing {
    * Adds a {@link DirectedEdge} which is known to form part of this ring.
    * @param de the {@link DirectedEdge} to add.
    */
-  private void add(DirectedEdge de)
+ /**private */void add(DirectedEdge de)
   {
     deList.add((PolygonizeDirectedEdge) de);
   }
@@ -235,7 +235,7 @@ class EdgeRing {
     this.isIncludedSet = true;
   }
 
-  private PointOnGeometryLocator getLocator() {
+ /**private */PointOnGeometryLocator getLocator() {
     if (locator == null) {
       locator = new IndexedPointInAreaLocator(getRing());
     }
@@ -257,7 +257,7 @@ class EdgeRing {
    * @param ring ring to test
    * @return true if ring is properly contained
    */
-  private bool contains(EdgeRing ring) {
+ /**private */bool contains(EdgeRing ring) {
     // the test envelope must be properly contained
     // (guards against testing rings against themselves)
     Envelope env = getEnvelope();
@@ -267,7 +267,7 @@ class EdgeRing {
     return isPointInOrOut(ring);
   }
   
-  private bool isPointInOrOut(EdgeRing ring) {
+ /**private */bool isPointInOrOut(EdgeRing ring) {
     // in most cases only one or two points will be checked
     for (Coordinate pt : ring.getCoordinates()) {
       int loc = locate(pt);
@@ -288,7 +288,7 @@ class EdgeRing {
    *
    * @return an array of the {@link Coordinate}s in this ring
    */
-  private List<Coordinate> getCoordinates()
+ /**private */List<Coordinate> getCoordinates()
   {
     if (ringPts == null) {
       CoordinateList coordList = new CoordinateList();
@@ -332,11 +332,11 @@ class EdgeRing {
     return ring;
   }
 
-  private Envelope getEnvelope() {
+ /**private */Envelope getEnvelope() {
     return getRing().getEnvelopeInternal();
   }
   
-  private static void addEdge(List<Coordinate> coords, bool isForward, CoordinateList coordList)
+ /**private */static void addEdge(List<Coordinate> coords, bool isForward, CoordinateList coordList)
   {
     if (isForward) {
       for (int i = 0; i < coords.length; i++) {

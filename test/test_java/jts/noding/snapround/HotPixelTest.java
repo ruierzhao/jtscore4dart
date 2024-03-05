@@ -201,7 +201,7 @@ public class HotPixelTest extends TestCase {
 
   //================================================
   
-  private void checkIntersects(boolean expected, 
+ /**private */void checkIntersects(boolean expected, 
       double x, double y, double scale, 
       double x1, double y1, double x2, double y2) {
     HotPixel hp = new HotPixel(new Coordinate(x,y), scale);

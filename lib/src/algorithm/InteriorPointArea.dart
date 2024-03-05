@@ -84,12 +84,12 @@ class InteriorPointArea {
     return intPt.getInteriorPoint();
   }
   
-  private static double avg(double a, double b) {
+ /**private */static double avg(double a, double b) {
     return (a + b) / 2.0;
   }
 
-  private Coordinate interiorPoint = null;
-  private double maxWidth = -1;
+ /**private */Coordinate interiorPoint = null;
+ /**private */double maxWidth = -1;
 
   /**
    * Creates a new interior point finder for an areal geometry.
@@ -117,7 +117,7 @@ class InteriorPointArea {
    * 
    * @param geom the geometry to process
    */
-  private void process(Geometry geom) {
+ /**private */void process(Geometry geom) {
     if ( geom.isEmpty() )
       return;
 
@@ -138,7 +138,7 @@ class InteriorPointArea {
    * 
    * @param polygon the polygon to process
    */
-  private void processPolygon(Polygon polygon) {
+ /**private */void processPolygon(Polygon polygon) {
     InteriorPointPolygon intPtPoly = new InteriorPointPolygon(polygon);
     intPtPoly.process();
     double width = intPtPoly.getWidth();
@@ -156,11 +156,11 @@ class InteriorPointArea {
    * @author mdavis
    *
    */
-  private static class InteriorPointPolygon {
-    private Polygon polygon;
-    private double interiorPointY;
-    private double interiorSectionWidth = 0.0;
-    private Coordinate interiorPoint = null;
+ /**private */static class InteriorPointPolygon {
+   /**private */Polygon polygon;
+   /**private */double interiorPointY;
+   /**private */double interiorSectionWidth = 0.0;
+   /**private */Coordinate interiorPoint = null;
 
     /**
      * Creates a new InteriorPointPolygon instance.
@@ -215,7 +215,7 @@ class InteriorPointArea {
       findBestMidpoint(crossings);
     }
 
-    private void scanRing(LinearRing ring, List<Double> crossings) {
+   /**private */void scanRing(LinearRing ring, List<Double> crossings) {
       // skip rings which don't cross scan line
       if ( !intersectsHorizontalLine(ring.getEnvelopeInternal(), interiorPointY) )
         return;
@@ -228,7 +228,7 @@ class InteriorPointArea {
       }
     }
 
-    private void addEdgeCrossing(Coordinate p0, Coordinate p1, double scanY, List<Double> crossings) {
+   /**private */void addEdgeCrossing(Coordinate p0, Coordinate p1, double scanY, List<Double> crossings) {
       // skip non-crossing segments
       if ( !intersectsHorizontalLine(p0, p1, scanY) )
         return;
@@ -248,7 +248,7 @@ class InteriorPointArea {
      * 
      * @param crossings the list of scan-line crossing X ordinates
      */
-    private void findBestMidpoint(List<Double> crossings) {
+   /**private */void findBestMidpoint(List<Double> crossings) {
       // zero-area polygons will have no crossings
       if (crossings.size() == 0) return;
       
@@ -285,7 +285,7 @@ class InteriorPointArea {
      * @param scanY the Y-ordinate of the horizontal line
      * @return true if the edge crossing is counted
      */
-    private static bool isEdgeCrossingCounted(Coordinate p0, Coordinate p1, double scanY) {
+   /**private */static bool isEdgeCrossingCounted(Coordinate p0, Coordinate p1, double scanY) {
       double y0 = p0.getY();
       double y1 = p1.getY();
       // skip horizontal lines
@@ -313,7 +313,7 @@ class InteriorPointArea {
      * @param Y  the Y-ordinate of the horizontal line
      * @return
      */
-    private static double intersection(Coordinate p0, Coordinate p1, double Y) {
+   /**private */static double intersection(Coordinate p0, Coordinate p1, double Y) {
       double x0 = p0.getX();
       double x1 = p1.getX();
 
@@ -335,7 +335,7 @@ class InteriorPointArea {
      * @param y the Y-ordinate of the horizontal line
      * @return true if the envelope and line intersect
      */
-    private static bool intersectsHorizontalLine(Envelope env, double y) {
+   /**private */static bool intersectsHorizontalLine(Envelope env, double y) {
       if ( y < env.getMinY() )
         return false;
       if ( y > env.getMaxY() )
@@ -351,7 +351,7 @@ class InteriorPointArea {
      * @param y the Y-ordinate of the horizontal line
      * @return true if the segment and line intersect
      */
-    private static bool intersectsHorizontalLine(Coordinate p0, Coordinate p1, double y) {
+   /**private */static bool intersectsHorizontalLine(Coordinate p0, Coordinate p1, double y) {
       // both ends above?
       if ( p0.getY() > y && p1.getY() > y )
         return false;
@@ -364,7 +364,7 @@ class InteriorPointArea {
     
     /*
     // for testing only
-    private static void checkIntersectionDD(Coordinate p0, Coordinate p1, double scanY, double xInt) {
+   /**private */static void checkIntersectionDD(Coordinate p0, Coordinate p1, double scanY, double xInt) {
       double xIntDD = intersectionDD(p0, p1, scanY);
       System.out.println(
           ((xInt != xIntDD) ? ">>" : "")
@@ -372,7 +372,7 @@ class InteriorPointArea {
           + "   y: " + scanY + "   " + WKTWriter.toLineString(p0, p1) );
     }
 
-    private static double intersectionDD(Coordinate p0, Coordinate p1, double Y) {
+   /**private */static double intersectionDD(Coordinate p0, Coordinate p1, double Y) {
       double x0 = p0.getX();
       double x1 = p1.getX();
 
@@ -406,17 +406,17 @@ class InteriorPointArea {
    * @author mdavis
    *
    */
-  private static class ScanLineYOrdinateFinder {
+ /**private */static class ScanLineYOrdinateFinder {
     static double getScanLineY(Polygon poly) {
       ScanLineYOrdinateFinder finder = new ScanLineYOrdinateFinder(poly);
       return finder.getScanLineY();
     }
 
-    private Polygon poly;
+   /**private */Polygon poly;
 
-    private double centreY;
-    private double hiY = Double.MAX_VALUE;
-    private double loY = -Double.MAX_VALUE;
+   /**private */double centreY;
+   /**private */double hiY = Double.MAX_VALUE;
+   /**private */double loY = -Double.MAX_VALUE;
 
     ScanLineYOrdinateFinder(Polygon poly) {
       this.poly = poly;
@@ -436,7 +436,7 @@ class InteriorPointArea {
       return scanLineY;
     }
 
-    private void process(LineString line) {
+   /**private */void process(LineString line) {
       CoordinateSequence seq = line.getCoordinateSequence();
       for (int i = 0; i < seq.size(); i++) {
         double y = seq.getY(i);
@@ -444,7 +444,7 @@ class InteriorPointArea {
       }
     }
 
-    private void updateInterval(double y) {
+   /**private */void updateInterval(double y) {
       if ( y <= centreY ) {
         if ( y > loY )
           loY = y;

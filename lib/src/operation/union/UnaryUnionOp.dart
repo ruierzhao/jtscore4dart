@@ -109,8 +109,8 @@ class UnaryUnionOp
 	
 	private GeometryFactory geomFact = null;
 
-  private InputExtracter extracter;
-  private UnionStrategy unionFunction = CascadedPolygonUnion.CLASSIC_UNION;
+ /**private */InputExtracter extracter;
+ /**private */UnionStrategy unionFunction = CascadedPolygonUnion.CLASSIC_UNION;
 
 	/**
 	 * Constructs a unary union operation for a {@link Collection} 
@@ -247,7 +247,7 @@ class UnaryUnionOp
    * @return the union of the input(s)
    * or null if both inputs are null
    */
-  private Geometry unionWithNull(Geometry g0, Geometry g1)
+ /**private */Geometry unionWithNull(Geometry g0, Geometry g1)
   {
   	if (g0 == null && g1 == null)
   		return null;

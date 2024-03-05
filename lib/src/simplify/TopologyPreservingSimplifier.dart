@@ -73,9 +73,9 @@ class TopologyPreservingSimplifier
     return tss.getResultGeometry();
   }
 
-  private Geometry inputGeom;
-  private TaggedLinesSimplifier lineSimplifier = new TaggedLinesSimplifier();
-  private Map<LineString, TaggedLineString> linestringMap;
+ /**private */Geometry inputGeom;
+ /**private */TaggedLinesSimplifier lineSimplifier = new TaggedLinesSimplifier();
+ /**private */Map<LineString, TaggedLineString> linestringMap;
 
   TopologyPreservingSimplifier(Geometry inputGeom)
   {
@@ -112,13 +112,13 @@ class TopologyPreservingSimplifier
   static class LineStringTransformer
       extends GeometryTransformer
   {
-    private Map<LineString, TaggedLineString> linestringMap;
+   /**private */Map<LineString, TaggedLineString> linestringMap;
     
     LineStringTransformer(Map<LineString, TaggedLineString> linestringMap) {
       this.linestringMap = linestringMap;
     }
     
-    protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
+   /**protected */CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
     {
       if (coords.size() == 0) return null;
     	// for linear components (including rings), simplify the linestring

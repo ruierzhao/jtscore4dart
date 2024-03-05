@@ -55,7 +55,7 @@ public class VertexSequencePackedRtreeTest extends TestCase {
     checkQuery(tree, 0,0,0,0,   result( 0, 10 ));
   }
   
-  private void checkQuery(VertexSequencePackedRtree tree, 
+ /**private */void checkQuery(VertexSequencePackedRtree tree, 
       double xmin, double ymin, double xmax, double ymax, int[] expected) {
     Envelope env = new Envelope(xmin, xmax, ymin, ymax);
     int[] result = tree.query(env);
@@ -63,7 +63,7 @@ public class VertexSequencePackedRtreeTest extends TestCase {
     assertTrue( isEqualResult(expected, result) );
   }
 
-  private boolean isEqualResult(int[] expected, int[] result) {
+ /**private */boolean isEqualResult(int[] expected, int[] result) {
     for (int i = 0; i < result.length; i++) {
       if (expected[i] != result[i])
         return false;
@@ -72,11 +72,11 @@ public class VertexSequencePackedRtreeTest extends TestCase {
     return true;
   }
 
-  private int[] result(int... i) {
+ /**private */int[] result(int... i) {
     return i;
   }
 
-  private VertexSequencePackedRtree createSPRtree(int... ords) {
+ /**private */VertexSequencePackedRtree createSPRtree(int... ords) {
     int  numCoord = ords.length / 2;
     Coordinate[] pt = new Coordinate[numCoord];
     for (int i = 0 ; i < numCoord; i++) {

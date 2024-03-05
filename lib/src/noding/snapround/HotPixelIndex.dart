@@ -33,8 +33,8 @@
  *
  */
 class HotPixelIndex {
-  private PrecisionModel precModel;
-  private double scaleFactor;
+ /**private */PrecisionModel precModel;
+ /**private */double scaleFactor;
 
   /**
    * Use a kd-tree to index the pixel centers for optimum performance.
@@ -42,7 +42,7 @@ class HotPixelIndex {
    * index must enlarge the query range by a suitable value
    * (using the pixel width is safest).
    */
-  private KdTree index = new KdTree();
+ /**private */KdTree index = new KdTree();
 
   HotPixelIndex(PrecisionModel pm) {
     this.precModel = pm;
@@ -55,12 +55,12 @@ class HotPixelIndex {
    *
    * @see <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">Fihser-Yates shuffle</a>
    */
-  private static final class CoordinateShuffler implements Iterator<Coordinate> {
+ /**private */static final class CoordinateShuffler implements Iterator<Coordinate> {
 
-    private final Random rnd = new Random(13);
-    private final List<Coordinate> coordinates;
-    private final int[] indices;
-    private int index;
+   /**private */final Random rnd = new Random(13);
+   /**private */final List<Coordinate> coordinates;
+   /**private */final int[] indices;
+   /**private */int index;
 
     /**
      * Creates an instance of this class
@@ -155,14 +155,14 @@ class HotPixelIndex {
     return hp;
   }
 
-  private HotPixel find(Coordinate pixelPt) {
+ /**private */HotPixel find(Coordinate pixelPt) {
     KdNode kdNode = index.query(pixelPt);
     if (kdNode == null)
       return null;
     return (HotPixel) kdNode.getData();
   }
 
-  private Coordinate round(Coordinate pt) {
+ /**private */Coordinate round(Coordinate pt) {
     Coordinate p2 = pt.copy();
     precModel.makePrecise(p2);
     return p2;

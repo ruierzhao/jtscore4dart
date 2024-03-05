@@ -32,9 +32,9 @@
  *
  */
 class OverlayLabeller {
-  private OverlayGraph graph;
-  private InputGeometry inputGeometry;
-  private Collection<OverlayEdge> edges;
+ /**private */OverlayGraph graph;
+ /**private */InputGeometry inputGeometry;
+ /**private */Collection<OverlayEdge> edges;
   
   OverlayLabeller(OverlayGraph graph, InputGeometry inputGeometry) {
     this.graph = graph;
@@ -73,7 +73,7 @@ class OverlayLabeller {
    *  
    * @param nodes the nodes to label
    */
-  private void labelAreaNodeEdges(Collection<OverlayEdge> nodes) {
+ /**private */void labelAreaNodeEdges(Collection<OverlayEdge> nodes) {
     for (OverlayEdge nodeEdge : nodes) {
       propagateAreaLocations(nodeEdge, 0);
       if (inputGeometry.hasEdges(1)) {
@@ -160,7 +160,7 @@ class OverlayLabeller {
    * @param geomIndex the parent geometry index
    * @return a boundary edge, or null if no boundary edge exists
    */
-  private static OverlayEdge findPropagationStartEdge(OverlayEdge nodeEdge, int geomIndex) {
+ /**private */static OverlayEdge findPropagationStartEdge(OverlayEdge nodeEdge, int geomIndex) {
     OverlayEdge eStart = nodeEdge;
     do {
       OverlayLabel label = eStart.getLabel();
@@ -197,7 +197,7 @@ class OverlayLabeller {
    * (These would get labeled anyway during subsequent disconnected labeling pass,
    * but may be more efficient and accurate to do it here.)
    */
-  private void labelCollapsedEdges() {
+ /**private */void labelCollapsedEdges() {
     for (OverlayEdge edge : edges) {
       if (edge.getLabel().isLineLocationUnknown(0)) {
         labelCollapsedEdge(edge, 0);
@@ -208,7 +208,7 @@ class OverlayLabeller {
     }
   }
 
-  private void labelCollapsedEdge(OverlayEdge edge, int geomIndex) {
+ /**private */void labelCollapsedEdge(OverlayEdge edge, int geomIndex) {
     //Debug.println("\n------  labelCollapsedEdge - geomIndex= " + geomIndex);
     //Debug.print("BEFORE: " + edge.toStringNode());
     OverlayLabel label = edge.getLabel();
@@ -227,7 +227,7 @@ class OverlayLabeller {
    * but are connected to a linear edge with known location.
    * In this case linear location is propagated to the connected edges.
    */
-  private void labelConnectedLinearEdges() {
+ /**private */void labelConnectedLinearEdges() {
     //TODO: can these be merged to avoid two scans?
     propagateLinearLocations(0);
     if (inputGeometry.hasEdges(1)) {
@@ -241,7 +241,7 @@ class OverlayLabeller {
    * 
    * @param geomIndex the index of the input geometry to label
    */
-  private void propagateLinearLocations(int geomIndex) {
+ /**private */void propagateLinearLocations(int geomIndex) {
     // find located linear edges
     List<OverlayEdge> linearEdges = findLinearEdgesWithLocation(edges, geomIndex);
     if (linearEdges.size() <= 0) return;
@@ -259,7 +259,7 @@ class OverlayLabeller {
     }
   }
   
-  private static void propagateLinearLocationAtNode(OverlayEdge eNode, 
+ /**private */static void propagateLinearLocationAtNode(OverlayEdge eNode, 
       int geomIndex, bool isInputLine, 
       Deque<OverlayEdge> edgeStack) {
     int lineLoc = eNode.getLabel().getLineLocation(geomIndex);
@@ -300,7 +300,7 @@ class OverlayLabeller {
    * @param geomIndex the index of the input geometry
    * @return list of linear edges with known location
    */
-  private static List<OverlayEdge> findLinearEdgesWithLocation(
+ /**private */static List<OverlayEdge> findLinearEdgesWithLocation(
       Collection<OverlayEdge>edges, int geomIndex) {
     List<OverlayEdge> linearEdges = new ArrayList<OverlayEdge>();
     for (OverlayEdge edge : edges) {
@@ -328,7 +328,7 @@ class OverlayLabeller {
    * be determined via a PIP test.
    * If the input is not an Area the location is EXTERIOR. 
    */
-  private void labelDisconnectedEdges() {
+ /**private */void labelDisconnectedEdges() {
     for (OverlayEdge edge : edges) {
       //Debug.println("\n------  checking for Disconnected edge " + edge);
       if (edge.getLabel().isLineLocationUnknown(0)) {
@@ -351,7 +351,7 @@ class OverlayLabeller {
    * @param edge the edge to label
    * @param geomIndex the input geometry to label against
    */
-  private void labelDisconnectedEdge(OverlayEdge edge, int geomIndex) { 
+ /**private */void labelDisconnectedEdge(OverlayEdge edge, int geomIndex) { 
      OverlayLabel label = edge.getLabel();
      //Assert.isTrue(label.isNotPart(geomIndex));
     
@@ -394,7 +394,7 @@ class OverlayLabeller {
    * @param edge the edge to locate
    * @return the location of the edge
    */
-  private int locateEdge(int geomIndex, OverlayEdge edge) {
+ /**private */int locateEdge(int geomIndex, OverlayEdge edge) {
     int loc = inputGeometry.locatePointInArea(geomIndex, edge.orig());
     int edgeLoc = loc != Location.EXTERIOR ? Location.INTERIOR : Location.EXTERIOR;
     return edgeLoc;
@@ -415,7 +415,7 @@ class OverlayLabeller {
    * @param edge the edge to locate
    * @return the location of the edge
    */
-  private int locateEdgeBothEnds(int geomIndex, OverlayEdge edge) {
+ /**private */int locateEdgeBothEnds(int geomIndex, OverlayEdge edge) {
     /*
      * To improve the robustness of the point location,
      * check both ends of the edge.

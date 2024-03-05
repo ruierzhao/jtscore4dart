@@ -23,7 +23,7 @@
  */
 abstract class ShortCircuitedGeometryVisitor
 {
-  private bool isDone = false;
+ /**private */bool isDone = false;
 
   ShortCircuitedGeometryVisitor() {
   }
@@ -43,7 +43,7 @@ abstract class ShortCircuitedGeometryVisitor
     }
   }
 
-  protected abstract void visit(Geometry element);
+ /**protected */abstract void visit(Geometry element);
 
   /**
    * Reports whether visiting components can be terminated.
@@ -52,5 +52,5 @@ abstract class ShortCircuitedGeometryVisitor
    * 
    * @return true if visiting can be terminated.
    */
-  protected abstract bool isDone();
+ /**protected */abstract bool isDone();
 }

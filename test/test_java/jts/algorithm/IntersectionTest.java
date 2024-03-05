@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 public class IntersectionTest extends TestCase {
-  private static final double MAX_ABS_ERROR = 1e-5;
+ /**private */static final double MAX_ABS_ERROR = 1e-5;
 
   public static void main(String args[]) {
     TestRunner.run(IntersectionTest.class);
@@ -73,7 +73,7 @@ public class IntersectionTest extends TestCase {
 
   //==================================================
   
-  private void checkIntersection(double p1x, double p1y, double p2x, double p2y, 
+ /**private */void checkIntersection(double p1x, double p1y, double p2x, double p2y, 
       double q1x, double q1y, double q2x, double q2y, 
       double expectedx, double expectedy) {
     Coordinate p1 = new Coordinate(p1x, p1y);
@@ -88,7 +88,7 @@ public class IntersectionTest extends TestCase {
     assertTrue(dist <= MAX_ABS_ERROR);
   }
   
-  private void checkIntersectionNull(double p1x, double p1y, double p2x, double p2y, 
+ /**private */void checkIntersectionNull(double p1x, double p1y, double p2x, double p2y, 
       double q1x, double q1y, double q2x, double q2y) {
     Coordinate p1 = new Coordinate(p1x, p1y);
     Coordinate p2 = new Coordinate(p2x, p2y);
@@ -98,7 +98,7 @@ public class IntersectionTest extends TestCase {
     assertTrue(actual == null);
   }
   
-  private void checkIntersectionLineSegment(double p1x, double p1y, double p2x, double p2y, 
+ /**private */void checkIntersectionLineSegment(double p1x, double p1y, double p2x, double p2y, 
       double q1x, double q1y, double q2x, double q2y, 
       double expectedx, double expectedy) {
     Coordinate p1 = new Coordinate(p1x, p1y);
@@ -113,7 +113,7 @@ public class IntersectionTest extends TestCase {
     assertTrue(dist <= MAX_ABS_ERROR);
   }
   
-  private void checkIntersectionLineSegmentNull(double p1x, double p1y, double p2x, double p2y, 
+ /**private */void checkIntersectionLineSegmentNull(double p1x, double p1y, double p2x, double p2y, 
       double q1x, double q1y, double q2x, double q2y) {
     Coordinate p1 = new Coordinate(p1x, p1y);
     Coordinate p2 = new Coordinate(p2x, p2y);

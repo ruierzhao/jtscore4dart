@@ -43,10 +43,10 @@
 ///@version 1.7
 class ConvexHull
 {
-  private static final int TUNING_REDUCE_SIZE = 50;
+ /**private */static final int TUNING_REDUCE_SIZE = 50;
   
-  private GeometryFactory geomFactory;
-  private List<Coordinate> inputPts;
+ /**private */GeometryFactory geomFactory;
+ /**private */List<Coordinate> inputPts;
 
   /// Create a new convex hull construction for the input {@link Geometry}.
   ConvexHull(Geometry geometry)
@@ -112,7 +112,7 @@ class ConvexHull
   /// done only once during the reduce phase.
   /// 
   /// @return a degenerate hull geometry, or null if the number of input points is large
-  private Geometry createFewPointsResult() {
+ /**private */Geometry createFewPointsResult() {
     List<Coordinate> uniquePts = extractUnique(inputPts, 2);
     if (uniquePts == null) {
       return null;
@@ -128,7 +128,7 @@ class ConvexHull
     }
   }
   
-  private static List<Coordinate> extractUnique(List<Coordinate> pts) {
+ /**private */static List<Coordinate> extractUnique(List<Coordinate> pts) {
     return extractUnique(pts, -1);
   }
   
@@ -142,7 +142,7 @@ class ConvexHull
   /// @param pts an array of Coordinates
   /// @param maxPts the maximum number of unique points to scan, or -1
   /// @return an array of unique values, or null
-  private static List<Coordinate> extractUnique(List<Coordinate> pts, int maxPts) {
+ /**private */static List<Coordinate> extractUnique(List<Coordinate> pts, int maxPts) {
     Set<Coordinate> uniquePts = new HashSet<Coordinate>();
     for (Coordinate pt : pts) {
       uniquePts.add(pt);
@@ -154,7 +154,7 @@ class ConvexHull
   
   /// An alternative to Stack.toArray, which is not present in earlier versions
   /// of Java.
-  protected List<Coordinate> toCoordinateArray(Stack<Coordinate> stack) {
+ /**protected */List<Coordinate> toCoordinateArray(Stack<Coordinate> stack) {
     List<Coordinate> coordinates = new Coordinate[stack.size()];
     for (int i = 0; i < stack.size(); i++) {
       Coordinate coordinate = (Coordinate) stack.get(i);
@@ -183,7 +183,7 @@ class ConvexHull
   ///
   /// @param pts the points to reduce
   /// @return the reduced list of points (at least 3)
-  private List<Coordinate> reduce(List<Coordinate> inputPts)
+ /**private */List<Coordinate> reduce(List<Coordinate> inputPts)
   {
     //List<Coordinate> polyPts = computeQuad(inputPts);
     List<Coordinate> innerPolyPts = computeInnerOctolateralRing(inputPts);
@@ -219,7 +219,7 @@ class ConvexHull
     return reducedPts;
   }
 
-  private List<Coordinate> padArray3(List<Coordinate> pts)
+ /**private */List<Coordinate> padArray3(List<Coordinate> pts)
   {
     List<Coordinate> pad = new Coordinate[3];
     for (int i = 0; i < pad.length; i++) {
@@ -236,7 +236,7 @@ class ConvexHull
   /// 
   /// @param pts the points to sort
   /// @return the sorted points
-  private List<Coordinate> preSort(List<Coordinate> pts) {
+ /**private */List<Coordinate> preSort(List<Coordinate> pts) {
     Coordinate t;
 
     /**
@@ -262,7 +262,7 @@ class ConvexHull
   /// 
   /// @param c a list of points, with at least 3 entries
   /// @return a Stack containing the ordered points of the convex hull ring
-  private Stack<Coordinate> grahamScan(List<Coordinate> c) {
+ /**private */Stack<Coordinate> grahamScan(List<Coordinate> c) {
     Coordinate p;
     Stack<Coordinate> ps = new Stack<Coordinate>();
     ps.push(c[0]);
@@ -286,7 +286,7 @@ class ConvexHull
 
   ///@return    whether the three coordinates are collinear and c2 lies between
   ///      c1 and c3 inclusive
-  private bool isBetween(Coordinate c1, Coordinate c2, Coordinate c3) {
+ /**private */bool isBetween(Coordinate c1, Coordinate c2, Coordinate c3) {
     if (Orientation.index(c1, c2, c3) != 0) {
       return false;
     }
@@ -309,7 +309,7 @@ class ConvexHull
     return false;
   }
 
-  private List<Coordinate> computeInnerOctolateralRing(List<Coordinate> inputPts) {
+ /**private */List<Coordinate> computeInnerOctolateralRing(List<Coordinate> inputPts) {
     List<Coordinate> octPts = computeInnerOctolateralPts(inputPts);
     CoordinateList coordList = new CoordinateList();
     coordList.add(octPts, false);
@@ -327,7 +327,7 @@ class ConvexHull
   /// 
   /// @param inputPts the points to compute the octolateral for
   /// @return the extremal points of the octolateral
-  private List<Coordinate> computeInnerOctolateralPts(List<Coordinate> inputPts)
+ /**private */List<Coordinate> computeInnerOctolateralPts(List<Coordinate> inputPts)
   {
     List<Coordinate> pts = new Coordinate[8];
     for (int j = 0; j < pts.length; j++) {
@@ -368,7 +368,7 @@ class ConvexHull
   ///@return           a 2-vertex <code>LineString</code> if the vertices are
   ///      collinear; otherwise, a <code>Polygon</code> with unnecessary
   ///      (collinear) vertices removed
-  private Geometry lineOrPolygon(List<Coordinate> coordinates) {
+ /**private */Geometry lineOrPolygon(List<Coordinate> coordinates) {
 
     coordinates = cleanRing(coordinates);
     if (coordinates.length == 3) {
@@ -383,7 +383,7 @@ class ConvexHull
   /// @param  vertices  the vertices of a linear ring, which may or may not be
   ///      flattened (i.e. vertices collinear)
   /// @return the coordinates with unnecessary (collinear) vertices removed
-  private List<Coordinate> cleanRing(List<Coordinate> original) {
+ /**private */List<Coordinate> cleanRing(List<Coordinate> original) {
     Assert.equals(original[0], original[original.length - 1]);
     List<Coordinate> cleanedRing = new ArrayList<Coordinate>();
     Coordinate previousDistinctCoordinate = null;
@@ -414,10 +414,10 @@ class ConvexHull
   ///
   /// @author Martin Davis
   /// @version 1.7
-  private static class RadialComparator
+ /**private */static class RadialComparator
       implements Comparator<Coordinate>
   {
-    private Coordinate origin;
+   /**private */Coordinate origin;
 
     /**
      * Creates a new comparator using a given origin.
@@ -457,7 +457,7 @@ class ConvexHull
      * @return -1, 0 or 1 depending on whether p is less than,
      * equal to or greater than q
      */
-    private static int polarCompare(Coordinate o, Coordinate p, Coordinate q)
+   /**private */static int polarCompare(Coordinate o, Coordinate p, Coordinate q)
     {
       int orient = Orientation.index(o, p, q);
       if (orient == Orientation.COUNTERCLOCKWISE) return 1;

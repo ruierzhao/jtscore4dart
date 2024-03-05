@@ -43,10 +43,10 @@ class Node
   }
 
   /** The location of this Node */
-  protected Coordinate pt;
+ /**protected */Coordinate pt;
 
   /** The collection of DirectedEdges that leave this Node */
-  protected DirectedEdgeStar deStar;
+ /**protected */DirectedEdgeStar deStar;
 
   /**
    * Constructs a Node with the given location.

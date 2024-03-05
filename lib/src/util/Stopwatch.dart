@@ -19,9 +19,9 @@
  */
 class Stopwatch {
 
-  private long startTimestamp;
-  private long totalTime = 0;
-  private bool isRunning = false;
+ /**private */long startTimestamp;
+ /**private */long totalTime = 0;
+ /**private */bool isRunning = false;
 
   Stopwatch()
   {
@@ -57,7 +57,7 @@ class Stopwatch {
     return totalTime;
   }
 
-  private void updateTotalTime()
+ /**private */void updateTotalTime()
   {
     long endTimestamp = System.currentTimeMillis();
     long elapsedTime = endTimestamp - startTimestamp;

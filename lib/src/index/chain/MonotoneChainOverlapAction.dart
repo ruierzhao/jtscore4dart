@@ -21,8 +21,8 @@
  */
 class MonotoneChainOverlapAction
 {
-  protected LineSegment overlapSeg1 = new LineSegment();
-  protected LineSegment overlapSeg2 = new LineSegment();
+ /**protected */LineSegment overlapSeg1 = new LineSegment();
+ /**protected */LineSegment overlapSeg2 = new LineSegment();
 
   /**
    * This function can be overridden if the original chains are needed

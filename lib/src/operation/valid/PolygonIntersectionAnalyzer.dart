@@ -32,16 +32,16 @@
 class PolygonIntersectionAnalyzer 
 implements SegmentIntersector
 {
-  private static final int NO_INVALID_INTERSECTION = -1;
+ /**private */static final int NO_INVALID_INTERSECTION = -1;
   
-  private bool isInvertedRingValid;
+ /**private */bool isInvertedRingValid;
   
-  private LineIntersector li = new RobustLineIntersector();
-  private int invalidCode = NO_INVALID_INTERSECTION;
-  private Coordinate invalidLocation = null;
+ /**private */LineIntersector li = new RobustLineIntersector();
+ /**private */int invalidCode = NO_INVALID_INTERSECTION;
+ /**private */Coordinate invalidLocation = null;
   
-  private bool hasDoubleTouch = false;
-  private Coordinate doubleTouchLocation;
+ /**private */bool hasDoubleTouch = false;
+ /**private */Coordinate doubleTouchLocation;
 
   /**
    * Creates a new finder, allowing for the mode where inverted rings are valid.
@@ -96,7 +96,7 @@ implements SegmentIntersector
     }
   }
 
-  private int findInvalidIntersection(SegmentString ss0, int segIndex0, 
+ /**private */int findInvalidIntersection(SegmentString ss0, int segIndex0, 
       SegmentString ss1, int segIndex1) {
     Coordinate p00 = ss0.getCoordinate(segIndex0);
     Coordinate p01 = ss0.getCoordinate(segIndex0 + 1);
@@ -199,11 +199,11 @@ implements SegmentIntersector
     return NO_INVALID_INTERSECTION;
   }
 
-  private bool addDoubleTouch(SegmentString ss0, SegmentString ss1, Coordinate intPt) {
+ /**private */bool addDoubleTouch(SegmentString ss0, SegmentString ss1, Coordinate intPt) {
     return PolygonRing.addTouch((PolygonRing) ss0.getData(), (PolygonRing) ss1.getData(), intPt);
   }
 
-  private void addSelfTouch(SegmentString ss, Coordinate intPt, Coordinate e00, Coordinate e01, Coordinate e10,
+ /**private */void addSelfTouch(SegmentString ss, Coordinate intPt, Coordinate e00, Coordinate e01, Coordinate e10,
       Coordinate e11) {
     PolygonRing polyRing = (PolygonRing) ss.getData();
     if (polyRing == null) {
@@ -220,7 +220,7 @@ implements SegmentIntersector
    * @param segIndex the segment index
    * @return the coordinate previous to the given segment
    */
-  private static Coordinate prevCoordinateInRing(SegmentString ringSS, int segIndex) {
+ /**private */static Coordinate prevCoordinateInRing(SegmentString ringSS, int segIndex) {
     int prevIndex = segIndex - 1;
     if (prevIndex < 0) {
       prevIndex = ringSS.size() - 2;
@@ -237,7 +237,7 @@ implements SegmentIntersector
    * @param segIndex1 a segment index
    * @return true if the segments are adjacent
    */
-  private static bool isAdjacentInRing(SegmentString ringSS, int segIndex0, int segIndex1) {
+ /**private */static bool isAdjacentInRing(SegmentString ringSS, int segIndex0, int segIndex1) {
     int delta = (segIndex1 - segIndex0).abs();
     if (delta <= 1) return true;
     /**

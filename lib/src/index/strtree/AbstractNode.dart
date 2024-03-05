@@ -32,11 +32,11 @@ abstract class AbstractNode implements Boundable, Serializable {
   /**
    * 
    */
-  private static final long serialVersionUID = 6493722185909573708L;
+ /**private */static final long serialVersionUID = 6493722185909573708L;
   
-  private ArrayList childBoundables = new ArrayList();
-  private Object bounds = null;
-  private int level;
+ /**private */ArrayList childBoundables = new ArrayList();
+ /**private */Object bounds = null;
+ /**private */int level;
 
   /**
    * Default constructor required for serialization.
@@ -73,7 +73,7 @@ abstract class AbstractNode implements Boundable, Serializable {
    *         object (for other subclasses of AbstractSTRtree)
    * @see AbstractSTRtree.IntersectsOp
    */
-  protected abstract Object computeBounds();
+ /**protected */abstract Object computeBounds();
 
   /**
    * Gets the bounds of this node

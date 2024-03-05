@@ -20,9 +20,9 @@
  */
 class PointPairDistance {
 
-  private List<Coordinate> pt = { new Coordinate(), new Coordinate() };
-  private double distance = double.nan;
-  private bool isNull = true;
+ /**private */List<Coordinate> pt = { new Coordinate(), new Coordinate() };
+ /**private */double distance = double.nan;
+ /**private */bool isNull = true;
 
   PointPairDistance()
   {
@@ -44,7 +44,7 @@ class PointPairDistance {
    * @param p1
    * @param distance the distance between p0 and p1
    */
-  private void initialize(Coordinate p0, Coordinate p1, double distance)
+ /**private */void initialize(Coordinate p0, Coordinate p1, double distance)
   {
     pt[0].setCoordinate(p0);
     pt[1].setCoordinate(p1);

@@ -26,7 +26,7 @@ public class LineSegmentTest extends TestCase {
 
   public LineSegmentTest(String name) { super(name); }
 
-  private static double ROOT2 = Math.sqrt(2);
+ /**private */static double ROOT2 = Math.sqrt(2);
   
   /**
    * Test hash code collisions.
@@ -38,7 +38,7 @@ public class LineSegmentTest extends TestCase {
     checkHashcode(new LineSegment(580.0, 1330.0, 590.0, 1330.0), new LineSegment(580.0, 1340.0, 590.0, 1340.));
   }
 
-  private void checkHashcode(LineSegment seg, LineSegment seg2) {
+ /**private */void checkHashcode(LineSegment seg, LineSegment seg2) {
     //System.out.format("Seg 1: %d   Seg 2: %d\n", seg.hashCode(), seg2.hashCode());
     assertTrue(seg.hashCode() != seg2.hashCode());
   }
@@ -67,9 +67,9 @@ public class LineSegmentTest extends TestCase {
         35613477.772841461, 4257160.5339209242 );
   }
   
-  private static final double MAX_ABS_ERROR_INTERSECTION = 1e-5;
+ /**private */static final double MAX_ABS_ERROR_INTERSECTION = 1e-5;
   
-  private void checkLineIntersection(double p1x, double p1y, double p2x, double p2y, 
+ /**private */void checkLineIntersection(double p1x, double p1y, double p2x, double p2y, 
       double q1x, double q1y, double q2x, double q2y, 
       double expectedx, double expectedy) {
     LineSegment seg1 = new LineSegment(p1x, p1y, p2x, p2y);
@@ -103,14 +103,14 @@ public class LineSegmentTest extends TestCase {
     checkDistancePerpendicularOriented(1,1,  1,1,  1,2, 1);    
   }
   
-  private void checkDistancePerpendicular(double x0, double y0, double x1, double y1, double px, double py, 
+ /**private */void checkDistancePerpendicular(double x0, double y0, double x1, double y1, double px, double py, 
       double expected) {
     LineSegment seg = new LineSegment(x0, y0, x1, y1);
     double dist = seg.distancePerpendicular(new Coordinate(px, py));
     assertEquals(expected, dist, 0.000001);
   }
   
-  private void checkDistancePerpendicularOriented(double x0, double y0, double x1, double y1, double px, double py, 
+ /**private */void checkDistancePerpendicularOriented(double x0, double y0, double x1, double y1, double px, double py, 
       double expected) {
     LineSegment seg = new LineSegment(x0, y0, x1, y1);
     double dist = seg.distancePerpendicularOriented(new Coordinate(px, py));

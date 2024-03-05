@@ -41,13 +41,13 @@ class VertexSequencePackedRtree {
    * Number of items/nodes in a parent node.
    * Determined empirically.  Performance is not too sensitive to this.
    */
-  private static final int NODE_CAPACITY = 16;
+ /**private */static final int NODE_CAPACITY = 16;
   
-  private List<Coordinate> items;
-  private int[] levelOffset;
-  private int nodeCapacity  = NODE_CAPACITY;
-  private Envelope[] bounds;
-  private bool[] isRemoved;
+ /**private */List<Coordinate> items;
+ /**private */int[] levelOffset;
+ /**private */int nodeCapacity  = NODE_CAPACITY;
+ /**private */Envelope[] bounds;
+ /**private */bool[] isRemoved;
 
   /**
    * Creates a new tree over the given sequence of coordinates.
@@ -65,7 +65,7 @@ class VertexSequencePackedRtree {
     return bounds.clone();
   }
   
-  private void build() {
+ /**private */void build() {
     levelOffset = computeLevelOffsets();
     bounds = createBounds();
   }
@@ -80,7 +80,7 @@ class VertexSequencePackedRtree {
    * 
    * @return the level offsets
    */
-  private int[] computeLevelOffsets() {
+ /**private */int[] computeLevelOffsets() {
     IntArrayList offsets = new IntArrayList();
     offsets.add(0);
     int levelSize = items.length;
@@ -93,11 +93,11 @@ class VertexSequencePackedRtree {
     return offsets.toArray();
   }
 
-  private int levelNodeCount(int numNodes) {
+ /**private */int levelNodeCount(int numNodes) {
     return MathUtil.ceil(numNodes, nodeCapacity);
   }
   
-  private Envelope[] createBounds() {
+ /**private */Envelope[] createBounds() {
     int boundsSize = levelOffset[levelOffset.length - 1] + 1;
     Envelope[] bounds = new Envelope[boundsSize];
     fillItemBounds(bounds);
@@ -108,7 +108,7 @@ class VertexSequencePackedRtree {
     return bounds;
   }
   
-  private void fillLevelBounds(int lvl, Envelope[] bounds) {
+ /**private */void fillLevelBounds(int lvl, Envelope[] bounds) {
     int levelStart = levelOffset[lvl - 1]; 
     int levelEnd = levelOffset[lvl];
     int nodeStart = levelStart;
@@ -121,7 +121,7 @@ class VertexSequencePackedRtree {
     while (nodeStart < levelEnd);
   }
 
-  private void fillItemBounds(Envelope[] bounds) {
+ /**private */void fillItemBounds(Envelope[] bounds) {
     int nodeStart = 0;
     int boundIndex = 0;
     do {
@@ -132,7 +132,7 @@ class VertexSequencePackedRtree {
     while (nodeStart < items.length);
   }
 
-  private static Envelope computeNodeEnvelope(Envelope[] bounds, int start, int end) {
+ /**private */static Envelope computeNodeEnvelope(Envelope[] bounds, int start, int end) {
     Envelope env = new Envelope();
     for (int i = start; i < end; i++) {
       env.expandToInclude(bounds[i]);
@@ -140,7 +140,7 @@ class VertexSequencePackedRtree {
     return env;
   }
   
-  private static Envelope computeItemEnvelope(List<Coordinate> items, int start, int end) {
+ /**private */static Envelope computeItemEnvelope(List<Coordinate> items, int start, int end) {
     Envelope env = new Envelope();
     for (int i = start; i < end; i++) {
       env.expandToInclude(items[i]);
@@ -166,7 +166,7 @@ class VertexSequencePackedRtree {
     return result;
   }
   
-  private void queryNode(Envelope queryEnv, int level, int nodeIndex, IntArrayList resultList) {
+ /**private */void queryNode(Envelope queryEnv, int level, int nodeIndex, IntArrayList resultList) {
     int boundsIndex = levelOffset[level] + nodeIndex;
     Envelope nodeEnv = bounds[boundsIndex];
     //--- node is empty
@@ -184,7 +184,7 @@ class VertexSequencePackedRtree {
     }
   }
 
-  private void queryNodeRange(Envelope queryEnv, int level, int nodeStartIndex, IntArrayList resultList) {  
+ /**private */void queryNodeRange(Envelope queryEnv, int level, int nodeStartIndex, IntArrayList resultList) {  
     int levelMax = levelSize(level);
     for (int i = 0; i < nodeCapacity; i++) {
       int index = nodeStartIndex + i;
@@ -194,11 +194,11 @@ class VertexSequencePackedRtree {
     }    
   }
 
-  private int levelSize(int level) {
+ /**private */int levelSize(int level) {
     return levelOffset[level + 1] - levelOffset[level];
   }
 
-  private void queryItemRange(Envelope queryEnv, int itemIndex, IntArrayList resultList) {
+ /**private */void queryItemRange(Envelope queryEnv, int itemIndex, IntArrayList resultList) {
     for (int i = 0; i < nodeCapacity; i++) {
       int index = itemIndex + i;
       if (index >= items.length) 
@@ -241,7 +241,7 @@ class VertexSequencePackedRtree {
     //TODO: propagate removal up the tree nodes?
   }
   
-  private bool isNodeEmpty(int level, int index) {
+ /**private */bool isNodeEmpty(int level, int index) {
     int start = index * nodeCapacity;
     int end = MathUtil.clampMax(start + nodeCapacity, levelOffset[level]);
     for (int i = start; i < end; i++) {
@@ -250,7 +250,7 @@ class VertexSequencePackedRtree {
     return true;
   }
 
-  private bool isItemsNodeEmpty(int nodeIndex) {
+ /**private */bool isItemsNodeEmpty(int nodeIndex) {
     int start = nodeIndex * nodeCapacity;
     int end = MathUtil.clampMax(start + nodeCapacity, items.length);
     for (int i = start; i < end; i++) {

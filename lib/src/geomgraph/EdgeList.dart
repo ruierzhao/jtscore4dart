@@ -30,12 +30,12 @@
  */
 class EdgeList
 {
-  private List edges = new ArrayList();
+ /**private */List edges = new ArrayList();
   /**
    * An index of the edges, for fast lookup.
    *
    */
-  private Map ocaMap = new TreeMap();
+ /**private */Map ocaMap = new TreeMap();
 
   EdgeList() {
   }

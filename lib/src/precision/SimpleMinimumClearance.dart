@@ -50,9 +50,9 @@ class SimpleMinimumClearance
     return rp.getLine();
   }
   
-  private Geometry inputGeom;
-  private double minClearance;
-  private List<Coordinate> minClearancePts;
+ /**private */Geometry inputGeom;
+ /**private */double minClearance;
+ /**private */List<Coordinate> minClearancePts;
   
   SimpleMinimumClearance(Geometry geom)
   {
@@ -71,7 +71,7 @@ class SimpleMinimumClearance
     return inputGeom.getFactory().createLineString(minClearancePts);
   }
   
-  private void compute()
+ /**private */void compute()
   {
     if (minClearancePts != null) return;
     minClearancePts = new Coordinate[2];
@@ -79,7 +79,7 @@ class SimpleMinimumClearance
     inputGeom.apply(new VertexCoordinateFilter(this));
   }
   
-  private void updateClearance(double candidateValue, Coordinate p0, Coordinate p1)
+ /**private */void updateClearance(double candidateValue, Coordinate p0, Coordinate p1)
   {
     if (candidateValue < minClearance) {
       minClearance = candidateValue;
@@ -88,7 +88,7 @@ class SimpleMinimumClearance
     }
   }
   
-  private void updateClearance(double candidateValue, Coordinate p, 
+ /**private */void updateClearance(double candidateValue, Coordinate p, 
       Coordinate seg0, Coordinate seg1)
   {
     if (candidateValue < minClearance) {
@@ -99,7 +99,7 @@ class SimpleMinimumClearance
     }
   }
   
-  private static class VertexCoordinateFilter 
+ /**private */static class VertexCoordinateFilter 
   implements CoordinateFilter
   {
     SimpleMinimumClearance smc;
@@ -114,11 +114,11 @@ class SimpleMinimumClearance
     }
   }
   
-  private static class ComputeMCCoordinateSequenceFilter 
+ /**private */static class ComputeMCCoordinateSequenceFilter 
   implements CoordinateSequenceFilter 
   {
     SimpleMinimumClearance smc;
-    private Coordinate queryPt;
+   /**private */Coordinate queryPt;
     
     ComputeMCCoordinateSequenceFilter(SimpleMinimumClearance smc, Coordinate queryPt)
     {
@@ -135,7 +135,7 @@ class SimpleMinimumClearance
       }
     }
     
-    private void checkVertexDistance(Coordinate vertex)
+   /**private */void checkVertexDistance(Coordinate vertex)
     {
       double vertexDist = vertex.distance(queryPt);
       if (vertexDist > 0) {
@@ -143,7 +143,7 @@ class SimpleMinimumClearance
       }
     }
     
-    private void checkSegmentDistance(Coordinate seg0, Coordinate seg1)
+   /**private */void checkSegmentDistance(Coordinate seg0, Coordinate seg1)
     {
         if (queryPt.equals2D(seg0) || queryPt.equals2D(seg1))
           return;

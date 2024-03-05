@@ -43,20 +43,20 @@ class DirectedEdge
     return 0;
   }
 
-  protected bool isForward;
-  private bool isInResult = false;
-  private bool isVisited = false;
+ /**protected */bool isForward;
+ /**private */bool isInResult = false;
+ /**private */bool isVisited = false;
 
-  private DirectedEdge sym; // the symmetric edge
-  private DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
-  private DirectedEdge nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
-  private EdgeRing edgeRing;  // the EdgeRing that this edge is part of
-  private EdgeRing minEdgeRing;  // the MinimalEdgeRing that this edge is part of
+ /**private */DirectedEdge sym; // the symmetric edge
+ /**private */DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
+ /**private */DirectedEdge nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
+ /**private */EdgeRing edgeRing;  // the EdgeRing that this edge is part of
+ /**private */EdgeRing minEdgeRing;  // the MinimalEdgeRing that this edge is part of
   /**
    * The depth of each side (position) of this edge.
    * The 0 element of the array is never used.
    */
-  private int[] depth = { 0, -999, -999 };
+ /**private */int[] depth = { 0, -999, -999 };
 
   DirectedEdge(Edge edge, bool isForward)
   {
@@ -184,7 +184,7 @@ class DirectedEdge
   /**
    * Compute the label in the appropriate orientation for this DirEdge
    */
-  private void computeDirectedLabel()
+ /**private */void computeDirectedLabel()
   {
     label = new Label(edge.getLabel());
     if (! isForward)

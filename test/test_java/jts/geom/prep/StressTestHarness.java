@@ -32,7 +32,7 @@ public abstract class StressTestHarness
   static WKTReader wktRdr = new WKTReader(fact);
   static WKTWriter wktWriter = new WKTWriter();
 
-  private int numTargetPts = 1000;
+ /**private */int numTargetPts = 1000;
 
   public StressTestHarness() {
   }

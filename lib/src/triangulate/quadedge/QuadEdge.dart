@@ -128,17 +128,17 @@ class QuadEdge
     }
 
     // the dual of this edge, directed from right to left
-    private QuadEdge rot;
-    private Vertex   vertex;            // The vertex that this edge represents
-    private QuadEdge next;              // A reference to a connected edge
-    private Object   data       = null;
-//    private int      visitedKey = 0;
+   /**private */QuadEdge rot;
+   /**private */Vertex   vertex;            // The vertex that this edge represents
+   /**private */QuadEdge next;              // A reference to a connected edge
+   /**private */Object   data       = null;
+//   /**private */int      visitedKey = 0;
 
     /**
      * Quadedges must be made using {@link makeEdge}, 
      * to ensure proper construction.
      */
-    private QuadEdge()
+   /**private */QuadEdge()
     {
     	
     }

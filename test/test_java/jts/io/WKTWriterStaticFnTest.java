@@ -12,8 +12,8 @@ import java.util.Random;
 
 public class WKTWriterStaticFnTest extends GeometryTestCase {
 
-  private Random _rnd;
-  private WKTReader _reader;
+ /**private */Random _rnd;
+ /**private */WKTReader _reader;
 
   public static void main(String[] args) {
     TestRunner.run(new TestSuite(WKTWriterStaticFnTest.class));
@@ -24,7 +24,7 @@ public class WKTWriterStaticFnTest extends GeometryTestCase {
   }
 
   @Override
-  protected void setUp() throws Exception {
+ /**protected */void setUp() throws Exception {
     super.setUp();
     _rnd = new Random(13);
     _reader = new WKTReader();

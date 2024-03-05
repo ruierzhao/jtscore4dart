@@ -29,7 +29,7 @@
 class EdgeIntersectionList
 {
   // a Map <EdgeIntersection, EdgeIntersection>
-  private Map nodeMap = new TreeMap();
+ /**private */Map nodeMap = new TreeMap();
   Edge edge;  // the parent edge
 
   EdgeIntersectionList(Edge edge)

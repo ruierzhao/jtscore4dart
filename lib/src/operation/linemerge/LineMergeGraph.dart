@@ -57,7 +57,7 @@ class LineMergeGraph extends PlanarGraph
     add(edge);
   }
 
-  private Node getNode(Coordinate coordinate) {
+ /**private */Node getNode(Coordinate coordinate) {
     Node node = findNode(coordinate);
     if (node == null) {
       node = new Node(coordinate);

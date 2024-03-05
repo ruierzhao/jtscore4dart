@@ -28,16 +28,16 @@
 class SegmentIntersectionDetector
     implements SegmentIntersector
 {
-  private LineIntersector li;
-  private bool findProper = false;
-  private bool findAllTypes = false;
+ /**private */LineIntersector li;
+ /**private */bool findProper = false;
+ /**private */bool findAllTypes = false;
   
-  private bool hasIntersection = false;
-  private bool hasProperIntersection = false;
-  private bool hasNonProperIntersection = false;
+ /**private */bool hasIntersection = false;
+ /**private */bool hasProperIntersection = false;
+ /**private */bool hasNonProperIntersection = false;
   
-  private Coordinate intPt = null;
-  private List<Coordinate> intSegments = null;
+ /**private */Coordinate intPt = null;
+ /**private */List<Coordinate> intSegments = null;
 
   /**
    * Creates an intersection finder using a {@link RobustLineIntersector}.

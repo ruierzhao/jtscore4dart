@@ -47,7 +47,7 @@ class ConnectedElementLocationFilter
     return locations;
   }
 
-  private List locations;
+ /**private */List locations;
 
   ConnectedElementLocationFilter(List locations)
   {

@@ -51,16 +51,16 @@ public class GeometryCoordinateTest extends GeometryTestCase {
     checkCoordinate( "GEOMETRYCOLLECTION ( POINT(1 1), LINESTRING EMPTY )", 1, 1);
   }
 
-  private void checkCoordinate(String wkt, int x, int y) {
+ /**private */void checkCoordinate(String wkt, int x, int y) {
     checkCoordinate(read(wkt), new Coordinate(x, y));
   }
   
-  private void checkCoordinate(final Geometry g, Coordinate expected) {
+ /**private */void checkCoordinate(final Geometry g, Coordinate expected) {
     Coordinate actual = g.getCoordinate();
     checkEqualXY( expected, actual );
   }
   
-  private void checkCoordinate(String wkt) {
+ /**private */void checkCoordinate(String wkt) {
     Geometry g = read(wkt);
     Coordinate actual = g.getCoordinate();
     assertNull(actual);   

@@ -21,19 +21,15 @@
 // import org.locationtech.jts.geomgraph.index.MonotoneChainEdge;
 
 
-/**
- * @version 1.7
- */
+/// @version 1.7
 class Edge
   extends GraphComponent
 {
 
-  /**
-   * Updates an IM from the label for an edge.
-   * Handles edges from both L and A geometries.
-   * @param label Label defining position
-   * @param im intersection matrix
-   */
+  /// Updates an IM from the label for an edge.
+  /// Handles edges from both L and A geometries.
+  /// @param label Label defining position
+  /// @param im intersection matrix
   static void updateIM(Label label, IntersectionMatrix im)
   {
     im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1);
@@ -88,10 +84,8 @@ class Edge
 
   Depth getDepth() { return depth; }
 
-  /**
-   * The depthDelta is the change in depth as an edge is crossed from R to L
-   * @return the change in depth as the edge is crossed from R to L
-   */
+  /// The depthDelta is the change in depth as an edge is crossed from R to L
+  /// @return the change in depth as the edge is crossed from R to L
   int getDepthDelta()  { return depthDelta;  }
   void setDepthDelta(int depthDelta)  { this.depthDelta = depthDelta;  }
 
@@ -111,12 +105,10 @@ class Edge
   {
     return pts[0].equals(pts[pts.length - 1]);
   }
-  /**
-   * An Edge is collapsed if it is an Area edge and it consists of
-   * two segments which are equal and opposite (eg a zero-width V).
-   *
-   * @return zero-width V area edge, consisting of two segments which are equal and of oppose orientation
-   */
+  /// An Edge is collapsed if it is an Area edge and it consists of
+  /// two segments which are equal and opposite (eg a zero-width V).
+  ///
+  /// @return zero-width V area edge, consisting of two segments which are equal and of oppose orientation
   bool isCollapsed()
   {
     if (! label.isArea()) return false;
@@ -142,29 +134,25 @@ class Edge
     return isIsolated;
   }
 
-  /**
-   * Adds EdgeIntersections for one or both
-   * intersections found for a segment of an edge to the edge intersection list.
-   * @param li Determining number of intersections to add
-   * @param segmentIndex Segment index to add
-   * @param geomIndex Geometry index to add
-   */
+  /// Adds EdgeIntersections for one or both
+  /// intersections found for a segment of an edge to the edge intersection list.
+  /// @param li Determining number of intersections to add
+  /// @param segmentIndex Segment index to add
+  /// @param geomIndex Geometry index to add
   void addIntersections(LineIntersector li, int segmentIndex, int geomIndex)
   {
     for (int i = 0; i < li.getIntersectionNum(); i++) {
       addIntersection(li, segmentIndex, geomIndex, i);
     }
   }
-  /**
-   * Add an EdgeIntersection for intersection intIndex.
-   * An intersection that falls exactly on a vertex of the edge is normalized
-   * to use the higher of the two possible segmentIndexes
-   *
-   * @param li Determining number of intersections to add
-   * @param segmentIndex Segment index to add
-   * @param geomIndex Geometry index to add
-   * @param intIndex intIndex is 0 or 1
-   */
+  /// Add an EdgeIntersection for intersection intIndex.
+  /// An intersection that falls exactly on a vertex of the edge is normalized
+  /// to use the higher of the two possible segmentIndexes
+  ///
+  /// @param li Determining number of intersections to add
+  /// @param segmentIndex Segment index to add
+  /// @param geomIndex Geometry index to add
+  /// @param intIndex intIndex is 0 or 1
   void addIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
   {
       Coordinate intPt = new Coordinate(li.getIntersection(intIndex));
@@ -193,22 +181,18 @@ class Edge
 
   }
 
-  /**
-   * Update the IM with the contribution for this component.
-   * A component only contributes if it has a labelling for both parent geometries
-   */
+  /// Update the IM with the contribution for this component.
+  /// A component only contributes if it has a labelling for both parent geometries
   void computeIM(IntersectionMatrix im)
   {
     updateIM(label, im);
   }
 
-  /**
-   * equals is defined to be:
-   * <p>
-   * e1 equals e2
-   * <b>iff</b>
-   * the coordinates of e1 are the same or the reverse of the coordinates in e2
-   */
+  /// equals is defined to be:
+  /// <p>
+  /// e1 equals e2
+  /// <b>iff</b>
+  /// the coordinates of e1 are the same or the reverse of the coordinates in e2
   bool equals(Object o)
   {
     if (! (o is Edge)) return false;
@@ -252,12 +236,10 @@ class Edge
     return result;
   }
   
-  /**
-   * Check if coordinate sequences of the Edges are identical.
-   *
-   * @param e Edge
-   * @return true if the coordinate sequences of the Edges are identical
-   */
+  /// Check if coordinate sequences of the Edges are identical.
+  ///
+  /// @param e Edge
+  /// @return true if the coordinate sequences of the Edges are identical
   bool isPointwiseEqual(Edge e)
   {
     if (pts.length != e.pts.length) return false;

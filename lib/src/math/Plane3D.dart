@@ -14,23 +14,19 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
-/**
- * Models a plane in 3-dimensional Cartesian space.
- * 
- * @author mdavis
- *
- */
+/// Models a plane in 3-dimensional Cartesian space.
+/// 
+/// @author mdavis
+///
 class Plane3D {
 	
-	/**
-	 * Enums for the 3 coordinate planes
-	 */
-	static final int XY_PLANE = 1;
-	static final int YZ_PLANE = 2;
-	static final int XZ_PLANE = 3;
+	/// Enums for the 3 coordinate planes
+	static const int XY_PLANE = 1;
+	static const int YZ_PLANE = 2;
+	static const int XZ_PLANE = 3;
 	
-	private Vector3D normal;
-	private Coordinate basePt;
+	/**private */ Vector3D normal;
+	/**private */ Coordinate basePt;
 
 	Plane3D(Vector3D normal, Coordinate basePt)
 	{
@@ -38,18 +34,16 @@ class Plane3D {
 		this.basePt = basePt;
 	}
 	
-	/**
-	 * Computes the oriented distance from a point to the plane.
-	 * The distance is:
-	 * <ul>
-	 * <li><b>positive</b> if the point lies above the plane (relative to the plane normal)
-	 * <li><b>zero</b> if the point is on the plane
-	 * <li><b>negative</b> if the point lies below the plane (relative to the plane normal)
-	 * </ul> 
-	 * 
-	 * @param p the point to compute the distance for
-	 * @return the oriented distance to the plane
-	 */
+	/// Computes the oriented distance from a point to the plane.
+	/// The distance is:
+	/// <ul>
+	/// <li><b>positive</b> if the point lies above the plane (relative to the plane normal)
+	/// <li><b>zero</b> if the point is on the plane
+	/// <li><b>negative</b> if the point lies below the plane (relative to the plane normal)
+	/// </ul> 
+	/// 
+	/// @param p the point to compute the distance for
+	/// @return the oriented distance to the plane
 	double orientedDistance(Coordinate p) {
 		Vector3D pb = new Vector3D(p, basePt);
 		double pbdDotNormal = pb.dot(normal);
@@ -59,17 +53,15 @@ class Plane3D {
 		return d;
 	}
 
-	/**
-	 * Computes the axis plane that this plane lies closest to.
-	 * <p>
-	 * Geometries lying in this plane undergo least distortion
-	 * (and have maximum area)
-	 * when projected to the closest axis plane.
-	 * This provides optimal conditioning for
-	 * computing a Point-in-Polygon test.
-	 *  
-	 * @return the index of the closest axis plane.
-	 */
+	/// Computes the axis plane that this plane lies closest to.
+	/// <p>
+	/// Geometries lying in this plane undergo least distortion
+	/// (and have maximum area)
+	/// when projected to the closest axis plane.
+	/// This provides optimal conditioning for
+	/// computing a Point-in-Polygon test.
+	///  
+	/// @return the index of the closest axis plane.
 	int closestAxisPlane() {
 		double xmag = (normal.getX().abs());
 		double ymag = (normal.getY().abs());

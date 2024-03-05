@@ -14,9 +14,16 @@
 // import org.locationtech.jts.util.Assert;
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceComparator.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
+import 'package:jtscore4dart/src/geom/Dimension.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
 import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/geom/Puntal.dart';
 
@@ -46,6 +53,7 @@ class Point
   ///@param  SRID            the ID of the Spatial Reference System used by this
   ///      <code>Point</code>
   /// @deprecated Use GeometryFactory instead
+  @Deprecated("Use GeometryFactory instead")
   Point(Coordinate coordinate, PrecisionModel precisionModel, int SRID) {
     super(GeometryFactory(precisionModel, SRID));
     init(getFactory().getCoordinateSequenceFactory().create(
@@ -59,11 +67,9 @@ class Point
     init(coordinates);
   }
 
-  private void init(CoordinateSequence coordinates)
+  /**private */ void init([CoordinateSequence? coordinates])
   {
-    if (coordinates == null) {
-      coordinates = getFactory().getCoordinateSequenceFactory().create(new List<Coordinate>{});
-    }
+    coordinates ??= getFactory().getCoordinateSequenceFactory().create(new List<Coordinate>{});
     Assert.isTrue(coordinates.size() <= 1);
     this.coordinates = coordinates;
   }
@@ -126,9 +132,9 @@ class Point
     return getFactory().createGeometryCollection();
   }
 
-  protected Envelope computeEnvelopeInternal() {
+  /**protected */ Envelope computeEnvelopeInternal() {
     if (isEmpty()) {
-      return new Envelope();
+      return Envelope.init();
     }
     Envelope env = new Envelope();
     env.expandToInclude(coordinates.getX(0), coordinates.getY(0));
@@ -179,7 +185,7 @@ class Point
     return copy();
   }
 
-  protected Point copyInternal() {
+  /**protected */ Point copyInternal() {
     return new Point(coordinates.copy(), factory);
   }
 
@@ -187,7 +193,7 @@ class Point
     return (Point) super.reverse();
   }
 
-  protected Point reverseInternal()
+  /**protected */ Point reverseInternal()
   {
     return getFactory().createPoint(coordinates.copy());
   }
@@ -197,18 +203,18 @@ class Point
     // a Point is always in normalized form
   }
 
-  protected int compareToSameClass(Object other) {
+  /**protected */ int compareToSameClass(Object other) {
     Point point = (Point) other;
     return getCoordinate().compareTo(point.getCoordinate());
   }
 
-  protected int compareToSameClass(Object other, CoordinateSequenceComparator comp)
+  /**protected */ int compareToSameClass(Object other, CoordinateSequenceComparator comp)
   {
     Point point = (Point) other;
     return comp.compare(this.coordinates, point.coordinates);
   }
   
-  protected int getTypeCode() {
+  /**protected */ int getTypeCode() {
     return Geometry.TYPECODE_POINT;
   }
 

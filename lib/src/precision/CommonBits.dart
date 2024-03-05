@@ -11,40 +11,34 @@
  */
 
 
-/**
- * Determines the maximum number of common most-significant
- * bits in the mantissa of one or numbers.
- * Can be used to compute the double-precision number which
- * is represented by the common bits.
- * If there are no common bits, the number computed is 0.0.
- *
- * @version 1.7
- */
+/// Determines the maximum number of common most-significant
+/// bits in the mantissa of one or numbers.
+/// Can be used to compute the double-precision number which
+/// is represented by the common bits.
+/// If there are no common bits, the number computed is 0.0.
+///
+/// @version 1.7
 class CommonBits {
 
-  /**
-   * Computes the bit pattern for the sign and exponent of a
-   * double-precision number.
-   * 
-   * @param num
-   * @return the bit pattern for the sign and exponent
-   */
+  /// Computes the bit pattern for the sign and exponent of a
+  /// double-precision number.
+  /// 
+  /// @param num
+  /// @return the bit pattern for the sign and exponent
   static long signExpBits(long num)
   {
     return num >> 52;
   }
 
-  /**
- * This computes the number of common most-significant bits in the mantissas
- * of two double-precision numbers.
- * It does not count the hidden bit, which is always 1.
- * It does not determine whether the numbers have the same exponent - if they do
- * not, the value computed by this function is meaningless.
- * 
- * @param num1 the first number
- * @param num2 the second number
- * @return the number of common most-significant mantissa bits
- */
+  /// This computes the number of common most-significant bits in the mantissas
+  /// of two double-precision numbers.
+  /// It does not count the hidden bit, which is always 1.
+  /// It does not determine whether the numbers have the same exponent - if they do
+  /// not, the value computed by this function is meaningless.
+  /// 
+  /// @param num1 the first number
+  /// @param num2 the second number
+  /// @return the number of common most-significant mantissa bits
   static int numCommonMostSigMantissaBits(long num1, long num2)
   {
     int count = 0;
@@ -57,12 +51,10 @@ class CommonBits {
     return 52;
   }
 
-  /**
-   * Zeroes the lower n bits of a bitstring.
-   * 
-   * @param bits the bitstring to alter
-   * @return the zeroed bitstring
-   */
+  /// Zeroes the lower n bits of a bitstring.
+  /// 
+  /// @param bits the bitstring to alter
+  /// @return the zeroed bitstring
   static long zeroLowerBits(long bits, int nBits)
   {
     long invMask = (1L << nBits) - 1L;
@@ -71,13 +63,11 @@ class CommonBits {
     return zeroed;
   }
 
-  /**
-   * Extracts the i'th bit of a bitstring.
-   * 
-   * @param bits the bitstring to extract from
-   * @param i the bit to extract
-   * @return the value of the extracted bit
-   */
+  /// Extracts the i'th bit of a bitstring.
+  /// 
+  /// @param bits the bitstring to extract from
+  /// @param i the bit to extract
+  /// @return the value of the extracted bit
   static int getBit(long bits, int i)
   {
     long mask = (1L << i);
@@ -119,9 +109,7 @@ class CommonBits {
   {
     return Double.longBitsToDouble(commonBits);
   }
-  /**
-   * A representation of the Double bits formatted for easy readability
-   */
+  /// A representation of the Double bits formatted for easy readability
   String toString(long bits)
   {
     double x = Double.longBitsToDouble(bits);

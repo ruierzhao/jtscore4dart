@@ -34,6 +34,7 @@
 
 import 'package:jtscore4dart/src/algorithm/Centroid.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceComparator.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
 import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
@@ -1452,7 +1453,7 @@ abstract class Geometry{
   ///
   ///@param  filter  the filter to apply to this <code>Geometry</code> (and
   ///      its children, if it is a <code>GeometryCollection</code>).
-  abstract void apply(GeometryFilter filter);
+  /**abstract */ void apply(GeometryFilter filter);
 
   ///  Performs an operation with or on this Geometry and its
   ///  component Geometry's.  Only GeometryCollections and
@@ -1460,7 +1461,7 @@ abstract class Geometry{
   ///  of the shell and holes.
   ///
   ///@param  filter  the filter to apply to this <code>Geometry</code>.
-  abstract void apply(GeometryComponentFilter filter);
+  /**abstract */ void apply(GeometryComponentFilter filter);
 
   /// Creates and returns a full copy of this {@link Geometry} object
   /// (including all coordinates contained by it).
@@ -1469,6 +1470,7 @@ abstract class Geometry{
   ///
   /// @return a clone of this instance
   /// @deprecated
+  @Deprecated("没有道理，文档说的")
   Object clone() {
     try {
       Geometry clone = (Geometry) super.clone();
@@ -1601,7 +1603,7 @@ abstract class Geometry{
   ///      defined in "Normal Form For Geometry" in the JTS Technical
   ///      Specifications
   int compareTo(Object o, CoordinateSequenceComparator comp) {
-    Geometry other = (Geometry) o;
+    Geometry other = o as Geometry;
     if (getTypeCode() != other.getTypeCode()) {
       return getTypeCode() - other.getTypeCode();
     }
@@ -1639,7 +1641,7 @@ abstract class Geometry{
   ///      but not one of its subclasses
   static void checkNotGeometryCollection(Geometry g) {
     if (g.isGeometryCollection()) {
-      throw new ArgumentError("Operation does not support GeometryCollection arguments");
+      throw ArgumentError("Operation does not support GeometryCollection arguments");
     }
   }
 

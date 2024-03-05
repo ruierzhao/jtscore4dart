@@ -430,5 +430,11 @@ class Polygon
 
     return getFactory().createPolygon(shell, holes);
   }
+  
+  // @override
+  // bool equalsExactWithTolerance(Geometry other, double tolerance) {
+  //   // TODO: implement equalsExactWithTolerance
+  //   throw UnimplementedError();
+  // }
 }
 

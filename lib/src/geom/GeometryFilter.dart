@@ -12,6 +12,8 @@
 
 
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 ///  <code>GeometryCollection</code> classes support the concept of
 ///  applying a <code>GeometryFilter</code> to the <code>Geometry</code>.
 ///  The filter is applied to every element <code>Geometry</code>.

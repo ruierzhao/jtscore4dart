@@ -45,7 +45,7 @@ class GeometryFactory{
 
   /**private */ CoordinateSequenceFactory? coordinateSequenceFactory;
   
-  /**/**private */*/ int SRID;
+  /**private */ int SRID;
 
 
   static Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)

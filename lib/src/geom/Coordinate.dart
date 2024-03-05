@@ -105,7 +105,7 @@ class Coordinate implements Comparable<Coordinate> {
   ///
   ///@param  x  the x-value
   ///@param  y  the y-value
-  // @ruier edit: 等价于Coordinate(this.x, this.y, [this.z=NULL_ORDINATE]);
+  // TODO: @ruier edit: 等价于Coordinate(this.x, this.y, [this.z=NULL_ORDINATE]);
   // Coordinate(double x, double y) {
   //   this(x, y, NULL_ORDINATE);
   // }
@@ -192,6 +192,7 @@ class Coordinate implements Comparable<Coordinate> {
       case Y:
         return y;
       case Z:
+        //  委托给子类返回，而不是返回自己的
         return getZ(); // sure to delegate to subclass rather than offer direct field access
     }
     throw ArgumentError("Invalid ordinate index: $ordinateIndex");
@@ -206,6 +207,7 @@ class Coordinate implements Comparable<Coordinate> {
   /// @param ordinateIndex the ordinate index
   /// @param value the value to set
   /// @throws ArgumentError if the index is not valid
+  /// 通过指定Coordinate 的索引指定 对应值
   void setOrdinate(int ordinateIndex, double value) {
     switch (ordinateIndex) {
       case X:
@@ -215,8 +217,7 @@ class Coordinate implements Comparable<Coordinate> {
         y = value;
         break;
       case Z:
-        setZ(
-            value); // delegate to subclass rather than offer direct field access
+        setZ(value); // delegate to subclass rather than offer direct field access
         break;
       default:
         throw ArgumentError("Invalid ordinate index: $ordinateIndex");

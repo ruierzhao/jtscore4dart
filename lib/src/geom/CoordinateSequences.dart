@@ -10,7 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
+//////////////////// ruier
 // import org.locationtech.jts.io.OrdinateFormat;
 import "dart:math";
 
@@ -18,6 +18,7 @@ import "dart:math";
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequenceFactory.dart';
+import 'package:jtscore4dart/src/io/OrdinateFormat.dart';
 
 /// Utility functions for manipulating {@link CoordinateSequence}s
 ///
@@ -173,7 +174,7 @@ class CoordinateSequences {
     int cs1Size = cs1.size();
     int cs2Size = cs2.size();
     if (cs1Size != cs2Size) return false;
-    int dim = math.min(cs1.getDimension(), cs2.getDimension());
+    int dim = min(cs1.getDimension(), cs2.getDimension());
     for (int i = 0; i < cs1Size; i++) {
       for (int d = 0; d < dim; d++) {
         double v1 = cs1.getOrdinate(i, d);
@@ -201,23 +202,23 @@ class CoordinateSequences {
   /// 
   /// @param cs the sequence to output
   /// @return the string representation of the sequence
-  static String toString(CoordinateSequence cs)
+  static String ToString(CoordinateSequence cs)
   {
     int size = cs.size();
     if (size == 0) {
       return "()";
     }
     int dim = cs.getDimension();
-    StringBuilder builder = new StringBuilder();
-    builder.append('(');
+    StringBuffer builder = StringBuffer();
+    builder.write('(');
     for (int i = 0; i < size; i++) {
-      if (i > 0) builder.append(" ");
+      if (i > 0) builder.write(" ");
       for (int d = 0; d < dim; d++) {
-        if (d > 0) builder.append(",");
-        builder.append( OrdinateFormat.DEFAULT.format(cs.getOrdinate(i, d)) );
+        if (d > 0) builder.write(",");
+        builder.write(OrdinateFormat.DEFAULT.format(cs.getOrdinate(i, d)) ); /// error
       }
     }
-    builder.append(')');
+    builder.write(')');
     return builder.toString();
   }
 

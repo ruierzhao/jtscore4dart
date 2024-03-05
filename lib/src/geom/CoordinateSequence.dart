@@ -1,15 +1,4 @@
-/*
- * Copyright (c) 2018 Vivid Solutions
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
- * and the Eclipse Distribution License is available at
- *
- * http://www.eclipse.org/org/documents/edl-v10.php.
- */
-
+/// 允许使用除了数组以外的数据结构来存储 geometry 的系列点 的接口
 
 // import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 // import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
@@ -18,10 +7,15 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Coordinates.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 
+
+/// Geometry 中 一系列坐标的内部表示。
+/// 这允许 Geometries 使用JTSCoordinate class 以外的结构来存储点
+/// 
 /// The internal representation of a list of coordinates inside a Geometry.
 /// <p>
 /// This allows Geometries to store their
 /// points using something other than the JTS {@link Coordinate} class. 
+/// 
 /// For example, a storage-efficient implementation
 /// might store coordinate sequences as an array of x's
 /// and an array of y's. 

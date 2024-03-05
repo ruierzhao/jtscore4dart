@@ -50,4 +50,5 @@ analyzer:
     no_leading_underscores_for_local_identifiers: ignore # 本地变量前下划线警告
     # library_prefixes: ignore # 导入重命名可以为大写
     file_names: ignore # 忽略文件名大小写
+    doc_directive_unknown: ignore # 忽略Java文档
     

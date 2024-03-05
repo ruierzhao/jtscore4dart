@@ -10,6 +10,7 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
+/// 指定如何创建CoordinateSequences 实例的接口
 
 import 'Coordinate.dart';
 import 'CoordinateSequence.dart';

@@ -27,12 +27,11 @@ import '../CoordinateSequenceFactory.dart';
 final class CoordinateArraySequenceFactory
     implements CoordinateSequenceFactory {
   ///**private */static final int serialVersionUID = -4099577099607551657L;
-  /**/**private */*/ static final CoordinateArraySequenceFactory _instanceObject =
-      CoordinateArraySequenceFactory();
+  static final CoordinateArraySequenceFactory _instanceObject = CoordinateArraySequenceFactory();
 
-  /**/**private */*/ CoordinateArraySequenceFactory();
+  /**private */ CoordinateArraySequenceFactory();
 
-  /**/**private */*/ Object readResolve() {
+  /**private */ Object readResolve() {
     // http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
     return CoordinateArraySequenceFactory.instance();
   }

@@ -16,7 +16,7 @@ import 'package:jtscore4dart/src/geom/CoordinateXYM.dart';
 import 'package:jtscore4dart/src/geom/CoordinateXYZM.dart';
 
 /// Useful utility functions for handling Coordinate objects.
-/// 操作 Coordinate 对象的函数
+/// 操作 Coordinate 及子类对象的函数
 class Coordinates {
   /// Factory method providing access to common Coordinate implementations.
   ///

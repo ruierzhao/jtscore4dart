@@ -30,5 +30,6 @@ replace:
   - {\@code q} -> [q] 
   - \@param geom
   - long -> int
-  - new Coordinate[lineSegments.length + 1] -> List<Coordinate>
 delete: 
+
+  # - new Coordinate[lineSegments.length + 1] -> List<Coordinate>

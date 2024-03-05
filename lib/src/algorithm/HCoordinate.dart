@@ -13,33 +13,32 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
-/**
- * Represents a homogeneous coordinate in a 2-D coordinate space.
- * In JTS {@link HCoordinate}s are used as a clean way
- * of computing intersections between line segments.
- *
- * @author David Skea
- * @version 1.7
- */
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+/// Represents a homogeneous coordinate in a 2-D coordinate space.
+/// In JTS {@link HCoordinate}s are used as a clean way
+/// of computing intersections between line segments.
+///
+/// @author David Skea
+/// @version 1.7
+/// 代表一个同质的二维坐标
 class HCoordinate
 {
 
-  /**
-   * Computes the (approximate) intersection point between two line segments
-   * using homogeneous coordinates.
-   * <p>
-   * Note that this algorithm is
-   * not numerically stable; i.e. it can produce intersection points which
-   * lie outside the envelope of the line segments themselves.  In order
-   * to increase the precision of the calculation input points should be normalized
-   * before passing them to this routine.
-   * 
-   * @deprecated use {@link Intersection#intersection(Coordinate, Coordinate, Coordinate, Coordinate)}
-   */
-  static Coordinate intersection(
+  /// Computes the (approximate) intersection point between two line segments
+  /// using homogeneous coordinates.
+  /// <p>
+  /// Note that this algorithm is
+  /// not numerically stable; i.e. it can produce intersection points which
+  /// lie outside the envelope of the line segments themselves.  In order
+  /// to increase the precision of the calculation input points should be normalized
+  /// before passing them to this routine.
+  /// 
+  /// @deprecated use {@link Intersection#intersection(Coordinate, Coordinate, Coordinate, Coordinate)}
+  @Deprecated("use Intersection#intersection")
+  static Coordinate? intersection(
       Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2)
-      throws NotRepresentableException
   {
   	// unrolled computation
     double px = p1.y - p2.y;
@@ -57,12 +56,12 @@ class HCoordinate
     double xInt = x/w;
     double yInt = y/w;
     
-    if (((xInt).isNaN) || (Double.isInfinite(xInt)
-    		|| (yInt).isNaN) || (Double.isInfinite(yInt))) {
-      throw new NotRepresentableException();
+    if (((xInt).isNaN) || xInt.isInfinite || (yInt).isNaN || (yInt.isInfinite)) {
+      // throw NotRepresentableException();
+      return null;
     }
     
-    return new Coordinate(xInt, yInt);
+    return Coordinate(xInt, yInt);
   }
 
   /*
@@ -79,56 +78,39 @@ class HCoordinate
   }
   */
 
-  double x,y,w;
+  late double x,y,w;
 
-  HCoordinate() {
-    x = 0.0;
-    y = 0.0;
+  HCoordinate.empty():
+    x = 0.0,
+    y = 0.0,
     w = 1.0;
-  }
-
-  HCoordinate(double _x, double _y, double _w) {
-    x = _x;
-    y = _y;
-    w = _w;
-  }
-
-  HCoordinate(double _x, double _y) {
-    x = _x;
-    y = _y;
-    w = 1.0;
-  }
-
-  HCoordinate(Coordinate p) {
-    x = p.x;
-    y = p.y;
-    w = 1.0;
-  }
-
-  HCoordinate(HCoordinate p1, HCoordinate p2) 
-  {
-    x = p1.y * p2.w - p2.y * p1.w;
-    y = p2.x * p1.w - p1.x * p2.w;
-    w = p1.x * p2.y - p2.x * p1.y;
-  }
-
-  /**
-   * Constructs a homogeneous coordinate which is the intersection of the lines
-   * define by the homogenous coordinates represented by two
-   * {@link Coordinate}s.
-   * 
-   * @param p1
-   * @param p2
-   */
-  HCoordinate(Coordinate p1, Coordinate p2) 
-  {
-  	// optimization when it is known that w = 1
-    x = p1.y - p2.y;
-    y = p2.x - p1.x;
-    w = p1.x * p2.y - p2.x * p1.y;
-  }
   
-  HCoordinate(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) 
+
+  HCoordinate(this.x, this.y, [this.w=1.0]);
+
+  HCoordinate.fromCoord(Coordinate p)
+    :x = p.x,
+    y = p.y, 
+    w = 1.0;
+
+  HCoordinate.from2HCoord(HCoordinate p1, HCoordinate p2) 
+    :x = p1.y * p2.w - p2.y * p1.w,
+    y = p2.x * p1.w - p1.x * p2.w,
+    w = p1.x * p2.y - p2.x * p1.y;
+
+  /// Constructs a homogeneous coordinate which is the intersection of the lines
+  /// define by the homogenous coordinates represented by two
+  /// {@link Coordinate}s.
+  /// 
+  /// @param p1
+  /// @param p2
+  HCoordinate.from2Coord(Coordinate p1, Coordinate p2):
+  	// optimization when it is known that w = 1
+    x = p1.y - p2.y,
+    y = p2.x - p1.x,
+    w = p1.x * p2.y - p2.x * p1.y;
+  
+  HCoordinate.from4Coord(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) 
   {
   	// unrolled computation
     double px = p1.y - p2.y;
@@ -144,24 +126,26 @@ class HCoordinate
     w = px * qy - qx * py;
   }
   
-  double getX() throws NotRepresentableException {
+  double getX() /**throws NotRepresentableException */ {
     double a = x/w;
-    if (((a).isNaN) || (Double.isInfinite(a))) {
-      throw new NotRepresentableException();
+    if (((a).isNaN) || ((a).isInfinite)) {
+      // throw NotRepresentableException();
+      throw Exception("Java NotRepresentableException");
     }
     return a;
   }
 
-  double getY() throws NotRepresentableException {
+  double getY() /**throws NotRepresentableException */ {
     double a = y/w;
-    if  (((a).isNaN) || (Double.isInfinite(a))) {
-      throw new NotRepresentableException();
+    if  (((a).isNaN) || ((a).isInfinite)) {
+      // throw NotRepresentableException();
+      throw Exception("Java NotRepresentableException");
     }
     return a;
   }
 
-  Coordinate getCoordinate() throws NotRepresentableException {
-    Coordinate p = new Coordinate();
+  Coordinate getCoordinate() /**throws NotRepresentableException */ {
+    Coordinate p = Coordinate.empty2D();
     p.x = getX();
     p.y = getY();
     return p;

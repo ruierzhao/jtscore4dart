@@ -26,5 +26,6 @@ replace:
   - new Coordinate() -> Coordinate.empty2D()
 
   - math.floor(next) -> next.floor()
+  - Double.isInfinite(xInt) -> xInt.isInfinite
   - {@code q} -> [q] 
 delete: 

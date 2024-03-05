@@ -15,6 +15,7 @@
 // import org.locationtech.jts.math.DD;
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/math/DD.dart';
 
 /// Implements basic computational geometry algorithms using {@link DD} arithmetic.
 /// 
@@ -190,25 +191,25 @@ abstract class CGAlgorithmsDD
       Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2)
   {
-    DD px = new DD(p1.y).selfSubtract(p2.y);
-    DD py = new DD(p2.x).selfSubtract(p1.x);
-    DD pw = new DD(p1.x).selfMultiply(p2.y).selfSubtract(new DD(p2.x).selfMultiply(p1.y));
+    DD px = DD(p1.y).selfSubtract(p2.y);
+    DD py = DD(p2.x).selfSubtract(p1.x);
+    DD pw = DD(p1.x).selfMultiply(p2.y).selfSubtractDD(DD(p2.x).selfMultiply(p1.y));
 
-    DD qx = new DD(q1.y).selfSubtract(q2.y);
-    DD qy = new DD(q2.x).selfSubtract(q1.x);
-    DD qw = new DD(q1.x).selfMultiply(q2.y).selfSubtract(new DD(q2.x).selfMultiply(q1.y));
+    DD qx = DD(q1.y).selfSubtract(q2.y);
+    DD qy = DD(q2.x).selfSubtract(q1.x);
+    DD qw = DD(q1.x).selfMultiply(q2.y).selfSubtractDD(DD(q2.x).selfMultiply(q1.y));
 
-    DD x = py.multiply(qw).selfSubtract(qy.multiply(pw));
-    DD y = qx.multiply(pw).selfSubtract(px.multiply(qw));
-    DD w = px.multiply(qy).selfSubtract(qx.multiply(py));
+    DD x = py.multiplyDD(qw).selfSubtractDD(qy.multiplyDD(pw));
+    DD y = qx.multiplyDD(pw).selfSubtractDD(px.multiplyDD(qw));
+    DD w = px.multiplyDD(qy).selfSubtractDD(qx.multiplyDD(py));
 
-    double xInt = x.selfDivide(w).doubleValue();
-    double yInt = y.selfDivide(w).doubleValue();
+    double xInt = x.selfDivideDD(w).doubleValue();
+    double yInt = y.selfDivideDD(w).doubleValue();
 
     if (((xInt).isNaN) || (xInt.isInfinite || (yInt).isNaN) || ((yInt).isInfinite)) {
       return null;
     }
 
-    return new Coordinate(xInt, yInt);
+    return Coordinate(xInt, yInt);
   }
 }

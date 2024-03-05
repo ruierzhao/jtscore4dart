@@ -17,6 +17,8 @@ import 'package:jtscore4dart/src/algorithm/Distance.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
+import 'CGAlgorithmsDD.dart';
+
 /// Functions to compute intersection points between lines and line segments.
 /// <p>
 /// In general it is not possible to compute
@@ -43,7 +45,7 @@ class Intersection {
   /// or null if the lines are parallel or collinear
   /// 
   /// @see CGAlgorithmsDD#intersection(Coordinate, Coordinate, Coordinate, Coordinate)
-  static Coordinate intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
+  static Coordinate? intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
     return CGAlgorithmsDD.intersection(p1, p2, q1, q2);
     //-- this is less robust
     //return intersectionFP(p1, p2, q1, q2);

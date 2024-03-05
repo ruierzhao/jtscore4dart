@@ -15,16 +15,14 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.math.Vector3D;
 
-/**
- * Basic computational geometry algorithms 
- * for geometry and coordinates defined in 3-dimensional Cartesian space.
- * 
- * @author mdavis
- *
- */
-class CGAlgorithms3D 
+/// Basic computational geometry algorithms 
+/// for geometry and coordinates defined in 3-dimensional Cartesian space.
+/// 
+/// @author mdavis
+///
+abstract class CGAlgorithms3D 
 {
-	private CGAlgorithms3D() {}
+	// private CGAlgorithms3D() {}
 
 	static double distance(Coordinate p0, Coordinate p1)
 	{
@@ -81,15 +79,13 @@ class CGAlgorithms3D
 	}
 	
 
-	/**
-	 * Computes the distance between two 3D segments.
-	 * 
-	 * @param A the start point of the first segment
-	 * @param B the end point of the first segment
-	 * @param C the start point of the second segment
-	 * @param D the end point of the second segment
-	 * @return the distance between the segments
-	 */
+	/// Computes the distance between two 3D segments.
+	/// 
+	/// @param A the start point of the first segment
+	/// @param B the end point of the first segment
+	/// @param C the start point of the second segment
+	/// @param D the end point of the second segment
+	/// @return the distance between the segments
 	static double distanceSegmentSegment(
 			Coordinate A, Coordinate B, Coordinate C, Coordinate D) 
 	{

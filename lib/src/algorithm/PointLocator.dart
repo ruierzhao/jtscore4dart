@@ -26,72 +26,72 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
 
-/**
- * Computes the topological ({@link Location})
- * of a single point to a {@link Geometry}.
- * A {@link BoundaryNodeRule} may be specified 
- * to control the evaluation of whether the point lies on the boundary or not
- * The default rule is to use the the <i>SFS Boundary Determination Rule</i>
- * <p>
- * Notes:
- * <ul>
- * <li>{@link LinearRing}s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.
- * </ul>
- * Instances of this class are not reentrant.
- *
- * @version 1.7
- */
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/GeometryCollection.dart';
+import 'package:jtscore4dart/src/geom/GeometryCollectionIterator.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+
+
+import 'PointLocation.dart';
+
+/// Computes the topological ({@link Location})
+/// of a single point to a {@link Geometry}.
+/// A {@link BoundaryNodeRule} may be specified 
+/// to control the evaluation of whether the point lies on the boundary or not
+/// The default rule is to use the the <i>SFS Boundary Determination Rule</i>
+/// <p>
+/// Notes:
+/// <ul>
+/// <li>{@link LinearRing}s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.
+/// </ul>
+/// Instances of this class are not reentrant.
+///
+/// @version 1.7
 class PointLocator
 {
   // default is to use OGC SFS rule
-  private BoundaryNodeRule boundaryRule = 
-  	//BoundaryNodeRule.ENDPOINT_BOUNDARY_RULE; 
-  	BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+  /**private */ BoundaryNodeRule boundaryRule = 
+  	BoundaryNodeRule.ENDPOINT_BOUNDARY_RULE; 
+  	// BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
 
-  private bool isIn;         // true if the point lies in or on any Geometry element
-  private int numBoundaries;    // the number of sub-elements whose boundaries the point lies in
+  /**private */ bool isIn;         // true if the point lies in or on any Geometry element
+  /**private */ int numBoundaries;    // the number of sub-elements whose boundaries the point lies in
 
-  PointLocator() {
-  }
 
-  PointLocator(BoundaryNodeRule boundaryRule)
+  PointLocator([BoundaryNodeRule? _boundaryRule])
   {
-    if (boundaryRule == null)
-      throw new ArgumentError("Rule must be non-null");
-    this.boundaryRule = boundaryRule;
+    boundaryRule = (_boundaryRule ??= BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE);
   }
 
-  /**
-   * Convenience method to test a point for intersection with
-   * a Geometry
-   * @param p the coordinate to test
-   * @param geom the Geometry to test
-   * @return <code>true</code> if the point is in the interior or boundary of the Geometry
-   */
+  /// Convenience method to test a point for intersection with
+  /// a Geometry
+  /// @param p the coordinate to test
+  /// @param geom the Geometry to test
+  /// @return <code>true</code> if the point is in the interior or boundary of the Geometry
   bool intersects(Coordinate p, Geometry geom)
   {
     return locate(p, geom) != Location.EXTERIOR;
   }
 
-  /**
-   * Computes the topological relationship ({@link Location}) of a single point
-   * to a Geometry.
-   * It handles both single-element
-   * and multi-element Geometries.
-   * The algorithm for multi-part Geometries
-   * takes into account the SFS Boundary Determination Rule.
-   *
-   * @return the {@link Location} of the point relative to the input Geometry
-   */
+  /// Computes the topological relationship ({@link Location}) of a single point
+  /// to a Geometry.
+  /// It handles both single-element
+  /// and multi-element Geometries.
+  /// The algorithm for multi-part Geometries
+  /// takes into account the SFS Boundary Determination Rule.
+  ///
+  /// @return the {@link Location} of the point relative to the input Geometry
   int locate(Coordinate p, Geometry geom)
   {
     if (geom.isEmpty()) return Location.EXTERIOR;
 
     if (geom is LineString) {
-      return locateOnLineString(p, (LineString) geom);
+      return locateOnLineString(p,  geom as LineString);
     }
     else if (geom is Polygon) {
-      return locateInPolygon(p, (Polygon) geom);
+      return locateInPolygon(p, geom);
     }
 
     isIn = false;
@@ -105,24 +105,24 @@ class PointLocator
     return Location.EXTERIOR;
   }
 
-  private void computeLocation(Coordinate p, Geometry geom)
+  /**private */ void computeLocation(Coordinate p, Geometry geom)
   {
     if (geom.isEmpty())
       return;
     
     if (geom is Point) {
-      updateLocationInfo(locateOnPoint(p, (Point) geom));
+      updateLocationInfo(locateOnPoint(p, geom));
     }
     if (geom is LineString) {
-      updateLocationInfo(locateOnLineString(p, (LineString) geom));
+      updateLocationInfo(locateOnLineString(p, geom));
     }
     else if (geom is Polygon) {
-      updateLocationInfo(locateInPolygon(p, (Polygon) geom));
+      updateLocationInfo(locateInPolygon(p,  geom));
     }
     else if (geom is MultiLineString) {
-      MultiLineString ml = (MultiLineString) geom;
+      MultiLineString ml =  geom;
       for (int i = 0; i < ml.getNumGeometries(); i++) {
-        LineString l = (LineString) ml.getGeometryN(i);
+        LineString l =  ml.getGeometryN(i) as LineString;
         updateLocationInfo(locateOnLineString(p, l));
       }
     }
@@ -134,22 +134,22 @@ class PointLocator
       }
     }
     else if (geom is GeometryCollection) {
-      Iterator geomi = new GeometryCollectionIterator((GeometryCollection) geom);
+      Iterator geomi = GeometryCollectionIterator((GeometryCollection) geom);
       while (geomi.hasNext()) {
-        Geometry g2 = (Geometry) geomi.next();
+        Geometry g2 = geomi.next();
         if (g2 != geom)
           computeLocation(p, g2);
       }
     }
   }
 
-  private void updateLocationInfo(int loc)
+  /**private */ void updateLocationInfo(int loc)
   {
     if (loc == Location.INTERIOR) isIn = true;
     if (loc == Location.BOUNDARY) numBoundaries++;
   }
 
-  private int locateOnPoint(Coordinate p, Point pt)
+  /**private */ int locateOnPoint(Coordinate p, Point pt)
   {
   	// no point in doing envelope test, since equality test is just as fast
   	
@@ -159,7 +159,7 @@ class PointLocator
     return Location.EXTERIOR;
   }
 
-  private int locateOnLineString(Coordinate p, LineString l)
+  /**private */ int locateOnLineString(Coordinate p, LineString l)
   {
     // bounding-box check
     if (! l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
@@ -177,7 +177,7 @@ class PointLocator
     return Location.EXTERIOR;
   }
 
-  private int locateInPolygonRing(Coordinate p, LinearRing ring)
+  /**private */ int locateInPolygonRing(Coordinate p, LinearRing ring)
   {
   	// bounding-box check
   	if (! ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
@@ -185,7 +185,7 @@ class PointLocator
   	return PointLocation.locateInRing(p, ring.getCoordinates());
   }
 
-  private int locateInPolygon(Coordinate p, Polygon poly)
+  /**private */ int locateInPolygon(Coordinate p, Polygon poly)
   {
     if (poly.isEmpty()) return Location.EXTERIOR;
 
@@ -203,7 +203,4 @@ class PointLocator
     }
     return Location.INTERIOR;
   }
-
-
-
 }

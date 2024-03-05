@@ -17,6 +17,12 @@
 // import org.locationtech.jts.geom.LinearRing;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+import 'package:jtscore4dart/src/geom/LinearRing.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+
 class Rectangle {
   
   /// Creates a rectangular {@link Polygon} from a base segment
@@ -79,8 +85,9 @@ class Rectangle {
     Coordinate p3 = rightSidePt.equals2D(oppositePt) ? oppositePt.copy() 
         : oppLine.lineIntersection(rightLine);
     
-    LinearRing shell = factory.createLinearRing(
-        new List<Coordinate> { p0, p1, p2, p3, p0.copy() });
+    // LinearRing shell = factory.createLinearRing(
+    //     new List<Coordinate> { p0, p1, p2, p3, p0.copy() });
+    LinearRing shell = factory.createLinearRing(<Coordinate>[p0, p1, p2, p3, p0.copy()]);
     return factory.createPolygon(shell);
   }
 
@@ -91,12 +98,12 @@ class Rectangle {
   /// @param b the Y coefficient
   /// @param p a point on the line
   /// @return the constant C
-  private static double computeLineEquationC(double a, double b, Coordinate p)
+  /**private */ static double computeLineEquationC(double a, double b, Coordinate p)
   {
     return a * p.y - b * p.x;
   }
   
-  private static LineSegment createLineForStandardEquation(double a, double b, double c)
+  /**private */ static LineSegment createLineForStandardEquation(double a, double b, double c)
   {
     Coordinate p0;
     Coordinate p1;
@@ -112,14 +119,14 @@ class Rectangle {
     */
     if ((b).abs() > (a).abs()) {
       //-- abs(m) < 1
-      p0 = new Coordinate(0.0, c/b);
-      p1 = new Coordinate(1.0, c/b - a/b);
+      p0 = Coordinate(0.0, c/b);
+      p1 = Coordinate(1.0, c/b - a/b);
     }
     else {
       //-- abs(m) >= 1
-      p0 = new Coordinate(c/a, 0.0);
-      p1 = new Coordinate(c/a - b/a, 1.0);
+      p0 = Coordinate(c/a, 0.0);
+      p1 = Coordinate(c/a - b/a, 1.0);
     }
-    return new LineSegment(p0, p1);
+    return LineSegment(p0, p1);
   }
 }

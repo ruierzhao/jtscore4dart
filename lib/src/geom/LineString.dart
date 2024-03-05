@@ -33,7 +33,7 @@ class LineString
 	extends Geometry
 	implements Lineal
 {
- /**private */static final long serialVersionUID = 3110669828065365560L;
+ /**private */static final int serialVersionUID = 3110669828065365560L;
   
   /// The minimum number of vertices allowed in a valid non-empty linestring.
   /// Empty linestrings with 0 vertices are also valid.

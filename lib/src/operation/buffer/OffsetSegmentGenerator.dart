@@ -458,7 +458,7 @@ class OffsetSegmentGenerator
   /**
    * Adds a mitre join connecting two convex offset segments.
    * The mitre is beveled if it exceeds the mitre limit factor.
-   * The mitre limit is intended to prevent extremely long corners occurring.
+   * The mitre limit is intended to prevent extremely int corners occurring.
    * If the mitre limit is very small it can cause unwanted artifacts around fairly flat corners.
    * This is prevented by using a simple bevel join in this case.
    * In other words, the limit prevents the corner from getting too long, 

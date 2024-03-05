@@ -85,7 +85,7 @@ class Node
    * To merge labels for two nodes,
    * the merged location for each LabelElement is computed.
    * The location for the corresponding node LabelElement is set to the result,
-   * as long as the location is non-null.
+   * as int as the location is non-null.
    *
    * @param label2 Label to merge
    */

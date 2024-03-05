@@ -102,7 +102,7 @@ class MaximumInscribedCircle {
    * @param toleranceDist the tolerance distance
    * @return the maximum number of iterations allowed
    */
-  static long computeMaximumIterations(Geometry geom, double toleranceDist) {
+  static int computeMaximumIterations(Geometry geom, double toleranceDist) {
     double diam = geom.getEnvelopeInternal().getDiameter();
     double ncells = diam / toleranceDist;
     //-- Using log of ncells allows control over number of iterations
@@ -225,8 +225,8 @@ class MaximumInscribedCircle {
      * Carry out the branch-and-bound search
      * of the cell space
      */
-    long maxIter = computeMaximumIterations(inputGeom, tolerance);
-    long iter = 0;
+    int maxIter = computeMaximumIterations(inputGeom, tolerance);
+    int iter = 0;
     while (! cellQueue.isEmpty() && iter < maxIter) {
       iter++;
       // pick the most promising cell from the queue

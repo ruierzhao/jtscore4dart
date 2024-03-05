@@ -41,7 +41,7 @@ import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 abstract class PackedCoordinateSequence
     implements CoordinateSequence
 {
-  ///**private */static final long serialVersionUID = -3151899011275603L;
+  ///**private */static final int serialVersionUID = -3151899011275603L;
   /// The dimensions of the coordinates held in the packed array
   /**/**protected */*/ int dimension;
   
@@ -205,7 +205,7 @@ abstract class PackedCoordinateSequence
    * Packed coordinate sequence implementation based on doubles
    */
   static class Double extends PackedCoordinateSequence {
-   /**private */static final long serialVersionUID = 5777450686367912719L;
+   /**private */static final int serialVersionUID = 5777450686367912719L;
     /**
      * The packed coordinate array
      */
@@ -391,7 +391,7 @@ abstract class PackedCoordinateSequence
    * Packed coordinate sequence implementation based on floats
    */
   static class Float extends PackedCoordinateSequence {
-   /**private */static final long serialVersionUID = -2902252401427938986L;
+   /**private */static final int serialVersionUID = -2902252401427938986L;
     /**
      * The packed coordinate array
      */

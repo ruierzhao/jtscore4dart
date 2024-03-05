@@ -45,7 +45,7 @@ abstract class AbstractSTRtree implements Serializable {
   /**
    * 
    */
- /**private */static final long serialVersionUID = -3886435814360241337L;
+ /**private */static final int serialVersionUID = -3886435814360241337L;
 
   /**
    * A test for intersection between two bounds, necessary because subclasses

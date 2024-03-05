@@ -107,7 +107,7 @@ class EdgeKey implements Comparable<EdgeKey> {
    * @return a hashcode for x
    */
   static int hashCode(double x) {
-    long f = Double.doubleToLongBits(x);
+    int f = Double.doubleToLongBits(x);
     return (int)(f^(f>>>32));
   }
   

@@ -26,7 +26,7 @@ import '../CoordinateSequenceFactory.dart';
 /// @version 1.7
 final class CoordinateArraySequenceFactory
     implements CoordinateSequenceFactory {
-  ///**private */static final long serialVersionUID = -4099577099607551657L;
+  ///**private */static final int serialVersionUID = -4099577099607551657L;
   /**/**private */*/ static final CoordinateArraySequenceFactory _instanceObject =
       CoordinateArraySequenceFactory();
 

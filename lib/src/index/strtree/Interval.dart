@@ -62,7 +62,7 @@ class Interval {
   int hashCode() {
     final int prime = 31;
     int result = 1;
-    long temp;
+    int temp;
     temp = Double.doubleToLongBits(max);
     result = prime * result + (int) (temp ^ (temp >>> 32));
     temp = Double.doubleToLongBits(min);

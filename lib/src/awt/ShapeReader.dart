@@ -99,7 +99,7 @@ class ShapeReader
       seqIndex++;
       
       List holes = new ArrayList();
-      // add holes as long as rings are CCW
+      // add holes as int as rings are CCW
       while (seqIndex < pathPtSeq.size() && isHole((List<Coordinate>) pathPtSeq.get(seqIndex))) {
         List<Coordinate> holePts = (List<Coordinate>) pathPtSeq.get(seqIndex);
         LinearRing hole = geometryFactory.createLinearRing(holePts);

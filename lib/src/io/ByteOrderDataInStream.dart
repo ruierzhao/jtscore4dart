@@ -67,7 +67,7 @@ class ByteOrderDataInStream
    * 
    * @return the number of bytes read
    */
-  long getCount() {
+  int getCount() {
     return count;
   }
   
@@ -109,13 +109,13 @@ class ByteOrderDataInStream
   }
   
   /**
-   * Reads a long value.
+   * Reads a int value.
    * 
    * @return the value read
    * @throws IOException if an I/O error occurred
    * @throws ParseException if not enough data could be read
    */
-  long readLong()
+  int readLong()
 	throws IOException, ParseException
   {
     read(buf8);

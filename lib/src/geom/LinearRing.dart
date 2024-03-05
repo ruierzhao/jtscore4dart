@@ -35,7 +35,7 @@ class LinearRing extends LineString
   /// Empty rings with 0 vertices are also valid.
   static final int MINIMUM_VALID_SIZE = 3;
 
-  ///**private */static final long serialVersionUID = -4261142084085851829L;
+  ///**private */static final int serialVersionUID = -4261142084085851829L;
 
   /// Constructs a <code>LinearRing</code> with the given points.
   ///

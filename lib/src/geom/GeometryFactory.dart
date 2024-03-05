@@ -40,7 +40,7 @@ import 'impl/CoordinateArraySequenceFactory.dart';
 ///
 /// @version 1.7
 class GeometryFactory{
-  ///**private */static final long serialVersionUID = -6820524753094095635L;
+  ///**private */static final int serialVersionUID = -6820524753094095635L;
   /**private */ PrecisionModel? precisionModel;
 
   /**private */ CoordinateSequenceFactory? coordinateSequenceFactory;

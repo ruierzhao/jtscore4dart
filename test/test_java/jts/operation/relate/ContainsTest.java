@@ -48,9 +48,9 @@ public class ContainsTest
    * when using an FP intersection algorithm.
    * This case works when using CGAlgorithmsDD#intersection(Coordinate, Coordinate, Coordinate, Coordinate).
    * 
-   * The cause is that the long segment in A nodes the single-segment line in B.
+   * The cause is that the int segment in A nodes the single-segment line in B.
    * The node location cannot be computed precisely.
-   * The node then tests as not lying precisely on the original long segment in A.
+   * The node then tests as not lying precisely on the original int segment in A.
    * 
    * The solution is to change the relate algorithm so that it never computes
    * new intersection points, only ones which occur at existing vertices.

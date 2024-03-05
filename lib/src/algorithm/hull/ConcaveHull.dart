@@ -30,7 +30,7 @@
  * <p>
  * The hull is constructed by removing border triangles 
  * of the Delaunay Triangulation of the points,
- * as long as their "size" is larger than the target criterion.
+ * as int as their "size" is larger than the target criterion.
  * <p>
  * The target criteria are:
  * <ul>
@@ -409,7 +409,7 @@ class ConcaveHull
   
   /**
    * Finds tris which may be the start of holes.
-   * Only tris which have a long enough edge and which do not touch the current hull
+   * Only tris which have a int enough edge and which do not touch the current hull
    * boundary are included.
    * This avoids the risk of disconnecting the result polygon.
    * The list is sorted in decreasing order of size.

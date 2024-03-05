@@ -79,7 +79,7 @@ implements SpatialIndex, Serializable
   /**
    * 
    */
- /**private */static final long serialVersionUID = 259274702368956900L;
+ /**private */static final int serialVersionUID = 259274702368956900L;
   
  /**private */static Comparator xComparator =
     new Comparator() {

@@ -97,14 +97,14 @@ class DoubleBits {
 
   void zeroLowerBits(int nBits)
   {
-    long invMask = (1L << nBits) - 1L;
-    long mask = ~ invMask;
+    int invMask = (1L << nBits) - 1L;
+    int mask = ~ invMask;
     xBits &= mask;
   }
 
   int getBit(int i)
   {
-    long mask = (1L << i);
+    int mask = (1L << i);
     return (xBits & mask) != 0 ? 1 : 0;
   }
 

@@ -35,7 +35,7 @@ class Stopwatch {
     isRunning = true;
   }
 
-  long stop()
+  int stop()
   {
     if (isRunning) {
       updateTotalTime();
@@ -50,7 +50,7 @@ class Stopwatch {
     startTimestamp = System.currentTimeMillis();
   }
 
-  long split()
+  int split()
   {
     if (isRunning)
       updateTotalTime();
@@ -59,13 +59,13 @@ class Stopwatch {
 
  /**private */void updateTotalTime()
   {
-    long endTimestamp = System.currentTimeMillis();
-    long elapsedTime = endTimestamp - startTimestamp;
+    int endTimestamp = System.currentTimeMillis();
+    int elapsedTime = endTimestamp - startTimestamp;
     startTimestamp = endTimestamp;
     totalTime += elapsedTime;
   }
 
-  long getTime()
+  int getTime()
   {
     updateTotalTime();
     return totalTime;
@@ -73,7 +73,7 @@ class Stopwatch {
 
   String getTimeString()
   {
-    long totalTime = getTime();
+    int totalTime = getTime();
     return getTimeString(totalTime);
   }
 

@@ -26,7 +26,7 @@
  * {@link Geometry}s can be indexed by using their
  * {@link Envelope}s.
  * Any type of Object can also be indexed as
- * long as it has an extent that can be represented by an {@link Envelope}.
+ * int as it has an extent that can be represented by an {@link Envelope}.
  * <p>
  * This Quadtree index provides a <b>primary filter</b>
  * for range rectangle queries.  The various query methods return a list of
@@ -52,7 +52,7 @@
 class Quadtree
     implements SpatialIndex, Serializable
 {
- /**private */static final long serialVersionUID = -7461163625812743604L;
+ /**private */static final int serialVersionUID = -7461163625812743604L;
 
   /**
    * Ensure that the envelope for the inserted item has non-zero extents.

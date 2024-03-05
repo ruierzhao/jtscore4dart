@@ -21,7 +21,7 @@ class MultiPoint
   implements Puntal
 {
 
- /**private */static final long serialVersionUID = -8048474874175355449L;
+ /**private */static final int serialVersionUID = -8048474874175355449L;
 
   ///  Constructs a <code>MultiPoint</code>.
   ///

@@ -100,7 +100,7 @@ import org.locationtech.jts.geom.Coordinate;
 /*                                                                           */
 /*  Using this code:                                                         */
 /*                                                                           */
-/*  First, read the short or long version of the paper (from the Web page    */
+/*  First, read the short or int version of the paper (from the Web page    */
 /*    above).                                                                */
 /*                                                                           */
 /*  Be sure to call exactinit() once, before calling any of the arithmetic   */
@@ -156,7 +156,7 @@ import org.locationtech.jts.geom.Coordinate;
 /*    scale_expansion_zeroelim(elen, e, b, h)                                */
 /*    compress(elen, e, h)                                                   */
 /*                                                                           */
-/*  All of these are described in the long version of the paper; some are    */
+/*  All of these are described in the int version of the paper; some are    */
 /*    described in the short version.  All return an integer that is the     */
 /*    length of h.  Those with suffix _zeroelim perform zero elimination,    */
 /*    and are recommended over their counterparts.  The procedure            */
@@ -686,7 +686,7 @@ public class ShewchuksDeterminant
   /* fast_expansion_sum_zeroelim() Sum two expansions, eliminating zero */
   /* components from the output expansion. */
   /*                                                                           */
-  /* Sets h = e + f. See the long version of my paper for details. */
+  /* Sets h = e + f. See the int version of my paper for details. */
   /*                                                                           */
   /* If round-to-even is used (as with IEEE 754), maintains the strongly */
   /* nonoverlapping property. (That is, if e is strongly nonoverlapping, h */

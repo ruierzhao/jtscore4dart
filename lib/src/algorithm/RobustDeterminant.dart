@@ -88,7 +88,7 @@ class RobustDeterminant {
    * @return  1 if the determinant is positive,
    * @return  0 if the determinant is 0.
    */
-   //private static int originalSignOfDet2x2(double x1, double y1, double x2, double y2) {
+  //  private static int originalSignOfDet2x2(double x1, double y1, double x2, double y2) {
    static int signOfDet2x2(double x1, double y1, double x2, double y2) {
     // returns -1 if the determinant is negative,
     // returns  1 if the determinant is positive,
@@ -96,7 +96,7 @@ class RobustDeterminant {
     int sign;
     double swap;
     double k;
-    long count = 0;
+    int count = 0;
 
     //callCount++; // debugging only
 

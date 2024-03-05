@@ -43,7 +43,7 @@ import 'package:jtscore4dart/src/utils.dart';
 ///
 /// @version 1.16
 class Coordinate implements Comparable<Coordinate> {
-  ///**private */static final long serialVersionUID = 6683108902428366910L;
+  ///**private */static final int serialVersionUID = 6683108902428366910L;
 
   /// The value used to indicate a null or missing ordinate value.
   /// In particular, used for the value of ordinates for dimensions
@@ -419,7 +419,7 @@ class Coordinate implements Comparable<Coordinate> {
   /// @return a hashcode for x
   /// @ruier 参考： https://blog.csdn.net/kangzye/article/details/100766232
   // static int hashCode(double x) {
-  //   long f = Double.doubleToLongBits(x);
+  //   int f = Double.doubleToLongBits(x);
   //   return (int)(f^(f>>>32));
   // }
 

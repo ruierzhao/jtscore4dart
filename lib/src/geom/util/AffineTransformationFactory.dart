@@ -110,7 +110,7 @@ class AffineTransformationFactory {
 	 *          the destination points of the vectors
 	 * @return the computed transformation
 	 * @throws ArgumentError
-	 *           if the control vector arrays are too short, long or of different
+	 *           if the control vector arrays are too short, int or of different
 	 *           lengths
 	 */
 	static AffineTransformation createFromControlVectors(List<Coordinate> src,

@@ -136,7 +136,7 @@ public class SnapRoundingNoderTest  extends GeometryTestCase {
 
   /**
    * This test will fail if the diagonals of hot pixels are not checked.
-   * Note that the nearby vertex is far enough from the long segment
+   * Note that the nearby vertex is far enough from the int segment
    * to avoid being snapped as an intersection.
    */
   public void testDiagonalNotNodedRightUp() {

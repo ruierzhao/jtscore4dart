@@ -24,7 +24,7 @@
 ///@version 1.7
 class GeometryCollection extends Geometry {
 //  With contributions from Markus Schaber [schabios@logi-track.com] 2004-03-26
- /**private */static final long serialVersionUID = -5694727726395021467L;
+ /**private */static final int serialVersionUID = -5694727726395021467L;
   ///  Internal representation of this <code>GeometryCollection</code>.
  /**protected */List<Geometry> geometries;
 

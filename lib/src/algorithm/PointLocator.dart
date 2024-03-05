@@ -97,18 +97,21 @@ class PointLocator
     isIn = false;
     numBoundaries = 0;
     computeLocation(p, geom);
-    if (boundaryRule.isInBoundary(numBoundaries))
+    if (boundaryRule.isInBoundary(numBoundaries)) {
       return Location.BOUNDARY;
-    if (numBoundaries > 0 || isIn)
+    }
+    if (numBoundaries > 0 || isIn) {
       return Location.INTERIOR;
+    }
 
     return Location.EXTERIOR;
   }
 
   /**private */ void computeLocation(Coordinate p, Geometry geom)
   {
-    if (geom.isEmpty())
+    if (geom.isEmpty()) {
       return;
+    }
     
     if (geom is Point) {
       updateLocationInfo(locateOnPoint(p, geom));
@@ -137,8 +140,9 @@ class PointLocator
       Iterator geomi = GeometryCollectionIterator((GeometryCollection) geom);
       while (geomi.hasNext()) {
         Geometry g2 = geomi.next();
-        if (g2 != geom)
+        if (g2 != geom) {
           computeLocation(p, g2);
+        }
       }
     }
   }
@@ -154,8 +158,9 @@ class PointLocator
   	// no point in doing envelope test, since equality test is just as fast
   	
     Coordinate ptCoord = pt.getCoordinate();
-    if (ptCoord.equals2D(p))
+    if (ptCoord.equals2D(p)) {
       return Location.INTERIOR;
+    }
     return Location.EXTERIOR;
   }
 

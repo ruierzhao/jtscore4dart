@@ -1041,7 +1041,7 @@ import "dart:math" as math;
   
   /// Extracts the significant digits in the decimal representation of the argument.
   /// A decimal point may be optionally inserted in the string of digits
-  /// (as long as its position lies within the extracted digits
+  /// (as int as its position lies within the extracted digits
   /// - if not, the caller must prepend or append the appropriate zeroes and decimal point).
   /// 
   /// @param y the number to extract ( >= 0)

@@ -259,8 +259,8 @@ class LargestEmptyCircle {
      * Carry out the branch-and-bound search
      * of the cell space
      */
-    long maxIter = MaximumInscribedCircle.computeMaximumIterations(bounds, tolerance);
-    long iter = 0;
+    int maxIter = MaximumInscribedCircle.computeMaximumIterations(bounds, tolerance);
+    int iter = 0;
     while (! cellQueue.isEmpty() && iter < maxIter) {
       iter++;
       // pick the cell with greatest distance from the queue

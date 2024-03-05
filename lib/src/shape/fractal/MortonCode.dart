@@ -129,12 +129,12 @@ class MortonCode
    * @return the point on the curve
    */
   static Coordinate decode(int index) {
-    long x = deinterleave(index);
-    long y = deinterleave(index >> 1);
+    int x = deinterleave(index);
+    int y = deinterleave(index >> 1);
     return new Coordinate(x, y);
   }
 
- /**private */static long deinterleave(int x) {
+ /**private */static int deinterleave(int x) {
     x = x & 0x55555555;
     x = (x | (x >> 1)) & 0x33333333;
     x = (x | (x >> 2)) & 0x0F0F0F0F;

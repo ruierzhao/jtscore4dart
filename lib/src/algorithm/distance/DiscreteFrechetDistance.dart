@@ -551,17 +551,17 @@ class DiscreteFrechetDistance {
     }
 
     double get(int i, int j) {
-      long key = (long)i << 32 | j;
+      int key = (long)i << 32 | j;
       return matrix.getOrDefault(key, this.defaultValue);
     }
 
     void set(int i, int j, double value) {
-      long key = (long)i << 32 | j;
+      int key = (long)i << 32 | j;
       matrix.put(key, value);
     }
 
     bool isValueSet(int i, int j) {
-      long key = (long)i << 32 | j;
+      int key = (long)i << 32 | j;
       return matrix.containsKey(key);
     }
   }

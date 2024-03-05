@@ -56,7 +56,7 @@
  * and forces the output to be validly rounded to the precision model.</p>
  * <p>
  * For fixed precision models noding is performed using a {@link SnapRoundingNoder}.
- * This provides robust computation (as long as precision is limited to
+ * This provides robust computation (as int as precision is limited to
  * around 13 decimal digits).</p>
  * <p>
  * For floating precision an {@link MCIndexNoder} is used. 

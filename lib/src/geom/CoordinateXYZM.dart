@@ -19,7 +19,7 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 ///
 /// @since 1.16
 class CoordinateXYZM extends Coordinate {
-  ///**private */static final long serialVersionUID = -8763329985881823442L;
+  ///**private */static final int serialVersionUID = -8763329985881823442L;
 
   /// Default constructor
   CoordinateXYZM.empty():_m = 0.0,super.empty2D(); 

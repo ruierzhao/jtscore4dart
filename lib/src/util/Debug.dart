@@ -57,7 +57,7 @@ class Debug {
   }
 
  /**private */static Stopwatch stopwatch = new Stopwatch();
- /**private */static long lastTimePrinted;
+ /**private */static int lastTimePrinted;
 
   /// Prints the status of debugging to <tt>System.out</tt>
   ///
@@ -134,8 +134,8 @@ class Debug {
     if (!debugOn) {
       return;
     }
-    long time = stopwatch.getTime();
-    long elapsedTime = time - lastTimePrinted;
+    int time = stopwatch.getTime();
+    int elapsedTime = time - lastTimePrinted;
     debug.instancePrint(
         formatField(Stopwatch.getTimeString(time), 10)
         + " (" + formatField(Stopwatch.getTimeString(elapsedTime), 10) + " ) "

@@ -53,7 +53,7 @@ class ByteOrderValues
       buf[3] = (byte)(intValue >> 24);
     }
   }
-  static long getLong(byte[] buf, int byteOrder)
+  static int getLong(byte[] buf, int byteOrder)
   {
     if (byteOrder == BIG_ENDIAN) {
       return
@@ -105,13 +105,13 @@ class ByteOrderValues
 
   static double getDouble(byte[] buf, int byteOrder)
   {
-    long longVal = getLong(buf, byteOrder);
+    int longVal = getLong(buf, byteOrder);
     return Double.longBitsToDouble(longVal);
   }
 
   static void putDouble(double doubleValue, byte[] buf, int byteOrder)
   {
-    long longVal = Double.doubleToLongBits(doubleValue);
+    int longVal = Double.doubleToLongBits(doubleValue);
     putLong(longVal, buf, byteOrder);
   }
 

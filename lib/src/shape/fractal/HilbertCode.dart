@@ -121,15 +121,15 @@ class HilbertCode
     x = x << (16 - lvl);
     y = y << (16 - lvl);
     
-    long a = x ^ y;
-    long b = 0xFFFF ^ a;
-    long c = 0xFFFF ^ (x | y);
-    long d = x & (y ^ 0xFFFF);
+    int a = x ^ y;
+    int b = 0xFFFF ^ a;
+    int c = 0xFFFF ^ (x | y);
+    int d = x & (y ^ 0xFFFF);
 
-    long A = a | (b >> 1);
-    long B = (a >> 1) ^ a;
-    long C = ((c >> 1) ^ (b & (d >> 1))) ^ c;
-    long D = ((a & (c >> 1)) ^ (d >> 1)) ^ d;
+    int A = a | (b >> 1);
+    int B = (a >> 1) ^ a;
+    int C = ((c >> 1) ^ (b & (d >> 1))) ^ c;
+    int D = ((a & (c >> 1)) ^ (d >> 1)) ^ d;
 
     a = A;
     b = B;
@@ -159,8 +159,8 @@ class HilbertCode
     a = C ^ (C >> 1);
     b = D ^ (D >> 1);
 
-    long i0 = x ^ y;
-    long i1 = b | (0xFFFF ^ (i0 | a));
+    int i0 = x ^ y;
+    int i1 = b | (0xFFFF ^ (i0 | a));
 
     i0 = (i0 | (i0 << 8)) & 0x00FF00FF;
     i0 = (i0 | (i0 << 4)) & 0x0F0F0F0F;
@@ -172,7 +172,7 @@ class HilbertCode
     i1 = (i1 | (i1 << 2)) & 0x33333333;
     i1 = (i1 | (i1 << 1)) & 0x55555555;
 
-    long index = ((i1 << 1) | i0) >> (32 - 2 * lvl);
+    int index = ((i1 << 1) | i0) >> (32 - 2 * lvl);
     return (int) index;
   }
 
@@ -205,24 +205,24 @@ class HilbertCode
     
     index = index << (32 - 2 * lvl);
 
-    long i0 = deinterleave(index);
-    long i1 = deinterleave(index >> 1);
+    int i0 = deinterleave(index);
+    int i1 = deinterleave(index >> 1);
 
-    long t0 = (i0 | i1) ^ 0xFFFF;
-    long t1 = i0 & i1;
+    int t0 = (i0 | i1) ^ 0xFFFF;
+    int t1 = i0 & i1;
 
-    long prefixT0 = prefixScan(t0);
-    long prefixT1 = prefixScan(t1);
+    int prefixT0 = prefixScan(t0);
+    int prefixT1 = prefixScan(t1);
 
-    long a = (((i0 ^ 0xFFFF) & prefixT1) | (i0 & prefixT0));
+    int a = (((i0 ^ 0xFFFF) & prefixT1) | (i0 & prefixT0));
 
-    long x = (a ^ i1) >> (16 - lvl);
-    long y = (a ^ i0 ^ i1) >> (16 - lvl);
+    int x = (a ^ i1) >> (16 - lvl);
+    int y = (a ^ i0 ^ i1) >> (16 - lvl);
     
     return new Coordinate(x, y);
   }
 
- /**private */static long prefixScan(long x) {
+ /**private */static int prefixScan(long x) {
     x = (x >> 8) ^ x;
     x = (x >> 4) ^ x;
     x = (x >> 2) ^ x;
@@ -230,7 +230,7 @@ class HilbertCode
     return x;
   }
 
- /**private */static long deinterleave(int x) {
+ /**private */static int deinterleave(int x) {
     x = x & 0x55555555;
     x = (x | (x >> 1)) & 0x33333333;
     x = (x | (x >> 2)) & 0x0F0F0F0F;

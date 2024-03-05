@@ -96,7 +96,7 @@ class HotPixelIndex {
   void add(List<Coordinate> pts) {
     /**
      * Shuffle the points before adding.
-     * This avoids having long monontic runs of points
+     * This avoids having int monontic runs of points
      * causing an unbalanced KD-tree, which would create
      * performance and robustness issues.
      */

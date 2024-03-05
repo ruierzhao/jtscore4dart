@@ -27,7 +27,7 @@ class MultiPolygon
 	extends GeometryCollection
 	implements Polygonal
 {
- /**private */static final long serialVersionUID = -551033529766975875L;
+ /**private */static final int serialVersionUID = -551033529766975875L;
   ///  Constructs a <code>MultiPolygon</code>.
   ///
   ///@param  polygons        the <code>Polygon</code>s for this <code>MultiPolygon</code>

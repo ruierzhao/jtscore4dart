@@ -53,7 +53,7 @@ class PolygonizeGraph
     return degree;
   }
 
- /**private */static int getDegree(Node node, long label)
+ /**private */static int getDegree(Node node, int label)
   {
     List<DirectedEdge> edges = node.getOutEdges().getEdges();
     int degree = 0;
@@ -144,7 +144,7 @@ class PolygonizeGraph
  /**private */void convertMaximalToMinimalEdgeRings(List<PolygonizeDirectedEdge> ringEdges)
   {
     for (PolygonizeDirectedEdge de : ringEdges) {
-      long label = de.getLabel();
+      int label = de.getLabel();
       List<Node> intNodes = findIntersectionNodes(de, label);
 
       if (intNodes == null) continue;
@@ -162,7 +162,7 @@ class PolygonizeGraph
    * @return the list of intersection nodes found,
    * or <code>null</code> if no intersection nodes were found
    */
- /**private */static List<Node> findIntersectionNodes(PolygonizeDirectedEdge startDE, long label)
+ /**private */static List<Node> findIntersectionNodes(PolygonizeDirectedEdge startDE, int label)
   {
     PolygonizeDirectedEdge de = startDE;
     List<Node> intNodes = null;
@@ -221,7 +221,7 @@ class PolygonizeGraph
   {
     List<PolygonizeDirectedEdge> edgeRingStarts = new ArrayList<PolygonizeDirectedEdge>();
     // label the edge rings formed
-    long currLabel = 1;
+    int currLabel = 1;
     for (Iterator<PolygonizeDirectedEdge> i = dirEdges.iterator(); i.hasNext(); ) {
       PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.next();
       if (de.isMarked()) continue;
@@ -270,7 +270,7 @@ class PolygonizeGraph
     return cutLines;
   }
 
- /**private */static void label(Collection<?> dirEdges, long label)
+ /**private */static void label(Collection<?> dirEdges, int label)
   {
     for (Iterator<?> i = dirEdges.iterator(); i.hasNext(); ) {
       PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.next();
@@ -306,7 +306,7 @@ class PolygonizeGraph
    * given edgering label.
    * This algorithm has the effect of converting maximal edgerings into minimal edgerings
    */
- /**private */static void computeNextCCWEdges(Node node, long label)
+ /**private */static void computeNextCCWEdges(Node node, int label)
   {
     DirectedEdgeStar deStar = node.getOutEdges();
     //PolyDirectedEdge lastInDE = null;

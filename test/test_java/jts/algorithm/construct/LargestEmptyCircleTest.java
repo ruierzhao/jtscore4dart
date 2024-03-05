@@ -129,7 +129,7 @@ public class LargestEmptyCircleTest extends GeometryTestCase {
   /**
    * A simple distance check, mainly testing 
    * that there is not a huge number of iterations.
-   * (This will be revealed by CI taking a very long time!)
+   * (This will be revealed by CI taking a very int time!)
    * 
    * @param wkt
    * @param tolerance

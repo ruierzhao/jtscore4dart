@@ -23,7 +23,7 @@
  */
 class ConstraintEnforcementException extends RuntimeException {
 
-   /**private */static final long serialVersionUID = 386496846550080140L;
+   /**private */static final int serialVersionUID = 386496846550080140L;
 
    /**private */static String msgWithCoord(String msg, Coordinate pt) {
         if (pt != null)

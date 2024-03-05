@@ -17,7 +17,7 @@
 ///
 class Memory 
 {
-	static long used()
+	static int used()
 	{
 		Runtime runtime = Runtime.getRuntime ();
 		return runtime.totalMemory() - runtime.freeMemory();
@@ -28,7 +28,7 @@ class Memory
 		return format(used());
 	}
 	
-	static long free()
+	static int free()
 	{
 		Runtime runtime = Runtime.getRuntime ();
 		return runtime.freeMemory();
@@ -39,7 +39,7 @@ class Memory
 		return format(free());
 	}
 	
-	static long total()
+	static int total()
 	{
 		Runtime runtime = Runtime.getRuntime ();
 		return runtime.totalMemory();

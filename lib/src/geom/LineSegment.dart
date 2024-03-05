@@ -35,7 +35,7 @@
 class LineSegment
   implements Comparable, Serializable
 {
- /**private */static final long serialVersionUID = 3252005833466256227L;
+ /**private */static final int serialVersionUID = 3252005833466256227L;
 
   Coordinate p0, p1;
 
@@ -615,11 +615,11 @@ class LineSegment
   }
 
   int OLDhashCode() {
-    long bits0 = java.lang.Double.doubleToLongBits(p0.x);
+    int bits0 = java.lang.Double.doubleToLongBits(p0.x);
     bits0 ^= java.lang.Double.doubleToLongBits(p0.y) * 31;
     int hash0 = (((int) bits0) ^ ((int) (bits0  >> 32)));
     
-    long bits1 = java.lang.Double.doubleToLongBits(p1.x);
+    int bits1 = java.lang.Double.doubleToLongBits(p1.x);
     bits1 ^= java.lang.Double.doubleToLongBits(p1.y) * 31;
     int hash1 = (((int) bits1) ^ ((int) (bits1  >> 32)));
 

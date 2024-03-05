@@ -21,7 +21,7 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 /// 
 /// @since 1.16
 class CoordinateXYM extends Coordinate {
-  ///**private */static final long serialVersionUID = 2842127537691165613L;
+  ///**private */static final int serialVersionUID = 2842127537691165613L;
 
   /// Standard ordinate index value for X
   static const int X = 0;

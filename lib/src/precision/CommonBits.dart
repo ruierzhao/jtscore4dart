@@ -25,7 +25,7 @@ class CommonBits {
   /// 
   /// @param num
   /// @return the bit pattern for the sign and exponent
-  static long signExpBits(long num)
+  static int signExpBits(long num)
   {
     return num >> 52;
   }
@@ -39,7 +39,7 @@ class CommonBits {
   /// @param num1 the first number
   /// @param num2 the second number
   /// @return the number of common most-significant mantissa bits
-  static int numCommonMostSigMantissaBits(long num1, long num2)
+  static int numCommonMostSigMantissaBits(long num1, int num2)
   {
     int count = 0;
     for (int i = 52; i >= 0; i--)
@@ -55,11 +55,11 @@ class CommonBits {
   /// 
   /// @param bits the bitstring to alter
   /// @return the zeroed bitstring
-  static long zeroLowerBits(long bits, int nBits)
+  static int zeroLowerBits(long bits, int nBits)
   {
-    long invMask = (1L << nBits) - 1L;
-    long mask = ~ invMask;
-    long zeroed = bits & mask;
+    int invMask = (1L << nBits) - 1L;
+    int mask = ~ invMask;
+    int zeroed = bits & mask;
     return zeroed;
   }
 
@@ -70,7 +70,7 @@ class CommonBits {
   /// @return the value of the extracted bit
   static int getBit(long bits, int i)
   {
-    long mask = (1L << i);
+    int mask = (1L << i);
     return (bits & mask) != 0 ? 1 : 0;
   }
 
@@ -84,7 +84,7 @@ class CommonBits {
 
   void add(double num)
   {
-    long numBits = Double.doubleToLongBits(num);
+    int numBits = Double.doubleToLongBits(num);
     if (isFirst) {
       commonBits = numBits;
       commonSignExp = signExpBits(commonBits);
@@ -92,7 +92,7 @@ class CommonBits {
       return;
     }
 
-    long numSignExp = signExpBits(numBits);
+    int numSignExp = signExpBits(numBits);
     if (numSignExp != commonSignExp) {
       commonBits = 0;
       return;

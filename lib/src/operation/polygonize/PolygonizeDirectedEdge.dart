@@ -50,7 +50,7 @@ class PolygonizeDirectedEdge
   /**
    * Returns the identifier attached to this directed edge.
    */
-  long getLabel() { return label; }
+  int getLabel() { return label; }
   /**
    * Attaches an identifier to this directed edge.
    */

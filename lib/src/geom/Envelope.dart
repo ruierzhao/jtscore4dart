@@ -457,7 +457,7 @@ class Envelope
     _maxy = getMaxY() + transY;
   }
 
-  /// Computes the coordinate of the centre of this envelope (as long as it is non-null
+  /// Computes the coordinate of the centre of this envelope (as int as it is non-null
   ///
   /// @return the centre coordinate of this envelope
   /// <code>null</code> if the envelope is null

@@ -22,7 +22,7 @@ class MultiLineString
 	extends GeometryCollection
 	implements Lineal
 	{
- /**private */static final long serialVersionUID = 8166665132445433741L;
+ /**private */static final int serialVersionUID = 8166665132445433741L;
   ///  Constructs a <code>MultiLineString</code>.
   ///
   ///@param  lineStrings     the <code>LineString</code>s for this <code>MultiLineString</code>

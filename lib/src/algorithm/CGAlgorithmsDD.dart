@@ -44,7 +44,7 @@ abstract class CGAlgorithmsDD
   /// 0： 共线
   static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
   {
-    return orientationIndex(p1.x, p1.y, p2.x, p2.y, q.x, q.y);
+    return orientationIndexFromDouble(p1.x, p1.y, p2.x, p2.y, q.x, q.y);
   }
   
   /// Returns the index of the direction of the point {@code q} relative to
@@ -60,7 +60,7 @@ abstract class CGAlgorithmsDD
   /// @return 1 if q is counter-clockwise (left) from p1-p2
   ///        -1 if q is clockwise (right) from p1-p2
   ///         0 if q is collinear with p1-p2
-  static int orientationIndex(double p1x, double p1y,
+  static int orientationIndexFromDouble(double p1x, double p1y,
       double p2x, double p2y,
       double qx, double qy)
   {
@@ -76,7 +76,7 @@ abstract class CGAlgorithmsDD
     DD dy2 = DD.valueOf(qy).selfAdd(-p2y);
 
     // sign of determinant - unrolled for performance
-    return dx1.selfMultiply(dy2).selfSubtract(dy1.selfMultiply(dx2)).signum();
+    return dx1.selfMultiplyDD(dy2).selfSubtractDD(dy1.selfMultiplyDD(dx2)).signum();
   }
   
   /// Computes the sign of the determinant of the 2x2 matrix
@@ -85,9 +85,9 @@ abstract class CGAlgorithmsDD
   /// @return -1 if the determinant is negative,
   ///          1 if the determinant is positive,
   ///          0 if the determinant is 0.
-  static int signOfDet2x2(DD x1, DD y1, DD x2, DD y2)
+  static int signOfDet2x2DD(DD x1, DD y1, DD x2, DD y2)
   {
-    DD det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
+    DD det = x1.multiplyDD(y2).selfSubtractDD(y1.multiplyDD(x2));
     return det.signum();
   }
 
@@ -104,13 +104,13 @@ abstract class CGAlgorithmsDD
     DD x2 = DD.valueOf(dx2);
     DD y2 = DD.valueOf(dy2);
 
-    DD det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
+    DD det = x1.multiplyDD(y2).selfSubtractDD(y1.multiplyDD(x2));
     return det.signum();
   }
 
   /// A value which is safely greater than the
   /// relative round-off error in double-precision numbers
-  static final double _DP_SAFE_EPSILON = 1e-15;
+  static const double _DP_SAFE_EPSILON = 1e-15;
 
   /// A filter for computing the orientation index of three coordinates.
   /// <p>

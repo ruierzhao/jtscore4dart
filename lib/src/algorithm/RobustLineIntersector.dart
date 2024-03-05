@@ -11,24 +11,19 @@
  */
 
 
-/**
- *@version 1.7
- */
+///@version 1.7
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Envelope;
 
-/**
- * A robust version of {@link LineIntersector}.
- *
- * @version 1.7
- */
-class RobustLineIntersector
-    extends LineIntersector
-{
+import 'package:jtscore4dart/geometry.dart';
 
-  RobustLineIntersector() {
-  }
+import 'LineIntersector.dart';
+import 'Orientation.dart';
 
+/// A robust version of {@link LineIntersector}.
+///
+/// @version 1.7
+class RobustLineIntersector extends LineIntersector{
   void computeIntersection(Coordinate p, Coordinate p1, Coordinate p2) {
     isProper = false;
     // do between check first, since it is faster than the orientation test

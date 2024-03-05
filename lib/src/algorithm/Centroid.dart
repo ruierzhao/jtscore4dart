@@ -10,16 +10,8 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-// import org.locationtech.jts.geom.Coordinate;
-// import org.locationtech.jts.geom.Geometry;
-// import org.locationtech.jts.geom.GeometryCollection;
-// import org.locationtech.jts.geom.LineString;
-// import org.locationtech.jts.geom.Point;
-// import org.locationtech.jts.geom.Polygon;
-
-import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import "package:jtscore4dart/src/geom/Coordinate.dart";
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/geom/GeometryCollection.dart';
 import 'package:jtscore4dart/src/geom/LineString.dart';
@@ -61,7 +53,7 @@ class Centroid
   /// 
   /// @param geom the geometry to use
   /// @return the centroid point, or null if the geometry is empty
-  static Coordinate getCentroid(Geometry geom)
+  static Coordinate? getCentroid(Geometry geom)
   {
     Centroid cent = Centroid(geom);
     return cent._getCentroid();
@@ -105,7 +97,7 @@ class Centroid
       _addPolygon(poly);
     }
     else if (geom is GeometryCollection) {
-      GeometryCollection gc = (GeometryCollection) geom;
+      GeometryCollection gc = geom as GeometryCollection;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         _add(gc.getGeometryN(i));
       }
@@ -115,7 +107,7 @@ class Centroid
   /// Gets the computed centroid.
   /// 
   /// @return the computed centroid, or null if the input is empty
-  Coordinate _getCentroid()
+  Coordinate? _getCentroid()
   {
     /*
      * The centroid is computed from the highest dimension components present in the input.
@@ -171,7 +163,7 @@ class Centroid
     }
     bool isPositiveArea = ! Orientation.isCCW(pts);
     for (int i = 0; i < pts.length - 1; i++) {
-      _addTriangle(_areaBasePt, pts[i], pts[i+1], isPositiveArea);
+      _addTriangle(_areaBasePt!, pts[i], pts[i+1], isPositiveArea);
     }
     _addLineSegments(pts);
   }
@@ -180,7 +172,7 @@ class Centroid
   {
     bool isPositiveArea = Orientation.isCCW(pts);
     for (int i = 0; i < pts.length - 1; i++) {
-      _addTriangle(_areaBasePt, pts[i], pts[i+1], isPositiveArea);
+      _addTriangle(_areaBasePt!, pts[i], pts[i+1], isPositiveArea);
     }
     _addLineSegments(pts);
   }

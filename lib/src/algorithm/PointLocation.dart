@@ -11,10 +11,6 @@
  */
 
 
-// import org.locationtech.jts.geom.Coordinate;
-// import org.locationtech.jts.geom.CoordinateSequence;
-// import org.locationtech.jts.geom.Location;
-
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
@@ -29,7 +25,6 @@ import 'RobustLineIntersector.dart';
 /// @author Martin Davis
 ///
 class PointLocation {
-
   /// Tests whether a point lies on the line defined by a list of
   /// coordinates.
   /// 
@@ -58,15 +53,16 @@ class PointLocation {
   /// @param line the line coordinates
   /// @return true if the point is a vertex of the line or lies in the interior
   ///         of a line segment in the line
-  static bool isOnLine(Coordinate p, CoordinateSequence line)
+  // TODO: ruier edit from isOnLine -> isOnCSLine
+  static bool isOnCSLine(Coordinate p, CoordinateSequence line)
   {
-    LineIntersector lineIntersector = new RobustLineIntersector();
-    Coordinate p0 = new Coordinate();
-    Coordinate p1 = new Coordinate();
+    LineIntersector lineIntersector = RobustLineIntersector();
+    Coordinate p0 = Coordinate.empty2D();
+    Coordinate p1 = Coordinate.empty2D();
     int n = line.size();
     for (int i = 1; i < n; i++) {
-      line.getCoordinate(i-1, p0);
-      line.getCoordinate(i, p1);
+      line.getCoordinateTo(i-1, p0);
+      line.getCoordinateTo(i, p1);
       lineIntersector.computeIntersection(p, p0, p1);
       if (lineIntersector.hasIntersection()) {
         return true;

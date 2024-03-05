@@ -398,7 +398,7 @@ class Coordinate implements Comparable<Coordinate> {
   double distance3D(Coordinate c) {
     double dx = x - c.x;
     double dy = y - c.y;
-    double dz = getZ()! - c.getZ()!;
+    double dz = getZ() - c.getZ();
     return math.sqrt(dx * dx + dy * dy + dz * dz);
   }
 

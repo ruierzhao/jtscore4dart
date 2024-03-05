@@ -150,7 +150,7 @@ class Intersection {
      * The segment intersects the line.
      * The full line-line intersection is used to compute the intersection point.
      */
-    Coordinate intPt = intersection(line1, line2, seg1, seg2);
+    Coordinate? intPt = intersection(line1, line2, seg1, seg2);
     if (intPt != null) return intPt;
     
     /**
@@ -159,8 +159,9 @@ class Intersection {
      */
     double dist1 = Distance.pointToLinePerpendicular(seg1, line1, line2);
     double dist2 = Distance.pointToLinePerpendicular(seg2, line1, line2);
-    if (dist1 < dist2)
+    if (dist1 < dist2) {
       return seg1.copy();
+    }
     return seg2;
   }
 }

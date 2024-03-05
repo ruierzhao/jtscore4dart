@@ -19,75 +19,71 @@
 // import org.locationtech.jts.io.WKTWriter;
 // import org.locationtech.jts.util.Assert;
 
-/**
- * A <code>LineIntersector</code> is an algorithm that can both test whether
- * two line segments intersect and compute the intersection point(s)
- * if they do.
- * <p>
- * There are three possible outcomes when determining whether two line segments intersect:
- * <ul>
- * <li>{@link #NO_INTERSECTION} - the segments do not intersect
- * <li>{@link #POINT_INTERSECTION} - the segments intersect in a single point
- * <li>{@link #COLLINEAR_INTERSECTION} - the segments are collinear and they intersect in a line segment
- * </ul>
- * For segments which intersect in a single point, the point may be either an endpoint
- * or in the interior of each segment.  
- * If the point lies in the interior of both segments, 
- * this is termed a <i>proper intersection</i>.
- * The method {@link #isProper()} test for this situation.
- * <p>
- * The intersection point(s) may be computed in a precise or non-precise manner.
- * Computing an intersection point precisely involves rounding it 
- * via a supplied {@link PrecisionModel}.  
- * <p>
- * LineIntersectors do not perform an initial envelope intersection test 
- * to determine if the segments are disjoint.
- * This is because this class is likely to be used in a context where 
- * envelope overlap is already known to occur (or be likely).
- *
- * @version 1.7
- */
+import 'dart:math';
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import '../util/Assert.dart';
+import '../utils.dart';
+
+/// A <code>LineIntersector</code> is an algorithm that can both test whether
+/// two line segments intersect and compute the intersection point(s)
+/// if they do.
+/// <p>
+/// There are three possible outcomes when determining whether two line segments intersect:
+/// <ul>
+/// <li>{@link #NO_INTERSECTION} - the segments do not intersect
+/// <li>{@link #POINT_INTERSECTION} - the segments intersect in a single point
+/// <li>{@link #COLLINEAR_INTERSECTION} - the segments are collinear and they intersect in a line segment
+/// </ul>
+/// For segments which intersect in a single point, the point may be either an endpoint
+/// or in the interior of each segment.  
+/// If the point lies in the interior of both segments, 
+/// this is termed a <i>proper intersection</i>.
+/// The method {@link #isProper()} test for this situation.
+/// <p>
+/// The intersection point(s) may be computed in a precise or non-precise manner.
+/// Computing an intersection point precisely involves rounding it 
+/// via a supplied {@link PrecisionModel}.  
+/// <p>
+/// LineIntersectors do not perform an initial envelope intersection test 
+/// to determine if the segments are disjoint.
+/// This is because this class is likely to be used in a context where 
+/// envelope overlap is already known to occur (or be likely).
+///
+/// @version 1.7
 abstract class LineIntersector 
 {
-/**
- * These are deprecated, due to ambiguous naming
- */
-  final static int DONT_INTERSECT = 0;
-  final static int DO_INTERSECT = 1;
-  final static int COLLINEAR = 2;
+/// These are deprecated, due to ambiguous naming
+  static const  int DONT_INTERSECT = 0;
+  static const  int DO_INTERSECT = 1;
+  static const  int COLLINEAR = 2;
   
-  /**
-   * Indicates that line segments do not intersect
-   */
-  final static int NO_INTERSECTION = 0;
+  /// Indicates that line segments do not intersect
+  static const  int NO_INTERSECTION = 0;
   
-  /**
-   * Indicates that line segments intersect in a single point
-   */
-  final static int POINT_INTERSECTION = 1;
+  /// Indicates that line segments intersect in a single point
+  static const  int POINT_INTERSECTION = 1;
   
-  /**
-   * Indicates that line segments intersect in a line segment
-   */
-  final static int COLLINEAR_INTERSECTION = 2;
+  /// Indicates that line segments intersect in a line segment
+  static const  int COLLINEAR_INTERSECTION = 2;
 
-  /**
-   * Computes the "edge distance" of an intersection point p along a segment.
-   * The edge distance is a metric of the point along the edge.
-   * The metric used is a robust and easy to compute metric function.
-   * It is <b>not</b> equivalent to the usual Euclidean metric.
-   * It relies on the fact that either the x or the y ordinates of the
-   * points in the edge are unique, depending on whether the edge is longer in
-   * the horizontal or vertical direction.
-   * <p>
-   * NOTE: This function may produce incorrect distances
-   *  for inputs where p is not precisely on p1-p2
-   * (E.g. p = (139,9) p1 = (139,10), p2 = (280,1) produces distance 0.0, which is incorrect.
-   * <p>
-   * My hypothesis is that the function is safe to use for points which are the
-   * result of <b>rounding</b> points which lie on the line,
-   * but not safe to use for <b>truncated</b> points.
-   */
+  /// Computes the "edge distance" of an intersection point p along a segment.
+  /// The edge distance is a metric of the point along the edge.
+  /// The metric used is a robust and easy to compute metric function.
+  /// It is <b>not</b> equivalent to the usual Euclidean metric.
+  /// It relies on the fact that either the x or the y ordinates of the
+  /// points in the edge are unique, depending on whether the edge is longer in
+  /// the horizontal or vertical direction.
+  /// <p>
+  /// NOTE: This function may produce incorrect distances
+  ///  for inputs where p is not precisely on p1-p2
+  /// (E.g. p = (139,9) p1 = (139,10), p2 = (280,1) produces distance 0.0, which is incorrect.
+  /// <p>
+  /// My hypothesis is that the function is safe to use for points which are the
+  /// result of <b>rounding</b> points which lie on the line,
+  /// but not safe to use for <b>truncated</b> points.
   static double computeEdgeDistance(
         Coordinate p,
         Coordinate p0,
@@ -101,23 +97,25 @@ abstract class LineIntersector
       dist = 0.0;
     }
     else if (p.equals(p1)) {
-      if (dx > dy)
+      if (dx > dy) {
         dist = dx;
-      else
+      } else {
         dist = dy;
+      }
     }
     else {
       double pdx = (p.x - p0.x).abs();
       double pdy = (p.y - p0.y).abs();
-      if (dx > dy)
+      if (dx > dy) {
         dist = pdx;
-      else
+      } else {
         dist = pdy;
+      }
       // <FIX>
       // hack to ensure that non-endpoints always have a non-zero distance
       if (dist == 0.0 && ! p.equals(p0))
       {
-        dist = math.max(pdx, pdy);
+        dist = max(pdx, pdy);
       }
     }
     Assert.isTrue(! (dist == 0.0 && ! p.equals(p0)), "Bad distance calculation");
@@ -131,77 +129,65 @@ abstract class LineIntersector
   {
     double dx = p.x - p1.x;
     double dy = p.y - p1.y;
-    double dist = math.hypot(dx, dy);   // dummy value
+    double dist = hypot(dx, dy);   // dummy value
     Assert.isTrue(! (dist == 0.0 && ! p.equals(p1)), "Invalid distance calculation");
     return dist;
   }
 
  /**protected */int result;
- /**protected */List<Coordinate>[] inputLines = new Coordinate[2][2];
- /**protected */List<Coordinate> intPt = new Coordinate[2];
-  /**
-   * The indexes of the endpoints of the intersection lines, in order along
-   * the corresponding line
-   */
- /**protected */int[][] intLineIndex;
+ /**protected */List<List<Coordinate>> inputLines = Coordinate[2][2];
+ /**protected */List<Coordinate> intPt = Coordinate[2];
+  /// The indexes of the endpoints of the intersection lines, in order along
+  /// the corresponding line
+ /**protected */List<List<int>> intLineIndex;
  /**protected */bool isProper;
  /**protected */Coordinate pa;
  /**protected */Coordinate pb;
-  /**
-   * If makePrecise is true, computed intersection coordinates will be made precise
-   * using Coordinate#makePrecise
-   */
+  /// If makePrecise is true, computed intersection coordinates will be made precise
+  /// using Coordinate#makePrecise
  /**protected */PrecisionModel precisionModel = null;
 //int numIntersects = 0;
 
   LineIntersector() {
-    intPt[0] = new Coordinate();
-    intPt[1] = new Coordinate();
+    intPt[0] = Coordinate();
+    intPt[1] = Coordinate();
     // alias the intersection points for ease of reference
     pa = intPt[0];
     pb = intPt[1];
     result = 0;
   }
 
-  /**
-   * Force computed intersection to be rounded to a given precision model
-   * @param precisionModel
-   * @deprecated use <code>setPrecisionModel</code> instead
-   */
+  /// Force computed intersection to be rounded to a given precision model
+  /// @param precisionModel
+  /// @deprecated use <code>setPrecisionModel</code> instead
   void setMakePrecise(PrecisionModel precisionModel)
   {
     this.precisionModel = precisionModel;
   }
 
-  /**
-   * Force computed intersection to be rounded to a given precision model.
-   * No getter is provided, because the precision model is not required to be specified.
-   * @param precisionModel
-   */
+  /// Force computed intersection to be rounded to a given precision model.
+  /// No getter is provided, because the precision model is not required to be specified.
+  /// @param precisionModel
   void setPrecisionModel(PrecisionModel precisionModel)
   {
     this.precisionModel = precisionModel;
   }
 
-  /**
-   * Gets an endpoint of an input segment.
-   * 
-   * @param segmentIndex the index of the input segment (0 or 1)
-   * @param ptIndex the index of the endpoint (0 or 1)
-   * @return the specified endpoint
-   */
+  /// Gets an endpoint of an input segment.
+  /// 
+  /// @param segmentIndex the index of the input segment (0 or 1)
+  /// @param ptIndex the index of the endpoint (0 or 1)
+  /// @return the specified endpoint
   Coordinate getEndpoint(int segmentIndex, int ptIndex)
   {
     return inputLines[segmentIndex][ptIndex];
   }
   
-  /**
-   * Compute the intersection of a point p and the line p1-p2.
-   * This function computes the bool value of the hasIntersection test.
-   * The actual value of the intersection (if there is one)
-   * is equal to the value of <code>p</code>.
-   */
-  abstract void computeIntersection(
+  /// Compute the intersection of a point p and the line p1-p2.
+  /// This function computes the bool value of the hasIntersection test.
+  /// The actual value of the intersection (if there is one)
+  /// is equal to the value of <code>p</code>.
+  /**abstract */ void computeIntersection(
         Coordinate p,
         Coordinate p1, Coordinate p2);
 
@@ -209,11 +195,9 @@ abstract class LineIntersector
     return result == COLLINEAR_INTERSECTION;
   }
 
-  /**
-   * Computes the intersection of the lines p1-p2 and p3-p4.
-   * This function computes both the bool value of the hasIntersection test
-   * and the (approximate) value of the intersection point itself (if there is one).
-   */
+  /// Computes the intersection of the lines p1-p2 and p3-p4.
+  /// This function computes both the bool value of the hasIntersection test
+  /// and the (approximate) value of the intersection point itself (if there is one).
   void computeIntersection(
                 Coordinate p1, Coordinate p2,
                 Coordinate p3, Coordinate p4) {
@@ -225,7 +209,7 @@ abstract class LineIntersector
 //numIntersects++;
   }
 
- /**protected */abstract int computeIntersect(
+ /**protected abstract */int computeIntersect(
                 Coordinate p1, Coordinate p2,
                 Coordinate q1, Coordinate q2);
 
@@ -248,7 +232,7 @@ abstract class LineIntersector
 
  /**private */String getTopologySummary()
   {
-    StringBuilder catBuilder = new StringBuilder();
+    StringBuilder catBuilder = StringBuilder();
     if (isEndPoint()) catBuilder.append(" endpoint");
     if (isProper) catBuilder.append(" proper");
     if (isCollinear()) catBuilder.append(" collinear");
@@ -259,48 +243,40 @@ abstract class LineIntersector
     return hasIntersection() && !isProper;
   }
 
-  /**
-   * Tests whether the input geometries intersect.
-   *
-   * @return true if the input geometries intersect
-   */
+  /// Tests whether the input geometries intersect.
+  ///
+  /// @return true if the input geometries intersect
   bool hasIntersection() {
     return result != NO_INTERSECTION;
   }
 
-  /**
-   * Returns the number of intersection points found.  This will be either 0, 1 or 2.
-   * 
-   * @return the number of intersection points found (0, 1, or 2)
-   */
+  /// Returns the number of intersection points found.  This will be either 0, 1 or 2.
+  /// 
+  /// @return the number of intersection points found (0, 1, or 2)
   int getIntersectionNum() { return result; }
 
-  /**
-   * Returns the intIndex'th intersection point
-   *
-   * @param intIndex is 0 or 1
-   *
-   * @return the intIndex'th intersection point
-   */
+  /// Returns the intIndex'th intersection point
+  ///
+  /// @param intIndex is 0 or 1
+  ///
+  /// @return the intIndex'th intersection point
   Coordinate getIntersection(int intIndex)  { return intPt[intIndex]; }
 
  /**protected */void computeIntLineIndex() {
     if (intLineIndex == null) {
-      intLineIndex = new int[2][2];
+      intLineIndex = int[2][2];
       computeIntLineIndex(0);
       computeIntLineIndex(1);
     }
   }
 
-  /**
-   * Test whether a point is a intersection point of two line segments.
-   * Note that if the intersection is a line segment, this method only tests for
-   * equality with the endpoints of the intersection segment.
-   * It does <b>not</b> return true if
-   * the input point is internal to the intersection segment.
-   *
-   * @return true if the input point is one of the intersection points.
-   */
+  /// Test whether a point is a intersection point of two line segments.
+  /// Note that if the intersection is a line segment, this method only tests for
+  /// equality with the endpoints of the intersection segment.
+  /// It does <b>not</b> return true if
+  /// the input point is internal to the intersection segment.
+  ///
+  /// @return true if the input point is one of the intersection points.
   bool isIntersection(Coordinate pt) {
     for (int i = 0; i < result; i++) {
       if (intPt[i].equals2D(pt)) {
@@ -310,11 +286,9 @@ abstract class LineIntersector
     return false;
   }
 
-  /**
-   * Tests whether either intersection point is an interior point of one of the input segments.
-   *
-   * @return <code>true</code> if either intersection point is in the interior of one of the input segments
-   */
+  /// Tests whether either intersection point is an interior point of one of the input segments.
+  ///
+  /// @return <code>true</code> if either intersection point is in the interior of one of the input segments
   bool isInteriorIntersection()
   {
     if (isInteriorIntersection(0)) return true;
@@ -322,11 +296,9 @@ abstract class LineIntersector
     return false;
   }
 
-  /**
-   * Tests whether either intersection point is an interior point of the specified input segment.
-   *
-   * @return <code>true</code> if either intersection point is in the interior of the input segment
-   */
+  /// Tests whether either intersection point is an interior point of the specified input segment.
+  ///
+  /// @return <code>true</code> if either intersection point is in the interior of the input segment
   bool isInteriorIntersection(int inputLineIndex)
   {
     for (int i = 0; i < result; i++) {
@@ -338,48 +310,42 @@ abstract class LineIntersector
     return false;
   }
 
-  /**
-   * Tests whether an intersection is proper.
-   * <br>
-   * The intersection between two line segments is considered proper if
-   * they intersect in a single point in the interior of both segments
-   * (e.g. the intersection is a single point and is not equal to any of the
-   * endpoints).
-   * <p>
-   * The intersection between a point and a line segment is considered proper
-   * if the point lies in the interior of the segment (e.g. is not equal to
-   * either of the endpoints).
-   *
-   * @return true if the intersection is proper
-   */
+  /// Tests whether an intersection is proper.
+  /// <br>
+  /// The intersection between two line segments is considered proper if
+  /// they intersect in a single point in the interior of both segments
+  /// (e.g. the intersection is a single point and is not equal to any of the
+  /// endpoints).
+  /// <p>
+  /// The intersection between a point and a line segment is considered proper
+  /// if the point lies in the interior of the segment (e.g. is not equal to
+  /// either of the endpoints).
+  ///
+  /// @return true if the intersection is proper
   bool isProper() {
     return hasIntersection() && isProper;
   }
 
-  /**
-   * Computes the intIndex'th intersection point in the direction of
-   * a specified input line segment
-   *
-   * @param segmentIndex is 0 or 1
-   * @param intIndex is 0 or 1
-   *
-   * @return the intIndex'th intersection point in the direction of the specified input line segment
-   */
+  /// Computes the intIndex'th intersection point in the direction of
+  /// a specified input line segment
+  ///
+  /// @param segmentIndex is 0 or 1
+  /// @param intIndex is 0 or 1
+  ///
+  /// @return the intIndex'th intersection point in the direction of the specified input line segment
   Coordinate getIntersectionAlongSegment(int segmentIndex, int intIndex) {
     // lazily compute int line array
     computeIntLineIndex();
     return intPt[intLineIndex[segmentIndex][intIndex]];
   }
 
-  /**
-   * Computes the index (order) of the intIndex'th intersection point in the direction of
-   * a specified input line segment
-   *
-   * @param segmentIndex is 0 or 1
-   * @param intIndex is 0 or 1
-   *
-   * @return the index of the intersection point along the input segment (0 or 1)
-   */
+  /// Computes the index (order) of the intIndex'th intersection point in the direction of
+  /// a specified input line segment
+  ///
+  /// @param segmentIndex is 0 or 1
+  /// @param intIndex is 0 or 1
+  ///
+  /// @return the index of the intersection point along the input segment (0 or 1)
   int getIndexAlongSegment(int segmentIndex, int intIndex) {
     computeIntLineIndex();
     return intLineIndex[segmentIndex][intIndex];
@@ -398,14 +364,12 @@ abstract class LineIntersector
     }
   }
 
-  /**
-   * Computes the "edge distance" of an intersection point along the specified input line segment.
-   *
-   * @param segmentIndex is 0 or 1
-   * @param intIndex is 0 or 1
-   *
-   * @return the edge distance of the intersection point
-   */
+  /// Computes the "edge distance" of an intersection point along the specified input line segment.
+  ///
+  /// @param segmentIndex is 0 or 1
+  /// @param intIndex is 0 or 1
+  ///
+  /// @return the edge distance of the intersection point
   double getEdgeDistance(int segmentIndex, int intIndex) {
     double dist = computeEdgeDistance(intPt[intIndex], inputLines[segmentIndex][0],
         inputLines[segmentIndex][1]);

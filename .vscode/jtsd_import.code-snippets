@@ -32,5 +32,13 @@
 		],
 		"description": "import dart math"
 	}
+	,"import geometry": {
+		"scope": "dart",
+		"prefix": "igeom",
+		"body": [
+			"import 'package:jtscore4dart/geometry.dart';",
+		],
+		"description": "import dart geometry."
+	}
 }
 

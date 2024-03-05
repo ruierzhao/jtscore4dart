@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-//////////////////// ruier
 // import org.locationtech.jts.io.OrdinateFormat;
 import "dart:math";
 
@@ -222,17 +221,22 @@ class CoordinateSequences {
     return builder.toString();
   }
 
+  /// 获取最小的坐标
   ///  Returns the minimum coordinate, using the usual lexicographic comparison.
   ///
   ///@param  seq  the coordinate sequence to search
   ///@return  the minimum coordinate in the sequence, found using <code>compareTo</code>
   ///@see Coordinate#compareTo(Object)
-  static Coordinate minCoordinate(CoordinateSequence seq)
+  // TODO: ruier edit. @see CoordinateArrays#minCoordinate
+  static Coordinate? minCoordinate(CoordinateSequence seq)
   {
-    Coordinate minCoord = null;
-    for (int i = 0; i < seq.size(); i++) {
+    if (seq.size() == 0) {
+      return null;
+    }
+    Coordinate minCoord = seq.getCoordinate(1);
+    for (int i = 1; i < seq.size(); i++) {
       Coordinate testCoord = seq.getCoordinate(i);
-      if (minCoord == null || minCoord.compareTo(testCoord) > 0) {
+      if (minCoord.compareTo(testCoord) > 0) {
         minCoord = testCoord;
       }
     }
@@ -244,10 +248,12 @@ class CoordinateSequences {
   ///@param  seq  the coordinate sequence to search
   ///@return  the index of the minimum coordinate in the sequence, found using <code>compareTo</code>
   ///@see Coordinate#compareTo(Object)
-  static int minCoordinateIndex(CoordinateSequence seq) {
-    return minCoordinateIndex(seq, 0, seq.size() - 1);
-  }
+  // TODO: ruier edit.
+  // static int minCoordinateIndex(CoordinateSequence seq) {
+  //   return minCoordinateIndex(seq, 0, seq.size() - 1);
+  // }
 
+  ///获取最小 Coordinate 的索引
   ///  Returns the index of the minimum coordinate of a part of
   ///  the coordinate sequence (defined by {@code from} and {@code to},
   ///  using the usual lexicographic comparison.
@@ -257,10 +263,11 @@ class CoordinateSequences {
   ///@param  to    the upper search index
   ///@return  the index of the minimum coordinate in the sequence, found using <code>compareTo</code>
   ///@see Coordinate#compareTo(Object)
-  static int minCoordinateIndex(CoordinateSequence seq, int from, int to)
+  static int minCoordinateIndex(CoordinateSequence seq, [int from=0, int? to])
   {
     int minCoordIndex = -1;
-    Coordinate minCoord = null;
+    to ??= seq.size() - 1 ;
+    Coordinate? minCoord;
     for (int i = from; i <= to; i++) {
       Coordinate testCoord = seq.getCoordinate(i);
       if (minCoord == null || minCoord.compareTo(testCoord) > 0) {
@@ -276,7 +283,7 @@ class CoordinateSequences {
   ///
   ///@param  seq      the coordinate sequence to rearrange
   ///@param  firstCoordinate  the coordinate to make first
-  static void scroll(CoordinateSequence seq, Coordinate firstCoordinate) {
+  static void scrollCoordTofirst(CoordinateSequence seq, Coordinate firstCoordinate) {
     int i = indexOf(firstCoordinate, seq);
     if (i <= 0) return;
     scroll(seq, i);
@@ -287,10 +294,10 @@ class CoordinateSequences {
   ///
   ///@param  seq      the coordinate sequence to rearrange
   ///@param  indexOfFirstCoordinate  the index of the coordinate to make first
-  static void scroll(CoordinateSequence seq, int indexOfFirstCoordinate)
-  {
-    scroll(seq, indexOfFirstCoordinate, CoordinateSequences.isRing(seq));
-  }
+  // static void scroll(CoordinateSequence seq, int indexOfFirstCoordinate)
+  // {
+  //   scroll(seq, indexOfFirstCoordinate, CoordinateSequences.isRing(seq));
+  // }
 
   ///  Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
   ///  is first.
@@ -298,9 +305,10 @@ class CoordinateSequences {
   ///@param  seq      the coordinate sequence to rearrange
   ///@param  indexOfFirstCoordinate
   ///                 the index of the coordinate to make first
-  ///@param  ensureRing
+  ///@param  ensureRing 首尾相等
   ///                 makes sure that {@code} will be a closed ring upon exit
-    static void scroll(CoordinateSequence seq, int indexOfFirstCoordinate, bool ensureRing) {
+    static void scroll(CoordinateSequence seq, int indexOfFirstCoordinate, [bool? ensureRing]) {
+      ensureRing ??= CoordinateSequences.isRing(seq);
     int i = indexOfFirstCoordinate;
     if (i <= 0) return;
 

@@ -53,11 +53,11 @@ class PointLocator
 {
   // default is to use OGC SFS rule
   /**private */ BoundaryNodeRule boundaryRule = 
-  	BoundaryNodeRule.ENDPOINT_BOUNDARY_RULE; 
-  	// BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+  	// BoundaryNodeRule.ENDPOINT_BOUNDARY_RULE; 
+  	BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
 
-  /**private */ bool isIn;         // true if the point lies in or on any Geometry element
-  /**private */ int numBoundaries;    // the number of sub-elements whose boundaries the point lies in
+  /**private */ late bool isIn;         // true if the point lies in or on any Geometry element
+  /**private */ late int numBoundaries;    // the number of sub-elements whose boundaries the point lies in
 
 
   PointLocator([BoundaryNodeRule? _boundaryRule])
@@ -65,6 +65,7 @@ class PointLocator
     boundaryRule = (_boundaryRule ??= BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE);
   }
 
+  /// 如果点在内部或者边界上返回true。
   /// Convenience method to test a point for intersection with
   /// a Geometry
   /// @param p the coordinate to test
@@ -88,7 +89,7 @@ class PointLocator
     if (geom.isEmpty()) return Location.EXTERIOR;
 
     if (geom is LineString) {
-      return locateOnLineString(p,  geom as LineString);
+      return locateOnLineString(p,  geom);
     }
     else if (geom is Polygon) {
       return locateInPolygon(p, geom);
@@ -123,14 +124,14 @@ class PointLocator
       updateLocationInfo(locateInPolygon(p,  geom));
     }
     else if (geom is MultiLineString) {
-      MultiLineString ml =  geom;
+      MultiLineString ml =  geom as MultiLineString;
       for (int i = 0; i < ml.getNumGeometries(); i++) {
         LineString l =  ml.getGeometryN(i) as LineString;
         updateLocationInfo(locateOnLineString(p, l));
       }
     }
     else if (geom is MultiPolygon) {
-      MultiPolygon mpoly = (MultiPolygon) geom;
+      MultiPolygon mpoly =  geom as MultiPolygon;
       for (int i = 0; i < mpoly.getNumGeometries(); i++) {
         Polygon poly = (Polygon) mpoly.getGeometryN(i);
         updateLocationInfo(locateInPolygon(p, poly));
@@ -167,7 +168,7 @@ class PointLocator
   /**private */ int locateOnLineString(Coordinate p, LineString l)
   {
     // bounding-box check
-    if (! l.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
+    if (! l.getEnvelopeInternal().intersectsWithCoord(p)) return Location.EXTERIOR;
     
     CoordinateSequence seq = l.getCoordinateSequence();
     if (p.equals(seq.getCoordinate(0))
@@ -176,7 +177,7 @@ class PointLocator
       int loc = boundaryRule.isInBoundary(boundaryCount) ? Location.BOUNDARY : Location.INTERIOR;
       return loc;
     }
-    if (PointLocation.isOnLine(p, seq)) {
+    if (PointLocation.isOnCSLine(p, seq)) {
       return Location.INTERIOR;
     }
     return Location.EXTERIOR;
@@ -185,7 +186,7 @@ class PointLocator
   /**private */ int locateInPolygonRing(Coordinate p, LinearRing ring)
   {
   	// bounding-box check
-  	if (! ring.getEnvelopeInternal().intersects(p)) return Location.EXTERIOR;
+  	if (! ring.getEnvelopeInternal().intersectsWithCoord(p)) return Location.EXTERIOR;
 
   	return PointLocation.locateInRing(p, ring.getCoordinates());
   }

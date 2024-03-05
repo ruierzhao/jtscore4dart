@@ -51,4 +51,6 @@ analyzer:
     # library_prefixes: ignore # 导入重命名可以为大写
     file_names: ignore # 忽略文件名大小写
     doc_directive_unknown: ignore # 忽略Java文档
+    prefer_interpolation_to_compose_strings: ignore #忽略行内字符串
+    unnecessary_new: ignore # unnecessary_new
     

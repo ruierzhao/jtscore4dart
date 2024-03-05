@@ -258,22 +258,22 @@ class CoordinateArraySequence extends CoordinateSequence{
   ///
   /// @return The deep copy
   // TODO: ruier edit.
-  // @override
-  // CoordinateArraySequence copy() {
-  //   List<Coordinate> cloneCoordinates = Coordinate[size()];
-  //   for (int i = 0; i < _coordinates.length; i++) {
-  //     Coordinate duplicate = createCoordinate();
-  //     duplicate.setCoordinate(_coordinates[i]);
-  //     cloneCoordinates[i] = duplicate;
-  //   }
-  //   return CoordinateArraySequence(cloneCoordinates, _dimension, _measures);
-  // }
   @override
-  CoordinateSequence copy() {
-    // TODO: implement copy
-    throw UnimplementedError();
+  CoordinateArraySequence copy() {
+    // TODO: ruier replace.
+    List<Coordinate> cloneCoordinates = List<Coordinate>.generate(size(),(index) {
+      Coordinate duplicate = createCoordinate();
+      duplicate.setCoordinate(_coordinates[index]);
+      return duplicate;
+    });
+    // List<Coordinate> cloneCoordinates = Coordinate[size()];
+    // for (int i = 0; i < _coordinates.length; i++) {
+    //   Coordinate duplicate = createCoordinate();
+    //   duplicate.setCoordinate(_coordinates[i]);
+    //   cloneCoordinates[i] = duplicate;
+    // }
+    return CoordinateArraySequence(cloneCoordinates, _dimension, _measures);
   }
-  
 
   /// Returns the size of the coordinate sequence
   ///
@@ -320,21 +320,20 @@ class CoordinateArraySequence extends CoordinateSequence{
   ///
   /// @return The string
   // TODO: ruier edit.
-  // @override
-  // String toString() {
-  //   if (_coordinates.length > 0) {
-  //     StringBuilder strBuilder = new StringBuilder(17 * _coordinates.length);
-  //     strBuilder.append('(');
-  //     strBuilder.append(_coordinates[0]);
-  //     for (int i = 1; i < _coordinates.length; i++) {
-  //       strBuilder.append(", ");
-  //       strBuilder.append(_coordinates[i]);
-  //     }
-  //     strBuilder.append(')');
-  //     return strBuilder.toString();
-  //   } else {
-  //     return "()";
-  //   }
-  // }
-  
+  @override
+  String toString() {
+    if (_coordinates.isNotEmpty) {
+      StringBuffer strBuilder = new StringBuffer(17 * _coordinates.length);
+      strBuilder.write('(');
+      strBuilder.write(_coordinates[0]);
+      for (int i = 1; i < _coordinates.length; i++) {
+        strBuilder.write(", ");
+        strBuilder.write(_coordinates[i]);
+      }
+      strBuilder.write(')');
+      return strBuilder.toString();
+    } else {
+      return "()";
+    }
+  }
 }

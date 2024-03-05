@@ -25,7 +25,9 @@
 // import org.locationtech.jts.geom.CoordinateXYZM;
 // import org.locationtech.jts.geom.Envelope;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
 
 /// A {@link CoordinateSequence} implementation based on a packed arrays.
 /// In this implementation, {@link Coordinate}s returned by #toArray and #get are copies
@@ -43,15 +45,15 @@ abstract class PackedCoordinateSequence
 {
   ///**private */static final int serialVersionUID = -3151899011275603L;
   /// The dimensions of the coordinates held in the packed array
-  /**/**protected */*/ int dimension;
+  /**protected */ int dimension;
   
   /// The number of measures of the coordinates held in the packed array.
-  /**/**protected */*/ int measures;
+  /**protected */ int measures;
 
   /// Creates an instance of this class
   /// @param dimension the total number of ordinates that make up a {@link Coordinate} in this sequence.
   /// @param measures the number of measure-ordinates each {@link Coordinate} in this sequence has.
-  /**/**protected */*/ PackedCoordinateSequence(int _dimension, int _measures ) {
+  /**protected */ PackedCoordinateSequence(int _dimension, int _measures ) {
       if (_dimension - _measures < 2) {
          throw ArgumentError("Must have at least 2 spatial dimensions");
       }
@@ -61,7 +63,7 @@ abstract class PackedCoordinateSequence
   
   /// A soft reference to the List<Coordinate> representation of this sequence.
   /// Makes repeated coordinate array accesses more efficient.
-  /**/**protected */transient 不序列化某个变量 */  SoftReference<List<Coordinate>> coordRef;
+  /**protected transient 不序列化某个变量 */  SoftReference<List<Coordinate>> coordRef;
 
   /// @see CoordinateSequence#getDimension()
   int getDimension() {
@@ -69,7 +71,7 @@ abstract class PackedCoordinateSequence
   }
 
   /// @see CoordinateSequence#getMeasures()
-  @Override
+  @override
   int getMeasures() {
     return this.measures;
   }

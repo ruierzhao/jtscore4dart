@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/util/AssertionFailedException.dart';
 
 class Envelope implements Comparable {
   static final double _DP_SAFE_EPSILON = 1e-15;
@@ -135,11 +136,13 @@ class Ruier2{
   Ruier2([this.cc = 5]);
 }
 
+test(int a,[int b=0,int? c]){
+  c??= 4;
+  return a + b +c;
+}
 
 void main() {
-  var c = Ruier2(6);
-  var v = Ruier2();
-  print(c.cc);
-  print(v.cc);
-
+  assert(false,"ruier");
+  assert(true,"ruier");
+print("reuite");
 }

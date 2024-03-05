@@ -113,7 +113,7 @@ class Orientation {
   static bool isCCW(List<Coordinate> ring)
   {
     // wrap with an XY CoordinateSequence
-    return isCCW(CoordinateArraySequence(ring, 2, 0));
+    return isCCWFromCS(CoordinateArraySequence(ring, 2, 0));
   }
 
   /// Tests if a ring defined by a {@link CoordinateSequence} is
@@ -132,21 +132,19 @@ class Orientation {
   /// 
   /// @param ring a CoordinateSequence forming a ring (with first and last point identical)
   /// @return true if the ring is oriented counter-clockwise. 
-  static bool isCCW(CoordinateSequence ring)
+  static bool isCCWFromCS(CoordinateSequence ring)
   {
     // # of points without closing endpoint
     int nPts = ring.size() - 1;
     // return default value if ring is flat
     if (nPts < 3) return false;
   
-    /**
-     * Find first highest point after a lower point, if one exists
-     * (e.g. a rising segment)
-     * If one does not exist, hiIndex will remain 0
-     * and the ring must be flat.
-     * Note this relies on the convention that
-     * rings have the same start and end point. 
-     */
+    /// Find first highest point after a lower point, if one exists
+    /// (e.g. a rising segment)
+    /// If one does not exist, hiIndex will remain 0
+    /// and the ring must be flat.
+    /// Note this relies on the convention that
+    /// rings have the same start and end point. 
     Coordinate upHiPt = ring.getCoordinate(0);
     double prevY = upHiPt.y;
     Coordinate? upLowPt ;
@@ -198,8 +196,9 @@ class Orientation {
        * (including the case where the input array has fewer than 4 elements), or
        * it contains coincident line segments.
        */
-      if (upLowPt.equals2D(upHiPt) || downLowPt.equals2D(upHiPt) || upLowPt.equals2D(downLowPt))
+      if (upLowPt!.equals2D(upHiPt) || downLowPt.equals2D(upHiPt) || upLowPt.equals2D(downLowPt)) {
         return false;
+      }
     
       /**
        * It can happen that the top segments are coincident.

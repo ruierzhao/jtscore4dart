@@ -17,15 +17,15 @@ replace: # 替换
 delete: 
     word: # 删除单词
         - public
-        - private
     line: # 删除整行
         - package
 
 # new rule
 replace:
-  - new Coordinate() -> Coordinate.empty2D()
-
   - math.floor(next) -> next.floor()
   - Double.isInfinite(xInt) -> xInt.isInfinite
-  - {@code q} -> [q] 
+  - private -> /**private */ #startwith(" ")
+  - protected -> /**protected */
+  - {\@code q} -> [q] 
+  - \@param geom
 delete: 

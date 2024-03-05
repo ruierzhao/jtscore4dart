@@ -1,5 +1,3 @@
-// ignore_for_file: slash_for_doc_comments
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
@@ -14,69 +12,49 @@
 
  library jtsd.version;
 
- /**
-  * JTS API version information.
-  * <p>
-  * Versions consist of a 3-part version number: <code>major.minor.patch</code>
-  * An optional release status string may be present in the string version of
-  * the version.
-  *
-  * @version 1.7
-  */
+ /// JTS API version information.
+ /// <p>
+ /// Versions consist of a 3-part version number: <code>major.minor.patch</code>
+ /// An optional release status string may be present in the string version of
+ /// the version.
+ ///
+ /// @version 1.7
  class JTSVersion {
  
-   /**
-    * The current version number of the JTS API.
-    */
+   /// The current version number of the JTS API.
    static final JTSVersion CURRENT_VERSION = new JTSVersion();
  
-   /**
-    * The major version number.
-    */
+   /// The major version number.
     static const int MAJOR = 1;
  
-   /**
-    * The minor version number.
-    */
+   /// The minor version number.
     static const int MINOR = 20;
  
-   /**
-    * The patch version number.
-    */
+   /// The patch version number.
     static const int PATCH = 0;
  
-   /**
-    * An optional string providing further release info (such as "alpha 1");
-    */
+   /// An optional string providing further release info (such as "alpha 1");
     static const String RELEASE_INFO = "SNAPSHOT - ruier jtsd core";
  
  
-   /**
-    * Gets the major number of the release version.
-    *
-    * @return the major number of the release version.
-    */
+   /// Gets the major number of the release version.
+   ///
+   /// @return the major number of the release version.
     int getMajor() { return MAJOR; }
  
-   /**
-    * Gets the minor number of the release version.
-    *
-    * @return the minor number of the release version.
-    */
+   /// Gets the minor number of the release version.
+   ///
+   /// @return the minor number of the release version.
     int getMinor() { return MINOR; }
  
-   /**
-    * Gets the patch number of the release version.
-    *
-    * @return the patch number of the release version.
-    */
+   /// Gets the patch number of the release version.
+   ///
+   /// @return the patch number of the release version.
     int getPatch() { return PATCH; }
  
-   /**
-    * Gets the full version number, suitable for display.
-    *
-    * @return the full version number, suitable for display.
-    */
+   /// Gets the full version number, suitable for display.
+   ///
+   /// @return the full version number, suitable for display.
     String toString()
    {
      String ver = "$MAJOR.$MINOR.$PATCH";

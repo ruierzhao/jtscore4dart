@@ -29,61 +29,53 @@
 // import org.locationtech.jts.geom.MultiPoint;
 // import org.locationtech.jts.geom.Point;
 
-/**
- * Computes the boundary of a {@link Geometry}.
- * Allows specifying the {@link BoundaryNodeRule} to be used.
- * This operation will always return a {@link Geometry} of the appropriate
- * dimension for the boundary (even if the input geometry is empty).
- * The boundary of zero-dimensional geometries (Points) is
- * always the empty {@link GeometryCollection}.
- *
- * @author Martin Davis
- * @version 1.7
- */
+/// Computes the boundary of a {@link Geometry}.
+/// Allows specifying the {@link BoundaryNodeRule} to be used.
+/// This operation will always return a {@link Geometry} of the appropriate
+/// dimension for the boundary (even if the input geometry is empty).
+/// The boundary of zero-dimensional geometries (Points) is
+/// always the empty {@link GeometryCollection}.
+///
+/// @author Martin Davis
+/// @version 1.7
 
 class BoundaryOp
 {
-  /**
-   * Computes a geometry representing the boundary of a geometry.
-   * 
-   * @param g the input geometry
-   * @return the computed boundary
-   */
+  /// Computes a geometry representing the boundary of a geometry.
+  /// 
+  /// @param g the input geometry
+  /// @return the computed boundary
   static Geometry getBoundary(Geometry g)
   {
     BoundaryOp bop = new BoundaryOp(g);
     return bop.getBoundary();
   }
   
-  /**
-   * Computes a geometry representing the boundary of a geometry,
-   * using an explicit {@link BoundaryNodeRule}.
-   * 
-   * @param g the input geometry
-   * @param bnRule the Boundary Node Rule to use
-   * @return the computed boundary
-   */
+  /// Computes a geometry representing the boundary of a geometry,
+  /// using an explicit {@link BoundaryNodeRule}.
+  /// 
+  /// @param g the input geometry
+  /// @param bnRule the Boundary Node Rule to use
+  /// @return the computed boundary
   static Geometry getBoundary(Geometry g, BoundaryNodeRule bnRule)
   {
     BoundaryOp bop = new BoundaryOp(g, bnRule);
     return bop.getBoundary();
   }
   
-  /**
-   * Tests if a geometry has a boundary (it is non-empty).
-   * The semantics are:
-   * <ul>
-   * <li>Empty geometries do not have boundaries. 
-   * <li>Points do not have boundaries.
-   * <li>For linear geometries the existence of the boundary 
-   * is determined by the {@link BoundaryNodeRule}.
-   * <li>Non-empty polygons always have a boundary.
-   * </ul>
-   * 
-   * @param geom the geometry providing the boundary
-   * @param boundaryNodeRule  the Boundary Node Rule to use
-   * @return true if the boundary exists
-   */
+  /// Tests if a geometry has a boundary (it is non-empty).
+  /// The semantics are:
+  /// <ul>
+  /// <li>Empty geometries do not have boundaries. 
+  /// <li>Points do not have boundaries.
+  /// <li>For linear geometries the existence of the boundary 
+  /// is determined by the {@link BoundaryNodeRule}.
+  /// <li>Non-empty polygons always have a boundary.
+  /// </ul>
+  /// 
+  /// @param geom the geometry providing the boundary
+  /// @param boundaryNodeRule  the Boundary Node Rule to use
+  /// @return true if the boundary exists
   static bool hasBoundary(Geometry geom, BoundaryNodeRule boundaryNodeRule) {
     // Note that this does not handle geometry collections with a non-empty linear element
     if (geom.isEmpty()) return false;
@@ -104,22 +96,18 @@ class BoundaryOp
   private GeometryFactory geomFact;
   private BoundaryNodeRule bnRule;
 
-  /**
-   * Creates a new instance for the given geometry.
-   * 
-   * @param geom the input geometry
-   */
+  /// Creates a new instance for the given geometry.
+  /// 
+  /// @param geom the input geometry
   BoundaryOp(Geometry geom)
   {
     this(geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
   }
 
-  /**
-   * Creates a new instance for the given geometry.
-   * 
-   * @param geom the input geometry
-   * @param bnRule the Boundary Node Rule to use
-   */
+  /// Creates a new instance for the given geometry.
+  /// 
+  /// @param geom the input geometry
+  /// @param bnRule the Boundary Node Rule to use
   BoundaryOp(Geometry geom, BoundaryNodeRule bnRule)
   {
     this.geom = geom;
@@ -127,11 +115,9 @@ class BoundaryOp
     this.bnRule = bnRule;
   }
 
-  /**
-   * Gets the computed boundary.
-   * 
-   * @return the boundary geometry
-   */
+  /// Gets the computed boundary.
+  /// 
+  /// @return the boundary geometry
   Geometry getBoundary()
   {
     if (geom is LineString) return boundaryLineString((LineString) geom);
@@ -229,16 +215,12 @@ class BoundaryOp
   }
 }
 
-/**
- * Stores an integer count, for use as a Map entry.
- *
- * @author Martin Davis
- * @version 1.7
- */
+/// Stores an integer count, for use as a Map entry.
+///
+/// @author Martin Davis
+/// @version 1.7
 class Counter
 {
-  /**
-   * The value of the count
-   */
+  /// The value of the count
   int count;
 }

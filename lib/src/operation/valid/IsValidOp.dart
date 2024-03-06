@@ -21,6 +21,10 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/geometry.dart';
+
+import 'TopologyValidationError.dart';
+
 /**
  * Implements the algorithms required to compute the <code>isValid()</code> method
  * for {@link Geometry}s.
@@ -38,7 +42,7 @@ class IsValidOp
    * @param geom the Geometry to test
    * @return true if the geometry is valid
    */
-  static bool isValid(Geometry geom)
+  static bool of(Geometry geom)
   {
     IsValidOp isValidOp = new IsValidOp(geom);
     return isValidOp.isValid();
@@ -166,7 +170,7 @@ class IsValidOp
     if (g is GeometryCollection) return isValid( (GeometryCollection) g);
     
     // geometry type not known
-    throw new UnsupportedOperationException(g.getClass().getName());
+    throw UnsupportedOperationException(g.getClass().getName());
   }
 
   /**

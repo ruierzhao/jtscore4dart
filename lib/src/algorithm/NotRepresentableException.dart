@@ -18,10 +18,15 @@
  * @version 1.7
  * @see HCoordinate
  */
-class NotRepresentableException extends Exception {
+// TODO: ruier edit.
+// class NotRepresentableException extends Exception {
 
-  NotRepresentableException() {
-    super("Projective point not representable on the Cartesian plane.");
-  }
+//   NotRepresentableException() {
+//     super("Projective point not representable on the Cartesian plane.");
+//   }
 
+// }
+
+Exception NotRepresentableException(){
+  return Exception("Projective point not representable on the Cartesian plane.");
 }

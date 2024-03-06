@@ -108,6 +108,7 @@ class PointLocator
     return Location.EXTERIOR;
   }
 
+  @Deprecated("或许还需要改")
   /**private */ void computeLocation(Coordinate p, Geometry geom)
   {
     if (geom.isEmpty()) {
@@ -133,14 +134,17 @@ class PointLocator
     else if (geom is MultiPolygon) {
       MultiPolygon mpoly =  geom as MultiPolygon;
       for (int i = 0; i < mpoly.getNumGeometries(); i++) {
-        Polygon poly = (Polygon) mpoly.getGeometryN(i);
+        Polygon poly =  mpoly.getGeometryN(i) as Polygon;
         updateLocationInfo(locateInPolygon(p, poly));
       }
     }
     else if (geom is GeometryCollection) {
-      Iterator geomi = GeometryCollectionIterator((GeometryCollection) geom);
+      // TODO：@ruier need edit.
+      // Iterator geomi = GeometryCollectionIterator( geom);
+      GeometryCollectionIterator geomi = GeometryCollectionIterator( geom);
       while (geomi.hasNext()) {
-        Geometry g2 = geomi.next();
+        // Geometry g2 = geomi.next() ; 
+        Geometry g2 = geomi.next() as Geometry;
         if (g2 != geom) {
           computeLocation(p, g2);
         }

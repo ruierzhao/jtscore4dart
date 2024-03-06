@@ -13,6 +13,10 @@
 
 // import java.util.ArrayList;
 
+
+import 'GeometryCollection.dart';
+import 'Polygonal.dart';
+
 /// Models a collection of {@link Polygon}s.
 /// <p>
 /// As per the OGC SFS specification,

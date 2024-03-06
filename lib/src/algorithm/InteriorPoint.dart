@@ -18,6 +18,9 @@
 // import org.locationtech.jts.geom.GeometryCollection;
 // import org.locationtech.jts.geom.GeometryFilter;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
+
 /// Computes an interior point of a <code>{@link Geometry}</code>.
 /// An interior point is guaranteed to lie in the interior of the Geometry,
 /// if it possible to calculate such a point exactly. 
@@ -49,11 +52,12 @@ class InteriorPoint {
   /// @param geom a geometry in which to find an interior point
   /// @return the location of an interior point, 
   ///  or <code>null</code> if the input is empty
-  static Coordinate getInteriorPoint(Geometry geom) {
-    if (geom.isEmpty()) 
+  static Coordinate? getInteriorPoint(Geometry geom) {
+    if (geom.isEmpty()) {
       return null;
+    }
     
-    Coordinate interiorPt = null;
+    Coordinate? interiorPt;
     int dim = dimensionNonEmpty(geom);
     // this should not happen, but just in case...
     if (dim < 0) {
@@ -77,7 +81,10 @@ class InteriorPoint {
     return dimFilter.getDimension();
   }
   
- /**private */static class DimensionNonEmptyFilter implements GeometryFilter
+
+}
+// TODO: ruier edit.私有静态内部类
+ /**private static*/ class DimensionNonEmptyFilter implements GeometryFilter
   {
    /**private */int dim = -1;
     
@@ -85,13 +92,14 @@ class InteriorPoint {
       return dim;
     }
     
+    @override
     void filter(Geometry elem) {
-      if (elem is GeometryCollection)
+      if (elem is GeometryCollection) {
         return;
+      }
       if (! elem.isEmpty()) {
         int elemDim = elem.getDimension();
         if (elemDim > dim) dim = elemDim;
       }
     }
   }
-}

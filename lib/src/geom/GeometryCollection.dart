@@ -17,6 +17,8 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'Geometry.dart';
+
 /// Models a collection of {@link Geometry}s of
 /// arbitrary type and dimension.
 ///
@@ -286,6 +288,12 @@ class GeometryCollection extends Geometry {
       geometries[i] = this.geometries[i].reverse();
     }
     return new GeometryCollection(geometries, factory);
+  }
+  
+  @override
+  bool equalsExactWithTolerance(Geometry other, double tolerance) {
+    // TODO: @ruier add .implement equalsExactWithTolerance
+    throw UnimplementedError();
   }
 }
 

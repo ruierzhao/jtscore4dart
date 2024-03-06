@@ -41,6 +41,9 @@ import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
 import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/geom/util/LinearComponentExtracter.dart';
+import 'package:jtscore4dart/src/noding/BasicSegmentString.dart';
+import 'package:jtscore4dart/src/noding/MCIndexNoder.dart';
 import 'package:jtscore4dart/src/noding/SegmentIntersector.dart';
 import 'package:jtscore4dart/src/noding/SegmentString.dart';
 
@@ -112,13 +115,14 @@ class IsSimpleOp
    * @param geom the input geometry
    * @return a non-simple location, or null if the geometry is simple
    */
-  static Coordinate nonSimpleLocation(Geometry geom) {
+  static Coordinate? nonSimpleLocation(Geometry geom) {
     IsSimpleOp op = new IsSimpleOp(geom);
     return op.getNonSimpleLocation();
   }
 
  /**private */final Geometry inputGeom;
  /**private */late final  bool isClosedEndpointsInInterior;
+
  /**private */late bool isFindAllLocations;
 
  /**private */bool is_simple = false;
@@ -171,11 +175,11 @@ class IsSimpleOp
    * @return a coordinate for the location of the non-boundary self-intersection
    * or null if the geometry is simple
    */
-  Coordinate getNonSimpleLocation()
+  Coordinate? getNonSimpleLocation()
   {
     compute();
-    if (nonSimplePts.size() == 0) return null;
-    return nonSimplePts.get(0);
+    if (nonSimplePts!.isEmpty) return null;
+    return nonSimplePts![0];
   }
 
   /**
@@ -186,9 +190,11 @@ class IsSimpleOp
   List<Coordinate> getNonSimpleLocations()
   {
     compute();
-    return nonSimplePts;
+    return nonSimplePts!;
   }
 
+/// 1.判断 nonSimplePts 是否为空。不是null直接返回
+/// 1.初始化 nonSimplePts 
  /**private */void compute() {
     if (nonSimplePts != null) return;
     nonSimplePts = <Coordinate>[];
@@ -201,7 +207,7 @@ class IsSimpleOp
     if (geom is Point) return true;
     if (geom is LineString) return isSimpleLinearGeometry(geom);
     if (geom is MultiLineString) return isSimpleLinearGeometry(geom);
-    if (geom is MultiPoint) return isSimpleMultiPoint((MultiPoint) geom);
+    if (geom is MultiPoint) return isSimpleMultiPoint(geom as MultiPoint);
     if (geom is Polygonal) return isSimplePolygonal(geom);
     if (geom is GeometryCollection) return isSimpleGeometryCollection(geom);
     // all other geometry types are simple by definition
@@ -212,12 +218,13 @@ class IsSimpleOp
   {
     if (mp.isEmpty()) return true;
     bool isSimple = true;
-    Set<Coordinate> points = new HashSet<Coordinate>();
+    Set<Coordinate> points = {};
+    // Set<Coordinate> points = new HashSet<Coordinate>();
     for (int i = 0; i < mp.getNumGeometries(); i++) {
-      Point pt = (Point) mp.getGeometryN(i);
+      Point pt =  mp.getGeometryN(i) as Point;
       Coordinate p = pt.getCoordinate();
       if (points.contains(p)) {
-        nonSimplePts.add(p);
+        nonSimplePts!.add(p);
         isSimple = false;
         if (!isFindAllLocations) {
           break;
@@ -242,7 +249,7 @@ class IsSimpleOp
   {
     bool isSimple = true;
     List<Geometry> rings = LinearComponentExtracter.getLines(geom);
-    for (Geometry ring : rings) {
+    for (Geometry ring in rings) {
       if (! isSimpleLinearGeometry(ring))
       {
         isSimple = false;
@@ -282,7 +289,7 @@ class IsSimpleOp
     if (geom.isEmpty()) return true;
     List<SegmentString> segStrings = extractSegmentStrings(geom);
     _NonSimpleIntersectionFinder segInt = new _NonSimpleIntersectionFinder(isClosedEndpointsInInterior, isFindAllLocations, nonSimplePts);
-    MCIndexNoder noder = new MCIndexNoder();
+    MCIndexNoder noder = MCIndexNoder();
     noder.setSegmentIntersector(segInt);
     noder.computeNodes(segStrings);
     if (segInt.hasIntersection()) {
@@ -292,19 +299,19 @@ class IsSimpleOp
   }
 
  /**private */static List<SegmentString> extractSegmentStrings(Geometry geom) {
-    List<SegmentString> segStrings = new ArrayList<SegmentString>();
+    List<SegmentString> segStrings = <SegmentString>[];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      LineString line = (LineString) geom.getGeometryN(i);
-      List<Coordinate> trimPts = trimRepeatedPoints(line.getCoordinates());
+      LineString line =  geom.getGeometryN(i) as LineString;
+      List<Coordinate>? trimPts = trimRepeatedPoints(line.getCoordinates());
       if (trimPts != null) {
-        SegmentString ss = new BasicSegmentString(trimPts, null);
+        SegmentString ss = BasicSegmentString(trimPts, null);
         segStrings.add(ss);
       }
     }
     return segStrings;
   }
 
- /**private */static List<Coordinate> trimRepeatedPoints(List<Coordinate> pts) {
+ /**private */static List<Coordinate>? trimRepeatedPoints(List<Coordinate> pts) {
     if (pts.length <= 2) {
       return pts;
     }

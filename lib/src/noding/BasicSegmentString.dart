@@ -15,6 +15,11 @@
 // import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'Octant.dart';
+import 'SegmentString.dart';
+
 /**
  * Represents a read-only list of contiguous line segments.
  * This can be used for detection of intersections or nodes.

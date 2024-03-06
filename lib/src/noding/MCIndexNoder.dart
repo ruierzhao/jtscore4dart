@@ -23,6 +23,8 @@
 // import org.locationtech.jts.index.chain.MonotoneChainOverlapAction;
 // import org.locationtech.jts.index.hprtree.HPRtree;
 
+import 'SinglePassNoder.dart';
+
 /**
  * Nodes a set of {@link SegmentString}s using a index based
  * on {@link MonotoneChain}s and a {@link SpatialIndex}.

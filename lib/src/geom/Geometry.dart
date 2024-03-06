@@ -41,6 +41,7 @@ import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/Point.dart';
 import 'package:jtscore4dart/src/geom/Polygon.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
 
 
 /// A representation of a planar, linear vector geometry.
@@ -1053,14 +1054,8 @@ abstract class Geometry{
     return equalsExact(g);
   }
 
-  /// Gets a hash code for the Geometry.
-  ///
-  /// @return an integer value suitable for use as a hashcode
-  int hashCode()
-  {
-    return getEnvelopeInternal().hashCode();
-  }
 
+  @override
   String toString() {
     return toText();
   }
@@ -1659,7 +1654,7 @@ abstract class Geometry{
   ///
   ///@return    this <code>Geometry</code>s bounding box; if the <code>Geometry</code>
   ///      is empty, <code>Envelope#isNull</code> will return <code>true</code>
-  /**protected */ abstract Envelope computeEnvelopeInternal();
+  /**protected abstract*/  Envelope computeEnvelopeInternal();
 
   ///  Returns whether this <code>Geometry</code> is greater than, equal to,
   ///  or less than another <code>Geometry</code> having the same class.
@@ -1669,7 +1664,7 @@ abstract class Geometry{
   ///      this object is greater than, equal to, or less than <code>o</code>, as
   ///      defined in "Normal Form For Geometry" in the JTS Technical
   ///      Specifications
-  /**protected */ abstract int compareToSameClass(Object o);
+  /**protected abstract*/ int compareToSameClass(Object o);
 
   ///  Returns whether this <code>Geometry</code> is greater than, equal to,
   ///  or less than another <code>Geometry</code> of the same class.
@@ -1730,7 +1725,25 @@ abstract class Geometry{
     exemplar.getPrecisionModel().makePrecise(coord);
     return exemplar.getFactory().createPoint(coord);
   }
+  
+  @override
+  bool operator ==(Object other) {
+    // TODO: implement ==
+    return super == other;
+  }
 
+  /// Gets a hash code for the Geometry.
+  ///
+  /// @return an integer value suitable for use as a hashcode
+  // int hashCode()
+  // {
+  //   return getEnvelopeInternal().hashCode();
+  // }
+  @override
+  int get hashCode
+  {
+    return getEnvelopeInternal().hashCode();
+  }
 
 }
 

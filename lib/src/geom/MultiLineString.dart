@@ -13,6 +13,16 @@
 
 // import org.locationtech.jts.operation.BoundaryOp;
 
+import 'package:jtscore4dart/src/operation/BoundaryOp.dart';
+
+import 'Dimension.dart';
+import 'Geometry.dart';
+import 'GeometryCollection.dart';
+import 'GeometryFactory.dart';
+import 'LineString.dart';
+import 'Lineal.dart';
+import 'PrecisionModel.dart';
+
 /// Models a collection of {@link LineString}s.
 /// <p>
 /// Any collection of LineStrings is a valid MultiLineString.
@@ -22,7 +32,7 @@ class MultiLineString
 	extends GeometryCollection
 	implements Lineal
 	{
- /**private */static final int serialVersionUID = 8166665132445433741L;
+//  /**private */static final int serialVersionUID = 8166665132445433741L;
   ///  Constructs a <code>MultiLineString</code>.
   ///
   ///@param  lineStrings     the <code>LineString</code>s for this <code>MultiLineString</code>
@@ -49,14 +59,17 @@ class MultiLineString
     super(lineStrings, factory);
   }
 
+  @override
   int getDimension() {
     return 1;
   }
 
+  @override
   bool hasDimension(int dim) {
     return dim == 1;
   }
   
+  @override
   int getBoundaryDimension() {
     if (isClosed()) {
       return Dimension.FALSE;
@@ -64,6 +77,7 @@ class MultiLineString
     return 0;
   }
 
+  @override
   String getGeometryType() {
     return Geometry.TYPENAME_MULTILINESTRING;
   }
@@ -85,6 +99,7 @@ class MultiLineString
   ///
   /// @return the boundary geometry
   /// @see Geometry#getBoundary
+  @override
   Geometry getBoundary()
   {
     return (new BoundaryOp(this)).getBoundary();
@@ -97,26 +112,30 @@ class MultiLineString
   /// are reversed.
   ///
   /// @return a {@link MultiLineString} in the reverse order
+  @override
   MultiLineString reverse() {
-    return (MultiLineString) super.reverse();
+    return  super.reverse() as MultiLineString;
   }
 
- /**protected */MultiLineString reverseInternal() {
+ /**protected */@override
+  MultiLineString reverseInternal() {
     List<LineString> lineStrings = new LineString[this.geometries.length];
     for (int i = 0; i < lineStrings.length; i++) {
-      lineStrings[i] = (LineString) this.geometries[i].reverse();
+      lineStrings[i] =  this.geometries[i].reverse() as LineString;
     }
     return new MultiLineString(lineStrings, factory);
   }
   
- /**protected */MultiLineString copyInternal() {
+ /**protected */@override
+  MultiLineString copyInternal() {
     List<LineString> lineStrings = new LineString[this.geometries.length];
     for (int i = 0; i < lineStrings.length; i++) {
-      lineStrings[i] = (LineString) this.geometries[i].copy();
+      lineStrings[i] = this.geometries[i].copy() as LineString;
     }
     return new MultiLineString(lineStrings, factory);
   }
 
+  @override
   bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
@@ -124,7 +143,8 @@ class MultiLineString
     return super.equalsExact(other, tolerance);
   }
 
- /**protected */int getTypeCode() {
+ /**protected */@override
+  int getTypeCode() {
     return Geometry.TYPECODE_MULTILINESTRING;
   }
 }

@@ -23,6 +23,8 @@
 // import org.locationtech.jts.geom.MultiLineString;
 
 
+import '../GeometryComponentFilter.dart';
+
 /**
  * Extracts all the 1-dimensional ({@link LineString}) components from a {@link Geometry}.
  * For polygonal geometries, this will extract all the component {@link LinearRing}s.

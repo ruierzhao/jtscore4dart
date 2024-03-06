@@ -10,108 +10,117 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.Iterator;
 // import java.util.NoSuchElementException;
 
+import 'Geometry.dart';
+import 'GeometryCollection.dart';
+
 ///  Iterates over all {@link Geometry}s in a {@link Geometry},
 ///  (which may be either a collection or an atomic geometry).
-///  The iteration sequence follows a pre-order, depth-first traversal of the 
+///  The iteration sequence follows a pre-order, depth-first traversal of the
 ///  structure of the <code>GeometryCollection</code>
 ///  (which may be nested). The original <code>Geometry</code> object is
-///  returned as well (as the first object), as are all sub-collections and atomic elements. 
+///  returned as well (as the first object), as are all sub-collections and atomic elements.
 ///  It is  simple to ignore the intermediate <code>GeometryCollection</code> objects if they are not
 ///  needed.
 ///
 ///@version 1.7
-class GeometryCollectionIterator implements Iterator {
-
+class GeometryCollectionIterator /** implements Iterator */ {
   ///  The <code>Geometry</code> being iterated over.
- /**private */Geometry parent;
-  ///  Indicates whether or not the first element 
+   final Geometry _parent;
+
+  ///  Indicates whether or not the first element
   ///  (the root <code>GeometryCollection</code>) has been returned.
- /**private */bool atStart;
+   bool _atStart;
+
   ///  The number of <code>Geometry</code>s in the the <code>GeometryCollection</code>.
- /**private */int max;
+   final int _max;
+
   ///  The index of the <code>Geometry</code> that will be returned when <code>next</code>
   ///  is called.
- /**private */int index;
+   int _index;
+
   ///  The iterator over a nested <code>Geometry</code>, or <code>null</code>
   ///  if this <code>GeometryCollectionIterator</code> is not currently iterating
   ///  over a nested <code>GeometryCollection</code>.
- /**private */GeometryCollectionIterator subcollectionIterator;
+   GeometryCollectionIterator? _subcollectionIterator;
 
   ///  Constructs an iterator over the given <code>Geometry</code>.
   ///
   ///@param  parent  the geometry over which to iterate; also, the first
   ///      element returned by the iterator.
-  GeometryCollectionIterator(Geometry parent) {
-    this.parent = parent;
-    atStart = true;
-    index = 0;
-    max = parent.getNumGeometries();
-  }
+  GeometryCollectionIterator(this._parent)
+      : _atStart = true,
+        _index = 0,
+        _max = _parent.getNumGeometries();
+  //    {
+  //   this.parent = parent;
+  //   atStart = true;
+  //   index = 0;
+  //   max = parent.getNumGeometries();
+  // }
 
   /// Tests whether any geometry elements remain to be returned.
-  /// 
+  ///
   /// @return true if more geometry elements remain
   bool hasNext() {
-    if (atStart) {
+    if (_atStart) {
       return true;
     }
-    if (subcollectionIterator != null) {
-      if (subcollectionIterator.hasNext()) {
+    if (_subcollectionIterator != null) {
+      if (_subcollectionIterator!.hasNext()) {
         return true;
       }
-      subcollectionIterator = null;
+      _subcollectionIterator = null;
     }
-    if (index >= max) {
+    if (_index >= _max) {
       return false;
     }
     return true;
   }
 
   /// Gets the next geometry in the iteration sequence.
-  /// 
+  ///
   /// @return the next geometry in the iteration
   Object next() {
     // the parent GeometryCollection is the first object returned
-    if (atStart) {
-      atStart = false;
-      if (isAtomic(parent))
-        index++;
-      return parent;
-    }
-    if (subcollectionIterator != null) {
-      if (subcollectionIterator.hasNext()) {
-        return subcollectionIterator.next();
+    if (_atStart) {
+      _atStart = false;
+      if (_isAtomic(_parent)) {
+        _index++;
       }
-      else {
-        subcollectionIterator = null;
+      return _parent;
+    }
+    if (_subcollectionIterator != null) {
+      if (_subcollectionIterator!.hasNext()) {
+        return _subcollectionIterator!.next();
+      } else {
+        _subcollectionIterator = null;
       }
     }
-    if (index >= max) {
-      throw new NoSuchElementException();
+    if (_index >= _max) {
+      // throw NoSuchElementException();
+      throw ArgumentError();
     }
-    Geometry obj = parent.getGeometryN(index++);
+    Geometry obj = _parent.getGeometryN(_index++);
     if (obj is GeometryCollection) {
-      subcollectionIterator = new GeometryCollectionIterator((GeometryCollection) obj);
+      _subcollectionIterator = GeometryCollectionIterator(obj);
       // there will always be at least one element in the sub-collection
-      return subcollectionIterator.next();
+      return _subcollectionIterator!.next();
     }
     return obj;
   }
 
- /**private */static bool isAtomic(Geometry geom)
-  {
-    return ! (geom is GeometryCollection);
+   static bool _isAtomic(Geometry geom) {
+    return geom is! GeometryCollection;
   }
-  
+
   /// Removal is not supported.
   ///
   /// @throws  UnsupportedOperationException  This method is not implemented.
   void remove() {
-    throw new UnsupportedOperationException(getClass().getName());
+    // throw UnsupportedOperationException(getClass().getName());
+    throw Exception("UnsupportedOperationException #remove");
   }
 }
-

@@ -11,6 +11,9 @@
  */
 
 
+import 'GeometryCollection.dart';
+import 'Puntal.dart';
+
 /// Models a collection of {@link Point}s.
 /// <p>
 /// Any collection of Points is a valid MultiPoint.

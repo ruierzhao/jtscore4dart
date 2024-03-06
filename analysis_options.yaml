@@ -53,4 +53,5 @@ analyzer:
     doc_directive_unknown: ignore # 忽略Java文档
     prefer_interpolation_to_compose_strings: ignore #忽略行内字符串
     unnecessary_new: ignore # unnecessary_new
+    slash_for_doc_comments: ignore # 注释格式
     

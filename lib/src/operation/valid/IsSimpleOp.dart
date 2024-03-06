@@ -35,6 +35,11 @@
 // import org.locationtech.jts.noding.SegmentIntersector;
 // import org.locationtech.jts.noding.SegmentString;
 
+import 'package:jtscore4dart/algorithm.dart';
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/noding/SegmentString.dart';
+
 /**
  * Tests whether a <code>Geometry</code> is simple as defined by the OGC SFS specification.
  * <p>
@@ -92,8 +97,8 @@ class IsSimpleOp
    * @param geom the geometry to test
    * @return true if the geometry is simple
    */
-  static bool isSimple(Geometry geom) {
-    IsSimpleOp op = new IsSimpleOp(geom);
+  static bool of(Geometry geom) {
+    IsSimpleOp op = IsSimpleOp(geom);
     return op.isSimple();
   }
 
@@ -103,26 +108,26 @@ class IsSimpleOp
    * @param geom the input geometry
    * @return a non-simple location, or null if the geometry is simple
    */
-  static Coordinate getNonSimpleLocation(Geometry geom) {
+  static Coordinate nonSimpleLocation(Geometry geom) {
     IsSimpleOp op = new IsSimpleOp(geom);
     return op.getNonSimpleLocation();
   }
 
  /**private */final Geometry inputGeom;
- /**private */final bool isClosedEndpointsInInterior;
- /**private */bool isFindAllLocations;
+ /**private */late final  bool isClosedEndpointsInInterior;
+ /**private */late bool isFindAllLocations;
 
- /**private */bool isSimple = false;
- /**private */List<Coordinate> nonSimplePts;
+ /**private */bool is_simple = false;
+ /**private */late List<Coordinate> nonSimplePts;
 
   /**
    * Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
    *
    * @param geom the geometry to test
    */
-  IsSimpleOp(Geometry geom) {
-    this(geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
-  }
+  // IsSimpleOp(Geometry geom) {
+  //   this(geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
+  // }
 
   /**
    * Creates a simplicity checker using a given {@link BoundaryNodeRule}
@@ -130,11 +135,11 @@ class IsSimpleOp
    * @param geom the geometry to test
    * @param boundaryNodeRule the boundary node rule to use.
    */
-  IsSimpleOp(Geometry geom, BoundaryNodeRule boundaryNodeRule)
-  {
-    this.inputGeom = geom;
-    isClosedEndpointsInInterior = ! boundaryNodeRule.isInBoundary(2);
-  }
+  IsSimpleOp(this.inputGeom, [BoundaryNodeRule? boundaryNodeRule]):isClosedEndpointsInInterior = !(boundaryNodeRule ??= BoundaryNodeRule.MOD2_BOUNDARY_RULE).isInBoundary(2);
+  // {
+  //   boundaryNodeRule ??= BoundaryNodeRule.MOD2_BOUNDARY_RULE;
+    
+  // }
 
   /**
    * Sets whether all non-simple intersection points
@@ -154,7 +159,7 @@ class IsSimpleOp
   bool isSimple()
   {
     compute();
-    return isSimple;
+    return is_simple;
   }
 
   /**
@@ -186,7 +191,7 @@ class IsSimpleOp
  /**private */void compute() {
     if (nonSimplePts != null) return;
     nonSimplePts = new ArrayList<Coordinate>();
-    isSimple = computeSimple(inputGeom);
+    is_simple = computeSimple(inputGeom);
   }
 
  /**private */bool computeSimple(Geometry geom)

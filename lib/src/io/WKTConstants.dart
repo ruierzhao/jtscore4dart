@@ -19,19 +19,19 @@
  */
 class WKTConstants {
 
-  static final String GEOMETRYCOLLECTION = "GEOMETRYCOLLECTION";
-  static final String LINEARRING = "LINEARRING";
-  static final String LINESTRING = "LINESTRING";
-  static final String MULTIPOLYGON = "MULTIPOLYGON";
-  static final String MULTILINESTRING = "MULTILINESTRING";
-  static final String MULTIPOINT = "MULTIPOINT";
-  static final String POINT = "POINT";
-  static final String POLYGON = "POLYGON";
+  static const String GEOMETRYCOLLECTION = "GEOMETRYCOLLECTION";
+  static const String LINEARRING = "LINEARRING";
+  static const String LINESTRING = "LINESTRING";
+  static const String MULTIPOLYGON = "MULTIPOLYGON";
+  static const String MULTILINESTRING = "MULTILINESTRING";
+  static const String MULTIPOINT = "MULTIPOINT";
+  static const String POINT = "POINT";
+  static const String POLYGON = "POLYGON";
   
-  static final String EMPTY = "EMPTY";
+  static const String EMPTY = "EMPTY";
 
-  static final String M = "M";
-  static final String Z = "Z";
-  static final String ZM = "ZM";
+  static const String M = "M";
+  static const String Z = "Z";
+  static const String ZM = "ZM";
 
 }

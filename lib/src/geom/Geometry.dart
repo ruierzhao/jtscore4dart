@@ -157,9 +157,6 @@ import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 /// Geometries can be used effectively in Java collections.
 ///
 ///@version 1.7
-
-
-
 abstract class Geometry{
   // TODO: ruier edit. unused
   ///**private */static final int serialVersionUID = 8763622679187376702L;
@@ -277,7 +274,7 @@ abstract class Geometry{
   /// Gets the user data object for this geometry, if any.
   ///
   /// @return the user data object, or <code>null</code> if none set
-  Object getUserData() {
+  Object? getUserData() {
         return userData;
   }
 

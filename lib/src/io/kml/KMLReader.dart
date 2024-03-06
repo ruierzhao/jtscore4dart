@@ -21,9 +21,11 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.io.ParseException;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+
+
+// import javax.xml.stream.XMLInputFactory;
+// import javax.xml.stream.XMLStreamException;
+// import javax.xml.stream.XMLStreamReader;
 // import java.io.StringReader;
 // import java.lang.reflect.Array;
 // import java.util.ArrayList;
@@ -35,10 +37,10 @@ import javax.xml.stream.XMLStreamReader;
 // import java.util.Map;
 // import java.util.Set;
 
-/**
- * Constructs a {@link Geometry} object from the OGC KML representation.
- * Works only with KML geometry elements and may also parse attributes within these elements
- */
+import 'package:jtscore4dart/geometry.dart';
+
+/// Constructs a {@link Geometry} object from the OGC KML representation.
+/// Works only with KML geometry elements and may also parse attributes within these elements
 class KMLReader {
    /**private */final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
    /**private */final GeometryFactory geometryFactory;
@@ -55,19 +57,15 @@ class KMLReader {
 
    /**private */static final String NO_ELEMENT_ERROR = "No element %s found in %s";
 
-    /**
-     * Creates a reader that creates objects using the default {@link GeometryFactory}.
-     */
+    /// Creates a reader that creates objects using the default {@link GeometryFactory}.
     KMLReader() {
         this(new GeometryFactory(), Collections.emptyList());
     }
 
-    /**
-     * Creates a reader that creates objects using the given
-     * {@link GeometryFactory}.
-     *
-     * @param geometryFactory the factory used to create <code>Geometry</code>s.
-     */
+    /// Creates a reader that creates objects using the given
+    /// {@link GeometryFactory}.
+    ///
+    /// @param geometryFactory the factory used to create <code>Geometry</code>s.
     KMLReader(GeometryFactory geometryFactory) {
         this(geometryFactory, Collections.emptyList());
     }
@@ -120,8 +118,8 @@ class KMLReader {
             raiseParseError("Empty coordinates");
         }
 
-        double[] parsedOrdinates = {double.nan, double.nan, double.nan};
-        List<Coordinate> coordinateList = new ArrayList();
+        List<double> parsedOrdinates = [double.nan, double.nan, double.nan];
+        List<Coordinate> coordinateList = [];
 
         int spaceIdx = coordinates.indexOf(' ');
         int currentIdx = 0;

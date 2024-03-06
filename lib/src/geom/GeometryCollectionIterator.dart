@@ -123,4 +123,8 @@ class GeometryCollectionIterator /** implements Iterator */ {
     // throw UnsupportedOperationException(getClass().getName());
     throw Exception("UnsupportedOperationException #remove");
   }
+  
+  @override
+  // TODO: implement iterator
+  Iterator get iterator => throw UnimplementedError();
 }

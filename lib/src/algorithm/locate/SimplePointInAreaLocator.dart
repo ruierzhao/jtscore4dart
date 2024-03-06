@@ -75,7 +75,7 @@ class SimplePointInAreaLocator
     /**
      * Do a fast check against the geometry envelope first
      */
-    if (! geom.getEnvelopeInternal().intersects(p)) {
+    if (! geom.getEnvelopeInternal().intersectsWith(p)) {
       return Location.EXTERIOR;
     }
     
@@ -105,9 +105,12 @@ class SimplePointInAreaLocator
     }
     
     if (geom is GeometryCollection) {
-      Iterator geomi = new GeometryCollectionIterator((GeometryCollection) geom);
+      // TODO: ruier edit.存疑修改
+      // Iterator geomi = new GeometryCollectionIterator((GeometryCollection) geom);
+      GeometryCollectionIterator geomi = GeometryCollectionIterator( geom);
       while (geomi.hasNext()) {
-        Geometry g2 = (Geometry) geomi.next();
+        // Geometry g2 = (Geometry) geomi.next() ;
+        Geometry g2 =  geomi.next() as Geometry;
         if (g2 != geom) {
           int loc = locateInGeometry(p, g2);
           if (loc != Location.EXTERIOR) return loc;

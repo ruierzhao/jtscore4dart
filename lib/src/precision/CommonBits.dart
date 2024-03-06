@@ -25,7 +25,7 @@ class CommonBits {
   /// 
   /// @param num
   /// @return the bit pattern for the sign and exponent
-  static int signExpBits(long num)
+  static int signExpBits(int num)
   {
     return num >> 52;
   }

@@ -37,7 +37,11 @@
 
 import 'package:jtscore4dart/algorithm.dart';
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/noding/SegmentIntersector.dart';
 import 'package:jtscore4dart/src/noding/SegmentString.dart';
 
 /**
@@ -118,7 +122,7 @@ class IsSimpleOp
  /**private */late bool isFindAllLocations;
 
  /**private */bool is_simple = false;
- /**private */late List<Coordinate> nonSimplePts;
+ /**private */late List<Coordinate>? nonSimplePts;
 
   /**
    * Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
@@ -136,10 +140,7 @@ class IsSimpleOp
    * @param boundaryNodeRule the boundary node rule to use.
    */
   IsSimpleOp(this.inputGeom, [BoundaryNodeRule? boundaryNodeRule]):isClosedEndpointsInInterior = !(boundaryNodeRule ??= BoundaryNodeRule.MOD2_BOUNDARY_RULE).isInBoundary(2);
-  // {
-  //   boundaryNodeRule ??= BoundaryNodeRule.MOD2_BOUNDARY_RULE;
-    
-  // }
+
 
   /**
    * Sets whether all non-simple intersection points
@@ -190,7 +191,7 @@ class IsSimpleOp
 
  /**private */void compute() {
     if (nonSimplePts != null) return;
-    nonSimplePts = new ArrayList<Coordinate>();
+    nonSimplePts = <Coordinate>[];
     is_simple = computeSimple(inputGeom);
   }
 
@@ -218,11 +219,13 @@ class IsSimpleOp
       if (points.contains(p)) {
         nonSimplePts.add(p);
         isSimple = false;
-        if (!isFindAllLocations)
+        if (!isFindAllLocations) {
           break;
+        }
       }
-      else
+      else {
         points.add(p);
+      }
     }
     return isSimple;
   }
@@ -243,8 +246,9 @@ class IsSimpleOp
       if (! isSimpleLinearGeometry(ring))
       {
         isSimple = false;
-        if (!isFindAllLocations)
+        if (!isFindAllLocations) {
           break;
+        }
       }
     }
     return isSimple;
@@ -265,8 +269,9 @@ class IsSimpleOp
       if (! computeSimple(comp))
       {
         isSimple = false;
-        if (!isFindAllLocations)
+        if (!isFindAllLocations) {
           break;
+        }
       }
     }
     return isSimple;
@@ -276,7 +281,7 @@ class IsSimpleOp
   {
     if (geom.isEmpty()) return true;
     List<SegmentString> segStrings = extractSegmentStrings(geom);
-    NonSimpleIntersectionFinder segInt = new NonSimpleIntersectionFinder(isClosedEndpointsInInterior, isFindAllLocations, nonSimplePts);
+    _NonSimpleIntersectionFinder segInt = new _NonSimpleIntersectionFinder(isClosedEndpointsInInterior, isFindAllLocations, nonSimplePts);
     MCIndexNoder noder = new MCIndexNoder();
     noder.setSegmentIntersector(segInt);
     noder.computeNodes(segStrings);
@@ -300,14 +305,16 @@ class IsSimpleOp
   }
 
  /**private */static List<Coordinate> trimRepeatedPoints(List<Coordinate> pts) {
-    if (pts.length <= 2)
+    if (pts.length <= 2) {
       return pts;
+    }
     
     int len = pts.length;
     bool hasRepeatedStart = pts[0].equals2D(pts[1]);
     bool hasRepeatedEnd = pts[len - 1].equals2D(pts[len - 2]);
-    if (! hasRepeatedStart && ! hasRepeatedEnd)
+    if (! hasRepeatedStart && ! hasRepeatedEnd) {
       return pts;
+    }
     
     //-- trim ends
     int startIndex = 0;
@@ -328,20 +335,18 @@ class IsSimpleOp
     return trimPts;
   }
   
- /**private */static class NonSimpleIntersectionFinder
-  implements SegmentIntersector
+}
+
+/// TODO: @ruier 内部私有静态类
+ /**private static*/ class _NonSimpleIntersectionFinder implements SegmentIntersector
   {
    /**private */final bool isClosedEndpointsInInterior;
    /**private */final bool isFindAll;
-
-    LineIntersector li = new RobustLineIntersector();
    /**private */final List<Coordinate> intersectionPts;
 
-    NonSimpleIntersectionFinder(bool isClosedEndpointsInInterior, bool isFindAll, List<Coordinate> intersectionPts) {
-      this.isClosedEndpointsInInterior =isClosedEndpointsInInterior;
-      this.isFindAll = isFindAll;
-      this.intersectionPts = intersectionPts;
-    }
+    LineIntersector li = new RobustLineIntersector();
+
+    _NonSimpleIntersectionFinder(this.isClosedEndpointsInInterior, this.isFindAll, this.intersectionPts) ;
 
     /**
      * Tests whether an intersection was found.
@@ -350,10 +355,11 @@ class IsSimpleOp
      */
     bool hasIntersection()
     {
-      return intersectionPts.size() > 0;
+      // return intersectionPts.size() > 0;
+      return intersectionPts.isNotEmpty;
     }
 
-    @Override
+    @override
     void processIntersections(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
 
       // don't test a segment with itself
@@ -465,12 +471,11 @@ class IsSimpleOp
       return intPt.equals2D(endPt0) ? 0 : 1;
     }
 
-    @Override
+    @override
     bool isDone() {
       if (isFindAll) return false;
-      return intersectionPts.size() > 0;
+      return intersectionPts.isNotEmpty;
     }
 
   }
 
-}

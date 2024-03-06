@@ -131,9 +131,13 @@ class Ruier extends ListBase<Coordinate>{
 
 }
 
-class Ruier2{
+abstract class Ruier2{
   int cc;
   Ruier2([this.cc = 5]);
+  void ruier(String vv);
+  void vvv(){
+    print("rueir");
+  }
 }
 
 test(int a,[int b=0,int? c]){
@@ -142,7 +146,5 @@ test(int a,[int b=0,int? c]){
 }
 
 void main() {
-  assert(false,"ruier");
-  assert(true,"ruier");
-print("reuite");
+
 }

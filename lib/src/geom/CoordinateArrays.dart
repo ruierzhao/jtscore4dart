@@ -118,9 +118,9 @@ abstract class CoordinateArrays {
   // TODO: ruier edit.
   static void enforceConsistency(List<Coordinate> array)
   {
-    // if (array == null) {
-    //   return;
-    // }
+    if (array.isEmpty) {
+      return;
+    }
     // step one check
     int maxDimension = -1;
     int maxMeasures = -1;

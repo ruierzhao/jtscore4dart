@@ -16,6 +16,11 @@
 // import org.locationtech.jts.noding.FastSegmentSetIntersectionFinder;
 // import org.locationtech.jts.noding.SegmentStringUtil;
 
+import 'package:jtscore4dart/src/geom/Lineal.dart';
+import 'package:jtscore4dart/src/noding/FastSegmentSetIntersectionFinder.dart';
+
+import 'BasicPreparedGeometry.dart';
+
 /**
  * A prepared version for {@link Lineal} geometries.
  * <p>

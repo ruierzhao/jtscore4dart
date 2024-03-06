@@ -62,6 +62,12 @@
  * @see Centroid
  *
  */
+import 'dart:math';
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+
+/// polygonal 的最大内切圆
 class MaximumInscribedCircle {
 
   /**
@@ -72,7 +78,12 @@ class MaximumInscribedCircle {
    * @param tolerance the distance tolerance for computing the center point
    * @return the center point of the maximum inscribed circle
    */
-  static Point getCenter(Geometry polygonal, double tolerance) {
+  // static Point getCenter(Geometry polygonal, double tolerance) {
+  //   MaximumInscribedCircle mic = new MaximumInscribedCircle(polygonal, tolerance);
+  //   return mic.getCenter();
+  // }
+  // TODO: ruier replace.
+  static Point centerOf(Geometry polygonal, double tolerance) {
     MaximumInscribedCircle mic = new MaximumInscribedCircle(polygonal, tolerance);
     return mic.getCenter();
   }
@@ -85,12 +96,20 @@ class MaximumInscribedCircle {
    * @param tolerance the distance tolerance for computing the center point
    * @return a line from the center to a point on the circle
    */
-  static LineString getRadiusLine(Geometry polygonal, double tolerance) {
+  // static LineString getRadiusLine(Geometry polygonal, double tolerance) {
+  //   MaximumInscribedCircle mic = new MaximumInscribedCircle(polygonal, tolerance);
+  //   return mic.getRadiusLine();
+  // }
+  // TODO: ruier replace.
+  static LineString radiusLineOf(Geometry polygonal, double tolerance) {
     MaximumInscribedCircle mic = new MaximumInscribedCircle(polygonal, tolerance);
     return mic.getRadiusLine();
   }
   
   /**
+   * 计算迭代次数
+   * 更小的容差距离将有更大的迭代次数
+   * 
    * Computes the maximum number of iterations allowed.
    * Uses a heuristic based on the size of the input geometry
    * and the tolerance distance.
@@ -106,7 +125,9 @@ class MaximumInscribedCircle {
     double diam = geom.getEnvelopeInternal().getDiameter();
     double ncells = diam / toleranceDist;
     //-- Using log of ncells allows control over number of iterations
-    int factor = (int) math.log(ncells);
+    // int factor = (int) log(ncells);
+    ///TODO: 存疑修改
+    int factor = log(ncells).floor();
     if (factor < 1) factor = 1;
     return 2000 + 2000 * factor;
   }
@@ -237,8 +258,9 @@ class MaximumInscribedCircle {
       //TestBuilderProxy.showIndicator(inputGeom.getFactory().toGeometry(cell.getEnvelope()));
       
       //-- if cell must be closer than furthest, terminate since all remaining cells in queue are even closer. 
-      if (cell.getMaxDistance() < farthestCell.getDistance())
+      if (cell.getMaxDistance() < farthestCell.getDistance()) {
         break;
+      }
       
       // update the circle center cell if the candidate is further from the boundary
       if (cell.getDistance() > farthestCell.getDistance()) {

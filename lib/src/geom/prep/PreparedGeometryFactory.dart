@@ -16,6 +16,10 @@
 // import org.locationtech.jts.geom.Polygonal;
 // import org.locationtech.jts.geom.Puntal;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
+import 'PreparedGeometry.dart';
+
 /**
  * A factory for creating {@link PreparedGeometry}s.
  * It chooses an appropriate implementation of PreparedGeometry

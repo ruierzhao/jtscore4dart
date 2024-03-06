@@ -15,6 +15,10 @@
 // import org.locationtech.jts.geom.Puntal;
 
 
+import '../Geometry.dart';
+import '../Puntal.dart';
+import 'BasicPreparedGeometry.dart';
+
 /**
  * A prepared version for {@link Puntal} geometries.
  * <p>
@@ -23,8 +27,7 @@
  * @author Martin Davis
  *
  */
-class PreparedPoint
-  extends BasicPreparedGeometry
+class PreparedPoint extends BasicPreparedGeometry
 {
   PreparedPoint(Puntal point) {
     super((Geometry) point);

@@ -21,6 +21,13 @@
 // import org.locationtech.jts.geom.util.ComponentCoordinateExtracter;
 
 
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/util/ComponentCoordinateExtracter.dart';
+
+import 'PreparedGeometry.dart';
+
 /**
  * A base class for {@link PreparedGeometry} subclasses.
  * Contains default implementations for methods, which simply delegate
@@ -37,12 +44,15 @@ class BasicPreparedGeometry
  /**private */final Geometry baseGeom;
  /**private */final List representativePts;  // List<Coordinate>
 
-  BasicPreparedGeometry(Geometry geom) 
-  {
-    baseGeom = geom;
-    representativePts = ComponentCoordinateExtracter.getCoordinates(geom);
-  }
+  // BasicPreparedGeometry(Geometry geom) 
+  // {
+  //   baseGeom = geom;
+  //   representativePts = ComponentCoordinateExtracter.getCoordinates(geom);
+  // }
+  BasicPreparedGeometry(this.baseGeom) :representativePts = ComponentCoordinateExtracter.getCoordinates(baseGeom);
 
+
+  @override
   Geometry getGeometry() { return baseGeom; }
 
   /**
@@ -71,10 +81,13 @@ class BasicPreparedGeometry
 	bool isAnyTargetComponentInTest(Geometry testGeom)
 	{
 		PointLocator locator = new PointLocator();
-    for (Iterator i = representativePts.iterator(); i.hasNext(); ) {
-      Coordinate p = (Coordinate) i.next();
-      if (locator.intersects(p, testGeom))
+    // for (Iterator i = representativePts.iterator(); i.hasNext(); ) {
+    for (Iterator i = representativePts.iterator; i.moveNext(); ) {
+      // Coordinate p =  i.next();
+      Coordinate p =  i.current;
+      if (locator.intersects(p, testGeom)) {
         return true;
+      }
     }
 		return false;
 	}
@@ -88,8 +101,9 @@ class BasicPreparedGeometry
    */
  /**protected */bool envelopesIntersect(Geometry g)
   {
-    if (! baseGeom.getEnvelopeInternal().intersects(g.getEnvelopeInternal()))
+    if (! baseGeom.getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
       return false;
+    }
     return true;
   }
   
@@ -103,14 +117,16 @@ class BasicPreparedGeometry
    */
  /**protected */bool envelopeCovers(Geometry g)
   {
-    if (! baseGeom.getEnvelopeInternal().covers(g.getEnvelopeInternal()))
+    if (! baseGeom.getEnvelopeInternal().covers(g.getEnvelopeInternal())) {
       return false;
+    }
     return true;
   }
   
   /**
    * Default implementation.
    */
+  @override
   bool contains(Geometry g)
   {
     return baseGeom.contains(g);
@@ -119,13 +135,15 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
+  @override
   bool containsProperly(Geometry g)
   {
   	// since raw relate is used, provide some optimizations
   	
     // short-circuit test
-    if (! baseGeom.getEnvelopeInternal().contains(g.getEnvelopeInternal()))
+    if (! baseGeom.getEnvelopeInternal().contains(g.getEnvelopeInternal())) {
       return false;
+    }
   	
     // otherwise, compute using relate mask
     return baseGeom.relate(g, "T**FF*FF*");
@@ -134,6 +152,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
+  @override
   bool coveredBy(Geometry g)
   {
     return baseGeom.coveredBy(g);
@@ -142,6 +161,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
+  @override
   bool covers(Geometry g)
   {
     return baseGeom.covers(g);
@@ -150,6 +170,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
+  @override
   bool crosses(Geometry g)
   {
     return baseGeom.crosses(g);
@@ -159,6 +180,7 @@ class BasicPreparedGeometry
    * Standard implementation for all geometries.
    * Supports {@link GeometryCollection}s as input.
    */
+  @override
   bool disjoint(Geometry g)
   {
     return ! intersects(g);
@@ -167,6 +189,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
+  @override
   bool intersects(Geometry g)
   {
     return baseGeom.intersects(g);
@@ -175,6 +198,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
+  @override
   bool overlaps(Geometry g)
   {
     return baseGeom.overlaps(g);
@@ -183,6 +207,7 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
+  @override
   bool touches(Geometry g)
   {
     return baseGeom.touches(g);
@@ -191,11 +216,13 @@ class BasicPreparedGeometry
   /**
    * Default implementation.
    */
+  @override
   bool within(Geometry g)
   {
     return baseGeom.within(g);
   }
   
+  @override
   String toString()
   {
   	return baseGeom.toString();

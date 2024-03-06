@@ -14,6 +14,8 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.geom.GeometryCollection;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 /**
  * An abstract class for classes which prepare {@link Geometry}s 
  * in order to optimize the performance 

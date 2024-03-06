@@ -66,7 +66,7 @@ class Angle {
     return math.atan2(dy, dx);
   }
 
-  /// ruier add
+  /// @ruier add
   /// alias of [angle]
   static double of(Coordinate p0, Coordinate p1) {
     double dx = p1.x - p0.x;

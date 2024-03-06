@@ -15,11 +15,16 @@
 // import org.locationtech.jts.operation.BoundaryOp;
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
 import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/Lineal.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import 'GeometryFilter.dart';
 
 ///  Models an OGC-style <code>LineString</code>.
 ///  A LineString consists of a sequence of two or more vertices,
@@ -44,7 +49,7 @@ class LineString
   
   /// The minimum number of vertices allowed in a valid non-empty linestring.
   /// Empty linestrings with 0 vertices are also valid.
-  static final int MINIMUM_VALID_SIZE = 2;
+  static const int MINIMUM_VALID_SIZE = 2;
   
   ///  The points of this <code>LineString</code>.
  /**protected */CoordinateSequence points;
@@ -243,14 +248,14 @@ class LineString
   }
 
   @override
-  void apply(CoordinateFilter filter) {
+  void applyCoord(CoordinateFilter filter) {
       for (int i = 0; i < points.size(); i++) {
         filter.filter(points.getCoordinate(i));
       }
   }
 
   @override
-  void apply(CoordinateSequenceFilter filter)
+  void applyCoordSeq(CoordinateSequenceFilter filter)
   {
     if (points.size() == 0)
       return;
@@ -269,7 +274,7 @@ class LineString
   }
 
   @override
-  void apply(GeometryComponentFilter filter) {
+  void applyGeometryComonent(GeometryComponentFilter filter) {
     filter.filter(this);
   }
 
@@ -347,6 +352,12 @@ class LineString
  /**protected */@override
   int getTypeCode() {
     return Geometry.TYPECODE_LINESTRING;
+  }
+
+  @override
+  bool equalsExactWithTolerance(Geometry other, double tolerance) {
+    // TODO: implement equalsExactWithTolerance
+    throw UnimplementedError();
   }
   
   // @override

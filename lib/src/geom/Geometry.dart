@@ -43,6 +43,10 @@ import 'package:jtscore4dart/src/geom/Polygon.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
 
+import 'CoordinateFilter.dart';
+import 'CoordinateSequenceFilter.dart';
+import 'GeometryFilter.dart';
+
 
 /// A representation of a planar, linear vector geometry.
 /// <P>
@@ -1055,20 +1059,21 @@ abstract class Geometry{
   }
 
 
-  @override
-  String toString() {
-    return toText();
-  }
+  // @override
+  // String toString() {
+  //   return toText();
+  // }
 
   ///  Returns the Well-known Text representation of this <code>Geometry</code>.
   ///  For a definition of the Well-known Text format, see the OpenGIS Simple
   ///  Features Specification.
   ///
   ///@return    the Well-known Text representation of this <code>Geometry</code>
-  String toText() {
-    WKTWriter writer = new WKTWriter();
-    return writer.write(this);
-  }
+  // TODO: ruier edit.之后添加
+  // String toText() {
+  //   WKTWriter writer = new WKTWriter();
+  //   return writer.write(this);
+  // }
 
   /// Computes a buffer area around this geometry having the given width. The
   /// buffer of a Geometry is the Minkowski sum or difference of the geometry
@@ -1412,7 +1417,7 @@ abstract class Geometry{
   /// @return true if the input geometries are exactly equal in their normalized form
   bool equalsNorm(Geometry g)
   {
-    if (g == null) return false;
+    // if (g == null) return false;
     return norm().equalsExact(g.norm());
   }
 
@@ -1428,7 +1433,7 @@ abstract class Geometry{
   ///
   ///@param  filter  the filter to apply to this <code>Geometry</code>'s
   ///      coordinates
-  /**abstract */ void apply(CoordinateFilter filter);
+  /**abstract */ void applyCoord(CoordinateFilter filter);
 
   ///  Performs an operation on the coordinates in this <code>Geometry</code>'s
   ///  {@link CoordinateSequence}s.
@@ -1436,7 +1441,7 @@ abstract class Geometry{
   ///  {@link #geometryChanged} will be called automatically.
   ///
   ///@param  filter  the filter to apply
-  /**abstract */ void apply(CoordinateSequenceFilter filter);
+  /**abstract */ void applyCoordSeq(CoordinateSequenceFilter filter);
 
   ///  Performs an operation with or on this <code>Geometry</code> and its
   ///  subelement <code>Geometry</code>s (if any).
@@ -1453,7 +1458,7 @@ abstract class Geometry{
   ///  of the shell and holes.
   ///
   ///@param  filter  the filter to apply to this <code>Geometry</code>.
-  /**abstract */ void apply(GeometryComponentFilter filter);
+  /**abstract */ void applyGeometryComonent(GeometryComponentFilter filter);
 
   /// Creates and returns a full copy of this {@link Geometry} object
   /// (including all coordinates contained by it).

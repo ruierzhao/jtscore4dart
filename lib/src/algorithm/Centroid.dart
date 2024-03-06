@@ -58,6 +58,13 @@ class Centroid
     Centroid cent = Centroid(geom);
     return cent._getCentroid();
   }
+
+  /// @ruier add 
+  static Coordinate? of(Geometry geom)
+  {
+    Centroid cent = Centroid(geom);
+    return cent._getCentroid();
+  }
   
   Coordinate? _areaBasePt;// the point all triangles are based at
   final Coordinate _triangleCent3 = Coordinate.empty2D();// temporary variable to hold centroid of triangle

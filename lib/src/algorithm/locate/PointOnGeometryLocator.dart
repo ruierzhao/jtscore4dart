@@ -15,6 +15,8 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.geom.Location;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
 /**
  * An abstract class for classes which determine the {@link Location} of
  * points in a {@link Geometry}.

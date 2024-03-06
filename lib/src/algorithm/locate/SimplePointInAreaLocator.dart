@@ -24,6 +24,13 @@
 // import org.locationtech.jts.geom.Polygonal;
 
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/PointLocation.dart';
+import 'package:jtscore4dart/src/geom/GeometryCollectionIterator.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+
+import 'PointOnGeometryLocator.dart';
+
 /**
  * Computes the location of points
  * relative to a {@link Polygonal} {@link Geometry},
@@ -68,8 +75,9 @@ class SimplePointInAreaLocator
     /**
      * Do a fast check against the geometry envelope first
      */
-    if (! geom.getEnvelopeInternal().intersects(p))
+    if (! geom.getEnvelopeInternal().intersects(p)) {
       return Location.EXTERIOR;
+    }
     
     return locateInGeometry(p, geom);
   }
@@ -169,12 +177,13 @@ class SimplePointInAreaLocator
  /**private */static int locatePointInRing(Coordinate p, LinearRing ring)
   {
   	// short-circuit if point is not in ring envelope
-  	if (! ring.getEnvelopeInternal().intersects(p))
-  		return Location.EXTERIOR;
+  	if (! ring.getEnvelopeInternal().intersectsWithCoord(p)) {
+  	  return Location.EXTERIOR;
+  	}
   	return PointLocation.locateInRing(p, ring.getCoordinates());
   }
 
-	private Geometry geom;
+	/**private */ Geometry geom;
 
 	/**
 	 * Create an instance of a point-in-area locator,
@@ -198,7 +207,8 @@ class SimplePointInAreaLocator
    * @param p the point to test
    * @return the Location of the point in the geometry  
    */
-	int locate(Coordinate p) {
+	@override
+   int locate(Coordinate p) {
 		return SimplePointInAreaLocator.locate(p, geom);
 	}
 

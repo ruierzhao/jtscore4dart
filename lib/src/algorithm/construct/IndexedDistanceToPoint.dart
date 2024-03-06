@@ -17,6 +17,12 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.operation.distance.IndexedFacetDistance;
 
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
+
 /// Computes the distance between a point and a geometry
 /// (which may be a collection containing any type of geometry).
 /// Also computes the pair of points containing the input
@@ -35,8 +41,9 @@ class IndexedDistanceToPoint {
   }
   
  /**private */void init() {
-    if (facetDistance != null)
+    if (facetDistance != null) {
       return;
+    }
     facetDistance = new IndexedFacetDistance(targetGeometry);
     ptLocater = new IndexedPointInPolygonsLocator(targetGeometry);
   }
@@ -68,7 +75,8 @@ class IndexedDistanceToPoint {
     init();
     if (isInArea(pt)) {
       Coordinate p = pt.getCoordinate();
-      return new List<Coordinate> { p.copy(), p.copy() };
+      // return new List<Coordinate> { p.copy(), p.copy() };
+      return [p.copy(),p.copy()];
     }
     return facetDistance.nearestPoints(pt);
   }

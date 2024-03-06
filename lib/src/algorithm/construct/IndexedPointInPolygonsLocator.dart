@@ -22,6 +22,10 @@
 // import org.locationtech.jts.geom.util.PolygonalExtracter;
 // import org.locationtech.jts.index.strtree.STRtree;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
+import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
+
 /**
  * Determines the location of a point in the polygonal elements of a geometry.
  * Uses spatial indexing to provide efficient performance.

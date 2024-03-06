@@ -24,6 +24,9 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/geometry.dart';
+
+
 /**
  * Computes a point in the interior of an areal geometry.
  * The point will lie in the geometry interior
@@ -79,7 +82,7 @@ class InteriorPointArea {
    * @return the computed interior point,
    * or <code>null</code> if the geometry has no polygonal components
    */
-  static Coordinate getInteriorPoint(Geometry geom) {
+  static Coordinate? of(Geometry geom) {
     InteriorPointArea intPt = new InteriorPointArea(geom);
     return intPt.getInteriorPoint();
   }
@@ -88,7 +91,8 @@ class InteriorPointArea {
     return (a + b) / 2.0;
   }
 
- /**private */Coordinate interiorPoint = null;
+//  /**private */Coordinate interiorPoint = null;
+ /**private */late Coordinate? interiorPoint;
  /**private */double maxWidth = -1;
 
   /**
@@ -106,7 +110,7 @@ class InteriorPointArea {
    * @return the coordinate of an interior point
    *  or <code>null</code> if the input geometry is empty
    */
-  Coordinate getInteriorPoint() {
+  Coordinate? getInteriorPoint() {
     return interiorPoint;
   }
 
@@ -118,13 +122,14 @@ class InteriorPointArea {
    * @param geom the geometry to process
    */
  /**private */void process(Geometry geom) {
-    if ( geom.isEmpty() )
+    if ( geom.isEmpty() ) {
       return;
+    }
 
     if ( geom is Polygon ) {
-      processPolygon((Polygon) geom);
+      processPolygon(geom);
     } else if ( geom is GeometryCollection ) {
-      GeometryCollection gc = (GeometryCollection) geom;
+      GeometryCollection gc =  geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         process(gc.getGeometryN(i));
       }
@@ -148,6 +153,9 @@ class InteriorPointArea {
     }
   }
 
+}
+
+
   /**
    * Computes an interior point in a single {@link Polygon},
    * as well as the width of the scan-line section it occurs in
@@ -156,21 +164,26 @@ class InteriorPointArea {
    * @author mdavis
    *
    */
- /**private */static class InteriorPointPolygon {
+ /**private static*/ 
+ class InteriorPointPolygon {
    /**private */Polygon polygon;
    /**private */double interiorPointY;
    /**private */double interiorSectionWidth = 0.0;
-   /**private */Coordinate interiorPoint = null;
+   /**private */late Coordinate? interiorPoint ;
 
     /**
      * Creates a new InteriorPointPolygon instance.
      * 
      * @param polygon the polygon to test
      */
-    InteriorPointPolygon(Polygon polygon) {
-      this.polygon = polygon;
-      interiorPointY = ScanLineYOrdinateFinder.getScanLineY(polygon);
-    }
+    // InteriorPointPolygon(Polygon polygon) {
+    //   this.polygon = polygon;
+    //   interiorPointY = ScanLineYOrdinateFinder.getScanLineY(polygon);
+    // }
+    // TODO: ruier edit.
+    InteriorPointPolygon(this.polygon) :
+      interiorPointY = ScanLineYOrdinateFinder.scanLineY(polygon);
+    
 
     /**
      * Gets the computed interior point.
@@ -178,7 +191,7 @@ class InteriorPointArea {
      * @return the interior point coordinate,
      *  or <code>null</code> if the input geometry is empty
      */
-    Coordinate getInteriorPoint() {
+    Coordinate? getInteriorPoint() {
       return interiorPoint;
     }
 
@@ -205,20 +218,21 @@ class InteriorPointArea {
       /**
        * set default interior point in case polygon has zero area
        */
-      interiorPoint = new Coordinate(polygon.getCoordinate());
+      interiorPoint = Coordinate.fromAnother(polygon.getCoordinate());
       
-      List<Double> crossings = new ArrayList<Double>();
-      scanRing((LinearRing) polygon.getExteriorRing(), crossings);
+      List<double> crossings = [];
+      scanRing( polygon.getExteriorRing() , crossings);
       for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-        scanRing((LinearRing) polygon.getInteriorRingN(i), crossings);
+        scanRing( polygon.getInteriorRingN(i), crossings);
       }
       findBestMidpoint(crossings);
     }
 
-   /**private */void scanRing(LinearRing ring, List<Double> crossings) {
+   /**private */void scanRing(LinearRing ring, List<double> crossings) {
       // skip rings which don't cross scan line
-      if ( !intersectsHorizontalLine(ring.getEnvelopeInternal(), interiorPointY) )
+      if ( !intersectsHorizontalLine(ring.getEnvelopeInternal(), interiorPointY) ) {
         return;
+      }
 
       CoordinateSequence seq = ring.getCoordinateSequence();
       for (int i = 1; i < seq.size(); i++) {
@@ -230,10 +244,12 @@ class InteriorPointArea {
 
    /**private */void addEdgeCrossing(Coordinate p0, Coordinate p1, double scanY, List<Double> crossings) {
       // skip non-crossing segments
-      if ( !intersectsHorizontalLine(p0, p1, scanY) )
+      if ( !intersectsHorizontalLine(p0, p1, scanY) ) {
         return;
-      if (! isEdgeCrossingCounted(p0, p1, scanY) )
+      }
+      if (! isEdgeCrossingCounted(p0, p1, scanY) ) {
         return;
+      }
         
       // edge intersects scan line, so add a crossing
       double xInt = intersection(p0, p1, scanY);
@@ -289,15 +305,18 @@ class InteriorPointArea {
       double y0 = p0.getY();
       double y1 = p1.getY();
       // skip horizontal lines
-      if ( y0 == y1 )
+      if ( y0 == y1 ) {
         return false;
+      }
       // handle cases where vertices lie on scan-line
       // downward segment does not include start point
-      if ( y0 == scanY && y1 < scanY )
+      if ( y0 == scanY && y1 < scanY ) {
         return false;
+      }
       // upward segment does not include endpoint
-      if ( y1 == scanY && y0 < scanY )
+      if ( y1 == scanY && y0 < scanY ) {
         return false;
+      }
       return true;
     }
     
@@ -317,8 +336,9 @@ class InteriorPointArea {
       double x0 = p0.getX();
       double x1 = p1.getX();
 
-      if ( x0 == x1 )
+      if ( x0 == x1 ) {
         return x0;
+      }
       
       // Assert: segDX is non-zero, due to previous equality test
       double segDX = x1 - x0;
@@ -336,10 +356,12 @@ class InteriorPointArea {
      * @return true if the envelope and line intersect
      */
    /**private */static bool intersectsHorizontalLine(Envelope env, double y) {
-      if ( y < env.getMinY() )
+      if ( y < env.getMinY() ) {
         return false;
-      if ( y > env.getMaxY() )
+      }
+      if ( y > env.getMaxY() ) {
         return false;
+      }
       return true;
     }
     
@@ -351,13 +373,16 @@ class InteriorPointArea {
      * @param y the Y-ordinate of the horizontal line
      * @return true if the segment and line intersect
      */
-   /**private */static bool intersectsHorizontalLine(Coordinate p0, Coordinate p1, double y) {
+   /**private */
+   static bool intersectsHorizontalLine(Coordinate p0, Coordinate p1, double y) {
       // both ends above?
-      if ( p0.getY() > y && p1.getY() > y )
+      if ( p0.getY() > y && p1.getY() > y ) {
         return false;
+      }
       // both ends below?
-      if ( p0.getY() < y && p1.getY() < y )
+      if ( p0.getY() < y && p1.getY() < y ) {
         return false;
+      }
       // segment must intersect line
       return true;
     }
@@ -390,7 +415,8 @@ class InteriorPointArea {
     }
   */
   }
-  
+
+
   /**
    * Finds a safe scan line Y ordinate by projecting 
    * the polygon segments
@@ -406,8 +432,8 @@ class InteriorPointArea {
    * @author mdavis
    *
    */
- /**private */static class ScanLineYOrdinateFinder {
-    static double getScanLineY(Polygon poly) {
+ /**private static*/ class ScanLineYOrdinateFinder {
+    static double scanLineY(Polygon poly) {
       ScanLineYOrdinateFinder finder = new ScanLineYOrdinateFinder(poly);
       return finder.getScanLineY();
     }
@@ -454,5 +480,4 @@ class InteriorPointArea {
         }
       }
     }
-  }
-}
+  }  

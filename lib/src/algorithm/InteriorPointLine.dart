@@ -16,6 +16,11 @@
 // import org.locationtech.jts.geom.GeometryCollection;
 // import org.locationtech.jts.geom.LineString;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryCollection.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+
 /**
  * Computes a point in the interior of an linear geometry.
  * <h2>Algorithm</h2>
@@ -38,25 +43,28 @@ class InteriorPointLine {
    * @return the computed interior point,
    * or <code>null</code> if the geometry has no linear components
    */
-  static Coordinate getInteriorPoint(Geometry geom) {
-    InteriorPointLine intPt = new InteriorPointLine(geom);
+  static Coordinate? of(Geometry geom) {
+    InteriorPointLine intPt = InteriorPointLine(geom);
     return intPt.getInteriorPoint();
   }
   
- /**private */Coordinate centroid;
- /**private */double minDistance = Double.MAX_VALUE;
+ /**private */late Coordinate centroid;
+//  /**private */double minDistance = Double.MAX_VALUE;
+ /**private */double minDistance = double.maxFinite;
 
- /**private */Coordinate interiorPoint = null;
+//  /**private */Coordinate interiorPoint = null;
+ /**private */late Coordinate? interiorPoint;
 
   InteriorPointLine(Geometry g)
   {
     centroid = g.getCentroid().getCoordinate();
     addInterior(g);
-    if (interiorPoint == null)
+    if (interiorPoint == null) {
       addEndpoints(g);
+    }
   }
 
-  Coordinate getInteriorPoint()
+  Coordinate? getInteriorPoint()
   {
     return interiorPoint;
   }
@@ -69,20 +77,21 @@ class InteriorPointLine {
    */
  /**private */void addInterior(Geometry geom)
   {
-    if (geom.isEmpty())
+    if (geom.isEmpty()) {
       return;
+    }
     
     if (geom is LineString) {
-      addInterior(geom.getCoordinates());
+      addInteriorFromCoord(geom.getCoordinates());
     }
     else if (geom is GeometryCollection) {
-      GeometryCollection gc = (GeometryCollection) geom;
+      GeometryCollection gc = geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         addInterior(gc.getGeometryN(i));
       }
     }
   }
- /**private */void addInterior(List<Coordinate> pts)
+ /**private */void addInteriorFromCoord(List<Coordinate> pts)
   {
     for (int i = 1; i < pts.length - 1; i++) {
       add(pts[i]);
@@ -96,20 +105,21 @@ class InteriorPointLine {
    */
  /**private */void addEndpoints(Geometry geom)
   {
-    if (geom.isEmpty())
+    if (geom.isEmpty()) {
       return;
+    }
     
     if (geom is LineString) {
-      addEndpoints(geom.getCoordinates());
+      addEndpointsFromCoords(geom.getCoordinates());
     }
     else if (geom is GeometryCollection) {
-      GeometryCollection gc = (GeometryCollection) geom;
+      GeometryCollection gc =  geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         addEndpoints(gc.getGeometryN(i));
       }
     }
   }
- /**private */void addEndpoints(List<Coordinate> pts)
+ /**private */void addEndpointsFromCoords(List<Coordinate> pts)
   {
     add(pts[0]);
     add(pts[pts.length - 1]);
@@ -119,7 +129,7 @@ class InteriorPointLine {
   {
     double dist = point.distance(centroid);
     if (dist < minDistance) {
-      interiorPoint = new Coordinate(point);
+      interiorPoint = Coordinate.fromAnother(point);
       minDistance = dist;
     }
   }

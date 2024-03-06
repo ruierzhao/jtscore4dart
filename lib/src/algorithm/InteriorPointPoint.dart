@@ -16,6 +16,8 @@
 // import org.locationtech.jts.geom.GeometryCollection;
 // import org.locationtech.jts.geom.Point;
 
+import 'package:jtscore4dart/geometry.dart';
+
 /**
  * Computes a point in the interior of an point geometry.
  * <h2>Algorithm</h2>
@@ -33,15 +35,17 @@ class InteriorPointPoint {
    * @return the computed interior point,
    * or <code>null</code> if the geometry has no puntal components
    */
-  static Coordinate getInteriorPoint(Geometry geom) {
-    InteriorPointPoint intPt = new InteriorPointPoint(geom);
+  static Coordinate? of(Geometry geom) {
+    InteriorPointPoint intPt = InteriorPointPoint(geom);
     return intPt.getInteriorPoint();
   }
   
- /**private */Coordinate centroid;
- /**private */double minDistance = Double.MAX_VALUE;
+ /**private */late Coordinate centroid;
+//  /**@ruier replace */double minDistance = Double.MAX_VALUE;
+ /**private */double minDistance = double.maxFinite;
 
- /**private */Coordinate interiorPoint = null;
+//  /**private */Coordinate interiorPoint = null;
+ /**private */late Coordinate interiorPoint;
 
   InteriorPointPoint(Geometry g)
   {
@@ -56,29 +60,30 @@ class InteriorPointPoint {
    */
  /**private */void add(Geometry geom)
   {
-    if (geom.isEmpty())
+    if (geom.isEmpty()) {
       return;
+    }
     
     if (geom is Point) {
-      add(geom.getCoordinate());
+      addCoord(geom.getCoordinate());
     }
     else if (geom is GeometryCollection) {
-      GeometryCollection gc = (GeometryCollection) geom;
+      GeometryCollection gc = geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         add(gc.getGeometryN(i));
       }
     }
   }
- /**private */void add(Coordinate point)
+ /**private */void addCoord(Coordinate point)
   {
     double dist = point.distance(centroid);
     if (dist < minDistance) {
-      interiorPoint = new Coordinate(point);
+      interiorPoint = Coordinate.fromAnother(point);
       minDistance = dist;
     }
   }
 
-  Coordinate getInteriorPoint()
+  Coordinate? getInteriorPoint()
   {
     return interiorPoint;
   }

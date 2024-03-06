@@ -135,7 +135,8 @@ class Distance {
     }
     return minDistance;
   }
-
+  /// 计算[p] 到 线段 [A]-[B]的距离
+  /// 
   /// Computes the distance from a point p to a line segment AB
   ///
   /// Note: NON-ROBUST!
@@ -191,6 +192,8 @@ class Distance {
     return s.abs() * math.sqrt(len2);
   }
 
+  /// 计算点[p]到包含[A]-[B]点的直线的垂直距离
+  ///  
   /// Computes the perpendicular distance from a point p to the (infinite) line
   /// containing the points AB
   ///

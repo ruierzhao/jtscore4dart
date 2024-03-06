@@ -23,6 +23,7 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateList.dart';
 import 'package:jtscore4dart/src/geom/Coordinates.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/math/MathUtil.dart';
 
 
 /// A {@link Comparator} for {@link Coordinate} arrays
@@ -515,7 +516,8 @@ abstract class CoordinateArrays {
     }
     
     int last = coord.length - 1;
-    int mid = last / 2;
+    // int mid = last / 2;
+    int mid = (last / 2).floor();
     for (int i = 0; i <= mid; i++) {
       Coordinate tmp = coord[i];
       coord[i] = coord[last - i];
@@ -677,7 +679,8 @@ abstract class CoordinateArrays {
     if (start >= pts.length) npts = 0;
     if (end < start) npts = 0;
 
-    List<Coordinate> extractPts = new Coordinate[npts];
+    /**@ruier edit */ // List<Coordinate> extractPts = new Coordinate[npts];
+    List<Coordinate> extractPts = [];
     if (npts == 0) return extractPts;
 
     int iPts = 0;
@@ -692,9 +695,9 @@ abstract class CoordinateArrays {
   /// @param coordinates the coordinates to scan
   /// @return the envelope of the coordinates
   static Envelope envelope(List<Coordinate> coordinates) {
-    Envelope env = new Envelope();
+    Envelope env = Envelope.init();
     for (int i = 0; i < coordinates.length; i++) {
-      env.expandToInclude(coordinates[i]);
+      env.expandToIncludeCoordinate(coordinates[i]);
     }
     return env;
   }
@@ -707,7 +710,7 @@ abstract class CoordinateArrays {
   static List<Coordinate> intersection(List<Coordinate> coordinates, Envelope env) {
     CoordinateList coordList = new CoordinateList();
     for (int i = 0; i < coordinates.length; i++) {
-      if (env.intersects(coordinates[i])) {
+      if (env.intersectsWithCoord(coordinates[i])) {
         coordList.add(coordinates[i], true);
       }
     }

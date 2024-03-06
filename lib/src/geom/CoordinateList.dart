@@ -182,7 +182,7 @@ class CoordinateList  /** extends ArrayList<Coordinate> */
   /// @return the coordinates
   List<Coordinate> toCoordinateArray()
   {
-    return (List<Coordinate>) toArray(coordArrayType);
+    return toArray(coordArrayType);
   }
 
   /// Creates an array containing the coordinates in this list,

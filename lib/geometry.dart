@@ -12,3 +12,4 @@ export 'src/geom/MultiPolygon.dart';
 export 'src/geom/Geometry.dart';
 export "src/geom/GeometryFactory.dart";
 export 'src/geom/GeometryCollection.dart';
+export 'src/geom/CoordinateSequence.dart';

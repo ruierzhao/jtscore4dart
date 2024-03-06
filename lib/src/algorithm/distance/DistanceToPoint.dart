@@ -18,6 +18,11 @@
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+
+import 'PointPairDistance.dart';
+
 /**
  * Computes the Euclidean distance (L2 metric) from a {@link Coordinate} to a {@link Geometry}.
  * Also computes two points on the geometry which are separated by the distance found.
@@ -28,16 +33,17 @@ class DistanceToPoint
   DistanceToPoint() {
   }
 
+  //@ruier edit. // static void computeDistance(Geometry geom, Coordinate pt, PointPairDistance ptDist)
   static void computeDistance(Geometry geom, Coordinate pt, PointPairDistance ptDist)
   {
     if (geom is LineString) {
-      computeDistance((LineString) geom, pt, ptDist);
+      computeDistanceLine( geom, pt, ptDist);
     }
     else if (geom is Polygon) {
-      computeDistance((Polygon) geom, pt, ptDist);
+      computeDistancePoly( geom, pt, ptDist);
     }
     else if (geom is GeometryCollection) {
-      GeometryCollection gc = (GeometryCollection) geom;
+      GeometryCollection gc =  geom;
       for (int i = 0; i < gc.getNumGeometries(); i++) {
         Geometry g = gc.getGeometryN(i);
         computeDistance(g, pt, ptDist);
@@ -48,7 +54,7 @@ class DistanceToPoint
     }
   }
   
-  static void computeDistance(LineString line, Coordinate pt, PointPairDistance ptDist)
+  static void computeDistanceLine(LineString line, Coordinate pt, PointPairDistance ptDist)
   {
     LineSegment tempSegment = new LineSegment();
     List<Coordinate> coords = line.getCoordinates();
@@ -60,13 +66,13 @@ class DistanceToPoint
     }
   }
 
-  static void computeDistance(LineSegment segment, Coordinate pt, PointPairDistance ptDist)
+  static void computeDistanceLineSeg(LineSegment segment, Coordinate pt, PointPairDistance ptDist)
   {
     Coordinate closestPt = segment.closestPoint(pt);
     ptDist.setMinimum(closestPt, pt);
   }
 
-  static void computeDistance(Polygon poly, Coordinate pt, PointPairDistance ptDist)
+  static void computeDistancePoly(Polygon poly, Coordinate pt, PointPairDistance ptDist)
   {
     computeDistance(poly.getExteriorRing(), pt, ptDist);
     for (int i = 0; i < poly.getNumInteriorRing(); i++) {

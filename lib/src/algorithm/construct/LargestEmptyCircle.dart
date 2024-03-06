@@ -26,6 +26,8 @@
 // import org.locationtech.jts.geom.Polygonal;
 // import org.locationtech.jts.operation.distance.IndexedFacetDistance;
 
+import 'package:jtscore4dart/geometry.dart';
+
 /// Constructs the Largest Empty Circle for a set
 /// of obstacle geometries, up to a given accuracy distance tolerance.
 /// The obstacles may be any combination of point, linear and polygonal geometries.
@@ -67,7 +69,10 @@ class LargestEmptyCircle {
   /// @param obstacles a geometry representing the obstacles
   /// @param tolerance the distance tolerance for computing the center point
   /// @return the center point of the Largest Empty Circle
-  static Point getCenter(Geometry obstacles, double tolerance) {
+  // static Point getCenter(Geometry obstacles, double tolerance) {
+  //   return getCenter(obstacles, null, tolerance);
+  // }
+  static Point ofCenter(Geometry obstacles, double tolerance) {
     return getCenter(obstacles, null, tolerance);
   }
 

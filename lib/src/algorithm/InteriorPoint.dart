@@ -21,6 +21,10 @@
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
 
+import 'InteriorPointArea.dart';
+import 'InteriorPointLine.dart';
+import 'InteriorPointPoint.dart';
+
 /// Computes an interior point of a <code>{@link Geometry}</code>.
 /// An interior point is guaranteed to lie in the interior of the Geometry,
 /// if it possible to calculate such a point exactly. 
@@ -45,14 +49,13 @@ import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
 /// @see MaximumInscribedCircle
 /// @see LargestEmptyCircle
 class InteriorPoint {
-  
   /// Computes a location of an interior point in a {@link Geometry}.
   /// Handles all geometry types.
   /// 
   /// @param geom a geometry in which to find an interior point
   /// @return the location of an interior point, 
   ///  or <code>null</code> if the input is empty
-  static Coordinate? getInteriorPoint(Geometry geom) {
+  static Coordinate? of(Geometry geom) {
     if (geom.isEmpty()) {
       return null;
     }
@@ -64,13 +67,13 @@ class InteriorPoint {
       return null;
     }
     if (dim == 0) {
-      interiorPt = InteriorPointPoint.getInteriorPoint(geom);
+      interiorPt = InteriorPointPoint.of(geom);
     }
     else if (dim == 1) {
-      interiorPt = InteriorPointLine.getInteriorPoint(geom);
+      interiorPt = InteriorPointLine.of(geom);
     }
     else {
-      interiorPt = InteriorPointArea.getInteriorPoint(geom);
+      interiorPt = InteriorPointArea.of(geom);
     }
     return interiorPt;
   }

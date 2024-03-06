@@ -21,6 +21,12 @@
 // import org.locationtech.jts.io.WKTConstants;
 
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+
+import 'Coordinate.dart';
+
 /// Represents a line segment defined by two {@link Coordinate}s.
 /// Provides methods to compute various geometric properties
 /// and relationships of line segments.
@@ -33,28 +39,27 @@
 ///
 ///@version 1.7
 class LineSegment
-  implements Comparable, Serializable
+  implements Comparable /**,Serializable */
 {
- /**private */static final int serialVersionUID = 3252005833466256227L;
+//  /**private */static final int serialVersionUID = 3252005833466256227L;
 
   Coordinate p0, p1;
 
-  LineSegment(Coordinate p0, Coordinate p1) {
-    this.p0 = p0;
-    this.p1 = p1;
-  }
+  // LineSegment(Coordinate p0, Coordinate p1) {
+  //   this.p0 = p0;
+  //   this.p1 = p1;
+  // }
+  LineSegment(this.p0, this.p1);
 
-  LineSegment(double x0, double y0, double x1, double y1) {
-    this(new Coordinate(x0, y0), new Coordinate(x1, y1));
-  }
+  LineSegment.fromDouble(double x0, double y0, double x1, double y1) :
+    this(Coordinate(x0, y0), Coordinate(x1, y1));
+  
 
-  LineSegment(LineSegment ls) {
+  LineSegment.fromAnother(LineSegment ls) :
     this(ls.p0, ls.p1);
-  }
 
-  LineSegment() {
-    this(new Coordinate(), new Coordinate());
-  }
+  LineSegment.empty() :
+    this(Coordinate.empty2D(), Coordinate.empty2D());
 
   Coordinate getCoordinate(int i)
   {
@@ -64,10 +69,10 @@ class LineSegment
 
   void setCoordinates(LineSegment ls)
   {
-    setCoordinates(ls.p0, ls.p1);
+    setCoordinatesFromCoord(ls.p0, ls.p1);
   }
 
-  void setCoordinates(Coordinate p0, Coordinate p1)
+  void setCoordinatesFromCoord(Coordinate p0, Coordinate p1)
   {
     this.p0.x = p0.x;
     this.p0.y = p0.y;
@@ -78,25 +83,25 @@ class LineSegment
   /// Gets the minimum X ordinate.
   /// @return the minimum X ordinate
   double minX() {
-    return math.min(p0.x, p1.x);
+    return min(p0.x, p1.x);
   }
   
   /// Gets the maximum X ordinate.
   /// @return the maximum X ordinate
   double maxX() {
-    return math.max(p0.x, p1.x);
+    return max(p0.x, p1.x);
   }
 
   /// Gets the minimum Y ordinate.
   /// @return the minimum Y ordinate
   double minY() {
-    return math.min(p0.y, p1.y);
+    return min(p0.y, p1.y);
   }
   
   /// Gets the maximum Y ordinate.
   /// @return the maximum Y ordinate
   double maxY() {
-    return math.max(p0.y, p1.y);
+    return max(p0.y, p1.y);
   }
 
   /// Computes the length of the line segment.
@@ -138,11 +143,13 @@ class LineSegment
     int orient0 = Orientation.index(p0, p1, seg.p0);
     int orient1 = Orientation.index(p0, p1, seg.p1);
     // this handles the case where the points are L or collinear
-    if (orient0 >= 0 && orient1 >= 0)
-      return math.max(orient0, orient1);
+    if (orient0 >= 0 && orient1 >= 0) {
+      return max(orient0, orient1);
+    }
     // this handles the case where the points are R or collinear
-    if (orient0 <= 0 && orient1 <= 0)
-      return math.min(orient0, orient1);
+    if (orient0 <= 0 && orient1 <= 0) {
+      return min(orient0, orient1);
+    }
     // points lie on opposite sides ==> indeterminate orientation
     return 0;
   }
@@ -187,7 +194,7 @@ class LineSegment
   /// @return the angle this segment makes with the X-axis (in radians)
   double angle()
   {
-    return math.atan2(p1.y - p0.y, p1.x - p0.x);
+    return atan2(p1.y - p0.y, p1.x - p0.x);
   }
 
   /// Computes the midpoint of the segment
@@ -232,8 +239,9 @@ class LineSegment
   /// @return the perpendicular distance between the line and point
   double distancePerpendicular(Coordinate p)
   {
-    if (p0.equals2D(p1))
+    if (p0.equals2D(p1)) {
       return p0.distance(p);
+    }
     return Distance.pointToLinePerpendicular(p, p0, p1);
   }
 
@@ -248,11 +256,13 @@ class LineSegment
   /// @return the oriented perpendicular distance between the line and point
   double distancePerpendicularOriented(Coordinate p)
   {
-    if (p0.equals2D(p1))
+    if (p0.equals2D(p1)) {
       return p0.distance(p);
+    }
     double dist = distancePerpendicular(p);
-    if (orientationIndex(p) < 0)
+    if (orientationIndex(p) < 0) {
       return -dist;
+    }
     return dist;
   }
   
@@ -295,12 +305,13 @@ class LineSegment
     
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
-    double len = math.hypot(dx, dy);
+    double len = hypot(dx, dy);
     double ux = 0.0;
     double uy = 0.0;
     if (offsetDistance != 0.0) {
-      if (len <= 0.0)
+      if (len <= 0.0) {
         throw new IllegalStateException("Cannot compute offset from zero-length line segment");
+      }
 
       // u is the vector that is the length of the offset, in the direction of the segment
       ux = offsetDistance * dx / len;
@@ -370,9 +381,9 @@ class LineSegment
       Coordinate inputPt)
   {
     double segFrac = projectionFactor(inputPt);
-    if (segFrac < 0.0)
+    if (segFrac < 0.0) {
       segFrac = 0.0;
-    else if (segFrac > 1.0 || (segFrac).isNaN)
+    } else if (segFrac > 1.0 || (segFrac).isNaN)
       segFrac = 1.0;
     return segFrac;
   }
@@ -481,8 +492,9 @@ class LineSegment
     }
     double dist0 = p0.distance(p);
     double dist1 = p1.distance(p);
-    if (dist0 < dist1)
+    if (dist0 < dist1) {
       return p0;
+    }
     return p1;
   }
   /// Computes the closest points on two line segments.
@@ -553,8 +565,9 @@ class LineSegment
   {
     LineIntersector li = new RobustLineIntersector();
     li.computeIntersection(p0, p1, line.p0, line.p1);
-    if (li.hasIntersection())
+    if (li.hasIntersection()) {
       return li.getIntersection(0);
+    }
     return null;
   }
 

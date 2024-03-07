@@ -21,6 +21,27 @@ import "dart:math" as math;
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
+
+/// The types of Precision Model which JTS supports.
+class _Type /**implements Serializable */
+{
+  ///**private */static final int serialVersionUID = -5528602631731589822L;
+  static final Map _nameToTypeMap = {};
+  _Type(this._name) {
+      _nameToTypeMap[_name] = this;
+  }
+  final String _name;
+  @override
+  String toString() { return _name; }
+  
+  
+  /// Ssee http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
+  // Object _readResolve() {
+  //     return _nameToTypeMap.get(_name);
+  // }
+}
+
+
 /// Specifies the precision model of the {@link Coordinate}s in a {@link Geometry}.
 /// In other words, specifies the grid of allowable points for a <code>Geometry</code>.
 /// A precision model may be <b>floating</b> ({@link #FLOATING} or {@link #FLOATING_SINGLE}), 
@@ -70,28 +91,6 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 ///
 ///
 ///@version 1.7
-
-
-/// The types of Precision Model which JTS supports.
-class _Type /**implements Serializable */
-{
-  ///**private */static final int serialVersionUID = -5528602631731589822L;
-  static final Map _nameToTypeMap = {};
-  _Type(this._name) {
-      _nameToTypeMap[_name] = this;
-  }
-  final String _name;
-  @override
-  String toString() { return _name; }
-  
-  
-  /// Ssee http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
-  // Object _readResolve() {
-  //     return _nameToTypeMap.get(_name);
-  // }
-}
-
-
 class PrecisionModel implements /** Serializable, */  Comparable
 {
 	/// Determines which of two {@link PrecisionModel}s is the most precise
@@ -126,34 +125,32 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///  The maximum precise value representable in a double. Since IEE754
   ///  double-precision numbers allow 53 bits of mantissa, the value is equal to
   ///  2^53 - 1.  This provides <i>almost</i> 16 decimal digits of precision.
-  static final double maximumPreciseValue = 9007199254740992.0;
+  static const double maximumPreciseValue = 9007199254740992.0;
 
   /// The type of PrecisionModel this represents.
   /**private */ _Type modelType;
   /// The scale factor which determines the number of decimal places in fixed precision.
-  /**private */ double scale;
+  /**private */ late double scale;
   /// If non-zero, the precise grid size specified.
   /// In this case, the scale is also valid and is computed from the grid size.
   /// If zero, the scale is used to compute the grid size where needed.
-  /**private */ double gridSize;
+  /**private */late double _gridSize;
 
   /// Creates a <code>PrecisionModel</code> with a default precision
   /// of FLOATING.
-  PrecisionModel() {
-    // default is floating precision
-    modelType = FLOATING;
-  }
+  // PrecisionModel() {
+  //   // default is floating precision
+  //   modelType = FLOATING;
+  // }
 
   /// Creates a <code>PrecisionModel</code> that specifies
   /// an explicit precision model type.
   /// If the model type is FIXED the scale factor will default to 1.
   ///
   /// @param modelType the type of the precision model
-  PrecisionModel(_Type modelType)
+  PrecisionModel([_Type? modelType]):modelType = (modelType??=FLOATING)
   {
-    this.modelType = modelType;
-    if (modelType == FIXED)
-    {
+    if (modelType == FIXED){
       setScale(1.0);
     }
   }
@@ -167,8 +164,9 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///@param  offsetY  not used.
   ///
   /// @deprecated offsets are no longer supported, since internal representation is rounded floating point
-  PrecisionModel(double scale, double offsetX, double offsetY) {
-    modelType = FIXED;
+  PrecisionModel.Fixed(double scale, [double? offsetX, double? offsetY]) 
+  :modelType = FIXED 
+  {
     setScale(scale);
   }
   ///  Creates a <code>PrecisionModel</code> that specifies Fixed precision.
@@ -179,17 +177,17 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///
   ///@param  scale amount by which to multiply a coordinate after subtracting
   ///      the offset, to obtain a precise coordinate.  Must be non-zero.
-  PrecisionModel(double scale) {
-    modelType = FIXED;
-    setScale(scale);
-  }
+  // PrecisionModel(double scale) {
+  //   modelType = FIXED;
+  //   setScale(scale);
+  // }
   ///  Copy constructor to create a new <code>PrecisionModel</code>
   ///  from an existing one.
-  PrecisionModel(PrecisionModel pm) {
-    modelType = pm.modelType;
-    scale = pm.scale;
-    gridSize = pm.gridSize;
-  }
+  PrecisionModel.fromAnother(PrecisionModel pm) :
+    modelType = pm.modelType,
+    scale = pm.scale,
+    _gridSize = pm._gridSize;
+  
 
 
   /// Tests whether the precision model supports floating point
@@ -248,13 +246,13 @@ class PrecisionModel implements /** Serializable, */  Comparable
   /// it will be returned.
   ///  
   /// @return the grid size at a fixed precision scale.
-  double gridSize() {
+  double  gridSize() {
     if (isFloating()) {
       return double.nan;
     }
     
-    if (gridSize != 0) {
-      return gridSize;
+    if (_gridSize != 0) {
+      return _gridSize;
     }
     return 1.0 / scale;
   }
@@ -275,15 +273,15 @@ class PrecisionModel implements /** Serializable, */  Comparable
      * The scale is set as well, as the reciprocal.
      */
     if (scale < 0) {
-      gridSize = (scale).abs();
-      this.scale = 1.0 / gridSize;
+      _gridSize = (scale).abs();
+      this.scale = 1.0 / _gridSize;
     }
     else {
       this.scale = (scale).abs();
       /**
        * Leave gridSize as 0, to ensure it is computed using scale
        */
-      gridSize = 0.0;
+      _gridSize = 0.0;
     }
   }
 
@@ -314,7 +312,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
   /// @param internal the coordinate whose values will be changed to the
   ///                 precise representation of <code>external</code>
   /// @deprecated use makePrecise instead
-  void toInternal (Coordinate external, Coordinate internal) {
+  void toInternal$1(Coordinate external, Coordinate internal) {
     if (isFloating()) {
       internal.x = external.x;
       internal.y = external.y;
@@ -333,8 +331,8 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///      representation of <code>external</code>
   /// @deprecated use makePrecise instead
   Coordinate toInternal(Coordinate external) {
-    Coordinate internal = new Coordinate(external);
-    makePrecise(internal);
+    Coordinate internal = Coordinate.fromAnother(external);
+    makePreciseFromCoord(internal);
     return internal;
   }
 
@@ -345,7 +343,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///      external representation of <code>internal</code>
   /// @deprecated no longer needed, since internal representation is same as external representation
   Coordinate toExternal(Coordinate internal) {
-    Coordinate external = new Coordinate(internal);
+    Coordinate external = new Coordinate.fromAnother(internal);
     return external;
   }
 
@@ -355,7 +353,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///@param  external  the coordinate whose values will be changed to the
   ///      external representation of <code>internal</code>
   /// @deprecated no longer needed, since internal representation is same as external representation
-  void toExternal(Coordinate internal, Coordinate external) {
+  void toExternal$1(Coordinate internal, Coordinate external) {
       external.x = internal.x;
       external.y = internal.y;
   }
@@ -375,12 +373,12 @@ class PrecisionModel implements /** Serializable, */  Comparable
   	if ((val).isNaN) return val;
   	
   	if (modelType == FLOATING_SINGLE) {
-  		float floatSingleVal = (float) val;
-  		return (double) floatSingleVal;
+  		double floatSingleVal =  val;
+  		return  floatSingleVal;
   	}
   	if (modelType == FIXED) {
-  	  if (gridSize > 0) {
-  	    return (val / gridSize).roundToDouble() * gridSize;
+  	  if (_gridSize > 0) {
+  	    return (val / _gridSize).roundToDouble() * _gridSize;
   	  }
   	  else {
   	    return (val * scale).roundToDouble() / scale;
@@ -391,7 +389,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
   }
 
   /// Rounds a Coordinate to the PrecisionModel grid.
-  void makePrecise(Coordinate coord)
+  void makePreciseFromCoord(Coordinate coord)
   {
     // optimization for full precision
     if (modelType == FLOATING) return;
@@ -402,6 +400,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
   }
 
 
+  @override
   String toString() {
   	String description = "UNKNOWN";
   	if (modelType == FLOATING) {
@@ -426,16 +425,17 @@ class PrecisionModel implements /** Serializable, */  Comparable
   /* (non-Javadoc)
    * @see java.lang.Object#hashCode()
    */
-  @override
-  int get hashCode {
-    const int prime = 31;
-    int result = 1;
-    result = prime * result + ((modelType == null) ? 0 : modelType.hashCode);
-    int temp;
-    temp = Double.doubleToLongBits(scale);
-    result = prime * result + (int) (temp ^ (temp >>> 32));
-    return result;
-  }
+  // TODO: ruier edit.
+  // @override
+  // int get hashCode {
+  //   const int prime = 31;
+  //   int result = 1;
+  //   result = prime * result + ((modelType == null) ? 0 : modelType.hashCode);
+  //   int temp;
+  //   temp = Double.doubleToLongBits(scale);
+  //   result = prime * result + (int) (temp ^ (temp >>> 32));
+  //   return result;
+  // }
   
   ///  Compares this {@link PrecisionModel} object with the specified object for order.
   /// A PrecisionModel is greater than another if it provides greater precision.
@@ -448,12 +448,14 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///      is being compared
   ///@return    a negative integer, zero, or a positive integer as this <code>PrecisionModel</code>
   ///      is less than, equal to, or greater than the specified <code>PrecisionModel</code>
-  int compareTo(Object o) {
-    PrecisionModel other = (PrecisionModel) o;
+  @override
+  int compareTo(var o) {
+    PrecisionModel other =  o as PrecisionModel;
 
     int sigDigits = getMaximumSignificantDigits();
     int otherSigDigits = other.getMaximumSignificantDigits();
-    return Integer.compare(sigDigits, otherSigDigits);
+    // return Integer.compare(sigDigits, otherSigDigits);
+    return sigDigits.compareTo( otherSigDigits);
 //    if (sigDigits > otherSigDigits)
 //      return 1;
 //    else if
@@ -472,11 +474,11 @@ class PrecisionModel implements /** Serializable, */  Comparable
 //    return 0;
   }
   
-  @override
-  bool operator ==(Object other) {
-    // TODO: implement ==
-    return super == other;
-  }
+  // @override
+  // bool operator ==(Object other) {
+  //   // TODO: implement ==
+  //   return super == other;
+  // }
 }
 
 

@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
-import 'package:jtscore4dart/src/util/AssertionFailedException.dart';
 
 class Envelope implements Comparable {
   static final double _DP_SAFE_EPSILON = 1e-15;
@@ -162,8 +161,23 @@ apply(SomeFilter filter){
   filter.filter(5);
 }
 
+
+class _Type{
+  final String name;
+
+  _Type({required this.name});
+}
+
+class Ruier23{
+  _Type ruier = _Type(name: "ruier");
+  Ruier23();
+  gettypenamr(){ 
+    return ruier;
+  }
+}
+
+
 void main() {
-  var f = SomeFilter.GeometryFilter;
-  var f2 = SomeFilter.CFilter;
-apply(f);
+var cc = Ruier23().gettypenamr();
+print(cc);
 }

@@ -56,15 +56,26 @@ class GeometryFactory{
 
 
   // TODO: ruier edit.
-    GeometryFactory({
-      this.precisionModel,
-      this.SRID = 0 ,
-      this.coordinateSequenceFactory,
-      }) 
-      {
-        precisionModel ??= PrecisionModel();
-        coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
-      }
+    // GeometryFactory({
+    //   this.precisionModel,
+    //   this.SRID = 0 ,
+    //   this.coordinateSequenceFactory,
+    //   }) 
+    //   {
+    //     precisionModel ??= PrecisionModel();
+    //     coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
+    //   }
+
+    GeometryFactory([this.precisionModel, this.SRID=0, this.coordinateSequenceFactory]){
+
+    precisionModel ??= PrecisionModel.fromAnother(pm),
+    coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
+    }
+    // GeometryFactory([this.precisionModel, this.SRID=0, this.coordinateSequenceFactory]): 
+    // precisionModel ??= PrecisionModel(),
+    // coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
+
+
 
   /**private */ static CoordinateSequenceFactory getDefaultCoordinateSequenceFactory()
   {

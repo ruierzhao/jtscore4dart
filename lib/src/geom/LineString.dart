@@ -14,6 +14,7 @@
 // import org.locationtech.jts.algorithm.Length;
 // import org.locationtech.jts.operation.BoundaryOp;
 
+import 'package:jtscore4dart/src/algorithm/Length.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
@@ -23,7 +24,9 @@ import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
 import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/Lineal.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/operation/BoundaryOp.dart';
 
+import 'CoordinateSequences.dart';
 import 'GeometryFilter.dart';
 
 ///  Models an OGC-style <code>LineString</code>.
@@ -188,7 +191,7 @@ class LineString
   /// @see Geometry#getBoundary
   @override
   Geometry getBoundary() {
-    return (new BoundaryOp(this)).getBoundary();
+    return (BoundaryOp(this)).getBoundary();
   }
 
   /// Creates a {@link LineString} whose coordinates are in the reverse

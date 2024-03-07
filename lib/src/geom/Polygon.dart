@@ -17,9 +17,18 @@
 // import org.locationtech.jts.algorithm.Orientation;
 
 
-import 'package:jtscore4dart/src/geom/Geometry.dart';
-import 'package:jtscore4dart/src/geom/LinearRing.dart';
-import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+
+import 'CoordinateSequence.dart';
+import 'CoordinateSequences.dart';
+import 'Geometry.dart';
+import 'GeometryComponentFilter.dart';
+import 'GeometryFilter.dart';
+import 'LinearRing.dart';
+import 'Polygonal.dart';
+import 'CoordinateFilter.dart';
+import 'CoordinateSequenceFilter.dart';
+import 'Envelope.dart';
 
 /// Represents a polygon with linear edges, which may include holes.
 /// The outer boundary (shell)
@@ -120,10 +129,12 @@ class Polygon
     this.holes = holes;
   }
 
+  @override
   Coordinate getCoordinate() {
     return shell.getCoordinate();
   }
 
+  @override
   List<Coordinate> getCoordinates() {
     if (isEmpty()) {
       return new List<Coordinate>{};
@@ -145,6 +156,7 @@ class Polygon
     return coordinates;
   }
 
+  @override
   int getNumPoints() {
     int numPoints = shell.getNumPoints();
     for (int i = 0; i < holes.length; i++) {
@@ -153,18 +165,22 @@ class Polygon
     return numPoints;
   }
 
+  @override
   int getDimension() {
     return 2;
   }
 
+  @override
   int getBoundaryDimension() {
     return 1;
   }
 
+  @override
   bool isEmpty() {
     return shell.isEmpty();
   }
 
+  @override
   bool isRectangle()
   {
     if (getNumInteriorRing() != 0) return false;
@@ -190,8 +206,9 @@ class Polygon
       double y = seq.getY(i);
       bool xChanged = x != prevX;
       bool yChanged = y != prevY;
-      if (xChanged == yChanged)
+      if (xChanged == yChanged) {
         return false;
+      }
       prevX = x;
       prevY = y;
     }
@@ -210,6 +227,7 @@ class Polygon
     return holes[n];
   }
 
+  @override
   String getGeometryType() {
     return Geometry.TYPENAME_POLYGON;
   }
@@ -217,6 +235,7 @@ class Polygon
   ///  Returns the area of this <code>Polygon</code>
   ///
   ///@return the area of the polygon
+  @override
   double getArea()
   {
     double area = 0.0;
@@ -230,6 +249,7 @@ class Polygon
   ///  Returns the perimeter of this <code>Polygon</code>
   ///
   ///@return the perimeter of the polygon
+  @override
   double getLength()
   {
     double len = 0.0;
@@ -244,6 +264,7 @@ class Polygon
   ///
   /// @return a lineal geometry (which may be empty)
   /// @see Geometry#getBoundary
+  @override
   Geometry getBoundary() {
     if (isEmpty()) {
       return getFactory().createMultiLineString();
@@ -254,15 +275,18 @@ class Polygon
       rings[i + 1] = holes[i];
     }
     // create LineString or MultiLineString as appropriate
-    if (rings.length <= 1)
+    if (rings.length <= 1) {
       return getFactory().createLinearRing(rings[0].getCoordinateSequence());
+    }
     return getFactory().createMultiLineString(rings);
   }
 
- /**protected */Envelope computeEnvelopeInternal() {
+ /**protected */@override
+  Envelope computeEnvelopeInternal() {
     return shell.getEnvelopeInternal();
   }
 
+  @override
   bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
@@ -284,32 +308,38 @@ class Polygon
     return true;
   }
 
-  void apply(CoordinateFilter filter) {
+  @override
+  void applyCoord(CoordinateFilter filter) {
 	    shell.apply(filter);
 	    for (int i = 0; i < holes.length; i++) {
 	      holes[i].apply(filter);
 	    }
 	  }
 
-  void apply(CoordinateSequenceFilter filter)
+  @override
+  void applyCoordSeq(CoordinateSequenceFilter filter)
   {
 	    shell.apply(filter);
       if (! filter.isDone()) {
         for (int i = 0; i < holes.length; i++) {
           holes[i].apply(filter);
-          if (filter.isDone())
+          if (filter.isDone()) {
             break;
+          }
         }
       }
-      if (filter.isGeometryChanged())
+      if (filter.isGeometryChanged()) {
         geometryChanged();
+      }
 	  }
 
+  @override
   void apply(GeometryFilter filter) {
     filter.filter(this);
   }
 
-  void apply(GeometryComponentFilter filter) {
+  @override
+  void applyGeometryComonent(GeometryComponentFilter filter) {
     filter.filter(this);
     shell.apply(filter);
     for (int i = 0; i < holes.length; i++) {
@@ -322,12 +352,14 @@ class Polygon
   ///
   /// @return a clone of this instance
   /// @deprecated
+  @override
   Object clone() {
 
     return copy();
   }
 
- /**protected */Polygon copyInternal() {
+ /**protected */@override
+  Polygon copyInternal() {
     LinearRing shellCopy = (LinearRing) shell.copy();
     List<LinearRing> holeCopies = new LinearRing[this.holes.length];
     for (int i = 0; i < holes.length; i++) {
@@ -336,10 +368,12 @@ class Polygon
     return new Polygon(shellCopy, holeCopies, factory);
   }
 
+  @override
   Geometry convexHull() {
     return getExteriorRing().convexHull();
   }
 
+  @override
   void normalize() {
     shell = normalized(shell, true);
     for (int i = 0; i < holes.length; i++) {
@@ -348,7 +382,8 @@ class Polygon
     Arrays.sort(holes);
   }
 
- /**protected */int compareToSameClass(Object o) {
+ /**protected */@override
+  int compareToSameClass(Object o) {
     Polygon poly = (Polygon) o;
 
     LinearRing thisShell = shell;
@@ -371,7 +406,9 @@ class Polygon
     return 0;
   }
 
- /**protected */int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
+ /**protected */
+  @override
+  int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
     Polygon poly = (Polygon) o;
 
     LinearRing thisShell = shell;
@@ -394,7 +431,8 @@ class Polygon
     return 0;
   }
   
- /**protected */int getTypeCode() {
+ /**protected */@override
+  int getTypeCode() {
     return Geometry.TYPECODE_POLYGON;
   }
 
@@ -404,7 +442,8 @@ class Polygon
     return res;
   }
 
- /**private */void normalize(LinearRing ring, bool clockwise) {
+ /**private */@override
+  void normalize(LinearRing ring, bool clockwise) {
     if (ring.isEmpty()) {
       return;
     }
@@ -412,15 +451,18 @@ class Polygon
     CoordinateSequence seq = ring.getCoordinateSequence();
     int minCoordinateIndex = CoordinateSequences.minCoordinateIndex(seq, 0, seq.size()-2);
     CoordinateSequences.scroll(seq, minCoordinateIndex, true);
-    if (Orientation.isCCW(seq) == clockwise)
+    if (Orientation.isCCW(seq) == clockwise) {
       CoordinateSequences.reverse(seq);
+    }
   }
 
+  @override
   Polygon reverse() {
     return (Polygon) super.reverse();
   }
 
- /**protected */Polygon reverseInternal()
+ /**protected */@override
+  Polygon reverseInternal()
   {
     LinearRing shell = (LinearRing) getExteriorRing().reverse();
     List<LinearRing> holes = new LinearRing[getNumInteriorRing()];

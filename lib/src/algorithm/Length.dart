@@ -32,8 +32,9 @@ class Length {
   {
     // optimized for processing CoordinateSequences
     int n = pts.size();
-    if (n <= 1)
+    if (n <= 1) {
       return 0.0;
+    }
   
     double len = 0.0;
   

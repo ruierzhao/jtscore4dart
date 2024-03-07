@@ -26,6 +26,13 @@
 
 //import debug.*;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/math/MathUtil.dart';
+
+import 'BufferParameters.dart';
+
 /**
  * Computes the buffer of a geometry, for both positive and negative buffer distances.
  * <p>
@@ -143,10 +150,10 @@ class BufferOp
     double bufEnvMax = envMax + 2 * expandByDistance;
 
     // the smallest power of 10 greater than the buffer envelope
-    int bufEnvPrecisionDigits = (int) (Math.log(bufEnvMax) / math.log(10) + 1.0);
+    int bufEnvPrecisionDigits = (log(bufEnvMax) / log(10) + 1.0).floor();
     int minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
     
-    double scaleFactor = math.pow(10.0, minUnitLog10);
+    double scaleFactor = pow(10.0, minUnitLog10).toDouble();
     return scaleFactor;
   }
 

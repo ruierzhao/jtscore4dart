@@ -29,6 +29,12 @@
 // import org.locationtech.jts.geom.MultiPoint;
 // import org.locationtech.jts.geom.Point;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/geom/Dimension.dart';
+
+import '../geom/CoordinateArrays.dart';
+
 /// Computes the boundary of a {@link Geometry}.
 /// Allows specifying the {@link BoundaryNodeRule} to be used.
 /// This operation will always return a {@link Geometry} of the appropriate
@@ -45,11 +51,12 @@ class BoundaryOp
   /// 
   /// @param g the input geometry
   /// @return the computed boundary
-  static Geometry getBoundary(Geometry g)
-  {
-    BoundaryOp bop = new BoundaryOp(g);
-    return bop.getBoundary();
-  }
+  /// TODO: ruier replace use [BoundaryOf].
+  // static Geometry getBoundary(Geometry g)
+  // {
+  //   BoundaryOp bop = new BoundaryOp(g);
+  //   return bop.getBoundary();
+  // }
   
   /// Computes a geometry representing the boundary of a geometry,
   /// using an explicit {@link BoundaryNodeRule}.
@@ -57,8 +64,9 @@ class BoundaryOp
   /// @param g the input geometry
   /// @param bnRule the Boundary Node Rule to use
   /// @return the computed boundary
-  static Geometry getBoundary(Geometry g, BoundaryNodeRule bnRule)
+  static Geometry BoundaryOf(Geometry g, [BoundaryNodeRule? bnRule])
   {
+    // bnRule ??= BoundaryNodeRule.MOD2_BOUNDARY_RULE;
     BoundaryOp bop = new BoundaryOp(g, bnRule);
     return bop.getBoundary();
   }
@@ -85,7 +93,7 @@ class BoundaryOp
      * Linear geometries might have an empty boundary due to boundary node rule.
      */
     case Dimension.L:
-      Geometry boundary = BoundaryOp.getBoundary(geom, boundaryNodeRule);
+      Geometry boundary = BoundaryOp.BoundaryOf(geom, boundaryNodeRule);
       return ! boundary.isEmpty();
     case Dimension.A: return true;
     }
@@ -94,34 +102,34 @@ class BoundaryOp
   
  /**private */Geometry geom;
  /**private */GeometryFactory geomFact;
- /**private */BoundaryNodeRule bnRule;
+ /**private */late BoundaryNodeRule bnRule;
 
   /// Creates a new instance for the given geometry.
   /// 
   /// @param geom the input geometry
-  BoundaryOp(Geometry geom)
-  {
-    this(geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
-  }
+  // BoundaryOp(Geometry geom)
+  // {
+  //   this(geom, BoundaryNodeRule.MOD2_BOUNDARY_RULE);
+  // }
 
   /// Creates a new instance for the given geometry.
   /// 
   /// @param geom the input geometry
   /// @param bnRule the Boundary Node Rule to use
-  BoundaryOp(Geometry geom, BoundaryNodeRule bnRule)
-  {
-    this.geom = geom;
-    geomFact = geom.getFactory();
-    this.bnRule = bnRule;
-  }
+  BoundaryOp(this.geom,[BoundaryNodeRule? _bnRule]):this.bnRule = _bnRule??=BoundaryNodeRule.MOD2_BOUNDARY_RULE, geomFact = geom.getFactory();
+  // {
+  //   this.geom = geom;
+  //   geomFact = geom.getFactory();
+  //   this.bnRule = bnRule;
+  // }
 
   /// Gets the computed boundary.
   /// 
   /// @return the boundary geometry
   Geometry getBoundary()
   {
-    if (geom is LineString) return boundaryLineString((LineString) geom);
-    if (geom is MultiLineString) return boundaryMultiLineString((MultiLineString) geom);
+    if (geom is LineString) return boundaryLineString( geom as LineString);
+    if (geom is MultiLineString) return boundaryMultiLineString( geom as MultiLineString);
     return geom.getBoundary();
   }
 
@@ -156,11 +164,12 @@ class BoundaryOp
   }
 */
 
- /**private */Map endpointMap;
+ /**private */late Map endpointMap;
 
  /**private */List<Coordinate> computeBoundaryCoordinates(MultiLineString mLine)
   {
-    List bdyPts = new ArrayList();
+    // List bdyPts = new ArrayList();
+    List bdyPts = [];
     endpointMap = new TreeMap();
     for (int i = 0; i < mLine.getNumGeometries(); i++) {
       LineString line = (LineString) mLine.getGeometryN(i);
@@ -222,5 +231,5 @@ class BoundaryOp
 class Counter
 {
   /// The value of the count
-  int count;
+  late int count;
 }

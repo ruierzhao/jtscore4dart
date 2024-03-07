@@ -14,6 +14,8 @@
 
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 /**
  * An abstract class for classes which measures the degree of similarity between two {@link Geometry}s.
  * The computed measure lies in the range [0, 1].

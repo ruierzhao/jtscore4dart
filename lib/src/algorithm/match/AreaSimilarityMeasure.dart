@@ -14,6 +14,10 @@
 
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
+import 'SimilarityMeasure.dart';
+
 /**
  * Measures the degree of similarity between two {@link Geometry}s
  * using the area of intersection between the geometries.
@@ -39,11 +43,9 @@ class AreaSimilarityMeasure
   /**
    * Creates a new instance.
    */
-	AreaSimilarityMeasure()
-	{
-	}
-	
-	double measure(Geometry g1, Geometry g2)
+	AreaSimilarityMeasure();	
+	@override
+   double measure(Geometry g1, Geometry g2)
 	{		
 		double areaInt = g1.intersection(g2).getArea();
 		double areaUnion = g1.union(g2).getArea();

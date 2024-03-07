@@ -20,7 +20,14 @@
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.geom.MultiLineString;
 
+import 'package:jtscore4dart/geometry.dart';
+
+import '../GeometryFilter.dart';
+
+
 /**
+ * 从 geometry 中提取出所有的 linestring
+ * 
  * Extracts all the {@link LineString} elements from a {@link Geometry}.
  *
  * @version 1.7
@@ -37,8 +44,9 @@ class LineStringExtracter
    * @param lines the list to add the extracted LineStrings to
    * @return the list argument
    */
-  static List getLines(Geometry geom, List lines)
+  static List getLines(Geometry geom, [List? lines])
   {
+    lines ??= [];
   	if (geom is LineString) {
   		lines.add(geom);
   	}
@@ -57,10 +65,10 @@ class LineStringExtracter
    * @param geom the geometry from which to extract
    * @return a list containing the linear elements
    */
-  static List getLines(Geometry geom)
-  {
-    return getLines(geom, new ArrayList());
-  }
+  // static List getLines(Geometry geom)
+  // {
+  //   return getLines(geom, new ArrayList());
+  // }
 
   /**
    * Extracts the {@link LineString} elements from a single {@link Geometry}
@@ -79,11 +87,12 @@ class LineStringExtracter
   /**
    * Constructs a filter with a list in which to store the elements found.
    */
-  LineStringExtracter(List comps)
-  {
-    this.comps = comps;
-  }
+  LineStringExtracter(this.comps);
+  // {
+  //   this.comps = comps;
+  // }
 
+  @override
   void filter(Geometry geom)
   {
     if (geom is LineString) comps.add(geom);

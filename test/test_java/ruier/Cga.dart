@@ -145,6 +145,25 @@ test(int a,[int b=0,int? c]){
   return a + b +c;
 }
 
-void main() {
+enum SomeFilter{
+  CFilter([]),
+  GeometryFilter([]);
+  final List<int> list;
+  const SomeFilter(this.list);
+}
 
+extension _ on SomeFilter{
+  filter(int g){
+    print(g);
+  }
+}
+
+apply(SomeFilter filter){
+  filter.filter(5);
+}
+
+void main() {
+  var f = SomeFilter.GeometryFilter;
+  var f2 = SomeFilter.CFilter;
+apply(f);
 }

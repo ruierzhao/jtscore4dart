@@ -50,9 +50,9 @@ class GeometryExtracter
    * @deprecated
    */
  /**private */static String toGeometryType(Class clz) {
-	if (clz == null)
+	if (clz == null) {
 	  return null;
-	else if (clz.isAssignableFrom(Point.class))
+	} else if (clz.isAssignableFrom(Point.class))
 	  return Geometry.TYPENAME_POINT;
 	else if (clz.isAssignableFrom(LineString.class))
 	  return Geometry.TYPENAME_LINESTRING;
@@ -145,8 +145,9 @@ class GeometryExtracter
   }
 
   void filter(Geometry geom) {
-    if (geometryType == null || isOfType(geom, geometryType))
+    if (geometryType == null || isOfType(geom, geometryType)) {
       comps.add(geom);
+    }
   }
 
 }

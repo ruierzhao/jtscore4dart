@@ -28,6 +28,9 @@
  * A given set of points has a sequence of hulls of increasing concaveness,
  * determined by a numeric target parameter.
  * <p>
+ * 
+ * https://zhuanlan.zhihu.com/p/459884570
+ * 
  * The hull is constructed by removing border triangles 
  * of the Delaunay Triangulation of the points,
  * as int as their "size" is larger than the target criterion.

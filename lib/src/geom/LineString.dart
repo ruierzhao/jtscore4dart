@@ -26,8 +26,12 @@ import 'package:jtscore4dart/src/geom/Lineal.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/operation/BoundaryOp.dart';
 
+import 'CoordinateSequenceComparator.dart';
 import 'CoordinateSequences.dart';
+import 'Dimension.dart';
+import 'Envelope.dart';
 import 'GeometryFilter.dart';
+import 'Point.dart';
 
 ///  Models an OGC-style <code>LineString</code>.
 ///  A LineString consists of a sequence of two or more vertices,
@@ -55,24 +59,24 @@ class LineString
   static const int MINIMUM_VALID_SIZE = 2;
   
   ///  The points of this <code>LineString</code>.
- /**protected */CoordinateSequence points;
+ /**protected */late CoordinateSequence points;
 
   /**
    *  Constructs a <code>LineString</code> with the given points.
    *
-   *@param  points the points of the linestring, or <code>null</code>
+   *@param  [points] the points of the linestring, or <code>null</code>
    *      to create the empty geometry. This array must not contain <code>null</code>
    *      elements. Consecutive points may be equal.
-   *@param  precisionModel  the specification of the grid of allowable points
+   *@param  [precisionModel]  the specification of the grid of allowable points
    *      for this <code>LineString</code>
-   *@param  SRID            the ID of the Spatial Reference System used by this
+   *@param  [SRID]            the ID of the Spatial Reference System used by this
    *      <code>LineString</code>
    * @throws ArgumentError if too few points are provided
    */
   /// @deprecated Use GeometryFactory instead
-  LineString(List<Coordinate> points, PrecisionModel precisionModel, int SRID)
+  LineString.FromPM(List<Coordinate> points, PrecisionModel precisionModel, int SRID):
+  super(GeometryFactory(precisionModel, SRID))
   {
-    super(new GeometryFactory(precisionModel: precisionModel, SRID:SRID));
     init(getFactory().getCoordinateSequenceFactory().create(points));
   }
 
@@ -81,19 +85,18 @@ class LineString
   ///@param  points the points of the linestring, or <code>null</code>
   ///      to create the empty geometry.
   /// @throws ArgumentError if too few points are provided
-  LineString(CoordinateSequence points, GeometryFactory factory) {
-    super(factory);
+  LineString(CoordinateSequence points, GeometryFactory factory):super(factory) {
     init(points);
   }
 
- /**private */void init(CoordinateSequence points)
-  {
+ /**private */
+  void init(CoordinateSequence points){
+    // TODO: ruier edit. 优化表达。
     if (points == null) {
-      points = getFactory().getCoordinateSequenceFactory().create(new List<Coordinate>{});
+      points = getFactory().getCoordinateSequenceFactory().create(<Coordinate>[]);
     }
     if (points.size() > 0 && points.size() < MINIMUM_VALID_SIZE) {
-      throw new ArgumentError("Invalid number of points in LineString (found "
-      		+ points.size() + " - must be 0 or >= " + MINIMUM_VALID_SIZE + ")");
+      throw new ArgumentError("Invalid number of points in LineString (found ${points.size()} - must be 0 or >= $MINIMUM_VALID_SIZE)");
     }
     this.points = points;
   }
@@ -112,7 +115,7 @@ class LineString
   }
 
   @override
-  Coordinate getCoordinate()
+  Coordinate? getCoordinate()
   {
     if (isEmpty()) return null;
     return points.getCoordinate(0);
@@ -142,17 +145,17 @@ class LineString
   }
 
   Point getPointN(int n) {
-      return getFactory().createPoint(points.getCoordinate(n));
+      return getFactory().createPointFromCoord(points.getCoordinate(n));
   }
 
-  Point getStartPoint() {
+  Point? getStartPoint() {
     if (isEmpty()) {
       return null;
     }
     return getPointN(0);
   }
 
-  Point getEndPoint() {
+  Point? getEndPoint() {
     if (isEmpty()) {
       return null;
     }
@@ -200,7 +203,7 @@ class LineString
   /// @return a {@link LineString} with coordinates in the reverse order
   @override
   LineString reverse() {
-    return (LineString) super.reverse();
+    return  super.reverse() as LineString;
   }
 
  /**protected */@override
@@ -225,20 +228,39 @@ class LineString
     return false;
   }
 
- /**protected */@override
+ /**protected */
+  @override
   Envelope computeEnvelopeInternal() {
     if (isEmpty()) {
-      return new Envelope();
+      return Envelope.init();
     }
-    return points.expandEnvelope(new Envelope());
+    return points.expandEnvelope(Envelope.init());
   }
 
+  
+  // @override
+  // TODO: ruier edit. 存疑修改
+  // bool equalsExact(Geometry other, double tolerance) {
+    // if (!isEquivalentClass(other)) {
+    //   return false;
+    // }
+    // LineString otherLineString =  other as LineString;
+    // if (points.size() != otherLineString.points.size()) {
+    //   return false;
+    // }
+    // for (int i = 0; i < points.size(); i++) {
+    //   if (!equal(points.getCoordinate(i), otherLineString.points.getCoordinate(i), tolerance)) {
+    //     return false;
+    //   }
+    // }
+    // return true;
+  // }
   @override
-  bool equalsExact(Geometry other, double tolerance) {
+  bool equalsExactWithTolerance(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
-    LineString otherLineString = (LineString) other;
+    LineString otherLineString =  other as LineString;
     if (points.size() != otherLineString.points.size()) {
       return false;
     }
@@ -260,15 +282,18 @@ class LineString
   @override
   void applyCoordSeq(CoordinateSequenceFilter filter)
   {
-    if (points.size() == 0)
+    if (points.size() == 0) {
       return;
+    }
     for (int i = 0; i < points.size(); i++) {
       filter.filter(points, i);
-      if (filter.isDone())
+      if (filter.isDone()) {
         break;
+      }
     }
-    if (filter.isGeometryChanged())
+    if (filter.isGeometryChanged()) {
       geometryChanged();
+    }
   }
 
   @override
@@ -316,15 +341,17 @@ class LineString
       }
   }
 
- /**protected */@override
+ /**protected */
+  @override
   bool isEquivalentClass(Geometry other) {
     return other is LineString;
   }
 
- /**protected */@override
+ /**protected */
+  @override
   int compareToSameClass(Object o)
   {
-    LineString line = (LineString) o;
+    LineString line =  o as LineString;
     // MD - optimized implementation
     int i = 0;
     int j = 0;
@@ -346,9 +373,9 @@ class LineString
   }
 
  /**protected */@override
-  int compareToSameClass(Object o, CoordinateSequenceComparator comp)
+  int compareToSameClassWithCompar(Object o, CoordinateSequenceComparator comp)
   {
-    LineString line = (LineString) o;
+    LineString line =  o as LineString;
     return comp.compare(this.points, line.points);
   }
   
@@ -357,16 +384,5 @@ class LineString
     return Geometry.TYPECODE_LINESTRING;
   }
 
-  @override
-  bool equalsExactWithTolerance(Geometry other, double tolerance) {
-    // TODO: implement equalsExactWithTolerance
-    throw UnimplementedError();
-  }
-  
-  // @override
-  // bool equalsExactWithTolerance(Geometry other, double tolerance) {
-  //   // TODO: implement equalsExactWithTolerance
-  //   throw UnimplementedError();
-  // }
 
 }

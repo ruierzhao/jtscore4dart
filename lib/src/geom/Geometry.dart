@@ -46,6 +46,7 @@ import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
 import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
 import 'GeometryFilter.dart';
+import 'GeometryOverlay.dart';
 
 
 /// A representation of a planar, linear vector geometry.
@@ -333,7 +334,7 @@ abstract class Geometry{
   ///
   ///@return a coordinate which is a vertex of this <code>Geometry</code>.
   ///@return null if this Geometry is empty
-  Coordinate getCoordinate();
+  Coordinate? getCoordinate();
 
   ///  Returns an array containing the values of all the vertices for
   ///  this geometry.
@@ -1210,7 +1211,7 @@ abstract class Geometry{
 
     Geometry res = reverseInternal();
     if (this.envelope != null) {
-      res.envelope = this.envelope.copy();
+      res.envelope = this.envelope!.copy();
     }
     res.setSRID(getSRID());
 
@@ -1681,7 +1682,7 @@ abstract class Geometry{
   ///      this object is greater than, equal to, or less than <code>o</code>, as
   ///      defined in "Normal Form For Geometry" in the JTS Technical
   ///      Specifications
-  /**protected  abstract */ int compareToSameClass(Object o, CoordinateSequenceComparator comp);
+  /**protected  abstract */ int compareToSameClassWithCompar(Object o, CoordinateSequenceComparator comp);
 
   ///  Returns the first non-zero result of <code>compareTo</code> encountered as
   ///  the two <code>Collection</code>s are iterated over. If, by the time one of

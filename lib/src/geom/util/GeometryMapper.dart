@@ -19,6 +19,9 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.geom.GeometryCollection;
 
+import '../Geometry.dart';
+import '../GeometryCollection.dart';
+
 /**
  * Methods to map various collections 
  * of {@link Geometry}s  
@@ -119,6 +122,9 @@ class GeometryMapper
     }
   }
   
+
+}
+
   /**
    * An abstract class for geometry functions that map a geometry input to a geometry output.
    * The output may be <tt>null</tt> if there is no valid output value for 
@@ -137,4 +143,3 @@ class GeometryMapper
      */
     Geometry map(Geometry geom);
   }
-}

@@ -20,6 +20,10 @@
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.util.GeometryMapper.MapOp;
 
+import '../GeometryCollection.dart';
+import '../GeometryFactory.dart';
+import 'GeometryMapper.dart' show MapOp;
+
 /**
  * Maps the members of a {@link GeometryCollection}
  * into another <tt>GeometryCollection</tt> via a defined
@@ -47,8 +51,9 @@ class GeometryCollectionMapper
     List mapped = new ArrayList();
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       Geometry g = mapOp.map(gc.getGeometryN(i));
-      if (!g.isEmpty())
+      if (!g.isEmpty()) {
         mapped.add(g);
+      }
     }
     return gc.getFactory().createGeometryCollection(
         GeometryFactory.toGeometryArray(mapped));

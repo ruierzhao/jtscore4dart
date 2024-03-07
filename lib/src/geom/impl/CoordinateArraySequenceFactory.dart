@@ -48,13 +48,13 @@ final class CoordinateArraySequenceFactory
   ///            the coordinates, which may not be null nor contain null
   ///            elements
   @override
-  CoordinateSequence createFromListCoord(List<Coordinate> coordinates) {
+  CoordinateSequence create(List<Coordinate> coordinates) {
     return CoordinateArraySequence(coordinates);
   }
 
   /// @see org.locationtech.jts.geom.CoordinateSequenceFactory#create(org.locationtech.jts.geom.CoordinateSequence)
   @override
-  CoordinateSequence createFromAnother(CoordinateSequence coordSeq) {
+  CoordinateSequence createFromCoordSeq(CoordinateSequence coordSeq) {
     return CoordinateArraySequence.fromAnother(coordSeq);
   }
 
@@ -78,7 +78,7 @@ final class CoordinateArraySequenceFactory
   }
 
   @override
-  CoordinateSequence create(int size, int dimension, [int? measures]) {
+  CoordinateSequence createWithSize(int size, int dimension, [int? measures]) {
     if (measures == null) {
       return createBySize(size, dimension);
     }
@@ -100,4 +100,5 @@ final class CoordinateArraySequenceFactory
 
     return CoordinateArraySequence.init2(size, spatial + measures, measures);
   }
+  
 }

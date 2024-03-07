@@ -43,7 +43,7 @@ class GeometryCollection extends Geometry {
 
   /// @deprecated Use GeometryFactory instead
   @Deprecated("Use GeometryFactory instead")
-  GeometryCollection(List<Geometry> geometries, PrecisionModel precisionModel, int SRID) {
+  GeometryCollection.FromPM(List<Geometry> geometries, PrecisionModel precisionModel, int SRID) {
       this(geometries, new GeometryFactory(precisionModel, SRID));
   }
 
@@ -53,11 +53,9 @@ class GeometryCollection extends Geometry {
   ///            or <code>null</code> or an empty array to create the empty
   ///            geometry. Elements may be empty <code>Geometry</code>s,
   ///            but not <code>null</code>s.
-  GeometryCollection(List<Geometry> geometries, GeometryFactory factory) {
+  GeometryCollection(List<Geometry>? geometries, GeometryFactory factory) {
     super(factory);
-    if (geometries == null) {
-      geometries = new List<Geometry>{};
-    }
+    geometries ??= [];
     if (hasNullElements(geometries)) {
       throw new ArgumentError("geometries must not contain null elements");
     }
@@ -285,7 +283,7 @@ class GeometryCollection extends Geometry {
   }
 
  /**protected */@override
-  int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
+  int compareToSameClassWithCompar(Object o, CoordinateSequenceComparator comp) {
     GeometryCollection gc = (GeometryCollection) o;
 
     int n1 = getNumGeometries();

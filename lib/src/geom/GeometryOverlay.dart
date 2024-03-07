@@ -18,6 +18,18 @@
 // import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
 // import org.locationtech.jts.operation.union.UnaryUnionOp;
 
+
+
+import 'package:jtscore4dart/operation.dart';
+import 'package:jtscore4dart/src/operation/overlay/OverlayOp.dart';
+import 'package:jtscore4dart/src/operation/overlay/snap/SnapIfNeededOverlayOp.dart';
+import 'package:jtscore4dart/src/operation/union/UnaryUnionOp.dart';
+
+import 'Geometry.dart';
+import 'GeometryCollection.dart';
+import 'util/GeometryCollectionMapper.dart';
+import 'util/GeometryMapper.dart';
+
 /**
  * Internal class which encapsulates the runtime switch to use OverlayNG,
  * and some additional extensions for optimization and GeometryCollection handling.
@@ -58,14 +70,16 @@ class GeometryOverlay
    * 
    * @param overlayImplCode the code for the overlay method (may be null)
    */
-  static void setOverlayImpl(String overlayImplCode) {
-    if (overlayImplCode == null) 
+  static void setOverlayImpl([String? overlayImplCode]) {
+    if (overlayImplCode == null) {
       return;
+    }
     // set flag explicitly since current value may not be default
     isOverlayNG = OVERLAY_NG_DEFAULT;
     
-    if (OVERLAY_PROPERTY_VALUE_NG.equalsIgnoreCase(overlayImplCode) )
+    if (OVERLAY_PROPERTY_VALUE_NG.equalsIgnoreCase(overlayImplCode) ) {
       isOverlayNG = true;
+    }
   }
   
  /**private */static Geometry overlay(Geometry a, Geometry b, int opCode) {
@@ -95,8 +109,9 @@ class GeometryOverlay
      * TODO: MD - add optimization for P-A case using Point-In-Polygon
      */
     // special case: if one input is empty ==> empty
-    if (a.isEmpty() || b.isEmpty())
+    if (a.isEmpty() || b.isEmpty()) {
       return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, a, b, a.getFactory());
+    }
 
     // compute for GCs
     // (An inefficient algorithm, but will work)
@@ -124,8 +139,9 @@ class GeometryOverlay
     // handle empty geometry cases
     if (a.isEmpty() || b.isEmpty()) {
       // both empty - check dimensions
-      if (a.isEmpty() && b.isEmpty())
+      if (a.isEmpty() && b.isEmpty()) {
         return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, a, b, a.getFactory());
+      }
 
     // special case: if either input is empty ==> result = other arg
       if (a.isEmpty()) return b.copy();
@@ -141,8 +157,9 @@ class GeometryOverlay
   {
     // handle empty geometry cases
     if (a.isEmpty() || b.isEmpty()) {
-      if (a.isEmpty() && b.isEmpty())
+      if (a.isEmpty() && b.isEmpty()) {
         return OverlayOp.createEmptyResult(OverlayOp.UNION, a, b, a.getFactory());
+      }
 
     // special case: if either input is empty ==> other input
       if (a.isEmpty()) return b.copy();

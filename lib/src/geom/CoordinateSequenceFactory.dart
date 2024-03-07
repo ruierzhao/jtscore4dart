@@ -29,14 +29,14 @@ abstract class CoordinateSequenceFactory
   /// This method must handle null arguments by creating an empty sequence.
   ///
   /// @param coordinates the coordinates
-  CoordinateSequence createFromListCoord(List<Coordinate> coordinates);
+  CoordinateSequence create(List<Coordinate> coordinates);
 
   /// Creates a {@link CoordinateSequence} which is a copy
   /// of the given {@link CoordinateSequence}.
   /// This method must handle null arguments by creating an empty sequence.
   ///
   /// @param coordSeq the coordinate sequence to copy
-  CoordinateSequence createFromAnother(CoordinateSequence coordSeq);
+  CoordinateSequence createFromCoordSeq(CoordinateSequence coordSeq);
 
   /// Creates a {@link CoordinateSequence} of the specified size and dimension.
   /// For this to be useful, the {@link CoordinateSequence} implementation must
@@ -64,7 +64,7 @@ abstract class CoordinateSequenceFactory
   /// otherwise ignored)
   /// @param measures the number of measures of the coordinates in the sequence (if user-specifiable,
   /// otherwise ignored)
-  CoordinateSequence create(int size, int dimension, [int? measures]) {
+  CoordinateSequence createWithSize(int size, int dimension, [int? measures]) {
       return createBySize(size, dimension);
   }
 }

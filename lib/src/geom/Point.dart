@@ -106,20 +106,20 @@ class Point
 
   double getX() {
     if (getCoordinate() == null) {
-      throw new IllegalStateException("getX called on empty Point");
+      throw new Exception("getX called on empty Point");
     }
-    return getCoordinate().x;
+    return getCoordinate()!.x;
   }
 
-  double getY() {
+  double? getY() {
     if (getCoordinate() == null) {
-      throw new IllegalStateException("getY called on empty Point");
+      throw Exception("getY called on empty Point");
     }
-    return getCoordinate().y;
+    return getCoordinate()!.y;
   }
 
   @override
-  Coordinate getCoordinate() {
+  Coordinate? getCoordinate() {
     return coordinates.size() != 0 ? coordinates.getCoordinate(0): null;
   }
 
@@ -144,13 +144,13 @@ class Point
     if (isEmpty()) {
       return Envelope.init();
     }
-    Envelope env = new Envelope();
-    env.expandToInclude(coordinates.getX(0), coordinates.getY(0));
+    Envelope env = new Envelope.init();
+    env.expandToIncludeXY(coordinates.getX(0), coordinates.getY(0));
     return env;
   }
 
   @override
-  bool equalsExact(Geometry other, double tolerance) {
+  bool equalsExactWithTolerance(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
@@ -160,23 +160,25 @@ class Point
     if (isEmpty() != other.isEmpty()) {
       return false;
     }
-    return equal(((Point) other).getCoordinate(), this.getCoordinate(), tolerance);
+    return equal(( other as Point).getCoordinate(), this.getCoordinate(), tolerance);
   }
 
   @override
-  void apply(CoordinateFilter filter) {
+  void applyCoord(CoordinateFilter filter) {
 	    if (isEmpty()) { return; }
 	    filter.filter(getCoordinate());
 	  }
 
   @override
-  void apply(CoordinateSequenceFilter filter)
+  void applyCoordSeq(CoordinateSequenceFilter filter)
   {
-	    if (isEmpty())
-        return;
+	    if (isEmpty()) {
+	      return;
+	    }
 	    filter.filter(coordinates, 0);
-      if (filter.isGeometryChanged())
+      if (filter.isGeometryChanged()) {
         geometryChanged();
+      }
 	  }
 
   @override
@@ -185,7 +187,7 @@ class Point
   }
 
   @override
-  void apply(GeometryComponentFilter filter) {
+  void applyGeometryComonent(GeometryComponentFilter filter) {
     filter.filter(this);
   }
 
@@ -223,14 +225,14 @@ class Point
 
   /**protected */ @override
   int compareToSameClass(Object other) {
-    Point point = (Point) other;
-    return getCoordinate().compareTo(point.getCoordinate());
+    Point point = other as Point;
+    return getCoordinate()!.compareTo(point.getCoordinate()!);
   }
 
   /**protected */ @override
-  int compareToSameClass(Object other, CoordinateSequenceComparator comp)
+  int compareToSameClassWithCompar(Object other, CoordinateSequenceComparator comp)
   {
-    Point point = (Point) other;
+    Point point = other as Point;
     return comp.compare(this.coordinates, point.coordinates);
   }
   
@@ -243,10 +245,6 @@ class Point
     return coordinates;
   }
   
-  @override
-  bool equalsExactWithTolerance(Geometry other, double tolerance) {
-    // TODO: implement equalsExactWithTolerance
-    throw UnimplementedError();
-  }
+
 }
 

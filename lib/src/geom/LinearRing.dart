@@ -11,11 +11,20 @@
  */
 
 
+import 'Coordinate.dart';
+import 'CoordinateSequence.dart';
+import 'CoordinateSequences.dart';
+import 'Dimension.dart';
+import 'Geometry.dart';
+import 'GeometryFactory.dart';
 import 'LineString.dart';
+import 'PrecisionModel.dart';
 
 /// Models an OGC SFS <code>LinearRing</code>.
 /// A <code>LinearRing</code> is a {@link LineString} which is both closed and simple.
 /// In other words,
+/// 首尾点相同，并且不是自相交
+/// 
 /// the first and last coordinate in the ring must be equal,
 /// and the ring must not self-intersect.
 /// Either orientation of the ring is allowed.
@@ -33,7 +42,7 @@ class LinearRing extends LineString
 {
   /// The minimum number of vertices allowed in a valid non-empty ring.
   /// Empty rings with 0 vertices are also valid.
-  static final int MINIMUM_VALID_SIZE = 3;
+  static const int MINIMUM_VALID_SIZE = 3;
 
   ///**private */static final int serialVersionUID = -4261142084085851829L;
 
@@ -50,9 +59,9 @@ class LinearRing extends LineString
   /// @throws ArgumentError if the ring is not closed, or has too few points
   ///
   /// @deprecated Use GeometryFactory instead
-  LinearRing(Coordinate points[], PrecisionModel precisionModel,
-                    int SRID) {
-    this(points, new GeometryFactory(precisionModel, SRID));
+  LinearRing.FromPM(List<Coordinate> points, PrecisionModel precisionModel,int SRID):
+  super.FromPM(points, precisionModel, SRID)
+  {
     validateConstruction();
   }
 
@@ -60,9 +69,10 @@ class LinearRing extends LineString
   /// @param points
   /// @param factory
   /// @throws ArgumentError if the ring is not closed, or has too few points
- /**private */LinearRing(Coordinate points[], GeometryFactory factory) {
-    this(factory.getCoordinateSequenceFactory().create(points), factory);
-  }
+ /**private */
+  LinearRing(List<Coordinate> points, GeometryFactory factory):
+    super(factory.getCoordinateSequenceFactory().create(points), factory);
+  
 
 
   /// Constructs a <code>LinearRing</code> with the vertices
@@ -73,18 +83,19 @@ class LinearRing extends LineString
   ///
   /// @throws ArgumentError if the ring is not closed, or has too few points
   ///
-  LinearRing(CoordinateSequence points, GeometryFactory factory) {
-    super(points, factory);
+  LinearRing.FromCoordSeq(CoordinateSequence points, GeometryFactory factory):
+  super(points, factory) 
+  {
     validateConstruction();
   }
 
- /**private */void validateConstruction() {
+ /**private */
+  void validateConstruction() {
     if (!isEmpty() && ! super.isClosed()) {
       throw new ArgumentError("Points of LinearRing do not form a closed linestring");
     }
     if (getCoordinateSequence().size() >= 1 && getCoordinateSequence().size() < MINIMUM_VALID_SIZE) {
-      throw new ArgumentError("Invalid number of points in LinearRing (found "
-      		+ getCoordinateSequence().size() + " - must be 0 or >= " + MINIMUM_VALID_SIZE + ")");
+      throw new ArgumentError("Invalid number of points in LinearRing (found ${getCoordinateSequence().size()} - must be 0 or >= $MINIMUM_VALID_SIZE)");
     }
   }
 
@@ -92,6 +103,7 @@ class LinearRing extends LineString
   /// not have a boundary.
   ///
   /// @return Dimension.FALSE
+  @override
   int getBoundaryDimension() {
     return Dimension.FALSE;
   }
@@ -100,6 +112,7 @@ class LinearRing extends LineString
   /// Empty rings are closed by definition.
   ///
   /// @return true if this ring is closed
+  @override
   bool isClosed() {
     if (isEmpty()) {
     	// empty LinearRings are closed by definition
@@ -109,23 +122,28 @@ class LinearRing extends LineString
   }
 
 
+  @override
   String getGeometryType() {
     return Geometry.TYPENAME_LINEARRING;
   }
   
- /**protected */int getTypeCode() {
+ /**protected */@override
+  int getTypeCode() {
     return Geometry.TYPECODE_LINEARRING;
   }
 
- /**protected */LinearRing copyInternal() {
-    return new LinearRing(points.copy(), factory);
+ /**protected */@override
+  LinearRing copyInternal() {
+    return LinearRing.FromCoordSeq(points.copy(), factory);
   }
 
+  @override
   LinearRing reverse()
   {
-    return (LinearRing) super.reverse();
+    return  super.reverse() as LinearRing;
   }
 
+  @override
   LinearRing reverseInternal() {
     CoordinateSequence seq = points.copy();
     CoordinateSequences.reverse(seq);

@@ -14,8 +14,13 @@
 // import java.util.ArrayList;
 
 
+import 'Geometry.dart';
 import 'GeometryCollection.dart';
+import 'GeometryFactory.dart';
+import 'LineString.dart';
+import 'Polygon.dart';
 import 'Polygonal.dart';
+import 'PrecisionModel.dart';
 
 /// Models a collection of {@link Polygon}s.
 /// <p>
@@ -31,7 +36,7 @@ class MultiPolygon
 	extends GeometryCollection
 	implements Polygonal
 {
- /**private */static final int serialVersionUID = -551033529766975875L;
+//  /**private */static final int serialVersionUID = -551033529766975875L;
   ///  Constructs a <code>MultiPolygon</code>.
   ///
   ///@param  polygons        the <code>Polygon</code>s for this <code>MultiPolygon</code>
@@ -45,9 +50,8 @@ class MultiPolygon
   ///@param  SRID            the ID of the Spatial Reference System used by this
   ///      <code>MultiPolygon</code>
   /// @deprecated Use GeometryFactory instead
-  MultiPolygon(List<Polygon> polygons, PrecisionModel precisionModel, int SRID) {
-    this(polygons, new GeometryFactory(precisionModel, SRID));
-  }
+  MultiPolygon.FromPM(List<Polygon> polygons, PrecisionModel precisionModel, int SRID) : super.FromPM(polygons, precisionModel, SRID) ;
+    
 
 
   /// @param polygons
@@ -58,22 +62,26 @@ class MultiPolygon
   ///            assertions specified in the <A
   ///            HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple
   ///            Features Specification for SQL</A>.
-  MultiPolygon(List<Polygon> polygons, GeometryFactory factory) {
+  MultiPolygon(List<Polygon> polygons, GeometryFactory factory):
     super(polygons, factory);
-  }
+  
 
+  @override
   int getDimension() {
     return 2;
   }
 
+  @override
   bool hasDimension(int dim) {
     return dim == 2;
   }
   
+  @override
   int getBoundaryDimension() {
     return 1;
   }
 
+  @override
   String getGeometryType() {
     return Geometry.TYPENAME_MULTIPOLYGON;
   }
@@ -88,6 +96,7 @@ class MultiPolygon
   ///
   /// @return a lineal geometry (which may be empty)
   /// @see Geometry#getBoundary
+  @override
   Geometry getBoundary() {
     if (isEmpty()) {
       return getFactory().createMultiLineString();
@@ -104,6 +113,7 @@ class MultiPolygon
     return getFactory().createMultiLineString((List<LineString>) allRings.toArray(allRingsArray));
   }
 
+  @override
   bool equalsExact(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
@@ -116,11 +126,13 @@ class MultiPolygon
   /// The order of the components in the collection are not reversed.
   ///
   /// @return a MultiPolygon in the reverse order
+  @override
   MultiPolygon reverse() {
-    return (MultiPolygon) super.reverse();
+    return super.reverse() as MultiPolygon;
   }
 
- /**protected */MultiPolygon reverseInternal() {
+ /**protected */@override
+  MultiPolygon reverseInternal() {
     List<Polygon> polygons = new Polygon[this.geometries.length];
     for (int i = 0; i < polygons.length; i++) {
       polygons[i] = (Polygon) this.geometries[i].reverse();
@@ -128,7 +140,8 @@ class MultiPolygon
     return new MultiPolygon(polygons, factory);
   }
   
- /**protected */MultiPolygon copyInternal() {
+ /**protected */@override
+  MultiPolygon copyInternal() {
     List<Polygon> polygons = new Polygon[this.geometries.length];
     for (int i = 0; i < polygons.length; i++) {
       polygons[i] = (Polygon) this.geometries[i].copy();
@@ -136,7 +149,8 @@ class MultiPolygon
     return new MultiPolygon(polygons, factory);
   }
 
- /**protected */int getTypeCode() {
+ /**protected */@override
+  int getTypeCode() {
     return Geometry.TYPECODE_MULTIPOLYGON;
   }
 }

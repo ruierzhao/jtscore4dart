@@ -29,6 +29,8 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'package:jtscore4dart/geometry.dart';
+
 /// A class which supports creating new {@link Geometry}s 
 /// which are modifications of existing ones,
 /// maintaining the same type structure.
@@ -214,6 +216,9 @@ class GeometryEditor
           new List<Geometry> {  }));
   }
 
+  
+}
+
   /**
    * A abstract class which specifies an edit operation for Geometries.
    *
@@ -239,6 +244,7 @@ class GeometryEditor
     Geometry edit(Geometry geometry, GeometryFactory factory);
   }
 
+
   /**
    * A GeometryEditorOperation which does not modify
    * the input geometry.
@@ -256,7 +262,6 @@ class GeometryEditor
   		return geometry;
   	}
   }
-  
   /**
    * A {@link GeometryEditorOperation} which edits the coordinate list of a {@link Geometry}.
    * Operates on Geometry subclasses which contains a single coordinate list.
@@ -301,13 +306,13 @@ class GeometryEditor
                                       Geometry geometry);
   }
   
+
   /**
    * A {@link GeometryEditorOperation} which edits the {@link CoordinateSequence}
    * of a {@link Geometry}.
    * Operates on Geometry subclasses which contains a single coordinate list.
    */
-  abstract static class CoordinateSequenceOperation
-      implements GeometryEditorOperation
+  /**abstract static */ class CoordinateSequenceOperation implements GeometryEditorOperation
   {
     final Geometry edit(Geometry geometry, GeometryFactory factory) {
       if (geometry is LinearRing) {
@@ -338,7 +343,5 @@ class GeometryEditor
      * @param geometry the geometry containing the coordinate list
      * @return an edited coordinate sequence (which may be the same as the input)
      */
-    abstract CoordinateSequence edit(CoordinateSequence coordSeq,
-                                      Geometry geometry);
+    /**abstract */ CoordinateSequence edit(CoordinateSequence coordSeq,Geometry geometry);
   }
-}

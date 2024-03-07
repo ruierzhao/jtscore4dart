@@ -23,8 +23,12 @@
 
 import 'dart:math';
 
+import 'package:jtscore4dart/src/algorithm/Distance.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
 
+import '../utils.dart';
 import 'Coordinate.dart';
 
 /// Represents a line segment defined by two {@link Coordinate}s.
@@ -51,7 +55,7 @@ class LineSegment
   // }
   LineSegment(this.p0, this.p1);
 
-  LineSegment.fromDouble(double x0, double y0, double x1, double y1) :
+  LineSegment.fromXY(double x0, double y0, double x1, double y1) :
     this(Coordinate(x0, y0), Coordinate(x1, y1));
   
 
@@ -138,7 +142,7 @@ class LineSegment
   /// @return 1 if <code>seg</code> is to the left of this segment
   /// @return -1 if <code>seg</code> is to the right of this segment
   /// @return 0 if <code>seg</code> is collinear to or crosses this segment
-  int orientationIndex(LineSegment seg)
+  int orientationIndexOf(LineSegment seg)
   {
     int orient0 = Orientation.index(p0, p1, seg.p0);
     int orient1 = Orientation.index(p0, p1, seg.p1);
@@ -202,13 +206,13 @@ class LineSegment
   /// @return the midpoint of the segment
   Coordinate midPoint()
   {
-    return midPoint(p0, p1);
+    return midPoint$1(p0, p1);
   }
 
   /// Computes the midpoint of a segment
   ///
   /// @return the midpoint of the segment
-  static Coordinate midPoint(Coordinate p0, Coordinate p1)
+  static Coordinate midPoint$1(Coordinate p0, Coordinate p1)
   {
     return new Coordinate( (p0.x + p1.x) / 2,
                            (p0.y + p1.y) / 2);
@@ -225,7 +229,7 @@ class LineSegment
   /// Computes the distance between this line segment and a given point.
   ///
   /// @return the distance from this segment to the given point
-  double distance(Coordinate p)
+  double distanceToCoord(Coordinate p)
   {
     return Distance.pointToSegment(p, p0, p1);
   }
@@ -310,7 +314,8 @@ class LineSegment
     double uy = 0.0;
     if (offsetDistance != 0.0) {
       if (len <= 0.0) {
-        throw new IllegalStateException("Cannot compute offset from zero-length line segment");
+        // throw new IllegalStateException("Cannot compute offset from zero-length line segment");
+        throw new Exception("Cannot compute offset from zero-length line segment");
       }
 
       // u is the vector that is the length of the offset, in the direction of the segment
@@ -399,10 +404,10 @@ class LineSegment
     if (p.equals(p0) || p.equals(p1)) return p.copy();
 
     double r = projectionFactor(p);
-    return project(p, r);
+    return projectWithFactor(p, r);
   }
   
- /**private */Coordinate project(Coordinate p, double projectionFactor)
+ /**private */Coordinate projectWithFactor(Coordinate p, double projectionFactor)
   {
     Coordinate coord = p.copy();
     coord.x = p0.x + projectionFactor * (p1.x - p0.x);
@@ -420,7 +425,7 @@ class LineSegment
   ///
   /// @param seg the line segment to project
   /// @return the projected line segment, or <code>null</code> if there is no overlap
-  LineSegment project(LineSegment seg)
+  LineSegment? projectSeg(LineSegment seg)
   {
     double pf0 = projectionFactor(seg.p0);
     double pf1 = projectionFactor(seg.p1);
@@ -428,11 +433,11 @@ class LineSegment
     if (pf0 >= 1.0 && pf1 >= 1.0) return null;
     if (pf0 <= 0.0 && pf1 <= 0.0) return null;
 
-    Coordinate newp0 = project(seg.p0, pf0);
+    Coordinate newp0 = projectWithFactor(seg.p0, pf0);
     if (pf0 < 0.0) newp0 = p0;
     if (pf0 > 1.0) newp0 = p1;
 
-    Coordinate newp1 = project(seg.p1, pf1);
+    Coordinate newp1 = projectWithFactor(seg.p1, pf1);
     if (pf1 < 0.0) newp1 = p0;
     if (pf1 > 1.0) newp1 = p1;
 
@@ -488,7 +493,7 @@ class LineSegment
   {
     double factor = projectionFactor(p);
     if (factor > 0 && factor < 1) {
-      return project(p, factor);
+      return projectWithFactor(p, factor);
     }
     double dist0 = p0.distance(p);
     double dist1 = p1.distance(p);
@@ -504,17 +509,19 @@ class LineSegment
   List<Coordinate> closestPoints(LineSegment line)
   {
     // test for intersection
-    Coordinate intPt = intersection(line);
+    Coordinate? intPt = intersection(line);
     if (intPt != null) {
-      return new List<Coordinate> { intPt, intPt };
+      // return new List<Coordinate> { intPt, intPt };
+      return [ intPt, intPt ];
     }
 
     /**
      *  if no intersection closest pair contains at least one endpoint.
      * Test each endpoint in turn.
      */
-    List<Coordinate> closestPt = new Coordinate[2];
-    double minDistance = Double.MAX_VALUE;
+    // List<Coordinate> closestPt = new Coordinate[2];
+    List<Coordinate> closestPt = List.filled(2, Coordinate.empty2D());
+    double minDistance = double.maxFinite;
     double dist;
 
     Coordinate close00 = closestPoint(line.p0);
@@ -561,7 +568,7 @@ class LineSegment
   /// @return an intersection point, or <code>null</code> if there is none
   /// 
   /// @see RobustLineIntersector
-  Coordinate intersection(LineSegment line)
+  Coordinate? intersection(LineSegment line)
   {
     LineIntersector li = new RobustLineIntersector();
     li.computeIntersection(p0, p1, line.p0, line.p1);

@@ -70,12 +70,12 @@ class Polygon
   ///  The exterior boundary,
   /// or <code>null</code> if this <code>Polygon</code>
   ///  is empty.
-  LinearRing shell;
+  LinearRing? shell;
 
   /// The interior boundaries, if any.
   /// This instance var is never null.
   /// If there are no holes, the array is of zero length.
-  List<LinearRing> holes;
+  List<LinearRing>? holes;
 
   ///  Constructs a <code>Polygon</code> with the given exterior boundary.
   ///
@@ -380,15 +380,6 @@ class Polygon
     return getExteriorRing().convexHull();
   }
 
-  @override
-  void normalize() {
-    shell = normalized(shell!, true);
-    for (int i = 0; i < holes!.length; i++) {
-      holes![i] = normalized(holes![i], false);
-    }
-    // TODO: ruier edit.
-    // Arrays.sort(holes);
-  }
 
  /**protected */@override
   int compareToSameClass(Object o) {
@@ -400,11 +391,11 @@ class Polygon
     if (shellComp != 0) return shellComp;
 
     int nHole1 = getNumInteriorRing();
-    int nHole2 = ((Polygon) o).getNumInteriorRing();
+    int nHole2 = ( o).getNumInteriorRing();
     int i = 0;
     while (i < nHole1 && i < nHole2) {
-      LinearRing thisHole = (LinearRing) getInteriorRingN(i);
-      LinearRing otherHole = (LinearRing) poly.getInteriorRingN(i);
+      LinearRing thisHole = getInteriorRingN(i);
+      LinearRing otherHole = poly.getInteriorRingN(i);
       int holeComp = thisHole.compareToSameClass(otherHole);
       if (holeComp != 0) return holeComp;
       i++;
@@ -417,10 +408,10 @@ class Polygon
  /**protected */
   @override
   int compareToSameClassWithCompar(Object o, CoordinateSequenceComparator comp) {
-    Polygon poly = (Polygon) o;
+    Polygon poly =  o as Polygon;
 
-    LinearRing thisShell = shell;
-    LinearRing otherShell = poly.shell;
+    LinearRing thisShell = shell as LinearRing;
+    LinearRing otherShell = poly.shell as LinearRing;
     int shellComp = thisShell.compareToSameClassWithCompar(otherShell, comp);
     if (shellComp != 0) return shellComp;
 
@@ -428,8 +419,8 @@ class Polygon
     int nHole2 = poly.getNumInteriorRing();
     int i = 0;
     while (i < nHole1 && i < nHole2) {
-      LinearRing thisHole = (LinearRing) getInteriorRingN(i);
-      LinearRing otherHole = (LinearRing) poly.getInteriorRingN(i);
+      LinearRing thisHole =  getInteriorRingN(i);
+      LinearRing otherHole = poly.getInteriorRingN(i);
       int holeComp = thisHole.compareToSameClassWithCompar(otherHole, comp);
       if (holeComp != 0) return holeComp;
       i++;
@@ -444,14 +435,24 @@ class Polygon
     return Geometry.TYPECODE_POLYGON;
   }
 
- /**private */LinearRing normalized(LinearRing ring, bool clockwise) {
-    LinearRing res = (LinearRing) ring.copy();
-    normalize(res, clockwise);
+ /**private */LinearRing normalized$2(LinearRing ring, bool clockwise) {
+    LinearRing res = ring.copy() as LinearRing;
+    normalizeOf(res, clockwise);
     return res;
   }
 
- /**private */@override
-  void normalize(LinearRing ring, bool clockwise) {
+  @override
+  void normalize() {
+    shell = normalized$2(shell!, true);
+    for (int i = 0; i < holes!.length; i++) {
+      holes![i] = normalized$2(holes![i], false);
+    }
+    // TODO: ruier edit.
+    // Arrays.sort(holes);
+  }
+
+ /**private */
+  void normalizeOf(LinearRing ring, bool clockwise) {
     if (ring.isEmpty()) {
       return;
     }
@@ -459,7 +460,7 @@ class Polygon
     CoordinateSequence seq = ring.getCoordinateSequence();
     int minCoordinateIndex = CoordinateSequences.minCoordinateIndex(seq, 0, seq.size()-2);
     CoordinateSequences.scroll(seq, minCoordinateIndex, true);
-    if (Orientation.isCCW(seq) == clockwise) {
+    if (Orientation.isCCWFromCS(seq) == clockwise) {
       CoordinateSequences.reverse(seq);
     }
   }

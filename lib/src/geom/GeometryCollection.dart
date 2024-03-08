@@ -20,12 +20,10 @@
 import 'dart:math';
 
 import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
-
 import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
-
 import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
-import '../util/Assert.dart';
 import 'Coordinate.dart';
 import 'CoordinateSequenceComparator.dart';
 import 'Dimension.dart';
@@ -65,9 +63,9 @@ class GeometryCollection extends Geometry {
 
   @override
   Coordinate? getCoordinate() {
-    for (int i = 0; i < geometries.length; i++) {
-      if (! geometries[i].isEmpty()) {
-        return geometries[i].getCoordinate();
+    for (int i = 0; i < geometries!.length; i++) {
+      if (! geometries![i].isEmpty()) {
+        return geometries![i].getCoordinate();
       }
     }
     return null;
@@ -284,10 +282,12 @@ class GeometryCollection extends Geometry {
   }
 
  /**protected */@override
+ // TODO: ruier edit.
   int compareToSameClass(Object o) {
-    TreeSet theseElements = new TreeSet(Arrays.asList(geometries));
-    TreeSet otherElements = new TreeSet(Arrays.asList(( o as GeometryCollection).geometries));
-    return compare(theseElements, otherElements);
+    throw UnimplementedError("late edit.");
+    // TreeSet theseElements = new TreeSet(Arrays.asList(geometries));
+    // TreeSet otherElements = new TreeSet(Arrays.asList(( o as GeometryCollection).geometries));
+    // return compare(theseElements, otherElements);
   }
 
  /**protected */@override

@@ -27,6 +27,7 @@ import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/geom/Point.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 
+import 'CoordinateSequences.dart';
 import 'GeometryCollection.dart';
 import 'LineString.dart';
 import 'LinearRing.dart';
@@ -73,8 +74,8 @@ class GeometryFactory{
     //     precisionModel ??= PrecisionModel();
     //     coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
     //   }
-    GeometryFactory([PrecisionModel? _precisionModel, this.SRID=0, CoordinateSequenceFactory? coordinateSequenceFactory]): 
-    this.precisionModel = _precisionModel ??= PrecisionModel(),
+    GeometryFactory([PrecisionModel? _precisionModel, this.SRID=0, CoordinateSequenceFactory? coordinateSequenceFactory])
+    :this.precisionModel = _precisionModel ??= PrecisionModel(),
     coordinateSequenceFactory = coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
 
 
@@ -101,6 +102,7 @@ class GeometryFactory{
   ///
   ///@param  geometries  the list of <code>Geometry's</code> to convert
   ///@return            the <code>List</code> in array format
+  // TODO: ruier edit.
   // static List<Geometry> toGeometryArray(Collection geometries) {
   //   if (geometries == null) return null;
   //   List<Geometry> geometryArray = new Geometry[geometries.size()];
@@ -293,14 +295,15 @@ class GeometryFactory{
   /// @param geometries an array of Geometries, each of which may be empty but not null, or null
   /// @return the created GeometryCollection
   GeometryCollection createGeometryCollection([List<Geometry>? geometries]) {
-  	return new GeometryCollection(geometries, this);
+  	return new GeometryCollection(geometries!, this);
   }
   
   /// Constructs an empty {@link MultiPolygon} geometry.
   /// 
   /// @return an empty MultiPolygon
-  MultiPolygon createMultiPolygon() {
-    return MultiPolygon(null, this);
+  MultiPolygon createMultiPolygonEmpty() {
+    // TODO: ruier edit.
+    return MultiPolygon(null!, this);
   }
 
   /// Creates a MultiPolygon using the given Polygons; a null or empty array
@@ -348,8 +351,9 @@ class GeometryFactory{
   /// Constructs an empty {@link MultiPoint} geometry.
   /// 
   /// @return an empty MultiPoint
-  MultiPoint createMultiPoint() {
-    return new MultiPoint(null, this);
+  MultiPoint createMultiPointEmpty() {
+    // TODO: ruier edit.
+    return new MultiPoint(null!, this);
   }
 
   /// Creates a {@link MultiPoint} using the given {@link Point}s.
@@ -357,7 +361,7 @@ class GeometryFactory{
   ///
   /// @param point an array of Points (without null elements), or an empty array, or <code>null</code>
   /// @return a MultiPoint object
-  MultiPoint createMultiPoint(List<Point> point) {
+  MultiPoint createMultiPointFromPoints(List<Point> point) {
   	return new MultiPoint(point, this);
   }
 
@@ -367,8 +371,8 @@ class GeometryFactory{
   /// @param coordinates an array (without null elements), or an empty array, or <code>null</code>
   /// @return a MultiPoint object
   /// @deprecated Use {@link GeometryFactory#createMultiPointFromCoords} instead
-  MultiPoint createMultiPoint(List<Coordinate> coordinates) {
-      return createMultiPoint(coordinates != null
+  MultiPoint createMultiPoint(List<Coordinate>? coordinates) {
+      return createMultiPointFromCoordSeq(coordinates != null
                               ? getCoordinateSequenceFactory().create(coordinates)
                               : null);
   }
@@ -378,8 +382,8 @@ class GeometryFactory{
   ///
   /// @param coordinates an array (without null elements), or an empty array, or <code>null</code>
   /// @return a MultiPoint object
-  MultiPoint createMultiPointFromCoords(List<Coordinate> coordinates) {
-      return createMultiPoint(coordinates != null
+  MultiPoint createMultiPointFromCoords(List<Coordinate>? coordinates) {
+      return createMultiPointFromCoordSeq(coordinates != null
                               ? getCoordinateSequenceFactory().create(coordinates)
                               : null);
   }
@@ -390,18 +394,20 @@ class GeometryFactory{
   ///
   /// @param coordinates a CoordinateSequence (possibly empty), or <code>null</code>
   /// @return a MultiPoint geometry
-  MultiPoint createMultiPoint(CoordinateSequence coordinates) {
+  MultiPoint createMultiPointFromCoordSeq(CoordinateSequence? coordinates) {
     if (coordinates == null) {
-      return createMultiPoint(new Point[0]);
+      return createMultiPointFromPoints(<Point>[]);
     }
-   List<Point>points = new Point[coordinates.size()];
+  //  List<Point>points = new Point[coordinates.size()];
+   List<Point>points = [];
     for (int i = 0; i < coordinates.size(); i++) {
       CoordinateSequence ptSeq = getCoordinateSequenceFactory()
-        .create(1, coordinates.getDimension(), coordinates.getMeasures());
+        .createWithSize(1, coordinates.getDimension(), coordinates.getMeasures());
       CoordinateSequences.copy(coordinates, i, ptSeq, 0, 1);
-      points[i] = createPoint(ptSeq);
+      // points[i] = createPointFromCoordSeq(ptSeq);
+      points.add(createPointFromCoordSeq(ptSeq));
     }
-    return createMultiPoint(points);
+    return createMultiPointFromPoints(points);
   }
 
   /// Constructs a <code>Polygon</code> with the given exterior boundary and
@@ -416,9 +422,22 @@ class GeometryFactory{
   ///            <code>null</code> or empty <code>LinearRing</code> s if
   ///            the empty geometry is to be created.
   /// @throws ArgumentError if a ring is invalid
-  Polygon createPolygon(LinearRing shell, [List<LinearRing>? holes]) {
+  Polygon createPolygon([LinearRing? shell, List<LinearRing>? holes]) {
     return Polygon(shell, holes, this);
   }
+
+
+  /// Constructs a <code>Polygon</code> with the given exterior boundary.
+  ///
+  /// @param shell
+  ///            the outer boundary of the new <code>Polygon</code>, or
+  ///            <code>null</code> or an empty <code>LinearRing</code> if
+  ///            the empty geometry is to be created.
+  /// @throws ArgumentError if the boundary ring is invalid
+  Polygon createPolygonFromCoords(List<Coordinate> shell) {
+    return createPolygon(createLinearRing(shell));
+  }
+
 
   /// Constructs a <code>Polygon</code> with the given exterior boundary.
   ///
@@ -438,27 +457,16 @@ class GeometryFactory{
   ///            <code>null</code> or an empty <code>LinearRing</code> if
   ///            the empty geometry is to be created.
   /// @throws ArgumentError if the boundary ring is invalid
-  Polygon createPolygonFromCoords(List<Coordinate> shell) {
-    return createPolygon(createLinearRing(shell));
-  }
-
-  /// Constructs a <code>Polygon</code> with the given exterior boundary.
-  ///
-  /// @param shell
-  ///            the outer boundary of the new <code>Polygon</code>, or
-  ///            <code>null</code> or an empty <code>LinearRing</code> if
-  ///            the empty geometry is to be created.
-  /// @throws ArgumentError if the boundary ring is invalid
-  Polygon createPolygon(LinearRing shell) {
-    return createPolygon(shell, null);
-  }
+  // Polygon createPolygon(LinearRing shell) {
+  //   return createPolygon(shell, null);
+  // }
   
   /// Constructs an empty {@link Polygon} geometry.
   /// 
   /// @return an empty polygon
-  Polygon createPolygonEmpty() {
-    return createPolygon(null, null);
-  }
+  // Polygon createPolygonEmpty() {
+  //   return createPolygon(null, null);
+  // }
 
   ///  Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>, or
   ///  <code>GeometryCollection</code> to contain the <code>Geometry</code>s in
@@ -485,56 +493,58 @@ class GeometryFactory{
   ///@return           a <code>Geometry</code> of the "smallest", "most
   ///      type-specific" class that can contain the elements of <code>geomList</code>
   ///      .
-  Geometry buildGeometry(Collection geomList) {
+  // Geometry buildGeometry(Collection geomList) {
+  // TODO: ruier edit.
+  // Geometry buildGeometry(Iterable geomList) {
   	
-  	/**
-  	 * Determine some facts about the geometries in the list
-  	 */
-    Class geomClass = null;
-    bool isHeterogeneous = false;
-    bool hasGeometryCollection = false;
-    for (Iterator i = geomList.iterator(); i.hasNext(); ) {
-      Geometry geom = (Geometry) i.next();
-      Class partClass = geom.getClass();
-      if (geomClass == null) {
-        geomClass = partClass;
-      }
-      if (partClass != geomClass) {
-        isHeterogeneous = true;
-      }
-      if (geom is GeometryCollection)
-        hasGeometryCollection = true;
-    }
+  // 	/**
+  // 	 * Determine some facts about the geometries in the list
+  // 	 */
+  //   Class geomClass = null;
+  //   bool isHeterogeneous = false;
+  //   bool hasGeometryCollection = false;
+  //   for (Iterator i = geomList.iterator(); i.hasNext(); ) {
+  //     Geometry geom = (Geometry) i.next();
+  //     Class partClass = geom.getClass();
+  //     if (geomClass == null) {
+  //       geomClass = partClass;
+  //     }
+  //     if (partClass != geomClass) {
+  //       isHeterogeneous = true;
+  //     }
+  //     if (geom is GeometryCollection)
+  //       hasGeometryCollection = true;
+  //   }
     
-    /**
-     * Now construct an appropriate geometry to return
-     */
-    // for the empty geometry, return an empty GeometryCollection
-    if (geomClass == null) {
-      return createGeometryCollection();
-    }
-    if (isHeterogeneous || hasGeometryCollection) {
-      return createGeometryCollection(toGeometryArray(geomList));
-    }
-    // at this point we know the collection is hetereogenous.
-    // Determine the type of the result from the first Geometry in the list
-    // this should always return a geometry, since otherwise an empty collection would have already been returned
-    Geometry geom0 = (Geometry) geomList.iterator().next();
-    bool isCollection = geomList.size() > 1;
-    if (isCollection) {
-      if (geom0 is Polygon) {
-        return createMultiPolygon(toPolygonArray(geomList));
-      }
-      else if (geom0 is LineString) {
-        return createMultiLineString(toLineStringArray(geomList));
-      }
-      else if (geom0 is Point) {
-        return createMultiPoint(toPointArray(geomList));
-      }
-      Assert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());
-    }
-    return geom0;
-  }
+  //   /**
+  //    * Now construct an appropriate geometry to return
+  //    */
+  //   // for the empty geometry, return an empty GeometryCollection
+  //   if (geomClass == null) {
+  //     return createGeometryCollection();
+  //   }
+  //   if (isHeterogeneous || hasGeometryCollection) {
+  //     return createGeometryCollection(toGeometryArray(geomList));
+  //   }
+  //   // at this point we know the collection is hetereogenous.
+  //   // Determine the type of the result from the first Geometry in the list
+  //   // this should always return a geometry, since otherwise an empty collection would have already been returned
+  //   Geometry geom0 = (Geometry) geomList.iterator().next();
+  //   bool isCollection = geomList.size() > 1;
+  //   if (isCollection) {
+  //     if (geom0 is Polygon) {
+  //       return createMultiPolygon(toPolygonArray(geomList));
+  //     }
+  //     else if (geom0 is LineString) {
+  //       return createMultiLineString(toLineStringArray(geomList));
+  //     }
+  //     else if (geom0 is Point) {
+  //       return createMultiPoint(toPointArray(geomList));
+  //     }
+  //     Assert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());
+  //   }
+  //   return geom0;
+  // }
   
   /// Constructs an empty {@link LineString} geometry.
   /// 
@@ -568,10 +578,10 @@ class GeometryFactory{
     switch (dimension) {
     case -1: return createGeometryCollection();
     case 0: return createPoint();
-    case 1: return createLineString();
+    case 1: return createLineStringEmpty();
     case 2: return createPolygon();
     default:
-      throw new ArgumentError("Invalid dimension: " + dimension);
+      throw new ArgumentError("Invalid dimension: $dimension");
     }
   }
   
@@ -590,7 +600,7 @@ class GeometryFactory{
   /// @return a deep copy of the input geometry, using the CoordinateSequence type of this factory
   /// 
   /// @see Geometry#copy() 
-  Geometry createGeometry(Geometry g)
+  Geometry? createGeometry(Geometry g)
   {
     GeometryEditor editor = new GeometryEditor(this);
     return editor.edit(g, new CoordSeqCloneOp(coordinateSequenceFactory));
@@ -613,11 +623,13 @@ class GeometryFactory{
 
 
 // TODO: ruier edit. 内部类
- /**private static*/ class CoordSeqCloneOp extends CoordinateSequenceOperation {
+ /**private static*/ 
+ class CoordSeqCloneOp extends CoordinateSequenceOperation {
     CoordinateSequenceFactory coordinateSequenceFactory;
-    CoordSeqCloneOp(CoordinateSequenceFactory coordinateSequenceFactory) {
-      this.coordinateSequenceFactory = coordinateSequenceFactory;
-    }
+
+    CoordSeqCloneOp(this.coordinateSequenceFactory);
+    
+    @override
     CoordinateSequence edit(CoordinateSequence coordSeq, Geometry geometry) {
       return coordinateSequenceFactory.createFromCoordSeq(coordSeq);
     }

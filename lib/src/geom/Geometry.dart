@@ -33,6 +33,7 @@
 
 
 import 'package:jtscore4dart/src/algorithm/Centroid.dart';
+import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
 import 'package:jtscore4dart/src/algorithm/InteriorPoint.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequenceComparator.dart';
@@ -42,7 +43,11 @@ import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/Point.dart';
 import 'package:jtscore4dart/src/geom/Polygon.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
 import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
+import 'package:jtscore4dart/src/operation/predicate/RectangleContains.dart';
+import 'package:jtscore4dart/src/operation/predicate/RectangleIntersects.dart';
+import 'package:jtscore4dart/src/operation/relate/RelateOp.dart';
 import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
 import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
 
@@ -50,6 +55,7 @@ import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
 import 'GeometryFilter.dart';
 import 'GeometryOverlay.dart';
+import 'IntersectionMatrix.dart';
 
 
 /// A representation of a planar, linear vector geometry.
@@ -704,7 +710,7 @@ abstract class Geometry{
       return RectangleIntersects.intersects( this as Polygon, g);
     }
     if (g.isRectangle()) {
-      return RectangleIntersects.intersects((Polygon) g, this);
+      return RectangleIntersects.intersects( g as Polygon, this);
     }
     if (isGeometryCollection() || g.isGeometryCollection()) {
       for (int i = 0 ; i < getNumGeometries() ; i++) {
@@ -961,7 +967,7 @@ abstract class Geometry{
   ///@return                      <code>true</code> if the DE-9IM intersection
   ///      matrix for the two <code>Geometry</code>s match <code>intersectionPattern</code>
   /// @see IntersectionMatrix
-  bool relate(Geometry g, String intersectionPattern) {
+  bool relateOfPattern(Geometry g, String intersectionPattern) {
     return relate(g).matches(intersectionPattern);
   }
 
@@ -974,26 +980,6 @@ abstract class Geometry{
     checkNotGeometryCollection(this);
     checkNotGeometryCollection(g);
     return RelateOp.relate(this, g);
-  }
-
-  /// Tests whether this geometry is
-  /// topologically equal to the argument geometry.
-  /// <p>
-  /// This method is included for backward compatibility reasons.
-  /// It has been superseded by the {@link #equalsTopo(Geometry)} method,
-  /// which has been named to clearly denote its functionality.
-  /// <p>
-  /// This method should NOT be confused with the method
-  /// {@link #equals(Object)}, which implements
-  /// an exact equality comparison.
-  ///
-  ///@param  g  the <code>Geometry</code> with which to compare this <code>Geometry</code>
-  ///@return true if the two <code>Geometry</code>s are topologically equal
-  ///
-  ///@see #equalsTopo(Geometry)
-  bool equals(Geometry g) {
-    if (g == null) return false;
-    return equalsTopo(g);
   }
 
   /// Tests whether this geometry is topologically equal to the argument geometry
@@ -1062,6 +1048,27 @@ abstract class Geometry{
   }
 
 
+  /// Tests whether this geometry is
+  /// topologically equal to the argument geometry.
+  /// <p>
+  /// This method is included for backward compatibility reasons.
+  /// It has been superseded by the {@link #equalsTopo(Geometry)} method,
+  /// which has been named to clearly denote its functionality.
+  /// <p>
+  /// This method should NOT be confused with the method
+  /// {@link #equals(Object)}, which implements
+  /// an exact equality comparison.
+  ///
+  ///@param  g  the <code>Geometry</code> with which to compare this <code>Geometry</code>
+  ///@return true if the two <code>Geometry</code>s are topologically equal
+  ///
+  ///@see #equalsTopo(Geometry)
+  bool equalsOfTopo(Geometry g) {
+    if (g == null) return false;
+    return equalsTopo(g);
+  }
+
+
   // @override
   // String toString() {
   //   return toText();
@@ -1077,34 +1084,6 @@ abstract class Geometry{
   //   WKTWriter writer = new WKTWriter();
   //   return writer.write(this);
   // }
-
-  /// Computes a buffer area around this geometry having the given width. The
-  /// buffer of a Geometry is the Minkowski sum or difference of the geometry
-  /// with a disc of radius <code>abs(distance)</code>.
-  /// <p>
-  /// Mathematically-exact buffer area boundaries can contain circular arcs.
-  /// To represent these arcs using linear geometry they must be approximated with line segments.
-  /// The buffer geometry is constructed using 8 segments per quadrant to approximate
-  /// the circular arcs.
-  /// The end cap style is <code>CAP_ROUND</code>.
-  /// <p>
-  /// The buffer operation always returns a polygonal result. The negative or
-  /// zero-distance buffer of lines and points is always an empty {@link Polygon}.
-  /// This is also the result for the buffers of degenerate (zero-area) polygons.
-  ///
-  /// @param distance
-  ///          the width of the buffer (may be positive, negative or 0)
-  /// @return a polygonal geometry representing the buffer region (which may be
-  ///         empty)
-  ///
-  /// @throws TopologyException
-  ///           if a robustness error occurs
-  ///
-  /// @see #buffer(double, int)
-  /// @see #buffer(double, int, int)
-	Geometry buffer(double distance) {
-		return BufferOp.bufferOp(this, distance);
-	}
 
   /// Computes a buffer area around this geometry having the given width and with
   /// a specified accuracy of approximation for circular arcs.
@@ -1136,6 +1115,35 @@ abstract class Geometry{
   Geometry buffer(double distance, int quadrantSegments) {
     return BufferOp.bufferOp(this, distance, quadrantSegments);
   }
+
+  /// Computes a buffer area around this geometry having the given width. The
+  /// buffer of a Geometry is the Minkowski sum or difference of the geometry
+  /// with a disc of radius <code>abs(distance)</code>.
+  /// <p>
+  /// Mathematically-exact buffer area boundaries can contain circular arcs.
+  /// To represent these arcs using linear geometry they must be approximated with line segments.
+  /// The buffer geometry is constructed using 8 segments per quadrant to approximate
+  /// the circular arcs.
+  /// The end cap style is <code>CAP_ROUND</code>.
+  /// <p>
+  /// The buffer operation always returns a polygonal result. The negative or
+  /// zero-distance buffer of lines and points is always an empty {@link Polygon}.
+  /// This is also the result for the buffers of degenerate (zero-area) polygons.
+  ///
+  /// @param distance
+  ///          the width of the buffer (may be positive, negative or 0)
+  /// @return a polygonal geometry representing the buffer region (which may be
+  ///         empty)
+  ///
+  /// @throws TopologyException
+  ///           if a robustness error occurs
+  ///
+  /// @see #buffer(double, int)
+  /// @see #buffer(double, int, int)
+	Geometry buffer(double distance) {
+		return BufferOp.bufferOp(this, distance);
+	}
+
 
   /// Computes a buffer area around this geometry having the given
   /// width and with a specified accuracy of approximation for circular arcs,
@@ -1372,7 +1380,8 @@ abstract class Geometry{
   /// @see #equalsExact(Geometry)
   /// @see #normalize()
   /// @see #norm()
-  /**abstract */ bool equalsExactWithTolerance(Geometry other, double tolerance);
+  /**abstract */ 
+  bool equalsExactWithTolerance(Geometry other, double tolerance);
 
   /// Returns true if the two <code>Geometry</code>s are exactly equal.
   /// Two Geometries are exactly equal iff:
@@ -1470,18 +1479,19 @@ abstract class Geometry{
   ///
   /// @return a clone of this instance
   /// @deprecated
-  @Deprecated("没有道理，文档说的")
-  Object clone() {
-    try {
-      Geometry clone = (Geometry) super.clone();
-      if (clone.envelope != null) { clone.envelope = new Envelope(clone.envelope); }
-      return clone;
-    }
-    catch (CloneNotSupportedException e) {
-      Assert.shouldNeverReachHere();
-      return null;
-    }
-  }
+  // TODO: ruier edit. dart clone...
+  // @Deprecated("没有道理，文档说的")
+  // Object clone() {
+  //   try {
+  //     Geometry clone =  super.clone() as Geometry;
+  //     if (clone.envelope != null) { clone.envelope = new Envelope(clone.envelope); }
+  //     return clone;
+  //   }
+  //   catch (CloneNotSupportedException e) {
+  //     Assert.shouldNeverReachHere();
+  //     return null;
+  //   }
+  // }
 
   /// Creates a deep copy of this {@link Geometry} object.
   /// Coordinate sequences contained in it are copied.
@@ -1495,7 +1505,7 @@ abstract class Geometry{
   /// @return a deep copy of this geometry
   Geometry copy() {
     Geometry copy = copyInternal();
-    copy.envelope = envelope == null ? null : envelope.copy();
+    copy.envelope = envelope?.copy();
     copy.SRID = this.SRID;
     copy.userData = this.userData;
     return copy;
@@ -1697,21 +1707,42 @@ abstract class Geometry{
   ///@param  b  a <code>Collection</code> of <code>Comparable</code>s
   ///@return    the first non-zero <code>compareTo</code> result, if any;
   ///      otherwise, zero
-  /**protected */ int compare(Collection a, Collection b) {
-    Iterator i = a.iterator();
-    Iterator j = b.iterator();
-    while (i.hasNext() && j.hasNext()) {
-      Comparable aElement = (Comparable) i.next();
-      Comparable bElement = (Comparable) j.next();
+  /**protected */ 
+  // TODO: ruier edit.
+  // int compare(Collection a, Collection b) {
+  //   Iterator i = a.iterator();
+  //   Iterator j = b.iterator();
+  //   while (i.hasNext() && j.hasNext()) {
+  //     Comparable aElement = (Comparable) i.next();
+  //     Comparable bElement = (Comparable) j.next();
+  //     int comparison = aElement.compareTo(bElement);
+  //     if (comparison != 0) {
+  //       return comparison;
+  //     }
+  //   }
+  //   if (i.hasNext()) {
+  //     return 1;
+  //   }
+  //   if (j.hasNext()) {
+  //     return -1;
+  //   }
+  //   return 0;
+  // }
+  int compare(Iterable a,Iterable b) {
+    Iterator i = a.iterator;
+    Iterator j = b.iterator;
+    while (i.moveNext() && j.moveNext()) {
+      Comparable aElement =  i.current as Comparable;
+      Comparable bElement = j.current as Comparable;
       int comparison = aElement.compareTo(bElement);
       if (comparison != 0) {
         return comparison;
       }
     }
-    if (i.hasNext()) {
+    if (i.moveNext()) {
       return 1;
     }
-    if (j.hasNext()) {
+    if (j.moveNext()) {
       return -1;
     }
     return 0;
@@ -1730,7 +1761,7 @@ abstract class Geometry{
     if (coord == null) {
       return exemplar.getFactory().createPoint();
     }
-    exemplar.getPrecisionModel().makePrecise(coord);
+    exemplar.getPrecisionModel().makePreciseFromCoord(coord);
     return exemplar.getFactory().createPoint(coord);
   }
   
@@ -1743,15 +1774,11 @@ abstract class Geometry{
   /// Gets a hash code for the Geometry.
   ///
   /// @return an integer value suitable for use as a hashcode
+  // TODO: ruier edit.
   // int hashCode()
   // {
   //   return getEnvelopeInternal().hashCode();
   // }
-  @override
-  int get hashCode
-  {
-    return getEnvelopeInternal().hashCode();
-  }
 
 }
 

@@ -86,8 +86,8 @@ class MultiLineString
     if (isEmpty()) {
       return false;
     }
-    for (int i = 0; i < geometries.length; i++) {
-      if (!( geometries[i] as LineString).isClosed()) {
+    for (int i = 0; i < geometries!.length; i++) {
+      if (!( geometries![i] as LineString).isClosed()) {
         return false;
       }
     }
@@ -123,14 +123,14 @@ class MultiLineString
     List<LineString> lineStrings = [];
     for (int i = 0; i < lineStrings.length; i++) {
       // lineStrings[i] =  this.geometries[i].reverse() as LineString;
-      lineStrings.add(this.geometries[i].reverse() as LineString);
+      lineStrings.add(this.geometries![i].reverse() as LineString);
     }
     return new MultiLineString(lineStrings, factory);
   }
   
  /**protected */@override
   MultiLineString copyInternal() {
-    List<LineString> lineStrings = List.generate(this.geometries.length,(i) => this.geometries[i].copy() as LineString);
+    List<LineString> lineStrings = List.generate(this.geometries!.length,(i) => this.geometries![i].copy() as LineString);
     
     // List<LineString> lineStrings = new LineString[this.geometries.length];
     // for (int i = 0; i < lineStrings.length; i++) {

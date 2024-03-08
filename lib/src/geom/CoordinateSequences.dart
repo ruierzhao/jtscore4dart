@@ -135,7 +135,7 @@ class CoordinateSequences {
   
   /**private */ static CoordinateSequence createClosedRing(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
   {
-    CoordinateSequence newseq = fact.create(size, seq.getDimension());
+    CoordinateSequence newseq = fact.createBySize(size, seq.getDimension());
     int n = seq.size();
     copy(seq, 0, newseq, 0, n);
     // fill remaining coordinates with start point
@@ -147,7 +147,7 @@ class CoordinateSequences {
   
   static CoordinateSequence extend(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
   {
-    CoordinateSequence newseq = fact.create(size, seq.getDimension());
+    CoordinateSequence newseq = fact.createBySize(size, seq.getDimension());
     int n = seq.size();
     copy(seq, 0, newseq, 0, n);
     // fill remaining coordinates with end point, if it exists

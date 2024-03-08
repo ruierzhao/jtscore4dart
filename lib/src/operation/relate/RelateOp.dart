@@ -16,6 +16,13 @@
 // import org.locationtech.jts.geom.IntersectionMatrix;
 // import org.locationtech.jts.operation.GeometryGraphOperation;
 
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
+import 'package:jtscore4dart/src/operation/relate/RelateComputer.dart';
+
+import '../GeometryGraphOperation.dart';
+
 /**
  * Implements the SFS <tt>relate()</tt> generalized spatial predicate on two {@link Geometry}s.
  * <p>

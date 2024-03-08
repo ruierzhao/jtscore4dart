@@ -99,26 +99,28 @@ class MultiPolygon
   @override
   Geometry getBoundary() {
     if (isEmpty()) {
-      return getFactory().createMultiLineString();
+      return getFactory().createMultiLineString([]);
     }
-    ArrayList allRings = new ArrayList();
-    for (int i = 0; i < geometries.length; i++) {
-      Polygon polygon = (Polygon) geometries[i];
+    // ArrayList allRings = new ArrayList();
+    List allRings = [];
+    for (int i = 0; i < geometries!.length; i++) {
+      Polygon polygon =  geometries![i] as Polygon;
       Geometry rings = polygon.getBoundary();
       for (int j = 0; j < rings.getNumGeometries(); j++) {
         allRings.add(rings.getGeometryN(j));
       }
     }
-    List<LineString> allRingsArray = new LineString[allRings.size()];
-    return getFactory().createMultiLineString((List<LineString>) allRings.toArray(allRingsArray));
+    // List<LineString> allRingsArray = new LineString[allRings!.length];
+    // return getFactory().createMultiLineString((List<LineString>) allRings.toArray(allRingsArray));
+    return getFactory().createMultiLineString(allRings as List<LineString>);
   }
 
   @override
-  bool equalsExact(Geometry other, double tolerance) {
+  bool equalsExactWithTolerance(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
-    return super.equalsExact(other, tolerance);
+    return super.equalsExactWithTolerance(other, tolerance);
   }
 
   /// Creates a {@link MultiPolygon} with
@@ -133,18 +135,22 @@ class MultiPolygon
 
  /**protected */@override
   MultiPolygon reverseInternal() {
-    List<Polygon> polygons = new Polygon[this.geometries.length];
+    // List<Polygon> polygons = new Polygon[this.geometries.length];
+    List<Polygon> polygons = [];
     for (int i = 0; i < polygons.length; i++) {
-      polygons[i] = (Polygon) this.geometries[i].reverse();
+      // polygons[i] = (Polygon) this.geometries[i].reverse();
+      polygons.add(this.geometries![i].reverse() as Polygon);
     }
     return new MultiPolygon(polygons, factory);
   }
   
  /**protected */@override
   MultiPolygon copyInternal() {
-    List<Polygon> polygons = new Polygon[this.geometries.length];
+    // List<Polygon> polygons = new Polygon[this.geometries.length];
+    List<Polygon> polygons = [];
     for (int i = 0; i < polygons.length; i++) {
-      polygons[i] = (Polygon) this.geometries[i].copy();
+      // polygons[i] = (Polygon) this.geometries[i].copy();
+      polygons.add(this.geometries![i].copy() as Polygon);
     }
     return new MultiPolygon(polygons, factory);
   }

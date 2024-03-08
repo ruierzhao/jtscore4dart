@@ -80,23 +80,20 @@ class GeometryEditor
 {
   /// The factory used to create the modified Geometry.
   /// If <tt>null</tt> the GeometryFactory of the input is used.
- /**private */GeometryFactory factory = null;
+ /**private */GeometryFactory? factory = null;
  /**private */bool isUserDataCopied = false;
 
   /// Creates a new GeometryEditor object which will create
   /// edited {@link Geometry}s with the same {@link GeometryFactory} as the input Geometry.
-  GeometryEditor()
-  {
-  }
+  // GeometryEditor()
+  // {
+  // }
 
   /// Creates a new GeometryEditor object which will create
   /// edited {@link Geometry}s with the given {@link GeometryFactory}.
   ///
   /// @param factory the GeometryFactory to create  edited Geometrys with
-  GeometryEditor(GeometryFactory factory)
-  {
-    this.factory = factory;
-  }
+  GeometryEditor([this.factory]);
 
   /// Sets whether the User Data is copied to the edit result.
   /// Only the object reference is copied.
@@ -114,14 +111,14 @@ class GeometryEditor
   /// @param geometry the Geometry to edit
   /// @param operation the edit operation to carry out
   /// @return a new {@link Geometry} which is the result of the editing (which may be empty)
-  Geometry edit(Geometry geometry, GeometryEditorOperation operation)
+  Geometry? edit(Geometry geometry, GeometryEditorOperation operation)
   {
     // nothing to do
     if (geometry == null) return null;
     
     Geometry result = editInternal(geometry, operation);
     if (isUserDataCopied) {
-      result.setUserData(geometry.getUserData());
+      result.setUserData(geometry.getUserData()!);
     }
     return result;
   }

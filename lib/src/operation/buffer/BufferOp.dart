@@ -29,17 +29,30 @@
 import 'dart:math';
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/math/MathUtil.dart';
 
+import 'BufferBuilder.dart';
 import 'BufferParameters.dart';
 
 /**
+ * 计算geometry buffer，支持正负数的buffer 距离
+ * 总是返回polygonal 
+ * 直线的负距离或者0距离的buffer总是返回 empty polygon
+ * 
+ * 使用BufferParameters#setQuadrantSegments(int) 指定arc 精确度。
+ * 
+ * buffer 操作总是返回有效 的polygon，使用这一特性，可以通过设置0 距离的buffer 将无效的polygon 转为有效
+ * 到是需要注意：自相交图形只会保留闭合的最大面。
+ * 
  * Computes the buffer of a geometry, for both positive and negative buffer distances.
  * <p>
  * In GIS, the positive (or negative) buffer of a geometry is defined as
  * the Minkowski sum (or difference) of the geometry
  * with a circle of radius equal to the absolute value of the buffer distance.
+ * 
  * In the CAD/CAM world buffers are known as <i>offset curves</i>.
+ * 
  * In morphological analysis the 
  * operation of positive and negative buffering 
  * is referred to as <i>erosion</i> and <i>dilation</i>
@@ -91,23 +104,23 @@ class BufferOp
    * Specifies a round line buffer end cap style.
    * @deprecated use BufferParameters
    */
-  static final int CAP_ROUND = BufferParameters.CAP_ROUND;
+  static const int CAP_ROUND = BufferParameters.CAP_ROUND;
   /**
    * Specifies a butt (or flat) line buffer end cap style.
    * @deprecated use BufferParameters
    */
-  static final int CAP_BUTT = BufferParameters.CAP_FLAT;
+  static const int CAP_BUTT = BufferParameters.CAP_FLAT;
   
   /**
    * Specifies a butt (or flat) line buffer end cap style.
    * @deprecated use BufferParameters
    */
-  static final int CAP_FLAT = BufferParameters.CAP_FLAT;
+  static const int CAP_FLAT = BufferParameters.CAP_FLAT;
   /**
    * Specifies a square line buffer end cap style.
    * @deprecated use BufferParameters
    */
-  static final int CAP_SQUARE = BufferParameters.CAP_SQUARE;
+  static const int CAP_SQUARE = BufferParameters.CAP_SQUARE;
   
   /**
    * A number of digits of precision which leaves some computational "headroom"
@@ -134,17 +147,15 @@ class BufferOp
    *
    * @return a scale factor for the buffer computation
    */
- /**private */static double precisionScaleFactor(Geometry g,
-      double distance,
-    int maxPrecisionDigits)
-  {
+ /**private */
+ static double precisionScaleFactor(Geometry g, double distance, int maxPrecisionDigits) {
     Envelope env = g.getEnvelopeInternal();
     double envMax = MathUtil.max(
         (env.getMaxX().abs()), 
-            (env.getMaxY().abs()), 
-                (env.getMinX().abs()), 
-                    (env.getMinY().abs())
-            );
+        (env.getMaxY().abs()), 
+        (env.getMinX().abs()), 
+        (env.getMinY().abs())
+        );
     
     double expandByDistance = distance > 0.0 ? distance : 0.0;
     double bufEnvMax = envMax + 2 * expandByDistance;
@@ -183,14 +194,14 @@ class BufferOp
    * @param distance the buffer distance
    * @return the buffer of the input geometry
    */
-  static Geometry bufferOp(Geometry g, double distance)
-  {
-    BufferOp gBuf = new BufferOp(g);
-    Geometry geomBuf = gBuf.getResultGeometry(distance);
-//BufferDebug.saveBuffer(geomBuf);
-    //BufferDebug.runCount++;
-    return geomBuf;
-  }
+  // static Geometry bufferOp(Geometry g, double distance)
+  // {
+  //   BufferOp gBuf = new BufferOp(g);
+  //   Geometry geomBuf = gBuf.getResultGeometry(distance);
+  //   // BufferDebug.saveBuffer(geomBuf);
+  //   // BufferDebug.runCount++;
+  //   return geomBuf;
+  // }
 
   /**
    * Computes the buffer for a geometry for a given buffer distance
@@ -200,9 +211,9 @@ class BufferOp
    * @param distance the buffer distance
    * @param params the buffer parameters to use
    * @return the buffer of the input geometry
-   *
    */
-  static Geometry bufferOp(Geometry g, double distance, BufferParameters params)
+  // TODO: ruier edit.
+  static Geometry bufferOpWithParams(Geometry g, double distance, BufferParameters params)
   {
     BufferOp bufOp = new BufferOp(g, params);
     Geometry geomBuf = bufOp.getResultGeometry(distance);
@@ -219,13 +230,13 @@ class BufferOp
    * @return the buffer of the input geometry
    *
    */
-  static Geometry bufferOp(Geometry g, double distance, int quadrantSegments)
-  {
-    BufferOp bufOp = new BufferOp(g);
-    bufOp.setQuadrantSegments(quadrantSegments);
-    Geometry geomBuf = bufOp.getResultGeometry(distance);
-    return geomBuf;
-  }
+  // static Geometry bufferOp(Geometry g, double distance, int quadrantSegments)
+  // {
+  //   BufferOp bufOp = new BufferOp(g);
+  //   bufOp.setQuadrantSegments(quadrantSegments);
+  //   Geometry geomBuf = bufOp.getResultGeometry(distance);
+  //   return geomBuf;
+  // }
 
   /**
    * Computes the buffer for a geometry for a given buffer distance
@@ -238,17 +249,32 @@ class BufferOp
    * @return the buffer of the input geometry
    *
    */
-  static Geometry bufferOp(Geometry g,
-                                  double distance,
-    int quadrantSegments,
-    int endCapStyle)
+  static Geometry bufferOp(
+    Geometry g,
+    double distance,
+    [int? quadrantSegments,
+    int? endCapStyle])
   {
     BufferOp bufOp = new BufferOp(g);
-    bufOp.setQuadrantSegments(quadrantSegments);
-    bufOp.setEndCapStyle(endCapStyle);
+    if (quadrantSegments != null) {
+      bufOp.setQuadrantSegments(quadrantSegments);
+    }
+    if (endCapStyle != null) {
+      bufOp.setEndCapStyle(endCapStyle);
+    }
     Geometry geomBuf = bufOp.getResultGeometry(distance);
     return geomBuf;
   }
+  // static Geometry bufferOp(Geometry g,double distance,
+  //   int quadrantSegments,
+  //   int endCapStyle,)
+  // {
+  //   BufferOp bufOp = new BufferOp(g);
+  //   bufOp.setQuadrantSegments(quadrantSegments);
+  //   bufOp.setEndCapStyle(endCapStyle);
+  //   Geometry geomBuf = bufOp.getResultGeometry(distance);
+  //   return geomBuf;
+  // }
 
   /**
    * Buffers a geometry with distance zero.
@@ -290,7 +316,8 @@ class BufferOp
    * @param poly1 a polygonal geometry (which may be empty)
    * @return a combined polygonal geometry
    */
- /**private */static Geometry combine(Geometry poly0, Geometry poly1) {
+ /**private */
+ static Geometry combine(Geometry poly0, Geometry poly1) {
     // short-circuit - handles case where geometry is valid
     if (poly1.isEmpty()) return poly0;
     if (poly0.isEmpty()) return poly1;
@@ -302,19 +329,20 @@ class BufferOp
     return poly0.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polys));
   }
 
- /**private */static void extractPolygons(Geometry poly0, List<Polygon> polys) {
+ /**private */
+ static void extractPolygons(Geometry poly0, List<Polygon> polys) {
     for (int i = 0; i < poly0.getNumGeometries(); i++) {
       polys.add((Polygon) poly0.getGeometryN(i));
     }
   }
 
  /**private */Geometry argGeom;
- /**private */double distance;
+ /**private */late double distance;
   
- /**private */BufferParameters bufParams = new BufferParameters();
+ /**private */BufferParameters bufParams = BufferParameters();
 
- /**private */Geometry resultGeometry = null;
- /**private */RuntimeException saveException;   // debugging only
+ /**private */Geometry resultGeometry = null!;
+//  /**private */RuntimeException saveException;   // debugging only
  /**private */bool isInvertOrientation = false;
 
   /**
@@ -322,9 +350,9 @@ class BufferOp
    *
    * @param g the geometry to buffer
    */
-  BufferOp(Geometry g) {
-    argGeom = g;
-  }
+  // BufferOp(Geometry g) {
+  //   argGeom = g;
+  // }
 
   /**
    * Initializes a buffer computation for the given geometry
@@ -333,11 +361,8 @@ class BufferOp
    * @param g the geometry to buffer
    * @param bufParams the buffer parameters to use
    */
-  BufferOp(Geometry g, BufferParameters bufParams) {
-    argGeom = g;
-    this.bufParams = bufParams;
-  }
-
+  BufferOp(this.argGeom, [BufferParameters? bufParams])
+    :this.bufParams = bufParams??= BufferParameters();
   /**
    * Specifies the end cap style of the generated buffer.
    * The styles supported are {@link BufferParameters#CAP_ROUND}, {@link BufferParameters#CAP_FLAT}, and {@link BufferParameters#CAP_SQUARE}.
@@ -374,7 +399,8 @@ class BufferOp
     return resultGeometry;
   }
 
- /**private */void computeGeometry()
+ /**private */
+ void computeGeometry()
   {
     bufferOriginalPrecision();
     if (resultGeometry != null) return;
@@ -414,7 +440,8 @@ class BufferOp
     bufferFixedPrecision(fixedPM);
   }
   
- /**private */void bufferOriginalPrecision()
+ /**private */
+ void bufferOriginalPrecision()
   {
     try {
       // use fast noding by default
@@ -430,13 +457,15 @@ class BufferOp
     }
   }
 
- /**private */BufferBuilder createBufferBullder() {
+ /**private */
+ BufferBuilder createBufferBullder() {
     BufferBuilder bufBuilder = new BufferBuilder(bufParams);
     bufBuilder.setInvertOrientation(isInvertOrientation);
     return bufBuilder;
   }
 
- /**private */void bufferFixedPrecision(PrecisionModel fixedPM)
+ /**private */
+ void bufferFixedPrecision(PrecisionModel fixedPM)
   {
     //System.out.println("recomputing with precision scale factor = " + fixedPM);
 

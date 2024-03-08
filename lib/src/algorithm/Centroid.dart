@@ -96,7 +96,7 @@ class Centroid
       return;
     }
     if (geom is Point) {
-      _addPoint(geom.getCoordinate());
+      _addPoint(geom.getCoordinate()!);
     }
     else if (geom is LineString) {
       _addLineSegments(geom.getCoordinates());

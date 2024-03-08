@@ -13,6 +13,10 @@
 
 // import org.locationtech.jts.algorithm.Angle;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/algorithm/Angle.dart';
+
 /**
  * A value class containing the parameters which 
  * specify how a buffer should be constructed.
@@ -34,28 +38,28 @@ class BufferParameters
   /**
    * Specifies a round line buffer end cap style.
    */
-  static final int CAP_ROUND = 1;
+  static const int CAP_ROUND = 1;
   /**
    * Specifies a flat line buffer end cap style.
    */
-  static final int CAP_FLAT = 2;
+  static const int CAP_FLAT = 2;
   /**
    * Specifies a square line buffer end cap style.
    */
-  static final int CAP_SQUARE = 3;
+  static const int CAP_SQUARE = 3;
   
   /**
    * Specifies a round join style.
    */
-  static final int JOIN_ROUND = 1;
+  static const int JOIN_ROUND = 1;
   /**
    * Specifies a mitre join style.
    */
-  static final int JOIN_MITRE = 2;
+  static const int JOIN_MITRE = 2;
   /**
    * Specifies a bevel join style.
    */
-  static final int JOIN_BEVEL = 3;
+  static const int JOIN_BEVEL = 3;
 
   /**
    * The default number of facets into which to divide a fillet of 90 degrees.
@@ -63,34 +67,42 @@ class BufferParameters
    * For a max error of &lt; 1%, use QS = 12.
    * For a max error of &lt; 0.1%, use QS = 18.
    */
-  static final int DEFAULT_QUADRANT_SEGMENTS = 8;
+  static const int DEFAULT_QUADRANT_SEGMENTS = 8;
 
   /**
    * The default mitre limit
    * Allows fairly pointy mitres.
    */
-  static final double DEFAULT_MITRE_LIMIT = 5.0;
+  static const double DEFAULT_MITRE_LIMIT = 5.0;
   
   /**
    * The default simplify factor
    * Provides an accuracy of about 1%, which matches the accuracy of the default Quadrant Segments parameter.
    */
-  static final double DEFAULT_SIMPLIFY_FACTOR = 0.01;
+  static const double DEFAULT_SIMPLIFY_FACTOR = 0.01;
   
 
- /**private */int quadrantSegments = DEFAULT_QUADRANT_SEGMENTS;
- /**private */int endCapStyle = CAP_ROUND;
- /**private */int joinStyle = JOIN_ROUND;
- /**private */double mitreLimit = DEFAULT_MITRE_LIMIT;
- /**private */bool isSingleSided = false;
- /**private */double simplifyFactor = DEFAULT_SIMPLIFY_FACTOR;
+  int quadrantSegments = DEFAULT_QUADRANT_SEGMENTS;
+  int endCapStyle = CAP_ROUND;
+  int joinStyle = JOIN_ROUND;
+  double mitreLimit = DEFAULT_MITRE_LIMIT;
+  bool isSingleSided = false;
+  double simplifyFactor = DEFAULT_SIMPLIFY_FACTOR;
   
+
+  // TODO: ruier edit. 
+  BufferParameters({
+    this.quadrantSegments = DEFAULT_QUADRANT_SEGMENTS,
+    this.endCapStyle = CAP_ROUND,
+    this.joinStyle = JOIN_ROUND,
+    this.mitreLimit = DEFAULT_MITRE_LIMIT,
+  });
   /**
    * Creates a default set of parameters
    *
    */
-  BufferParameters() {
-  }
+  // BufferParameters() {
+  // }
 
   /**
    * Creates a set of parameters with the
@@ -98,10 +110,10 @@ class BufferParameters
    * 
    * @param quadrantSegments the number of quadrant segments to use
    */
-  BufferParameters(int quadrantSegments) 
-  {
-    setQuadrantSegments(quadrantSegments);
-  }
+  // BufferParameters(int quadrantSegments) 
+  // {
+  //   setQuadrantSegments(quadrantSegments);
+  // }
 
   /**
    * Creates a set of parameters with the
@@ -110,12 +122,12 @@ class BufferParameters
    * @param quadrantSegments the number of quadrant segments to use
    * @param endCapStyle the end cap style to use
    */
-  BufferParameters(int quadrantSegments,
-      int endCapStyle) 
-  {
-    setQuadrantSegments(quadrantSegments);
-    setEndCapStyle(endCapStyle);
-  }
+  // BufferParameters(int quadrantSegments,
+  //     int endCapStyle) 
+  // {
+  //   setQuadrantSegments(quadrantSegments);
+  //   setEndCapStyle(endCapStyle);
+  // }
 
   /**
    * Creates a set of parameters with the
@@ -126,16 +138,16 @@ class BufferParameters
    * @param joinStyle the join style to use
    * @param mitreLimit the mitre limit to use
    */
-  BufferParameters(int quadrantSegments,
-      int endCapStyle,
-      int joinStyle,
-      double mitreLimit) 
-  {
-    setQuadrantSegments(quadrantSegments);
-    setEndCapStyle(endCapStyle);
-    setJoinStyle(joinStyle);
-    setMitreLimit(mitreLimit);
-  }
+  // BufferParameters(int quadrantSegments,
+  //     int endCapStyle,
+  //     int joinStyle,
+  //     double mitreLimit) 
+  // {
+  //   setQuadrantSegments(quadrantSegments);
+  //   setEndCapStyle(endCapStyle);
+  //   setJoinStyle(joinStyle);
+  //   setMitreLimit(mitreLimit);
+  // }
 
   /**
    * Gets the number of quadrant segments which will be used
@@ -143,10 +155,10 @@ class BufferParameters
    * 
    * @return the number of quadrant segments
    */
-  int getQuadrantSegments()
-  {
-    return quadrantSegments;
-  }
+  // int getQuadrantSegments()
+  // {
+  //   return quadrantSegments;
+  // }
   
   /**
    * Sets the number of line segments in a quarter-circle
@@ -179,7 +191,7 @@ class BufferParameters
   static double bufferDistanceError(int quadSegs)
   {
     double alpha = Angle.PI_OVER_2 / quadSegs;
-    return 1 - math.cos(alpha / 2.0);
+    return 1 - cos(alpha / 2.0);
   }
   
   /**
@@ -187,10 +199,10 @@ class BufferParameters
    * 
    * @return the end cap style code
    */
-  int getEndCapStyle()
-  {
-    return endCapStyle;
-  }
+  // int getEndCapStyle()
+  // {
+  //   return endCapStyle;
+  // }
   
   /**
    * Specifies the end cap style of the generated buffer.
@@ -209,10 +221,10 @@ class BufferParameters
    * 
    * @return the join style code
    */
-  int getJoinStyle()
-  {
-    return joinStyle;
-  }
+  // int getJoinStyle()
+  // {
+  //   return joinStyle;
+  // }
   
   /**
    * Sets the join style for outside (reflex) corners between line segments.
@@ -232,10 +244,10 @@ class BufferParameters
    * 
    * @return the limit value
    */
-  double getMitreLimit()
-  {
-    return mitreLimit;
-  }
+  // double getMitreLimit()
+  // {
+  //   return mitreLimit;
+  // }
   
   /**
    * Sets the limit on the mitre ratio used for very sharp corners.
@@ -283,18 +295,18 @@ class BufferParameters
    * 
    * @return true if the generated buffer is to be single-sided
    */
-  bool isSingleSided() {
-    return isSingleSided;
-  }
+  // bool getIsSingleSided() {
+  //   return isSingleSided;
+  // }
 
   /**
    * Gets the simplify factor.
    * 
    * @return the simplify factor
    */
-  double getSimplifyFactor() {
-    return simplifyFactor;
-  }
+  // double getSimplifyFactor() {
+  //   return simplifyFactor;
+  // }
   
   /**
    * Sets the factor used to determine the simplify distance tolerance

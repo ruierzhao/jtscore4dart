@@ -1112,9 +1112,9 @@ abstract class Geometry{
   ///
   /// @see #buffer(double)
   /// @see #buffer(double, int, int)
-  Geometry buffer(double distance, int quadrantSegments) {
-    return BufferOp.bufferOp(this, distance, quadrantSegments);
-  }
+  // Geometry buffer(double distance, int quadrantSegments) {
+  //   return BufferOp.bufferOp(this, distance, quadrantSegments);
+  // }
 
   /// Computes a buffer area around this geometry having the given width. The
   /// buffer of a Geometry is the Minkowski sum or difference of the geometry
@@ -1140,9 +1140,9 @@ abstract class Geometry{
   ///
   /// @see #buffer(double, int)
   /// @see #buffer(double, int, int)
-	Geometry buffer(double distance) {
-		return BufferOp.bufferOp(this, distance);
-	}
+	// Geometry buffer(double distance) {
+	// 	return BufferOp.bufferOp(this, distance);
+	// }
 
 
   /// Computes a buffer area around this geometry having the given
@@ -1177,7 +1177,7 @@ abstract class Geometry{
   /// @see #buffer(double)
   /// @see #buffer(double, int)
   /// @see BufferOp
-  Geometry buffer(double distance, int quadrantSegments, int endCapStyle) {
+  Geometry buffer(double distance, [int? quadrantSegments, int? endCapStyle]) {
     return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
   }
 

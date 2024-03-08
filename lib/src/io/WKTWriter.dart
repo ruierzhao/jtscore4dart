@@ -32,6 +32,13 @@
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import 'Ordinate.dart';
+import 'OrdinateFormat.dart';
+import 'WKTConstants.dart';
+
 /**
  * Writes the Well-Known Text representation of a {@link Geometry}.
  * The Well-Known Text format is defined in the
@@ -78,19 +85,20 @@ class WKTWriter
    */
   static String toLineString(CoordinateSequence seq)
   {
-    StringBuilder buf = new StringBuilder();
-    buf.append(WKTConstants.LINESTRING);
-    buf.append(" ");
+    
+    StringBuffer buf = new StringBuffer();
+    buf.write(WKTConstants.LINESTRING);
+    buf.write(" ");
     if (seq.size() == 0)
-      buf.append(WKTConstants.EMPTY);
+      buf.write(WKTConstants.EMPTY);
     else {
-      buf.append("(");
+      buf.write("(");
       for (int i = 0; i < seq.size(); i++) {
         if (i > 0)
-          buf.append(", ");
-        buf.append(format(seq.getX(i), seq.getY(i)));
+          buf.write(", ");
+        buf.write(format(seq.getX(i), seq.getY(i)));
       }
-      buf.append(")");
+      buf.write(")");
     }
     return buf.toString();
   }
@@ -105,19 +113,19 @@ class WKTWriter
    */
   static String toLineString(List<Coordinate> coord)
   {
-    StringBuilder buf = new StringBuilder();
-    buf.append(WKTConstants.LINESTRING);
-    buf.append(" ");
+    StringBuffer buf = new StringBuffer();
+    buf.write(WKTConstants.LINESTRING);
+    buf.write(" ");
     if (coord.length == 0)
-      buf.append(WKTConstants.EMPTY);
+      buf.write(WKTConstants.EMPTY);
     else {
-      buf.append("(");
+      buf.write("(");
       for (int i = 0; i < coord.length; i++) {
         if (i > 0)
-          buf.append(", ");
-        buf.append(format(coord[i]));
+          buf.write(", ");
+        buf.write(format(coord[i]));
       }
-      buf.append(")");
+      buf.write(")");
     }
     return buf.toString();
   }
@@ -168,9 +176,9 @@ class WKTWriter
    *@return        a <code>String</code> of characters
    */
  /**private */static String stringOfChar(char ch, int count) {
-    StringBuilder buf = new StringBuilder(count);
+    StringBuffer buf = new StringBuffer(count);
     for (int i = 0; i < count; i++) {
-      buf.append(ch);
+      buf.write(ch);
     }
     return buf.toString();
   }
@@ -441,7 +449,7 @@ class WKTWriter
     throws IOException
   {
     OrdinateFormat formatter = getFormatter(geometry);
-    // append the WKT
+    // write the WKT
     appendGeometryTaggedText(geometry, useFormatting, writer, formatter);
   }
 

@@ -23,6 +23,8 @@
 // import org.locationtech.jts.geom.MultiLineString;
 
 
+import 'package:jtscore4dart/geometry.dart';
+
 import '../GeometryComponentFilter.dart';
 
 /**
@@ -43,10 +45,11 @@ class LinearComponentExtracter
    * @param lines the collection to add the extracted linear components to
    * @return the collection of linear components (LineStrings or LinearRings)
    */
-  static Collection getLines(Collection geoms, Collection lines)
+  // static Collection getLines(Collection geoms, Collection lines)
+  static Iterable getLines(Iterable geoms, Iterable lines)
   {
-  	for (Iterator i = geoms.iterator(); i.hasNext(); ) {
-  		Geometry g = (Geometry) i.next();
+  	for (Iterator i = geoms.iterator; i.moveNext(); ) {
+  		Geometry g =  i.current as Geometry;
   		getLines(g, lines);
   	}
     return lines;
@@ -61,10 +64,10 @@ class LinearComponentExtracter
    * @param forceToLineString true if LinearRings should be converted to LineStrings
    * @return the collection of linear components (LineStrings or LinearRings)
    */
-  static Collection getLines(Collection geoms, Collection lines, bool forceToLineString)
+  static Iterable getLines(Iterable geoms, Iterable lines, bool forceToLineString)
   {
-  	for (Iterator i = geoms.iterator(); i.hasNext(); ) {
-  		Geometry g = (Geometry) i.next();
+  	for (Iterator i = geoms.iterator; i.moveNext(); ) {
+  		Geometry g = i.current as Geometry;
   		getLines(g, lines, forceToLineString);
   	}
     return lines;
@@ -78,7 +81,7 @@ class LinearComponentExtracter
    * @param lines the Collection to add the extracted linear components to
    * @return the Collection of linear components (LineStrings or LinearRings)
    */
-  static Collection getLines(Geometry geom, Collection lines)
+  static Iterable getLines(Geometry geom, Iterable lines)
   {
   	if (geom is LineString) {
   		lines.add(geom);
@@ -98,7 +101,7 @@ class LinearComponentExtracter
    * @param forceToLineString true if LinearRings should be converted to LineStrings
    * @return the Collection of linear components (LineStrings or LinearRings)
    */
-  static Collection getLines(Geometry geom, Collection lines, bool forceToLineString)
+  static Iterable getLines(Geometry geom, Iterable lines, bool forceToLineString)
   {
     geom.apply(new LinearComponentExtracter(lines, forceToLineString));
     return lines;
@@ -162,25 +165,18 @@ class LinearComponentExtracter
   }
 
 
- /**private */Collection lines;
+ /**private */Iterable lines;
  /**private */bool isForcedToLineString = false;
   
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.
    */
-  LinearComponentExtracter(Collection lines)
-  {
-    this.lines = lines;
-  }
+  // LinearComponentExtracter(this.lines);
 
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.
    */
-  LinearComponentExtracter(Collection lines, bool isForcedToLineString)
-  {
-    this.lines = lines;
-    this.isForcedToLineString = isForcedToLineString;
-  }
+  LinearComponentExtracter(this.lines, [this.isForcedToLineString=false]);
 
   /**
    * Indicates that LinearRing components should be 
@@ -193,6 +189,7 @@ class LinearComponentExtracter
   	this.isForcedToLineString = isForcedToLineString;
   }
   
+  @override
   void filter(Geometry geom)
   {
   	if (isForcedToLineString && geom is LinearRing) {

@@ -17,37 +17,37 @@
 final class GMLConstants{
 	
 	  // Namespace constants
-	  static final String GML_NAMESPACE = "http://www.opengis.net/gml";
-	  static final String GML_PREFIX = "gml";
+	  static const String GML_NAMESPACE = "http://www.opengis.net/gml";
+	  static const String GML_PREFIX = "gml";
 
 	  // Source Coordinate System
-	  static final String GML_ATTR_SRSNAME = "srsName";
+	  static const String GML_ATTR_SRSNAME = "srsName";
 
 	  // GML associative types
-	  static final String GML_GEOMETRY_MEMBER = "geometryMember";
-	  static final String GML_POINT_MEMBER = "pointMember";
-	  static final String GML_POLYGON_MEMBER = "polygonMember";
-	  static final String GML_LINESTRING_MEMBER = "lineStringMember";
-	  static final String GML_OUTER_BOUNDARY_IS = "outerBoundaryIs";
-	  static final String GML_INNER_BOUNDARY_IS = "innerBoundaryIs";
+	  static const String GML_GEOMETRY_MEMBER = "geometryMember";
+	  static const String GML_POINT_MEMBER = "pointMember";
+	  static const String GML_POLYGON_MEMBER = "polygonMember";
+	  static const String GML_LINESTRING_MEMBER = "lineStringMember";
+	  static const String GML_OUTER_BOUNDARY_IS = "outerBoundaryIs";
+	  static const String GML_INNER_BOUNDARY_IS = "innerBoundaryIs";
 
 	  // Primitive Geometries
-	  static final String GML_POINT = "Point";
-	  static final String GML_LINESTRING = "LineString";
-	  static final String GML_LINEARRING = "LinearRing";
-	  static final String GML_POLYGON = "Polygon";
-	  static final String GML_BOX = "Box";
+	  static const String GML_POINT = "Point";
+	  static const String GML_LINESTRING = "LineString";
+	  static const String GML_LINEARRING = "LinearRing";
+	  static const String GML_POLYGON = "Polygon";
+	  static const String GML_BOX = "Box";
 
 	  // Aggregate Geometries
-	  static final String GML_MULTI_GEOMETRY = "MultiGeometry";
-	  static final String GML_MULTI_POINT = "MultiPoint";
-	  static final String GML_MULTI_LINESTRING = "MultiLineString";
-	  static final String GML_MULTI_POLYGON = "MultiPolygon";
+	  static const String GML_MULTI_GEOMETRY = "MultiGeometry";
+	  static const String GML_MULTI_POINT = "MultiPoint";
+	  static const String GML_MULTI_LINESTRING = "MultiLineString";
+	  static const String GML_MULTI_POLYGON = "MultiPolygon";
 
 	  // Coordinates
-	  static final String GML_COORDINATES = "coordinates";
-	  static final String GML_COORD = "coord";
-	  static final String GML_COORD_X = "X";
-	  static final String GML_COORD_Y = "Y";
-	  static final String GML_COORD_Z = "Z";
+	  static const String GML_COORDINATES = "coordinates";
+	  static const String GML_COORD = "coord";
+	  static const String GML_COORD_X = "X";
+	  static const String GML_COORD_Y = "Y";
+	  static const String GML_COORD_Z = "Z";
 }

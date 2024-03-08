@@ -31,6 +31,8 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/geometry.dart';
+
 /// Computes the convex hull of a {@link Geometry}.
 /// The convex hull is the smallest convex Geometry that contains all the
 /// points in the input Geometry.
@@ -43,25 +45,21 @@
 ///@version 1.7
 class ConvexHull
 {
- /**private */static final int TUNING_REDUCE_SIZE = 50;
+ /**private */static const int TUNING_REDUCE_SIZE = 50;
   
  /**private */GeometryFactory geomFactory;
  /**private */List<Coordinate> inputPts;
 
   /// Create a new convex hull construction for the input {@link Geometry}.
-  ConvexHull(Geometry geometry)
-  {
-    this(geometry.getCoordinates(), geometry.getFactory());
-  }
+  ConvexHull.FromGeometry(Geometry geometry):this(geometry.getCoordinates(), geometry.getFactory());
+
   /// Create a new convex hull construction for the input {@link Coordinate} array.
-  ConvexHull(List<Coordinate> pts, GeometryFactory geomFactory)
-  {  
-    //-- suboptimal early uniquing - for performance testing only
+  ConvexHull(this.inputPts, this.geomFactory);
+    // {
+      //-- suboptimal early uniquing - for performance testing only
     //inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
     
-    inputPts = pts;
-    this.geomFactory = geomFactory;
-  }
+    // }
 
   /// Returns a {@link Geometry} that represents the convex hull of the input
   /// geometry.

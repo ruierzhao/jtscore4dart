@@ -30,6 +30,7 @@
 
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 /// A class which supports creating new {@link Geometry}s 
 /// which are modifications of existing ones,
@@ -95,6 +96,7 @@ class GeometryEditor
   /// @param factory the GeometryFactory to create  edited Geometrys with
   GeometryEditor([this.factory]);
 
+  /// 
   /// Sets whether the User Data is copied to the edit result.
   /// Only the object reference is copied.
   /// 
@@ -111,10 +113,11 @@ class GeometryEditor
   /// @param geometry the Geometry to edit
   /// @param operation the edit operation to carry out
   /// @return a new {@link Geometry} which is the result of the editing (which may be empty)
-  Geometry? edit(Geometry geometry, GeometryEditorOperation operation)
+  Geometry edit(Geometry geometry, GeometryEditorOperation operation)
   {
     // nothing to do
-    if (geometry == null) return null;
+    // TODO: ruier edit.
+    // if (geometry == null) return null;
     
     Geometry result = editInternal(geometry, operation);
     if (isUserDataCopied) {
@@ -126,16 +129,14 @@ class GeometryEditor
  /**private */Geometry editInternal(Geometry geometry, GeometryEditorOperation operation)
   {
     // if client did not supply a GeometryFactory, use the one from the input Geometry
-    if (factory == null)
-      factory = geometry.getFactory();
+    factory ??= geometry.getFactory();
 
     if (geometry is GeometryCollection) {
-      return editGeometryCollection((GeometryCollection) geometry,
-                                    operation);
+      return editGeometryCollection( geometry, operation);
     }
 
     if (geometry is Polygon) {
-      return editPolygon((Polygon) geometry, operation);
+      return editPolygon( geometry, operation);
     }
 
     if (geometry is Point) {
@@ -146,16 +147,15 @@ class GeometryEditor
       return operation.edit(geometry, factory);
     }
 
-    Assert.shouldNeverReachHere("Unsupported Geometry class: " + geometry.getClass().getName());
-    return null;
+    // Assert.shouldNeverReachHere("Unsupported Geometry class: " + geometry.getClass().getName());
+    Assert.shouldNeverReachHere("Unsupported Geometry class:  ${geometry.getGeometryType()}");
+    // return null;
   }
 
- /**private */Polygon editPolygon(Polygon polygon,
-                              GeometryEditorOperation operation) {
-    Polygon newPolygon = (Polygon) operation.edit(polygon, factory);
+ /**private */Polygon editPolygon(Polygon polygon,GeometryEditorOperation operation) {
+    Polygon newPolygon = operation.edit(polygon, factory);
     // create one if needed
-    if (newPolygon == null)
-      newPolygon = factory.createPolygon();
+    newPolygon ??= factory!.createPolygon();
     if (newPolygon.isEmpty()) {
       //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
       return newPolygon;
@@ -167,20 +167,20 @@ class GeometryEditor
       return factory.createPolygon();
     }
 
-    ArrayList holes = new ArrayList();
+    List holes = [];
     for (int i = 0; i < newPolygon.getNumInteriorRing(); i++) {
-      LinearRing hole = (LinearRing) edit(newPolygon.getInteriorRingN(i), operation);
+      LinearRing hole = edit(newPolygon.getInteriorRingN(i), operation);
       if (hole == null || hole.isEmpty()) {
         continue;
       }
       holes.add(hole);
     }
 
-    return factory.createPolygon(shell,
-                                 (List<LinearRing>) holes.toArray(new List<LinearRing> {  }));
+    return factory.createPolygon(shell, holes);
   }
 
- /**private */GeometryCollection editGeometryCollection(
+ /**private */
+ GeometryCollection editGeometryCollection(
       GeometryCollection collection, GeometryEditorOperation operation) {
     // first edit the entire collection
     // MD - not sure why this is done - could just check original collection?
@@ -251,10 +251,10 @@ class GeometryEditor
    * @author mbdavis
    *
    */
-  static class NoOpGeometryOperation
-  implements GeometryEditorOperation
+class NoOpGeometryOperation implements GeometryEditorOperation
   {
-  	Geometry edit(Geometry geometry, GeometryFactory factory)
+  	@override
+  Geometry edit(Geometry geometry, GeometryFactory factory)
   	{
   		return geometry;
   	}
@@ -263,26 +263,24 @@ class GeometryEditor
    * A {@link GeometryEditorOperation} which edits the coordinate list of a {@link Geometry}.
    * Operates on Geometry subclasses which contains a single coordinate list.
    */
-  abstract static class CoordinateOperation
+  abstract class CoordinateOperation
       implements GeometryEditorOperation
   {
-    final Geometry edit(Geometry geometry, GeometryFactory factory) {
+    /**final */ 
+    @override
+    Geometry edit(Geometry geometry, GeometryFactory factory) {
       if (geometry is LinearRing) {
-        return factory.createLinearRing(edit(geometry.getCoordinates(),
-            geometry));
+        return factory.createLinearRing(edit(geometry.getCoordinates(), geometry));
       }
 
       if (geometry is LineString) {
-        return factory.createLineString(edit(geometry.getCoordinates(),
-            geometry));
+        return factory.createLineString(edit(geometry.getCoordinates(),geometry));
       }
 
       if (geometry is Point) {
-        List<Coordinate> newCoordinates = edit(geometry.getCoordinates(),
-            geometry);
+        List<Coordinate> newCoordinates = edit(geometry.getCoordinates(),geometry);
 
-        return factory.createPoint((newCoordinates.length > 0)
-                                   ? newCoordinates[0] : null);
+        return factory.createPoint((newCoordinates.length > 0) ? newCoordinates[0] : null);
       }
 
       return geometry;
@@ -299,8 +297,7 @@ class GeometryEditor
      * @param geometry the geometry containing the coordinate list
      * @return an edited coordinate array (which may be the same as the input)
      */
-    abstract List<Coordinate> edit(List<Coordinate> coordinates,
-                                      Geometry geometry);
+    List<Coordinate> edit(List<Coordinate> coordinates, Geometry geometry);
   }
   
 
@@ -309,9 +306,11 @@ class GeometryEditor
    * of a {@link Geometry}.
    * Operates on Geometry subclasses which contains a single coordinate list.
    */
-  /**abstract static */ class CoordinateSequenceOperation implements GeometryEditorOperation
+  /**abstract static */ 
+  class CoordinateSequenceOperation implements GeometryEditorOperation
   {
-    final Geometry edit(Geometry geometry, GeometryFactory factory) {
+  @override
+  Geometry edit(Geometry geometry, GeometryFactory factory) {
       if (geometry is LinearRing) {
         return factory.createLinearRing(edit(
             ((LinearRing)geometry).getCoordinateSequence(),
@@ -340,5 +339,6 @@ class GeometryEditor
      * @param geometry the geometry containing the coordinate list
      * @return an edited coordinate sequence (which may be the same as the input)
      */
-    /**abstract */ CoordinateSequence edit(CoordinateSequence coordSeq,Geometry geometry);
+    /**abstract */ @override
+  CoordinateSequence edit(CoordinateSequence coordSeq,Geometry geometry);
   }

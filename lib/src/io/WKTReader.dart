@@ -42,6 +42,11 @@
 // import org.locationtech.jts.util.Assert;
 // import org.locationtech.jts.util.AssertionFailedException;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceFactory.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geom/impl/CoordinateArraySequenceFactory.dart';
+
 /**
  * Converts a geometry in Well-Known Text format to a {@link Geometry}.
  * <p>
@@ -174,9 +179,9 @@ class WKTReader
   /**
    * Creates a reader that creates objects using the default {@link GeometryFactory}.
    */
-  WKTReader() {
-    this(new GeometryFactory());
-  }
+  // WKTReader() {
+  //   this(new GeometryFactory());
+  // }
 
   /**
    *  Creates a reader that creates objects using the given
@@ -184,10 +189,10 @@ class WKTReader
    *
    *@param  geometryFactory  the factory used to create <code>Geometry</code>s.
    */
-  WKTReader(GeometryFactory geometryFactory) {
-    this.geometryFactory = geometryFactory;
-    this.csFactory = geometryFactory.getCoordinateSequenceFactory();
-    this.precisionModel = geometryFactory.getPrecisionModel();
+  WKTReader([GeometryFactory? geometryFactory]) {
+    this.geometryFactory = geometryFactory??=GeometryFactory();
+    this.csFactory = this.geometryFactory.getCoordinateSequenceFactory();
+    this.precisionModel = this.geometryFactory.getPrecisionModel();
   }
 
   /**

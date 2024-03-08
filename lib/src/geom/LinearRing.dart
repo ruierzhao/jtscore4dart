@@ -147,6 +147,6 @@ class LinearRing extends LineString
   LinearRing reverseInternal() {
     CoordinateSequence seq = points.copy();
     CoordinateSequences.reverse(seq);
-    return getFactory().createLinearRing(seq);
+    return getFactory().createLinearRingFromCoordSeq(seq);
   }
 }

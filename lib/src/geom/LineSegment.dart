@@ -24,12 +24,16 @@
 import 'dart:math';
 
 import 'package:jtscore4dart/src/algorithm/Distance.dart';
+import 'package:jtscore4dart/src/algorithm/Intersection.dart';
 import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/io/WKTConstants.dart';
 
 import '../utils.dart';
 import 'Coordinate.dart';
+import 'GeometryFactory.dart';
+import 'LineString.dart';
 
 /// Represents a line segment defined by two {@link Coordinate}s.
 /// Provides methods to compute various geometric properties
@@ -593,9 +597,9 @@ class LineSegment
   /// or an infinite number of intersection points
   /// 
   /// @see RobustLineIntersector
-  Coordinate lineIntersection(LineSegment line)
+  Coordinate? lineIntersection(LineSegment line)
   {
-    Coordinate intPt = Intersection.intersection(p0, p1, line.p0, line.p1);
+    Coordinate? intPt = Intersection.intersection(p0, p1, line.p0, line.p1);
     return intPt;
   }
 
@@ -605,7 +609,7 @@ class LineSegment
   /// @return a LineString with the same geometry as this segment
   LineString toGeometry(GeometryFactory geomFactory)
   {
-    return geomFactory.createLineString(new List<Coordinate> { p0, p1 });
+    return geomFactory.createLineString(<Coordinate>[p0, p1]);
   }
   
   ///  Returns <code>true</code> if <code>other</code> has the same values for
@@ -618,34 +622,49 @@ class LineSegment
     if (!(o is LineSegment)) {
       return false;
     }
-    LineSegment other = (LineSegment) o;
+    LineSegment other =  o;
     return p0.equals(other.p0) && p1.equals(other.p1);
   }
 
   /// Gets a hashcode for this object.
   /// 
   /// @return a hashcode for this object
-  int hashCode() {
+  @override
+  int get hashCode {
     int hash = 17;
-    hash = hash * 29 + Double.hashCode(p0.x);
-    hash = hash * 29 + Double.hashCode(p0.y);
-    hash = hash * 29 + Double.hashCode(p1.x);
-    hash = hash * 29 + Double.hashCode(p1.y);
+    hash = hash * 29 + (p0.x).hashCode;
+    hash = hash * 29 + (p0.y).hashCode;
+    hash = hash * 29 + (p1.x).hashCode;
+    hash = hash * 29 + (p1.y).hashCode;
     return hash;
   }
-
-  int OLDhashCode() {
-    int bits0 = java.lang.Double.doubleToLongBits(p0.x);
-    bits0 ^= java.lang.Double.doubleToLongBits(p0.y) * 31;
-    int hash0 = (((int) bits0) ^ ((int) (bits0  >> 32)));
-    
-    int bits1 = java.lang.Double.doubleToLongBits(p1.x);
-    bits1 ^= java.lang.Double.doubleToLongBits(p1.y) * 31;
-    int hash1 = (((int) bits1) ^ ((int) (bits1  >> 32)));
-
-    // XOR is supposed to be a good way to combine hashcodes
-    return hash0 ^ hash1;
+  // int hashCode() {
+  //   int hash = 17;
+  //   hash = hash * 29 + Double.hashCode(p0.x);
+  //   hash = hash * 29 + Double.hashCode(p0.y);
+  //   hash = hash * 29 + Double.hashCode(p1.x);
+  //   hash = hash * 29 + Double.hashCode(p1.y);
+  //   return hash;
+  // }
+    @override
+  bool operator ==(Object other) {
+    // TODO: implement ==
+    return super == other;
   }
+
+// TODO: ruier edit. 以后修改
+  // int OLDhashCode() {
+  //   int bits0 = java.lang.Double.doubleToLongBits(p0.x);
+  //   bits0 ^= java.lang.Double.doubleToLongBits(p0.y) * 31;
+  //   int hash0 = (((int) bits0) ^ ((int) (bits0  >> 32)));
+    
+  //   int bits1 = java.lang.Double.doubleToLongBits(p1.x);
+  //   bits1 ^= java.lang.Double.doubleToLongBits(p1.y) * 31;
+  //   int hash1 = (((int) bits1) ^ ((int) (bits1  >> 32)));
+
+  //   // XOR is supposed to be a good way to combine hashcodes
+  //   return hash0 ^ hash1;
+  // }
   
   ///  Compares this object with the specified object for order.
   ///  Uses the standard lexicographic ordering for the points in the LineSegment.
@@ -654,8 +673,9 @@ class LineSegment
   ///      is being compared
   ///@return    a negative integer, zero, or a positive integer as this <code>LineSegment</code>
   ///      is less than, equal to, or greater than the specified <code>LineSegment</code>
-  int compareTo(Object o) {
-    LineSegment other = (LineSegment) o;
+  @override
+  int compareTo(var o) {
+    LineSegment other =  o;
     int comp0 = p0.compareTo(other.p0);
     if (comp0 != 0) return comp0;
     return p1.compareTo(other.p1);
@@ -675,11 +695,19 @@ class LineSegment
       || p0.equals(other.p1) && p1.equals(other.p0);
   }
 
+  @override
   String toString()
   {
-    return WKTConstants.LINESTRING + " (" +
-        p0.x + " " + p0.y
-        + ", " +
-        p1.x + " " + p1.y + ")";
+    return" ${WKTConstants.LINESTRING} (${p0.x}  ${p0.y}, ${p1.x} ${p1.y})";
   }
+  // @override
+  // String toString()
+  // {
+  //   return WKTConstants.LINESTRING + " (" +
+  //       p0.x + " " + p0.y
+  //       + ", " +
+  //       p1.x + " " + p1.y + ")";
+  // }
+  
+
 }

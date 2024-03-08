@@ -34,8 +34,8 @@ import 'TopologyValidationError.dart';
  */
 class IsValidOp
 {
- /**private */static final int MIN_SIZE_LINESTRING = 2;
- /**private */static final int MIN_SIZE_RING = 4;
+ /**private */static const int MIN_SIZE_LINESTRING = 2;
+ /**private */static const int MIN_SIZE_RING = 4;
 
   /**
    * Tests whether a {@link Geometry} is valid.
@@ -56,12 +56,12 @@ class IsValidOp
    * @param coord the coordinate to validate
    * @return <code>true</code> if the coordinate is valid
    */
-  static bool isValid(Coordinate coord)
+  static bool isValidOf(Coordinate coord)
   {
     if ((coord.x).isNaN) return false;
-    if (Double.isInfinite(coord.x)) return false;
+    if ((coord.x).isInfinite) return false;
     if ((coord.y).isNaN) return false;
-    if (Double.isInfinite(coord.y)) return false;
+    if ((coord.y).isInfinite) return false;
     return true;
   }
   

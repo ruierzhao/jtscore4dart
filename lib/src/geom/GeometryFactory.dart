@@ -212,14 +212,14 @@ class GeometryFactory{
     // vertical or horizontal line?
     if (envelope.getMinX() == envelope.getMaxX()
     		|| envelope.getMinY() == envelope.getMaxY()) {
-    	return createLineString(new List<Coordinate>{
+    	return createLineString(<Coordinate>[
           new Coordinate(envelope.getMinX(), envelope.getMinY()),
           new Coordinate(envelope.getMaxX(), envelope.getMaxY())
-          });
+          ]);
     }
 
     // create a CW ring for the polygon 
-    return createPolygon(createLinearRing(List<Coordinate>[
+    return createPolygon(createLinearRing(<Coordinate>[
         Coordinate(envelope.getMinX(), envelope.getMinY()),
         Coordinate(envelope.getMinX(), envelope.getMaxY()),
         Coordinate(envelope.getMaxX(), envelope.getMaxY()),
@@ -248,8 +248,8 @@ class GeometryFactory{
   /// 
   /// @param coordinate a Coordinate, or null
   /// @return the created Point
-  Point createPointFromCoord([Coordinate? coordinate]) {
-    return createPoint(coordinate != null 
+  Point createPoint([Coordinate? coordinate]) {
+    return createPointFromCoordSeq(coordinate != null 
     ? getCoordinateSequenceFactory().create([coordinate]) : 
     getCoordinateSequenceFactory().create(<Coordinate>[]));
   }
@@ -259,7 +259,7 @@ class GeometryFactory{
   /// 
   /// @param coordinates a CoordinateSequence (possibly empty), or null
   /// @return the created Point
-  Point createPoint(CoordinateSequence coordinates) {
+  Point createPointFromCoordSeq(CoordinateSequence coordinates) {
   	return new Point(coordinates, this);
   }
   
@@ -318,8 +318,8 @@ class GeometryFactory{
   /// Constructs an empty {@link LinearRing} geometry.
   /// 
   /// @return an empty LinearRing
-  LinearRing createLinearRing() {
-    return createLinearRing(getCoordinateSequenceFactory().create(new List<Coordinate>{}));
+  LinearRing createLinearRingEmpty() {
+    return createLinearRingFromCoordSeq(getCoordinateSequenceFactory().create(<Coordinate>[]));
   }
 
   /// Creates a {@link LinearRing} using the given {@link Coordinate}s.
@@ -329,7 +329,8 @@ class GeometryFactory{
   /// @return the created LinearRing
   /// @throws ArgumentError if the ring is not closed, or has too few points
   LinearRing createLinearRing(List<Coordinate> coordinates) {
-    return createLinearRing(coordinates != null ? getCoordinateSequenceFactory().create(coordinates) : null);
+    // return createLinearRingFromCoordSeq(coordinates != null ? getCoordinateSequenceFactory().create(coordinates) : null);
+    return createLinearRingFromCoordSeq(getCoordinateSequenceFactory().create(coordinates));
   }
 
   /// Creates a {@link LinearRing} using the given {@link CoordinateSequence}. 
@@ -339,8 +340,8 @@ class GeometryFactory{
   /// @param coordinates a CoordinateSequence (possibly empty), or null
   /// @return the created LinearRing
   /// @throws ArgumentError if the ring is not closed, or has too few points
-  LinearRing createLinearRing(CoordinateSequence coordinates) {
-    return new LinearRing(coordinates, this);
+  LinearRing createLinearRingFromCoordSeq(CoordinateSequence coordinates) {
+    return new LinearRing.FromCoordSeq(coordinates, this);
   }
   
   /// Constructs an empty {@link MultiPoint} geometry.
@@ -355,7 +356,7 @@ class GeometryFactory{
   ///
   /// @param point an array of Points (without null elements), or an empty array, or <code>null</code>
   /// @return a MultiPoint object
-  MultiPoint createMultiPoint(Point[] point) {
+  MultiPoint createMultiPoint(List<Point> point) {
   	return new MultiPoint(point, this);
   }
 
@@ -414,8 +415,8 @@ class GeometryFactory{
   ///            <code>null</code> or empty <code>LinearRing</code> s if
   ///            the empty geometry is to be created.
   /// @throws ArgumentError if a ring is invalid
-  Polygon createPolygon(LinearRing shell, List<LinearRing> holes) {
-    return new Polygon(shell, holes, this);
+  Polygon createPolygon(LinearRing shell, [List<LinearRing>? holes]) {
+    return Polygon(shell, holes, this);
   }
 
   /// Constructs a <code>Polygon</code> with the given exterior boundary.
@@ -425,8 +426,8 @@ class GeometryFactory{
   ///            <code>null</code> or an empty <code>LinearRing</code> if
   ///            the empty geometry is to be created.
   /// @throws ArgumentError if the boundary ring is invalid
-  Polygon createPolygon(CoordinateSequence shell) {
-    return createPolygon(createLinearRing(shell));
+  Polygon createPolygonFromCoordSeq(CoordinateSequence shell) {
+    return createPolygon(createLinearRingFromCoordSeq(shell));
   }
 
   /// Constructs a <code>Polygon</code> with the given exterior boundary.
@@ -436,7 +437,7 @@ class GeometryFactory{
   ///            <code>null</code> or an empty <code>LinearRing</code> if
   ///            the empty geometry is to be created.
   /// @throws ArgumentError if the boundary ring is invalid
-  Polygon createPolygon(List<Coordinate> shell) {
+  Polygon createPolygonFromCoords(List<Coordinate> shell) {
     return createPolygon(createLinearRing(shell));
   }
 
@@ -454,7 +455,7 @@ class GeometryFactory{
   /// Constructs an empty {@link Polygon} geometry.
   /// 
   /// @return an empty polygon
-  Polygon createPolygon() {
+  Polygon createPolygonEmpty() {
     return createPolygon(null, null);
   }
 
@@ -537,8 +538,8 @@ class GeometryFactory{
   /// Constructs an empty {@link LineString} geometry.
   /// 
   /// @return an empty LineString
-  LineString createLineString() {
-    return createLineString(getCoordinateSequenceFactory().create(new List<Coordinate>{}));
+  LineString createLineStringEmpty() {
+    return createLineStringFromSeq(getCoordinateSequenceFactory().create(<Coordinate>[]));
   }
 
   /// Creates a LineString using the given Coordinates.
@@ -546,13 +547,14 @@ class GeometryFactory{
   /// 
   /// @param coordinates an array without null elements, or an empty array, or null
   LineString createLineString(List<Coordinate> coordinates) {
-    return createLineString(coordinates != null ? getCoordinateSequenceFactory().create(coordinates) : null);
+    // return createLineStringFromSeq(coordinates != null ? getCoordinateSequenceFactory().create(coordinates) : null);
+    return createLineStringFromSeq(getCoordinateSequenceFactory().create(coordinates));
   }
   /// Creates a LineString using the given CoordinateSequence.
   /// A null or empty CoordinateSequence creates an empty LineString. 
   /// 
   /// @param coordinates a CoordinateSequence (possibly empty), or null
-  LineString createLineString(CoordinateSequence coordinates) {
+  LineString createLineStringFromSeq(CoordinateSequence coordinates) {
 	return new LineString(coordinates, this);
   }
 

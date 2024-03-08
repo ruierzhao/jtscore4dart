@@ -26,6 +26,7 @@ import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/geom/Puntal.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 /// Represents a single point.
 ///
@@ -42,7 +43,7 @@ class Point
 {
   ///**private */static final int serialVersionUID = 4902022702746614570L;
   ///  The <code>Coordinate</code> wrapped by this <code>Point</code>.
-  /**private */ CoordinateSequence coordinates;
+  /**private */ late CoordinateSequence coordinates;
 
   ///  Constructs a <code>Point</code> with the given coordinate.
   ///
@@ -54,29 +55,32 @@ class Point
   ///      <code>Point</code>
   /// @deprecated Use GeometryFactory instead
   @Deprecated("Use GeometryFactory instead")
-  Point(Coordinate coordinate, PrecisionModel precisionModel, int SRID) {
-    super(GeometryFactory(precisionModel, SRID));
+  Point.FromPM(Coordinate? coordinate, PrecisionModel precisionModel, int SRID):super(GeometryFactory(precisionModel, SRID)) {
     init(getFactory().getCoordinateSequenceFactory().create(
-          coordinate != null ? new List<Coordinate>{coordinate} : new List<Coordinate>{}));
+          coordinate != null ? [coordinate] : <Coordinate>[]));
   }
+  // Point(Coordinate coordinate, PrecisionModel precisionModel, int SRID) {
+  //   super(GeometryFactory(precisionModel, SRID));
+  //   init(getFactory().getCoordinateSequenceFactory().create(
+  //         coordinate != null ? new List<Coordinate>{coordinate} : new List<Coordinate>{}));
+  // }
 
   ///@param  coordinates      contains the single coordinate on which to base this <code>Point</code>
   ///      , or <code>null</code> to create the empty geometry.
-  Point(CoordinateSequence coordinates, GeometryFactory factory) {
-    super(factory);
+  Point(CoordinateSequence coordinates, GeometryFactory factory):super(factory) {
     init(coordinates);
   }
 
   /**private */ void init([CoordinateSequence? coordinates])
   {
-    coordinates ??= getFactory().getCoordinateSequenceFactory().create(new List<Coordinate>{});
+    coordinates ??= getFactory().getCoordinateSequenceFactory().create(<Coordinate>[]);
     Assert.isTrue(coordinates.size() <= 1);
     this.coordinates = coordinates;
   }
 
   @override
   List<Coordinate> getCoordinates() {
-    return isEmpty() ? <Coordinate>[] : [getCoordinate()];
+    return isEmpty() ? <Coordinate>[] : [getCoordinate()!];
   }
 
   @override
@@ -160,13 +164,13 @@ class Point
     if (isEmpty() != other.isEmpty()) {
       return false;
     }
-    return equal(( other as Point).getCoordinate(), this.getCoordinate(), tolerance);
+    return equal(( other as Point).getCoordinate()!, this.getCoordinate()!, tolerance);
   }
 
   @override
   void applyCoord(CoordinateFilter filter) {
 	    if (isEmpty()) { return; }
-	    filter.filter(getCoordinate());
+	    filter.filter(getCoordinate()!);
 	  }
 
   @override
@@ -208,13 +212,13 @@ class Point
 
   @override
   Point reverse() {
-    return (Point) super.reverse();
+    return super.reverse()as Point;
   }
 
   /**protected */ @override
   Point reverseInternal()
   {
-    return getFactory().createPoint(coordinates.copy());
+    return getFactory().createPointFromCoordSeq(coordinates.copy());
   }
 
   @override

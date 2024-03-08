@@ -33,6 +33,7 @@
 
 
 import 'package:jtscore4dart/src/algorithm/Centroid.dart';
+import 'package:jtscore4dart/src/algorithm/InteriorPoint.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequenceComparator.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
@@ -41,7 +42,9 @@ import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/Point.dart';
 import 'package:jtscore4dart/src/geom/Polygon.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
 import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
+import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
 
 import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
@@ -164,7 +167,6 @@ import 'GeometryOverlay.dart';
 ///
 ///@version 1.7
 abstract class Geometry{
-  // TODO: ruier edit. unused
   ///**private */static final int serialVersionUID = 8763622679187376702L;
     
   static const int TYPECODE_POINT = 0;
@@ -398,7 +400,7 @@ abstract class Geometry{
   /// @see IsValidOp
   bool isValid()
   {
-  	return IsValidOp.isValid(this);
+  	return IsValidOp.of(this);
   }
 
   /// Tests whether the set of points covered by this <code>Geometry</code> is
@@ -481,7 +483,7 @@ abstract class Geometry{
     if (isEmpty()) {
       return factory.createPoint();
     }
-    Coordinate centPt = Centroid.getCentroid(this);
+    Coordinate? centPt = Centroid.getCentroid(this);
     return createPointFromInternalCoord(centPt, this);
   }
 
@@ -496,7 +498,7 @@ abstract class Geometry{
   Point getInteriorPoint()
   {
     if (isEmpty()) return factory.createPoint();
-    Coordinate pt = InteriorPoint.getInteriorPoint(this);
+    Coordinate? pt = InteriorPoint.of(this);
     return createPointFromInternalCoord(pt, this);
   }
 
@@ -514,7 +516,7 @@ abstract class Geometry{
   /// @return the topological dimension of this geometry.
   ///
   /// @see #hasDimension(int) 
-  abstract int getDimension();
+  /**abstract */ int getDimension();
 
   /// Tests whether an atomic geometry or any element of a collection
   /// has the specified dimension.
@@ -590,7 +592,7 @@ abstract class Geometry{
   /// and/or update any derived information it has cached (such as its {@link Envelope} ).
   /// The operation is applied to all component Geometries.
   void geometryChanged() {
-    apply(_geometryChangedFilter);
+    applyGeometryComonent(_geometryChangedFilter);
   }
 
   /// Notifies this Geometry that its Coordinates have been changed by an external
@@ -1722,7 +1724,7 @@ abstract class Geometry{
 
   /**abstract/**protected */*/ int getTypeCode();
 
-  /**private */ Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
+  /**private */ Point createPointFromInternalCoord(Coordinate? coord, Geometry exemplar)
   {
     // create empty point for null input
     if (coord == null) {

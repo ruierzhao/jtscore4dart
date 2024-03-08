@@ -53,6 +53,7 @@ class Centroid
   /// 
   /// @param geom the geometry to use
   /// @return the centroid point, or null if the geometry is empty
+  @Deprecated("use Centroid#of method replace.")
   static Coordinate? getCentroid(Geometry geom)
   {
     Centroid cent = Centroid(geom);
@@ -60,6 +61,7 @@ class Centroid
   }
 
   /// @ruier add 
+  /// alias of [getCentroid]
   static Coordinate? of(Geometry geom)
   {
     Centroid cent = Centroid(geom);

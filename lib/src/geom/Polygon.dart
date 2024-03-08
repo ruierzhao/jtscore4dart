@@ -18,17 +18,21 @@
 
 
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceComparator.dart';
 
+import 'Coordinate.dart';
 import 'CoordinateSequence.dart';
 import 'CoordinateSequences.dart';
 import 'Geometry.dart';
 import 'GeometryComponentFilter.dart';
+import 'GeometryFactory.dart';
 import 'GeometryFilter.dart';
 import 'LinearRing.dart';
 import 'Polygonal.dart';
 import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
 import 'Envelope.dart';
+import 'PrecisionModel.dart';
 
 /// Represents a polygon with linear edges, which may include holes.
 /// The outer boundary (shell)
@@ -137,7 +141,7 @@ class Polygon
   @override
   List<Coordinate> getCoordinates() {
     if (isEmpty()) {
-      return new List<Coordinate>{};
+      return [];
     }
     List<Coordinate> coordinates = new Coordinate[getNumPoints()];
     int k = -1;
@@ -287,21 +291,21 @@ class Polygon
   }
 
   @override
-  bool equalsExact(Geometry other, double tolerance) {
+  bool equalsExactWithTolerance(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
     Polygon otherPolygon = (Polygon) other;
     Geometry thisShell = shell;
     Geometry otherPolygonShell = otherPolygon.shell;
-    if (!thisShell.equalsExact(otherPolygonShell, tolerance)) {
+    if (!thisShell.equalsExactWithTolerance(otherPolygonShell, tolerance)) {
       return false;
     }
     if (holes.length != otherPolygon.holes.length) {
       return false;
     }
     for (int i = 0; i < holes.length; i++) {
-      if (!((Geometry) holes[i]).equalsExact(otherPolygon.holes[i], tolerance)) {
+      if (!((Geometry) holes[i]).equalsExactWithTolerance(otherPolygon.holes[i], tolerance)) {
         return false;
       }
     }
@@ -408,12 +412,12 @@ class Polygon
 
  /**protected */
   @override
-  int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
+  int compareToSameClassWithCompar(Object o, CoordinateSequenceComparator comp) {
     Polygon poly = (Polygon) o;
 
     LinearRing thisShell = shell;
     LinearRing otherShell = poly.shell;
-    int shellComp = thisShell.compareToSameClass(otherShell, comp);
+    int shellComp = thisShell.compareToSameClassWithCompar(otherShell, comp);
     if (shellComp != 0) return shellComp;
 
     int nHole1 = getNumInteriorRing();
@@ -422,7 +426,7 @@ class Polygon
     while (i < nHole1 && i < nHole2) {
       LinearRing thisHole = (LinearRing) getInteriorRingN(i);
       LinearRing otherHole = (LinearRing) poly.getInteriorRingN(i);
-      int holeComp = thisHole.compareToSameClass(otherHole, comp);
+      int holeComp = thisHole.compareToSameClassWithCompar(otherHole, comp);
       if (holeComp != 0) return holeComp;
       i++;
     }
@@ -458,25 +462,21 @@ class Polygon
 
   @override
   Polygon reverse() {
-    return (Polygon) super.reverse();
+    return super.reverse() as Polygon;
   }
 
  /**protected */@override
   Polygon reverseInternal()
   {
-    LinearRing shell = (LinearRing) getExteriorRing().reverse();
-    List<LinearRing> holes = new LinearRing[getNumInteriorRing()];
-    for (int i = 0; i < holes.length; i++) {
-      holes[i] = (LinearRing) getInteriorRingN(i).reverse();
-    }
+    LinearRing shell = getExteriorRing().reverse();
+    // List<LinearRing> holes = new LinearRing[getNumInteriorRing()];
+    // for (int i = 0; i < holes.length; i++) {
+    //   holes[i] = getInteriorRingN(i).reverse();
+    // }
+    List<LinearRing> holes = List.generate(getNumInteriorRing(), (index) => getInteriorRingN(index).reverse());
 
     return getFactory().createPolygon(shell, holes);
   }
   
-  // @override
-  // bool equalsExactWithTolerance(Geometry other, double tolerance) {
-  //   // TODO: implement equalsExactWithTolerance
-  //   throw UnimplementedError();
-  // }
 }
 

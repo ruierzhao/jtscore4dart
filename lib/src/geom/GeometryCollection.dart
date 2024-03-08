@@ -17,13 +17,19 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'dart:math';
+
 import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
 
 import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
 
 import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
 
+import '../util/Assert.dart';
 import 'Coordinate.dart';
+import 'CoordinateSequenceComparator.dart';
+import 'Dimension.dart';
+import 'Envelope.dart';
 import 'Geometry.dart';
 import 'GeometryFactory.dart';
 import 'GeometryFilter.dart';
@@ -43,9 +49,7 @@ class GeometryCollection extends Geometry {
 
   /// @deprecated Use GeometryFactory instead
   @Deprecated("Use GeometryFactory instead")
-  GeometryCollection.FromPM(List<Geometry> geometries, PrecisionModel precisionModel, int SRID) {
-      this(geometries, new GeometryFactory(precisionModel, SRID));
-  }
+  GeometryCollection.FromPM(List<Geometry> geometries, PrecisionModel precisionModel, int SRID) :this(geometries, new GeometryFactory(precisionModel, SRID));
 
 
   /// @param geometries
@@ -53,17 +57,14 @@ class GeometryCollection extends Geometry {
   ///            or <code>null</code> or an empty array to create the empty
   ///            geometry. Elements may be empty <code>Geometry</code>s,
   ///            but not <code>null</code>s.
-  GeometryCollection(List<Geometry>? geometries, GeometryFactory factory) {
-    super(factory);
-    geometries ??= [];
-    if (hasNullElements(geometries)) {
+  GeometryCollection(this.geometries, GeometryFactory factory):super(factory) {
+    if (Geometry.hasNullElements(geometries)) {
       throw new ArgumentError("geometries must not contain null elements");
     }
-    this.geometries = geometries;
   }
 
   @override
-  Coordinate getCoordinate() {
+  Coordinate? getCoordinate() {
     for (int i = 0; i < geometries.length; i++) {
       if (! geometries[i].isEmpty()) {
         return geometries[i].getCoordinate();
@@ -82,7 +83,8 @@ class GeometryCollection extends Geometry {
   ///
   @override
   List<Coordinate> getCoordinates() {
-    List<Coordinate> coordinates = new Coordinate[getNumPoints()];
+    // List<Coordinate> coordinates = new Coordinate[getNumPoints()];
+    List<Coordinate> coordinates = [];
     int k = -1;
     for (int i = 0; i < geometries.length; i++) {
       List<Coordinate> childCoordinates = geometries[i].getCoordinates();
@@ -108,7 +110,7 @@ class GeometryCollection extends Geometry {
   int getDimension() {
     int dimension = Dimension.FALSE;
     for (int i = 0; i < geometries.length; i++) {
-      dimension = math.max(dimension, geometries[i].getDimension());
+      dimension = max(dimension, geometries[i].getDimension());
     }
     return dimension;
   }
@@ -116,8 +118,9 @@ class GeometryCollection extends Geometry {
   @override
   bool hasDimension(int dim) {
     for (int i = 0; i < geometries.length; i++) {
-      if (geometries[i].hasDimension(dim))
+      if (geometries[i].hasDimension(dim)) {
         return true;
+      }
     }
     return false;
   }
@@ -126,7 +129,7 @@ class GeometryCollection extends Geometry {
   int getBoundaryDimension() {
     int dimension = Dimension.FALSE;
     for (int i = 0; i < geometries.length; i++) {
-      dimension = math.max(dimension, ((Geometry) geometries[i]).getBoundaryDimension());
+      dimension = max(dimension, ( geometries[i] as Geometry).getBoundaryDimension());
     }
     return dimension;
   }
@@ -145,7 +148,7 @@ class GeometryCollection extends Geometry {
   int getNumPoints() {
     int numPoints = 0;
     for (int i = 0; i < geometries.length; i++) {
-      numPoints += ((Geometry) geometries[i]).getNumPoints();
+      numPoints += ( geometries[i] as Geometry).getNumPoints();
     }
     return numPoints;
   }
@@ -157,9 +160,10 @@ class GeometryCollection extends Geometry {
 
   @override
   Geometry getBoundary() {
-    checkNotGeometryCollection(this);
+    Geometry.checkNotGeometryCollection(this);
     Assert.shouldNeverReachHere();
-    return null;
+    throw AssertionError("Should never reach here");
+    // return ;
   }
 
   ///  Returns the area of this <code>GeometryCollection</code>
@@ -186,16 +190,16 @@ class GeometryCollection extends Geometry {
   }
 
   @override
-  bool equalsExact(Geometry other, double tolerance) {
+  bool equalsExactWithTolerance(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
-    GeometryCollection otherCollection = (GeometryCollection) other;
+    GeometryCollection otherCollection =  other as GeometryCollection;
     if (geometries.length != otherCollection.geometries.length) {
       return false;
     }
     for (int i = 0; i < geometries.length; i++) {
-      if (!((Geometry) geometries[i]).equalsExact(otherCollection.geometries[i], tolerance)) {
+      if (!( geometries[i]).equalsExactWithTolerance(otherCollection.geometries[i], tolerance)) {
         return false;
       }
     }
@@ -205,22 +209,24 @@ class GeometryCollection extends Geometry {
   @override
   void applyCoord(CoordinateFilter filter) {
 	    for (int i = 0; i < geometries.length; i++) {
-	      geometries[i].apply(filter);
+	      geometries[i].applyCoord(filter);
 	    }
 	  }
 
   @override
   void applyCoordSeq(CoordinateSequenceFilter filter) {
-    if (geometries.length == 0)
+    if (geometries.length == 0) {
       return;
+    }
     for (int i = 0; i < geometries.length; i++) {
-      geometries[i].apply(filter);
+      geometries[i].applyCoordSeq(filter);
       if (filter.isDone()) {
         break;
       }
     }
-    if (filter.isGeometryChanged())
+    if (filter.isGeometryChanged()) {
       geometryChanged();
+    }
   }
 
   @override
@@ -235,7 +241,7 @@ class GeometryCollection extends Geometry {
   void applyGeometryComonent(GeometryComponentFilter filter) {
     filter.filter(this);
     for (int i = 0; i < geometries.length; i++) {
-      geometries[i].apply(filter);
+      geometries[i].applyGeometryComonent(filter);
     }
   }
 
@@ -251,7 +257,8 @@ class GeometryCollection extends Geometry {
 
  /**protected */@override
   GeometryCollection copyInternal() {
-    List<Geometry> geometries = new Geometry[this.geometries.length];
+    // List<Geometry> geometries = new Geometry[this.geometries.length];
+    List<Geometry> geometries = [];
     for (int i = 0; i < geometries.length; i++) {
       geometries[i] = this.geometries[i].copy();
     }
@@ -263,14 +270,15 @@ class GeometryCollection extends Geometry {
     for (int i = 0; i < geometries.length; i++) {
       geometries[i].normalize();
     }
-    Arrays.sort(geometries);
+    // TODO: ruier edit.
+    // Arrays.sort(geometries);
   }
 
  /**protected */@override
   Envelope computeEnvelopeInternal() {
-    Envelope envelope = new Envelope();
+    Envelope envelope = new Envelope.init();
     for (int i = 0; i < geometries.length; i++) {
-      envelope.expandToInclude(geometries[i].getEnvelopeInternal());
+      envelope.expandToIncludeEnvelope(geometries[i].getEnvelopeInternal());
     }
     return envelope;
   }
@@ -278,13 +286,13 @@ class GeometryCollection extends Geometry {
  /**protected */@override
   int compareToSameClass(Object o) {
     TreeSet theseElements = new TreeSet(Arrays.asList(geometries));
-    TreeSet otherElements = new TreeSet(Arrays.asList(((GeometryCollection) o).geometries));
+    TreeSet otherElements = new TreeSet(Arrays.asList(( o as GeometryCollection).geometries));
     return compare(theseElements, otherElements);
   }
 
  /**protected */@override
   int compareToSameClassWithCompar(Object o, CoordinateSequenceComparator comp) {
-    GeometryCollection gc = (GeometryCollection) o;
+    GeometryCollection gc =  o as GeometryCollection;
 
     int n1 = getNumGeometries();
     int n2 = gc.getNumGeometries();
@@ -292,7 +300,7 @@ class GeometryCollection extends Geometry {
     while (i < n1 && i < n2) {
       Geometry thisGeom = getGeometryN(i);
       Geometry otherGeom = gc.getGeometryN(i);
-      int holeComp = thisGeom.compareToSameClass(otherGeom, comp);
+      int holeComp = thisGeom.compareToSameClassWithCompar(otherGeom, comp);
       if (holeComp != 0) return holeComp;
       i++;
     }
@@ -314,23 +322,20 @@ class GeometryCollection extends Geometry {
   /// @return a {@link GeometryCollection} in the reverse order
   @override
   GeometryCollection reverse() {
-    return (GeometryCollection) super.reverse();
+    return  super.reverse() as GeometryCollection;
   }
 
  /**protected */@override
   GeometryCollection reverseInternal()
   {
-    List<Geometry> geometries = new Geometry[this.geometries.length];
+    // List<Geometry> geometries = new Geometry[this.geometries.length];
+    List<Geometry> geometries = [];
     for (int i = 0; i < geometries.length; i++) {
       geometries[i] = this.geometries[i].reverse();
     }
     return new GeometryCollection(geometries, factory);
   }
   
-  @override
-  bool equalsExactWithTolerance(Geometry other, double tolerance) {
-    // TODO: @ruier add .implement equalsExactWithTolerance
-    throw UnimplementedError();
-  }
+
 }
 

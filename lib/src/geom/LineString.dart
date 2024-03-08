@@ -145,7 +145,7 @@ class LineString
   }
 
   Point getPointN(int n) {
-      return getFactory().createPointFromCoord(points.getCoordinate(n));
+      return getFactory().createPoint(points.getCoordinate(n));
   }
 
   Point? getStartPoint() {
@@ -211,7 +211,7 @@ class LineString
   {
     CoordinateSequence seq = points.copy();
     CoordinateSequences.reverse(seq);
-    return getFactory().createLineString(seq);
+    return getFactory().createLineStringFromSeq(seq);
   }
 
   ///  Returns true if the given point is a vertex of this <code>LineString</code>.

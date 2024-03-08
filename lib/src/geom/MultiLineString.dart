@@ -44,9 +44,9 @@ class MultiLineString
   ///@param  SRID            the ID of the Spatial Reference System used by this
   ///      <code>MultiLineString</code>
   /// @deprecated Use GeometryFactory instead
-  MultiLineString(List<LineString> lineStrings, PrecisionModel precisionModel, int SRID) {
-    super(lineStrings, new GeometryFactory(precisionModel, SRID));
-  }
+  MultiLineString.FromPM(List<LineString> lineStrings, PrecisionModel precisionModel, int SRID) 
+    :super(lineStrings, new GeometryFactory(precisionModel, SRID));
+  
 
 
 
@@ -55,9 +55,9 @@ class MultiLineString
   ///            or <code>null</code> or an empty array to create the empty
   ///            geometry. Elements may be empty <code>LineString</code>s,
   ///            but not <code>null</code>s.
-  MultiLineString(List<LineString> lineStrings, GeometryFactory factory) {
-    super(lineStrings, factory);
-  }
+  MultiLineString(List<LineString> lineStrings, GeometryFactory factory) 
+    :super(lineStrings, factory);
+  
 
   @override
   int getDimension() {
@@ -87,7 +87,7 @@ class MultiLineString
       return false;
     }
     for (int i = 0; i < geometries.length; i++) {
-      if (!((LineString) geometries[i]).isClosed()) {
+      if (!( geometries[i] as LineString).isClosed()) {
         return false;
       }
     }
@@ -119,28 +119,32 @@ class MultiLineString
 
  /**protected */@override
   MultiLineString reverseInternal() {
-    List<LineString> lineStrings = new LineString[this.geometries.length];
+    // List<LineString> lineStrings = new LineString[this.geometries.length];
+    List<LineString> lineStrings = [];
     for (int i = 0; i < lineStrings.length; i++) {
-      lineStrings[i] =  this.geometries[i].reverse() as LineString;
+      // lineStrings[i] =  this.geometries[i].reverse() as LineString;
+      lineStrings.add(this.geometries[i].reverse() as LineString);
     }
     return new MultiLineString(lineStrings, factory);
   }
   
  /**protected */@override
   MultiLineString copyInternal() {
-    List<LineString> lineStrings = new LineString[this.geometries.length];
-    for (int i = 0; i < lineStrings.length; i++) {
-      lineStrings[i] = this.geometries[i].copy() as LineString;
-    }
-    return new MultiLineString(lineStrings, factory);
+    List<LineString> lineStrings = List.generate(this.geometries.length,(i) => this.geometries[i].copy() as LineString);
+    
+    // List<LineString> lineStrings = new LineString[this.geometries.length];
+    // for (int i = 0; i < lineStrings.length; i++) {
+    //   lineStrings[i] = this.geometries[i].copy() as LineString;
+    // }
+    return MultiLineString(lineStrings, factory);
   }
 
   @override
-  bool equalsExact(Geometry other, double tolerance) {
+  bool equalsExactWithTolerance(Geometry other, double tolerance) {
     if (!isEquivalentClass(other)) {
       return false;
     }
-    return super.equalsExact(other, tolerance);
+    return super.equalsExactWithTolerance(other, tolerance);
   }
 
  /**protected */@override

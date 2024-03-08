@@ -40,8 +40,7 @@ import 'package:jtscore4dart/src/geom/Envelope.dart';
 /// modified through a setter method.
 ///
 /// @version 1.7
-abstract class PackedCoordinateSequence
-    implements CoordinateSequence
+abstract class PackedCoordinateSequence implements CoordinateSequence
 {
   ///**private */static final int serialVersionUID = -3151899011275603L;
   /// The dimensions of the coordinates held in the packed array

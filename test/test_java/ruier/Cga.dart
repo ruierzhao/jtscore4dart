@@ -178,11 +178,10 @@ class Ruier23{
 
 
 void main() {
-var cc = Ruier23().gettypenamr();
-var vv = 5 ~/ 2;
-print(vv);
- vv = (5 / 2).floor();
-print(vv);
-throw AssertionError("AssertError");
+// var cc = <int>[];
+var cc = List.empty(growable: true);
+for (var i = 0; i < 5; i++) {
+  cc[i] = i;
+}
 print(cc);
 }

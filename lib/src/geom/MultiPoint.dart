@@ -110,7 +110,7 @@ class MultiPoint
     if (!isEquivalentClass(other)) {
       return false;
     }
-    return super.equalsExact(other, tolerance);
+    return super.equalsExactWithTolerance(other, tolerance);
   }
 
   ///  Returns the <code>Coordinate</code> at the given position.

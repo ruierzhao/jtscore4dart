@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_non_null_assertion
+
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
@@ -17,6 +19,7 @@
 // import org.locationtech.jts.algorithm.Orientation;
 
 
+import 'package:jtscore4dart/src/algorithm/Area.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequenceComparator.dart';
 
@@ -84,9 +87,9 @@ class Polygon
   ///@param  SRID            the ID of the Spatial Reference System used by this
   ///      <code>Polygon</code>
   /// @deprecated Use GeometryFactory instead
-  Polygon(LinearRing shell, PrecisionModel precisionModel, int SRID) {
-    this(shell, new List<LinearRing>{}, new GeometryFactory(precisionModel, SRID));
-  }
+  Polygon.FromPM(LinearRing shell, PrecisionModel precisionModel, int SRID) 
+   : this(shell, <LinearRing>[], new GeometryFactory(precisionModel, SRID));
+  
 
   ///  Constructs a <code>Polygon</code> with the given exterior boundary and
   ///  interior boundaries.
@@ -102,9 +105,9 @@ class Polygon
   ///@param  SRID            the ID of the Spatial Reference System used by this
   ///      <code>Polygon</code>
   /// @deprecated Use GeometryFactory instead
-  Polygon(LinearRing shell, List<LinearRing> holes, PrecisionModel precisionModel, int SRID) {
-      this(shell, holes, new GeometryFactory(precisionModel, SRID));
-  }
+  Polygon.WithHolePM(LinearRing shell, List<LinearRing> holes, PrecisionModel precisionModel, int SRID) 
+     : this(shell, holes, new GeometryFactory(precisionModel, SRID));
+  
 
   ///  Constructs a <code>Polygon</code> with the given exterior boundary and
   ///  interior boundaries.
@@ -115,27 +118,21 @@ class Polygon
   ///@param  holes           the inner boundaries of the new <code>Polygon</code>
   ///      , or <code>null</code> or empty <code>LinearRing</code>s if the empty
   ///      geometry is to be created.
-  Polygon(LinearRing shell, List<LinearRing> holes, GeometryFactory factory) {
-    super(factory);
-    if (shell == null) {
-      shell = getFactory().createLinearRing();
-    }
-    if (holes == null) {
-      holes = new List<LinearRing>{};
-    }
-    if (hasNullElements(holes)) {
+  Polygon(this.shell, this.holes, GeometryFactory factory): super(factory) {
+    
+    shell ??= getFactory().createLinearRing([]);
+    holes ??= <LinearRing>[];
+    if (Geometry.hasNullElements(holes!)) {
       throw new ArgumentError("holes must not contain null elements");
     }
-    if (shell.isEmpty() && hasNonEmptyElements(holes)) {
+    if (shell!.isEmpty() && Geometry.hasNonEmptyElements(holes!)) {
       throw new ArgumentError("shell is empty but holes are not");
     }
-    this.shell = shell;
-    this.holes = holes;
   }
 
   @override
-  Coordinate getCoordinate() {
-    return shell.getCoordinate();
+  Coordinate? getCoordinate() {
+    return shell!.getCoordinate();
   }
 
   @override
@@ -143,15 +140,16 @@ class Polygon
     if (isEmpty()) {
       return [];
     }
-    List<Coordinate> coordinates = new Coordinate[getNumPoints()];
+    // List<Coordinate> coordinates = new Coordinate[getNumPoints()];
+    List<Coordinate> coordinates = [];
     int k = -1;
-    List<Coordinate> shellCoordinates = shell.getCoordinates();
+    List<Coordinate> shellCoordinates = shell!.getCoordinates();
     for (int x = 0; x < shellCoordinates.length; x++) {
       k++;
       coordinates[k] = shellCoordinates[x];
     }
-    for (int i = 0; i < holes.length; i++) {
-      List<Coordinate> childCoordinates = holes[i].getCoordinates();
+    for (int i = 0; i < holes!.length; i++) {
+      List<Coordinate> childCoordinates = holes![i].getCoordinates();
       for (int j = 0; j < childCoordinates.length; j++) {
         k++;
         coordinates[k] = childCoordinates[j];
@@ -162,9 +160,9 @@ class Polygon
 
   @override
   int getNumPoints() {
-    int numPoints = shell.getNumPoints();
-    for (int i = 0; i < holes.length; i++) {
-      numPoints += holes[i].getNumPoints();
+    int numPoints = shell!.getNumPoints();
+    for (int i = 0; i < holes!.length; i++) {
+      numPoints += holes![i].getNumPoints();
     }
     return numPoints;
   }
@@ -181,7 +179,7 @@ class Polygon
 
   @override
   bool isEmpty() {
-    return shell.isEmpty();
+    return shell!.isEmpty();
   }
 
   @override
@@ -189,9 +187,9 @@ class Polygon
   {
     if (getNumInteriorRing() != 0) return false;
     if (shell == null) return false;
-    if (shell.getNumPoints() != 5) return false;
+    if (shell!.getNumPoints() != 5) return false;
 
-    CoordinateSequence seq = shell.getCoordinateSequence();
+    CoordinateSequence seq = shell!.getCoordinateSequence();
 
     // check vertices have correct values
     Envelope env = getEnvelopeInternal();
@@ -220,15 +218,15 @@ class Polygon
   }
 
   LinearRing getExteriorRing() {
-    return shell;
+    return shell!;
   }
 
   int getNumInteriorRing() {
-    return holes.length;
+    return holes!.length;
   }
 
   LinearRing getInteriorRingN(int n) {
-    return holes[n];
+    return holes![n];
   }
 
   @override
@@ -243,9 +241,10 @@ class Polygon
   double getArea()
   {
     double area = 0.0;
-    area += Area.ofRing(shell.getCoordinateSequence());
-    for (int i = 0; i < holes.length; i++) {
-      area -= Area.ofRing(holes[i].getCoordinateSequence());
+    // area += Area.ofRing(shell.getCoordinateSequence());
+    area += Area.ofRing(shell!.getCoordinates());
+    for (int i = 0; i < holes!.length; i++) {
+      area -= Area.ofRing(holes![i].getCoordinates());
     }
     return area;
   }
@@ -257,9 +256,9 @@ class Polygon
   double getLength()
   {
     double len = 0.0;
-    len += shell.getLength();
-    for (int i = 0; i < holes.length; i++) {
-      len += holes[i].getLength();
+    len += shell!.getLength();
+    for (int i = 0; i < holes!.length; i++) {
+      len += holes![i].getLength();
     }
     return len;
   }
@@ -271,23 +270,26 @@ class Polygon
   @override
   Geometry getBoundary() {
     if (isEmpty()) {
-      return getFactory().createMultiLineString();
+      return getFactory().createMultiLineString([]);
     }
-    List<LinearRing> rings = new LinearRing[holes.length + 1];
-    rings[0] = shell;
-    for (int i = 0; i < holes.length; i++) {
-      rings[i + 1] = holes[i];
+    // List<LinearRing> rings = new LinearRing[holes.length + 1];
+    List<LinearRing> rings = [];
+    // rings[0] = shell;
+    rings.add(shell!);
+    for (int i = 0; i < holes!.length; i++) {
+      // rings[i + 1] = holes[i];
+      rings.add(holes![i]);
     }
     // create LineString or MultiLineString as appropriate
     if (rings.length <= 1) {
-      return getFactory().createLinearRing(rings[0].getCoordinateSequence());
+      return getFactory().createLinearRingFromCoordSeq(rings[0].getCoordinateSequence());
     }
     return getFactory().createMultiLineString(rings);
   }
 
  /**protected */@override
   Envelope computeEnvelopeInternal() {
-    return shell.getEnvelopeInternal();
+    return shell!.getEnvelopeInternal();
   }
 
   @override
@@ -295,17 +297,17 @@ class Polygon
     if (!isEquivalentClass(other)) {
       return false;
     }
-    Polygon otherPolygon = (Polygon) other;
-    Geometry thisShell = shell;
-    Geometry otherPolygonShell = otherPolygon.shell;
+    Polygon otherPolygon =  other as Polygon;
+    Geometry thisShell = shell!;
+    Geometry otherPolygonShell = otherPolygon.shell!;
     if (!thisShell.equalsExactWithTolerance(otherPolygonShell, tolerance)) {
       return false;
     }
-    if (holes.length != otherPolygon.holes.length) {
+    if (holes!.length != otherPolygon.holes!.length) {
       return false;
     }
-    for (int i = 0; i < holes.length; i++) {
-      if (!((Geometry) holes[i]).equalsExactWithTolerance(otherPolygon.holes[i], tolerance)) {
+    for (int i = 0; i < holes!.length; i++) {
+      if (!( holes![i] as Geometry).equalsExactWithTolerance(otherPolygon.holes![i], tolerance)) {
         return false;
       }
     }
@@ -314,19 +316,19 @@ class Polygon
 
   @override
   void applyCoord(CoordinateFilter filter) {
-	    shell.apply(filter);
-	    for (int i = 0; i < holes.length; i++) {
-	      holes[i].apply(filter);
+	    shell!.applyCoord(filter);
+	    for (int i = 0; i < holes!.length; i++) {
+	      holes![i].applyCoord(filter);
 	    }
 	  }
 
   @override
   void applyCoordSeq(CoordinateSequenceFilter filter)
   {
-	    shell.apply(filter);
+	    shell!.applyCoordSeq(filter);
       if (! filter.isDone()) {
-        for (int i = 0; i < holes.length; i++) {
-          holes[i].apply(filter);
+        for (int i = 0; i < holes!.length; i++) {
+          holes![i].applyCoordSeq(filter);
           if (filter.isDone()) {
             break;
           }
@@ -345,9 +347,9 @@ class Polygon
   @override
   void applyGeometryComonent(GeometryComponentFilter filter) {
     filter.filter(this);
-    shell.apply(filter);
-    for (int i = 0; i < holes.length; i++) {
-      holes[i].apply(filter);
+    shell!.applyGeometryComonent(filter);
+    for (int i = 0; i < holes!.length; i++) {
+      holes![i].applyGeometryComonent(filter);
     }
   }
 
@@ -364,14 +366,15 @@ class Polygon
 
  /**protected */@override
   Polygon copyInternal() {
-    LinearRing shellCopy = (LinearRing) shell.copy();
-    List<LinearRing> holeCopies = new LinearRing[this.holes.length];
-    for (int i = 0; i < holes.length; i++) {
-    	holeCopies[i] = (LinearRing) holes[i].copy();
+    LinearRing shellCopy = shell!.copy() as LinearRing; 
+    // List<LinearRing> holeCopies = new LinearRing[this.holes.length];
+    List<LinearRing> holeCopies = [];
+    for (int i = 0; i < holes!.length; i++) {
+    	// holeCopies[i] = (LinearRing) holes![i].copy();
+      holeCopies.add( holes![i].copy() as LinearRing);
     }
     return new Polygon(shellCopy, holeCopies, factory);
   }
-
   @override
   Geometry convexHull() {
     return getExteriorRing().convexHull();
@@ -379,19 +382,20 @@ class Polygon
 
   @override
   void normalize() {
-    shell = normalized(shell, true);
-    for (int i = 0; i < holes.length; i++) {
-      holes[i] = normalized(holes[i], false);
+    shell = normalized(shell!, true);
+    for (int i = 0; i < holes!.length; i++) {
+      holes![i] = normalized(holes![i], false);
     }
-    Arrays.sort(holes);
+    // TODO: ruier edit.
+    // Arrays.sort(holes);
   }
 
  /**protected */@override
   int compareToSameClass(Object o) {
-    Polygon poly = (Polygon) o;
+    Polygon poly =  o as Polygon;
 
-    LinearRing thisShell = shell;
-    LinearRing otherShell = poly.shell;
+    LinearRing thisShell = shell!;
+    LinearRing otherShell = poly.shell!;
     int shellComp = thisShell.compareToSameClass(otherShell);
     if (shellComp != 0) return shellComp;
 

@@ -266,9 +266,10 @@ class GeometryFactory{
   /// Constructs an empty {@link MultiLineString} geometry.
   /// 
   /// @return an empty MultiLineString
-  MultiLineString createMultiLineString() {
-    return new MultiLineString(null, this);
-  }
+  // TODO: ruier edit. 不能为null，至少是一个空数组
+  // MultiLineString createMultiLineString() {
+  //   return new MultiLineString(null, this);
+  // }
 
   /// Creates a MultiLineString using the given LineStrings; a null or empty
   /// array will create an empty MultiLineString.

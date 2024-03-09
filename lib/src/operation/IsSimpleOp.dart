@@ -37,7 +37,14 @@
 // import org.locationtech.jts.geomgraph.GeometryGraph;
 // import org.locationtech.jts.geomgraph.index.SegmentIntersector;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+
 /**
+ * Polygon: isSimple不能判断自相交，使用isValid
+ * Linear: isSimple 说明两个线部件满足 Geometry#touches(Geometry)
+ * point: isSimple 说明两个点未重合
+ * 
  * Tests whether a <code>Geometry</code> is simple.
  * In general, the SFS specification of simplicity
  * follows the rule:
@@ -62,13 +69,16 @@
  * repeated points.
  * <li><b>Empty</b> geometries are <i>always</i> simple, by definition
  * </ul>
+ * 
  * For {@link Lineal} geometries the evaluation of simplicity  
  * can be customized by supplying a {@link BoundaryNodeRule} 
  * to define how boundary points are determined.
+ * 
  * The default is the SFS-standard {@link BoundaryNodeRule#MOD2_BOUNDARY_RULE}.
  * Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s (rings)
  * will never satisfy the <tt>touches</tt> predicate at their endpoints, since these are
  * interior points, not boundary points. 
+ * 
  * If it is required to test whether a set of <code>LineString</code>s touch
  * only at their endpoints, use <code>IsSimpleOp</code> with {@link BoundaryNodeRule#ENDPOINT_BOUNDARY_RULE}.
  * For example, this can be used to validate that a set of lines form a topologically valid
@@ -80,28 +90,30 @@
  * 
  * @deprecated Replaced by org.locationtech.jts.operation.valid.IsSimpleOp
  */
+@Deprecated("Replaced by operation.valid.IsSimpleOp")
 class IsSimpleOp
 {
- /**private */Geometry inputGeom;
+ /**private */late Geometry? inputGeom;
  /**private */bool isClosedEndpointsInInterior = true;
- /**private */Coordinate nonSimpleLocation = null;
+ /**private */Coordinate? nonSimpleLocation = null;
 
   /**
    * Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
    *
    * @deprecated use IsSimpleOp(Geometry)
    */
-  IsSimpleOp() {
-  }
+  // IsSimpleOp() {
+  // }
 
   /**
    * Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
    *
    * @param geom the geometry to test
    */
-  IsSimpleOp(Geometry geom) {
-    this.inputGeom = geom;
-  }
+   
+  // IsSimpleOp(Geometry geom) {
+  //   this.inputGeom = geom;
+  // }
 
   /**
    * Creates a simplicity checker using a given {@link BoundaryNodeRule}
@@ -109,11 +121,13 @@ class IsSimpleOp
    * @param geom the geometry to test
    * @param boundaryNodeRule the rule to use.
    */
-  IsSimpleOp(Geometry geom, BoundaryNodeRule boundaryNodeRule)
-  {
-    this.inputGeom = geom;
-    isClosedEndpointsInInterior = ! boundaryNodeRule.isInBoundary(2);
-  }
+  // IsSimpleOp(Geometry geom, BoundaryNodeRule boundaryNodeRule)
+  IsSimpleOp([this.inputGeom,BoundaryNodeRule boundaryNodeRule])
+  :isClosedEndpointsInInterior = ! boundaryNodeRule.isInBoundary(2);
+  // {
+  //   this.inputGeom = geom;
+  //   isClosedEndpointsInInterior = ! boundaryNodeRule.isInBoundary(2);
+  // }
 
   /**
    * Tests whether the geometry is simple.

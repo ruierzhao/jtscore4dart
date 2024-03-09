@@ -31,9 +31,9 @@
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 import 'package:jtscore4dart/src/geom/Dimension.dart';
 
-import '../geom/CoordinateArrays.dart';
 
 /// Computes the boundary of a {@link Geometry}.
 /// Allows specifying the {@link BoundaryNodeRule} to be used.
@@ -116,7 +116,9 @@ class BoundaryOp
   /// 
   /// @param geom the input geometry
   /// @param bnRule the Boundary Node Rule to use
-  BoundaryOp(this.geom,[BoundaryNodeRule? _bnRule]):this.bnRule = _bnRule??=BoundaryNodeRule.MOD2_BOUNDARY_RULE, geomFact = geom.getFactory();
+  BoundaryOp(this.geom,[BoundaryNodeRule? _bnRule]):
+    this.bnRule = _bnRule??=BoundaryNodeRule.MOD2_BOUNDARY_RULE, 
+    geomFact = geom.getFactory();
   // {
   //   this.geom = geom;
   //   geomFact = geom.getFactory();
@@ -128,14 +130,19 @@ class BoundaryOp
   /// @return the boundary geometry
   Geometry getBoundary()
   {
-    if (geom is LineString) return boundaryLineString( geom as LineString);
-    if (geom is MultiLineString) return boundaryMultiLineString( geom as MultiLineString);
+    if (geom is LineString) {
+      return boundaryLineString( geom as LineString);
+    }
+    if (geom is MultiLineString) {
+      return boundaryMultiLineString( geom as MultiLineString);
+    }
     return geom.getBoundary();
   }
 
- /**private */MultiPoint getEmptyMultiPoint()
+ /**private */
+ MultiPoint getEmptyMultiPoint()
   {
-    return geomFact.createMultiPoint();
+    return geomFact.createMultiPointEmpty();
   }
 
  /**private */Geometry boundaryMultiLineString(MultiLineString mLine)
@@ -173,8 +180,9 @@ class BoundaryOp
     endpointMap = new TreeMap();
     for (int i = 0; i < mLine.getNumGeometries(); i++) {
       LineString line = (LineString) mLine.getGeometryN(i);
-      if (line.getNumPoints() == 0)
+      if (line.getNumPoints() == 0) {
         continue;
+      }
       addEndpoint(line.getCoordinateN(0));
       addEndpoint(line.getCoordinateN(line.getNumPoints() - 1));
     }
@@ -217,10 +225,7 @@ class BoundaryOp
         return geomFact.createMultiPoint();
       }
     }
-    return geomFact.createMultiPoint(new Point[]{
-                                     line.getStartPoint(),
-                                     line.getEndPoint()
-    });
+    return geomFact.createMultiPointFromPoints(<Point>[line.getStartPoint()!,line.getEndPoint()!,]);
   }
 }
 

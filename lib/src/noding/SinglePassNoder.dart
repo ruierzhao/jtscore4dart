@@ -13,6 +13,8 @@
 
 // import java.util.Collection;
 
+import 'Noder.dart';
+
 /**
  * Base class for {@link Noder}s which make a single
  * pass to find intersections.

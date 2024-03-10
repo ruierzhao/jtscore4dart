@@ -14,7 +14,10 @@
 // import org.locationtech.jts.geom.Location;
 // import org.locationtech.jts.geom.Position;
 
- /**
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+
+/**
  * A <code>Label</code> indicates the topological relationship of a component
  * of a topology graph to a given <code>Geometry</code>.
  * This class supports labels for relationships to two <code>Geometry</code>s,
@@ -121,8 +124,13 @@ class Label {
     elt[1].flip();
   }
 
-  int getLocation(int geomIndex, int posIndex) { return elt[geomIndex].get(posIndex); }
-  int getLocation(int geomIndex) { return elt[geomIndex].get(Position.ON); }
+  int getLocation(int geomIndex, [int posIndex=Position.ON]) { 
+    return elt[geomIndex].get(posIndex); 
+  }
+  // TODO: ruier replace.
+  // int getLocation(int geomIndex) { 
+  //   return elt[geomIndex].get(Position.ON); 
+  // }
   void setLocation(int geomIndex, int posIndex, int location)
   {
     elt[geomIndex].setLocation(posIndex, location);

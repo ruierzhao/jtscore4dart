@@ -30,7 +30,11 @@ import 'dart:math';
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
 import 'package:jtscore4dart/src/math/MathUtil.dart';
+import 'package:jtscore4dart/src/noding/Noder.dart';
+import 'package:jtscore4dart/src/noding/ScaledNoder.dart';
+import 'package:jtscore4dart/src/noding/snapround/SnapRoundingNoder.dart';
 
 import 'BufferBuilder.dart';
 import 'BufferParameters.dart';
@@ -322,17 +326,18 @@ class BufferOp
     if (poly1.isEmpty()) return poly0;
     if (poly0.isEmpty()) return poly1;
     
-    List<Polygon> polys = new ArrayList<Polygon>();
+    // List<Polygon> polys = new ArrayList<Polygon>();
+    List<Polygon> polys = <Polygon>[];
     extractPolygons(poly0, polys);
     extractPolygons(poly1, polys);
-    if (polys.size() == 1) return polys.get(0);
+    if (polys.length == 1) return polys[0];
     return poly0.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polys));
   }
 
  /**private */
  static void extractPolygons(Geometry poly0, List<Polygon> polys) {
     for (int i = 0; i < poly0.getNumGeometries(); i++) {
-      polys.add((Polygon) poly0.getGeometryN(i));
+      polys.add( poly0.getGeometryN(i) as Polygon);
     }
   }
 
@@ -343,6 +348,7 @@ class BufferOp
 
  /**private */Geometry resultGeometry = null!;
 //  /**private */RuntimeException saveException;   // debugging only
+ /**private */late Exception saveException;   // debugging only
  /**private */bool isInvertOrientation = false;
 
   /**
@@ -406,10 +412,11 @@ class BufferOp
     if (resultGeometry != null) return;
 
     PrecisionModel argPM = argGeom.getFactory().getPrecisionModel();
-    if (argPM.getType() == PrecisionModel.FIXED)
+    if (argPM.getType() == PrecisionModel.FIXED) {
       bufferFixedPrecision(argPM);
-    else
+    } else {
       bufferReducedPrecision();
+    }
   }
 
  /**private */void bufferReducedPrecision()
@@ -417,11 +424,11 @@ class BufferOp
     // try and compute with decreasing precision
     for (int precDigits = MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
       try {
-        bufferReducedPrecision(precDigits);
-      }
-      catch (TopologyException ex) {
+        bufferReducedPrecisionDigits(precDigits);
+      }/**on TopologyException */
+      catch (ex) {
       	// update the saved exception to reflect the new input geometry
-        saveException = ex;
+        saveException = ex as Exception;
         // don't propagate the exception - it will be detected by fact that resultGeometry is null
       }
       if (resultGeometry != null) return;
@@ -431,12 +438,12 @@ class BufferOp
     throw saveException;
   }
 
- /**private */void bufferReducedPrecision(int precisionDigits)
+ /**private */void bufferReducedPrecisionDigits(int precisionDigits)
   {
     double sizeBasedScaleFactor = precisionScaleFactor(argGeom, distance, precisionDigits);
 //    System.out.println("recomputing with precision scale factor = " + sizeBasedScaleFactor);
 
-    PrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
+    PrecisionModel fixedPM = new PrecisionModel.Fixed(sizeBasedScaleFactor);
     bufferFixedPrecision(fixedPM);
   }
   
@@ -447,14 +454,15 @@ class BufferOp
       // use fast noding by default
       BufferBuilder bufBuilder = createBufferBullder();
       resultGeometry = bufBuilder.buffer(argGeom, distance);
-    }
-    catch (RuntimeException ex) {
+    // } on RuntimeException catch (ex) {
+    } on Exception catch (ex) {
       saveException = ex;
       // don't propagate the exception - it will be detected by fact that resultGeometry is null
 
       // testing ONLY - propagate exception
       //throw ex;
     }
+    
   }
 
  /**private */
@@ -480,8 +488,8 @@ class BufferOp
      * (Note this only works for buffering, because
      * ScaledNoder may invalidate topology.)
      */
-    Noder snapNoder = new SnapRoundingNoder(new PrecisionModel(1.0));
-    Noder noder = new ScaledNoder(snapNoder, fixedPM.getScale());
+    Noder snapNoder = SnapRoundingNoder(new PrecisionModel.Fixed(1.0));
+    Noder noder = ScaledNoder(snapNoder, fixedPM.getScale());
 
     BufferBuilder bufBuilder = createBufferBullder();
     bufBuilder.setWorkingPrecisionModel(fixedPM);

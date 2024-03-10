@@ -31,6 +31,12 @@
 // import org.locationtech.jts.geomgraph.Label;
 // import org.locationtech.jts.geomgraph.Node;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/planargraph/DirectedEdge.dart';
+
+import 'RightmostEdgeFinder.dart';
+
 /**
  * A connected subset of the graph of
  * {@link DirectedEdge}s and {@link Node}s.
@@ -74,7 +80,7 @@ class BufferSubgraph
         DirectedEdge dirEdge = (DirectedEdge) it.next();
         List<Coordinate> pts = dirEdge.getEdge().getCoordinates();
         for (int i = 0; i < pts.length - 1; i++) {
-          edgeEnv.expandToInclude(pts[i]);
+          edgeEnv.expandToIncludeCoordinate(pts[i]);
         }
       }
       env = edgeEnv;

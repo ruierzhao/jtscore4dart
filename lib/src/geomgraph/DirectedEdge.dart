@@ -18,6 +18,15 @@
 // import org.locationtech.jts.geom.TopologyException;
 
 
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+
+import 'Edge.dart';
+import 'EdgeEnd.dart';
+import 'EdgeRing.dart';
+import 'Label.dart';
+
 /**
  * @version 1.7
  */
@@ -36,16 +45,16 @@ class DirectedEdge
    */
   static int depthFactor(int currLocation, int nextLocation)
   {
-    if (currLocation == Location.EXTERIOR && nextLocation == Location.INTERIOR)
-       return 1;
-    else if (currLocation == Location.INTERIOR && nextLocation == Location.EXTERIOR)
+    if (currLocation == Location.EXTERIOR && nextLocation == Location.INTERIOR) {
+      return 1;
+    } else if (currLocation == Location.INTERIOR && nextLocation == Location.EXTERIOR)
        return -1;
     return 0;
   }
 
- /**protected */bool isForward;
- /**private */bool isInResult = false;
- /**private */bool isVisited = false;
+ /**protected */bool _isForward;
+ /**private */bool _isInResult = false;
+ /**private */bool _isVisited = false;
 
  /**private */DirectedEdge sym; // the symmetric edge
  /**private */DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
@@ -56,13 +65,13 @@ class DirectedEdge
    * The depth of each side (position) of this edge.
    * The 0 element of the array is never used.
    */
- /**private */int[] depth = { 0, -999, -999 };
+ /**private */List<int> depth = [ 0, -999, -999];
 
   DirectedEdge(Edge edge, bool isForward)
   {
     super(edge);
-    this.isForward = isForward;
-    if (isForward) {
+    this._isForward = _isForward;
+    if (_isForward) {
       init(edge.getCoordinate(0), edge.getCoordinate(1));
     }
     else {
@@ -71,11 +80,12 @@ class DirectedEdge
     }
     computeDirectedLabel();
   }
+  @override
   Edge getEdge() { return edge; }
-  void setInResult(bool isInResult) { this.isInResult = isInResult; }
-  bool isInResult() { return isInResult; }
-  bool isVisited() { return isVisited; }
-  void setVisited(bool isVisited) { this.isVisited = isVisited; }
+  void setInResult(bool isInResult) { this._isInResult = isInResult; }
+  bool isInResult() { return _isInResult; }
+  bool isVisited() { return _isVisited; }
+  void setVisited(bool isVisited) { this._isVisited = isVisited; }
   void setEdgeRing(EdgeRing edgeRing) { this.edgeRing = edgeRing; }
   EdgeRing getEdgeRing() { return edgeRing; }
   void setMinEdgeRing(EdgeRing minEdgeRing) { this.minEdgeRing = minEdgeRing; }
@@ -97,8 +107,9 @@ class DirectedEdge
 //      if (depth[position] != depthVal) {
 //        Debug.print(this);
 //      }
-      if (depth[position] != depthVal)
+      if (depth[position] != depthVal) {
         throw new TopologyException("assigned depths do not match", getCoordinate());
+      }
       //Assert.isTrue(depth[position] == depthVal, "assigned depths do not match at " + getCoordinate());
     }
     depth[position] = depthVal;
@@ -107,7 +118,7 @@ class DirectedEdge
   int getDepthDelta()
   {
     int depthDelta = edge.getDepthDelta();
-    if (! isForward) depthDelta = -depthDelta;
+    if (! _isForward) depthDelta = -depthDelta;
     return depthDelta;
   }
 
@@ -130,7 +141,7 @@ class DirectedEdge
    * @return the DirectedEdge for the same Edge but in the opposite direction
    */
   DirectedEdge getSym() { return sym; }
-  bool isForward() { return isForward; }
+  bool isForward() { return _isForward; }
   void setSym(DirectedEdge de)
   {
     sym = de;
@@ -187,8 +198,9 @@ class DirectedEdge
  /**private */void computeDirectedLabel()
   {
     label = new Label(edge.getLabel());
-    if (! isForward)
+    if (! _isForward) {
       label.flip();
+    }
   }
 
   /**
@@ -202,12 +214,13 @@ class DirectedEdge
   {
     // get the depth transition delta from R to L for this directed Edge
     int depthDelta = getEdge().getDepthDelta();
-    if (! isForward) depthDelta = -depthDelta;
+    if (! _isForward) depthDelta = -depthDelta;
 
     // if moving from L to R instead of R to L must change sign of delta
     int directionFactor = 1;
-    if (position == Position.LEFT)
+    if (position == Position.LEFT) {
       directionFactor = -1;
+    }
 
     int oppositePos = Position.opposite(position);
     int delta = depthDelta * directionFactor;
@@ -230,10 +243,11 @@ class DirectedEdge
   {
     print(out);
     out.print(" ");
-    if (isForward)
+    if (_isForward) {
       edge.print(out);
-    else
+    } else {
       edge.printReverse(out);
+    }
   }
 
 }

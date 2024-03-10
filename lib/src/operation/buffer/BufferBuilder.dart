@@ -47,6 +47,29 @@
 
 
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeList.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
+import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
+import 'package:jtscore4dart/src/noding/FastNodingValidator.dart';
+import 'package:jtscore4dart/src/noding/IntersectionAdder.dart';
+import 'package:jtscore4dart/src/noding/MCIndexNoder.dart';
+import 'package:jtscore4dart/src/noding/Noder.dart';
+import 'package:jtscore4dart/src/noding/SegmentString.dart';
+import 'package:jtscore4dart/src/operation/overlay/OverlayNodeFactory.dart';
+import 'package:jtscore4dart/src/operation/overlay/PolygonBuilder.dart';
+
+import 'BufferCurveSetBuilder.dart';
+import 'BufferParameters.dart';
+import 'BufferSubgraph.dart';
+import 'SubgraphDepthLocater.dart';
+
 /**
  * Builds the buffer geometry for a given input geometry and precision model.
  * Allows setting the level of approximation for circular arcs,
@@ -78,10 +101,10 @@ class BufferBuilder
 
  /**private */BufferParameters bufParams;
 
- /**private */PrecisionModel workingPrecisionModel;
- /**private */Noder workingNoder;
- /**private */GeometryFactory geomFact;
- /**private */PlanarGraph graph;
+ /**private */late PrecisionModel? workingPrecisionModel;
+ /**private */late Noder? workingNoder;
+ /**private */late GeometryFactory geomFact;
+ /**private */late PlanarGraph graph;
  /**private */EdgeList edgeList     = new EdgeList();
 
  /**private */bool isInvertOrientation = false;
@@ -92,10 +115,7 @@ class BufferBuilder
    * 
    * @param bufParams the buffer parameters to use
    */
-  BufferBuilder(BufferParameters bufParams)
-  {
-    this.bufParams = bufParams;
-  }
+  BufferBuilder(this.bufParams);
 
   /**
    * Sets the precision model to use during the curve computation and noding,
@@ -133,9 +153,8 @@ class BufferBuilder
 
   Geometry buffer(Geometry g, double distance)
   {
-    PrecisionModel precisionModel = workingPrecisionModel;
-    if (precisionModel == null)
-      precisionModel = g.getPrecisionModel();
+    PrecisionModel? precisionModel = workingPrecisionModel;
+    precisionModel ??= g.getPrecisionModel();
 
     // factory must be the same as the one used by the input
     geomFact = g.getFactory();
@@ -188,7 +207,7 @@ class BufferBuilder
 
  /**private */Noder getNoder(PrecisionModel precisionModel)
   {
-    if (workingNoder != null) return workingNoder;
+    if (workingNoder != null) return workingNoder!;
 
     // otherwise use a fast (but non-robust) noder
     MCIndexNoder noder = new MCIndexNoder();
@@ -218,7 +237,7 @@ class BufferBuilder
 //BufferDebug.saveEdges(nodedEdges, "run" + BufferDebug.runCount + "_nodedEdges");
 
     for (Iterator i = nodedSegStrings.iterator(); i.hasNext(); ) {
-      SegmentString segStr = (SegmentString) i.next();
+      SegmentString segStr =  i.next() as SegmentString;
       
       /**
        * Discard edges which have zero length, 
@@ -228,7 +247,7 @@ class BufferBuilder
       if (pts.length == 2 && pts[0].equals2D(pts[1]))
         continue;
 
-      Label oldLabel = (Label) segStr.getData();
+      Label oldLabel =  segStr.getData() as Label;
       Edge edge = new Edge(segStr.getCoordinates(), new Label(oldLabel));
       insertUniqueEdge(edge);
     }

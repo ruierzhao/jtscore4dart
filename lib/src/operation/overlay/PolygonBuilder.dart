@@ -29,6 +29,11 @@
 // import org.locationtech.jts.geomgraph.PlanarGraph;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
+import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
+import 'package:jtscore4dart/src/operation/overlay/MaximalEdgeRing.dart';
+
 /**
  * Forms {@link Polygon}s out of a graph of {@link DirectedEdge}s.
  * The edges to use are marked as being in the result Area.
@@ -39,12 +44,9 @@
 class PolygonBuilder {
 
  /**private */GeometryFactory geometryFactory;
- /**private */List shellList        = new ArrayList();
+ /**private */List shellList        = [];
 
-  PolygonBuilder(GeometryFactory geometryFactory)
-  {
-    this.geometryFactory = geometryFactory;
-  }
+  PolygonBuilder(this.geometryFactory);
 
   /**
    * Add a complete graph.
@@ -61,11 +63,11 @@ class PolygonBuilder {
    * The graph is assumed to contain one or more polygons,
    * possibly with holes.
    */
-  void add(Collection dirEdges, Collection nodes)
+  void add(Iterable dirEdges, Iterable nodes)
   {
     PlanarGraph.linkResultDirectedEdges(nodes);
     List maxEdgeRings = buildMaximalEdgeRings(dirEdges);
-    List freeHoleList = new ArrayList();
+    List freeHoleList = [];
     List edgeRings = buildMinimalEdgeRings(maxEdgeRings, shellList, freeHoleList);
     sortShellsAndHoles(edgeRings, shellList, freeHoleList);
     placeFreeHoles(shellList, freeHoleList);
@@ -82,11 +84,11 @@ class PolygonBuilder {
   /**
    * for all DirectedEdges in result, form them into MaximalEdgeRings
    */
- /**private */List buildMaximalEdgeRings(Collection dirEdges)
+ /**private */List buildMaximalEdgeRings(Iterable dirEdges)
   {
-    List maxEdgeRings     = new ArrayList();
-    for (Iterator it = dirEdges.iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    List maxEdgeRings     = [];
+    for (Iterator it = dirEdges.iterator; it.moveNext(); ) {
+      DirectedEdge de = it.current as DirectedEdge;
       if (de.isInResult() && de.getLabel().isArea() ) {
         // if this edge has not yet been processed
         if (de.getEdgeRing() == null) {

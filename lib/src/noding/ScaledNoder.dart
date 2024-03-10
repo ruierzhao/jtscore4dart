@@ -20,6 +20,8 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateArrays;
 
+import 'Noder.dart';
+
 /**
  * Wraps a {@link Noder} and transforms its input
  * into the integer domain.

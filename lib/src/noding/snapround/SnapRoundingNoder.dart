@@ -25,6 +25,8 @@
 // import org.locationtech.jts.noding.Noder;
 // import org.locationtech.jts.noding.SegmentString;
 
+import '../Noder.dart';
+
 /**
  * Uses Snap Rounding to compute a rounded,
  * fully noded arrangement from a set of {@link SegmentString}s,

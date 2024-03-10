@@ -19,6 +19,16 @@
 // import org.locationtech.jts.geom.Quadrant;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Quadrant.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'Edge.dart';
+import 'Label.dart';
+import 'Node.dart';
+
 /**
  * Models the end of an edge incident on a node.
  * EdgeEnds have a direction
@@ -74,9 +84,9 @@ class EdgeEnd
   void setNode(Node node) { this.node = node; }
   Node getNode() { return node; }
 
-  int compareTo(Object obj)
+  int compareTo(var obj)
   {
-      EdgeEnd e = (EdgeEnd) obj;
+      EdgeEnd e =  obj as EdgeEnd;
       return compareDirection(e);
   }
   /**
@@ -97,8 +107,9 @@ class EdgeEnd
    */
   int compareDirection(EdgeEnd e)
   {
-    if (dx == e.dx && dy == e.dy)
+    if (dx == e.dx && dy == e.dy) {
       return 0;
+    }
     // if the rays are in different quadrants, determining the ordering is trivial
     if (quadrant > e.quadrant) return 1;
     if (quadrant < e.quadrant) return -1;
@@ -111,20 +122,20 @@ class EdgeEnd
   {
     // subclasses should override this if they are using labels
   }
-  void print(PrintStream out)
-  {
-    double angle = math.atan2(dy, dx);
-    String className = getClass().getName();
-    int lastDotPos = className.lastIndexOf('.');
-    String name = className.substring(lastDotPos + 1);
-    out.print("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle + "   " + label);
-  }
-  String toString()
-  {
-    double angle = math.atan2(dy, dx);
-    String className = getClass().getName();
-    int lastDotPos = className.lastIndexOf('.');
-    String name = className.substring(lastDotPos + 1);
-    return "  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle + "   " + label;
-  }
+  // void print(PrintStream out)
+  // {
+  //   double angle = math.atan2(dy, dx);
+  //   String className = getClass().getName();
+  //   int lastDotPos = className.lastIndexOf('.');
+  //   String name = className.substring(lastDotPos + 1);
+  //   out.print("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle + "   " + label);
+  // }
+  // String toString()
+  // {
+  //   double angle = math.atan2(dy, dx);
+  //   String className = getClass().getName();
+  //   int lastDotPos = className.lastIndexOf('.');
+  //   String name = className.substring(lastDotPos + 1);
+  //   return "  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle + "   " + label;
+  // }
 }

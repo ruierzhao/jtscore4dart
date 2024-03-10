@@ -108,22 +108,26 @@ class BufferOp
    * Specifies a round line buffer end cap style.
    * @deprecated use BufferParameters
    */
+  @Deprecated("use BufferParameters")
   static const int CAP_ROUND = BufferParameters.CAP_ROUND;
   /**
    * Specifies a butt (or flat) line buffer end cap style.
    * @deprecated use BufferParameters
    */
+  @Deprecated("use BufferParameters")
   static const int CAP_BUTT = BufferParameters.CAP_FLAT;
   
   /**
    * Specifies a butt (or flat) line buffer end cap style.
    * @deprecated use BufferParameters
    */
+  @Deprecated("use BufferParameters")
   static const int CAP_FLAT = BufferParameters.CAP_FLAT;
   /**
    * Specifies a square line buffer end cap style.
    * @deprecated use BufferParameters
    */
+  @Deprecated("use BufferParameters")
   static const int CAP_SQUARE = BufferParameters.CAP_SQUARE;
   
   /**

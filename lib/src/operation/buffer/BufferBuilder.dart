@@ -56,6 +56,7 @@ import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/geomgraph/Edge.dart';
 import 'package:jtscore4dart/src/geomgraph/EdgeList.dart';
 import 'package:jtscore4dart/src/geomgraph/Label.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
 import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
 import 'package:jtscore4dart/src/noding/FastNodingValidator.dart';
 import 'package:jtscore4dart/src/noding/IntersectionAdder.dart';

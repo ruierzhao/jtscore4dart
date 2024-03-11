@@ -17,6 +17,8 @@
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
 
+import 'TopologyLocation.dart';
+
 /**
  * A <code>Label</code> indicates the topological relationship of a component
  * of a topology graph to a given <code>Geometry</code>.
@@ -48,12 +50,13 @@ class Label {
   {
     Label lineLabel = new Label(Location.NONE);
     for (int i = 0; i < 2; i++) {
-      lineLabel.setLocation(i, label.getLocation(i));
+      lineLabel.setLocationOn(i, label.getLocation(i));
     }
     return lineLabel;
   }
 
-  TopologyLocation elt[] = new TopologyLocation[2];
+  // List<TopologyLocation> elt = TopologyLocation[2];
+  List<TopologyLocation> elt = [];
 
   /**
    * Construct a Label with a single location for both Geometries.
@@ -63,8 +66,8 @@ class Label {
    */
   Label(int onLoc)
   {
-    elt[0] = new TopologyLocation(onLoc);
-    elt[1] = new TopologyLocation(onLoc);
+    elt[0] = new TopologyLocation.On(onLoc);
+    elt[1] = new TopologyLocation.On(onLoc);
   }
   /**
    * Construct a Label with a single location for both Geometries.
@@ -73,10 +76,10 @@ class Label {
    * @param geomIndex Geometry index
    * @param onLoc On location
    */
-  Label(int geomIndex, int onLoc)
+  Label.GeomIndex(int geomIndex, int onLoc)
   {
-    elt[0] = new TopologyLocation(Location.NONE);
-    elt[1] = new TopologyLocation(Location.NONE);
+    elt[0] = new TopologyLocation.On(Location.NONE);
+    elt[1] = new TopologyLocation.On(Location.NONE);
     elt[geomIndex].setLocation(onLoc);
   }
   /**
@@ -87,10 +90,10 @@ class Label {
    * @param rightLoc Right location
    * @param leftLoc Left location
    */
-  Label(int onLoc, int leftLoc, int rightLoc)
+  Label.From3(int onLoc, int leftLoc, int rightLoc)
   {
-    elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc);
-    elt[1] = new TopologyLocation(onLoc, leftLoc, rightLoc);
+    elt[0] = new TopologyLocation.From3(onLoc, leftLoc, rightLoc);
+    elt[1] = new TopologyLocation.From3(onLoc, leftLoc, rightLoc);
   }
   /**
    * Construct a Label with On, Left and Right locations for both Geometries.
@@ -101,10 +104,10 @@ class Label {
    * @param rightLoc Right location
    * @param leftLoc Left location
    */
-  Label(int geomIndex, int onLoc, int leftLoc, int rightLoc)
+  Label.GeomFrom3(int geomIndex, int onLoc, int leftLoc, int rightLoc)
   {
-    elt[0] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
-    elt[1] = new TopologyLocation(Location.NONE, Location.NONE, Location.NONE);
+    elt[0] = new TopologyLocation.From3(Location.NONE, Location.NONE, Location.NONE);
+    elt[1] = new TopologyLocation.From3(Location.NONE, Location.NONE, Location.NONE);
     elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc);
   }
   /**
@@ -112,10 +115,10 @@ class Label {
    *
    * @param lbl Label
    */
-  Label(Label lbl)
+  Label.FromAnother(Label lbl)
   {
-    elt[0] = new TopologyLocation(lbl.elt[0]);
-    elt[1] = new TopologyLocation(lbl.elt[1]);
+    elt[0] = TopologyLocation.FromAnother(lbl.elt[0]);
+    elt[1] = TopologyLocation.FromAnother(lbl.elt[1]);
   }
 
   void flip()
@@ -131,26 +134,26 @@ class Label {
   // int getLocation(int geomIndex) { 
   //   return elt[geomIndex].get(Position.ON); 
   // }
-  void setLocation(int geomIndex, int posIndex, int location)
-  {
-    elt[geomIndex].setLocation(posIndex, location);
+  void setLocation(int geomIndex, int posIndex, int location){
+    elt[geomIndex].setLocationKV(posIndex, location);
   }
-  void setLocation(int geomIndex, int location)
-  {
-    elt[geomIndex].setLocation(Position.ON, location);
+
+  void setLocationOn(int geomIndex, int location){
+    elt[geomIndex].setLocationKV(Position.ON, location);
   }
+
   void setAllLocations(int geomIndex, int location)
   {
     elt[geomIndex].setAllLocations(location);
   }
-  void setAllLocationsIfNull(int geomIndex, int location)
+  void setAllLocationsIfNullGeom(int geomIndex, int location)
   {
     elt[geomIndex].setAllLocationsIfNull(location);
   }
-  void setAllLocationsIfNull(int location)
-  {
-    setAllLocationsIfNull(0, location);
-    setAllLocationsIfNull(1, location);
+
+  void setAllLocationsIfNull(int location){
+    setAllLocationsIfNullGeom(0, location);
+    setAllLocationsIfNullGeom(1, location);
   }
   /**
    * Merge this label with another one.
@@ -162,7 +165,7 @@ s   */
   {
     for (int i = 0; i < 2; i++) {
       if (elt[i] == null && lbl.elt[i] != null) {
-        elt[i] = new TopologyLocation(lbl.elt[i]);
+        elt[i] = new TopologyLocation.FromAnother(lbl.elt[i]);
       }
       else {
         elt[i].merge(lbl.elt[i]);
@@ -179,14 +182,23 @@ s   */
   bool isNull(int geomIndex) { return elt[geomIndex].isNull(); }
   bool isAnyNull(int geomIndex) { return elt[geomIndex].isAnyNull(); }
 
-  bool isArea()               { return elt[0].isArea() || elt[1].isArea();   }
-  bool isArea(int geomIndex)  
+  // TODO: ruier edit.
+  // bool isArea()               { return elt[0].isArea() || elt[1].isArea();   }
+
+  // bool isArea(int geomIndex)  
+  // {
+  // 	/*  Testing
+  // 	if (elt[0].getLocations().length != elt[1].getLocations().length) {
+  // 		System.out.println(this);
+  // 	}
+  // 		*/
+  // 	return elt[geomIndex].isArea();   
+  // }
+  bool isArea([int? geomIndex])  
   {
-  	/*  Testing
-  	if (elt[0].getLocations().length != elt[1].getLocations().length) {
-  		System.out.println(this);
+  	if (geomIndex == null ) {
+  	  return elt[0].isArea() || elt[1].isArea();
   	}
-  		*/
   	return elt[geomIndex].isArea();   
   }
   bool isLine(int geomIndex)  { return elt[geomIndex].isLine();   }
@@ -207,19 +219,21 @@ s   */
    */
   void toLine(int geomIndex)
   {
-    if (elt[geomIndex].isArea())
-      elt[geomIndex] = new TopologyLocation(elt[geomIndex].location[0]);
+    if (elt[geomIndex].isArea()) {
+      elt[geomIndex] = new TopologyLocation.On(elt[geomIndex].location[0]);
+    }
   }
+  @override
   String toString()
   {
     StringBuffer buf = new StringBuffer();
     if (elt[0] != null) {
-      buf.append("A:");
-      buf.append(elt[0].toString());
+      buf.write("A:");
+      buf.write(elt[0].toString());
     }
     if (elt[1] != null) {
-      buf.append(" B:");
-      buf.append(elt[1].toString());
+      buf.write(" B:");
+      buf.write(elt[1].toString());
     }
     return buf.toString();
   }

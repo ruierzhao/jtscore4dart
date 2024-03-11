@@ -16,6 +16,9 @@
 // import org.locationtech.jts.geom.Location;
 // import org.locationtech.jts.geom.Position;
 
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+
 /**
   * A TopologyLocation is the labelling of a
   * GraphComponent's topological relationship to a single Geometry.
@@ -39,9 +42,9 @@
  */
 class TopologyLocation {
 
-  int location[];
+  late List<int> location;
 
-  TopologyLocation(int[] location)
+  TopologyLocation(List<int> location)
   {
     init(location.length);
   }
@@ -55,18 +58,18 @@ class TopologyLocation {
    * @param left left position
    * @param right right position
    */
-  TopologyLocation(int on, int left, int right) {
+  TopologyLocation.From3(int on, int left, int right) {
    init(3);
    location[Position.ON] = on;
    location[Position.LEFT] = left;
    location[Position.RIGHT] = right;
   }
 
-  TopologyLocation(int on) {
+  TopologyLocation.On(int on) {
    init(1);
    location[Position.ON] = on;
   }
-  TopologyLocation(TopologyLocation gl) {
+  TopologyLocation.FromAnother(TopologyLocation gl) {
     init(gl.location.length);
     if (gl != null) {
       for (int i = 0; i < location.length; i++) {
@@ -76,8 +79,9 @@ class TopologyLocation {
   }
  /**private */void init(int size)
   {
-    location = new int[size];
-    setAllLocations(Location.NONE);
+    // location = new int[size];
+    // setAllLocations(Location.NONE);
+    this.location = List<int>.filled(size, Location.NONE);
   }
   int get(int posIndex)
   {
@@ -133,15 +137,18 @@ class TopologyLocation {
     }
   }
 
-  void setLocation(int locIndex, int locValue)
+  void setLocationKV(int locIndex, int locValue)
   {
       location[locIndex] = locValue;
   }
+
   void setLocation(int locValue)
   {
-    setLocation(Position.ON, locValue);
+    setLocationKV(Position.ON, locValue);
   }
-  int[] getLocations() { return location; }
+
+  List<int> getLocations() { return location; }
+
   void setLocations(int on, int left, int right) {
       location[Position.ON] = on;
       location[Position.LEFT] = left;
@@ -165,24 +172,27 @@ class TopologyLocation {
   {
     // if the src is an Area label & and the dest is not, increase the dest to be an Area
     if (gl.location.length > location.length) {
-      int [] newLoc = new int[3];
+      // int [] newLoc = new int[3];
+      List<int> newLoc = List.filled(3, Location.NONE);
       newLoc[Position.ON] = location[Position.ON];
       newLoc[Position.LEFT] = Location.NONE;
       newLoc[Position.RIGHT] = Location.NONE;
       location = newLoc;
     }
     for (int i = 0; i < location.length; i++) {
-      if (location[i] == Location.NONE && i < gl.location.length)
+      if (location[i] == Location.NONE && i < gl.location.length) {
         location[i] = gl.location[i];
+      }
     }
   }
 
+  @override
   String toString()
   {
     StringBuffer buf = new StringBuffer();
-    if (location.length > 1) buf.append(Location.toLocationSymbol(location[Position.LEFT]));
-    buf.append(Location.toLocationSymbol(location[Position.ON]));
-    if (location.length > 1) buf.append(Location.toLocationSymbol(location[Position.RIGHT]));
+    if (location.length > 1) buf.write(Location.toLocationSymbol(location[Position.LEFT]));
+    buf.write(Location.toLocationSymbol(location[Position.ON]));
+    if (location.length > 1) buf.write(Location.toLocationSymbol(location[Position.RIGHT]));
     return buf.toString();
   }
 }

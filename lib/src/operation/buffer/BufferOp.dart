@@ -317,7 +317,7 @@ class BufferOp
   
   /**
    * Combines the elements of two polygonal geometries together.
-   * The input geometries must be non-adjacent, to avoid
+   * The input geometries must be non-adjacent(相邻的), to avoid
    * creating an invalid result.
    * 
    * @param poly0 a polygonal geometry (which may be empty)
@@ -350,7 +350,7 @@ class BufferOp
   
  /**private */BufferParameters bufParams = BufferParameters();
 
- /**private */Geometry resultGeometry = null!;
+ /**private */Geometry? resultGeometry;
 //  /**private */RuntimeException saveException;   // debugging only
  /**private */late Exception saveException;   // debugging only
  /**private */bool isInvertOrientation = false;
@@ -406,7 +406,7 @@ class BufferOp
   {
     this.distance = distance;
     computeGeometry();
-    return resultGeometry;
+    return resultGeometry!;
   }
 
  /**private */

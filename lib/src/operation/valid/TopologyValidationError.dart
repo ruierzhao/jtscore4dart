@@ -36,32 +36,44 @@ class TopologyValidationError {
   static const int REPEATED_POINT          = 1;
 
   /**
+   * hole 在 polygon shell 的外部（exterior）
+   * 
    * Indicates that a hole of a polygon lies partially or completely in the exterior of the shell
    */
   static const int HOLE_OUTSIDE_SHELL      = 2;
 
   /**
+   * 同一个polygon中一个hole 在另一个hole 里面
+   * 
    * Indicates that a hole lies in the interior of another hole in the same polygon
    */
   static const int NESTED_HOLES            = 3;
 
   /**
+   * 一个polygon 的内部相离
+   * 一系列相邻的holes 把polygon 拆分 为两部分产生
+   * 
    * Indicates that the interior of a polygon is disjoint
    * (often caused by set of contiguous holes splitting the polygon into two parts)
    */
   static const int DISCONNECTED_INTERIOR   = 4;
 
   /**
+   * 一个polygon 的两个环相交
+   * 
    * Indicates that two rings of a polygonal geometry intersect
    */
   static const int SELF_INTERSECTION       = 5;
 
   /**
+   * ring 自相交
    * Indicates that a ring self-intersects
    */
   static const int RING_SELF_INTERSECTION  = 6;
 
   /**
+   * MultiPolygon 中的一个polygon组件在另一个polygon中
+   * 
    * Indicates that a polygon component of a MultiPolygon lies inside another polygonal component
    */
   static const int NESTED_SHELLS           = 7;

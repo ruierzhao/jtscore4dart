@@ -23,6 +23,9 @@
 
 import 'package:jtscore4dart/geometry.dart';
 
+import 'IndexedNestedHoleTester.dart';
+import 'IndexedNestedPolygonTester.dart';
+import 'PolygonTopologyAnalyzer.dart';
 import 'TopologyValidationError.dart';
 
 /**
@@ -47,6 +50,13 @@ class IsValidOp
     IsValidOp isValidOp = new IsValidOp(geom);
     return isValidOp.isValid();
   }
+
+  @Deprecated("alias of #of")
+  static bool ofGeom(Geometry geom)
+  {
+    IsValidOp isValidOp = new IsValidOp(geom);
+    return isValidOp.isValid();
+  }
   
   /**
    * Checks whether a coordinate is valid for processing.
@@ -56,7 +66,7 @@ class IsValidOp
    * @param coord the coordinate to validate
    * @return <code>true</code> if the coordinate is valid
    */
-  static bool isValidOf(Coordinate coord)
+  static bool ofCoord(Coordinate coord)
   {
     if ((coord.x).isNaN) return false;
     if ((coord.x).isInfinite) return false;
@@ -75,17 +85,14 @@ class IsValidOp
    */
  /**private */bool isInvertedRingValid = false;
   
- /**private */TopologyValidationError validErr;
+ /**private */late TopologyValidationError? validErr;
 
   /**
    * Creates a new validator for a geometry.
    * 
    * @param inputGeometry the geometry to validate
    */
-  IsValidOp(Geometry inputGeometry)
-  {
-    this.inputGeometry = inputGeometry;
-  }
+  IsValidOp(this.inputGeometry);
 
   /**
    * Sets whether polygons using <b>Self-Touching Rings</b> to form
@@ -139,13 +146,13 @@ class IsValidOp
    * @return the validation error, if the geometry is invalid
    * or null if the geometry is valid
    */
-  TopologyValidationError getValidationError()
+  TopologyValidationError? getValidationError()
   {
     isValidGeometry(inputGeometry);
     return validErr;
   }
   
- /**private */void logInvalid(int code, Coordinate pt) {
+ /**private */void logInvalid(int code, Coordinate? pt) {
     validErr = new TopologyValidationError(code, pt);   
   }
   
@@ -161,22 +168,23 @@ class IsValidOp
     // empty geometries are always valid
     if (g.isEmpty()) return true;
 
-    if (g is Point)              return isValid( (Point) g);
-    if (g is MultiPoint)         return isValid( (MultiPoint) g);
-    if (g is LinearRing)         return isValid( (LinearRing) g);
-    if (g is LineString)         return isValid( (LineString) g);
-    if (g is Polygon)            return isValid( (Polygon) g);
-    if (g is MultiPolygon)       return isValid( (MultiPolygon) g);
-    if (g is GeometryCollection) return isValid( (GeometryCollection) g);
+    if (g is Point)              return isValidPoint( g as  Point);
+    if (g is MultiPoint)         return isValidMPoint( g as  MultiPoint);
+    if (g is LinearRing)         return isValidLR( g as  LinearRing);
+    if (g is LineString)         return isValidLS( g as  LineString);
+    if (g is Polygon)            return isValidP( g as  Polygon);
+    if (g is MultiPolygon)       return isValidMP( g as  MultiPolygon);
+    if (g is GeometryCollection) return isValidGC( g as  GeometryCollection);
     
     // geometry type not known
-    throw UnsupportedOperationException(g.getClass().getName());
+    // throw UnsupportedOperationException(g.getClass().getName());
+    throw Exception("just never run to here");
   }
 
   /**
    * Tests validity of a Point.
    */
- /**private */bool isValid(Point g)
+ /**private */bool isValidPoint(Point g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -186,7 +194,7 @@ class IsValidOp
   /**
    * Tests validity of a MultiPoint.
    */
- /**private */bool isValid(MultiPoint g)
+ /**private */bool isValidMPoint(MultiPoint g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -197,7 +205,7 @@ class IsValidOp
    * Tests validity of a LineString.  
    * Almost anything goes for linestrings!
    */
- /**private */bool isValid(LineString g)
+ /**private */bool isValidLS(LineString g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -209,7 +217,7 @@ class IsValidOp
   /**
    * Tests validity of a LinearRing.
    */
- /**private */bool isValid(LinearRing g)
+ /**private */bool isValidLR(LinearRing g)
   {
     checkCoordinatesValid(g.getCoordinates());
     if (hasInvalidError()) return false;
@@ -228,9 +236,9 @@ class IsValidOp
    * Tests the validity of a polygon.
    * Sets the validErr flag.
    */
- /**private */bool isValid(Polygon g)
+ /**private */bool isValidP(Polygon g)
   {
-    checkCoordinatesValid(g);
+    checkCoordinatesValidPolygon(g);
     if (hasInvalidError()) return false;
     
     checkRingsClosed(g);
@@ -262,11 +270,11 @@ class IsValidOp
    * @param g
    * @return
    */
- /**private */bool isValid(MultiPolygon g)
+ /**private */bool isValidMP(MultiPolygon g)
   {
     for (int i = 0; i < g.getNumGeometries(); i++) {
-      Polygon p = (Polygon) g.getGeometryN(i);
-      checkCoordinatesValid(p);
+      Polygon p =  g.getGeometryN(i) as Polygon;
+      checkCoordinatesValidPolygon(p);
       if (hasInvalidError()) return false;
       
       checkRingsClosed(p);
@@ -281,12 +289,12 @@ class IsValidOp
     if (hasInvalidError()) return false;
     
     for (int i = 0; i < g.getNumGeometries(); i++) {
-      Polygon p = (Polygon) g.getGeometryN(i);
+      Polygon p =  g.getGeometryN(i) as Polygon;
       checkHolesInShell(p);
       if (hasInvalidError()) return false;
     }
     for (int i = 0; i < g.getNumGeometries(); i++) {
-      Polygon p = (Polygon) g.getGeometryN(i);
+      Polygon p = g.getGeometryN(i) as Polygon;
       checkHolesNotNested(p);
       if (hasInvalidError()) return false;
     }
@@ -305,7 +313,7 @@ class IsValidOp
    * @param gc
    * @return
    */
- /**private */bool isValid(GeometryCollection gc)
+ /**private */bool isValidGC(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       if (! isValidGeometry( gc.getGeometryN(i) )) 
@@ -317,14 +325,14 @@ class IsValidOp
  /**private */void checkCoordinatesValid(List<Coordinate> coords)
   {
     for (int i = 0; i < coords.length; i++) {
-      if (! isValid(coords[i])) {
+      if ( !ofCoord(coords[i])) {
         logInvalid(TopologyValidationError.INVALID_COORDINATE, coords[i]);
         return;
       }
     }
   }
 
- /**private */void checkCoordinatesValid(Polygon poly)
+ /**private */void checkCoordinatesValidPolygon(Polygon poly)
   {
     checkCoordinatesValid(poly.getExteriorRing().getCoordinates());
     if (hasInvalidError()) return;
@@ -338,7 +346,7 @@ class IsValidOp
   {
     if (ring.isEmpty()) return;
     if (! ring.isClosed() ) {
-      Coordinate pt = ring.getNumPoints() >= 1 ? ring.getCoordinateN(0) : null;
+      Coordinate? pt = ring.getNumPoints() >= 1 ? ring.getCoordinateN(0) : null;
       logInvalid( TopologyValidationError.RING_NOT_CLOSED, pt);
       return;
     }
@@ -377,7 +385,7 @@ class IsValidOp
    */
  /**private */void checkPointSize(LineString line, int minSize) {
     if (! isNonRepeatedSizeAtLeast(line, minSize) ) {
-      Coordinate pt = line.getNumPoints() >= 1 ? line.getCoordinateN(0) : null;
+      Coordinate? pt = line.getNumPoints() >= 1 ? line.getCoordinateN(0) : null;
       logInvalid(TopologyValidationError.TOO_FEW_POINTS, pt);
     }
   }
@@ -392,7 +400,7 @@ class IsValidOp
    */
  /**private */bool isNonRepeatedSizeAtLeast(LineString line, int minSize) {
     int numPts = 0;
-    Coordinate prevPt = null;
+    Coordinate? prevPt;
     for (int i = 0; i < line.getNumPoints(); i++) {
       if (numPts >= minSize) return true;
       Coordinate pt = line.getCoordinateN(i);
@@ -447,7 +455,7 @@ class IsValidOp
       LinearRing hole = poly.getInteriorRingN(i);
       if (hole.isEmpty()) continue;
       
-      Coordinate invalidPt = null;
+      Coordinate? invalidPt = null;
       if (isShellEmpty) {
         invalidPt = hole.getCoordinate();
       }
@@ -473,7 +481,7 @@ class IsValidOp
    * @param shell the polygon shell to test against
    * @return a hole point outside the shell, or null if it is inside
    */
- /**private */Coordinate findHoleOutsideShellPoint(LinearRing hole, LinearRing shell) {
+ /**private */Coordinate? findHoleOutsideShellPoint(LinearRing hole, LinearRing shell) {
     Coordinate holePt0 = hole.getCoordinateN(0);
     /**
      * If hole envelope is not covered by shell, it must be outside

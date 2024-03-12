@@ -11,6 +11,12 @@
  */
 
 
+import 'dart:math';
+
+import 'Coordinate.dart';
+import 'Envelope.dart';
+import 'Geometry.dart';
+
 /// A bounding container for a {@link Geometry} which is in the shape of a general octagon.
 /// The OctagonalEnvelope of a geometric object
 /// is a geometry which is a tight bound
@@ -25,6 +31,10 @@ class OctagonalEnvelope
   /// @param geom the geometry
   /// @return the octagonal envelope of the geometry
   static Geometry octagonalEnvelope(Geometry geom) {
+    return OctagonalEnvelope(geom).toGeometry(geom.getFactory());
+  }
+  /// alias of #octagonalEnvelope
+  static Geometry of(Geometry geom) {
     return (new OctagonalEnvelope(geom)).toGeometry(geom.getFactory());
   }
   
@@ -38,7 +48,7 @@ class OctagonalEnvelope
     return x - y;
   }
 
- /**private */static double SQRT2 = math.sqrt(2.0);
+ /**private */static double SQRT2 = sqrt(2.0);
   
   // initialize in the null state
  /**private */double minX = double.nan;

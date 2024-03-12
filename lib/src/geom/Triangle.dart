@@ -16,11 +16,15 @@
 // import org.locationtech.jts.algorithm.Orientation;
 // import org.locationtech.jts.math.DD;
 
+import 'dart:math';
+
 import 'package:jtscore4dart/src/algorithm/Angle.dart';
 import 'package:jtscore4dart/src/algorithm/HCoordinate.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/math/DD.dart';
 
+// TODO: ruier edit.方法名重复，静态方法加 S
 /// Represents a planar triangle, and provides methods for calculating various
 /// properties of triangles.
 /// 
@@ -39,7 +43,7 @@ class Triangle
   /// @param b a vertex of the triangle
   /// @param c a vertex of the triangle
   /// @return true if the triangle is acute
-  static bool isAcute(Coordinate a, Coordinate b, Coordinate c)
+  static bool isAcuteS(Coordinate a, Coordinate b, Coordinate c)
   {
     if (!Angle.isAcute(a, b, c)) {
       return false;
@@ -59,7 +63,7 @@ class Triangle
   /// @param b a vertex of the triangle
   /// @param c a vertex of the triangle
   /// @return true if the triangle orientation is counter-clockwise
-  static bool isCCW(Coordinate a, Coordinate b, Coordinate c)
+  static bool isCCWS(Coordinate a, Coordinate b, Coordinate c)
   {
     return Orientation.COUNTERCLOCKWISE == Orientation.index(a, b, c);
   }
@@ -73,7 +77,7 @@ class Triangle
   /// @return true if the triangle intersects the point
   static bool intersects(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
   {
-    int exteriorIndex = isCCW(a, b, c) ? 
+    int exteriorIndex = isCCWS(a, b, c) ? 
         Orientation.CLOCKWISE : Orientation.COUNTERCLOCKWISE;
     if (exteriorIndex == Orientation.index(a, b, p)) return false;
     if (exteriorIndex == Orientation.index(b, c, p)) return false;
@@ -97,7 +101,7 @@ class Triangle
     HCoordinate l1 = HCoordinate(a.x + dx / 2.0, a.y + dy / 2.0, 1.0);
     HCoordinate l2 = HCoordinate(a.x - dy + dx / 2.0, a.y + dx + dy / 2.0,
         1.0);
-    return HCoordinate(l1, l2);
+    return HCoordinate.from2HCoord(l1, l2);
   }
 
   /// Computes the radius of the circumcircle of a triangle.
@@ -108,15 +112,17 @@ class Triangle
   /// @param b a vertex of the triangle
   /// @param c a vertex of the triangle
   /// @return the circumradius of the triangle
-  static double circumradius(Coordinate a, Coordinate b, Coordinate c) {
+  static double circumradiusS(Coordinate a, Coordinate b, Coordinate c) {
     double A = a.distance(b);
     double B = b.distance(c);
     double C = c.distance(a);
-    double _area = area(a, b, c);
+    double _area = areaS(a, b, c);
     if (_area == 0.0) {
-      return Double.POSITIVE_INFINITY;
+      // return Double.POSITIVE_INFINITY;
+      // TODO: ruier edit.
+      return double.infinity;
     }
-    return (A * B * C) / (4 * area);
+    return (A * B * C) / (4 * _area);
   }
   
   /**
@@ -173,7 +179,7 @@ class Triangle
   /// @param c
   ///          a vertex of the triangle
   /// @return the circumcentre of the triangle
-  static Coordinate circumcentre(Coordinate a, Coordinate b, Coordinate c)
+  static Coordinate circumcentreS(Coordinate a, Coordinate b, Coordinate c)
   {
     double cx = c.x;
     double cy = c.y;
@@ -218,14 +224,14 @@ class Triangle
     DD bx = DD.valueOf(b.x).subtract(c.x);
     DD by = DD.valueOf(b.y).subtract(c.y);
 
-    DD denom = DD.determinant(ax, ay, bx, by).multiply(2);
-    DD asqr = ax.sqr().add( ay.sqr());
-    DD bsqr = bx.sqr().add( by.sqr());
-    DD numx = DD.determinant(ay, asqr, by, bsqr);
-    DD numy = DD.determinant(ax, asqr, bx, bsqr);
+    DD denom = DD.determinantDD(ax, ay, bx, by).multiply(2);
+    DD asqr = ax.sqr().addDD( ay.sqr());
+    DD bsqr = bx.sqr().addDD( by.sqr());
+    DD numx = DD.determinantDD(ay, asqr, by, bsqr);
+    DD numy = DD.determinantDD(ax, asqr, bx, bsqr);
 
-    double ccx = DD.valueOf(c.x).subtract( numx.divide(denom) ).doubleValue();
-    double ccy = DD.valueOf(c.y).add( numy.divide(denom) ).doubleValue();
+    double ccx = DD.valueOf(c.x).subtractDD( numx.divideDD(denom) ).doubleValue();
+    double ccy = DD.valueOf(c.y).addDD( numy.divideDD(denom) ).doubleValue();
 
     return new Coordinate(ccx, ccy);
   }
@@ -262,7 +268,7 @@ class Triangle
   /// @param c
   ///          a vertex of the triangle
   /// @return the point which is the incentre of the triangle
-  static Coordinate inCentre(Coordinate a, Coordinate b, Coordinate c)
+  static Coordinate inCentreS(Coordinate a, Coordinate b, Coordinate c)
   {
     // the lengths of the sides, labelled by their opposite vertex
     double len0 = b.distance(c);
@@ -290,7 +296,7 @@ class Triangle
   /// @param c
   ///          a vertex of the triangle
   /// @return the centroid of the triangle
-  static Coordinate centroid(Coordinate a, Coordinate b, Coordinate c)
+  static Coordinate centroidS(Coordinate a, Coordinate b, Coordinate c)
   {
     double x = (a.x + b.x + c.x) / 3;
     double y = (a.y + b.y + c.y) / 3;
@@ -303,7 +309,7 @@ class Triangle
   /// @param b a vertex of the triangle
   /// @param c a vertex of the triangle
   /// @return the length of the triangle perimeter
-  static double length(Coordinate a, Coordinate b, Coordinate c)
+  static double lengthS(Coordinate a, Coordinate b, Coordinate c)
   {
     return a.distance(b) + b.distance(c) + c.distance(a);
   }
@@ -317,7 +323,7 @@ class Triangle
   /// @param c
   ///          a vertex of the triangle
   /// @return the length of the longest side of the triangle
-  static double longestSideLength(Coordinate a, Coordinate b,
+  static double longestSideLengthS(Coordinate a, Coordinate b,
       Coordinate c)
   {
     double lenAB = a.distance(b);
@@ -371,7 +377,7 @@ class Triangle
   /// @return the area of the triangle
   /// 
   /// @see #signedArea(Coordinate, Coordinate, Coordinate)
-  static double area(Coordinate a, Coordinate b, Coordinate c)
+  static double areaS(Coordinate a, Coordinate b, Coordinate c)
   {
     return (((c.x - a.x) * (b.y - a.y) - (b.x - a.x) * (c.y - a.y)) / 2).abs();
   }
@@ -393,7 +399,7 @@ class Triangle
   /// @return the signed 2D area of the triangle
   /// 
   /// @see Orientation#index(Coordinate, Coordinate, Coordinate)
-  static double signedArea(Coordinate a, Coordinate b, Coordinate c)
+  static double signedAreaS(Coordinate a, Coordinate b, Coordinate c)
   {
     /**
      * Uses the formula 1/2 * | u x v | where u,v are the side vectors of the
@@ -413,7 +419,7 @@ class Triangle
   /// @param c
   ///          a vertex of the triangle
   /// @return the 3D area of the triangle
-  static double area3D(Coordinate a, Coordinate b, Coordinate c)
+  static double area3DS(Coordinate a, Coordinate b, Coordinate c)
   {
     /**
      * Uses the formula 1/2 * | u x v | where u,v are the side vectors of the
@@ -435,7 +441,7 @@ class Triangle
 
     // tri area = 1/2 * | u x v |
     double absSq = crossx * crossx + crossy * crossy + crossz * crossz;
-    double area3D = math.sqrt(absSq) / 2;
+    double area3D = sqrt(absSq) / 2;
 
     return area3D;
   }
@@ -457,7 +463,7 @@ class Triangle
   /// @param v2
   ///          a vertex of a triangle, with a Z ordinate
   /// @return the computed Z-value (elevation) of the point
-  static double interpolateZ(Coordinate p, Coordinate v0, Coordinate v1,
+  static double interpolateZS(Coordinate p, Coordinate v0, Coordinate v1,
       Coordinate v2)
   {
     double x0 = v0.x;
@@ -486,12 +492,7 @@ class Triangle
   ///          a vertex
   /// @param p2
   ///          a vertex
-  Triangle(Coordinate p0, Coordinate p1, Coordinate p2)
-  {
-    this.p0 = p0;
-    this.p1 = p1;
-    this.p2 = p2;
-  }
+  Triangle(this.p0, this.p1, this.p2);
 
   /// Computes the incentre of this triangle. The <i>incentre</i> of a triangle
   /// is the point which is equidistant from the sides of the triangle. It is
@@ -502,7 +503,7 @@ class Triangle
   /// @return the point which is the inCentre of this triangle
   Coordinate inCentre()
   {
-    return inCentre(p0, p1, p2);
+    return inCentreS(p0, p1, p2);
   }
 
   /// Tests whether this triangle is acute. A triangle is acute if all interior
@@ -515,14 +516,14 @@ class Triangle
   /// @return true if this triangle is acute
   bool isAcute()
   {
-    return isAcute(p0, p1, p2);
+    return isAcuteS(p0, p1, p2);
   }
 
   /// Tests whether this triangle is oriented counter-clockwise.
   /// 
   /// @return true if the triangle orientation is counter-clockwise
   bool isCCW() {
-    return isCCW(p0, p1, p2);
+    return isCCWS(p0, p1, p2);
   }
   
   /// Computes the circumcentre of this triangle. The circumcentre is the centre
@@ -540,7 +541,7 @@ class Triangle
   /// @return the circumcentre of this triangle
   Coordinate circumcentre()
   {
-    return circumcentre(p0, p1, p2);
+    return circumcentreS(p0, p1, p2);
   }
 
   /// Computes the radius of the circumcircle of a triangle.
@@ -548,7 +549,7 @@ class Triangle
   /// @return the triangle circumradius
   double circumradius()
   {
-    return circumradius(p0, p1, p2);
+    return circumradiusS(p0, p1, p2);
   }
   
   /// Computes the centroid (centre of mass) of this triangle. This is also the
@@ -561,7 +562,7 @@ class Triangle
   /// @return the centroid of this triangle
   Coordinate centroid()
   {
-    return centroid(p0, p1, p2);
+    return centroidS(p0, p1, p2);
   }
 
   /// Computes the length of the perimeter of this triangle.
@@ -569,7 +570,7 @@ class Triangle
   /// @return the length of the perimeter
   double length()
   {
-    return length(p0, p1, p2);
+    return lengthS(p0, p1, p2);
   }
   
   /// Computes the length of the longest side of this triangle
@@ -577,7 +578,7 @@ class Triangle
   /// @return the length of the longest side of this triangle
   double longestSideLength()
   {
-    return longestSideLength(p0, p1, p2);
+    return longestSideLengthS(p0, p1, p2);
   }
 
   /// Computes the 2D area of this triangle. The area value is always
@@ -588,7 +589,7 @@ class Triangle
   /// @see #signedArea()
   double area()
   {
-    return area(p0, p1, p2);
+    return areaS(p0, p1, p2);
   }
 
   /// Computes the signed 2D area of this triangle. The area value is positive if
@@ -604,7 +605,7 @@ class Triangle
   /// @see Orientation#index(Coordinate, Coordinate, Coordinate)
   double signedArea()
   {
-    return signedArea(p0, p1, p2);
+    return signedAreaS(p0, p1, p2);
   }
 
   /// Computes the 3D area of this triangle. The value computed is always
@@ -613,7 +614,7 @@ class Triangle
   /// @return the 3D area of this triangle
   double area3D()
   {
-    return area3D(p0, p1, p2);
+    return area3DS(p0, p1, p2);
   }
 
   /// Computes the Z-value (elevation) of an XY point on a three-dimensional
@@ -632,7 +633,7 @@ class Triangle
     if (p == null) {
       throw new ArgumentError("Supplied point is null.");
     }
-    return interpolateZ(p, this.p0, this.p1, this.p2);
+    return interpolateZS(p, this.p0, this.p1, this.p2);
   }
 
 }

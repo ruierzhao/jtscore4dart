@@ -179,9 +179,10 @@ class Ruier23{
 
 void main() {
 // var cc = <int>[];
-var cc = List.empty(growable: true);
+// var cc = List.empty(growable: true);
+var cc = List.filled(5,Coordinate.empty2D());
 for (var i = 0; i < 5; i++) {
-  cc[i] = i;
+  cc[i] = Coordinate(i.toDouble(), i*i.toDouble());
 }
 print(cc);
 }

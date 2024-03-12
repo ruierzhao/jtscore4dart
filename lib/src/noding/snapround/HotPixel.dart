@@ -18,6 +18,13 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/algorithm/CGAlgorithmsDD.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
 /**
  * Implements a "hot pixel" as used in the Snap Rounding algorithm.
  * A hot pixel is a square region centred 
@@ -44,7 +51,7 @@ class HotPixel
   // testing only
 //  static int nTests = 0;
   
- /**private */static final double TOLERANCE = 0.5;
+ /**private */static const double TOLERANCE = 0.5;
 
  /**private */Coordinate originalPt;
  /**private */double scaleFactor;
@@ -52,13 +59,13 @@ class HotPixel
   /**
    * The scaled ordinates of the hot pixel point
    */
- /**private */double hpx;
- /**private */double hpy;
+ /**private */late double hpx;
+ /**private */late double hpy;
   
   /**
    * Indicates if this hot pixel must be a node in the output.
    */
- /**private */bool isNode = false;
+ /**private */bool _isNode = false;
   
   /**
    * Creates a new hot pixel centered on a rounded point, using a given scale factor.
@@ -67,19 +74,18 @@ class HotPixel
    * @param pt the coordinate at the centre of the pixel (already rounded)
    * @param scaleFactor the scaleFactor determining the pixel size.  Must be &gt; 0
    */
-  HotPixel(Coordinate pt, double scaleFactor) {
-    originalPt = pt;
-    this.scaleFactor = scaleFactor;
-    
-    if (scaleFactor <= 0) 
+
+  HotPixel(this.originalPt, this.scaleFactor) {
+    if (scaleFactor <= 0) {
       throw new ArgumentError("Scale factor must be non-zero");
+    }
     if (scaleFactor != 1.0) {
-      hpx = scaleRound(pt.getX());
-      hpy = scaleRound(pt.getY());
+      hpx = scaleRound(originalPt.getX());
+      hpy = scaleRound(originalPt.getY());
     }
     else {
-      hpx = pt.getX();
-      hpy = pt.getY();
+      hpx = originalPt.getX();
+      hpy = originalPt.getY();
     }
   }
 
@@ -114,7 +120,7 @@ class HotPixel
    * @return true if the pixel is marked as a node
    */
   bool isNode() {
-    return isNode;
+    return _isNode;
   }
   
   /**
@@ -122,12 +128,12 @@ class HotPixel
    */
   void setToNode() {
     //System.out.println(this + " set to Node");
-    isNode = true;
+    _isNode = true;
   }
   
  /**private */double scaleRound(double val)
   {
-    return (double) math.round(val * scaleFactor);
+    return  (val * scaleFactor).round().toDouble();
   }
 
   /**
@@ -172,10 +178,11 @@ class HotPixel
    * @param p1 the second coordinate of the line segment to test
    * @return true if the line segment intersects this hot pixel
    */
-  bool intersects(Coordinate p0, Coordinate p1)
+  bool intersects2(Coordinate p0, Coordinate p1)
   {
-    if (scaleFactor == 1.0)
+    if (scaleFactor == 1.0) {
       return intersectsScaled(p0.x, p0.y, p1.x, p1.y);
+    }
 
     double sp0x = scale(p0.x);
     double sp0y = scale(p0.y);
@@ -204,19 +211,19 @@ class HotPixel
      */   
     // check Right side
     double maxx = hpx + TOLERANCE;
-    double segMinx = math.min(px, qx);
+    double segMinx = min(px, qx);
     if (segMinx >= maxx) return false;
     // check Left side
     double minx = hpx - TOLERANCE;
-    double segMaxx = math.max(px, qx);
+    double segMaxx = max(px, qx);
     if (segMaxx < minx) return false;
     // check Top side
     double maxy = hpy + TOLERANCE;
-    double segMiny = math.min(py, qy);
+    double segMiny = min(py, qy);
     if (segMiny >= maxy) return false;
     // check Bottom side
     double miny = hpy - TOLERANCE;
-    double segMaxy = math.max(py, qy);
+    double segMaxy = max(py, qy);
     if (segMaxy < miny) return false;
 
     /**
@@ -245,7 +252,7 @@ class HotPixel
      * This is the case if the orientations for each corner of the side are different.
      */
     
-    int orientUL = CGAlgorithmsDD.orientationIndex(px, py, qx, qy, minx, maxy);
+    int orientUL = CGAlgorithmsDD.orientationIndexFromDouble(px, py, qx, qy, minx, maxy);
     if (orientUL == 0) {
       // upward segment does not intersect pixel interior
       if (py < qy) return false;
@@ -253,7 +260,7 @@ class HotPixel
       return true;
     }
     
-    int orientUR = CGAlgorithmsDD.orientationIndex(px, py, qx, qy, maxx, maxy);
+    int orientUR = CGAlgorithmsDD.orientationIndexFromDouble(px, py, qx, qy, maxx, maxy);
     if (orientUR == 0) {
       // downward segment does not intersect pixel interior
       if (py > qy) return false;
@@ -265,7 +272,7 @@ class HotPixel
       return true;
     }
     
-    int orientLL = CGAlgorithmsDD.orientationIndex(px, py, qx, qy, minx, miny);
+    int orientLL = CGAlgorithmsDD.orientationIndexFromDouble(px, py, qx, qy, minx, miny);
     if (orientLL == 0) {
       // segment crossed LL corner, which is the only one in pixel interior
       return true;
@@ -275,7 +282,7 @@ class HotPixel
       return true;
     }
     
-    int orientLR = CGAlgorithmsDD.orientationIndex(px, py, qx, qy, maxx, miny);
+    int orientLR = CGAlgorithmsDD.orientationIndexFromDouble(px, py, qx, qy, maxx, miny);
     if (orientLR == 0) {
       // upward segment does not intersect pixel interior
       if (py < qy) return false;
@@ -320,7 +327,8 @@ class HotPixel
     double miny = hpy - TOLERANCE;
     double maxy = hpy + TOLERANCE;
     
-    List<Coordinate> corner = new Coordinate[4];
+    // List<Coordinate> corner = new Coordinate[4];
+    List<Coordinate> corner = List.filled(4, Coordinate.empty2D());
     corner[UPPER_RIGHT] = new Coordinate(maxx, maxy);
     corner[UPPER_LEFT] = new Coordinate(minx, maxy);
     corner[LOWER_LEFT] = new Coordinate(minx, miny);
@@ -340,7 +348,11 @@ class HotPixel
   }
   
   String toString() {
-    return "HP(" + WKTWriter.format(originalPt) + ")";
+    return "HP($originalPt )";
   }
+  // TODO: ruier edit.
+  // String toString() {
+  //   return "HP(" + WKTWriter.format(originalPt) + ")";
+  // }
 
 }

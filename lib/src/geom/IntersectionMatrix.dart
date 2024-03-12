@@ -11,6 +11,9 @@
  */
 
 
+import 'Dimension.dart';
+import 'Location.dart';
+
 /// Models a <b>Dimensionally Extended Nine-Intersection Model (DE-9IM)</b> matrix. 
 /// DE-9IM matrix values (such as "212FF1FF2")
 /// specify the topological relationship between two {@link Geometry}s. 
@@ -76,7 +79,7 @@ class IntersectionMatrix implements Cloneable {
   ///  <code>other</code>.
   ///
   ///@param  other  an <code>IntersectionMatrix</code> to copy
-  IntersectionMatrix(IntersectionMatrix other) {
+  IntersectionMatrix.FromAnother(IntersectionMatrix other) {
     this();
     matrix[Location.INTERIOR][Location.INTERIOR] = other.matrix[Location.INTERIOR][Location.INTERIOR];
     matrix[Location.INTERIOR][Location.BOUNDARY] = other.matrix[Location.INTERIOR][Location.BOUNDARY];

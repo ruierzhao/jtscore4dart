@@ -27,6 +27,8 @@ import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import '../util/Assert.dart';
 import '../utils.dart';
 
+/// 判断两条线段是否相交并计算交点
+/// 
 /// A <code>LineIntersector</code> is an algorithm that can both test whether
 /// two line segments intersect and compute the intersection point(s)
 /// if they do.
@@ -56,8 +58,11 @@ import '../utils.dart';
 abstract class LineIntersector 
 {
 /// These are deprecated, due to ambiguous naming
+  @Deprecated("These are deprecated, due to ambiguous naming, #NO_INTERSECTION")
   static const  int DONT_INTERSECT = 0;
+  @Deprecated("These are deprecated, due to ambiguous naming,use #POINT_INTERSECTION")
   static const  int DO_INTERSECT = 1;
+  @Deprecated("These are deprecated, due to ambiguous naming, use #COLLINEAR_INTERSECTION")
   static const  int COLLINEAR = 2;
   
   /// Indicates that line segments do not intersect
@@ -69,7 +74,7 @@ abstract class LineIntersector
   /// Indicates that line segments intersect in a line segment
   static const  int COLLINEAR_INTERSECTION = 2;
 
-  /// Computes the "edge distance" of an intersection point p along a segment.
+  /// Computes the "edge distance" of an intersection point [p] along a segment.
   /// The edge distance is a metric of the point along the edge.
   /// The metric used is a robust and easy to compute metric function.
   /// It is <b>not</b> equivalent to the usual Euclidean metric.

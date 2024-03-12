@@ -12,7 +12,6 @@
 
 
 import 'package:jtscore4dart/geometry.dart';
-import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 
 import 'LineIntersector.dart';

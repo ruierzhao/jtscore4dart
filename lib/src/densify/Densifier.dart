@@ -22,6 +22,17 @@
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.geom.util.GeometryTransformer;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/MultiPolygon.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geom/util/GeometryTransformer.dart';
+
 /**
  * Densifies a {@link Geometry} by inserting extra vertices along the line segments
  * contained in the geometry. 
@@ -63,7 +74,7 @@ class Densifier {
 	 * @param distanceTolerance the densify tolerance
 	 * @return the densified coordinate sequence
 	 */
-	private static List<Coordinate> densifyPoints(List<Coordinate> pts,
+	 /**private  */ static List<Coordinate> densifyPoints(List<Coordinate> pts,
 			double distanceTolerance, PrecisionModel precModel) {
 		LineSegment seg = new LineSegment();
 		CoordinateList coordList = new CoordinateList();
@@ -74,11 +85,12 @@ class Densifier {
 			double len = seg.getLength();
 			
 			// check if no densification is required
-			if (len <= distanceTolerance)
+			if (len <= distanceTolerance) {
 			  continue;
+			}
 			
 			// densify the segment
-			int densifiedSegCount = (int) math.ceil(len / distanceTolerance);
+			int densifiedSegCount = (len / distanceTolerance).ceil();
 			double densifiedSegLen = len / densifiedSegCount;
 			for (int j = 1; j < densifiedSegCount; j++) {
 				double segFract = (j * densifiedSegLen) / len;
@@ -91,28 +103,27 @@ class Densifier {
 			}
 		}
 		// this check handles empty sequences
-		if (pts.length > 0) 
+		if (pts.isNotEmpty) {
 		  coordList.add(pts[pts.length - 1], false);
+		}
 		return coordList.toCoordinateArray();
 	}
 
-	private Geometry inputGeom;
+	/**private  */ Geometry inputGeom;
 
-	private double distanceTolerance;
+	/**private  */ double distanceTolerance;
 
 	/**
 	 * Indicates whether areas should be topologically validated.
 	 */
- /**private */bool isValidated = true;
+ /**private  */bool isValidated = true;
 
 	/**
 	 * Creates a new densifier instance.
 	 * 
 	 * @param inputGeom
 	 */
-	Densifier(Geometry inputGeom) {
-		this.inputGeom = inputGeom;
-	}
+	Densifier(this.inputGeom);
 
 	/**
 	 * Sets the distance tolerance for the densification. All line segments
@@ -123,8 +134,9 @@ class Densifier {
 	 *          the densification tolerance to use
 	 */
 	void setDistanceTolerance(double distanceTolerance) {
-		if (distanceTolerance <= 0.0)
-			throw new ArgumentError("Tolerance must be positive");
+		if (distanceTolerance <= 0.0) {
+		  throw new ArgumentError("Tolerance must be positive");
+		}
 		this.distanceTolerance = distanceTolerance;
 	}
 
@@ -146,16 +158,18 @@ class Densifier {
 		return (new DensifyTransformer(distanceTolerance, isValidated)).transform(inputGeom);
 	}
 
-	static class DensifyTransformer extends GeometryTransformer {
+}
+
+
+	/**static */ class DensifyTransformer extends GeometryTransformer {
 	  double distanceTolerance;
    /**private */bool isValidated;
 	  
-	  DensifyTransformer(double distanceTolerance, bool isValidated) {
-	    this.distanceTolerance = distanceTolerance;
-	    this.isValidated = isValidated;
-    }
+	  DensifyTransformer(this.distanceTolerance, this.isValidated);
 	  
-		protected CoordinateSequence transformCoordinates(
+		/**protected */ 
+    @override
+    CoordinateSequence transformCoordinates(
 				CoordinateSequence coords, Geometry parent) {
 			List<Coordinate> inputPts = coords.toCoordinateArray();
 			List<Coordinate> newPts = Densifier
@@ -167,7 +181,7 @@ class Densifier {
 			return factory.getCoordinateSequenceFactory().create(newPts);
 		}
 
-		protected Geometry transformPolygon(Polygon geom, Geometry parent) {
+		/**protected */ Geometry transformPolygon(Polygon geom, Geometry parent) {
 			Geometry roughGeom = super.transformPolygon(geom, parent);
 			// don't try and correct if the parent is going to do this
 			if (parent is MultiPolygon) {
@@ -176,7 +190,7 @@ class Densifier {
 			return createValidArea(roughGeom);
 		}
 
-		protected Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
+		/**protected */ Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
 			Geometry roughGeom = super.transformMultiPolygon(geom, parent);
 			return createValidArea(roughGeom);
 		}
@@ -193,11 +207,10 @@ class Densifier {
 		 *          an area geometry possibly containing self-intersections
 		 * @return a valid area geometry
 		 */
-		private Geometry createValidArea(Geometry roughAreaGeom) {
+		/**private  */ Geometry createValidArea(Geometry roughAreaGeom) {
 		  // if valid no need to process to make valid
 		  if (! isValidated || roughAreaGeom.isValid()) return roughAreaGeom;
 			return roughAreaGeom.buffer(0.0);
 		}
 	}
 
-}

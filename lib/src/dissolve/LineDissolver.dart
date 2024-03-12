@@ -30,6 +30,10 @@
 
 
 
+import 'package:jtscore4dart/geometry.dart';
+
+import 'DissolveEdgeGraph.dart';
+
 /**
  * Dissolves the linear components 
  * from a collection of {@link Geometry}s

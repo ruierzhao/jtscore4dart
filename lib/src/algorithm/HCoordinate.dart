@@ -21,6 +21,7 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 ///
 /// @author David Skea
 /// @version 1.7
+/// 
 /// 代表一个同质的二维坐标
 class HCoordinate
 {

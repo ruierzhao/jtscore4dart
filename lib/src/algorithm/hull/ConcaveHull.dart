@@ -21,6 +21,14 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/util/PriorityQueue.dart';
+
+import 'HullTri.dart';
+import 'HullTriangulation.dart';
+
 /**
  * Constructs a concave hull of a set of points.
  * A concave hull is a concave or convex polygon containing all the input points,
@@ -83,7 +91,7 @@ class ConcaveHull
   static double uniformGridEdgeLength(Geometry geom) {
     double areaCH = geom.convexHull().getArea();
     int numPts = geom.getNumPoints();
-    return math.sqrt(areaCH / numPts);
+    return sqrt(areaCH / numPts);
   }
   
   /**
@@ -94,9 +102,9 @@ class ConcaveHull
    * @param maxLength the target maximum edge length
    * @return the concave hull
    */
-  static Geometry concaveHullByLength(Geometry geom, double maxLength) {
-    return concaveHullByLength(geom, maxLength, false);
-  }
+  // static Geometry concaveHullByLength(Geometry geom, double maxLength) {
+  //   return concaveHullByLength(geom, maxLength, false);
+  // }
   
   /**
    * Computes a concave hull of the vertices in a geometry
@@ -108,7 +116,7 @@ class ConcaveHull
    * @param isHolesAllowed whether holes are allowed in the result
    * @return the concave hull
    */
-  static Geometry concaveHullByLength(Geometry geom, double maxLength, bool isHolesAllowed) {
+  static Geometry concaveHullByLength(Geometry geom, double maxLength, [bool isHolesAllowed=false]) {
     ConcaveHull hull = new ConcaveHull(geom);
     hull.setMaximumEdgeLength(maxLength);
     hull.setHolesAllowed(isHolesAllowed);
@@ -126,9 +134,9 @@ class ConcaveHull
    * @param lengthRatio the target edge length factor
    * @return the concave hull
    */
-  static Geometry concaveHullByLengthRatio(Geometry geom, double lengthRatio) {
-    return concaveHullByLengthRatio(geom, lengthRatio, false);
-  }
+  // static Geometry concaveHullByLengthRatio(Geometry geom, double lengthRatio) {
+  //   return concaveHullByLengthRatio(geom, lengthRatio, false);
+  // }
   
   /**
    * Computes a concave hull of the vertices in a geometry
@@ -143,7 +151,7 @@ class ConcaveHull
    * @param isHolesAllowed whether holes are allowed in the result
    * @return the concave hull
    */
-  static Geometry concaveHullByLengthRatio(Geometry geom, double lengthRatio, bool isHolesAllowed) {
+  static Geometry concaveHullByLengthRatio(Geometry geom, double lengthRatio, [bool isHolesAllowed=false]) {
     ConcaveHull hull = new ConcaveHull(geom);
     hull.setMaximumEdgeLengthRatio(lengthRatio);
     hull.setHolesAllowed(isHolesAllowed);
@@ -184,10 +192,7 @@ class ConcaveHull
    * 
    * @param geom the input geometry
    */
-  ConcaveHull(Geometry geom) {
-    this.inputGeometry = geom;
-    this.geomFactory = geom.getFactory();
-  }
+  ConcaveHull(this.inputGeometry) :this.geomFactory = inputGeometry.getFactory();
   
   /**
    * Sets the target maximum edge length for the concave hull.
@@ -207,8 +212,9 @@ class ConcaveHull
    * @see #uniformGridEdgeLength(Geometry)
    */
   void setMaximumEdgeLength(double edgeLength) {
-    if (edgeLength < 0)
+    if (edgeLength < 0) {
       throw new ArgumentError("Edge length must be non-negative");
+    }
     this.maxSizeInHull = edgeLength;
     maxEdgeLengthRatio = -1;
     criteriaType = PARAM_EDGE_LENGTH;
@@ -229,8 +235,9 @@ class ConcaveHull
    * @param edgeLengthRatio a length factor value between 0 and 1
    */
   void setMaximumEdgeLengthRatio(double edgeLengthRatio) {
-    if (edgeLengthRatio < 0 || edgeLengthRatio > 1)
+    if (edgeLengthRatio < 0 || edgeLengthRatio > 1) {
       throw new ArgumentError("Edge length ratio must be in range [0,1]");
+    }
     this.maxEdgeLengthRatio = edgeLengthRatio;
     criteriaType = PARAM_EDGE_LENGTH;
   }
@@ -272,8 +279,9 @@ class ConcaveHull
     if (maxEdgeLengthRatio >= 0) {
       maxSizeInHull = computeTargetEdgeLength(triList, maxEdgeLengthRatio);
     }
-    if (triList.isEmpty())
+    if (triList.isEmpty()) {
       return inputGeometry.convexHull();
+    }
     
     computeHull(triList);    
 
@@ -282,7 +290,7 @@ class ConcaveHull
   }
 
  /**private */void setSize(List<HullTri> triList) {
-    for (HullTri tri : triList) {
+    for (HullTri tri in triList) {
       if (criteriaType == PARAM_EDGE_LENGTH) {
         tri.setSizeToLongestEdge();
       }
@@ -297,18 +305,21 @@ class ConcaveHull
     if (edgeLengthRatio == 0) return 0;
     double maxEdgeLen = -1;
     double minEdgeLen = -1;
-    for (HullTri tri : triList) {
+    for (HullTri tri in triList) {
       for (int i = 0; i < 3; i++) {
         double len = tri.getCoordinate(i).distance(tri.getCoordinate(HullTri.next(i)));
-        if (len > maxEdgeLen) 
+        if (len > maxEdgeLen) {
           maxEdgeLen = len;
-        if (minEdgeLen < 0 || len < minEdgeLen)
+        }
+        if (minEdgeLen < 0 || len < minEdgeLen) {
           minEdgeLen = len;
+        }
       }
     }
     //-- if ratio = 1 ensure all edges are included
-    if (edgeLengthRatio == 1) 
+    if (edgeLengthRatio == 1) {
       return 2 * maxEdgeLen;
+    }
     
     return edgeLengthRatio * (maxEdgeLen - minEdgeLen) + minEdgeLen;
   }
@@ -336,8 +347,9 @@ class ConcaveHull
     while (! queue.isEmpty()) {
       HullTri tri = queue.poll();
       
-      if (isInHull(tri)) 
+      if (isInHull(tri)) {
         break;
+      }
       
       if (isRemovableBorder(tri)) {
         //-- the non-null adjacents are now on the border
@@ -381,10 +393,11 @@ class ConcaveHull
   }
 
  /**private */void setSize(HullTri tri) {
-    if (criteriaType == PARAM_EDGE_LENGTH)
+    if (criteriaType == PARAM_EDGE_LENGTH) {
       tri.setSizeToBoundary();
-    else 
+    } else {
       tri.setSizeToCircumradius();
+    }
   }
   
   /**
@@ -404,8 +417,9 @@ class ConcaveHull
     for (HullTri tri : candidateHoles) {
       if (tri.isRemoved() 
           || tri.isBorder() 
-          || tri.hasBoundaryTouch())
+          || tri.hasBoundaryTouch()) {
         continue;
+      }
       removeHole(triList, tri);
     }
   }
@@ -450,8 +464,9 @@ class ConcaveHull
     while (! queue.isEmpty()) {
       HullTri tri = queue.poll();
       
-      if (tri != triHole && isInHull(tri)) 
+      if (tri != triHole && isInHull(tri)) {
         break;
+      }
       
       if (tri == triHole || isRemovableHole(tri)) {
         //-- the non-null adjacents are now on the border

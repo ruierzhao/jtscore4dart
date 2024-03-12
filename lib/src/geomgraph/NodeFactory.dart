@@ -14,6 +14,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'EdgeEndStar.dart';
+import 'Node.dart';
+
 /**
  * @version 1.7
  */
@@ -25,6 +30,8 @@ class NodeFactory {
  */
   Node createNode(Coordinate coord)
   {
+    // TODO: ruier edit.
+    // return new Node(coord, null);
     return new Node(coord, null);
   }
 }

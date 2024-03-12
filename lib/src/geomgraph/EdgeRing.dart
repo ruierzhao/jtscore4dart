@@ -29,6 +29,10 @@
 
 
 
+import 'package:jtscore4dart/geometry.dart';
+
+import 'DirectedEdge.dart';
+
 /**
  * @version 1.7
  */
@@ -62,7 +66,7 @@ abstract class EdgeRing {
     return isHole;
   }
 
-  Coordinate getCoordinate(int i) { return (Coordinate) pts.get(i);  }
+  Coordinate getCoordinate(int i) { return  pts.get(i) as Coordinate;  }
   LinearRing getLinearRing() { return ring; }
   Label getLabel() { return label; }
   bool isShell() { return shell == null; }

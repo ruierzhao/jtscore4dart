@@ -26,6 +26,11 @@
 // import org.locationtech.jts.geom.TopologyException;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+
+import 'EdgeEnd.dart';
+
 /**
  * A EdgeEndStar is an ordered list of EdgeEnds around a node.
  * They are maintained in CCW order (starting with the positive x-axis) around the node
@@ -47,18 +52,19 @@ abstract class EdgeEndStar
   /**
    * The location of the point for this star in Geometry i Areas
    */
- /**private */int[] ptInAreaLocation = { Location.NONE, Location.NONE };
+ /**private */List<int> ptInAreaLocation = [ Location.NONE, Location.NONE];
 
-  EdgeEndStar()
-  {
+  // TODO: ruier edit.
+  // EdgeEndStar()
+  // {
 
-  }
+  // }
 
   /**
    * Insert a EdgeEnd into this EdgeEndStar
    * @param e EdgeEnd
    */
-  abstract void insert(EdgeEnd e);
+   void insert(EdgeEnd e);
 
   /**
    * Insert an EdgeEnd into the map, and clear the edgeList cache,

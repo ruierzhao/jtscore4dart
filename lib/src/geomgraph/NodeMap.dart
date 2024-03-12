@@ -22,6 +22,12 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Location;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'EdgeEnd.dart';
+import 'Node.dart';
+import 'NodeFactory.dart';
+
 /**
  * A map of nodes, indexed by the coordinate of the node
  * @version 1.7
@@ -33,9 +39,7 @@ class NodeMap
   Map nodeMap = new TreeMap();
   NodeFactory nodeFact;
 
-  NodeMap(NodeFactory nodeFact) {
-    this.nodeFact = nodeFact;
-  }
+  NodeMap(this.nodeFact);
 
   /**
    * Factory function - subclasses can override to create their own types of nodes
@@ -91,7 +95,7 @@ class NodeMap
    * @param coord Coordinate to find
    * @return the node if found; null otherwise
    */
-  Node find(Coordinate coord)  {    return (Node) nodeMap.get(coord);  }
+  Node find(Coordinate coord)  {    return  nodeMap.get(coord) as Node;  }
 
   Iterator iterator()
   {

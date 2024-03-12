@@ -316,8 +316,9 @@ class IsValidOp
  /**private */bool isValidGC(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
-      if (! isValidGeometry( gc.getGeometryN(i) )) 
+      if (! isValidGeometry( gc.getGeometryN(i) )) {
         return false;
+      }
     }
     return true;
   }
@@ -404,8 +405,9 @@ class IsValidOp
     for (int i = 0; i < line.getNumPoints(); i++) {
       if (numPts >= minSize) return true;
       Coordinate pt = line.getCoordinateN(i);
-      if (prevPt == null || ! pt.equals2D(prevPt))
+      if (prevPt == null || ! pt.equals2D(prevPt)) {
         numPts++;
+      }
       prevPt = pt; 
     }
     return numPts >= minSize;
@@ -486,12 +488,14 @@ class IsValidOp
     /**
      * If hole envelope is not covered by shell, it must be outside
      */
-    if (! shell.getEnvelopeInternal().covers( hole.getEnvelopeInternal() ))
+    if (! shell.getEnvelopeInternal().covers( hole.getEnvelopeInternal() )) {
       //TODO: find hole pt outside shell env
       return holePt0;
+    }
     
-    if (PolygonTopologyAnalyzer.isRingNested(hole, shell))
-      return null;  
+    if (PolygonTopologyAnalyzer.isRingNested(hole, shell)) {
+      return null;
+    }  
     //TODO: find hole point outside shell
     return holePt0;
   }
@@ -510,8 +514,7 @@ class IsValidOp
     
     IndexedNestedHoleTester nestedTester = new IndexedNestedHoleTester(poly);
     if ( nestedTester.isNested() ) {
-      logInvalid(TopologyValidationError.NESTED_HOLES,
-                            nestedTester.getNestedPoint());
+      logInvalid(TopologyValidationError.NESTED_HOLES,nestedTester.getNestedPoint());
     }
   }
 

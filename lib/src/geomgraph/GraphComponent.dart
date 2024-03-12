@@ -15,6 +15,12 @@
 // import org.locationtech.jts.geom.IntersectionMatrix;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'Label.dart';
+
 /**
  * A GraphComponent is the parent class for the objects'
  * that form a graph.  Each GraphComponent can carry a
@@ -27,41 +33,42 @@ abstract class GraphComponent {
   /**
    * isInResult indicates if this component has already been included in the result
    */
- /**private */bool isInResult = false;
- /**private */bool isCovered = false;
- /**private */bool isCoveredSet = false;
- /**private */bool isVisited = false;
+ /**private */bool _isInResult = false;
+ /**private */bool _isCovered = false;
+ /**private */bool _isCoveredSet = false;
+ /**private */bool _isVisited = false;
 
-  GraphComponent() {
-  }
 
-  GraphComponent(Label label) {
-    this.label = label;
-  }
+  // GraphComponent() {
+  // }
+
+  GraphComponent(this.label);
 
   Label getLabel() { return label; }
+
   void setLabel(Label label) { this.label = label; }
-  void setInResult(bool isInResult) { this.isInResult = isInResult; }
-  bool isInResult() { return isInResult; }
+  
+  void setInResult(bool isInResult) { this._isInResult = isInResult; }
+  bool isInResult() { return _isInResult; }
   void setCovered(bool isCovered)
   {
-    this.isCovered = isCovered;
-    this.isCoveredSet = true;
+    this._isCovered = isCovered;
+    this._isCoveredSet = true;
   }
-  bool isCovered()    { return isCovered; }
-  bool isCoveredSet() { return isCoveredSet; }
-  bool isVisited() { return isVisited; }
-  void setVisited(bool isVisited) { this.isVisited = isVisited; }
+  bool isCovered()    { return _isCovered; }
+  bool isCoveredSet() { return _isCoveredSet; }
+  bool isVisited() { return _isVisited; }
+  void setVisited(bool isVisited) { this._isVisited = isVisited; }
   /**
    * @return a coordinate in this component (or null, if there are none)
    */
-  abstract Coordinate getCoordinate();
+   Coordinate getCoordinate();
   /**
    * Compute the contribution to an IM for this component.
    *
    * @param im Intersection matrix
    */
-  abstract/**protected */void computeIM(IntersectionMatrix im);
+  /**protected */void computeIM(IntersectionMatrix im);
   /**
    * An isolated component is one that does not intersect or touch any other
    * component.  This is the case if the label has valid locations for
@@ -69,7 +76,7 @@ abstract class GraphComponent {
    *
    * @return true if this component is isolated
    */
-  abstract bool isIsolated();
+   bool isIsolated();
   /**
    * Update the IM with the contribution for this component.
    * A component only contributes if it has a labelling for both parent geometries

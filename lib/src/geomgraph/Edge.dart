@@ -21,6 +21,17 @@
 // import org.locationtech.jts.geomgraph.index.MonotoneChainEdge;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geomgraph/index/MonotoneChainEdge.dart';
+
+import 'Depth.dart';
+import 'EdgeIntersectionList.dart';
+import 'GraphComponent.dart';
+import 'Label.dart';
+
 /// @version 1.7
 class Edge
   extends GraphComponent

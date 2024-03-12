@@ -19,22 +19,30 @@
 // import org.locationtech.jts.geom.Location;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+
+import 'DirectedEdge.dart';
+import 'EdgeEnd.dart';
+import 'EdgeEndStar.dart';
+import 'GraphComponent.dart';
+import 'Label.dart';
+
 /**
  * @version 1.7
  */
-class Node
-  extends GraphComponent
+/**ruieredit*/ abstract class Node extends GraphComponent
 {
  /**protected */Coordinate coord; // only non-null if this node is precise
  /**protected */EdgeEndStar edges;
 
-  Node(Coordinate coord, EdgeEndStar edges)
-  {
-    this.coord = coord;
-    this.edges = edges;
-    label = new Label(0, Location.NONE);
-  }
+  Node(this.coord, this.edges) : super(new Label.GeomIndex(0, Location.NONE));
+  // {
+  //   label = new Label.GeomIndex(0, Location.NONE);
+  // }
 
+  @override
   Coordinate getCoordinate() { return coord; }
   EdgeEndStar getEdges() { return edges; }
 
@@ -48,22 +56,29 @@ class Node
    */
   bool isIncidentEdgeInResult()
   {
-    for (Iterator it = getEdges().getEdges().iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
-      if (de.getEdge().isInResult())
+    for (Iterator it = getEdges().getEdges().iterator; it.moveNext(); ) {
+      DirectedEdge de =  it.current as DirectedEdge;
+      if (de.getEdge().isInResult()) {
         return true;
+      }
     }
     return false;
   }
 
+  @override
   bool isIsolated()
   {
     return (label.getGeometryCount() == 1);
   }
+
   /**
    * Basic nodes do not compute IMs
    */
- /**protected */void computeIM(IntersectionMatrix im) {}
+ /**protected */
+ @override
+  void computeIM(IntersectionMatrix im);
+//  /**protected */void computeIM(IntersectionMatrix im) {}
+
   /**
    * Add the edge to the list of edges at this node.
    *
@@ -78,7 +93,7 @@ class Node
 
   void mergeLabel(Node n)
   {
-    mergeLabel(n.label);
+    mergeLabelFromLabel(n.label);
   }
 
   /**
@@ -89,22 +104,27 @@ class Node
    *
    * @param label2 Label to merge
    */
-  void mergeLabel(Label label2)
+  void mergeLabelFromLabel(Label label2)
   {
     for (int i = 0; i < 2; i++) {
       int loc = computeMergedLocation(label2, i);
       int thisLoc = label.getLocation(i);
-      if (thisLoc == Location.NONE) label.setLocation(i, loc);
+      if (thisLoc == Location.NONE) label.setLocationOn(i, loc);
     }
   }
 
-  void setLabel(int argIndex, int onLocation)
+  // TODO: ruier edit.
+  // void setLabel(int argIndex, int onLocation)
+  void setLabelLocation(int argIndex, int onLocation)
   {
-    if (label == null) {
-      label = new Label(argIndex, onLocation);
-    }
-    else
-      label.setLocation(argIndex, onLocation);
+    // TODO: ruier edit. label never null.
+    label.setLocationOn(argIndex, onLocation);
+    // if (label == null) {
+    //   label = new Label.GeomIndex(argIndex, onLocation);
+    // }
+    // else {
+    //   label.setLocationOn(argIndex, onLocation);
+    // }
   }
 
   /**
@@ -118,8 +138,9 @@ class Node
 
     // determine the current location for the point (if any)
     int loc = Location.NONE;
-    if (label != null)
+    if (label != null) {
       loc = label.getLocation(argIndex);
+    }
     // flip the loc
     int newLoc;
     switch (loc) {
@@ -127,7 +148,7 @@ class Node
     case Location.INTERIOR: newLoc = Location.BOUNDARY; break;
     default: newLoc = Location.BOUNDARY;  break;
     }
-    label.setLocation(argIndex, newLoc);
+    label.setLocationOn(argIndex, newLoc);
   }
 
   /**
@@ -147,14 +168,15 @@ class Node
     }
     return loc;
   }
-
-  void print(PrintStream out)
-  {
-    out.println("node " + coord + " lbl: " + label);
-  }
+  // TODO: ruier edit.
+  // void print(PrintStream out)
+  // {
+  //   out.println("node " + coord + " lbl: " + label);
+  // }
   
+  @override
   String toString() {
-    return "Node(" + coord.x + ", " + coord.y + ")";
+    return "Node(${coord.x} , ${coord.y})";
   }
   
 }

@@ -1538,9 +1538,9 @@ abstract class Geometry{
   /// @see #normalize()
   Geometry norm()
   {
-    Geometry copy = copy();
-    copy.normalize();
-    return copy;
+    Geometry _copy = copy();
+    _copy.normalize();
+    return _copy;
   }
 
   ///  Returns whether this <code>Geometry</code> is greater than, equal to,
@@ -1639,9 +1639,11 @@ abstract class Geometry{
   ///      for equality
   ///@return        <code>true</code> if the classes of the two <code>Geometry</code>
   ///      s are considered to be equal by the <code>equalsExact</code> method.
-  /**protected */ bool isEquivalentClass(Geometry other) {
-    return this.getClass().getName().equals(other.getClass().getName());
-  }
+  /**protected */ 
+  // TODO: ruier edit.
+  // bool isEquivalentClass(Geometry other) {
+  //   return this.getClass().getName().equals(other.getClass().getName());
+  // }
 
   ///  Throws an exception if <code>g</code>'s type is a <code>GeometryCollection</code>.
   ///  (Its subclasses do not trigger an exception).

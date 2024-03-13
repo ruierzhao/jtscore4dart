@@ -19,11 +19,13 @@
 
 import "dart:math";
 
-import 'package:jtscore4dart/src/geom/Coordinate.dart';
-import 'package:jtscore4dart/src/geom/CoordinateList.dart';
-import 'package:jtscore4dart/src/geom/Coordinates.dart';
-import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/math/MathUtil.dart';
+
+import 'Coordinate.dart';
+import 'CoordinateList.dart';
+import 'Coordinates.dart';
+import 'Envelope.dart';
+
 
 
 /// A {@link Comparator} for {@link Coordinate} arrays

@@ -11,7 +11,6 @@
  */
 
 
-import 'package:jtscore4dart/src/geom/CoordinateSequenceComparator.dart';
 
 import 'Coordinate.dart';
 import 'Dimension.dart';
@@ -120,7 +119,7 @@ class MultiPoint
   ///@return    the <code>n</code>th <code>Coordinate</code>
  /**protected */
  Coordinate? getCoordinateN(int n) {
-    return ( geometries![n] as Point).getCoordinate();
+    return ( geometries[n] as Point).getCoordinate();
   }
   
  /**protected */@override

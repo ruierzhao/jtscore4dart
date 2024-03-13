@@ -134,6 +134,8 @@ class GeometryFactory{
   //   return (List<LineString>) lineStrings.toArray(lineStringArray);
   // }
   static List<LineString> toLineStringArray(Iterable lineStrings) {
+    // lineStrings.length;
+    // TODO: ruier edit.可以优化
     // List<LineString> lineStringArray = new LineString[lineStrings.size()];
     return lineStrings.toList() as List<LineString>;
   }

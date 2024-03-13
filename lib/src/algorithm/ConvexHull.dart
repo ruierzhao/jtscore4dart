@@ -31,8 +31,18 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.util.Assert;
 
-import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+import 'package:stack/stack.dart';
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
+
+import 'Orientation.dart';
+import 'PointLocation.dart';
+
+/// 计算geometry 的凸壳 - 包含输入geometry 的所有点的最小壳子
+/// 
 /// Computes the convex hull of a {@link Geometry}.
 /// The convex hull is the smallest convex Geometry that contains all the
 /// points in the input Geometry.
@@ -51,10 +61,10 @@ class ConvexHull
  /**private */List<Coordinate> inputPts;
 
   /// Create a new convex hull construction for the input {@link Geometry}.
-  ConvexHull.FromGeometry(Geometry geometry):this(geometry.getCoordinates(), geometry.getFactory());
+  ConvexHull(Geometry geometry):this.FromCoords(geometry.getCoordinates(), geometry.getFactory());
 
   /// Create a new convex hull construction for the input {@link Coordinate} array.
-  ConvexHull(this.inputPts, this.geomFactory);
+  ConvexHull.FromCoords(this.inputPts, this.geomFactory);
     // {
       //-- suboptimal early uniquing - for performance testing only
     //inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
@@ -73,11 +83,12 @@ class ConvexHull
   /// 0 points, an empty {@link GeometryCollection}.
   Geometry getConvexHull() {
 
-    Geometry fewPointsGeom = createFewPointsResult();
-    if (fewPointsGeom != null) 
+    Geometry? fewPointsGeom = createFewPointsResult();
+    if (fewPointsGeom != null) {
       return fewPointsGeom;
+    }
     
-    List<Coordinate> reducedPts = inputPts;
+    List<Coordinate>? reducedPts = inputPts;
     //-- use heuristic to reduce points, if large
     if (inputPts.length > TUNING_REDUCE_SIZE) {
       reducedPts = reduce(inputPts);
@@ -110,12 +121,12 @@ class ConvexHull
   /// done only once during the reduce phase.
   /// 
   /// @return a degenerate hull geometry, or null if the number of input points is large
- /**private */Geometry createFewPointsResult() {
-    List<Coordinate> uniquePts = extractUnique(inputPts, 2);
+  /**private */Geometry? createFewPointsResult() {
+  List<Coordinate>? uniquePts = extractUniqueWithMax(inputPts, 2);
     if (uniquePts == null) {
       return null;
     }
-    else if (uniquePts.length == 0) {
+    else if (uniquePts.isEmpty) {
       return geomFactory.createGeometryCollection();
     }
     else if (uniquePts.length == 1) {
@@ -126,10 +137,11 @@ class ConvexHull
     }
   }
   
- /**private */static List<Coordinate> extractUnique(List<Coordinate> pts) {
-    return extractUnique(pts, -1);
+  /**private */static List<Coordinate>? extractUnique(List<Coordinate> pts) {
+    return extractUniqueWithMax(pts, -1);
   }
   
+
   /// Extracts unique coordinates from an array of coordinates, 
   /// up to an (optional) maximum count of values.
   /// If more than the given maximum of unique values are found,
@@ -140,24 +152,35 @@ class ConvexHull
   /// @param pts an array of Coordinates
   /// @param maxPts the maximum number of unique points to scan, or -1
   /// @return an array of unique values, or null
- /**private */static List<Coordinate> extractUnique(List<Coordinate> pts, int maxPts) {
-    Set<Coordinate> uniquePts = new HashSet<Coordinate>();
-    for (Coordinate pt : pts) {
+ /**private */static List<Coordinate>? extractUniqueWithMax(List<Coordinate> pts, int maxPts) {
+    // Set<Coordinate> uniquePts = new HashSet<Coordinate>();
+    Set<Coordinate> uniquePts = {};
+    for (Coordinate pt in pts) {
       uniquePts.add(pt);
       //-- if maxPts is provided, exit if more unique pts found
-      if (maxPts >= 0 && uniquePts.size() > maxPts) return null;
+      if (maxPts >= 0 && uniquePts.length > maxPts) {
+        return null;
+      }
     }
     return CoordinateArrays.toCoordinateArray(uniquePts);
   }
   
   /// An alternative to Stack.toArray, which is not present in earlier versions
   /// of Java.
- /**protected */List<Coordinate> toCoordinateArray(Stack<Coordinate> stack) {
-    List<Coordinate> coordinates = new Coordinate[stack.size()];
-    for (int i = 0; i < stack.size(); i++) {
-      Coordinate coordinate = (Coordinate) stack.get(i);
+ /**protected */
+ List<Coordinate> toCoordinateArray(Stack<Coordinate> stack) {
+    // List<Coordinate> coordinates = new Coordinate[stack.size()];
+    List<Coordinate> coordinates = List.filled(stack.size(), Coordinate.empty2D());
+    // TODO: ruier edit.测试顺序问题
+    var stacklen = stack.size();
+    for (var i = stacklen-1; i >= 0; i--) {
+      Coordinate coordinate = stack.pop();
       coordinates[i] = coordinate;
     }
+    // for (int i = 0; i < stack.size(); i++) {
+    //   Coordinate coordinate = stack.get(i);
+    //   coordinates[i] = coordinate;
+    // }
     return coordinates;
   }
 
@@ -187,14 +210,15 @@ class ConvexHull
     List<Coordinate> innerPolyPts = computeInnerOctolateralRing(inputPts);
  
     // unable to compute interior polygon for some reason
-    if (innerPolyPts == null)
+    if (innerPolyPts == null) {
       return inputPts;
+    }
 
 //    LinearRing ring = geomFactory.createLinearRing(polyPts);
 //    System.out.println(ring);
 
     // add points defining polygon
-    Set<Coordinate> reducedSet = new HashSet();
+    Set<Coordinate> reducedSet = {};
     for (int i = 0; i < innerPolyPts.length; i++) {
       reducedSet.add(innerPolyPts[i]);
     }
@@ -212,20 +236,23 @@ class ConvexHull
     List<Coordinate> reducedPts = CoordinateArrays.toCoordinateArray(reducedSet);
     
     // ensure that computed array has at least 3 points (not necessarily unique)  
-    if (reducedPts.length < 3)
-      return padArray3(reducedPts); 
+    if (reducedPts.length < 3) {
+      return padArray3(reducedPts);
+    } 
     return reducedPts;
   }
 
  /**private */List<Coordinate> padArray3(List<Coordinate> pts)
   {
-    List<Coordinate> pad = new Coordinate[3];
+    // List<Coordinate> pad = new Coordinate[3];
+    List<Coordinate> pad = List<Coordinate>.filled(3, Coordinate.empty2D());
     for (int i = 0; i < pad.length; i++) {
       if (i < pts.length) {
         pad[i] = pts[i];
       }
-      else
+      else {
         pad[i] = pts[0];
+      }
     }
     return pad;
   }
@@ -234,7 +261,8 @@ class ConvexHull
   /// 
   /// @param pts the points to sort
   /// @return the sorted points
- /**private */List<Coordinate> preSort(List<Coordinate> pts) {
+ /**private */
+ List<Coordinate> preSort(List<Coordinate> pts) {
     Coordinate t;
 
     /**
@@ -256,6 +284,9 @@ class ConvexHull
     return pts;
   }
 
+  /// @ruier 参考：https://blog.nowcoder.net/n/1751f9349571436e8ccfa42677ceda63
+  /// @ruier 参考：https://www.bilibili.com/video/BV1v741197YM/?spm_id_from=333.337.search-card.all.click&vd_source=d98c8a9c6da17e27687b22d814ab8d45
+  /// 
   /// Uses the Graham Scan algorithm to compute the convex hull vertices.
   /// 
   /// @param c a list of points, with at least 3 entries
@@ -268,12 +299,14 @@ class ConvexHull
     ps.push(c[2]);
     for (int i = 3; i < c.length; i++) {
       Coordinate cp = c[i];
-      p = (Coordinate) ps.pop();
+      p =  ps.pop() ;
       // check for empty stack to guard against robustness problems
       while (
-          ! ps.empty() && 
-          Orientation.index((Coordinate) ps.peek(), p, cp) > 0) {
-         p = (Coordinate) ps.pop();
+           ps.isNotEmpty && 
+          // Orientation.index( ps.peek(), p, cp) > 0) {
+            // TODO: ruier replace.
+          Orientation.index(ps.top(), p, cp) > 0) {
+         p = ps.pop();
       }
       ps.push(p);
       ps.push(cp);
@@ -307,7 +340,8 @@ class ConvexHull
     return false;
   }
 
- /**private */List<Coordinate> computeInnerOctolateralRing(List<Coordinate> inputPts) {
+ /**private */
+ List<Coordinate>? computeInnerOctolateralRing(List<Coordinate> inputPts) {
     List<Coordinate> octPts = computeInnerOctolateralPts(inputPts);
     CoordinateList coordList = new CoordinateList();
     coordList.add(octPts, false);
@@ -370,7 +404,7 @@ class ConvexHull
 
     coordinates = cleanRing(coordinates);
     if (coordinates.length == 3) {
-      return geomFactory.createLineString(new List<Coordinate>{coordinates[0], coordinates[1]});
+      return geomFactory.createLineString(<Coordinate>[coordinates[0], coordinates[1]]);
     }
     LinearRing linearRing = geomFactory.createLinearRing(coordinates);
     return geomFactory.createPolygon(linearRing);
@@ -383,8 +417,9 @@ class ConvexHull
   /// @return the coordinates with unnecessary (collinear) vertices removed
  /**private */List<Coordinate> cleanRing(List<Coordinate> original) {
     Assert.equals(original[0], original[original.length - 1]);
-    List<Coordinate> cleanedRing = new ArrayList<Coordinate>();
-    Coordinate previousDistinctCoordinate = null;
+    // List<Coordinate> cleanedRing = new ArrayList<Coordinate>();
+    List<Coordinate> cleanedRing = <Coordinate>[];
+    Coordinate? previousDistinctCoordinate;
     for (int i = 0; i <= original.length - 2; i++) {
       Coordinate currentCoordinate = original[i];
       Coordinate nextCoordinate = original[i+1];
@@ -399,9 +434,15 @@ class ConvexHull
       previousDistinctCoordinate = currentCoordinate;
     }
     cleanedRing.add(original[original.length - 1]);
-    List<Coordinate> cleanedRingCoordinates = new Coordinate[cleanedRing.size()];
-    return (List<Coordinate>) cleanedRing.toArray(cleanedRingCoordinates);
+
+    return cleanedRing;
+    // TODO: ruier edit.
+    // List<Coordinate> cleanedRingCoordinates = new Coordinate[cleanedRing.size()];
+    // return  cleanedRing.toArray(cleanedRingCoordinates);
   }
+
+
+}
 
 
   /// Compares {@link Coordinate}s for their angle and distance
@@ -412,9 +453,8 @@ class ConvexHull
   ///
   /// @author Martin Davis
   /// @version 1.7
- /**private */static class RadialComparator
-      implements Comparator<Coordinate>
-  {
+ /**private static*/ class RadialComparator /**implements Comparable<Coordinate> */ {
+  
    /**private */Coordinate origin;
 
     /**
@@ -424,12 +464,8 @@ class ConvexHull
      * 
      * @param origin the origin of the radial comparison
      */
-    RadialComparator(Coordinate origin)
-    {
-      this.origin = origin;
-    }
+    RadialComparator(this.origin);
     
-    @Override
     int compare(Coordinate p1, Coordinate p2)
     {
       int comp = polarCompare(origin, p1, p2);      
@@ -484,5 +520,10 @@ class ConvexHull
       // Assert: p = q
       return 0;
     }
+    
+    //   @override
+    //   int compareTo(Coordinate other) {
+    // // TODO: implement compareTo
+    //       throw UnimplementedError();
+    //   }
   }
-}

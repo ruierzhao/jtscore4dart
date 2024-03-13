@@ -1210,7 +1210,7 @@ abstract class Geometry{
   ///@return    the minimum-area convex polygon containing this <code>Geometry</code>'
   ///      s points
   Geometry convexHull() {
-    return (new ConvexHull(this)).getConvexHull();
+    return (ConvexHull(this)).getConvexHull();
   }
 
   /// Computes a new geometry which has all component coordinate sequences

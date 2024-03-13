@@ -33,3 +33,5 @@ replace:
 delete: 
 
   # - new Coordinate[lineSegments.length + 1] -> List<Coordinate>
+replace: 
+  - new ArrayList<Coordinate>() -> <Coordinate>[]

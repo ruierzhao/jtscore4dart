@@ -98,7 +98,10 @@ class ConvexHull
       reducedPts = extractUnique(inputPts);
     }
     // sort points for Graham scan.
-    List<Coordinate> sortedPts = preSort(reducedPts);
+    if (reducedPts == null) {
+      // TODO: it just Work now....
+    }
+    List<Coordinate> sortedPts = preSort(reducedPts!);
 
     // Use Graham scan to find convex hull.
     Stack<Coordinate> cHS = grahamScan(sortedPts);
@@ -279,7 +282,9 @@ class ConvexHull
     }
 
     // sort the points radially around the focal point.
-    Arrays.sort(pts, 1, pts.length, new RadialComparator(pts[0]));
+    // TODO: ruier edit. 猜测从索引 1 到 pts.length 排序。
+    // Arrays.sort(pts, 1, pts.length, new RadialComparator(pts[0]));
+    sort(pts, 1, pts.length); // 等价 sort2(pts, 1, pts.length,RadialComparator(pts[0]));
 
     return pts;
   }
@@ -444,9 +449,67 @@ class ConvexHull
     // return  cleanedRing.toArray(cleanedRingCoordinates);
   }
 
+/// TODO: ruier edit.[sort2] 和 [sort]
+static sort2(List<Coordinate> pts,int from, int to, RadialComparator comparator){
+  var sortPts = pts.sublist(from,to);
+  sortPts.sort(comparator.compare);
+  
+  for (var i = from; i < sortPts.length; i++) {
+    pts[i+from] = sortPts[i];
+  }
+  // return pts;
+ }
+
+ static sort(List<Coordinate> pts,int from, int to, [RadialComparator2? comparator]){
+  int polarCompare(Coordinate o, Coordinate p, Coordinate q)
+    {
+      int orient = Orientation.index(o, p, q);
+      if (orient == Orientation.COUNTERCLOCKWISE) return 1;
+      if (orient == Orientation.CLOCKWISE) return -1;
+
+      /** 
+       * The points are collinear,
+       * so compare based on distance from the origin.  
+       * The points p and q are >= to the origin,
+       * so they lie in the closed half-plane above the origin.
+       * If they are not in a horizontal line, 
+       * the Y ordinate can be tested to determine distance.
+       * This is more robust than computing the distance explicitly.
+       */
+      if (p.y > q.y) return 1;
+      if (p.y < q.y) return -1;
+
+      /**
+       * The points lie in a horizontal line, which should also contain the origin
+       * (since they are collinear).
+       * Also, they must be above the origin.
+       * Use the X ordinate to determine distance. 
+       */ 
+      if (p.x > q.x) return 1;
+      if (p.x < q.x) return -1;
+      // Assert: p = q
+      return 0;
+    }
+
+  var origin = pts[0];
+  int compare(Coordinate p1, Coordinate p2)
+  {
+    int comp = polarCompare(origin, p1, p2);      
+    return comp;
+  }
+
+  var sortPts = pts.sublist(from,to);
+  sortPts.sort(compare);
+  
+  for (var i = from; i < sortPts.length; i++) {
+    pts[i+from] = sortPts[i];
+  }
+  // return pts;
+ }
 
 }
 
+typedef RadialComparator2=int Function(Coordinate a, Coordinate b);
 
   /// Compares {@link Coordinate}s for their angle and distance
   /// relative to an origin.
@@ -456,7 +519,8 @@ class ConvexHull
   ///
   /// @author Martin Davis
   /// @version 1.7
- /**private static*/ class RadialComparator /**implements Comparable<Coordinate> */ {
+ /**private static*/ 
+ class RadialComparator  {
   
    /**private */Coordinate origin;
 
@@ -494,7 +558,8 @@ class ConvexHull
      * @return -1, 0 or 1 depending on whether p is less than,
      * equal to or greater than q
      */
-   /**private */static int polarCompare(Coordinate o, Coordinate p, Coordinate q)
+   /**private */
+   static int polarCompare(Coordinate o, Coordinate p, Coordinate q)
     {
       int orient = Orientation.index(o, p, q);
       if (orient == Orientation.COUNTERCLOCKWISE) return 1;
@@ -524,9 +589,4 @@ class ConvexHull
       return 0;
     }
     
-    //   @override
-    //   int compareTo(Coordinate other) {
-    // // TODO: implement compareTo
-    //       throw UnimplementedError();
-    //   }
   }

@@ -20,6 +20,7 @@
 import "dart:math";
 
 import 'package:jtscore4dart/src/math/MathUtil.dart';
+import 'package:jtscore4dart/src/util/Comparator.dart';
 
 import 'Coordinate.dart';
 import 'CoordinateList.dart';
@@ -32,7 +33,8 @@ import 'Envelope.dart';
 /// in the forward direction of their coordinates,
 /// using lexicographic ordering.
 /// @ruier 两个内部类,好像没地方用到
-class _ForwardComparator implements Comparable /**Comparator */{
+class _ForwardComparator implements Comparator {
+  @override
   int compare(Object o1, Object o2) {
     List<Coordinate> pts1 =  o1 as List<Coordinate>;
     List<Coordinate> pts2 =  o2 as List<Coordinate>;
@@ -40,14 +42,11 @@ class _ForwardComparator implements Comparable /**Comparator */{
     return CoordinateArrays.compare(pts1, pts2);
   }
   
-  @override
-  int compareTo(other) {
-    // TODO: implement compareTo
-    throw UnimplementedError();
-  }
+
 }
 // TODO: ruier edit.not use
-class _BidirectionalComparator implements Comparable /**Comparator */ {
+class _BidirectionalComparator implements Comparator {
+  @override
   int compare(Object o1, Object o2) {
     List<Coordinate> pts1 =  o1 as List<Coordinate>;
     List<Coordinate> pts2 = o2 as  List<Coordinate>;
@@ -55,7 +54,7 @@ class _BidirectionalComparator implements Comparable /**Comparator */ {
     if (pts1.length < pts2.length) return -1;
     if (pts1.length > pts2.length) return 1;
 
-    if (pts1.length == 0) return 0;
+    if (pts1.isEmpty) return 0;
 
     int forwardComp = CoordinateArrays.compare(pts1, pts2);
     bool isEqualRev = CoordinateArrays._isEqualReversed(pts1, pts2);
@@ -65,11 +64,6 @@ class _BidirectionalComparator implements Comparable /**Comparator */ {
     return forwardComp;
   }
   
-  @override
-  int compareTo(other) {
-    // TODO: implement compareTo
-    throw UnimplementedError();
-  }
 }
 
 /// Useful utility functions for handling Coordinate arrays
@@ -99,7 +93,8 @@ abstract class CoordinateArrays {
   /// @param pts supplied coordinates
   /// @return number of measures recorded
   static int measures(List<Coordinate> pts) {
-    if (pts == null || pts.length == 0) {
+    // if (pts == null || pts.length == 0) {
+    if (pts.isEmpty) {
       return 0; // unknown, assume default
     }
     int measures = 0;
@@ -393,7 +388,7 @@ abstract class CoordinateArrays {
     //   copy[i] = coordinates[i].copy();
     // }
     // return copy;
-    return List.generate(coordinates.length, (index) => coordinates[index].copy());
+    return List.generate(coordinates.length, (index) => coordinates[index].copy(), growable: false);
   }
 
   /// Creates a deep copy of a given section of a source {@link Coordinate} array
@@ -419,6 +414,7 @@ abstract class CoordinateArrays {
   // }
   // TODO: ruier edit.replace [toCoordinateArray]
   static List<Coordinate> toCoordinateArray(Iterable<Coordinate> coordList) {
+    // coordList.forEach((element) { });
     return  coordList.toList();
   }
 
@@ -497,10 +493,16 @@ abstract class CoordinateArrays {
   /// @return an array containing only non-null elements
   static List<Coordinate> removeNull(List<Coordinate> coord) {
     int nonNull = 0;
+    int dim = 0;
     for (int i = 0; i < coord.length; i++) {
-      if (coord[i] != null) nonNull++;
+      if (coord[i] != null) {
+        nonNull++;
+        dim = max(dim, Coordinates.dimension(coord[i]));
+      }
     }
-    List<Coordinate> newCoord = new Coordinate[nonNull];
+    // List<Coordinate> newCoord = new Coordinate[nonNull];
+    var emptyCoord = Coordinates.create(dim);
+    List<Coordinate> newCoord = List<Coordinate>.filled(nonNull, emptyCoord, growable: false);
     // empty case
     if (nonNull == 0) return newCoord;
 
@@ -535,7 +537,7 @@ abstract class CoordinateArrays {
     List<Coordinate> coord1,
     List<Coordinate> coord2) {
     if (coord1 == coord2) return true;
-    if (coord1 == null || coord2 == null) return false;
+    // if (coord1 == null || coord2 == null) return false;
     if (coord1.length != coord2.length) return false;
     for (int i = 0; i < coord1.length; i++) {
       if (!coord1[i].equals(coord2[i])) return false;
@@ -549,10 +551,11 @@ abstract class CoordinateArrays {
   /// @param coord1               an array of Coordinates
   /// @param coord2               an array of Coordinates
   /// @param coordinateComparator a Comparator for Coordinates
-  static bool equals(
+  static bool equalsWithComparator(
     List<Coordinate> coord1,
     List<Coordinate> coord2,
     Comparator coordinateComparator) {
+    // Comparable coordinateComparator) {
     if (coord1 == coord2) return true;
     if (coord1 == null || coord2 == null) return false;
     if (coord1.length != coord2.length) return false;
@@ -598,7 +601,7 @@ abstract class CoordinateArrays {
   ///
   /// @param coordinates     the array to rearrange
   /// @param firstCoordinate the coordinate to make first
-  static void scroll(List<Coordinate> coordinates, Coordinate firstCoordinate) {
+  static void scrollCoordToFirst(List<Coordinate> coordinates, Coordinate firstCoordinate) {
     int i = indexOf(firstCoordinate, coordinates);
     scroll(coordinates, i);
   }
@@ -608,9 +611,9 @@ abstract class CoordinateArrays {
   ///
   /// @param coordinates            the array to rearrange
   /// @param indexOfFirstCoordinate the index of the coordinate to make first
-  static void scroll(List<Coordinate> coordinates, int indexOfFirstCoordinate) {
-    scroll(coordinates, indexOfFirstCoordinate, CoordinateArrays.isRing(coordinates));
-  }
+  // static void scroll(List<Coordinate> coordinates, int indexOfFirstCoordinate) {
+  //   scroll(coordinates, indexOfFirstCoordinate, CoordinateArrays.isRing(coordinates));
+  // }
 
   /// Shifts the positions of the coordinates until the coordinate
   /// at <code>indexOfFirstCoordinate</code> is first.
@@ -618,17 +621,33 @@ abstract class CoordinateArrays {
   /// If {@code ensureRing} is {@code true}, first and last
   /// coordinate of the returned array are equal.
   ///
-  /// @param coordinates            the array to rearrange
-  /// @param indexOfFirstCoordinate the index of the coordinate to make first
-  /// @param ensureRing             flag indicating if returned array should form a ring.
-  static void scroll(List<Coordinate> coordinates, int indexOfFirstCoordinate, bool ensureRing) {
+  /// @param [coordinates]            the array to rearrange
+  /// @param [indexOfFirstCoordinate] the index of the coordinate to make first
+  /// @param [ensureRing]             flag indicating if returned array should form a ring.
+  static void scroll(List<Coordinate> coordinates, int indexOfFirstCoordinate, [bool? ensureRing]) {
+    ensureRing ??= CoordinateArrays.isRing(coordinates);
+
     int i = indexOfFirstCoordinate;
     if (i <= 0) return;
 
-    List<Coordinate> newCoordinates = new Coordinate[coordinates.length];
-    if (!ensureRing) {
-      System.arraycopy(coordinates, i, newCoordinates, 0, coordinates.length - i);
-      System.arraycopy(coordinates, 0, newCoordinates, coordinates.length - i, i);
+    // List<Coordinate> newCoordinates = new Coordinate[coordinates.length];
+    List<Coordinate> newCoordinates = List.filled(coordinates.length, Coordinate.empty2D());
+    // newCoordinates.sublist()
+    if (!ensureRing) { // not ring
+      /// 第一个参数是要被复制的数组
+      /// 第二个参数是被复制的数字开始复制的下标
+      /// 第三个参数是目标数组，也就是要把数据放进来的数组
+      /// 第四个参数是从目标数据第几个下标开始放入数据
+      /// 第五个参数表示从被复制的数组中拿几个数值放到目标数组中
+      // System.arraycopy(coordinates, i, newCoordinates, 0, coordinates.length - i);
+      // System.arraycopy(coordinates, 0, newCoordinates, coordinates.length - i, i);
+      var _li1 = coordinates.sublist(i,coordinates.length);
+      _li1.addAll(coordinates.sublist(0,i));
+      for (var i = 0; i < coordinates.length; i++) {
+        coordinates[i] = _li1[i];
+      }
+      // newCoordinates = coordinates.sublist(i,coordinates.length);
+      // newCoordinates.addAll(coordinates.sublist(0,i));
     } else {
       int last = coordinates.length - 1;
 
@@ -640,8 +659,12 @@ abstract class CoordinateArrays {
 
       // Fix the ring (first == last)
       newCoordinates[j] = newCoordinates[0].copy();
+      for (var i = 0; i < coordinates.length; i++) {
+        coordinates[i] = newCoordinates[i];
+      }
     }
-    System.arraycopy(newCoordinates, 0, coordinates, 0, coordinates.length);
+
+    // System.arraycopy(newCoordinates, 0, coordinates, 0, coordinates.length);
   }
 
   /// Returns the index of <code>coordinate</code> in <code>coordinates</code>.

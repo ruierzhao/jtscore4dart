@@ -31,10 +31,10 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.util.Assert;
 
-import 'package:jtscore4dart/src/geom/CoordinateList.dart';
-import 'package:jtscore4dart/src/util/Assert.dart';
 import 'package:stack/stack.dart';
 
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 

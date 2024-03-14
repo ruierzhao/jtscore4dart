@@ -37,10 +37,10 @@ class SimpleEdgeSetIntersector
   {
     nOverlaps = 0;
 
-    for (Iterator i0 = edges.iterator(); i0.hasNext(); ) {
-      Edge edge0 = (Edge) i0.next();
-      for (Iterator i1 = edges.iterator(); i1.hasNext(); ) {
-        Edge edge1 = (Edge) i1.next();
+    for (Iterator i0 = edges.iterator(); i0.moveNext(); ) {
+      Edge edge0 = (Edge) i0.current;
+      for (Iterator i1 = edges.iterator(); i1.moveNext(); ) {
+        Edge edge1 = (Edge) i1.current;
         if (testAllSegments || edge0 != edge1)
           computeIntersects(edge0, edge1, si);
       }
@@ -52,10 +52,10 @@ class SimpleEdgeSetIntersector
   {
     nOverlaps = 0;
 
-    for (Iterator i0 = edges0.iterator(); i0.hasNext(); ) {
-      Edge edge0 = (Edge) i0.next();
-      for (Iterator i1 = edges1.iterator(); i1.hasNext(); ) {
-        Edge edge1 = (Edge) i1.next();
+    for (Iterator i0 = edges0.iterator(); i0.moveNext(); ) {
+      Edge edge0 = (Edge) i0.current;
+      for (Iterator i1 = edges1.iterator(); i1.moveNext(); ) {
+        Edge edge1 = (Edge) i1.current;
         computeIntersects(edge0, edge1, si);
       }
     }

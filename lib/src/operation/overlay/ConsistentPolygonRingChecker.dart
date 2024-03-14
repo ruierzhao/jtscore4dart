@@ -56,8 +56,8 @@ class ConsistentPolygonRingChecker
    */
   void check(int opCode)
   {
-    for (Iterator nodeit = graph.getNodeIterator(); nodeit.hasNext(); ) {
-      Node node = (Node) nodeit.next();
+    for (Iterator nodeit = graph.getNodeIterator(); nodeit.moveNext(); ) {
+      Node node = (Node) nodeit.current;
       testLinkResultDirectedEdges((DirectedEdgeStar) node.getEdges(), opCode);
     }
   }
@@ -66,8 +66,8 @@ class ConsistentPolygonRingChecker
   {
 //print(System.out);
     List resultAreaEdgeList = new ArrayList();
-    for (Iterator it = deStar.iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    for (Iterator it = deStar.iterator(); it.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) it.current;
       if (isPotentialResultAreaEdge(de, opCode) || isPotentialResultAreaEdge(de.getSym(), opCode) )
         resultAreaEdgeList.add(de);
     }

@@ -20,6 +20,15 @@
 // import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'NodableSegmentString.dart';
+import 'Octant.dart';
+import 'SegmentNode.dart';
+import 'SegmentNodeList.dart';
+import 'SegmentString.dart';
+
 /**
  * Represents a list of contiguous line segments,
  * and supports noding the segments.
@@ -36,8 +45,8 @@
  * @version 1.7
  * @see BasicSegmentString
  */
-class NodedSegmentString
-	implements NodableSegmentString
+class NodedSegmentString extends NodableSegmentString
+	// implements NodableSegmentString
 {
 	/**
 	 * Gets the {@link SegmentString}s which result from splitting this string at node points.
@@ -45,12 +54,12 @@ class NodedSegmentString
 	 * @param segStrings a Collection of NodedSegmentStrings
 	 * @return a Collection of NodedSegmentStrings representing the substrings
 	 */
-  static List getNodedSubstrings(Collection segStrings)
-  {
-    List resultEdgelist = new ArrayList();
-    getNodedSubstrings(segStrings, resultEdgelist);
-    return resultEdgelist;
-  }
+  // static List getNodedSubstrings(Iterable segStrings)
+  // {
+  //   List resultEdgelist = [];
+  //   getNodedSubstrings(segStrings, resultEdgelist);
+  //   return resultEdgelist;
+  // }
 
 	/**
 	 * Adds the noded {@link SegmentString}s which result from splitting this string at node points.
@@ -58,15 +67,18 @@ class NodedSegmentString
 	 * @param segStrings a Collection of NodedSegmentStrings
 	 * @param resultEdgelist a List which will collect the NodedSegmentStrings representing the substrings
 	 */
- static void getNodedSubstrings(Collection segStrings, Collection resultEdgelist)
+ static List getNodedSubstrings(Iterable segStrings, [Iterable? resultEdgelist])
   {
-    for (Object segString : segStrings) {
-      NodedSegmentString ss = (NodedSegmentString) segString;
+    // ignore: prefer_conditional_assignment
+    if (resultEdgelist == null) resultEdgelist = [];
+    for (Object segString in segStrings) {
+      NodedSegmentString ss = segString as NodedSegmentString;
       ss.getNodeList().addSplitEdges(resultEdgelist);
     }
+    return resultEdgelist.toList();
   }
 
- /**private */SegmentNodeList nodeList = new SegmentNodeList(this);
+ /**private */SegmentNodeList nodeList = SegmentNodeList(this);
  /**private */List<Coordinate> pts;
  /**private */Object data;
 
@@ -76,28 +88,24 @@ class NodedSegmentString
    * @param pts the vertices of the segment string
    * @param data the user-defined data of this segment string (may be null)
    */
-  NodedSegmentString(List<Coordinate> pts, Object data)
-  {
-    this.pts = pts;
-    this.data = data;
-  }
+  NodedSegmentString(this.pts, this.data);
 
   /**
    * Creates a new instance from a {@link SegmentString}.
    *
    * @param ss the segment string to use
    */
-  NodedSegmentString(SegmentString ss)
-  {
-    this.pts = ss.getCoordinates();
+  NodedSegmentString.FromSS(SegmentString ss)
+  :this.pts = ss.getCoordinates(),
     this.data = ss.getData();
-  }
+  
 
   /**
    * Gets the user-defined data for this segment string.
    *
    * @return the user-defined data
    */
+  @override
   Object getData() { return data; }
 
   /**
@@ -105,11 +113,15 @@ class NodedSegmentString
    *
    * @param data an Object containing user-defined data
    */
+  @override
   void setData(Object data) { this.data = data; }
 
   SegmentNodeList getNodeList() { return nodeList; }
+  @override
   int size() { return pts.length; }
+  @override
   Coordinate getCoordinate(int i) { return pts[i]; }
+  @override
   List<Coordinate> getCoordinates() { return pts; }
 
   /**
@@ -121,6 +133,7 @@ class NodedSegmentString
     return nodeList.getSplitCoordinates();
   }
   
+  @override
   bool isClosed()
   {
     return pts[0].equals(pts[pts.length - 1]);
@@ -161,7 +174,7 @@ class NodedSegmentString
   void addIntersections(LineIntersector li, int segmentIndex, int geomIndex)
   {
     for (int i = 0; i < li.getIntersectionNum(); i++) {
-      addIntersection(li, segmentIndex, geomIndex, i);
+      addIntersection$1(li, segmentIndex, geomIndex, i);
     }
   }
   /**
@@ -170,10 +183,10 @@ class NodedSegmentString
    * of the SegmentString is normalized
    * to use the higher of the two possible segmentIndexes
    */
-  void addIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
+  void addIntersection$1(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
   {
     Coordinate intPt = li.getIntersection(intIndex).copy();
-    addIntersection(intPt, segmentIndex);
+    addIntersectionNode(intPt, segmentIndex);
   }
 
   /**
@@ -182,6 +195,7 @@ class NodedSegmentString
    * @param intPt the location of the intersection
    * @param segmentIndex the index of the segment containing the intersection
    */
+  @override
   void  addIntersection(Coordinate intPt, int segmentIndex) {
   	addIntersectionNode(intPt, segmentIndex);
   }
@@ -218,8 +232,11 @@ class NodedSegmentString
 		return ei;
 	}
   
-  String toString()
-  {
-  	return WKTWriter.toLineString(new CoordinateArraySequence(pts));
-  }
+  
+  // TODO: ruier edit.
+  // @override
+  // String toString()
+  // {
+  // 	return WKTWriter.toLineString(new CoordinateArraySequence(pts));
+  // }
 }

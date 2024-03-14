@@ -50,8 +50,8 @@ class EdgeSetNoder {
 //Debug.println("has proper int = " + si.hasProperIntersection());
 
     List splitEdges = new ArrayList();
-    for (Iterator i = inputEdges.iterator(); i.hasNext(); ) {
-      Edge e = (Edge) i.next();
+    for (Iterator i = inputEdges.iterator(); i.moveNext(); ) {
+      Edge e = (Edge) i.current;
       e.getEdgeIntersectionList().addSplitEdges(splitEdges);
     }
     return splitEdges;

@@ -150,8 +150,8 @@ class LineSequencer
    * @param geometries a Collection of geometries to add
    */
   void add(Collection geometries) {
-    for (Iterator i = geometries.iterator(); i.hasNext(); ) {
-      Geometry geometry = (Geometry) i.next();
+    for (Iterator i = geometries.iterator(); i.moveNext(); ) {
+      Geometry geometry = (Geometry) i.current;
       add(geometry);
     }
   }
@@ -227,8 +227,8 @@ class LineSequencer
     List sequences = new ArrayList();
     ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(graph);
     List subgraphs = csFinder.getConnectedSubgraphs();
-    for (Iterator i = subgraphs.iterator(); i.hasNext(); ) {
-      Subgraph subgraph = (Subgraph) i.next();
+    for (Iterator i = subgraphs.iterator(); i.moveNext(); ) {
+      Subgraph subgraph = (Subgraph) i.current;
       if (hasSequence(subgraph)) {
         List seq = findSequence(subgraph);
         sequences.add(seq);
@@ -251,8 +251,8 @@ class LineSequencer
  /**private */bool hasSequence(Subgraph graph)
   {
     int oddDegreeCount = 0;
-    for (Iterator i = graph.nodeIterator(); i.hasNext(); ) {
-      Node node = (Node) i.next();
+    for (Iterator i = graph.nodeIterator(); i.moveNext(); ) {
+      Node node = (Node) i.current;
       if (node.getDegree() % 2 == 1)
         oddDegreeCount++;
     }
@@ -264,7 +264,7 @@ class LineSequencer
     GraphComponent.setVisited(graph.edgeIterator(), false);
 
     Node startNode = findLowestDegreeNode(graph);
-    DirectedEdge startDE = (DirectedEdge) startNode.getOutEdges().iterator().next();
+    DirectedEdge startDE = (DirectedEdge) startNode.getOutEdges().iterator().current;
     DirectedEdge startDESym = startDE.getSym();
 
     List seq = new LinkedList();
@@ -297,8 +297,8 @@ class LineSequencer
   {
     DirectedEdge wellOrientedDE = null;
     DirectedEdge unvisitedDE = null;
-    for (Iterator i = node.getOutEdges().iterator(); i.hasNext(); ) {
-       DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = node.getOutEdges().iterator(); i.moveNext(); ) {
+       DirectedEdge de = (DirectedEdge) i.current;
        if (! de.getEdge().isVisited()) {
          unvisitedDE = de;
          if (de.getEdgeDirection())
@@ -336,8 +336,8 @@ class LineSequencer
   {
     int minDegree = Integer.MAX_VALUE;
     Node minDegreeNode = null;
-    for (Iterator i = graph.nodeIterator(); i.hasNext(); ) {
-      Node node = (Node) i.next();
+    for (Iterator i = graph.nodeIterator(); i.moveNext(); ) {
+      Node node = (Node) i.current;
       if (minDegreeNode == null || node.getDegree() < minDegree) {
         minDegree = node.getDegree();
         minDegreeNode = node;
@@ -419,8 +419,8 @@ class LineSequencer
  /**private */List reverse(List seq)
   {
     LinkedList newSeq = new LinkedList();
-    for (Iterator i = seq.iterator(); i.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = seq.iterator(); i.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) i.current;
       newSeq.addFirst(de.getSym());
     }
     return newSeq;
@@ -438,10 +438,10 @@ class LineSequencer
   {
     List lines = new ArrayList();
 
-    for (Iterator i1 = sequences.iterator(); i1.hasNext(); ) {
-      List seq = (List) i1.next();
-      for (Iterator i2 = seq.iterator(); i2.hasNext(); ) {
-        DirectedEdge de = (DirectedEdge) i2.next();
+    for (Iterator i1 = sequences.iterator(); i1.moveNext(); ) {
+      List seq = (List) i1.current;
+      for (Iterator i2 = seq.iterator(); i2.moveNext(); ) {
+        DirectedEdge de = (DirectedEdge) i2.current;
         LineMergeEdge e = (LineMergeEdge) de.getEdge();
         LineString line = e.getLine();
 

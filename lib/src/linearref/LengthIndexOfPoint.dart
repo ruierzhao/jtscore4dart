@@ -109,7 +109,7 @@ class LengthIndexOfPoint
         }
         segmentStartMeasure += seg.getLength();
       }
-      it.next();
+      it.current;
     }
     return ptMeasure;
   }

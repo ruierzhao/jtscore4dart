@@ -120,8 +120,8 @@ class MCIndexSnapRounder
    */
  /**private */void computeIntersectionSnaps(Collection snapPts)
   {
-    for (Iterator it = snapPts.iterator(); it.hasNext(); ) {
-      Coordinate snapPt = (Coordinate) it.next();
+    for (Iterator it = snapPts.iterator(); it.moveNext(); ) {
+      Coordinate snapPt = (Coordinate) it.current;
       HotPixel hotPixel = new HotPixel(snapPt, scaleFactor);
       pointSnapper.snap(hotPixel);
     }
@@ -134,8 +134,8 @@ class MCIndexSnapRounder
    */
   void computeVertexSnaps(Collection edges)
   {
-    for (Iterator i0 = edges.iterator(); i0.hasNext(); ) {
-      NodedSegmentString edge0 = (NodedSegmentString) i0.next();
+    for (Iterator i0 = edges.iterator(); i0.moveNext(); ) {
+      NodedSegmentString edge0 = (NodedSegmentString) i0.current;
       computeVertexSnaps(edge0);
     }
   }

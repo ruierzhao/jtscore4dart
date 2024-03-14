@@ -56,8 +56,8 @@ class RightmostEdgeFinder {
      * Check all forward DirectedEdges only.  This is still general,
      * because each edge has a forward DirectedEdge.
      */
-    for (Iterator i = dirEdgeList.iterator(); i.hasNext();) {
-      DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = dirEdgeList.iterator(); i.moveNext();) {
+      DirectedEdge de = (DirectedEdge) i.current;
       if (! de.isForward())
         continue;
       checkForRightmostCoordinate(de);

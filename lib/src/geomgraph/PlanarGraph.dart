@@ -56,8 +56,8 @@ class PlanarGraph
    */
   static void linkResultDirectedEdges(Collection nodes)
   {
-    for (Iterator nodeit = nodes.iterator(); nodeit.hasNext(); ) {
-      Node node = (Node) nodeit.next();
+    for (Iterator nodeit = nodes.iterator(); nodeit.moveNext(); ) {
+      Node node = (Node) nodeit.current;
       ((DirectedEdgeStar) node.getEdges()).linkResultDirectedEdges();
     }
   }
@@ -116,8 +116,8 @@ class PlanarGraph
   void addEdges(List edgesToAdd)
   {
     // create all the nodes for the edges
-    for (Iterator it = edgesToAdd.iterator(); it.hasNext(); ) {
-      Edge e = (Edge) it.next();
+    for (Iterator it = edgesToAdd.iterator(); it.moveNext(); ) {
+      Edge e = (Edge) it.current;
       edges.add(e);
 
       DirectedEdge de1 = new DirectedEdge(e, true);
@@ -137,8 +137,8 @@ class PlanarGraph
    */
   void linkResultDirectedEdges()
   {
-    for (Iterator nodeit = nodes.iterator(); nodeit.hasNext(); ) {
-      Node node = (Node) nodeit.next();
+    for (Iterator nodeit = nodes.iterator(); nodeit.moveNext(); ) {
+      Node node = (Node) nodeit.current;
       ((DirectedEdgeStar) node.getEdges()).linkResultDirectedEdges();
     }
   }
@@ -149,8 +149,8 @@ class PlanarGraph
    */
   void linkAllDirectedEdges()
   {
-    for (Iterator nodeit = nodes.iterator(); nodeit.hasNext(); ) {
-      Node node = (Node) nodeit.next();
+    for (Iterator nodeit = nodes.iterator(); nodeit.moveNext(); ) {
+      Node node = (Node) nodeit.current;
       ((DirectedEdgeStar) node.getEdges()).linkAllDirectedEdges();
     }
   }
@@ -164,8 +164,8 @@ class PlanarGraph
    */
   EdgeEnd findEdgeEnd(Edge e)
   {
-    for (Iterator i = getEdgeEnds().iterator(); i.hasNext(); ) {
-      EdgeEnd ee = (EdgeEnd) i.next();
+    for (Iterator i = getEdgeEnds().iterator(); i.moveNext(); ) {
+      EdgeEnd ee = (EdgeEnd) i.current;
       if (ee.getEdge() == e)
         return ee;
     }

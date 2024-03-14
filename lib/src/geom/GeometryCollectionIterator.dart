@@ -94,7 +94,7 @@ class GeometryCollectionIterator /** implements Iterator */ {
     }
     if (_subcollectionIterator != null) {
       if (_subcollectionIterator!.hasNext()) {
-        return _subcollectionIterator!.next();
+        return _subcollectionIterator!.current;
       } else {
         _subcollectionIterator = null;
       }
@@ -107,7 +107,7 @@ class GeometryCollectionIterator /** implements Iterator */ {
     if (obj is GeometryCollection) {
       _subcollectionIterator = GeometryCollectionIterator(obj);
       // there will always be at least one element in the sub-collection
-      return _subcollectionIterator!.next();
+      return _subcollectionIterator!.current;
     }
     return obj;
   }

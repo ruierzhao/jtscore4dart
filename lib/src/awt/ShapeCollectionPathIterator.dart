@@ -79,7 +79,7 @@ class ShapeCollectionPathIterator implements PathIterator {
     }
 
     void next() {
-        currentPathIterator.next();
+        currentPathIterator.current;
 
         if (currentPathIterator.isDone() && !shapeIterator.hasNext()) {
             done = true;

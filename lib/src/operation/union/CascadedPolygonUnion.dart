@@ -167,8 +167,8 @@ class CascadedPolygonUnion
 		 */
 //    STRtree index = new STRtree();
     STRtree index = new STRtree(STRTREE_NODE_CAPACITY);
-    for (Iterator i = inputPolys.iterator(); i.hasNext(); ) {
-      Geometry item = (Geometry) i.next();
+    for (Iterator i = inputPolys.iterator(); i.moveNext(); ) {
+      Geometry item = (Geometry) i.current;
       index.insert(item.getEnvelopeInternal(), item);
     }
     // To avoiding holding memory remove references to the input geometries,
@@ -204,8 +204,8 @@ class CascadedPolygonUnion
  /**private */Geometry repeatedUnion(List geoms)
   {
   	Geometry union = null;
-  	for (Iterator i = geoms.iterator(); i.hasNext(); ) {
-  		Geometry g = (Geometry) i.next();
+  	for (Iterator i = geoms.iterator(); i.moveNext(); ) {
+  		Geometry g = (Geometry) i.current;
   		if (union == null)
   			union = g.copy();
   		else
@@ -279,8 +279,8 @@ class CascadedPolygonUnion
  /**private */List reduceToGeometries(List geomTree)
   {
     List geoms = new ArrayList();
-    for (Iterator i = geomTree.iterator(); i.hasNext(); ) {
-      Object o = i.next();
+    for (Iterator i = geomTree.iterator(); i.moveNext(); ) {
+      Object o = i.current;
       Geometry geom = null;
       if (o is List) {
         geom = unionTree((List) o);

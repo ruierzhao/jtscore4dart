@@ -280,7 +280,7 @@ class Debug {
   void instancePrint(Iterator it)
   {
     while (it.hasNext()) {
-      Object obj = it.next();
+      Object obj = it.current;
       instancePrintObject(obj);
     }
   }

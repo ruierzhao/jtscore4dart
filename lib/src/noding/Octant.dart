@@ -13,6 +13,9 @@
 
 
 // import org.locationtech.jts.geom.Coordinate;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
 /**
  * Methods for computing and working with octants of the Cartesian plane
  * Octants are numbered as follows:
@@ -28,46 +31,51 @@
  *
  * @version 1.7
  */
-class Octant {
+abstract class Octant {
 
   /**
    * Returns the octant of a directed line segment (specified as x and y
    * displacements, which cannot both be 0).
    */
-  static int octant(double dx, double dy)
+  static int octantXY(double dx, double dy)
   {
-    if (dx == 0.0 && dy == 0.0)
+    if (dx == 0.0 && dy == 0.0) {
       throw new ArgumentError("Cannot compute the octant for point ( "+ dx + ", " + dy + " )" );
+    }
 
     double adx = (dx).abs();
     double ady = (dy).abs();
 
     if (dx >= 0) {
       if (dy >= 0) {
-        if (adx >= ady)
+        if (adx >= ady) {
           return 0;
-        else
+        } else {
           return 1;
+        }
       }
       else { // dy < 0
-        if (adx >= ady)
+        if (adx >= ady) {
           return 7;
-        else
+        } else {
           return 6;
+        }
       }
     }
     else { // dx < 0
       if (dy >= 0) {
-        if (adx >= ady)
+        if (adx >= ady) {
           return 3;
-        else
+        } else {
           return 2;
+        }
       }
       else { // dy < 0
-        if (adx >= ady)
+        if (adx >= ady) {
           return 4;
-        else
+        } else {
           return 5;
+        }
       }
     }
   }
@@ -79,11 +87,12 @@ class Octant {
   {
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
-    if (dx == 0.0 && dy == 0.0)
-      throw new ArgumentError("Cannot compute the octant for two identical points " + p0);
-    return octant(dx, dy);
+    if (dx == 0.0 && dy == 0.0) {
+      throw new ArgumentError("Cannot compute the octant for two identical points $p0");
+    }
+    return octantXY(dx, dy);
   }
 
- /**private */Octant() {
-  }
+//  /**private */Octant() {
+//   }
 }

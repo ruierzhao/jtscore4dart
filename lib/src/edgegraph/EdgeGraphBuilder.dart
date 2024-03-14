@@ -73,8 +73,8 @@ class EdgeGraphBuilder
    */
   void add(Collection geometries) 
   {
-    for (Iterator i = geometries.iterator(); i.hasNext(); ) {
-      Geometry geometry = (Geometry) i.next();
+    for (Iterator i = geometries.iterator(); i.moveNext(); ) {
+      Geometry geometry = (Geometry) i.current;
       add(geometry);
     }
   }

@@ -41,10 +41,10 @@ class SimpleNoder
   void computeNodes(Collection inputSegStrings)
   {
     this.nodedSegStrings = inputSegStrings;
-    for (Iterator i0 = inputSegStrings.iterator(); i0.hasNext(); ) {
-      SegmentString edge0 = (SegmentString) i0.next();
-      for (Iterator i1 = inputSegStrings.iterator(); i1.hasNext(); ) {
-        SegmentString edge1 = (SegmentString) i1.next();
+    for (Iterator i0 = inputSegStrings.iterator(); i0.moveNext(); ) {
+      SegmentString edge0 = (SegmentString) i0.current;
+      for (Iterator i1 = inputSegStrings.iterator(); i1.moveNext(); ) {
+        SegmentString edge1 = (SegmentString) i1.current;
         computeIntersects(edge0, edge1);
       }
     }

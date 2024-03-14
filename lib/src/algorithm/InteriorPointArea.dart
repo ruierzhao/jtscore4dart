@@ -26,6 +26,8 @@
 
 import 'package:jtscore4dart/geometry.dart';
 
+import '../util/Assert.dart';
+
 
 /**
  * Computes a point in the interior of an areal geometry.
@@ -218,7 +220,7 @@ class InteriorPointArea {
       /**
        * set default interior point in case polygon has zero area
        */
-      interiorPoint = Coordinate.fromAnother(polygon.getCoordinate());
+      interiorPoint = Coordinate.fromAnother(polygon.getCoordinate()!);
       
       List<double> crossings = [];
       scanRing( polygon.getExteriorRing() , crossings);
@@ -242,9 +244,9 @@ class InteriorPointArea {
       }
     }
 
-   /**private */void addEdgeCrossing(Coordinate p0, Coordinate p1, double scanY, List<Double> crossings) {
+   /**private */void addEdgeCrossing(Coordinate p0, Coordinate p1, double scanY, List<double> crossings) {
       // skip non-crossing segments
-      if ( !intersectsHorizontalLine(p0, p1, scanY) ) {
+      if ( !intersectsHorizontalCoordLine(p0, p1, scanY) ) {
         return;
       }
       if (! isEdgeCrossingCounted(p0, p1, scanY) ) {
@@ -264,27 +266,29 @@ class InteriorPointArea {
      * 
      * @param crossings the list of scan-line crossing X ordinates
      */
-   /**private */void findBestMidpoint(List<Double> crossings) {
+   /**private */void findBestMidpoint(List<double> crossings) {
       // zero-area polygons will have no crossings
-      if (crossings.size() == 0) return;
+      if (crossings.isEmpty) return;
       
       // TODO: is there a better way to verify the crossings are correct?
-      Assert.isTrue(0 == crossings.size() % 2, "Interior Point robustness failure: odd number of scanline crossings");
+      Assert.isTrue(0 == crossings.length % 2, "Interior Point robustness failure: odd number of scanline crossings");
       
-      crossings.sort(Double::compare);
+      // TODO: ruier edit.
+      // crossings.sort(Double::compare);
+      crossings.sort();
       /*
        * Entries in crossings list are expected to occur in pairs representing a
        * section of the scan line interior to the polygon (which may be zero-length)
        */
-      for (int i = 0; i < crossings.size(); i += 2) {
-        double x1 = crossings.get(i);
+      for (int i = 0; i < crossings.length; i += 2) {
+        double x1 = crossings[i];
         // crossings count must be even so this should be safe
-        double x2 = crossings.get(i + 1);
+        double x2 = crossings[i + 1];
 
         double width = x2 - x1;
         if ( width > interiorSectionWidth ) {
           interiorSectionWidth = width;
-          double interiorPointX = avg(x1, x2);
+          double interiorPointX = InteriorPointArea.avg(x1, x2);
           interiorPoint = new Coordinate(interiorPointX, interiorPointY);
         }
       }
@@ -368,13 +372,13 @@ class InteriorPointArea {
     /**
      * Tests if a line segment intersects a horizontal line.
      * 
-     * @param p0 a segment endpoint
-     * @param p1 a segment endpoint
-     * @param y the Y-ordinate of the horizontal line
+     * @param [p0] a segment endpoint
+     * @param [p1] a segment endpoint
+     * @param [y] the Y-ordinate of the horizontal line
      * @return true if the segment and line intersect
      */
    /**private */
-   static bool intersectsHorizontalLine(Coordinate p0, Coordinate p1, double y) {
+   static bool intersectsHorizontalCoordLine(Coordinate p0, Coordinate p1, double y) {
       // both ends above?
       if ( p0.getY() > y && p1.getY() > y ) {
         return false;
@@ -440,25 +444,25 @@ class InteriorPointArea {
 
    /**private */Polygon poly;
 
-   /**private */double centreY;
-   /**private */double hiY = Double.MAX_VALUE;
-   /**private */double loY = -Double.MAX_VALUE;
+   /**private */late double centreY;
+  //  /**private */double hiY = Double.MAX_VALUE;
+   /**private */double hiY = double.maxFinite;
+   /**private */double loY = -double.maxFinite;
 
-    ScanLineYOrdinateFinder(Polygon poly) {
-      this.poly = poly;
-
-      // initialize using extremal values
-      hiY = poly.getEnvelopeInternal().getMaxY();
+    ScanLineYOrdinateFinder(this.poly)
+    {
       loY = poly.getEnvelopeInternal().getMinY();
-      centreY = avg(loY, hiY);
+      hiY = poly.getEnvelopeInternal().getMaxY();
+      centreY = InteriorPointArea.avg(loY, hiY);
     }
+    
 
     double getScanLineY() {
       process(poly.getExteriorRing());
       for (int i = 0; i < poly.getNumInteriorRing(); i++) {
         process(poly.getInteriorRingN(i));
       }
-      double scanLineY = avg(hiY, loY);
+      double scanLineY = InteriorPointArea.avg(hiY, loY);
       return scanLineY;
     }
 
@@ -472,8 +476,9 @@ class InteriorPointArea {
 
    /**private */void updateInterval(double y) {
       if ( y <= centreY ) {
-        if ( y > loY )
+        if ( y > loY ) {
           loY = y;
+        }
       } else if ( y > centreY ) {
         if ( y < hiY ) {
           hiY = y;

@@ -52,8 +52,8 @@ class EdgeString {
       int forwardDirectedEdges = 0;
       int reverseDirectedEdges = 0;
       CoordinateList coordinateList = new CoordinateList();
-      for (Iterator i = directedEdges.iterator(); i.hasNext();) {
-        LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.next();
+      for (Iterator i = directedEdges.iterator(); i.moveNext();) {
+        LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.current;
         if (directedEdge.getEdgeDirection()) {
           forwardDirectedEdges++;
         }

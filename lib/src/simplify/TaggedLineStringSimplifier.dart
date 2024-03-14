@@ -228,8 +228,8 @@ class TaggedLineStringSimplifier
  /**private */bool hasOutputIntersection(LineSegment flatSeg)
   {
     List querySegs = outputIndex.query(flatSeg);
-    for (Iterator i = querySegs.iterator(); i.hasNext(); ) {
-      LineSegment querySeg = (LineSegment) i.next();
+    for (Iterator i = querySegs.iterator(); i.moveNext(); ) {
+      LineSegment querySeg = (LineSegment) i.current;
       if (hasInvalidIntersection(querySeg, flatSeg)) {
           return true;
       }
@@ -247,8 +247,8 @@ class TaggedLineStringSimplifier
                        LineSegment flatSeg)
   {
     List querySegs = inputIndex.query(flatSeg);
-    for (Iterator i = querySegs.iterator(); i.hasNext(); ) {
-      TaggedLineSegment querySeg = (TaggedLineSegment) i.next();
+    for (Iterator i = querySegs.iterator(); i.moveNext(); ) {
+      TaggedLineSegment querySeg = (TaggedLineSegment) i.current;
       if (hasInvalidIntersection(querySeg, flatSeg)) {
         /**
          * Ignore the intersection if the intersecting segment is part of the section being collapsed

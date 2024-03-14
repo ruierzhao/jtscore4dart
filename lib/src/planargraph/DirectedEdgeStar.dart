@@ -74,7 +74,7 @@ class DirectedEdgeStar
   {
     Iterator<DirectedEdge> it = iterator();
     if (! it.hasNext()) return null;
-    DirectedEdge e = (DirectedEdge) it.next();
+    DirectedEdge e = (DirectedEdge) it.current;
     return e.getCoordinate();
   }
 

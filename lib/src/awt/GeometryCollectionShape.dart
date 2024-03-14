@@ -49,8 +49,8 @@ class GeometryCollectionShape implements Shape {
     Rectangle2D getBounds2D() {
         Rectangle2D rectangle = null;
 
-        for (Iterator i = shapes.iterator(); i.hasNext();) {
-            Shape shape = (Shape) i.next();
+        for (Iterator i = shapes.iterator(); i.moveNext();) {
+            Shape shape = (Shape) i.current;
 
             if (rectangle == null) {
                 rectangle = shape.getBounds2D();

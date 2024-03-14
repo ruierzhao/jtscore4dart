@@ -310,8 +310,8 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
 
  /**private */void checkIntersectionWithLineStrings(List lines)
   {
-    for (Iterator i = lines.iterator(); i.hasNext(); ) {
-      LineString testLine = (LineString) i.next();
+    for (Iterator i = lines.iterator(); i.moveNext(); ) {
+      LineString testLine = (LineString) i.current;
       checkIntersectionWithSegments(testLine);
       if (hasIntersection)
         return;

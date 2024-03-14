@@ -227,8 +227,8 @@ abstract class EdgeRing {
     if (! env.contains(p)) return false;
     if (! PointLocation.isInRing(p, shell.getCoordinates()) ) return false;
 
-    for (Iterator i = holes.iterator(); i.hasNext(); ) {
-      EdgeRing hole = (EdgeRing) i.next();
+    for (Iterator i = holes.iterator(); i.moveNext(); ) {
+      EdgeRing hole = (EdgeRing) i.current;
       if (hole.containsPoint(p) )
         return false;
     }

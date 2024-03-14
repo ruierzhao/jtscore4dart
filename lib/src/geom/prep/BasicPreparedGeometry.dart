@@ -81,9 +81,9 @@ class BasicPreparedGeometry
 	bool isAnyTargetComponentInTest(Geometry testGeom)
 	{
 		PointLocator locator = new PointLocator();
-    // for (Iterator i = representativePts.iterator(); i.hasNext(); ) {
+    // for (Iterator i = representativePts.iterator(); i.moveNext(); ) {
     for (Iterator i = representativePts.iterator; i.moveNext(); ) {
-      // Coordinate p =  i.next();
+      // Coordinate p =  i.current;
       Coordinate p =  i.current;
       if (locator.intersects(p, testGeom)) {
         return true;

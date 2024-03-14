@@ -25,7 +25,7 @@
  * The standard usage pattern for a {@link LinearIterator} is:
  *
  * <pre>
- * for (LinearIterator it = new LinearIterator(...); it.hasNext(); it.next()) {
+ * for (LinearIterator it = new LinearIterator(...); it.moveNext(); it.next()) {
  *   ...
  *   int ci = it.getComponentIndex();   // for example
  *   int vi = it.getVertexIndex();      // for example

@@ -260,8 +260,8 @@ class OverlayOp
 
  /**private */void insertUniqueEdges(List edges)
   {
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      Edge e = (Edge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+      Edge e = (Edge) i.current;
       insertUniqueEdge(e);
     }
   }
@@ -343,8 +343,8 @@ class OverlayOp
    */
  /**private */void computeLabelsFromDepths()
   {
-    for (Iterator it = edgeList.iterator(); it.hasNext(); ) {
-      Edge e = (Edge) it.next();
+    for (Iterator it = edgeList.iterator(); it.moveNext(); ) {
+      Edge e = (Edge) it.current;
       Label lbl = e.getLabel();
       Depth depth = e.getDepth();
       /**
@@ -389,8 +389,8 @@ class OverlayOp
  /**private */void replaceCollapsedEdges()
   {
     List newEdges = new ArrayList();
-    for (Iterator it = edgeList.iterator(); it.hasNext(); ) {
-      Edge e = (Edge) it.next();
+    for (Iterator it = edgeList.iterator(); it.moveNext(); ) {
+      Edge e = (Edge) it.current;
       if (e.isCollapsed()) {
 //Debug.print(e);
         it.remove();
@@ -410,8 +410,8 @@ class OverlayOp
    */
  /**private */void copyPoints(int argIndex)
   {
-    for (Iterator i = arg[argIndex].getNodeIterator(); i.hasNext(); ) {
-      Node graphNode = (Node) i.next();
+    for (Iterator i = arg[argIndex].getNodeIterator(); i.moveNext(); ) {
+      Node graphNode = (Node) i.current;
       Node newNode = graph.addNode(graphNode.getCoordinate());
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
     }
@@ -426,8 +426,8 @@ class OverlayOp
    */
  /**private */void computeLabelling()
   {
-    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.hasNext(); ) {
-      Node node = (Node) nodeit.next();
+    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.moveNext(); ) {
+      Node node = (Node) nodeit.current;
 //if (node.getCoordinate().equals(new Coordinate(222, 100)) ) Debug.addWatch(node.getEdges());
       node.getEdges().computeLabelling(arg);
     }
@@ -442,8 +442,8 @@ class OverlayOp
    */
  /**private */void mergeSymLabels()
   {
-    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.hasNext(); ) {
-      Node node = (Node) nodeit.next();
+    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.moveNext(); ) {
+      Node node = (Node) nodeit.current;
       ((DirectedEdgeStar) node.getEdges()).mergeSymLabels();
 //node.print(System.out);
     }
@@ -454,8 +454,8 @@ class OverlayOp
     // The label for a node is updated from the edges incident on it
     // (Note that a node may have already been labelled
     // because it is a point in one of the input geometries)
-    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.hasNext(); ) {
-      Node node = (Node) nodeit.next();
+    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.moveNext(); ) {
+      Node node = (Node) nodeit.current;
       Label lbl = ((DirectedEdgeStar) node.getEdges()).getLabel();
       node.getLabel().merge(lbl);
     }
@@ -479,8 +479,8 @@ class OverlayOp
  /**private */void labelIncompleteNodes()
   {
   	// int nodeCount = 0;
-    for (Iterator ni = graph.getNodes().iterator(); ni.hasNext(); ) {
-      Node n = (Node) ni.next();
+    for (Iterator ni = graph.getNodes().iterator(); ni.moveNext(); ) {
+      Node n = (Node) ni.current;
       Label label = n.getLabel();
       if (n.isIsolated()) {
       	// nodeCount++;
@@ -524,8 +524,8 @@ class OverlayOp
    */
  /**private */void findResultAreaEdges(int opCode)
   {
-    for (Iterator it = graph.getEdgeEnds().iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    for (Iterator it = graph.getEdgeEnds().iterator(); it.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) it.current;
     // mark all dirEdges with the appropriate label
       Label label = de.getLabel();
       if (label.isArea()
@@ -547,8 +547,8 @@ class OverlayOp
   {
     // remove any dirEdges whose sym is also included
     // (they "cancel each other out")
-    for (Iterator it = graph.getEdgeEnds().iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    for (Iterator it = graph.getEdgeEnds().iterator(); it.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) it.current;
       DirectedEdge sym = de.getSym();
       if (de.isInResult() && sym.isInResult()) {
         de.setInResult(false);
@@ -586,8 +586,8 @@ class OverlayOp
    */
  /**private */bool isCovered(Coordinate coord, List geomList)
   {
-    for (Iterator it = geomList.iterator(); it.hasNext(); ) {
-      Geometry geom = (Geometry) it.next();
+    for (Iterator it = geomList.iterator(); it.moveNext(); ) {
+      Geometry geom = (Geometry) it.current;
       int loc = ptLocator.locate(coord, geom);
       if (loc != Location.EXTERIOR) return true;
     }

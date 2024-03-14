@@ -65,8 +65,8 @@ class LineBuilder {
  /**private */void findCoveredLineEdges()
   {
     // first set covered for all L edges at nodes which have A edges too
-    for (Iterator nodeit = op.getGraph().getNodes().iterator(); nodeit.hasNext(); ) {
-      Node node = (Node) nodeit.next();
+    for (Iterator nodeit = op.getGraph().getNodes().iterator(); nodeit.moveNext(); ) {
+      Node node = (Node) nodeit.current;
 //node.print(System.out);
       ((DirectedEdgeStar) node.getEdges()).findCoveredLineEdges();
     }
@@ -75,8 +75,8 @@ class LineBuilder {
      * For all L edges which weren't handled by the above,
      * use a point-in-poly test to determine whether they are covered
      */
-    for (Iterator it = op.getGraph().getEdgeEnds().iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    for (Iterator it = op.getGraph().getEdgeEnds().iterator(); it.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) it.current;
       Edge e = de.getEdge();
       if (de.isLineEdge() && ! e.isCoveredSet()) {
         bool isCovered = op.isCoveredByA(de.getCoordinate());
@@ -87,8 +87,8 @@ class LineBuilder {
 
  /**private */void collectLines(int opCode)
   {
-    for (Iterator it = op.getGraph().getEdgeEnds().iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    for (Iterator it = op.getGraph().getEdgeEnds().iterator(); it.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) it.current;
       collectLineEdge(de, opCode, lineEdgesList);
       collectBoundaryTouchEdge(de, opCode, lineEdgesList);
     }
@@ -152,8 +152,8 @@ class LineBuilder {
 
  /**private */void buildLines(int opCode)
   {
-    for (Iterator it = lineEdgesList.iterator(); it.hasNext(); ) {
-      Edge e = (Edge) it.next();
+    for (Iterator it = lineEdgesList.iterator(); it.moveNext(); ) {
+      Edge e = (Edge) it.current;
       // Label label = e.getLabel();
         LineString line = geometryFactory.createLineString(e.getCoordinates());
         resultLineList.add(line);
@@ -163,8 +163,8 @@ class LineBuilder {
 
  /**private */void labelIsolatedLines(List edgesList)
   {
-    for (Iterator it = edgesList.iterator(); it.hasNext(); ) {
-      Edge e = (Edge) it.next();
+    for (Iterator it = edgesList.iterator(); it.moveNext(); ) {
+      Edge e = (Edge) it.current;
       Label label = e.getLabel();
 //n.print(System.out);
       if (e.isIsolated()) {

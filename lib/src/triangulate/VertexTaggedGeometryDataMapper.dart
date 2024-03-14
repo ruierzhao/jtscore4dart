@@ -47,8 +47,8 @@ class VertexTaggedGeometryDataMapper
 	
 	void loadSourceGeometries(Collection geoms)
 	{
-		for (Iterator i = geoms.iterator(); i.hasNext(); ) {
-			Geometry geom = (Geometry) i.next();
+		for (Iterator i = geoms.iterator(); i.moveNext(); ) {
+			Geometry geom = (Geometry) i.current;
 			loadVertices(geom.getCoordinates(), geom.getUserData());
 		}
 	}

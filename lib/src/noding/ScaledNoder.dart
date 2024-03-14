@@ -76,8 +76,8 @@ class ScaledNoder
  /**private */Collection scale(Collection segStrings)
   {
     List nodedSegmentStrings = new ArrayList(segStrings.size());
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
-      SegmentString ss = (SegmentString) i.next();
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
+      SegmentString ss = (SegmentString) i.current;
       nodedSegmentStrings.add(new NodedSegmentString(scale(ss.getCoordinates()), ss.getData()));
     }
     return nodedSegmentStrings;
@@ -101,8 +101,8 @@ class ScaledNoder
 
  /**private */void rescale(Collection segStrings)
   {
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
-      SegmentString ss = (SegmentString) i.next();
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
+      SegmentString ss = (SegmentString) i.current;
       rescale(ss.getCoordinates());
     }
   }

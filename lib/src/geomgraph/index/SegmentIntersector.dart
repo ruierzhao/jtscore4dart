@@ -200,8 +200,8 @@ class SegmentIntersector
 
  /**private */bool isBoundaryPointInternal(LineIntersector li, Collection bdyNodes)
   {
-    for (Iterator i = bdyNodes.iterator(); i.hasNext(); ) {
-      Node node = (Node) i.next();
+    for (Iterator i = bdyNodes.iterator(); i.moveNext(); ) {
+      Node node = (Node) i.current;
       Coordinate pt = node.getCoordinate();
       if (li.isIntersection(pt)) return true;
     }

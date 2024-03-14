@@ -108,8 +108,8 @@ class LineDissolver
    */
   void add(Collection geometries) 
   {
-    for (Iterator i = geometries.iterator(); i.hasNext(); ) {
-      Geometry geometry = (Geometry) i.next();
+    for (Iterator i = geometries.iterator(); i.moveNext(); ) {
+      Geometry geometry = (Geometry) i.current;
       add(geometry);
     }
   }
@@ -149,8 +149,8 @@ class LineDissolver
 
  /**private */void computeResult() {
     Collection edges = graph.getVertexEdges();
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      HalfEdge e = (HalfEdge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+      HalfEdge e = (HalfEdge) i.current;
       if (MarkHalfEdge.isMarked(e)) continue;
       process(e);
     }
@@ -239,7 +239,7 @@ class LineDissolver
     // scan along the path until a node is found (if one exists)
     while (e.sym().degree() == 2) {
       updateRingStartEdge(e);
-      DissolveHalfEdge eNext = (DissolveHalfEdge) e.next();
+      DissolveHalfEdge eNext = (DissolveHalfEdge) e.current;
       // check if edges form a ring - if so, we're done
       if (eNext == eStart)  {
         buildRing(ringStartEdge);
@@ -266,7 +266,7 @@ class LineDissolver
     line.add(e.orig().copy(), false);
     // scan along the path until a node is found (if one exists)
     while (e.sym().degree() == 2) {
-      HalfEdge eNext = e.next();
+      HalfEdge eNext = e.current;
       // check if edges form a ring - if so, we're done
       if (eNext == eStartRing)
         break;

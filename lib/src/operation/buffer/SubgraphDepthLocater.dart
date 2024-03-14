@@ -63,8 +63,8 @@ class SubgraphDepthLocater
  /**private */List findStabbedSegments(Coordinate stabbingRayLeftPt)
   {
     List stabbedSegments = new ArrayList();
-    for (Iterator i = subgraphs.iterator(); i.hasNext(); ) {
-      BufferSubgraph bsg = (BufferSubgraph) i.next();
+    for (Iterator i = subgraphs.iterator(); i.moveNext(); ) {
+      BufferSubgraph bsg = (BufferSubgraph) i.current;
 
       // optimization - don't bother checking subgraphs which the ray does not intersect
       Envelope env = bsg.getEnvelope();
@@ -93,8 +93,8 @@ class SubgraphDepthLocater
      * Check all forward DirectedEdges only.  This is still general,
      * because each Edge has a forward DirectedEdge.
      */
-    for (Iterator i = dirEdges.iterator(); i.hasNext();) {
-      DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = dirEdges.iterator(); i.moveNext();) {
+      DirectedEdge de = (DirectedEdge) i.current;
       if (! de.isForward())
         continue;
       findStabbedSegments(stabbingRayLeftPt, de, stabbedSegments);

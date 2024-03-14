@@ -118,8 +118,8 @@ class Polygonizer
    */
   void add(Collection geomList)
   {
-    for (Iterator i = geomList.iterator(); i.hasNext(); ) {
-      Geometry geometry = (Geometry) i.next();
+    for (Iterator i = geomList.iterator(); i.moveNext(); ) {
+      Geometry geometry = (Geometry) i.current;
       add(geometry);
     }
   }

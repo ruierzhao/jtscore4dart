@@ -93,10 +93,11 @@ class BufferBuilder
   {
     int lLoc = label.getLocation(0, Position.LEFT);
     int rLoc = label.getLocation(0, Position.RIGHT);
-    if (lLoc == Location.INTERIOR && rLoc == Location.EXTERIOR)
+    if (lLoc == Location.INTERIOR && rLoc == Location.EXTERIOR) {
       return 1;
-    else if (lLoc == Location.EXTERIOR && rLoc == Location.INTERIOR)
+    } else if (lLoc == Location.EXTERIOR && rLoc == Location.INTERIOR){
       return -1;
+    }
     return 0;
   }
 
@@ -166,7 +167,7 @@ class BufferBuilder
     List bufferSegStrList = curveSetBuilder.getCurves();
 
     // short-circuit test
-    if (bufferSegStrList.size() <= 0) {
+    if (bufferSegStrList.isEmpty) {
       return createEmptyResultGeometry();
     }
 
@@ -198,7 +199,7 @@ class BufferBuilder
     List resultPolyList = polyBuilder.getPolygons();
 
     // just in case...
-    if (resultPolyList.size() <= 0) {
+    if (resultPolyList.isEmpty) {
       return createEmptyResultGeometry();
     }
 
@@ -227,7 +228,7 @@ class BufferBuilder
   {
     Noder noder = getNoder(precisionModel);
     noder.computeNodes(bufferSegStrList);
-    Collection nodedSegStrings = noder.getNodedSubstrings();
+    Iterable nodedSegStrings = noder.getNodedSubstrings();
     
     if (isNodingValidated) {
       FastNodingValidator nv = new FastNodingValidator(nodedSegStrings);
@@ -237,19 +238,20 @@ class BufferBuilder
 // DEBUGGING ONLY
 //BufferDebug.saveEdges(nodedEdges, "run" + BufferDebug.runCount + "_nodedEdges");
 
-    for (Iterator i = nodedSegStrings.iterator(); i.hasNext(); ) {
-      SegmentString segStr =  i.next() as SegmentString;
+    for (Iterator i = nodedSegStrings.iterator; i.moveNext(); ) {
+      SegmentString segStr =  i.current as SegmentString;
       
       /**
        * Discard edges which have zero length, 
        * since they carry no information and cause problems with topology building
        */
       List<Coordinate> pts = segStr.getCoordinates();
-      if (pts.length == 2 && pts[0].equals2D(pts[1]))
+      if (pts.length == 2 && pts[0].equals2D(pts[1])) {
         continue;
+      }
 
       Label oldLabel =  segStr.getData() as Label;
-      Edge edge = new Edge(segStr.getCoordinates(), new Label(oldLabel));
+      Edge edge = new Edge(segStr.getCoordinates(), new Label.FromAnother(oldLabel));
       insertUniqueEdge(edge);
     }
     //saveEdges(edgeList.getEdges(), "run" + runCount + "_collapsedEdges");
@@ -275,7 +277,7 @@ class BufferBuilder
       // check if new edge is in reverse direction to existing edge
       // if so, must flip the label before merging it
       if (! existingEdge.isPointwiseEqual(e)) {
-        labelToMerge = new Label(e.getLabel());
+        labelToMerge = new Label.FromAnother(e.getLabel());
         labelToMerge.flip();
       }
       existingLabel.merge(labelToMerge);
@@ -296,9 +298,9 @@ class BufferBuilder
 
  /**private */List createSubgraphs(PlanarGraph graph)
   {
-    List subgraphList = new ArrayList();
-    for (Iterator i = graph.getNodes().iterator(); i.hasNext(); ) {
-      Node node = (Node) i.next();
+    List subgraphList = [];
+    for (Iterator i = graph.getNodes().iterator; i.moveNext(); ) {
+      Node node = i.current as Node;
       if (! node.isVisited()) {
         BufferSubgraph subgraph = new BufferSubgraph();
         subgraph.create(node);
@@ -311,7 +313,8 @@ class BufferBuilder
      * subgraphs for shells will have been built before the subgraphs for
      * any holes they contain.
      */
-    Collections.sort(subgraphList, Collections.reverseOrder());
+    // Collections.sort(subgraphList, Collections.reverseOrder());
+    subgraphList.sort();
     return subgraphList;
   }
 
@@ -326,8 +329,8 @@ class BufferBuilder
  /**private */void buildSubgraphs(List subgraphList, PolygonBuilder polyBuilder)
   {
     List processedGraphs = new ArrayList();
-    for (Iterator i = subgraphList.iterator(); i.hasNext(); ) {
-      BufferSubgraph subgraph = (BufferSubgraph) i.next();
+    for (Iterator i = subgraphList.iterator(); i.moveNext(); ) {
+      BufferSubgraph subgraph = (BufferSubgraph) i.current;
       Coordinate p = subgraph.getRightmostCoordinate();
 //      int outsideDepth = 0;
 //      if (polyBuilder.containsPoint(p))
@@ -353,7 +356,7 @@ class BufferBuilder
   	GeometryFactory fact = new GeometryFactory();
   	List lines = new ArrayList();
   	while (it.hasNext()) {
-  		SegmentString ss = (SegmentString) it.next();
+  		SegmentString ss = (SegmentString) it.current;
   		LineString line = fact.createLineString(ss.getCoordinates());
   		lines.add(line);
   	}

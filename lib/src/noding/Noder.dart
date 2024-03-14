@@ -40,6 +40,6 @@ abstract class Noder
    *
    * @return a Collection of SegmentStrings
    */
-  Collection getNodedSubstrings();
+  Iterable getNodedSubstrings();
 
 }

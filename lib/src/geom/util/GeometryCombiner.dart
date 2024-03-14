@@ -143,8 +143,8 @@ class GeometryCombiner
   Geometry combine()
   {
   	List elems = new ArrayList();
-  	for (Iterator i = inputGeoms.iterator(); i.hasNext(); ) {
-  		Geometry g = (Geometry) i.next();
+  	for (Iterator i = inputGeoms.iterator(); i.moveNext(); ) {
+  		Geometry g = (Geometry) i.current;
   		extractElements(g, elems);
   	}
     

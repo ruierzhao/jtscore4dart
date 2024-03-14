@@ -511,8 +511,8 @@ class QuadEdgeSubdivision {
   Collection getVertices(bool includeFrame) 
   {
     Set vertices = new HashSet();
-    for (Iterator i = quadEdges.iterator(); i.hasNext();) {
-      QuadEdge qe = (QuadEdge) i.next();
+    for (Iterator i = quadEdges.iterator(); i.moveNext();) {
+      QuadEdge qe = (QuadEdge) i.current;
       Vertex v = qe.orig();
       //System.out.println(v);
       if (includeFrame || ! isFrameVertex(v))
@@ -552,8 +552,8 @@ class QuadEdgeSubdivision {
   {
   	List edges = new ArrayList();
     Set visitedVertices = new HashSet();
-    for (Iterator i = quadEdges.iterator(); i.hasNext();) {
-      QuadEdge qe = (QuadEdge) i.next();
+    for (Iterator i = quadEdges.iterator(); i.moveNext();) {
+      QuadEdge qe = (QuadEdge) i.current;
       Vertex v = qe.orig();
       //System.out.println(v);
       if (! visitedVertices.contains(v)) {
@@ -858,8 +858,8 @@ class QuadEdgeSubdivision {
 		List quadEdges = getPrimaryEdges(false);
 		List<LineString> edges = new LineString[quadEdges.size()];
 		int i = 0;
-		for (Iterator it = quadEdges.iterator(); it.hasNext();) {
-			QuadEdge qe = (QuadEdge) it.next();
+		for (Iterator it = quadEdges.iterator(); it.moveNext();) {
+			QuadEdge qe = (QuadEdge) it.current;
 			edges[i++] = geomFact.createLineString(new List<Coordinate> {
 					qe.orig().getCoordinate(), qe.dest().getCoordinate() });
 		}
@@ -877,8 +877,8 @@ class QuadEdgeSubdivision {
 		List triPtsList = getTriangleCoordinates(false);
 		List<Polygon> tris = new Polygon[triPtsList.size()];
 		int i = 0;
-		for (Iterator it = triPtsList.iterator(); it.hasNext();) {
-			List<Coordinate> triPt = (List<Coordinate>) it.next();
+		for (Iterator it = triPtsList.iterator(); it.moveNext();) {
+			List<Coordinate> triPt = (List<Coordinate>) it.current;
 			tris[i++] = geomFact
 					.createPolygon(geomFact.createLinearRing(triPt));
 		}
@@ -897,8 +897,8 @@ class QuadEdgeSubdivision {
     List triPtsList = getTriangleCoordinates(includeFrame);
     List<Polygon> tris = new Polygon[triPtsList.size()];
     int i = 0;
-    for (Iterator it = triPtsList.iterator(); it.hasNext();) {
-      List<Coordinate> triPt = (List<Coordinate>) it.next();
+    for (Iterator it = triPtsList.iterator(); it.moveNext();) {
+      List<Coordinate> triPt = (List<Coordinate>) it.current;
       tris[i++] = geomFact.createPolygon(geomFact.createLinearRing(triPt));
     }
     return geomFact.createGeometryCollection(tris);
@@ -944,8 +944,8 @@ class QuadEdgeSubdivision {
   	
     List cells = new ArrayList();
     Collection edges = getVertexUniqueEdges(false);
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-    	QuadEdge qe = (QuadEdge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+    	QuadEdge qe = (QuadEdge) i.current;
       cells.add(getVoronoiCellPolygon(qe, geomFact));
     }
     return cells;

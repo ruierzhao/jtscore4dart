@@ -54,7 +54,7 @@ class EdgeList
 
   void addAll(Collection edgeColl)
   {
-    for (Iterator i = edgeColl.iterator(); i.hasNext(); ) {
+    for (Iterator i = edgeColl.iterator(); i.moveNext(); ) {
       add((Edge) i.next());
     }
   }

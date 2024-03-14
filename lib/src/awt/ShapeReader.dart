@@ -153,16 +153,16 @@ class ShapeReader
         else {
           coordList = new CoordinateList();
           coordList.add(new Coordinate(pathPt[0], pathPt[1]));
-          pathIt.next();
+          pathIt.current;
         }
         break;
       case PathIterator.SEG_LINETO:
         coordList.add(new Coordinate(pathPt[0], pathPt[1]));
-        pathIt.next();
+        pathIt.current;
         break;
       case PathIterator.SEG_CLOSE:  
         coordList.closeRing();
-        pathIt.next();
+        pathIt.current;
         isDone = true;   
         break;
       default:

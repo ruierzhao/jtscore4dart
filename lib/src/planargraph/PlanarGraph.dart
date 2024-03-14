@@ -183,8 +183,8 @@ abstract class PlanarGraph
   {
     // unhook all directed edges
     List outEdges = node.getOutEdges().getEdges();
-    for (Iterator i = outEdges.iterator(); i.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = outEdges.iterator(); i.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) i.current;
       DirectedEdge sym = de.getSym();
       // remove the diredge that points to this node
       if (sym != null) remove(sym);
@@ -208,8 +208,8 @@ abstract class PlanarGraph
   List findNodesOfDegree(int degree)
   {
     List nodesFound = new ArrayList();
-    for (Iterator i = nodeIterator(); i.hasNext(); ) {
-      Node node = (Node) i.next();
+    for (Iterator i = nodeIterator(); i.moveNext(); ) {
+      Node node = (Node) i.current;
       if (node.getDegree() == degree)
         nodesFound.add(node);
     }

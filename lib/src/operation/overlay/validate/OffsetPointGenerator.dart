@@ -67,8 +67,8 @@ class OffsetPointGenerator
   {
     List offsetPts = new ArrayList();
     List lines = LinearComponentExtracter.getLines(g);
-    for (Iterator i = lines.iterator(); i.hasNext(); ) {
-      LineString line = (LineString) i.next();
+    for (Iterator i = lines.iterator(); i.moveNext(); ) {
+      LineString line = (LineString) i.current;
       extractPoints(line, offsetDistance, offsetPts);
     }
     //System.out.println(toMultiPoint(offsetPts));

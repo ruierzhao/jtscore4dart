@@ -51,8 +51,8 @@ class NodingValidator {
    */
  /**private */void checkCollapses()
   {
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
-      SegmentString ss = (SegmentString) i.next();
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
+      SegmentString ss = (SegmentString) i.current;
       checkCollapses(ss);
     }
   }
@@ -77,10 +77,10 @@ class NodingValidator {
    */
  /**private */void checkInteriorIntersections()
   {
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
-      SegmentString ss0 = (SegmentString) i.next();
-      for (Iterator j = segStrings.iterator(); j.hasNext(); ) {
-        SegmentString ss1 = (SegmentString) j.next();
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
+      SegmentString ss0 = (SegmentString) i.current;
+      for (Iterator j = segStrings.iterator(); j.moveNext(); ) {
+        SegmentString ss1 = (SegmentString) j.current;
 
           checkInteriorIntersections(ss0, ss1);
       }
@@ -139,8 +139,8 @@ class NodingValidator {
    */
  /**private */void checkEndPtVertexIntersections()
   {
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
-      SegmentString ss = (SegmentString) i.next();
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
+      SegmentString ss = (SegmentString) i.current;
       List<Coordinate> pts = ss.getCoordinates();
       checkEndPtVertexIntersections(pts[0], segStrings);
       checkEndPtVertexIntersections(pts[pts.length - 1], segStrings);
@@ -149,8 +149,8 @@ class NodingValidator {
 
  /**private */void checkEndPtVertexIntersections(Coordinate testPt, Collection segStrings)
   {
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
-      SegmentString ss = (SegmentString) i.next();
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
+      SegmentString ss = (SegmentString) i.current;
       List<Coordinate> pts = ss.getCoordinates();
       for (int j = 1; j < pts.length - 1; j++) {
         if (pts[j].equals(testPt))

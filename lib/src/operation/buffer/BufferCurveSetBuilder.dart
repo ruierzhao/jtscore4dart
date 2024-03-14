@@ -1,3 +1,6 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
+
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
@@ -39,6 +42,23 @@
 // import org.locationtech.jts.noding.NodedSegmentString;
 // import org.locationtech.jts.noding.SegmentString;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/Distance.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geom/Triangle.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
+import 'package:jtscore4dart/src/noding/NodedSegmentString.dart';
+import 'package:jtscore4dart/src/noding/SegmentString.dart';
+
+import 'BufferParameters.dart';
+import 'OffsetCurveBuilder.dart';
+
 /**
  * Creates all the raw offset curves for a buffer of a {@link Geometry}.
  * Raw curves need to be noded together and polygonized to form the final buffer area.
@@ -51,20 +71,19 @@ class BufferCurveSetBuilder {
  /**private */double distance;
  /**private */OffsetCurveBuilder curveBuilder;
 
- /**private */List curveList = new ArrayList();
+//  /**private */List curveList = new ArrayList();
+ /**private */List curveList = [];
 
  /**private */bool isInvertOrientation = false;
 
   BufferCurveSetBuilder(
-      Geometry inputGeom,
-          double distance,
+      this.inputGeom,
+          this.distance,
           PrecisionModel precisionModel,
-          BufferParameters bufParams)
-  {
-    this.inputGeom = inputGeom;
-    this.distance = distance;
-    this.curveBuilder = new OffsetCurveBuilder(precisionModel, bufParams);
-  }
+          BufferParameters bufParams):this.curveBuilder = new OffsetCurveBuilder(precisionModel, bufParams);
+  // {
+  //   this.curveBuilder = new OffsetCurveBuilder(precisionModel, bufParams);
+  // }
 
   /**
    * Sets whether the offset curve is generated 
@@ -125,8 +144,7 @@ class BufferCurveSetBuilder {
     // don't add null or trivial curves
     if (coord == null || coord.length < 2) return;
     // add the edge for a coordinate list which is a raw offset curve
-    SegmentString e = new NodedSegmentString(coord,
-                        new Label(0, Location.BOUNDARY, leftLoc, rightLoc));
+    SegmentString e = NodedSegmentString(coord, Label.GeomFrom3(0, Location.BOUNDARY, leftLoc, rightLoc));
     curveList.add(e);
   }
 
@@ -135,15 +153,17 @@ class BufferCurveSetBuilder {
   {
     if (g.isEmpty()) return;
 
-    if (g is Polygon)                 addPolygon((Polygon) g);
-                        // LineString also handles LinearRings
-    else if (g is LineString)         addLineString((LineString) g);
-    else if (g is Point)              addPoint((Point) g);
-    else if (g is MultiPoint)         addCollection((MultiPoint) g);
-    else if (g is MultiLineString)    addCollection((MultiLineString) g);
-    else if (g is MultiPolygon)       addCollection((MultiPolygon) g);
-    else if (g is GeometryCollection) addCollection((GeometryCollection) g);
-    else  throw new UnsupportedOperationException(g.getClass().getName());
+    if (g is Polygon) {
+      addPolygon( g );
+    } 
+    else if (g is LineString)         addLineString( g);
+    else if (g is Point)              addPoint( g);
+    else if (g is MultiPoint)         addCollection( g);
+    else if (g is MultiLineString)    addCollection( g);
+    else if (g is MultiPolygon)       addCollection( g);
+    else if (g is GeometryCollection) addCollection( g);
+    // else  throw new UnsupportedOperationException(g.getClass().getName());
+    else  throw  Exception("UnsupportedOperationException BufferCurveSetBuilder#add");
   }
  /**private */void addCollection(GeometryCollection gc)
   {
@@ -158,12 +178,14 @@ class BufferCurveSetBuilder {
  /**private */void addPoint(Point p)
   {
     // a zero or negative width buffer of a point is empty
-    if (distance <= 0.0) 
+    if (distance <= 0.0) {
       return;
+    }
     List<Coordinate> coord = p.getCoordinates();
     // skip if coordinate is invalid
-    if (coord.length >= 1 && ! coord[0].isValid())
+    if (coord.isNotEmpty && ! coord[0].isValid()) {
       return;
+    }
     List<Coordinate> curve = curveBuilder.getLineCurve(coord, distance);
     addCurve(curve, Location.EXTERIOR, Location.INTERIOR);
   }
@@ -217,11 +239,13 @@ class BufferCurveSetBuilder {
     List<Coordinate> shellCoord = clean(shell.getCoordinates());
     // optimization - don't bother computing buffer
     // if the polygon would be completely eroded
-    if (distance < 0.0 && isErodedCompletely(shell, distance))
-        return;
+    if (distance < 0.0 && isErodedCompletely(shell, distance)) {
+      return;
+    }
     // don't attempt to buffer a polygon with too few distinct vertices
-    if (distance <= 0.0 && shellCoord.length < 3)
-    	return;
+    if (distance <= 0.0 && shellCoord.length < 3) {
+      return;
+    }
 
     addRingSide(
             shellCoord,
@@ -237,8 +261,9 @@ class BufferCurveSetBuilder {
 
       // optimization - don't bother computing buffer for this hole
       // if the hole would be completely covered
-      if (distance > 0.0 && isErodedCompletely(hole, -distance))
-          continue;
+      if (distance > 0.0 && isErodedCompletely(hole, -distance)) {
+        continue;
+      }
 
       // Holes are topologically labelled opposite to the shell, since
       // the interior of the polygon lies on their opposite side
@@ -281,8 +306,9 @@ class BufferCurveSetBuilder {
  /**private */void addRingSide(List<Coordinate> coord, double offsetDistance, int side, int cwLeftLoc, int cwRightLoc)
   {
     // don't bother adding ring if it is "flat" and will disappear in the output
-    if (offsetDistance == 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE)
+    if (offsetDistance == 0.0 && coord.length < LinearRing.MINIMUM_VALID_SIZE) {
       return;
+    }
     
     int leftLoc  = cwLeftLoc;
     int rightLoc = cwRightLoc;
@@ -306,9 +332,9 @@ class BufferCurveSetBuilder {
     addCurve(curve, leftLoc, rightLoc);
   }
 
- /**private */static final int MAX_INVERTED_RING_SIZE = 9;
- /**private */static final int INVERTED_CURVE_VERTEX_FACTOR = 4;
- /**private */static final double NEARNESS_FACTOR = 0.99;
+ /**private */static const int MAX_INVERTED_RING_SIZE = 9;
+ /**private */static const int INVERTED_CURVE_VERTEX_FACTOR = 4;
+ /**private */static const double NEARNESS_FACTOR = 0.99;
 
   /**
    * Tests whether the offset curve for a ring is fully inverted. 
@@ -371,7 +397,7 @@ class BufferCurveSetBuilder {
    */
  /**private */static double maxDistance(List<Coordinate> pts, List<Coordinate> line) {
     double maxDistance = 0;
-    for (Coordinate p : pts) {
+    for (Coordinate p in pts) {
       double dist = Distance.pointToSegmentString(p, line);
       if (dist > maxDistance) {
         maxDistance = dist;
@@ -396,20 +422,23 @@ class BufferCurveSetBuilder {
   {
     List<Coordinate> ringCoord = ring.getCoordinates();
     // degenerate ring has no area
-    if (ringCoord.length < 4)
+    if (ringCoord.length < 4) {
       return bufferDistance < 0;
+    }
 
     // important test to eliminate inverted triangle bug
     // also optimizes erosion test for triangles
-    if (ringCoord.length == 4)
+    if (ringCoord.length == 4) {
       return isTriangleErodedCompletely(ringCoord, bufferDistance);
+    }
 
     // if envelope is narrower than twice the buffer distance, ring is eroded
     Envelope env = ring.getEnvelopeInternal();
-    double envMinDimension = math.min(env.getHeight(), env.getWidth());
+    double envMinDimension = min(env.getHeight(), env.getWidth());
     if (bufferDistance < 0.0
-        && 2 * (bufferDistance).abs() > envMinDimension)
+        && 2 * (bufferDistance).abs() > envMinDimension) {
       return true;
+    }
 
     return false;
   }

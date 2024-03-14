@@ -47,10 +47,10 @@ class SimpleSegmentSetMutualIntersector implements SegmentSetMutualIntersector
    * @param segInt segment intersector to use
    */
   void process(Collection segStrings, SegmentIntersector segInt) {
-    for (Iterator i = baseSegStrings.iterator(); i.hasNext(); ) {
-    	SegmentString baseSS = (SegmentString) i.next();
-    	for (Iterator j = segStrings.iterator(); j.hasNext(); ) {
-	      	SegmentString ss = (SegmentString) j.next();
+    for (Iterator i = baseSegStrings.iterator(); i.moveNext(); ) {
+    	SegmentString baseSS = (SegmentString) i.current;
+    	for (Iterator j = segStrings.iterator(); j.moveNext(); ) {
+	      	SegmentString ss = (SegmentString) j.current;
 	      	intersect(baseSS, ss, segInt);
 	        if (segInt.isDone()) 
 	        	return;

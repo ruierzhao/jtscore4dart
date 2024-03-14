@@ -86,7 +86,7 @@ class SegmentStringDissolver
    */
   void dissolve(Collection segStrings)
   {
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
       dissolve((SegmentString) i.next());
     }
   }
@@ -135,8 +135,8 @@ class SegmentStringDissolver
 
  /**private */bool checkAdded(OrientedCoordinateArray oca)
   {
-    for (Iterator i = testAddedSS.iterator(); i.hasNext(); ) {
-      OrientedCoordinateArray addedOCA = (OrientedCoordinateArray) i.next();
+    for (Iterator i = testAddedSS.iterator(); i.moveNext(); ) {
+      OrientedCoordinateArray addedOCA = (OrientedCoordinateArray) i.current;
       if (oca.compareTo(addedOCA) == 0)
         return true;
     }

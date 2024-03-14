@@ -58,8 +58,8 @@ class GeometryMapper
   static Collection map(Collection geoms, MapOp op)
   {
     List mapped = new ArrayList();
-    for (Iterator i = geoms.iterator(); i.hasNext(); ) {
-      Geometry g = (Geometry) i.next();
+    for (Iterator i = geoms.iterator(); i.moveNext(); ) {
+      Geometry g = (Geometry) i.current;
       Geometry gr = op.map(g);
       if (gr != null)
         mapped.add(gr);

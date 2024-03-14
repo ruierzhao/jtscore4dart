@@ -59,16 +59,16 @@ class SimpleSweepLineIntersector
 
  /**private */void add(List edges)
   {
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      Edge edge = (Edge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+      Edge edge = (Edge) i.current;
       // edge is its own group
       add(edge, edge);
     }
   }
  /**private */void add(List edges, Object edgeSet)
   {
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      Edge edge = (Edge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+      Edge edge = (Edge) i.current;
       add(edge, edgeSet);
     }
   }

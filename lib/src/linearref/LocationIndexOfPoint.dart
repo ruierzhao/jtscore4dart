@@ -98,7 +98,7 @@ class LocationIndexOfPoint
 
     LineSegment seg = new LineSegment();
     for (LinearIterator it = new LinearIterator(linearGeom);
-         it.hasNext(); it.next()) {
+         it.moveNext(); it.next()) {
       if (! it.isEndOfLine()) {
         seg.p0 = it.getSegmentStart();
         seg.p1 = it.getSegmentEnd();

@@ -227,8 +227,8 @@ class IsSimpleOp
  /**private */bool isSimplePolygonal(Geometry geom)
   {
     List rings = LinearComponentExtracter.getLines(geom);
-    for (Iterator i = rings.iterator(); i.hasNext(); ) {
-      LinearRing ring = (LinearRing) i.next();
+    for (Iterator i = rings.iterator(); i.moveNext(); ) {
+      LinearRing ring = (LinearRing) i.current;
       if (! isSimpleLinearGeometry(ring))
         return false;
     }
@@ -277,11 +277,11 @@ class IsSimpleOp
    */
  /**private */bool hasNonEndpointIntersection(GeometryGraph graph)
   {
-    for (Iterator i = graph.getEdgeIterator(); i.hasNext(); ) {
-      Edge e = (Edge) i.next();
+    for (Iterator i = graph.getEdgeIterator(); i.moveNext(); ) {
+      Edge e = (Edge) i.current;
       int maxSegmentIndex = e.getMaximumSegmentIndex();
-      for (Iterator eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext(); ) {
-        EdgeIntersection ei = (EdgeIntersection) eiIt.next();
+      for (Iterator eiIt = e.getEdgeIntersectionList().iterator(); eiIt.moveNext(); ) {
+        EdgeIntersection ei = (EdgeIntersection) eiIt.current;
         if (! ei.isEndPoint(maxSegmentIndex)) {
           nonSimpleLocation = ei.getCoordinate();
           return true;
@@ -323,8 +323,8 @@ class IsSimpleOp
  /**private */bool hasClosedEndpointIntersection(GeometryGraph graph)
   {
     Map endPoints = new TreeMap();
-    for (Iterator i = graph.getEdgeIterator(); i.hasNext(); ) {
-      Edge e = (Edge) i.next();
+    for (Iterator i = graph.getEdgeIterator(); i.moveNext(); ) {
+      Edge e = (Edge) i.current;
       bool isClosed = e.isClosed();
       Coordinate p0 = e.getCoordinate(0);
       addEndpoint(endPoints, p0, isClosed);
@@ -332,8 +332,8 @@ class IsSimpleOp
       addEndpoint(endPoints, p1, isClosed);
     }
 
-    for (Iterator i = endPoints.values().iterator(); i.hasNext(); ) {
-      EndpointInfo eiInfo = (EndpointInfo) i.next();
+    for (Iterator i = endPoints.values().iterator(); i.moveNext(); ) {
+      EndpointInfo eiInfo = (EndpointInfo) i.current;
       if (eiInfo.isClosed && eiInfo.degree != 2) {
         nonSimpleLocation = eiInfo.getCoordinate();
         return true;

@@ -110,8 +110,8 @@ class PreparedLineStringIntersects
 		 */
 		PointLocator locator = new PointLocator();
     List coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
-    for (Iterator i = coords.iterator(); i.hasNext(); ) {
-      Coordinate p = (Coordinate) i.next();
+    for (Iterator i = coords.iterator(); i.moveNext(); ) {
+      Coordinate p = (Coordinate) i.current;
       if (locator.intersects(p, prepLine.getGeometry()))
         return true;
     }

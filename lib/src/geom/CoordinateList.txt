@@ -161,7 +161,7 @@ class CoordinateList  /** extends ArrayList<Coordinate> */
   bool addAll(Collection<? extends Coordinate> coll, bool allowRepeated)
   {
     bool isChanged = false;
-    for (Iterator<? extends Coordinate> i = coll.iterator(); i.hasNext(); ) {
+    for (Iterator<? extends Coordinate> i = coll.iterator(); i.moveNext(); ) {
       add(i.next(), allowRepeated);
       isChanged = true;
     }

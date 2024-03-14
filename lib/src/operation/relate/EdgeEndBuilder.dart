@@ -42,8 +42,8 @@ class EdgeEndBuilder {
   List computeEdgeEnds(Iterator edges)
   {
     List l = new ArrayList();
-    for (Iterator i = edges; i.hasNext(); ) {
-      Edge e = (Edge) i.next();
+    for (Iterator i = edges; i.moveNext(); ) {
+      Edge e = (Edge) i.current;
       computeEdgeEnds(e, l);
     }
     return l;
@@ -65,12 +65,12 @@ class EdgeEndBuilder {
     EdgeIntersection eiCurr = null;
     // no intersections, so there is nothing to do
     if (! it.hasNext()) return;
-    EdgeIntersection eiNext = (EdgeIntersection) it.next();
+    EdgeIntersection eiNext = (EdgeIntersection) it.current;
     do {
       eiPrev = eiCurr;
       eiCurr = eiNext;
       eiNext = null;
-      if (it.hasNext()) eiNext = (EdgeIntersection) it.next();
+      if (it.hasNext()) eiNext = (EdgeIntersection) it.current;
 
       if (eiCurr != null) {
         createEdgeEndForPrev(edge, l, eiCurr, eiPrev);

@@ -64,16 +64,16 @@ class SimpleMCSweepLineIntersector
 
  /**private */void addEdges(List edges)
   {
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      Edge edge = (Edge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+      Edge edge = (Edge) i.current;
       // edge is its own group
       addEdge(edge, edge);
     }
   }
  /**private */void addEdges(List edges, Object edgeSet)
   {
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      Edge edge = (Edge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+      Edge edge = (Edge) i.current;
       addEdge(edge, edgeSet);
     }
   }

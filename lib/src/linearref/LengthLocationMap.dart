@@ -162,7 +162,7 @@ class LengthLocationMap
         totalLength += segLen;
       }
 
-      it.next();
+      it.current;
     }
     // length is longer than line - return end location
     return LinearLocation.getEndLocation(linearGeom);
@@ -208,7 +208,7 @@ class LengthLocationMap
           return totalLength;
         }
       }
-      it.next();
+      it.current;
     }
     return totalLength;
   }

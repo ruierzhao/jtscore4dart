@@ -33,7 +33,7 @@ class CollectionUtil {
   /// @return a list of the transformed objects
   static List transform(Collection coll, _Function func) {
     List result = ArrayList();
-    for (Iterator i = coll.iterator(); i.hasNext();) {
+    for (Iterator i = coll.iterator(); i.moveNext();) {
       result.add(func.execute(i.next()));
     }
     return result;
@@ -45,7 +45,7 @@ class CollectionUtil {
   /// @param coll the collection to process
   /// @param func the Function to execute
   static void apply(Collection coll, _Function func) {
-    for (Iterator i = coll.iterator(); i.hasNext();) {
+    for (Iterator i = coll.iterator(); i.moveNext();) {
       func.execute(i.next());
     }
   }
@@ -59,8 +59,8 @@ class CollectionUtil {
   /// @return a list of objects for which the function was true
   static List select(Collection collection, _Function func) {
     List result = new ArrayList();
-    for (Iterator i = collection.iterator(); i.hasNext();) {
-      Object item = i.next();
+    for (Iterator i = collection.iterator(); i.moveNext();) {
+      Object item = i.current;
       if (Boolean.TRUE.equals(func.execute(item))) {
         result.add(item);
       }

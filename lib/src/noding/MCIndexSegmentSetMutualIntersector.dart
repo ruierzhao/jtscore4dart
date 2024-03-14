@@ -82,8 +82,8 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
  /**private */void addToIndex(SegmentString segStr)
   {
     List segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
-    for (Iterator i = segChains.iterator(); i.hasNext(); ) {
-      MonotoneChain mc = (MonotoneChain) i.next();
+    for (Iterator i = segChains.iterator(); i.moveNext(); ) {
+      MonotoneChain mc = (MonotoneChain) i.current;
       index.insert(mc.getEnvelope(overlapTolerance), mc);
     }
   }
@@ -99,7 +99,7 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
   void process(Collection segStrings, SegmentIntersector segInt)
   {
   	List monoChains = new ArrayList();
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
       addToMonoChains((SegmentString) i.next(), monoChains);
     }
     intersectChains(monoChains, segInt);
@@ -112,8 +112,8 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
     if (segStr.size() == 0)
       return;
     List segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
-    for (Iterator i = segChains.iterator(); i.hasNext(); ) {
-      MonotoneChain mc = (MonotoneChain) i.next();
+    for (Iterator i = segChains.iterator(); i.moveNext(); ) {
+      MonotoneChain mc = (MonotoneChain) i.current;
       monoChains.add(mc);
     }
   }
@@ -122,12 +122,12 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
   {
     MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(segInt);
 
-    for (Iterator i = monoChains.iterator(); i.hasNext(); ) {
-      MonotoneChain queryChain = (MonotoneChain) i.next();
+    for (Iterator i = monoChains.iterator(); i.moveNext(); ) {
+      MonotoneChain queryChain = (MonotoneChain) i.current;
       Envelope queryEnv = queryChain.getEnvelope(overlapTolerance);
       List overlapChains = index.query(queryEnv);
-      for (Iterator j = overlapChains.iterator(); j.hasNext(); ) {
-        MonotoneChain testChain = (MonotoneChain) j.next();
+      for (Iterator j = overlapChains.iterator(); j.moveNext(); ) {
+        MonotoneChain testChain = (MonotoneChain) j.current;
         queryChain.computeOverlaps(testChain, overlapTolerance, overlapAction);
         if (segInt.isDone()) return;
       }

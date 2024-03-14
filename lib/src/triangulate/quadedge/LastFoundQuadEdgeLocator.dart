@@ -37,7 +37,7 @@ class LastFoundQuadEdgeLocator implements QuadEdgeLocator {
    /**private */QuadEdge findEdge() {
         Collection edges = subdiv.getEdges();
         // assume there is an edge - otherwise will get an exception
-        return (QuadEdge) edges.iterator().next();
+        return (QuadEdge) edges.iterator().current;
     }
 
     /**

@@ -82,8 +82,8 @@ class KdTree {
    */
   static List<Coordinate> toCoordinates(Collection kdnodes, bool includeRepeated) {
     CoordinateList coord = new CoordinateList();
-    for (Iterator it = kdnodes.iterator(); it.hasNext();) {
-      KdNode node = (KdNode) it.next();
+    for (Iterator it = kdnodes.iterator(); it.moveNext();) {
+      KdNode node = (KdNode) it.current;
       int count = includeRepeated ? node.getCount() : 1;
       for (int i = 0; i < count; i++) {
        coord.add(node.getCoordinate(), true);

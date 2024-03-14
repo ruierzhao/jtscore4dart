@@ -87,8 +87,8 @@ class LineMerger
   void add(Collection geometries) 
   {
   	mergedLineStrings = null;
-    for (Iterator i = geometries.iterator(); i.hasNext(); ) {
-      Geometry geometry = (Geometry) i.next();
+    for (Iterator i = geometries.iterator(); i.moveNext(); ) {
+      Geometry geometry = (Geometry) i.current;
       add(geometry);
     }
   }
@@ -113,8 +113,8 @@ class LineMerger
     buildEdgeStringsForObviousStartNodes();
     buildEdgeStringsForIsolatedLoops();
     mergedLineStrings = new ArrayList();    
-    for (Iterator i = edgeStrings.iterator(); i.hasNext(); ) {
-      EdgeString edgeString = (EdgeString) i.next();
+    for (Iterator i = edgeStrings.iterator(); i.moveNext(); ) {
+      EdgeString edgeString = (EdgeString) i.current;
       mergedLineStrings.add(edgeString.toLineString());
     }    
   }
@@ -128,8 +128,8 @@ class LineMerger
   }  
   
  /**private */void buildEdgeStringsForUnprocessedNodes() {
-    for (Iterator i = graph.getNodes().iterator(); i.hasNext(); ) {
-      Node node = (Node) i.next();
+    for (Iterator i = graph.getNodes().iterator(); i.moveNext(); ) {
+      Node node = (Node) i.current;
       if (!node.isMarked()) { 
         Assert.isTrue(node.getDegree() == 2);
         buildEdgeStringsStartingAt(node);
@@ -138,8 +138,8 @@ class LineMerger
     }
   }  
  /**private */void buildEdgeStringsForNonDegree2Nodes() {
-    for (Iterator i = graph.getNodes().iterator(); i.hasNext(); ) {
-      Node node = (Node) i.next();
+    for (Iterator i = graph.getNodes().iterator(); i.moveNext(); ) {
+      Node node = (Node) i.current;
       if (node.getDegree() != 2) { 
         buildEdgeStringsStartingAt(node);
         node.setMarked(true);
@@ -147,8 +147,8 @@ class LineMerger
     }
   }
  /**private */void buildEdgeStringsStartingAt(Node node) {
-    for (Iterator i = node.getOutEdges().iterator(); i.hasNext(); ) {
-      LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.next();
+    for (Iterator i = node.getOutEdges().iterator(); i.moveNext(); ) {
+      LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.current;
       if (directedEdge.getEdge().isMarked()) { continue; }
       edgeStrings.add(buildEdgeStringStartingWith(directedEdge));
     }

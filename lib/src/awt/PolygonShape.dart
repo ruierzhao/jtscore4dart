@@ -48,8 +48,8 @@ class PolygonShape implements Shape
     {
         polygonPath = toPath(shellVertices);
 
-        for (Iterator i = holeVerticesCollection.iterator(); i.hasNext();) {
-            List<Coordinate> holeVertices = (List<Coordinate>) i.next();
+        for (Iterator i = holeVerticesCollection.iterator(); i.moveNext();) {
+            List<Coordinate> holeVertices = (List<Coordinate>) i.current;
             polygonPath.append(toPath(holeVertices), false);
         }
     }

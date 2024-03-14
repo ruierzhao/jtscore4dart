@@ -34,8 +34,8 @@ class FacetSequenceTreeBuilder {
   static STRtree build(Geometry g) {
     STRtree tree = new STRtree(STR_TREE_NODE_CAPACITY);
     List sections = computeFacetSequences(g);
-    for (Iterator i = sections.iterator(); i.hasNext();) {
-      FacetSequence section = (FacetSequence) i.next();
+    for (Iterator i = sections.iterator(); i.moveNext();) {
+      FacetSequence section = (FacetSequence) i.current;
       tree.insert(section.getEnvelope(), section);
     }
     tree.build();

@@ -192,8 +192,8 @@ class BoundablePair
       PriorityQueue priQ, double minDistance)
   {
     List children = ((AbstractNode) bndComposite).getChildBoundables();
-    for (Iterator i = children.iterator(); i.hasNext(); ) {
-      Boundable child = (Boundable) i.next();
+    for (Iterator i = children.iterator(); i.moveNext(); ) {
+      Boundable child = (Boundable) i.current;
       BoundablePair bp;
       if (isFlipped) {
         bp = new BoundablePair(bndOther, child, itemDistance);

@@ -44,8 +44,8 @@ class ConnectedSubgraphFinder
     List subgraphs = new ArrayList();
 
     GraphComponent.setVisited(graph.nodeIterator(), false);
-    for (Iterator i = graph.edgeIterator(); i.hasNext(); ) {
-      Edge e = (Edge) i.next();
+    for (Iterator i = graph.edgeIterator(); i.moveNext(); ) {
+      Edge e = (Edge) i.current;
       Node node = e.getDirEdge(0).getFromNode();
       if (! node.isVisited()) {
         subgraphs.add(findSubgraph(node));
@@ -85,8 +85,8 @@ class ConnectedSubgraphFinder
  /**private */void addEdges(Node node, Stack nodeStack, Subgraph subgraph)
   {
     node.setVisited(true);
-    for (Iterator i = ((DirectedEdgeStar) node.getOutEdges()).iterator(); i.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = ((DirectedEdgeStar) node.getOutEdges()).iterator(); i.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) i.current;
       subgraph.add(de.getEdge());
       Node toNode = de.getToNode();
       if (! toNode.isVisited()) nodeStack.push(toNode);

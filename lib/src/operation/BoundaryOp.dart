@@ -187,8 +187,8 @@ class BoundaryOp
       addEndpoint(line.getCoordinateN(line.getNumPoints() - 1));
     }
 
-    for (Iterator it = endpointMap.entrySet().iterator(); it.hasNext(); ) {
-      Map.Entry entry = (Map.Entry) it.next();
+    for (Iterator it = endpointMap.entrySet().iterator(); it.moveNext(); ) {
+      Map.Entry entry = (Map.Entry) it.current;
       Counter counter = (Counter) entry.getValue();
       int valence = counter.count;
       if (bnRule.isInBoundary(valence)) {

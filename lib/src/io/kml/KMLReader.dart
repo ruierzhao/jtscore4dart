@@ -177,7 +177,7 @@ class KMLReader {
                 }
             }
 
-            xmlStreamReader.next();
+            xmlStreamReader.current;
         }
 
         if (coordinates == null) {
@@ -233,7 +233,7 @@ class KMLReader {
                 }
             }
 
-            xmlStreamReader.next();
+            xmlStreamReader.current;
         }
 
         if (shell == null) {
@@ -271,7 +271,7 @@ class KMLReader {
                 }
             }
 
-            xmlStreamReader.next();
+            xmlStreamReader.current;
         }
 
         if (geometries.isEmpty()) {
@@ -307,7 +307,7 @@ class KMLReader {
                 break;
             }
 
-            xmlStreamReader.next();
+            xmlStreamReader.current;
         }
 
         if (!hasElement) {
@@ -323,7 +323,7 @@ class KMLReader {
             case POLYGON:
                 return parseKMLPolygon(xmlStreamReader);
             case MULTIGEOMETRY:
-                xmlStreamReader.next();
+                xmlStreamReader.current;
                 return parseKMLMultiGeometry(xmlStreamReader);
         }
 
@@ -340,7 +340,7 @@ class KMLReader {
                 break;
             }
 
-            xmlStreamReader.next();
+            xmlStreamReader.current;
         }
 
         if (!elementFound) {

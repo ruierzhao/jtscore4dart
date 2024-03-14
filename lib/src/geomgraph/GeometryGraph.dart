@@ -179,8 +179,8 @@ class GeometryGraph
     Collection coll = getBoundaryNodes();
     List<Coordinate> pts = new Coordinate[coll.size()];
     int i = 0;
-    for (Iterator it = coll.iterator(); it.hasNext(); ) {
-      Node node = (Node) it.next();
+    for (Iterator it = coll.iterator(); it.moveNext(); ) {
+      Node node = (Node) it.current;
       pts[i++] = node.getCoordinate().copy();
     }
     return pts;
@@ -193,8 +193,8 @@ class GeometryGraph
 
   void computeSplitEdges(List edgelist)
   {
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      Edge e = (Edge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+      Edge e = (Edge) i.current;
       e.eiList.addSplitEdges(edgelist);
     }
   }
@@ -377,8 +377,8 @@ class GeometryGraph
     EdgeSetIntersector esi = createEdgeSetIntersector();
     esi.computeIntersections(edges, g.edges, si);
 /*
-for (Iterator i = g.edges.iterator(); i.hasNext();) {
-Edge e = (Edge) i.next();
+for (Iterator i = g.edges.iterator(); i.moveNext();) {
+Edge e = (Edge) i.current;
 Debug.print(e.getEdgeIntersectionList());
 }
 */
@@ -420,11 +420,11 @@ Debug.print(e.getEdgeIntersectionList());
 
  /**private */void addSelfIntersectionNodes(int argIndex)
   {
-    for (Iterator i = edges.iterator(); i.hasNext(); ) {
-      Edge e = (Edge) i.next();
+    for (Iterator i = edges.iterator(); i.moveNext(); ) {
+      Edge e = (Edge) i.current;
       int eLoc = e.getLabel().getLocation(argIndex);
-      for (Iterator eiIt = e.eiList.iterator(); eiIt.hasNext(); ) {
-        EdgeIntersection ei = (EdgeIntersection) eiIt.next();
+      for (Iterator eiIt = e.eiList.iterator(); eiIt.moveNext(); ) {
+        EdgeIntersection ei = (EdgeIntersection) eiIt.current;
         addSelfIntersectionNode(argIndex, ei.coord, eLoc);
       }
     }

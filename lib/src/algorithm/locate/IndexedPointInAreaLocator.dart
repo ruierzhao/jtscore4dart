@@ -140,8 +140,8 @@ class IndexedPointInAreaLocator
    /**private */void init(Geometry geom)
     {
       List lines = LinearComponentExtracter.getLines(geom);
-      for (Iterator i = lines.iterator(); i.hasNext(); ) {
-        LineString line = (LineString) i.next();
+      for (Iterator i = lines.iterator(); i.moveNext(); ) {
+        LineString line = (LineString) i.current;
         //-- only include rings of Polygons or LinearRings
         if (! line.isClosed())
           continue;

@@ -13,6 +13,8 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
 /**
  * An abstract class for classes which represent a sequence of contiguous line segments.
  * SegmentStrings can carry a context object, which is useful
@@ -74,7 +76,8 @@ abstract class SegmentString
    * 
    * @see #isClosed
    */
-  default Coordinate prevInRing(int index) {
+  /**default  */ 
+  Coordinate prevInRing(int index) {
     int prevIndex = index - 1;
     if (prevIndex < 0) {
       prevIndex = size() - 2;
@@ -91,7 +94,8 @@ abstract class SegmentString
    * 
    * @see #isClosed
    */
-  default Coordinate nextInRing(int index) {
+  /**default  */ 
+  Coordinate nextInRing(int index) {
     int nextIndex = index + 1;
     if (nextIndex > size() - 1) {
       nextIndex = 1;

@@ -24,6 +24,13 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+
+import 'NodedSegmentString.dart';
+import 'SegmentNode.dart';
+import 'SegmentString.dart';
+
 /**
  * A list of the {@link SegmentNode}s present along a noded {@link SegmentString}.
  *
@@ -34,10 +41,7 @@ class SegmentNodeList
  /**private */Map nodeMap = new TreeMap();
  /**private */NodedSegmentString edge;  // the parent edge
 
-  SegmentNodeList(NodedSegmentString edge)
-  {
-    this.edge = edge;
-  }
+  SegmentNodeList(this.edge);
 
   /**
    * Gets the number of nodes in the list
@@ -59,7 +63,7 @@ class SegmentNodeList
   SegmentNode add(Coordinate intPt, int segmentIndex)
   {
     SegmentNode eiNew = new SegmentNode(edge, intPt, segmentIndex, edge.getSegmentOctant(segmentIndex));
-    SegmentNode ei = (SegmentNode) nodeMap.get(eiNew);
+    SegmentNode ei = nodeMap.get(eiNew) as SegmentNode;
     if (ei != null) {
       // debugging sanity check
       Assert.isTrue(ei.coord.equals2D(intPt), "Found equal nodes with different coordinates");
@@ -103,7 +107,7 @@ class SegmentNodeList
     findCollapsesFromExistingVertices(collapsedVertexIndexes);
 
     // node the collapses
-    for (Iterator it = collapsedVertexIndexes.iterator(); it.hasNext(); ) {
+    for (Iterator it = collapsedVertexIndexes.iterator(); it.moveNext(); ) {
       int vertexIndex = ((Integer) it.next()).intValue();
       add(edge.getCoordinate(vertexIndex), vertexIndex);
     }
@@ -135,15 +139,16 @@ class SegmentNodeList
    */
  /**private */void findCollapsesFromInsertedNodes(List collapsedVertexIndexes)
   {
-    int[] collapsedVertexIndex = new int[1];
+    List<int> collapsedVertexIndex = new int[1];
     Iterator it = iterator();
     // there should always be at least two entries in the list, since the endpoints are nodes
-    SegmentNode eiPrev = (SegmentNode) it.next();
+    SegmentNode eiPrev = (SegmentNode) it.current;
     while (it.hasNext()) {
-      SegmentNode ei = (SegmentNode) it.next();
+      SegmentNode ei = (SegmentNode) it.current;
       bool isCollapsed = findCollapseIndex(eiPrev, ei, collapsedVertexIndex);
-      if (isCollapsed)
+      if (isCollapsed) {
         collapsedVertexIndexes.add(collapsedVertexIndex[0]);
+      }
 
       eiPrev = ei;
     }
@@ -183,9 +188,9 @@ class SegmentNodeList
 
     Iterator it = iterator();
     // there should always be at least two entries in the list, since the endpoints are nodes
-    SegmentNode eiPrev = (SegmentNode) it.next();
+    SegmentNode eiPrev = (SegmentNode) it.current;
     while (it.hasNext()) {
-      SegmentNode ei = (SegmentNode) it.next();
+      SegmentNode ei = (SegmentNode) it.current;
       SegmentString newEdge = createSplitEdge(eiPrev, ei);
       /*
       if (newEdge.size() < 2)
@@ -207,16 +212,18 @@ class SegmentNodeList
     List<Coordinate> edgePts = edge.getCoordinates();
 
     // check that first and last points of split edges are same as endpoints of edge
-    SegmentString split0 = (SegmentString) splitEdges.get(0);
+    SegmentString split0 = splitEdges.get(0) as SegmentString;
     Coordinate pt0 = split0.getCoordinate(0);
-    if (! pt0.equals2D(edgePts[0]))
+    if (! pt0.equals2D(edgePts[0])) {
       throw new RuntimeException("bad split edge start point at " + pt0);
+    }
 
-    SegmentString splitn = (SegmentString) splitEdges.get(splitEdges.size() - 1);
+    SegmentString splitn =  splitEdges.get(splitEdges.size() - 1) as SegmentString;
     List<Coordinate> splitnPts = splitn.getCoordinates();
     Coordinate ptn = splitnPts[splitnPts.length - 1];
-    if (! ptn.equals2D(edgePts[edgePts.length - 1]))
-      throw new RuntimeException("bad split edge end point at " + ptn);
+    if (! ptn.equals2D(edgePts[edgePts.length - 1])) {
+      throw Exception("bad split edge end point at $ptn");
+    }
   }
 
   /**
@@ -245,7 +252,7 @@ class SegmentNodeList
     int npts = ei1.segmentIndex - ei0.segmentIndex + 2;
 
     // if only two points in split edge they must be the node points
-    if (npts == 2) return new List<Coordinate> { new Coordinate(ei0.coord), new Coordinate(ei1.coord) };
+    if (npts == 2) return <Coordinate>[Coordinate.fromAnother(ei0.coord), Coordinate.fromAnother(ei1.coord) ];
     
     Coordinate lastSegStartPt = edge.getCoordinate(ei1.segmentIndex);
     /**
@@ -289,9 +296,9 @@ class SegmentNodeList
 
     Iterator it = iterator();
     // there should always be at least two entries in the list, since the endpoints are nodes
-    SegmentNode eiPrev = (SegmentNode) it.next();
+    SegmentNode eiPrev = (SegmentNode) it.current;
     while (it.hasNext()) {
-      SegmentNode ei = (SegmentNode) it.next();
+      SegmentNode ei = (SegmentNode) it.current;
       addEdgeCoordinates(eiPrev, ei, coordList);
       eiPrev = ei;
     }
@@ -307,16 +314,15 @@ class SegmentNodeList
   void print(PrintStream out)
   {
     out.println("Intersections:");
-    for (Iterator it = iterator(); it.hasNext(); ) {
-      SegmentNode ei = (SegmentNode) it.next();
+    for (Iterator it = iterator(); it.moveNext(); ) {
+      SegmentNode ei =  it.next() as SegmentNode;
       ei.print(out);
     }
   }
 }
 
 // INCOMPLETE!
-class NodeVertexIterator
-    implements Iterator
+class NodeVertexIterator /**implements Iterator */
 {
  /**private */SegmentNodeList nodeList;
  /**private */NodedSegmentString edge;
@@ -365,7 +371,7 @@ class NodeVertexIterator
  /**private */void readNextNode()
   {
     if (nodeIt.hasNext())
-      nextNode = (SegmentNode) nodeIt.next();
+      nextNode = (SegmentNode) nodeIt.current;
     else
       nextNode = null;
   }
@@ -375,7 +381,7 @@ class NodeVertexIterator
    *@throws  UnsupportedOperationException  This method is not implemented.
    */
   void remove() {
-    throw new UnsupportedOperationException(getClass().getName());
+    throw new Exception("NodeVertexIterator");
   }
 
 }

@@ -14,6 +14,10 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'SegmentString.dart';
+
 /**
  * An abstract class for classes which support adding nodes to
  * a segment string.

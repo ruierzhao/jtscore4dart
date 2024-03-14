@@ -58,8 +58,8 @@ class SegmentStringUtil
   {
     List segStr = new ArrayList();
     List lines = LinearComponentExtracter.getLines(geom);
-    for (Iterator i = lines.iterator(); i.hasNext(); ) {
-      LineString line = (LineString) i.next();
+    for (Iterator i = lines.iterator(); i.moveNext(); ) {
+      LineString line = (LineString) i.current;
       List<Coordinate> pts = line.getCoordinates();
       segStr.add(new NodedSegmentString(pts, geom));
     }
@@ -78,8 +78,8 @@ class SegmentStringUtil
   {
     List segStr = new ArrayList();
     List lines = LinearComponentExtracter.getLines(geom);
-    for (Iterator i = lines.iterator(); i.hasNext(); ) {
-      LineString line = (LineString) i.next();
+    for (Iterator i = lines.iterator(); i.moveNext(); ) {
+      LineString line = (LineString) i.current;
       List<Coordinate> pts = line.getCoordinates();
       segStr.add(new BasicSegmentString(pts, geom));
     }
@@ -98,8 +98,8 @@ class SegmentStringUtil
   {
     List<LineString> lines = new LineString[segStrings.size()];
     int index = 0;
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
-      SegmentString ss = (SegmentString) i.next();
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
+      SegmentString ss = (SegmentString) i.current;
       LineString line = geomFact.createLineString(ss.getCoordinates());
       lines[index++] = line;
     }
@@ -110,8 +110,8 @@ class SegmentStringUtil
   static String toString(List segStrings)
   {
 	StringBuffer buf = new StringBuffer();
-    for (Iterator i = segStrings.iterator(); i.hasNext(); ) {
-        SegmentString segStr = (SegmentString) i.next();
+    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
+        SegmentString segStr = (SegmentString) i.current;
         buf.append(segStr.toString());
         buf.append("\n");
         

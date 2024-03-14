@@ -120,8 +120,8 @@ class ConformingDelaunayTriangulationBuilder
 	private List createSiteVertices(Collection coords)
 	{
 		List verts = new ArrayList();
-		for (Iterator i = coords.iterator(); i.hasNext(); ) {
-			Coordinate coord = (Coordinate) i.next();
+		for (Iterator i = coords.iterator(); i.moveNext(); ) {
+			Coordinate coord = (Coordinate) i.current;
 			if (constraintVertexMap.containsKey(coord)) 
 			  continue;
 			verts.add(new ConstraintVertex(coord));
@@ -142,8 +142,8 @@ class ConformingDelaunayTriangulationBuilder
 	{
 		List lines = LinearComponentExtracter.getLines(geom);
 		List constraintSegs = new ArrayList();
-		for (Iterator i = lines.iterator(); i.hasNext(); ) {
-			LineString line = (LineString) i.next();
+		for (Iterator i = lines.iterator(); i.moveNext(); ) {
+			LineString line = (LineString) i.current;
 			createConstraintSegments(line, constraintSegs);
 		}
 		return constraintSegs;

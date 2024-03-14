@@ -33,7 +33,11 @@
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdgeStar.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
 import 'package:jtscore4dart/src/planargraph/DirectedEdge.dart';
+import 'package:stack/stack.dart';
 
 import 'RightmostEdgeFinder.dart';
 
@@ -53,15 +57,14 @@ class BufferSubgraph
   implements Comparable
 {
  /**private */RightmostEdgeFinder finder;
- /**private */List dirEdgeList  = new ArrayList();
- /**private */List nodes        = new ArrayList();
- /**private */Coordinate rightMostCoord = null;
- /**private */Envelope env = null;
+ /**private */List dirEdgeList  = [];
+ /**private */List nodes        = [];
+ /**private */Coordinate? rightMostCoord ;
+ /**private */Envelope? env;
 
   BufferSubgraph()
-  {
-    finder = new RightmostEdgeFinder();
-  }
+  :finder = new RightmostEdgeFinder();
+  
 
   List getDirectedEdges() { return dirEdgeList; }
   List getNodes() { return nodes; }
@@ -75,9 +78,9 @@ class BufferSubgraph
   Envelope getEnvelope()
   {
     if (env == null) {
-      Envelope edgeEnv = new Envelope();
-      for (Iterator it = dirEdgeList.iterator(); it.hasNext(); ) {
-        DirectedEdge dirEdge = (DirectedEdge) it.next();
+      Envelope edgeEnv = new Envelope.init();
+      for (Iterator it = dirEdgeList.iterator; it.moveNext(); ) {
+        DirectedEdge dirEdge =  it.current as DirectedEdge;
         List<Coordinate> pts = dirEdge.getEdge().getCoordinates();
         for (int i = 0; i < pts.length - 1; i++) {
           edgeEnv.expandToIncludeCoordinate(pts[i]);
@@ -85,7 +88,7 @@ class BufferSubgraph
       }
       env = edgeEnv;
     }
-    return env;
+    return env!;
   }
 
   /**
@@ -118,9 +121,10 @@ class BufferSubgraph
  /**private */void addReachable(Node startNode)
   {
     Stack nodeStack = new Stack();
-    nodeStack.add(startNode);
-    while (! nodeStack.empty()) {
-      Node node = (Node) nodeStack.pop();
+    // nodeStack.add(startNode); // Java Stack #add 和 #push 返回值不同
+    nodeStack.push(startNode);
+    while (nodeStack.isNotEmpty) {
+      Node node = nodeStack.pop() as Node;
       add(node, nodeStack);
     }
   }
@@ -134,8 +138,8 @@ class BufferSubgraph
   {
     node.setVisited(true);
     nodes.add(node);
-    for (Iterator i = ((DirectedEdgeStar) node.getEdges()).iterator(); i.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = ( node.getEdges() as DirectedEdgeStar).iterator(); i.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) i.current;
       dirEdgeList.add(de);
       DirectedEdge sym = de.getSym();
       Node symNode = sym.getNode();
@@ -150,8 +154,8 @@ class BufferSubgraph
 
  /**private */void clearVisitedEdges()
   {
-    for (Iterator it = dirEdgeList.iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    for (Iterator it = dirEdgeList.iterator(); it.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) it.current;
       de.setVisited(false);
     }
   }
@@ -195,8 +199,8 @@ class BufferSubgraph
 
       // add all adjacent nodes to process queue,
       // unless the node has been visited already
-      for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.hasNext(); ) {
-        DirectedEdge de = (DirectedEdge) i.next();
+      for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.moveNext(); ) {
+        DirectedEdge de = (DirectedEdge) i.current;
         DirectedEdge sym = de.getSym();
         if (sym.isVisited()) continue;
         Node adjNode = sym.getNode();
@@ -212,8 +216,8 @@ class BufferSubgraph
   {
     // find a visited dirEdge to start at
     DirectedEdge startEdge = null;
-    for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) i.current;
       if (de.isVisited() || de.getSym().isVisited()) {
         startEdge = de;
         break;
@@ -229,8 +233,8 @@ class BufferSubgraph
     ((DirectedEdgeStar) n.getEdges()).computeDepths(startEdge);
 
     // copy depths to sym edges
-    for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.next();
+    for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) i.current;
       de.setVisited(true);
       copySymDepths(de);
     }
@@ -253,8 +257,8 @@ class BufferSubgraph
    */
   void findResultEdges()
   {
-    for (Iterator it = dirEdgeList.iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    for (Iterator it = dirEdgeList.iterator(); it.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) it.current;
       /**
        * Select edges which have an interior depth on the RHS
        * and an exterior depth on the LHS.
@@ -301,8 +305,8 @@ class BufferSubgraph
   void saveDirEdges()
   {
     GeometryFactory fact = new GeometryFactory();
-    for (Iterator it = dirEdgeList.iterator(); it.hasNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.next();
+    for (Iterator it = dirEdgeList.iterator(); it.moveNext(); ) {
+      DirectedEdge de = (DirectedEdge) it.current;
       double dx = de.getDx();
       double dy = de.getDy();
       Coordinate p0 = de.getCoordinate();

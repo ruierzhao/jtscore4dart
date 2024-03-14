@@ -57,8 +57,8 @@ abstract class PreparedPolygonPredicate
 	protected bool isAllTestComponentsInTarget(Geometry testGeom)
 	{
     List coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
-    for (Iterator i = coords.iterator(); i.hasNext(); ) {
-      Coordinate p = (Coordinate) i.next();
+    for (Iterator i = coords.iterator(); i.moveNext(); ) {
+      Coordinate p = (Coordinate) i.current;
       int loc = targetPointLocator.locate(p);
       if (loc == Location.EXTERIOR)
         return false;
@@ -77,8 +77,8 @@ abstract class PreparedPolygonPredicate
 	protected bool isAllTestComponentsInTargetInterior(Geometry testGeom)
 	{
     List coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
-    for (Iterator i = coords.iterator(); i.hasNext(); ) {
-      Coordinate p = (Coordinate) i.next();
+    for (Iterator i = coords.iterator(); i.moveNext(); ) {
+      Coordinate p = (Coordinate) i.current;
       int loc = targetPointLocator.locate(p);
       if (loc != Location.INTERIOR)
         return false;
@@ -97,8 +97,8 @@ abstract class PreparedPolygonPredicate
 	protected bool isAnyTestComponentInTarget(Geometry testGeom)
 	{
     List coords = ComponentCoordinateExtracter.getCoordinates(testGeom);
-    for (Iterator i = coords.iterator(); i.hasNext(); ) {
-      Coordinate p = (Coordinate) i.next();
+    for (Iterator i = coords.iterator(); i.moveNext(); ) {
+      Coordinate p = (Coordinate) i.current;
       int loc = targetPointLocator.locate(p);
       if (loc != Location.EXTERIOR)
         return true;
@@ -155,8 +155,8 @@ abstract class PreparedPolygonPredicate
 	protected bool isAnyTargetComponentInAreaTest(Geometry testGeom, List targetRepPts)
 	{
 		PointOnGeometryLocator piaLoc = new SimplePointInAreaLocator(testGeom);
-    for (Iterator i = targetRepPts.iterator(); i.hasNext(); ) {
-      Coordinate p = (Coordinate) i.next();
+    for (Iterator i = targetRepPts.iterator(); i.moveNext(); ) {
+      Coordinate p = (Coordinate) i.current;
       int loc = piaLoc.locate(p);
       if (loc != Location.EXTERIOR)
         return true;

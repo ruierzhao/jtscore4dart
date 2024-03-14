@@ -76,7 +76,7 @@ class GeometryNoder
   List node(Collection geoms)
   {
     // get geometry factory
-    Geometry geom0 = (Geometry) geoms.iterator().next();
+    Geometry geom0 = (Geometry) geoms.iterator().current;
     geomFact = geom0.getFactory();
 
     List segStrings = toSegmentStrings(extractLines(geoms));
@@ -96,8 +96,8 @@ class GeometryNoder
  /**private */List toLineStrings(Collection segStrings)
   {
     List lines = new ArrayList();
-    for (Iterator it = segStrings.iterator(); it.hasNext(); ) {
-      SegmentString ss = (SegmentString) it.next();
+    for (Iterator it = segStrings.iterator(); it.moveNext(); ) {
+      SegmentString ss = (SegmentString) it.current;
       // skip collapsed lines
       if (ss.size() < 2)
       	continue;
@@ -110,8 +110,8 @@ class GeometryNoder
   {
     List lines = new ArrayList();
     LinearComponentExtracter lce = new LinearComponentExtracter(lines);
-    for (Iterator it = geoms.iterator(); it.hasNext(); ) {
-      Geometry geom = (Geometry) it.next();
+    for (Iterator it = geoms.iterator(); it.moveNext(); ) {
+      Geometry geom = (Geometry) it.current;
       geom.apply(lce);
     }
     return lines;
@@ -120,8 +120,8 @@ class GeometryNoder
  /**private */List toSegmentStrings(Collection lines)
   {
     List segStrings = new ArrayList();
-    for (Iterator it = lines.iterator(); it.hasNext(); ) {
-      LineString line = (LineString) it.next();
+    for (Iterator it = lines.iterator(); it.moveNext(); ) {
+      LineString line = (LineString) it.current;
       segStrings.add(new NodedSegmentString(line.getCoordinates(), null));
     }
     return segStrings;

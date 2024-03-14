@@ -67,8 +67,8 @@ class PointBuilder {
     // testing only
     //if (true) return resultNodeList;
 
-    for (Iterator nodeit = op.getGraph().getNodes().iterator(); nodeit.hasNext(); ) {
-      Node n = (Node) nodeit.next();
+    for (Iterator nodeit = op.getGraph().getNodes().iterator(); nodeit.moveNext(); ) {
+      Node n = (Node) nodeit.current;
 
       // filter out nodes which are known to be in the result
       if (n.isInResult())

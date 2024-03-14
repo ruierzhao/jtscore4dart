@@ -134,7 +134,7 @@ class ExtractLineByLocation
     if (! start.isVertex())
       builder.add(start.getCoordinate(line));
 
-    for (LinearIterator it = new LinearIterator(line, start); it.hasNext(); it.next()) {
+    for (LinearIterator it = new LinearIterator(line, start); it.moveNext(); it.next()) {
       if (end.compareLocationValues(it.getComponentIndex(), it.getVertexIndex(), 0.0)
         < 0)
         break;

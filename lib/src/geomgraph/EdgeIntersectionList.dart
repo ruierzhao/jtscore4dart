@@ -73,8 +73,8 @@ class EdgeIntersectionList
    */
   bool isIntersection(Coordinate pt)
   {
-    for (Iterator it = iterator(); it.hasNext(); ) {
-      EdgeIntersection ei = (EdgeIntersection) it.next();
+    for (Iterator it = iterator(); it.moveNext(); ) {
+      EdgeIntersection ei = (EdgeIntersection) it.current;
       if (ei.coord.equals(pt))
        return true;
     }
@@ -106,9 +106,9 @@ class EdgeIntersectionList
 
     Iterator it = iterator();
     // there should always be at least two entries in the list
-    EdgeIntersection eiPrev = (EdgeIntersection) it.next();
+    EdgeIntersection eiPrev = (EdgeIntersection) it.current;
     while (it.hasNext()) {
-      EdgeIntersection ei = (EdgeIntersection) it.next();
+      EdgeIntersection ei = (EdgeIntersection) it.current;
       Edge newEdge = createSplitEdge(eiPrev, ei);
       edgeList.add(newEdge);
 
@@ -148,8 +148,8 @@ class EdgeIntersectionList
   void print(PrintStream out)
   {
     out.println("Intersections:");
-    for (Iterator it = iterator(); it.hasNext(); ) {
-      EdgeIntersection ei = (EdgeIntersection) it.next();
+    for (Iterator it = iterator(); it.moveNext(); ) {
+      EdgeIntersection ei = (EdgeIntersection) it.current;
       ei.print(out);
     }
   }

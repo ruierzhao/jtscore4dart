@@ -61,8 +61,8 @@ class SIRtree extends AbstractSTRtree {
     return new AbstractNode(level) {
      /**protected */Object computeBounds() {
         Interval bounds = null;
-        for (Iterator i = getChildBoundables().iterator(); i.hasNext(); ) {
-          Boundable childBoundable = (Boundable) i.next();
+        for (Iterator i = getChildBoundables().iterator(); i.moveNext(); ) {
+          Boundable childBoundable = (Boundable) i.current;
           if (bounds == null) {
             bounds = new Interval((Interval)childBoundable.getBounds());
           }

@@ -31,7 +31,7 @@ class InteriorPointPoint {
    * Computes an interior point for the
    * puntal components of a Geometry.
    * 
-   * @param geom the geometry to compute
+   * @param [geom] the geometry to compute
    * @return the computed interior point,
    * or <code>null</code> if the geometry has no puntal components
    */
@@ -49,7 +49,7 @@ class InteriorPointPoint {
 
   InteriorPointPoint(Geometry g)
   {
-    centroid = g.getCentroid().getCoordinate();
+    centroid = g.getCentroid().getCoordinate()!;
     add(g);
   }
 
@@ -65,7 +65,7 @@ class InteriorPointPoint {
     }
     
     if (geom is Point) {
-      addCoord(geom.getCoordinate());
+      addCoord(geom.getCoordinate()!);
     }
     else if (geom is GeometryCollection) {
       GeometryCollection gc = geom;
@@ -83,7 +83,7 @@ class InteriorPointPoint {
     }
   }
 
-  Coordinate? getInteriorPoint()
+  Coordinate getInteriorPoint()
   {
     return interiorPoint;
   }

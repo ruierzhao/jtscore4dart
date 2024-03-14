@@ -22,6 +22,9 @@ import 'package:jtscore4dart/src/geom/GeometryCollection.dart';
 import 'package:jtscore4dart/src/geom/LineString.dart';
 
 /**
+ * 计算线的离质心最近的内部顶点
+ * 如果没有内部顶点，寻找离质心最近的端点
+ * 
  * Computes a point in the interior of an linear geometry.
  * <h2>Algorithm</h2>
  * <ul>
@@ -39,7 +42,7 @@ class InteriorPointLine {
    * Computes an interior point for the
    * linear components of a Geometry.
    * 
-   * @param geom the geometry to compute
+   * @param [geom] the geometry to compute
    * @return the computed interior point,
    * or <code>null</code> if the geometry has no linear components
    */
@@ -57,7 +60,7 @@ class InteriorPointLine {
 
   InteriorPointLine(Geometry g)
   {
-    centroid = g.getCentroid().getCoordinate();
+    centroid = g.getCentroid().getCoordinate()!;
     addInterior(g);
     if (interiorPoint == null) {
       addEndpoints(g);

@@ -109,8 +109,8 @@ class NodeMap
   Collection getBoundaryNodes(int geomIndex)
   {
     Collection bdyNodes = new ArrayList();
-    for (Iterator i = iterator(); i.hasNext(); ) {
-      Node node = (Node) i.next();
+    for (Iterator i = iterator(); i.moveNext(); ) {
+      Node node = (Node) i.current;
       if (node.getLabel().getLocation(geomIndex) == Location.BOUNDARY)
         bdyNodes.add(node);
     }
@@ -119,9 +119,9 @@ class NodeMap
 
   void print(PrintStream out)
   {
-    for (Iterator it = iterator(); it.hasNext(); )
+    for (Iterator it = iterator(); it.moveNext(); )
     {
-      Node n = (Node) it.next();
+      Node n = (Node) it.current;
       n.print(out);
     }
   }

@@ -76,8 +76,8 @@ class IncrementalDelaunayTriangulator
    * @throws LocateFailureException if the location algorithm fails to converge in a reasonable number of iterations
 	 */
 	void insertSites(Collection vertices) {
-		for (Iterator i = vertices.iterator(); i.hasNext();) {
-			Vertex v = (Vertex) i.next();
+		for (Iterator i = vertices.iterator(); i.moveNext();) {
+			Vertex v = (Vertex) i.current;
 			insertSite(v);
 		}
 	}

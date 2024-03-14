@@ -70,8 +70,8 @@ class DelaunayTriangulationBuilder
 	static List toVertices(Collection coords)
 	{
 		List verts = new ArrayList();
-		for (Iterator i = coords.iterator(); i.hasNext(); ) {
-			Coordinate coord = (Coordinate) i.next();
+		for (Iterator i = coords.iterator(); i.moveNext(); ) {
+			Coordinate coord = (Coordinate) i.current;
 			verts.add(new Vertex(coord));
 		}
 		return verts;
@@ -86,8 +86,8 @@ class DelaunayTriangulationBuilder
 	static Envelope envelope(Collection coords)
 	{
 		Envelope env = new Envelope();
-		for (Iterator i = coords.iterator(); i.hasNext(); ) {
-			Coordinate coord = (Coordinate) i.next();
+		for (Iterator i = coords.iterator(); i.moveNext(); ) {
+			Coordinate coord = (Coordinate) i.current;
 			env.expandToInclude(coord);
 		}
 		return env;

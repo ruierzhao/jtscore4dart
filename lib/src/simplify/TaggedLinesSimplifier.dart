@@ -52,10 +52,10 @@ class TaggedLinesSimplifier
   void simplify(Collection taggedLines) {
     ComponentJumpChecker jumpChecker = new ComponentJumpChecker(taggedLines);
     
-    for (Iterator i = taggedLines.iterator(); i.hasNext(); ) {
+    for (Iterator i = taggedLines.iterator(); i.moveNext(); ) {
       inputIndex.add((TaggedLineString) i.next());
     }
-    for (Iterator i = taggedLines.iterator(); i.hasNext(); ) {
+    for (Iterator i = taggedLines.iterator(); i.moveNext(); ) {
       TaggedLineStringSimplifier tlss
                     = new TaggedLineStringSimplifier(inputIndex, outputIndex, jumpChecker);
       tlss.simplify((TaggedLineString) i.next(), distanceTolerance);

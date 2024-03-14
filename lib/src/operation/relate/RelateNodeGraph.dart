@@ -86,11 +86,11 @@ class RelateNodeGraph {
    */
   void computeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
   {
-    for (Iterator edgeIt = geomGraph.getEdgeIterator(); edgeIt.hasNext(); ) {
-      Edge e = (Edge) edgeIt.next();
+    for (Iterator edgeIt = geomGraph.getEdgeIterator(); edgeIt.moveNext(); ) {
+      Edge e = (Edge) edgeIt.current;
       int eLoc = e.getLabel().getLocation(argIndex);
-      for (Iterator eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext(); ) {
-        EdgeIntersection ei = (EdgeIntersection) eiIt.next();
+      for (Iterator eiIt = e.getEdgeIntersectionList().iterator(); eiIt.moveNext(); ) {
+        EdgeIntersection ei = (EdgeIntersection) eiIt.current;
         RelateNode n = (RelateNode) nodes.addNode(ei.coord);
         if (eLoc == Location.BOUNDARY)
           n.setLabelBoundary(argIndex);
@@ -114,8 +114,8 @@ class RelateNodeGraph {
      */
   void copyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
   {
-    for (Iterator nodeIt = geomGraph.getNodeIterator(); nodeIt.hasNext(); ) {
-      Node graphNode = (Node) nodeIt.next();
+    for (Iterator nodeIt = geomGraph.getNodeIterator(); nodeIt.moveNext(); ) {
+      Node graphNode = (Node) nodeIt.current;
       Node newNode = nodes.addNode(graphNode.getCoordinate());
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
 //node.print(System.out);
@@ -124,8 +124,8 @@ class RelateNodeGraph {
 
   void insertEdgeEnds(List ee)
   {
-    for (Iterator i = ee.iterator(); i.hasNext(); ) {
-      EdgeEnd e = (EdgeEnd) i.next();
+    for (Iterator i = ee.iterator(); i.moveNext(); ) {
+      EdgeEnd e = (EdgeEnd) i.current;
       nodes.add(e);
     }
   }

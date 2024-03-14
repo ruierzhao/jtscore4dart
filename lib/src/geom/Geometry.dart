@@ -1718,8 +1718,8 @@ abstract class Geometry{
   //   Iterator i = a.iterator();
   //   Iterator j = b.iterator();
   //   while (i.hasNext() && j.hasNext()) {
-  //     Comparable aElement = (Comparable) i.next();
-  //     Comparable bElement = (Comparable) j.next();
+  //     Comparable aElement = (Comparable) i.current;
+  //     Comparable bElement = (Comparable) j.current;
   //     int comparison = aElement.compareTo(bElement);
   //     if (comparison != 0) {
   //       return comparison;

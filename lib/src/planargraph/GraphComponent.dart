@@ -44,7 +44,7 @@ abstract class GraphComponent
   static void setVisited(Iterator i, bool visited)
   {
     while (i.hasNext()) {
-      GraphComponent comp = (GraphComponent) i.next();
+      GraphComponent comp = (GraphComponent) i.current;
       comp.setVisited(visited);
     }
   }
@@ -58,7 +58,7 @@ abstract class GraphComponent
   static void setMarked(Iterator i, bool marked)
   {
     while (i.hasNext()) {
-      GraphComponent comp = (GraphComponent) i.next();
+      GraphComponent comp = (GraphComponent) i.current;
       comp.setMarked(marked);
     }
   }
@@ -74,7 +74,7 @@ abstract class GraphComponent
   static GraphComponent getComponentWithVisitedState(Iterator i, bool visitedState)
   {
     while (i.hasNext()) {
-      GraphComponent comp = (GraphComponent) i.next();
+      GraphComponent comp = (GraphComponent) i.current;
       if (comp.isVisited() == visitedState)
         return comp;
     }

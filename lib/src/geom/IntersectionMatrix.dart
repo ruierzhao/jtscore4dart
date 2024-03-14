@@ -55,24 +55,31 @@ import 'Location.dart';
 ///  </UL>
 ///
 ///@version 1.7
-class IntersectionMatrix implements Cloneable {
+class IntersectionMatrix /**implements Cloneable  */ {
   ///  Internal representation of this <code>IntersectionMatrix</code>.
- /**private */int[][] matrix;
+//  /**private */int[][] matrix;
+ /**private */late List<List<int>> matrix;
 
   ///  Creates an <code>IntersectionMatrix</code> with <code>FALSE</code>
   ///  dimension values.
-  IntersectionMatrix() {
-    matrix = new int[3][3];
-    setAll(Dimension.FALSE);
+  _init_() {
+    // matrix = new int[3][3];
+    // setAll(Dimension.FALSE);
+    var matrix_ = List<int>.filled(3, Dimension.FALSE, growable: false);
+    this.matrix = List<List<int>>.filled(3, matrix_, growable: false);
   }
 
   ///  Creates an <code>IntersectionMatrix</code> with the given dimension
   ///  symbols.
   ///
-  ///@param  elements  a String of nine dimension symbols in row major order
-  IntersectionMatrix(String elements) {
-    this();
-    set(elements);
+  ///@param  [elements]  a String of nine dimension symbols in row major order
+  IntersectionMatrix([String? elements]) {
+    if (elements == null) {
+      _init_();
+    }else{
+      _init_();
+      setAllStr(elements);
+    }
   }
 
   ///  Creates an <code>IntersectionMatrix</code> with the same elements as
@@ -80,16 +87,17 @@ class IntersectionMatrix implements Cloneable {
   ///
   ///@param  other  an <code>IntersectionMatrix</code> to copy
   IntersectionMatrix.FromAnother(IntersectionMatrix other) {
-    this();
-    matrix[Location.INTERIOR][Location.INTERIOR] = other.matrix[Location.INTERIOR][Location.INTERIOR];
-    matrix[Location.INTERIOR][Location.BOUNDARY] = other.matrix[Location.INTERIOR][Location.BOUNDARY];
-    matrix[Location.INTERIOR][Location.EXTERIOR] = other.matrix[Location.INTERIOR][Location.EXTERIOR];
-    matrix[Location.BOUNDARY][Location.INTERIOR] = other.matrix[Location.BOUNDARY][Location.INTERIOR];
-    matrix[Location.BOUNDARY][Location.BOUNDARY] = other.matrix[Location.BOUNDARY][Location.BOUNDARY];
-    matrix[Location.BOUNDARY][Location.EXTERIOR] = other.matrix[Location.BOUNDARY][Location.EXTERIOR];
-    matrix[Location.EXTERIOR][Location.INTERIOR] = other.matrix[Location.EXTERIOR][Location.INTERIOR];
-    matrix[Location.EXTERIOR][Location.BOUNDARY] = other.matrix[Location.EXTERIOR][Location.BOUNDARY];
-    matrix[Location.EXTERIOR][Location.EXTERIOR] = other.matrix[Location.EXTERIOR][Location.EXTERIOR];
+    // this();
+    _init_();
+    this.matrix[Location.INTERIOR][Location.INTERIOR] = other.matrix[Location.INTERIOR][Location.INTERIOR];
+    this.matrix[Location.INTERIOR][Location.BOUNDARY] = other.matrix[Location.INTERIOR][Location.BOUNDARY];
+    this.matrix[Location.INTERIOR][Location.EXTERIOR] = other.matrix[Location.INTERIOR][Location.EXTERIOR];
+    this.matrix[Location.BOUNDARY][Location.INTERIOR] = other.matrix[Location.BOUNDARY][Location.INTERIOR];
+    this.matrix[Location.BOUNDARY][Location.BOUNDARY] = other.matrix[Location.BOUNDARY][Location.BOUNDARY];
+    this.matrix[Location.BOUNDARY][Location.EXTERIOR] = other.matrix[Location.BOUNDARY][Location.EXTERIOR];
+    this.matrix[Location.EXTERIOR][Location.INTERIOR] = other.matrix[Location.EXTERIOR][Location.INTERIOR];
+    this.matrix[Location.EXTERIOR][Location.BOUNDARY] = other.matrix[Location.EXTERIOR][Location.BOUNDARY];
+    this.matrix[Location.EXTERIOR][Location.EXTERIOR] = other.matrix[Location.EXTERIOR][Location.EXTERIOR];
   }
 
   /// Adds one matrix to another.
@@ -121,14 +129,14 @@ class IntersectionMatrix implements Cloneable {
   
   ///  Tests if the dimension value satisfies the dimension symbol.
   ///
-  ///@param  actualDimensionValue     a number that can be stored in the <code>IntersectionMatrix</code>
+  ///@param  [actualDimensionValue]     a number that can be stored in the <code>IntersectionMatrix</code>
   ///      . Possible values are <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>.
-  ///@param  requiredDimensionSymbol  a character used in the string
+  ///@param  [requiredDimensionSymbol]  a character used in the string
   ///      representation of an <code>IntersectionMatrix</code>. Possible values
   ///      are <code>{T, F, * , 0, 1, 2}</code>.
   ///@return                          true if the dimension symbol matches
   ///      the dimension value
-  static bool matches(int actualDimensionValue, char requiredDimensionSymbol) {
+  static bool matches(int actualDimensionValue, String requiredDimensionSymbol) {
     if (requiredDimensionSymbol == Dimension.SYM_DONTCARE) {
       return true;
     }
@@ -154,15 +162,15 @@ class IntersectionMatrix implements Cloneable {
   ///  Tests if each of the actual dimension symbols in a matrix string satisfies the
   ///  corresponding required dimension symbol in a pattern string.
   ///
-  ///@param  actualDimensionSymbols    nine dimension symbols to validate.
+  ///@param  [actualDimensionSymbols]    nine dimension symbols to validate.
   ///      Possible values are <code>{T, F, * , 0, 1, 2}</code>.
-  ///@param  requiredDimensionSymbols  nine dimension symbols to validate
+  ///@param  [requiredDimensionSymbols]  nine dimension symbols to validate
   ///      against. Possible values are <code>{T, F, * , 0, 1, 2}</code>.
   ///@return                           true if each of the required dimension
   ///      symbols encompass the corresponding actual dimension symbol
   static bool matches(String actualDimensionSymbols, String requiredDimensionSymbols) {
     IntersectionMatrix m = new IntersectionMatrix(actualDimensionSymbols);
-    return m.matches(requiredDimensionSymbols);
+    return m.matches_(requiredDimensionSymbols);
   }
 
   ///  Changes the value of one of this <code>IntersectionMatrix</code>s
@@ -182,11 +190,11 @@ class IntersectionMatrix implements Cloneable {
   ///
   ///@param  dimensionSymbols  nine dimension symbols to which to set this <code>IntersectionMatrix</code>
   ///      s elements. Possible values are <code>{T, F, * , 0, 1, 2}</code>
-  void set(String dimensionSymbols) {
-    for (int i = 0; i < dimensionSymbols.length(); i++) {
-      int row = i / 3;
+  void setAllStr(String dimensionSymbols) {
+    for (int i = 0; i < dimensionSymbols.length; i++) {
+      int row = (i / 3).floor();
       int col = i % 3;
-      matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols.charAt(i));
+      matrix[row][col] = Dimension.toDimensionValue(dimensionSymbols[i]);
     }
   }
 
@@ -230,9 +238,9 @@ class IntersectionMatrix implements Cloneable {
   ///      compare the elements of this <code>IntersectionMatrix</code>. The
   ///      order of dimension values from least to greatest is <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>
   ///      .
-  void setAtLeast(String minimumDimensionSymbols) {
-    for (int i = 0; i < minimumDimensionSymbols.length(); i++) {
-      int row = i / 3;
+  void setAtLeastStr(String minimumDimensionSymbols) {
+    for (int i = 0; i < minimumDimensionSymbols.length; i++) {
+      int row = (i / 3).floor();
       int col = i % 3;
       setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
     }
@@ -244,7 +252,7 @@ class IntersectionMatrix implements Cloneable {
   ///@param  dimensionValue  the dimension value to which to set this <code>IntersectionMatrix</code>
   ///      s elements. Possible values <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>
   ///      .
-  void setAll(int dimensionValue) {
+  void setAllInt(int dimensionValue) {
     for (int ai = 0; ai < 3; ai++) {
       for (int bi = 0; bi < 3; bi++) {
         matrix[ai][bi] = dimensionValue;
@@ -475,14 +483,13 @@ class IntersectionMatrix implements Cloneable {
   ///      compare the entries of this matrix. Possible
   ///      symbol values are <code>{T, F, * , 0, 1, 2}</code>.
   ///@return <code>true</code> if this matrix matches the pattern
-  bool matches(String pattern) {
-    if (pattern.length() != 9) {
+  bool matches_(String pattern) {
+    if (pattern.length != 9) {
       throw new ArgumentError("Should be length 9: " + pattern);
     }
     for (int ai = 0; ai < 3; ai++) {
       for (int bi = 0; bi < 3; bi++) {
-        if (!matches(matrix[ai][bi], pattern.charAt(3 * ai +
-            bi))) {
+        if (!matches(matrix[ai][bi], pattern[3 * ai + bi])) {
           return false;
         }
       }
@@ -512,7 +519,7 @@ class IntersectionMatrix implements Cloneable {
   ///@return    the nine dimension symbols of this <code>IntersectionMatrix</code>
   ///      in row-major order.
   String toString() {
-    StringBuilder builder = new StringBuilder("123456789");
+    StringBuffer builder = new StringBuffer("123456789");
     for (int ai = 0; ai < 3; ai++) {
       for (int bi = 0; bi < 3; bi++) {
         builder.setCharAt(3 * ai + bi, Dimension.toDimensionSymbol(matrix[ai][bi]));

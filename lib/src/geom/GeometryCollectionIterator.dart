@@ -94,7 +94,7 @@ class GeometryCollectionIterator /** implements Iterator */ {
     }
     if (_subcollectionIterator != null) {
       if (_subcollectionIterator!.hasNext()) {
-        return _subcollectionIterator!.current;
+        return _subcollectionIterator!.next();
       } else {
         _subcollectionIterator = null;
       }
@@ -107,7 +107,7 @@ class GeometryCollectionIterator /** implements Iterator */ {
     if (obj is GeometryCollection) {
       _subcollectionIterator = GeometryCollectionIterator(obj);
       // there will always be at least one element in the sub-collection
-      return _subcollectionIterator!.current;
+      return _subcollectionIterator!.next();
     }
     return obj;
   }
@@ -124,7 +124,7 @@ class GeometryCollectionIterator /** implements Iterator */ {
     throw Exception("UnsupportedOperationException #remove");
   }
   
-  @override
-  // TODO: implement iterator
-  Iterator get iterator => throw UnimplementedError();
+  // @override
+  // // TODO: implement iterator
+  // Iterator get iterator => throw UnimplementedError();
 }

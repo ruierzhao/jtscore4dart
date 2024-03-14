@@ -15,6 +15,9 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 /**
  * Represents the location of a point on a Geometry.
  * Maintains both the actual point location 
@@ -34,38 +37,34 @@ class GeometryLocation
    * These locations are not located on a segment, 
    * and thus do not have an associated segment index.
    */
-  static final int INSIDE_AREA = -1;
+  static const int INSIDE_AREA = -1;
 
- /**private */Geometry component = null;
- /**private */int segIndex;
- /**private */Coordinate pt = null;
+ /**private */ Geometry component;
+ /**private */ int segIndex;
+ /**private */ Coordinate pt;
 
   /**
    * Constructs a GeometryLocation specifying a point on a geometry, as well as the 
    * segment that the point is on 
    * (or {@link #INSIDE_AREA} if the point is not on a segment).
    * 
-   * @param component the component of the geometry containing the point
-   * @param segIndex the segment index of the location, or INSIDE_AREA
-   * @param pt the coordinate of the location
+   * @param [component] the component of the geometry containing the point
+   * @param [segIndex] the segment index of the location, or INSIDE_AREA
+   * @param [pt] the coordinate of the location
    */
-  GeometryLocation(Geometry component, int segIndex, Coordinate pt)
-  {
-    this.component = component;
-    this.segIndex = segIndex;
-    this.pt = pt;
-  }
+  GeometryLocation(this.component,this.pt,[int? segIndex])
+    : this.segIndex = segIndex??=INSIDE_AREA;
 
   /**
    * Constructs a GeometryLocation specifying a point inside an area geometry.
    * 
-   * @param component the component of the geometry containing the point
-   * @param pt the coordinate of the location
+   * @param [component] the component of the geometry containing the point
+   * @param [pt] the coordinate of the location
    */  
-  GeometryLocation(Geometry component,Coordinate pt)
-  {
-    this(component, INSIDE_AREA, pt);
-  }
+  // GeometryLocation(Geometry component, Coordinate pt)
+  // {
+  //   this(component, INSIDE_AREA, pt);
+  // }
 
   /**
    * Returns the geometry component on (or in) which this location occurs.
@@ -90,9 +89,14 @@ class GeometryLocation
    */
   bool isInsideArea() { return segIndex == INSIDE_AREA; }
   
+  // String toString() {
+  //   return component.getGeometryType() 
+  //       + "[" + segIndex + "]" 
+  //       + "-" + WKTWriter.toPoint(pt);
+  // }
+  // TODO: ruier edit.
+  @override
   String toString() {
-    return component.getGeometryType() 
-        + "[" + segIndex + "]" 
-        + "-" + WKTWriter.toPoint(pt);
+    return "${component.getGeometryType()} [$segIndex] - $pt"; 
   }
 }

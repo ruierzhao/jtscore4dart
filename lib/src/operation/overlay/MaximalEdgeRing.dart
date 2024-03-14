@@ -71,7 +71,7 @@ class MaximalEdgeRing
 
   List buildMinimalRings()
   {
-    List minEdgeRings = new ArrayList();
+    List minEdgeRings = [];
     DirectedEdge de = startDe;
     do {
       if (de.getMinEdgeRing() == null) {

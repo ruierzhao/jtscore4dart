@@ -133,7 +133,7 @@ implements SpatialIndex, Serializable
 
  /**private */List createParentBoundablesFromVerticalSlices(List[] verticalSlices, int newLevel) {
     Assert.isTrue(verticalSlices.length > 0);
-    List parentBoundables = new ArrayList();
+    List parentBoundables = [];
     for (int i = 0; i < verticalSlices.length; i++) {
       parentBoundables.addAll(
             createParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel));
@@ -153,7 +153,7 @@ implements SpatialIndex, Serializable
     List[] slices = new List[sliceCount];
     Iterator i = childBoundables.iterator();
     for (int j = 0; j < sliceCount; j++) {
-      slices[j] = new ArrayList();
+      slices[j] = [];
       int boundablesAddedToSlice = 0;
       while (i.hasNext() && boundablesAddedToSlice < sliceCapacity) {
         Boundable childBoundable = (Boundable) i.current;

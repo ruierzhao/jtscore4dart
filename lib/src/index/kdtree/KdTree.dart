@@ -378,7 +378,7 @@ class KdTree {
    * @return a list of the KdNodes found
    */
   List query(Envelope queryEnv) {
-    final List result = new ArrayList();
+    final List result = [];
     query(queryEnv, result);
     return result;
   }

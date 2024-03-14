@@ -31,7 +31,7 @@
 class LinearGeometryBuilder
 {
  /**private */GeometryFactory geomFact;
- /**private */List lines = new ArrayList();
+ /**private */List lines = [];
  /**private */CoordinateList coordList = null;
 
  /**private */bool ignoreInvalidLines = false;

@@ -65,7 +65,7 @@ class OffsetPointGenerator
    */
   List getPoints(double offsetDistance)
   {
-    List offsetPts = new ArrayList();
+    List offsetPts = [];
     List lines = LinearComponentExtracter.getLines(g);
     for (Iterator i = lines.iterator(); i.moveNext(); ) {
       LineString line = (LineString) i.current;

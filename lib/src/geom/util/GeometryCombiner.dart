@@ -85,7 +85,7 @@ class GeometryCombiner
 	 */
  /**private */static List createList(Object obj0, Object obj1)
   {
-		List list = new ArrayList();
+		List list = [];
 		list.add(obj0);
 		list.add(obj1);
 		return list;
@@ -100,7 +100,7 @@ class GeometryCombiner
 	 */
  /**private */static List createList(Object obj0, Object obj1, Object obj2)
   {
-		List list = new ArrayList();
+		List list = [];
 		list.add(obj0);
 		list.add(obj1);
 		list.add(obj2);
@@ -142,7 +142,7 @@ class GeometryCombiner
 	 */
   Geometry combine()
   {
-  	List elems = new ArrayList();
+  	List elems = [];
   	for (Iterator i = inputGeoms.iterator(); i.moveNext(); ) {
   		Geometry g = (Geometry) i.current;
   		extractElements(g, elems);

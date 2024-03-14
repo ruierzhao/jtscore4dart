@@ -108,7 +108,7 @@ class NodeMap
 
   Collection getBoundaryNodes(int geomIndex)
   {
-    Collection bdyNodes = new ArrayList();
+    Collection bdyNodes = [];
     for (Iterator i = iterator(); i.moveNext(); ) {
       Node node = (Node) i.current;
       if (node.getLabel().getLocation(geomIndex) == Location.BOUNDARY)

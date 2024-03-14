@@ -62,7 +62,7 @@ class SubgraphDepthLocater
    */
  /**private */List findStabbedSegments(Coordinate stabbingRayLeftPt)
   {
-    List stabbedSegments = new ArrayList();
+    List stabbedSegments = [];
     for (Iterator i = subgraphs.iterator(); i.moveNext(); ) {
       BufferSubgraph bsg = (BufferSubgraph) i.current;
 

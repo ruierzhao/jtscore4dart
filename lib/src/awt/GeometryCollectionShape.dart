@@ -31,7 +31,7 @@
  *
  */
 class GeometryCollectionShape implements Shape {
-   /**private */ArrayList shapes = new ArrayList();
+   /**private */ArrayList shapes = [];
 
     GeometryCollectionShape() {
     }

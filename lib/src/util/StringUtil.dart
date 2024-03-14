@@ -35,7 +35,7 @@ class StringUtil
  static String[] split(String s, String separator)
  {
    int separatorlen = separator.length();
-   ArrayList tokenList = new ArrayList();
+   ArrayList tokenList = [];
    String tmpString = "" + s;
    int pos = tmpString.indexOf(separator);
    while (pos >= 0) {

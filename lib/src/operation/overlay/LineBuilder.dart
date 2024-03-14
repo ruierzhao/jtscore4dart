@@ -36,8 +36,8 @@ class LineBuilder {
  /**private */GeometryFactory geometryFactory;
  /**private */PointLocator ptLocator;
 
- /**private */List lineEdgesList    = new ArrayList();
- /**private */List resultLineList   = new ArrayList();
+ /**private */List lineEdgesList    = [];
+ /**private */List resultLineList   = [];
 
   LineBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
     this.op = op;

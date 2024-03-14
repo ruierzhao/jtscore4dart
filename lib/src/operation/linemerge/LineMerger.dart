@@ -109,10 +109,10 @@ class LineMerger
     GraphComponent.setMarked(graph.nodeIterator(), false);
     GraphComponent.setMarked(graph.edgeIterator(), false);
     
-    edgeStrings = new ArrayList();
+    edgeStrings = [];
     buildEdgeStringsForObviousStartNodes();
     buildEdgeStringsForIsolatedLoops();
-    mergedLineStrings = new ArrayList();    
+    mergedLineStrings = [];    
     for (Iterator i = edgeStrings.iterator(); i.moveNext(); ) {
       EdgeString edgeString = (EdgeString) i.current;
       mergedLineStrings.add(edgeString.toLineString());

@@ -40,7 +40,7 @@ class DirectedEdge
    */
   static List toEdges(Collection dirEdges)
   {
-    List edges = new ArrayList();
+    List edges = [];
     for (Iterator i = dirEdges.iterator(); i.moveNext(); ) {
       edges.add( ((DirectedEdge) i.next()).parentEdge);
     }

@@ -89,7 +89,7 @@ class ShapeReader
   {
     List pathPtSeq = toCoordinates(pathIt);
     
-    List polys = new ArrayList();
+    List polys = [];
     int seqIndex = 0;
     while (seqIndex < pathPtSeq.size()) {
       // assume next seq is shell 
@@ -98,7 +98,7 @@ class ShapeReader
       LinearRing shell = geometryFactory.createLinearRing(pts);
       seqIndex++;
       
-      List holes = new ArrayList();
+      List holes = [];
       // add holes as int as rings are CCW
       while (seqIndex < pathPtSeq.size() && isHole((List<Coordinate>) pathPtSeq.get(seqIndex))) {
         List<Coordinate> holePts = (List<Coordinate>) pathPtSeq.get(seqIndex);
@@ -127,7 +127,7 @@ class ShapeReader
    */
   static List toCoordinates(PathIterator pathIt)
   {
-    List coordArrays = new ArrayList();
+    List coordArrays = [];
     while (! pathIt.isDone()) {
       List<Coordinate> pts = nextCoordinateArray(pathIt);
       if (pts == null)

@@ -207,7 +207,7 @@ abstract class PlanarGraph
    */
   List findNodesOfDegree(int degree)
   {
-    List nodesFound = new ArrayList();
+    List nodesFound = [];
     for (Iterator i = nodeIterator(); i.moveNext(); ) {
       Node node = (Node) i.current;
       if (node.getDegree() == degree)

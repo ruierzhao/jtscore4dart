@@ -33,7 +33,7 @@ class QuadEdgeUtil
 	 *         edge
 	 */
 	static List findEdgesIncidentOnOrigin(QuadEdge start) {
-		List incEdge = new ArrayList();
+		List incEdge = [];
 
 		QuadEdge qe = start;
 		do {

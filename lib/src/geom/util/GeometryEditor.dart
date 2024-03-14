@@ -188,7 +188,7 @@ class GeometryEditor
         factory);
     
     // edit the component geometries
-    ArrayList geometries = new ArrayList();
+    ArrayList geometries = [];
     for (int i = 0; i < collectionForType.getNumGeometries(); i++) {
       Geometry geometry = edit(collectionForType.getGeometryN(i), operation);
       if (geometry == null || geometry.isEmpty()) {

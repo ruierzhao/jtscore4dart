@@ -58,7 +58,7 @@ class CollectionUtil {
   /// @param func the Function to execute
   /// @return a list of objects for which the function was true
   static List select(Collection collection, _Function func) {
-    List result = new ArrayList();
+    List result = [];
     for (Iterator i = collection.iterator(); i.moveNext();) {
       Object item = i.current;
       if (Boolean.TRUE.equals(func.execute(item))) {

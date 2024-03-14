@@ -48,7 +48,7 @@ class EdgeNodingValidator
   static Collection toSegmentStrings(Collection edges)
   {
     // convert Edges to SegmentStrings
-    Collection segStrings = new ArrayList();
+    Collection segStrings = [];
     for (Iterator i = edges.iterator(); i.moveNext(); ) {
       Edge e = (Edge) i.current;
       segStrings.add(new BasicSegmentString(e.getCoordinates(), e));

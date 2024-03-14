@@ -30,7 +30,7 @@
  */
 class EdgeString {
  /**private */GeometryFactory factory;
- /**private */List directedEdges = new ArrayList();
+ /**private */List directedEdges = [];
  /**private */List<Coordinate> coordinates = null;
   /**
    * Constructs an EdgeString with the given factory used to convert this EdgeString

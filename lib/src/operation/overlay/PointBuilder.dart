@@ -29,7 +29,7 @@
 class PointBuilder {
  /**private */OverlayOp op;
  /**private */GeometryFactory geometryFactory;
- /**private */List resultPointList = new ArrayList();
+ /**private */List resultPointList = [];
 
   PointBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
     this.op = op;

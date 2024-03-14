@@ -41,7 +41,7 @@ class ConnectedSubgraphFinder
 
   List getConnectedSubgraphs()
   {
-    List subgraphs = new ArrayList();
+    List subgraphs = [];
 
     GraphComponent.setVisited(graph.nodeIterator(), false);
     for (Iterator i = graph.edgeIterator(); i.moveNext(); ) {

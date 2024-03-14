@@ -100,7 +100,7 @@ class ConformingDelaunayTriangulationBuilder
 
 		Envelope siteEnv = DelaunayTriangulationBuilder.envelope(siteCoords);
 		
-		List segments = new ArrayList();
+		List segments = [];
 		if (constraintLines != null) {
 			siteEnv.expandToInclude(constraintLines.getEnvelopeInternal());
 			createVertices(constraintLines);
@@ -119,7 +119,7 @@ class ConformingDelaunayTriangulationBuilder
 	
 	private List createSiteVertices(Collection coords)
 	{
-		List verts = new ArrayList();
+		List verts = [];
 		for (Iterator i = coords.iterator(); i.moveNext(); ) {
 			Coordinate coord = (Coordinate) i.current;
 			if (constraintVertexMap.containsKey(coord)) 
@@ -141,7 +141,7 @@ class ConformingDelaunayTriangulationBuilder
 	private static List createConstraintSegments(Geometry geom)
 	{
 		List lines = LinearComponentExtracter.getLines(geom);
-		List constraintSegs = new ArrayList();
+		List constraintSegs = [];
 		for (Iterator i = lines.iterator(); i.moveNext(); ) {
 			LineString line = (LineString) i.current;
 			createConstraintSegments(line, constraintSegs);

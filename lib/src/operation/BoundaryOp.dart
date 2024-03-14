@@ -175,7 +175,7 @@ class BoundaryOp
 
  /**private */List<Coordinate> computeBoundaryCoordinates(MultiLineString mLine)
   {
-    // List bdyPts = new ArrayList();
+    // List bdyPts = [];
     List bdyPts = [];
     endpointMap = new TreeMap();
     for (int i = 0; i < mLine.getNumGeometries(); i++) {

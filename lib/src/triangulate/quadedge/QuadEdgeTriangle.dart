@@ -291,7 +291,7 @@ class QuadEdgeTriangle
 	 */
 	List getTrianglesAdjacentToVertex(int vertexIndex) {
 		// Assert: isVertex
-		List adjTris = new ArrayList();
+		List adjTris = [];
 
 		QuadEdge start = getEdge(vertexIndex);
 		QuadEdge qe = start;
@@ -322,7 +322,7 @@ class QuadEdgeTriangle
 	}
 
 	private static class QuadEdgeTriangleBuilderVisitor implements TriangleVisitor {
-		private List triangles = new ArrayList();
+		private List triangles = [];
 
 		QuadEdgeTriangleBuilderVisitor() {
 		}

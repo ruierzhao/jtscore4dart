@@ -65,7 +65,7 @@ class ConsistentPolygonRingChecker
  /**private */List getPotentialResultAreaEdges(DirectedEdgeStar deStar, int opCode)
   {
 //print(System.out);
-    List resultAreaEdgeList = new ArrayList();
+    List resultAreaEdgeList = [];
     for (Iterator it = deStar.iterator(); it.moveNext(); ) {
       DirectedEdge de = (DirectedEdge) it.current;
       if (isPotentialResultAreaEdge(de, opCode) || isPotentialResultAreaEdge(de.getSym(), opCode) )

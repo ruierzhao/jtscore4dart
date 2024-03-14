@@ -138,7 +138,7 @@ if (newSize <= oldSize) {
   
   Iterator iterator()
   {
-    List foundItems = new ArrayList();
+    List foundItems = [];
     root.addAllItems(foundItems);
     return foundItems.iterator();
   }
@@ -161,7 +161,7 @@ if (newSize <= oldSize) {
      * the items that are matched are all items in intervals
      * which overlap the query interval
      */
-    List foundItems = new ArrayList();
+    List foundItems = [];
     query(interval, foundItems);
     return foundItems;
   }

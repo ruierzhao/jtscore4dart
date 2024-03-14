@@ -48,7 +48,7 @@ class GeometryCollectionMapper
 
   GeometryCollection map(GeometryCollection gc)
   {
-    List mapped = new ArrayList();
+    List mapped = [];
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       Geometry g = mapOp.map(gc.getGeometryN(i));
       if (!g.isEmpty()) {

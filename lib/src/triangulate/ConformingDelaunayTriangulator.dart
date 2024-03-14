@@ -81,7 +81,7 @@ class ConformingDelaunayTriangulator
 
 	// MD - using a Set doesn't seem to be much faster
 	///**private */Set segments = new HashSet();
-	private List segments = new ArrayList(); // List<Segment>
+	private List segments = []; // List<Segment>
 	private QuadEdgeSubdivision subdiv = null;
 	private IncrementalDelaunayTriangulator incDel;
 	private Geometry convexHull;
@@ -411,16 +411,16 @@ class ConformingDelaunayTriangulator
 	}
 
 	/*
-	 */**private */List findMissingConstraints() { List missingSegs = new ArrayList();
+	 */**private */List findMissingConstraints() { List missingSegs = [];
 	 * for (int i = 0; i < segments.size(); i++) { Segment s = (Segment)
 	 * segments.get(i); QuadEdge q = subdiv.locate(s.getStart(), s.getEnd()); if
 	 * (q == null) missingSegs.add(s); } return missingSegs; }
 	 */
 
 	private int enforceGabriel(Collection segsToInsert) {
-		List newSegments = new ArrayList();
+		List newSegments = [];
 		int splits = 0;
-		List segsToRemove = new ArrayList();
+		List segsToRemove = [];
 
 		/**
 		 * On each iteration must always scan all constraint (sub)segments, since

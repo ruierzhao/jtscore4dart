@@ -71,7 +71,7 @@ class BufferCurveSetBuilder {
  /**private */double distance;
  /**private */OffsetCurveBuilder curveBuilder;
 
-//  /**private */List curveList = new ArrayList();
+//  /**private */List curveList = [];
  /**private */List curveList = [];
 
  /**private */bool isInvertOrientation = false;

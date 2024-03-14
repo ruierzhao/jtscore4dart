@@ -49,7 +49,7 @@ class FacetSequenceTreeBuilder {
    * @return List<GeometryFacetSequence>
    */
  /**private */static List computeFacetSequences(Geometry g) {
-    final List sections = new ArrayList();
+    final List sections = [];
 
     g.apply(new GeometryComponentFilter() {
 

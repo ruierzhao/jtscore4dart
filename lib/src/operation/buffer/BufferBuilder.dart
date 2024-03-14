@@ -328,9 +328,9 @@ class BufferBuilder
    */
  /**private */void buildSubgraphs(List subgraphList, PolygonBuilder polyBuilder)
   {
-    List processedGraphs = new ArrayList();
-    for (Iterator i = subgraphList.iterator(); i.moveNext(); ) {
-      BufferSubgraph subgraph = (BufferSubgraph) i.current;
+    List processedGraphs = [];
+    for (Iterator i = subgraphList.iterator; i.moveNext(); ) {
+      BufferSubgraph subgraph = i.current as BufferSubgraph;
       Coordinate p = subgraph.getRightmostCoordinate();
 //      int outsideDepth = 0;
 //      if (polyBuilder.containsPoint(p))
@@ -354,7 +354,7 @@ class BufferBuilder
  /**private */static Geometry convertSegStrings(Iterator it)
   {
   	GeometryFactory fact = new GeometryFactory();
-  	List lines = new ArrayList();
+  	List lines = [];
   	while (it.hasNext()) {
   		SegmentString ss = (SegmentString) it.current;
   		LineString line = fact.createLineString(ss.getCoordinates());

@@ -42,7 +42,7 @@ class OffsetSegmentString
 
   OffsetSegmentString()
   {
-  	ptList = new ArrayList();
+  	ptList = [];
   }
   
   void setPrecisionModel(PrecisionModel precisionModel)

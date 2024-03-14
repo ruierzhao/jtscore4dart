@@ -69,7 +69,7 @@ class DelaunayTriangulationBuilder
 	 */
 	static List toVertices(Collection coords)
 	{
-		List verts = new ArrayList();
+		List verts = [];
 		for (Iterator i = coords.iterator(); i.moveNext(); ) {
 			Coordinate coord = (Coordinate) i.current;
 			verts.add(new Vertex(coord));

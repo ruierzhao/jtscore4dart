@@ -35,7 +35,7 @@ class EdgeEndBundle
   extends EdgeEnd
 {
 // /**private */BoundaryNodeRule boundaryNodeRule;
- /**private */List edgeEnds = new ArrayList();
+ /**private */List edgeEnds = [];
 
   EdgeEndBundle(BoundaryNodeRule boundaryNodeRule, EdgeEnd e)
   {

@@ -115,7 +115,7 @@ class PolygonalLineworkExtracter
 	
 	PolygonalLineworkExtracter()
 	{
-		linework = new ArrayList();
+		linework = [];
 	}
 	
 	/**

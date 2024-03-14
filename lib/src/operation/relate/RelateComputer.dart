@@ -61,7 +61,7 @@ class RelateComputer
  /**private */NodeMap nodes = new NodeMap(new RelateNodeFactory());
   // this intersection matrix will hold the results compute for the relate
  /**private */IntersectionMatrix im = null;
- /**private */ArrayList isolatedEdges = new ArrayList();
+ /**private */ArrayList isolatedEdges = [];
 
   // the intersection point found (if any)
  /**private */Coordinate invalidPoint;

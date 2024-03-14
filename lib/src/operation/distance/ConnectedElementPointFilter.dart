@@ -39,7 +39,7 @@ class ConnectedElementPointFilter
    */
   static List getCoordinates(Geometry geom)
   {
-    List pts = new ArrayList();
+    List pts = [];
     geom.apply(new ConnectedElementPointFilter(pts));
     return pts;
   }

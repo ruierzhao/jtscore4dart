@@ -124,7 +124,7 @@ class HPRtree
     build();
     
     if (! totalExtent.intersects(searchEnv)) 
-      return new ArrayList();
+      return [];
     
     ArrayListVisitor visitor = new ArrayListVisitor();
     query(searchEnv, visitor);

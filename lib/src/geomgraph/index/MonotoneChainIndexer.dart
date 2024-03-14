@@ -79,7 +79,7 @@ class MonotoneChainIndexer {
   {
     // find the startpoint (and endpoints) of all monotone chains in this edge
     int start = 0;
-    List startIndexList = new ArrayList();
+    List startIndexList = [];
     startIndexList.add(start);
     do {
       int last = findChainEnd(pts, start);

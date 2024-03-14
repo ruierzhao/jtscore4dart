@@ -62,9 +62,9 @@ class PlanarGraph
     }
   }
 
- /**protected */List edges        = new ArrayList();
+ /**protected */List edges        = [];
  /**protected */NodeMap nodes;
- /**protected */List edgeEndList  = new ArrayList();
+ /**protected */List edgeEndList  = [];
 
   PlanarGraph(NodeFactory nodeFact) {
     nodes = new NodeMap(nodeFact);

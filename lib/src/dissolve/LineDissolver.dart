@@ -75,7 +75,7 @@ class LineDissolver
  /**private */Geometry result;
  /**private */GeometryFactory factory;
  /**private */final DissolveEdgeGraph graph;
- /**private */final List lines = new ArrayList();
+ /**private */final List lines = [];
 
   LineDissolver()
   {

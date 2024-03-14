@@ -41,7 +41,7 @@ import 'SinglePassNoder.dart';
 class MCIndexNoder
     extends SinglePassNoder
 {
- /**private */List monoChains = new ArrayList();
+ /**private */List monoChains = [];
  /**private */SpatialIndex index= new HPRtree();
  /**private */int idCounter = 0;
  /**private */Collection nodedSegStrings;

@@ -88,7 +88,7 @@ class QuadEdgeSubdivision {
 	// used for edge extraction to ensure edge uniqueness
 	private int visitedKey = 0;
 //	private Set quadEdges = new HashSet();
-	private List quadEdges = new ArrayList();
+	private List quadEdges = [];
 	private QuadEdge startingEdge;
 	private double tolerance;
 	private double edgeCoincidenceTolerance;
@@ -550,7 +550,7 @@ class QuadEdgeSubdivision {
    */
   List getVertexUniqueEdges(bool includeFrame) 
   {
-  	List edges = new ArrayList();
+  	List edges = [];
     Set visitedVertices = new HashSet();
     for (Iterator i = quadEdges.iterator(); i.moveNext();) {
       QuadEdge qe = (QuadEdge) i.current;
@@ -593,7 +593,7 @@ class QuadEdgeSubdivision {
 	List getPrimaryEdges(bool includeFrame) {
 		visitedKey++;
 
-		List edges = new ArrayList();
+		List edges = [];
 		Stack edgeStack = new Stack();
 		edgeStack.push(startingEdge);
 		
@@ -752,7 +752,7 @@ class QuadEdgeSubdivision {
 	}
 
 	private static class TriangleEdgesListVisitor implements TriangleVisitor {
-		private List triList = new ArrayList();
+		private List triList = [];
 
 		void visit(QuadEdge[] triEdges) {
 			triList.add(new QuadEdge[]{triEdges[0], triEdges[1], triEdges[2]});
@@ -778,7 +778,7 @@ class QuadEdgeSubdivision {
 	}
 
 	private static class TriangleVertexListVisitor implements TriangleVisitor {
-		private List triList = new ArrayList();
+		private List triList = [];
 
 		void visit(QuadEdge[] triEdges) {
 			triList.add(new Vertex[] { triEdges[0].orig(), triEdges[1].orig(),
@@ -806,7 +806,7 @@ class QuadEdgeSubdivision {
 	private static class TriangleCoordinatesVisitor implements TriangleVisitor {
 		private CoordinateList coordList = new CoordinateList();
 
-		private List triCoords = new ArrayList();
+		private List triCoords = [];
 
 		TriangleCoordinatesVisitor() {
 		}
@@ -942,7 +942,7 @@ class QuadEdgeSubdivision {
   	 */ 
   	visitTriangles(new TriangleCircumcentreVisitor(), true);
   	
-    List cells = new ArrayList();
+    List cells = [];
     Collection edges = getVertexUniqueEdges(false);
     for (Iterator i = edges.iterator(); i.moveNext(); ) {
     	QuadEdge qe = (QuadEdge) i.current;
@@ -965,7 +965,7 @@ class QuadEdgeSubdivision {
    */
   Polygon getVoronoiCellPolygon(QuadEdge qe, GeometryFactory geomFact)
   {
-    List cellPts = new ArrayList();
+    List cellPts = [];
     QuadEdge startQE = qe;
     do {
 //    	Coordinate cc = circumcentre(qe);

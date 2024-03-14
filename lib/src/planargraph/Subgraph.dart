@@ -31,7 +31,7 @@ class Subgraph
 {
  /**protected */PlanarGraph parentGraph;
  /**protected */Set edges = new HashSet();
- /**protected */List dirEdges = new ArrayList();
+ /**protected */List dirEdges = [];
  /**protected */NodeMap nodeMap = new NodeMap();
 
   /**

@@ -43,7 +43,7 @@ class ComponentCoordinateExtracter
    */
   static List getCoordinates(Geometry geom)
   {
-    List coords = new ArrayList();
+    List coords = [];
     geom.apply(new ComponentCoordinateExtracter(coords));
     return coords;
   }

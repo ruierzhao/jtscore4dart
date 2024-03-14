@@ -30,7 +30,7 @@
  */
 class EdgeList
 {
- /**private */List edges = new ArrayList();
+ /**private */List edges = [];
   /**
    * An index of the edges, for fast lookup.
    *

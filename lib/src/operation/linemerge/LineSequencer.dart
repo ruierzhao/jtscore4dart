@@ -106,7 +106,7 @@ class LineSequencer
     Set prevSubgraphNodes = new TreeSet();
 
     Coordinate lastNode = null;
-    List currNodes = new ArrayList();
+    List currNodes = [];
     for (int i = 0; i < mls.getNumGeometries(); i++) {
       LineString line = (LineString) mls.getGeometryN(i);
       Coordinate startNode = line.getCoordinateN(0);
@@ -224,7 +224,7 @@ class LineSequencer
 
  /**private */List findSequences()
   {
-    List sequences = new ArrayList();
+    List sequences = [];
     ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(graph);
     List subgraphs = csFinder.getConnectedSubgraphs();
     for (Iterator i = subgraphs.iterator(); i.moveNext(); ) {
@@ -436,7 +436,7 @@ class LineSequencer
    */
  /**private */Geometry buildSequencedGeometry(List sequences)
   {
-    List lines = new ArrayList();
+    List lines = [];
 
     for (Iterator i1 = sequences.iterator(); i1.moveNext(); ) {
       List seq = (List) i1.current;

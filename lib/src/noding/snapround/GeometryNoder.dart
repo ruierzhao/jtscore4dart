@@ -95,7 +95,7 @@ class GeometryNoder
 
  /**private */List toLineStrings(Collection segStrings)
   {
-    List lines = new ArrayList();
+    List lines = [];
     for (Iterator it = segStrings.iterator(); it.moveNext(); ) {
       SegmentString ss = (SegmentString) it.current;
       // skip collapsed lines
@@ -108,7 +108,7 @@ class GeometryNoder
 
  /**private */List extractLines(Collection geoms)
   {
-    List lines = new ArrayList();
+    List lines = [];
     LinearComponentExtracter lce = new LinearComponentExtracter(lines);
     for (Iterator it = geoms.iterator(); it.moveNext(); ) {
       Geometry geom = (Geometry) it.current;
@@ -119,7 +119,7 @@ class GeometryNoder
 
  /**private */List toSegmentStrings(Collection lines)
   {
-    List segStrings = new ArrayList();
+    List segStrings = [];
     for (Iterator it = lines.iterator(); it.moveNext(); ) {
       LineString line = (LineString) it.current;
       segStrings.add(new NodedSegmentString(line.getCoordinates(), null));

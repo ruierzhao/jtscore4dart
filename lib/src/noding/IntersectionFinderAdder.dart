@@ -44,7 +44,7 @@ class IntersectionFinderAdder
   IntersectionFinderAdder(LineIntersector li)
   {
     this.li = li;
-    interiorIntersections = new ArrayList();
+    interiorIntersections = [];
   }
 
   List getInteriorIntersections()  {    return interiorIntersections;  }

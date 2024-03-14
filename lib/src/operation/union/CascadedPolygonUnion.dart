@@ -124,7 +124,7 @@ class CascadedPolygonUnion
     this.unionFun = unionFun;
     // guard against null input
     if (inputPolys == null)
-      inputPolys = new ArrayList();
+      inputPolys = [];
     this.countInput = inputPolys.size();
     this.countRemainder = countInput;
   }
@@ -278,7 +278,7 @@ class CascadedPolygonUnion
    */
  /**private */List reduceToGeometries(List geomTree)
   {
-    List geoms = new ArrayList();
+    List geoms = [];
     for (Iterator i = geomTree.iterator(); i.moveNext(); ) {
       Object o = i.current;
       Geometry geom = null;

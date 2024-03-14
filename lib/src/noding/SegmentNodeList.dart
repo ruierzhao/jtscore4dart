@@ -101,7 +101,7 @@ class SegmentNodeList
    */
  /**private */void addCollapsedNodes()
   {
-    List collapsedVertexIndexes = new ArrayList();
+    List collapsedVertexIndexes = [];
 
     findCollapsesFromInsertedNodes(collapsedVertexIndexes);
     findCollapsesFromExistingVertices(collapsedVertexIndexes);

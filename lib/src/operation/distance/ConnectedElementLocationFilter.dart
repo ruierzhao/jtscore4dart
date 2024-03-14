@@ -42,7 +42,7 @@ class ConnectedElementLocationFilter
    */  
   static List getLocations(Geometry geom)
   {
-    List locations = new ArrayList();
+    List locations = [];
     geom.apply(new ConnectedElementLocationFilter(locations));
     return locations;
   }

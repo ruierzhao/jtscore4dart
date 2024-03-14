@@ -48,7 +48,7 @@ class MonotoneChainBuilder {
    */
   static List getChains(List<Coordinate> pts, Object context)
   {
-    List mcList = new ArrayList();
+    List mcList = [];
     if (pts.length == 0)
       return mcList;
     int chainStart = 0;

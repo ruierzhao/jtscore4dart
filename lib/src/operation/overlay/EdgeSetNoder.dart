@@ -31,7 +31,7 @@
 class EdgeSetNoder {
 
  /**private */LineIntersector li;
- /**private */List inputEdges = new ArrayList();
+ /**private */List inputEdges = [];
 
   EdgeSetNoder(LineIntersector li) {
     this.li = li;
@@ -49,7 +49,7 @@ class EdgeSetNoder {
     esi.computeIntersections(inputEdges, si, true);
 //Debug.println("has proper int = " + si.hasProperIntersection());
 
-    List splitEdges = new ArrayList();
+    List splitEdges = [];
     for (Iterator i = inputEdges.iterator(); i.moveNext(); ) {
       Edge e = (Edge) i.current;
       e.getEdgeIntersectionList().addSplitEdges(splitEdges);

@@ -133,7 +133,7 @@ class LinearComponentExtracter
    */
   static List getLines(Geometry geom, bool forceToLineString)
   {
-    List lines = new ArrayList();
+    List lines = [];
     geom.apply(new LinearComponentExtracter(lines, forceToLineString));
     return lines;
   }

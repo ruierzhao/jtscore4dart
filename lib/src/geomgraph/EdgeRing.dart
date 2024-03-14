@@ -40,13 +40,13 @@ abstract class EdgeRing {
 
  /**protected */DirectedEdge startDe; // the directed edge which starts the list of edges for this EdgeRing
  /**private */int maxNodeDegree = -1;
- /**private */List edges = new ArrayList(); // the DirectedEdges making up this EdgeRing
- /**private */List pts = new ArrayList();
+ /**private */List edges = []; // the DirectedEdges making up this EdgeRing
+ /**private */List pts = [];
  /**private */Label label = new Label(Location.NONE); // label stores the locations of each geometry on the face surrounded by this ring
  /**private */LinearRing ring;  // the ring created for this EdgeRing
  /**private */bool isHole;
  /**private */EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
- /**private */ArrayList holes = new ArrayList(); // a list of EdgeRings which are holes in this EdgeRing
+ /**private */ArrayList holes = []; // a list of EdgeRings which are holes in this EdgeRing
 
  /**protected */GeometryFactory geometryFactory;
 

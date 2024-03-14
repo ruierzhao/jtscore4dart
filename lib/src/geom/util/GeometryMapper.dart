@@ -46,7 +46,7 @@ class GeometryMapper
    */
   static Geometry map(Geometry geom, MapOp op)
   {
-    List mapped = new ArrayList();
+    List mapped = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry g = op.map(geom.getGeometryN(i));
       if (g != null)
@@ -57,7 +57,7 @@ class GeometryMapper
   
   static Collection map(Collection geoms, MapOp op)
   {
-    List mapped = new ArrayList();
+    List mapped = [];
     for (Iterator i = geoms.iterator(); i.moveNext(); ) {
       Geometry g = (Geometry) i.current;
       Geometry gr = op.map(g);

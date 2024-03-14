@@ -98,7 +98,7 @@ class MCIndexSegmentSetMutualIntersector implements SegmentSetMutualIntersector
    */
   void process(Collection segStrings, SegmentIntersector segInt)
   {
-  	List monoChains = new ArrayList();
+  	List monoChains = [];
     for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
       addToMonoChains((SegmentString) i.next(), monoChains);
     }

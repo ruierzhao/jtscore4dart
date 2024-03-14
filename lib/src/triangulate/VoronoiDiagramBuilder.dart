@@ -176,7 +176,7 @@ class VoronoiDiagramBuilder
  /**private */static Geometry clipGeometryCollection(Geometry geom, Envelope clipEnv)
 	{
 		Geometry clipPoly = geom.getFactory().toGeometry(clipEnv);
-		List clipped = new ArrayList();
+		List clipped = [];
 		for (int i = 0; i < geom.getNumGeometries(); i++) {
 			Geometry g = geom.getGeometryN(i);
 			Geometry result = null;

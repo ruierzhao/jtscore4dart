@@ -60,7 +60,7 @@ class OverlayResultValidator
  /**private */Coordinate invalidLocation = null;
  /**private */double boundaryDistanceTolerance = TOLERANCE;
 
- /**private */List testCoords = new ArrayList();
+ /**private */List testCoords = [];
 
   OverlayResultValidator(Geometry a, Geometry b, Geometry result) 
   {

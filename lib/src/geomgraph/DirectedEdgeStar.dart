@@ -156,7 +156,7 @@ class DirectedEdgeStar
   {
 //print(System.out);
     if (resultAreaEdgeList != null) return resultAreaEdgeList;
-    resultAreaEdgeList = new ArrayList();
+    resultAreaEdgeList = [];
     for (Iterator it = iterator(); it.moveNext(); ) {
       DirectedEdge de = (DirectedEdge) it.current;
       if (de.isInResult() || de.getSym().isInResult() )

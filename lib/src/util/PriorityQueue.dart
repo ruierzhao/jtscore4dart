@@ -29,7 +29,7 @@ class PriorityQueue
    */
   PriorityQueue() {
     size = 0;
-    items = new ArrayList();
+    items = [];
     // create space for sentinel
     items.add(null);
   }

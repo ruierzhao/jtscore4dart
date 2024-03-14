@@ -153,7 +153,7 @@ class BufferDistanceValidator
   
  /**private */Geometry getPolygonLines(Geometry g)
   {
-  	List lines = new ArrayList();
+  	List lines = [];
   	LinearComponentExtracter lineExtracter = new LinearComponentExtracter(lines);
   	List polys = PolygonExtracter.getPolygons(g);
   	for (Iterator i = polys.iterator(); i.moveNext(); ) {

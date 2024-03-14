@@ -34,7 +34,7 @@ abstract class AbstractNode implements Boundable, Serializable {
    */
  /**private */static final int serialVersionUID = 6493722185909573708L;
   
- /**private */ArrayList childBoundables = new ArrayList();
+ /**private */ArrayList childBoundables = [];
  /**private */Object bounds = null;
  /**private */int level;
 

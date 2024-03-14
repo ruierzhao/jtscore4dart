@@ -35,7 +35,7 @@ class SimpleMCSweepLineIntersector
   extends EdgeSetIntersector
 {
 
-  List events = new ArrayList();
+  List events = [];
   // statistics information
   int nOverlaps;
 

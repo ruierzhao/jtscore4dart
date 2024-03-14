@@ -141,7 +141,7 @@ class WKTFileReader
 	
  /**private */List read(BufferedReader bufferedReader) 
       throws IOException, ParseException {
-    List geoms = new ArrayList();
+    List geoms = [];
     try {
       read(bufferedReader, geoms);
     }

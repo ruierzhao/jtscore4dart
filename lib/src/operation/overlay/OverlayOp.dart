@@ -145,9 +145,9 @@ class OverlayOp
  /**private */PlanarGraph graph;
  /**private */EdgeList edgeList     = new EdgeList();
 
- /**private */List resultPolyList   = new ArrayList();
- /**private */List resultLineList   = new ArrayList();
- /**private */List resultPointList  = new ArrayList();
+ /**private */List resultPolyList   = [];
+ /**private */List resultLineList   = [];
+ /**private */List resultPointList  = [];
 
   /**
    * Constructs an instance to compute a single overlay operation
@@ -204,7 +204,7 @@ class OverlayOp
     // compute intersections between edges of the two input geometries
     arg[0].computeEdgeIntersections(arg[1], li, true);
 
-    List baseSplitEdges = new ArrayList();
+    List baseSplitEdges = [];
     arg[0].computeSplitEdges(baseSplitEdges);
     arg[1].computeSplitEdges(baseSplitEdges);
     List splitEdges = baseSplitEdges;
@@ -388,7 +388,7 @@ class OverlayOp
    */
  /**private */void replaceCollapsedEdges()
   {
-    List newEdges = new ArrayList();
+    List newEdges = [];
     for (Iterator it = edgeList.iterator(); it.moveNext(); ) {
       Edge e = (Edge) it.current;
       if (e.isCollapsed()) {
@@ -599,7 +599,7 @@ class OverlayOp
                                         List resultPolyList,
                                         int opcode)
   {
-    List geomList = new ArrayList();
+    List geomList = [];
     // element geometries of the result are always in the order P,L,A
     geomList.addAll(resultPointList);
     geomList.addAll(resultLineList);

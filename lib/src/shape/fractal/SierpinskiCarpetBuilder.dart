@@ -52,7 +52,7 @@ extends GeometricShapeBuilder
 	
 	private List<LinearRing> getHoles(int n, double originX, double originY, double width) 
 	{
-		List holeList = new ArrayList();
+		List holeList = [];
 		
 		addHoles(n, originX, originY, width, holeList );
 		

@@ -121,7 +121,7 @@ class NodingIntersectionFinder
  /**private */LineIntersector li;
  /**private */Coordinate interiorIntersection = null;
  /**private */List<Coordinate> intSegments = null;
- /**private */List intersections = new ArrayList();
+ /**private */List intersections = [];
  /**private */int intersectionCount = 0;
 
   /**

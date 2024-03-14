@@ -62,7 +62,7 @@ class SegmentStringDissolver
  /**private */Map ocaMap = new TreeMap();
 
   // testing only
-  //private List testAddedSS = new ArrayList();
+  //private List testAddedSS = [];
 
   /**
    * Creates a dissolver with a user-defined merge strategy.

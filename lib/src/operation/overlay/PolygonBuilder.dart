@@ -104,7 +104,7 @@ class PolygonBuilder {
 
  /**private */List buildMinimalEdgeRings(List maxEdgeRings, List shellList, List freeHoleList)
   {
-    List edgeRings = new ArrayList();
+    List edgeRings = [];
     for (Iterator it = maxEdgeRings.iterator(); it.moveNext(); ) {
       MaximalEdgeRing er = (MaximalEdgeRing) it.current;
       if (er.getMaxNodeDegree() > 2) {
@@ -269,7 +269,7 @@ class PolygonBuilder {
   }
  /**private */List computePolygons(List shellList)
   {
-    List resultPolyList   = new ArrayList();
+    List resultPolyList   = [];
     // add Polygons for all shells
     for (Iterator it = shellList.iterator(); it.moveNext(); ) {
       EdgeRing er = (EdgeRing) it.current;

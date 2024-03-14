@@ -180,7 +180,7 @@ class GeometryTransformer
   }
 
  /**protected */Geometry transformMultiPoint(MultiPoint geom, Geometry parent) {
-    List transGeomList = new ArrayList();
+    List transGeomList = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry transformGeom = transformPoint((Point) geom.getGeometryN(i), geom);
       if (transformGeom == null) continue;
@@ -231,7 +231,7 @@ class GeometryTransformer
   }
 
  /**protected */Geometry transformMultiLineString(MultiLineString geom, Geometry parent) {
-    List transGeomList = new ArrayList();
+    List transGeomList = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {  
       Geometry transformGeom = transformLineString((LineString) geom.getGeometryN(i), geom);
       if (transformGeom == null) continue;
@@ -257,7 +257,7 @@ class GeometryTransformer
     if (shellIsNullOrEmpty || ! (shell is LinearRing))
       isAllValidLinearRings = false;
 
-    ArrayList holes = new ArrayList();
+    ArrayList holes = [];
     for (int i = 0; i < geom.getNumInteriorRing(); i++) {
       Geometry hole = transformLinearRing(geom.getInteriorRingN(i), geom);
       if (hole == null || hole.isEmpty()) {
@@ -273,7 +273,7 @@ class GeometryTransformer
       return factory.createPolygon((LinearRing) shell,
                                    (List<LinearRing>) holes.toArray(new List<LinearRing> {  }));
     else {
-      List components = new ArrayList();
+      List components = [];
       if (shell != null) components.add(shell);
       components.addAll(holes);
       return factory.buildGeometry(components);
@@ -281,7 +281,7 @@ class GeometryTransformer
   }
 
  /**protected */Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
-    List transGeomList = new ArrayList();
+    List transGeomList = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry transformGeom = transformPolygon((Polygon) geom.getGeometryN(i), geom);
       if (transformGeom == null) continue;
@@ -295,7 +295,7 @@ class GeometryTransformer
   }
 
  /**protected */Geometry transformGeometryCollection(GeometryCollection geom, Geometry parent) {
-    List transGeomList = new ArrayList();
+    List transGeomList = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry transformGeom = transform(geom.getGeometryN(i));
       if (transformGeom == null) continue;

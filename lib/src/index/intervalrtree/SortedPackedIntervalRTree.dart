@@ -35,7 +35,7 @@
  */
 class SortedPackedIntervalRTree 
 {
- /**private */final List leaves = new ArrayList();
+ /**private */final List leaves = [];
   
   /**
    * If root is null that indicates
@@ -95,7 +95,7 @@ class SortedPackedIntervalRTree
     // now group nodes into blocks of two and build tree up recursively
 		List src = leaves;
 		List temp = null;
-		List dest = new ArrayList();
+		List dest = [];
 		
 		while (true) {
 			buildLevel(src, dest);

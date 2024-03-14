@@ -36,7 +36,7 @@ abstract class NodeBase {
     return subnodeIndex;
   }
 
- /**protected */List items = new ArrayList();
+ /**protected */List items = [];
 
   /**
    * subnodes are numbered as follows:

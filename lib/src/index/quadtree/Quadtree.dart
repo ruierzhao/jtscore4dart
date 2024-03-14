@@ -165,7 +165,7 @@ class Quadtree
      * overlap the search envelope
      */
     /*
-    List foundItems = new ArrayList();
+    List foundItems = [];
     root.addAllItemsFromOverlapping(searchEnv, foundItems);
     return foundItems;
   }
@@ -222,7 +222,7 @@ class Quadtree
    */
   List queryAll()
   {
-    List foundItems = new ArrayList();
+    List foundItems = [];
     root.addAllItems(foundItems);
     return foundItems;
   }

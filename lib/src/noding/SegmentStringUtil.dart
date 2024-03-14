@@ -56,7 +56,7 @@ class SegmentStringUtil
    */
   static List extractNodedSegmentStrings(Geometry geom)
   {
-    List segStr = new ArrayList();
+    List segStr = [];
     List lines = LinearComponentExtracter.getLines(geom);
     for (Iterator i = lines.iterator(); i.moveNext(); ) {
       LineString line = (LineString) i.current;
@@ -76,7 +76,7 @@ class SegmentStringUtil
    */
   static List extractBasicSegmentStrings(Geometry geom)
   {
-    List segStr = new ArrayList();
+    List segStr = [];
     List lines = LinearComponentExtracter.getLines(geom);
     for (Iterator i = lines.iterator(); i.moveNext(); ) {
       LineString line = (LineString) i.current;

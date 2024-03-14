@@ -135,8 +135,8 @@ abstract class CoordinateSequence{
   /// Copies the i'th coordinate in the sequence to the supplied
   /// {@link Coordinate}.  Only the first two dimensions are copied.
   ///
-  /// @param index the index of the coordinate to copy
-  /// @param coord a {@link Coordinate} to receive the value
+  /// @param [index] the index of the coordinate to copy
+  /// @param [coord] a {@link Coordinate} to receive the value
   // TODO: @ruier edit
   void getCoordinateTo(int index, Coordinate coord);
   // void getCoordinate(int index, Coordinate coord);
@@ -188,8 +188,8 @@ abstract class CoordinateSequence{
   /// (for instance, they may contain other dimensions or measure
   /// values as described by {@link #getDimension()} and {@link #getMeasures()}).
   ///
-  /// @param index  the coordinate index in the sequence
-  /// @param ordinateIndex the ordinate index in the coordinate (in range [0, dimension-1])
+  /// @param [index]  the coordinate index in the sequence
+  /// @param [ordinateIndex] the ordinate index in the coordinate (in range [0, dimension-1])
   /// @return ordinate value
   double getOrdinate(int index, int ordinateIndex);
 

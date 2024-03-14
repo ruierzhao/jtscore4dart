@@ -177,12 +177,34 @@ class Ruier23{
 }
 
 
-void main() {
-// var cc = <int>[];
-// var cc = List.empty(growable: true);
-var cc = List.filled(5,Coordinate.empty2D());
-for (var i = 0; i < 5; i++) {
-  cc[i] = Coordinate(i.toDouble(), i*i.toDouble());
+class RuierList{
+  final List<int> _cc = [];
+  RuierList([ List<int>? coord ]){
+    if (coord != null) {
+      _cc.addAll(coord);
+    }
+  }
+  add(int v){
+    _cc.add(v);
+  }
+  printcc(){
+    for (int v in _cc) {
+      print("$v");
+    }
+  }
 }
-print(cc);
+
+test_reverse(){
+  List<int> arr = [1,2,3,4,5,6,7];
+  var arrlen = arr.length;
+  var cc = List<int>.generate(arrlen, (index) => arr[arrlen-index-1],growable: false);
+  print(cc);
+  var dd = List.filled(5, 5);
+  print(dd.length);
+  cc.add(0);
+}
+
+
+void main() {
+  test_reverse();
 }

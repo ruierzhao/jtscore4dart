@@ -207,7 +207,7 @@ class ConvexHull
  /**private */List<Coordinate> reduce(List<Coordinate> inputPts)
   {
     //List<Coordinate> polyPts = computeQuad(inputPts);
-    List<Coordinate> innerPolyPts = computeInnerOctolateralRing(inputPts);
+    List<Coordinate>? innerPolyPts = computeInnerOctolateralRing(inputPts);
  
     // unable to compute interior polygon for some reason
     if (innerPolyPts == null) {
@@ -344,7 +344,7 @@ class ConvexHull
  List<Coordinate>? computeInnerOctolateralRing(List<Coordinate> inputPts) {
     List<Coordinate> octPts = computeInnerOctolateralPts(inputPts);
     CoordinateList coordList = new CoordinateList();
-    coordList.add(octPts, false);
+    coordList.addList(octPts, false);
 
     // points must all lie in a line
     if (coordList.size() < 3) {
@@ -357,14 +357,17 @@ class ConvexHull
   /// Computes the extremal points of an inner octolateral.
   /// Some points may be duplicates - these are collapsed later.
   /// 
-  /// @param inputPts the points to compute the octolateral for
+  /// @param [inputPts] the points to compute the octolateral for
   /// @return the extremal points of the octolateral
- /**private */List<Coordinate> computeInnerOctolateralPts(List<Coordinate> inputPts)
+ /**private */
+ List<Coordinate> computeInnerOctolateralPts(List<Coordinate> inputPts)
   {
-    List<Coordinate> pts = new Coordinate[8];
-    for (int j = 0; j < pts.length; j++) {
-      pts[j] = inputPts[0];
-    }
+    // List<Coordinate> pts = new Coordinate[8];
+    // for (int j = 0; j < pts.length; j++) {
+    //   pts[j] = inputPts[0];
+    // }
+    // TODO: ruier edit.
+    List<Coordinate> pts = List<Coordinate>.filled(8, inputPts[0],growable: false);
     for (int i = 1; i < inputPts.length; i++) {
       if (inputPts[i].x < pts[0].x) {
         pts[0] = inputPts[i];

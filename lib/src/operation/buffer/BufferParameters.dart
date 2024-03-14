@@ -155,10 +155,10 @@ class BufferParameters
    * 
    * @return the number of quadrant segments
    */
-  // int getQuadrantSegments()
-  // {
-  //   return quadrantSegments;
-  // }
+  int getQuadrantSegments()
+  {
+    return quadrantSegments;
+  }
   
   /**
    * Sets the number of line segments in a quarter-circle
@@ -199,10 +199,10 @@ class BufferParameters
    * 
    * @return the end cap style code
    */
-  // int getEndCapStyle()
-  // {
-  //   return endCapStyle;
-  // }
+  int getEndCapStyle()
+  {
+    return endCapStyle;
+  }
   
   /**
    * Specifies the end cap style of the generated buffer.
@@ -221,10 +221,10 @@ class BufferParameters
    * 
    * @return the join style code
    */
-  // int getJoinStyle()
-  // {
-  //   return joinStyle;
-  // }
+  int getJoinStyle()
+  {
+    return joinStyle;
+  }
   
   /**
    * Sets the join style for outside (reflex) corners between line segments.
@@ -244,10 +244,10 @@ class BufferParameters
    * 
    * @return the limit value
    */
-  // double getMitreLimit()
-  // {
-  //   return mitreLimit;
-  // }
+  double getMitreLimit()
+  {
+    return mitreLimit;
+  }
   
   /**
    * Sets the limit on the mitre ratio used for very sharp corners.
@@ -283,7 +283,7 @@ class BufferParameters
    * always ignored, 
    * and forced to the equivalent of <tt>CAP_FLAT</tt>. 
    * 
-   * @param isSingleSided true if a single-sided buffer should be constructed
+   * @param [isSingleSided] true if a single-sided buffer should be constructed
    */
   void setSingleSided(bool isSingleSided)
   {
@@ -304,9 +304,9 @@ class BufferParameters
    * 
    * @return the simplify factor
    */
-  // double getSimplifyFactor() {
-  //   return simplifyFactor;
-  // }
+  double getSimplifyFactor() {
+    return simplifyFactor;
+  }
   
   /**
    * Sets the factor used to determine the simplify distance tolerance

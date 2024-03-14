@@ -24,12 +24,22 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'dart:collection';
+
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 import 'NodedSegmentString.dart';
 import 'SegmentNode.dart';
 import 'SegmentString.dart';
+
+// 扩展to兼容java 方法
+extension SplayTreeMapExtension<K, V> on Map<K, V>{
+  int size() => this.length;
+  V? get(Object? key) => this[key];
+  put(K key,V value) => this[key]=value; 
+}
 
 /**
  * A list of the {@link SegmentNode}s present along a noded {@link SegmentString}.
@@ -38,7 +48,8 @@ import 'SegmentString.dart';
  */
 class SegmentNodeList
 {
- /**private */Map nodeMap = new TreeMap();
+//  /**private */Map nodeMap = new TreeMap();
+ /**private */Map nodeMap = new SplayTreeMap();
  /**private */NodedSegmentString edge;  // the parent edge
 
   SegmentNodeList(this.edge);
@@ -80,7 +91,7 @@ class SegmentNodeList
   /**
    * returns an iterator of SegmentNodes
    */
-  Iterator iterator() { return nodeMap.values().iterator(); }
+  Iterator iterator() { return nodeMap.values.iterator; }
 
   /**
    * Adds nodes for the first and last points of the edge
@@ -107,8 +118,9 @@ class SegmentNodeList
     findCollapsesFromExistingVertices(collapsedVertexIndexes);
 
     // node the collapses
-    for (Iterator it = collapsedVertexIndexes.iterator(); it.moveNext(); ) {
-      int vertexIndex = ((Integer) it.next()).intValue();
+    for (Iterator it = collapsedVertexIndexes.iterator; it.moveNext(); ) {
+      // int vertexIndex = (it.current).intValue();
+      int vertexIndex = it.current;
       add(edge.getCoordinate(vertexIndex), vertexIndex);
     }
   }
@@ -139,12 +151,13 @@ class SegmentNodeList
    */
  /**private */void findCollapsesFromInsertedNodes(List collapsedVertexIndexes)
   {
-    List<int> collapsedVertexIndex = new int[1];
+    // List<int> collapsedVertexIndex = new int[1];
+    List<int> collapsedVertexIndex = List.filled(1, 0,growable: false);
     Iterator it = iterator();
     // there should always be at least two entries in the list, since the endpoints are nodes
-    SegmentNode eiPrev = (SegmentNode) it.current;
-    while (it.hasNext()) {
-      SegmentNode ei = (SegmentNode) it.current;
+    SegmentNode eiPrev =  it.current as SegmentNode;
+    while (it.moveNext()) {
+      SegmentNode ei =  it.current as SegmentNode;
       bool isCollapsed = findCollapseIndex(eiPrev, ei, collapsedVertexIndex);
       if (isCollapsed) {
         collapsedVertexIndexes.add(collapsedVertexIndex[0]);
@@ -154,13 +167,13 @@ class SegmentNodeList
     }
   }
 
- /**private */bool findCollapseIndex(SegmentNode ei0, SegmentNode ei1, int[] collapsedVertexIndex)
+ /**private */bool findCollapseIndex(SegmentNode ei0, SegmentNode ei1, List<int> collapsedVertexIndex)
   {
     // only looking for equal nodes
     if (! ei0.coord.equals2D(ei1.coord)) return false;
 
     int numVerticesBetween = ei1.segmentIndex - ei0.segmentIndex;
-    if (! ei1.isInterior()) {
+    if (! ei1.isInterior) {
       numVerticesBetween--;
     }
 
@@ -180,7 +193,7 @@ class SegmentNodeList
    * (this is so a single list can be used to accumulate all split edges
    * for a set of {@link SegmentString}s).
    */
-  void addSplitEdges(Collection edgeList)
+  void addSplitEdges(Iterable edgeList)
   {
     // ensure that the list has entries for the first and last point of the edge
     addEndpoints();
@@ -188,9 +201,9 @@ class SegmentNodeList
 
     Iterator it = iterator();
     // there should always be at least two entries in the list, since the endpoints are nodes
-    SegmentNode eiPrev = (SegmentNode) it.current;
-    while (it.hasNext()) {
-      SegmentNode ei = (SegmentNode) it.current;
+    SegmentNode eiPrev =  it.current as SegmentNode;
+    while (it.moveNext()) {
+      SegmentNode ei =  it.current as SegmentNode;
       SegmentString newEdge = createSplitEdge(eiPrev, ei);
       /*
       if (newEdge.size() < 2)
@@ -215,7 +228,7 @@ class SegmentNodeList
     SegmentString split0 = splitEdges.get(0) as SegmentString;
     Coordinate pt0 = split0.getCoordinate(0);
     if (! pt0.equals2D(edgePts[0])) {
-      throw new RuntimeException("bad split edge start point at " + pt0);
+      throw new Exception("bad split edge start point at $pt0" );
     }
 
     SegmentString splitn =  splitEdges.get(splitEdges.size() - 1) as SegmentString;
@@ -296,9 +309,9 @@ class SegmentNodeList
 
     Iterator it = iterator();
     // there should always be at least two entries in the list, since the endpoints are nodes
-    SegmentNode eiPrev = (SegmentNode) it.current;
-    while (it.hasNext()) {
-      SegmentNode ei = (SegmentNode) it.current;
+    SegmentNode eiPrev =  it.current as SegmentNode;
+    while (it.moveNext()) {
+      SegmentNode ei =  it.current as SegmentNode;
       addEdgeCoordinates(eiPrev, ei, coordList);
       eiPrev = ei;
     }
@@ -310,15 +323,15 @@ class SegmentNodeList
     List<Coordinate> pts = createSplitEdgePts(ei0, ei1);
     coordList.add(pts, false);
   }
-
-  void print(PrintStream out)
-  {
-    out.println("Intersections:");
-    for (Iterator it = iterator(); it.moveNext(); ) {
-      SegmentNode ei =  it.next() as SegmentNode;
-      ei.print(out);
-    }
-  }
+  /// TODO: ruier edit.
+  // void print(PrintStream out)
+  // {
+  //   out.println("Intersections:");
+  //   for (Iterator it = iterator(); it.moveNext(); ) {
+  //     SegmentNode ei =  it.next() as SegmentNode;
+  //     ei.print(out);
+  //   }
+  // }
 }
 
 // INCOMPLETE!
@@ -327,13 +340,12 @@ class NodeVertexIterator /**implements Iterator */
  /**private */SegmentNodeList nodeList;
  /**private */NodedSegmentString edge;
  /**private */Iterator nodeIt;
- /**private */SegmentNode currNode = null;
- /**private */SegmentNode nextNode = null;
+ /**private */SegmentNode? currNode;
+ /**private */SegmentNode? nextNode;
  /**private */int currSegIndex = 0;
 
-  NodeVertexIterator(SegmentNodeList nodeList)
+  NodeVertexIterator(this.nodeList)
   {
-    this.nodeList = nodeList;
     edge = nodeList.getEdge();
     nodeIt = nodeList.iterator();
     readNextNode();

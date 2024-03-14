@@ -78,9 +78,10 @@ class BufferCurveSetBuilder {
 
   BufferCurveSetBuilder(
       this.inputGeom,
-          this.distance,
-          PrecisionModel precisionModel,
-          BufferParameters bufParams):this.curveBuilder = new OffsetCurveBuilder(precisionModel, bufParams);
+      this.distance,
+      PrecisionModel precisionModel,
+      BufferParameters bufParams)
+      :this.curveBuilder = new OffsetCurveBuilder(precisionModel, bufParams);
   // {
   //   this.curveBuilder = new OffsetCurveBuilder(precisionModel, bufParams);
   // }
@@ -186,7 +187,9 @@ class BufferCurveSetBuilder {
     if (coord.isNotEmpty && ! coord[0].isValid()) {
       return;
     }
-    List<Coordinate> curve = curveBuilder.getLineCurve(coord, distance);
+    
+    // distance > 0 && !isSingleSided  => curve 不为 null
+    List<Coordinate> curve = curveBuilder.getLineCurve(coord, distance)!;
     addCurve(curve, Location.EXTERIOR, Location.INTERIOR);
   }
   
@@ -204,11 +207,11 @@ class BufferCurveSetBuilder {
      * 
      * Singled-sided buffers currently treat rings as if they are lines.
      */
-    if (CoordinateArrays.isRing(coord) && ! curveBuilder.getBufferParameters().isSingleSided()) {
+    if (CoordinateArrays.isRing(coord) && ! curveBuilder.getBufferParameters().isSingleSided) {
       addRingBothSides(coord, distance);
     }
     else {
-      List<Coordinate> curve = curveBuilder.getLineCurve(coord, distance);
+      List<Coordinate> curve = curveBuilder.getLineCurve(coord, distance)!;
       addCurve(curve, Location.EXTERIOR, Location.INTERIOR);
     }
     // TESTING
@@ -319,13 +322,13 @@ class BufferCurveSetBuilder {
       rightLoc = cwLeftLoc;
       side = Position.opposite(side);
     }
-    List<Coordinate> curve = curveBuilder.getRingCurve(coord, side, offsetDistance);
+    List<Coordinate>? curve = curveBuilder.getRingCurve(coord, side, offsetDistance);
     
     /**
      * If the offset curve has inverted completely it will produce
      * an unwanted artifact in the result, so skip it. 
      */
-    if (isRingCurveInverted(coord, offsetDistance, curve)) {
+    if (isRingCurveInverted(coord, offsetDistance, curve!)) {
       return;
     }
 

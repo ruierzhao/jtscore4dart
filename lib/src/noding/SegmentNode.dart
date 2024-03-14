@@ -15,27 +15,27 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'NodedSegmentString.dart';
+import 'SegmentPointComparator.dart';
+
 /**
  * Represents an intersection point between two {@link SegmentString}s.
  *
  * @version 1.7
  */
-class SegmentNode
-    implements Comparable
+class SegmentNode implements Comparable<SegmentNode>
 {
  /**private */final NodedSegmentString segString;
   final Coordinate coord;   // the point of intersection
   final int segmentIndex;   // the index of the containing line segment in the parent edge
  /**private */final int segmentOctant;
- /**private */final bool isInterior;
+ /**private */final bool _isInterior;
 
-  SegmentNode(NodedSegmentString segString, Coordinate coord, int segmentIndex, int segmentOctant) {
-    this.segString = segString;
-    this.coord = coord.copy();
-    this.segmentIndex = segmentIndex;
-    this.segmentOctant = segmentOctant;
-    isInterior = ! coord.equals2D(segString.getCoordinate(segmentIndex));
-  }
+  SegmentNode(this.segString, Coordinate coord, this.segmentIndex, this.segmentOctant)
+    :this.coord = coord.copy(),
+    _isInterior = ! coord.equals2D(segString.getCoordinate(segmentIndex));
 
   /**
    * Gets the {@link Coordinate} giving the location of this node.
@@ -47,11 +47,11 @@ class SegmentNode
     return coord;
   }
   
-  bool isInterior() { return isInterior; }
+  bool isInterior() { return _isInterior; }
 
   bool isEndPoint(int maxSegmentIndex)
   {
-    if (segmentIndex == 0 && ! isInterior) return true;
+    if (segmentIndex == 0 && ! _isInterior) return true;
     if (segmentIndex == maxSegmentIndex) return true;
     return false;
   }
@@ -61,9 +61,10 @@ class SegmentNode
    * 0 this SegmentNode is at the argument location;
    * 1 this SegmentNode is located after the argument location
    */
-  int compareTo(Object obj)
+  @override
+  int compareTo(SegmentNode obj)
   {
-    SegmentNode other = (SegmentNode) obj;
+    SegmentNode other =  obj ;
 
     if (segmentIndex < other.segmentIndex) return -1;
     if (segmentIndex > other.segmentIndex) return 1;
@@ -72,20 +73,21 @@ class SegmentNode
 
     // an exterior node is the segment start point, so always sorts first
     // this guards against a robustness problem where the octants are not reliable
-    if (! isInterior) return -1;
-    if (! other.isInterior) return 1;
+    if (! _isInterior) return -1;
+    if (! other._isInterior) return 1;
     
     return SegmentPointComparator.compare(segmentOctant, coord, other.coord);
     //return segment.compareNodePosition(this, other);
   }
 
-  void print(PrintStream out)
-  {
-    out.print(coord);
-    out.print(" seg # = " + segmentIndex);
-  }
+  // void print(PrintStream out)
+  // {
+  //   out.print(coord);
+  //   out.print(" seg # = " + segmentIndex);
+  // }
   
+  @override
   String toString() {
-    return segmentIndex + ":" + coord.toString();
+    return "$segmentIndex: $coord";
   }
 }

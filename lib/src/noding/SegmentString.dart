@@ -16,6 +16,9 @@
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
 /**
+ * 代表一系列相邻的线段类的抽象类
+ * 支持上下文信息，对保存拓扑信息或者来历很有用
+ * 
  * An abstract class for classes which represent a sequence of contiguous line segments.
  * SegmentStrings can carry a context object, which is useful
  * for preserving topological or parentage information.
@@ -48,7 +51,7 @@ abstract class SegmentString
   /**
    * Gets the segment string coordinate at a given index.
    *  
-   * @param i the coordinate index
+   * @param [i] the coordinate index
    * @return the coordinate at the index
    */
   Coordinate getCoordinate(int i);

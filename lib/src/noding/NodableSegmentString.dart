@@ -30,8 +30,8 @@ abstract class NodableSegmentString
   /**
    * Adds an intersection node for a given point and segment to this segment string.
    * 
-   * @param intPt the location of the intersection
-   * @param segmentIndex the index of the segment containing the intersection
+   * @param [intPt] the location of the intersection
+   * @param [segmentIndex] the index of the segment containing the intersection
    */
   void addIntersection(Coordinate intPt, int segmentIndex);
 }

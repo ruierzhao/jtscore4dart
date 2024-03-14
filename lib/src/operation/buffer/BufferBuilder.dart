@@ -171,15 +171,15 @@ class BufferBuilder
       return createEmptyResultGeometry();
     }
 
-//BufferDebug.runCount++;
-//String filename = "run" + BufferDebug.runCount + "_curves";
-//System.out.println("saving " + filename);
-//BufferDebug.saveEdges(bufferEdgeList, filename);
-// DEBUGGING ONLY
-//WKTWriter wktWriter = new WKTWriter();
-//Debug.println("Rings: " + wktWriter.write(convertSegStrings(bufferSegStrList.iterator())));
-//wktWriter.setMaxCoordinatesPerLine(10);
-//System.out.println(wktWriter.writeFormatted(convertSegStrings(bufferSegStrList.iterator())));
+    //BufferDebug.runCount++;
+    //String filename = "run" + BufferDebug.runCount + "_curves";
+    //System.out.println("saving " + filename);
+    //BufferDebug.saveEdges(bufferEdgeList, filename);
+    // DEBUGGING ONLY
+    //WKTWriter wktWriter = new WKTWriter();
+    //Debug.println("Rings: " + wktWriter.write(convertSegStrings(bufferSegStrList.iterator())));
+    //wktWriter.setMaxCoordinatesPerLine(10);
+    //System.out.println(wktWriter.writeFormatted(convertSegStrings(bufferSegStrList.iterator())));
 
     /**
      * Currently only zero-distance buffers are validated, 
@@ -207,7 +207,8 @@ class BufferBuilder
     return resultGeom;
   }
 
- /**private */Noder getNoder(PrecisionModel precisionModel)
+ /**private */
+ Noder getNoder(PrecisionModel precisionModel)
   {
     if (workingNoder != null) return workingNoder!;
 

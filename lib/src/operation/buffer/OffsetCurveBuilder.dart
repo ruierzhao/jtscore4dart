@@ -17,6 +17,15 @@
 // import org.locationtech.jts.geom.Position;
 // import org.locationtech.jts.geom.PrecisionModel;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import 'BufferInputLineSimplifier.dart';
+import 'BufferParameters.dart';
+import 'OffsetSegmentGenerator.dart';
+
 /**
  * Computes the raw offset curve for a
  * single {@link Geometry} component (ring, line or point).
@@ -40,14 +49,7 @@ class OffsetCurveBuilder
  /**private */PrecisionModel precisionModel;
  /**private */BufferParameters bufParams;
   
-  OffsetCurveBuilder(
-                PrecisionModel precisionModel,
-                BufferParameters bufParams
-                )
-  {
-    this.precisionModel = precisionModel;
-    this.bufParams = bufParams;
-  }
+  OffsetCurveBuilder(this.precisionModel,this.bufParams);
 
   /**
    * Gets the buffer parameters being used to generate the curve.
@@ -70,7 +72,7 @@ class OffsetCurveBuilder
    * @return a Coordinate array representing the curve
    * or null if the curve is empty
    */
-  List<Coordinate> getLineCurve(List<Coordinate> inputPts, double distance)
+  List<Coordinate>? getLineCurve(List<Coordinate> inputPts, double distance)
   {
     this.distance = distance;
     
@@ -82,12 +84,13 @@ class OffsetCurveBuilder
       computePointCurve(inputPts[0], segGen);
     }
     else {
-      if (bufParams.isSingleSided()) {
+      if (bufParams.isSingleSided) {
         bool isRightSide = distance < 0.0;
         computeSingleSidedBufferCurve(inputPts, isRightSide, segGen);
       }
-      else
+      else {
         computeLineBufferCurve(inputPts, segGen);
+      }
     }
     
     List<Coordinate> lineCoord = segGen.getCoordinates();
@@ -111,7 +114,7 @@ class OffsetCurveBuilder
     if (distance == 0.0) return true;
     // a negative width buffer of a line or point is empty,
     // except for single-sided buffers, where the sign indicates the side
-    if (distance < 0.0 && ! bufParams.isSingleSided()) return true;
+    if (distance < 0.0 && !bufParams.isSingleSided) return true;
     return false;
   }
 
@@ -125,11 +128,12 @@ class OffsetCurveBuilder
    * @return a Coordinate array representing the curve,
    * or null if the curve is empty
    */
-  List<Coordinate> getRingCurve(List<Coordinate> inputPts, int side, double distance)
+  List<Coordinate>? getRingCurve(List<Coordinate> inputPts, int side, double distance)
   {
     this.distance = distance;
-    if (inputPts.length <= 2)
+    if (inputPts.length <= 2) {
       return getLineCurve(inputPts, distance);
+    }
 
     // optimize creating ring for for zero distance
     if (distance == 0.0) {
@@ -140,7 +144,7 @@ class OffsetCurveBuilder
     return segGen.getCoordinates();
   }
 
-  List<Coordinate> getOffsetCurve(List<Coordinate> inputPts, double distance)
+  List<Coordinate>? getOffsetCurve(List<Coordinate> inputPts, double distance)
   {
     this.distance = distance;
     
@@ -158,14 +162,16 @@ class OffsetCurveBuilder
     }
     List<Coordinate> curvePts = segGen.getCoordinates();
     // for right side line is traversed in reverse direction, so have to reverse generated line
-    if (isRightSide) 
+    if (isRightSide) {
       CoordinateArrays.reverse(curvePts);
+    }
     return curvePts;
   }
   
  /**private */static List<Coordinate> copyCoordinates(List<Coordinate> pts)
   {
-    List<Coordinate> copy = new Coordinate[pts.length];
+    // List<Coordinate> copy = new Coordinate[pts.length];
+    List<Coordinate> copy = List.filled(pts.length, Coordinate.empty2D());
     for (int i = 0; i < copy.length; i++) {
       copy[i] = pts[i].copy();
     }
@@ -323,8 +329,9 @@ class OffsetCurveBuilder
     // simplify input line to improve performance
     double distTol = simplifyTolerance(distance);
     // ensure that correct side is simplified
-    if (side == Position.RIGHT)
+    if (side == Position.RIGHT) {
       distTol = -distTol;
+    }
     List<Coordinate> simp = BufferInputLineSimplifier.simplify(inputPts, distTol);
 //    List<Coordinate> simp = inputPts;
     

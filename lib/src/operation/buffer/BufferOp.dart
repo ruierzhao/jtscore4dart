@@ -272,9 +272,7 @@ class BufferOp
     Geometry geomBuf = bufOp.getResultGeometry(distance);
     return geomBuf;
   }
-  // static Geometry bufferOp(Geometry g,double distance,
-  //   int quadrantSegments,
-  //   int endCapStyle,)
+  // static Geometry bufferOp(Geometry g,double distance,int quadrantSegments,int endCapStyle,)
   // {
   //   BufferOp bufOp = new BufferOp(g);
   //   bufOp.setQuadrantSegments(quadrantSegments);

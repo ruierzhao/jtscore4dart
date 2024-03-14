@@ -20,7 +20,12 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateArrays;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
+
+import 'NodedSegmentString.dart';
 import 'Noder.dart';
+import 'SegmentString.dart';
 
 /**
  * Wraps a {@link Noder} and transforms its input
@@ -45,39 +50,40 @@ class ScaledNoder
  /**private */double offsetY;
  /**private */bool isScaled = false;
 
-  ScaledNoder(Noder noder, double scaleFactor) {
-    this(noder, scaleFactor, 0, 0);
+  // ScaledNoder(Noder noder, double scaleFactor) {
+  //   this(noder, scaleFactor, 0, 0);
+  // }
+
+  ScaledNoder(this.noder, this.scaleFactor, [this.offsetX=0, this.offsetY=0]) {
+    this.isScaled = ! isIntegerPrecision();
   }
 
-  ScaledNoder(Noder noder, double scaleFactor, double offsetX, double offsetY) {
-    this.noder = noder;
-    this.scaleFactor = scaleFactor;
-    // no need to scale if input precision is already integral
-    isScaled = ! isIntegerPrecision();
-  }
+  bool isIntegerPrecision() { return this.scaleFactor == 1.0; }
 
-  bool isIntegerPrecision() { return scaleFactor == 1.0; }
-
-  Collection getNodedSubstrings()
+  @override
+  Iterable getNodedSubstrings()
   {
-    Collection splitSS = noder.getNodedSubstrings();
+    Iterable splitSS = noder.getNodedSubstrings();
     if (isScaled) rescale(splitSS);
     return splitSS;
   }
 
-  void computeNodes(Collection inputSegStrings)
+  @override
+  void computeNodes(Iterable inputSegStrings)
   {
-    Collection intSegStrings = inputSegStrings;
-    if (isScaled)
+    Iterable intSegStrings = inputSegStrings;
+    if (isScaled) {
       intSegStrings = scale(inputSegStrings);
+    }
     noder.computeNodes(intSegStrings);
   }
 
- /**private */Collection scale(Collection segStrings)
+ /**private */Iterable scale(Iterable segStrings)
   {
+    // List nodedSegmentStrings = new ArrayList(segStrings.size());
     List nodedSegmentStrings = new ArrayList(segStrings.size());
-    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
-      SegmentString ss = (SegmentString) i.current;
+    for (Iterator i = segStrings.iterator; i.moveNext(); ) {
+      SegmentString ss =  i.current as SegmentString;
       nodedSegmentStrings.add(new NodedSegmentString(scale(ss.getCoordinates()), ss.getData()));
     }
     return nodedSegmentStrings;
@@ -86,10 +92,11 @@ class ScaledNoder
  /**private */List<Coordinate> scale(List<Coordinate> pts)
   {
     List<Coordinate> roundPts = new Coordinate[pts.length];
+    List<Coordinate> roundPts = new Coordinate[pts.length];
     for (int i = 0; i < pts.length; i++) {
       roundPts[i] = new Coordinate(
-          math.round((pts[i].x - offsetX) * scaleFactor),
-          math.round((pts[i].y - offsetY) * scaleFactor),
+          ((pts[i].x - offsetX) * scaleFactor).roundToDouble(),
+          ((pts[i].y - offsetY) * scaleFactor).roundToDouble(),
           pts[i].getZ()
         );
     }
@@ -99,10 +106,10 @@ class ScaledNoder
 
   //private double scale(double val) { return (double) math.round(val * scaleFactor); }
 
- /**private */void rescale(Collection segStrings)
+ /**private */void rescale(Iterable segStrings)
   {
-    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
-      SegmentString ss = (SegmentString) i.current;
+    for (Iterator i = segStrings.iterator; i.moveNext(); ) {
+      SegmentString ss = i.current as SegmentString;
       rescale(ss.getCoordinates());
     }
   }

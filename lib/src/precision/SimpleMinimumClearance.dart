@@ -75,7 +75,7 @@ class SimpleMinimumClearance
   {
     if (minClearancePts != null) return;
     minClearancePts = new Coordinate[2];
-    minClearance = Double.MAX_VALUE;
+    minClearance = double.maxFinite
     inputGeom.apply(new VertexCoordinateFilter(this));
   }
   

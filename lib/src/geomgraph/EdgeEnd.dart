@@ -39,31 +39,28 @@ import 'Node.dart';
  * This ordering is used to sort EdgeEnds around a node.
  * @version 1.7
  */
-class EdgeEnd
-  implements Comparable
+class EdgeEnd implements Comparable
 {
  /**protected */Edge edge;  // the parent edge of this edge end
- /**protected */Label label;
+ /**protected */Label? label;
 
- /**private */Node node;          // the node this edge end originates at
- /**private */Coordinate p0, p1;  // points of initial line segment
- /**private */double dx, dy;      // the direction vector for this edge from its starting point
- /**private */int quadrant;
+ /**private */late Node node;          // the node this edge end originates at
+ /**private */late Coordinate p0, p1;  // points of initial line segment
+ /**private */late double dx, dy;      // the direction vector for this edge from its starting point
+ /**private */late int quadrant;
 
- /**protected */EdgeEnd(Edge edge)
-  {
-    this.edge = edge;
-  }
-  EdgeEnd(Edge edge, Coordinate p0, Coordinate p1) {
-    this(edge, p0, p1, null);
-  }
-  EdgeEnd(Edge edge, Coordinate p0, Coordinate p1, Label label) {
-    this(edge);
+ /**protected */
+ EdgeEnd(this.edge);
+
+  // EdgeEnd(Edge edge, Coordinate p0, Coordinate p1) {
+  //   this(edge, p0, p1, null);
+  // }
+  EdgeEnd.Coord2(this.edge, Coordinate p0, Coordinate p1, [this.label]) {
     init(p0, p1);
-    this.label = label;
   }
 
- /**protected */void init(Coordinate p0, Coordinate p1)
+ /**protected */
+ void init(Coordinate p0, Coordinate p1)
   {
     this.p0 = p0;
     this.p1 = p1;
@@ -74,7 +71,7 @@ class EdgeEnd
   }
 
   Edge getEdge() { return edge; }
-  Label getLabel() { return label; }
+  Label? getLabel() { return label; }
   Coordinate getCoordinate() { return p0; }
   Coordinate getDirectedCoordinate() { return p1; }
   int getQuadrant() { return quadrant; }
@@ -84,6 +81,7 @@ class EdgeEnd
   void setNode(Node node) { this.node = node; }
   Node getNode() { return node; }
 
+  @override
   int compareTo(var obj)
   {
       EdgeEnd e =  obj as EdgeEnd;

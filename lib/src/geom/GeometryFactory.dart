@@ -26,6 +26,7 @@ import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/geom/Point.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 import 'CoordinateSequences.dart';
 import 'GeometryCollection.dart';
@@ -497,56 +498,59 @@ class GeometryFactory{
   ///      .
   // Geometry buildGeometry(Collection geomList) {
   // TODO: ruier edit.
-  // Geometry buildGeometry(Iterable geomList) {
+  Geometry buildGeometry(Iterable geomList) {
   	
-  // 	/**
-  // 	 * Determine some facts about the geometries in the list
-  // 	 */
-  //   Class geomClass = null;
-  //   bool isHeterogeneous = false;
-  //   bool hasGeometryCollection = false;
-  //   for (Iterator i = geomList.iterator(); i.moveNext(); ) {
-  //     Geometry geom = (Geometry) i.current;
-  //     Class partClass = geom.getClass();
-  //     if (geomClass == null) {
-  //       geomClass = partClass;
-  //     }
-  //     if (partClass != geomClass) {
-  //       isHeterogeneous = true;
-  //     }
-  //     if (geom is GeometryCollection)
-  //       hasGeometryCollection = true;
-  //   }
+  	/**
+  	 * Determine some facts about the geometries in the list
+  	 */
+    Class geomClass = null;
+    bool isHeterogeneous = false;
+    bool hasGeometryCollection = false;
+    for (Iterator i = geomList.iterator; i.moveNext(); ) {
+      Geometry geom =  i.current as Geometry;
+      Class partClass = geom.getClass();
+      // ignore: prefer_conditional_assignment
+      if (geomClass == null) {
+        geomClass = partClass;
+      }
+      if (partClass != geomClass) {
+        isHeterogeneous = true;
+      }
+      if (geom is GeometryCollection) {
+        hasGeometryCollection = true;
+      }
+    }
     
-  //   /**
-  //    * Now construct an appropriate geometry to return
-  //    */
-  //   // for the empty geometry, return an empty GeometryCollection
-  //   if (geomClass == null) {
-  //     return createGeometryCollection();
-  //   }
-  //   if (isHeterogeneous || hasGeometryCollection) {
-  //     return createGeometryCollection(toGeometryArray(geomList));
-  //   }
-  //   // at this point we know the collection is hetereogenous.
-  //   // Determine the type of the result from the first Geometry in the list
-  //   // this should always return a geometry, since otherwise an empty collection would have already been returned
-  //   Geometry geom0 = (Geometry) geomList.iterator().current;
-  //   bool isCollection = geomList.size() > 1;
-  //   if (isCollection) {
-  //     if (geom0 is Polygon) {
-  //       return createMultiPolygon(toPolygonArray(geomList));
-  //     }
-  //     else if (geom0 is LineString) {
-  //       return createMultiLineString(toLineStringArray(geomList));
-  //     }
-  //     else if (geom0 is Point) {
-  //       return createMultiPoint(toPointArray(geomList));
-  //     }
-  //     Assert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());
-  //   }
-  //   return geom0;
-  // }
+    /**
+     * Now construct an appropriate geometry to return
+     */
+    // for the empty geometry, return an empty GeometryCollection
+    if (geomClass == null) {
+      return createGeometryCollection();
+    }
+    if (isHeterogeneous || hasGeometryCollection) {
+      return createGeometryCollection(toGeometryArray(geomList));
+    }
+    // at this point we know the collection is hetereogenous.
+    // Determine the type of the result from the first Geometry in the list
+    // this should always return a geometry, since otherwise an empty collection would have already been returned
+    Geometry geom0 = geomList.iterator.current as Geometry;
+    bool isCollection = geomList.length > 1;
+    if (isCollection) {
+      if (geom0 is Polygon) {
+        return createMultiPolygon(toPolygonArray(geomList));
+      }
+      else if (geom0 is LineString) {
+        return createMultiLineString(toLineStringArray(geomList));
+      }
+      else if (geom0 is Point) {
+        return createMultiPointFromPoints(toPointArray(geomList));
+      }
+      // Assert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());
+      Assert.shouldNeverReachHere("Unhandled class: ${geom0.runtimeType}");
+    }
+    return geom0;
+  }
   
   /// Constructs an empty {@link LineString} geometry.
   /// 

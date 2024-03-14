@@ -16,7 +16,6 @@
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
-import 'EdgeEndStar.dart';
 import 'Node.dart';
 
 /**
@@ -32,6 +31,6 @@ class NodeFactory {
   {
     // TODO: ruier edit.
     // return new Node(coord, null);
-    return new Node(coord, null);
+    return Node(coord, null);
   }
 }

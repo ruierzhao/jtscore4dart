@@ -188,7 +188,7 @@ class LineStringSnapper
    */
  /**private */int findSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
   {
-    double minDist = Double.MAX_VALUE;
+    double minDist = double.maxFinite
     int snapIndex = -1;
     for (int i = 0; i < srcCoords.size() - 1; i++) {
       seg.p0 = (Coordinate) srcCoords.get(i);

@@ -27,6 +27,11 @@
 // import org.locationtech.jts.geom.util.PointExtracter;
 // import org.locationtech.jts.geom.util.PolygonExtracter;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+
+import 'GeometryLocation.dart';
+
 /**
  * Find two points on two {@link Geometry}s which lie
  * within a given distance, or else are the nearest points
@@ -72,8 +77,9 @@ class DistanceOp
   {
     // check envelope distance for a short-circuit negative result
     double envDist = g0.getEnvelopeInternal().distance(g1.getEnvelopeInternal());
-    if (envDist > distance)
+    if (envDist > distance) {
       return false;
+    }
 
     // MD - could improve this further with a positive short-circuit based on envelope MinMaxDist
     
@@ -115,8 +121,9 @@ class DistanceOp
  /**private */double terminateDistance = 0.0;
   // working
  /**private */PointLocator ptLocator = new PointLocator();
- /**private */GeometryLocation[] minDistanceLocation;
- /**private */double minDistance = Double.MAX_VALUE;
+ /**private */List<GeometryLocation> minDistanceLocation;
+//  /**private */double minDistance = Double.MAX_VALUE;
+ /**private */double minDistance = double.maxFinite;
 
   /**
    * Constructs a DistanceOp that computes the distance and nearest points between
@@ -136,13 +143,13 @@ class DistanceOp
    * @param g1 a Geometry
    * @param terminateDistance the distance on which to terminate the search
    */
-  DistanceOp(Geometry g0, Geometry g1, double terminateDistance)
-  {
-    this.geom = new Geometry[2];
-    geom[0] = g0;
-    geom[1] = g1;
-    this.terminateDistance = terminateDistance;
-  }
+  DistanceOp(Geometry g0, Geometry g1, [this.terminateDistance=0.0])
+  :this.geom = List.from([g0,g1], growable: false);
+  // {
+  //   this.geom = new Geometry[2];
+  //   geom[0] = g0;
+  //   geom[1] = g1;
+  // }
 
   /**
    * Report the distance between the nearest points on the input geometries.
@@ -153,10 +160,12 @@ class DistanceOp
    */
   double distance()
   {
-  	if (geom[0] == null || geom[1] == null)
-  		throw new ArgumentError("null geometries are not supported");
-  	if (geom[0].isEmpty() || geom[1].isEmpty()) 
-  		return 0.0;
+  	if (geom[0] == null || geom[1] == null) {
+  	  throw new ArgumentError("null geometries are not supported");
+  	}
+  	if (geom[0].isEmpty() || geom[1].isEmpty()) {
+  	  return 0.0;
+  	}
   	
     computeMinDistance();
     return minDistance;
@@ -194,7 +203,7 @@ class DistanceOp
    *
    * @return a pair of {@link GeometryLocation}s for the nearest points
    */
-  GeometryLocation[] nearestLocations()
+  List<GeometryLocation> nearestLocations()
   {
     computeMinDistance();
     return minDistanceLocation;
@@ -205,12 +214,12 @@ class DistanceOp
    * @return a pair of {@link GeometryLocation}s for the nearest points
    * @deprecated renamed to nearestLocations
    */
-  GeometryLocation[] closestLocations()
+  List<GeometryLocation> closestLocations()
   {
     return nearestLocations();
   }
 
- /**private */void updateMinDistance(GeometryLocation[] locGeom, bool flip)
+ /**private */void updateMinDistance(List<GeometryLocation> locGeom, bool flip)
   {
     // if not set then don't update
     if (locGeom[0] == null) return;
@@ -238,14 +247,14 @@ class DistanceOp
 
  /**private */void computeContainmentDistance()
   {
-    GeometryLocation[] locPtPoly = new GeometryLocation[2];
+    List<GeometryLocation> locPtPoly = new GeometryLocation[2];
     // test if either geometry has a vertex inside the other
     computeContainmentDistance(0, locPtPoly);
     if (minDistance <= terminateDistance) return;
     computeContainmentDistance(1, locPtPoly);
   }
   
- /**private */void computeContainmentDistance(int polyGeomIndex, GeometryLocation[] locPtPoly)
+ /**private */void computeContainmentDistance(int polyGeomIndex, List<GeometryLocation> locPtPoly)
   {
     Geometry polyGeom = geom[polyGeomIndex];
     // if no polygon then nothing to do
@@ -265,7 +274,7 @@ class DistanceOp
     }	
   }
   
- /**private */void computeContainmentDistance(List locs, List polys, GeometryLocation[] locPtPoly)
+ /**private */void computeContainmentDistance(List locs, List polys, List<GeometryLocation> locPtPoly)
   {
     for (int i = 0; i < locs.size(); i++) {
       GeometryLocation loc = (GeometryLocation) locs.get(i);
@@ -278,7 +287,7 @@ class DistanceOp
 
  /**private */void computeContainmentDistance(GeometryLocation ptLoc,
       Polygon poly,
-      GeometryLocation[] locPtPoly)
+      List<GeometryLocation> locPtPoly)
   {
     Coordinate pt = ptLoc.getCoordinate();
     // if pt is not in exterior, distance to geom is 0
@@ -297,7 +306,7 @@ class DistanceOp
    */
  /**private */void computeFacetDistance()
   {
-    GeometryLocation[] locGeom = new GeometryLocation[2];
+    List<GeometryLocation> locGeom = new GeometryLocation[2];
 
     /**
      * Geometries are not wholely inside, so compute distance from lines and points
@@ -332,7 +341,7 @@ class DistanceOp
     updateMinDistance(locGeom, false);
   }
 
- /**private */void computeMinDistanceLines(List lines0, List lines1, GeometryLocation[] locGeom)
+ /**private */void computeMinDistanceLines(List lines0, List lines1, List<GeometryLocation> locGeom)
   {
     for (int i = 0; i < lines0.size(); i++) {
       LineString line0 = (LineString) lines0.get(i);
@@ -344,16 +353,18 @@ class DistanceOp
     }
   }
 
- /**private */void computeMinDistancePoints(List points0, List points1, GeometryLocation[] locGeom)
+ /**private */void computeMinDistancePoints(List points0, List points1, List<GeometryLocation> locGeom)
   {
     for (int i = 0; i < points0.size(); i++) {
       Point pt0 = (Point) points0.get(i);
-      if (pt0.isEmpty())
+      if (pt0.isEmpty()) {
         continue;
+      }
       for (int j = 0; j < points1.size(); j++) {
         Point pt1 = (Point) points1.get(j);
-        if (pt1.isEmpty())
+        if (pt1.isEmpty()) {
           continue;
+        }
         double dist = pt0.getCoordinate().distance(pt1.getCoordinate());
         if (dist < minDistance) {
           minDistance = dist;
@@ -366,14 +377,15 @@ class DistanceOp
   }
 
  /**private */void computeMinDistanceLinesPoints(List lines, List points,
-      GeometryLocation[] locGeom)
+      List<GeometryLocation> locGeom)
   {
     for (int i = 0; i < lines.size(); i++) {
       LineString line = (LineString) lines.get(i);
       for (int j = 0; j < points.size(); j++) {
         Point pt = (Point) points.get(j);
-        if (pt.isEmpty())
+        if (pt.isEmpty()) {
           continue;
+        }
         computeMinDistance(line, pt, locGeom);
         if (minDistance <= terminateDistance) return;
       }
@@ -381,11 +393,12 @@ class DistanceOp
   }
 
  /**private */void computeMinDistance(LineString line0, LineString line1,
-                                  GeometryLocation[] locGeom)
+                                  List<GeometryLocation> locGeom)
   {
     if (line0.getEnvelopeInternal().distance(line1.getEnvelopeInternal())
-        > minDistance)
-          return;
+        > minDistance) {
+      return;
+    }
     List<Coordinate> coord0 = line0.getCoordinates();
     List<Coordinate> coord1 = line1.getCoordinates();
       // brute force approach!
@@ -393,15 +406,17 @@ class DistanceOp
       
       // short-circuit if line segment is far from line
       Envelope segEnv0 = new Envelope(coord0[i], coord0[i + 1]);
-      if (segEnv0.distance(line1.getEnvelopeInternal()) > minDistance)
+      if (segEnv0.distance(line1.getEnvelopeInternal()) > minDistance) {
         continue;
+      }
       
       for (int j = 0; j < coord1.length - 1; j++) {
         
         // short-circuit if line segments are far apart
         Envelope segEnv1 = new Envelope(coord1[j], coord1[j + 1]);
-        if (segEnv0.distance(segEnv1) > minDistance)
+        if (segEnv0.distance(segEnv1) > minDistance) {
           continue;
+        }
 
         double dist = Distance.segmentToSegment(
                                         coord0[i], coord0[i + 1],
@@ -420,11 +435,12 @@ class DistanceOp
   }
 
  /**private */void computeMinDistance(LineString line, Point pt,
-                                  GeometryLocation[] locGeom)
+                                  List<GeometryLocation> locGeom)
   {
     if (line.getEnvelopeInternal().distance(pt.getEnvelopeInternal())
-        > minDistance)
-          return;
+        > minDistance) {
+      return;
+    }
     List<Coordinate> coord0 = line.getCoordinates();
     Coordinate coord = pt.getCoordinate();
       // brute force approach!

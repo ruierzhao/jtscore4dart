@@ -32,7 +32,7 @@ abstract class Noder
    *
    * @param segStrings a collection of {@link SegmentString}s to node
    */
-  void computeNodes(Collection segStrings);
+  void computeNodes(Iterable segStrings);
 
   /**
    * Returns a {@link Collection} of fully noded {@link SegmentString}s.

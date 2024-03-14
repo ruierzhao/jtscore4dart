@@ -94,7 +94,7 @@ class Distance3DOp {
 	private double terminateDistance = 0.0;
 	// working
 	private GeometryLocation[] minDistanceLocation;
-	private double minDistance = Double.MAX_VALUE;
+	private double minDistance = double.maxFinite
 	private bool isDone = false;
 
 	/**

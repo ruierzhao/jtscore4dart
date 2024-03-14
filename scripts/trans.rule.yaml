@@ -38,3 +38,4 @@ replace:
   - new ArrayList() -> []
   - it.hasNext() -> it.moveNext()
   - it.next() -> it.current
+  - Double.MAX_VALUE -> double.maxFinite

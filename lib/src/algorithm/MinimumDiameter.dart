@@ -219,7 +219,7 @@ class MinimumDiameter
  /**private */void computeConvexRingMinDiameter(List<Coordinate> pts)
   {
     // for each segment in the ring
-    minWidth = Double.MAX_VALUE;
+    minWidth = double.maxFinite
     int currMaxIndex = 1;
 
     LineSegment seg = new LineSegment();
@@ -297,10 +297,10 @@ class MinimumDiameter
     double dx = minBaseSeg.p1.x - minBaseSeg.p0.x;
     double dy = minBaseSeg.p1.y - minBaseSeg.p0.y;
     
-    double minPara = Double.MAX_VALUE;
-    double maxPara = -Double.MAX_VALUE;
-    double minPerp = Double.MAX_VALUE;
-    double maxPerp = -Double.MAX_VALUE;
+    double minPara = double.maxFinite
+    double maxPara = -double.maxFinite
+    double minPerp = double.maxFinite
+    double maxPerp = -double.maxFinite
     
     // compute maxima and minima of lines parallel and perpendicular to base segment
     for (int i = 0; i < convexHullPts.length; i++) {

@@ -41,7 +41,7 @@ implements ItemDistance
    * @throws ClassCastException if either item is not a Geometry
    */
   double distance(ItemBoundable item1, ItemBoundable item2) {
-    if (item1 == item2) return Double.MAX_VALUE;
+    if (item1 == item2) return double.maxFinite
     Geometry g1 = (Geometry) item1.getItem();
     Geometry g2 = (Geometry) item2.getItem();
     return g1.distance(g2);    

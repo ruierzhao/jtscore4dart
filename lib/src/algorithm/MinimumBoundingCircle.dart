@@ -354,7 +354,7 @@ class MinimumBoundingCircle
 	
 	private static Coordinate pointWitMinAngleWithX(List<Coordinate> pts, Coordinate P)
 	{
-		double minSin = Double.MAX_VALUE;
+		double minSin = double.maxFinite
 		Coordinate minAngPt = null;
 		for (int i = 0; i < pts.length; i++) {
 			
@@ -380,7 +380,7 @@ class MinimumBoundingCircle
 	
 	private static Coordinate pointWithMinAngleWithSegment(List<Coordinate> pts, Coordinate P, Coordinate Q)
 	{
-		double minAng = Double.MAX_VALUE;
+		double minAng = double.maxFinite
 		Coordinate minAngPt = null;
 		for (int i = 0; i < pts.length; i++) {
 			

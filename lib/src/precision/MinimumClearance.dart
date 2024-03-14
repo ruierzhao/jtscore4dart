@@ -189,7 +189,7 @@ class MinimumClearance
     
     // initialize to "No Distance Exists" state
     minClearancePts = new Coordinate[2];
-    minClearance = Double.MAX_VALUE;
+    minClearance = double.maxFinite
     
     // handle empty geometries
     if (inputGeom.isEmpty()) {
@@ -228,7 +228,7 @@ class MinimumClearance
  /**private */static class MinClearanceDistance
   implements ItemDistance
   {
-   /**private */double minDist = Double.MAX_VALUE;
+   /**private */double minDist = double.maxFinite
    /**private */List<Coordinate> minPts = new Coordinate[2];
     
     List<Coordinate> getCoordinates()
@@ -239,7 +239,7 @@ class MinimumClearance
     double distance(ItemBoundable b1, ItemBoundable b2) {
       FacetSequence fs1 = (FacetSequence) b1.getItem();
       FacetSequence fs2 = (FacetSequence) b2.getItem();
-      minDist = Double.MAX_VALUE;
+      minDist = double.maxFinite
       return distance(fs1, fs2);
     }
     

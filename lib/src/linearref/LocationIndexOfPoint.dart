@@ -91,7 +91,7 @@ class LocationIndexOfPoint
 
  /**private */LinearLocation indexOfFromStart(Coordinate inputPt, LinearLocation minIndex)
   {
-    double minDistance = Double.MAX_VALUE;
+    double minDistance = double.maxFinite
     int minComponentIndex = 0;
     int minSegmentIndex = 0;
     double minFrac = -1.0;

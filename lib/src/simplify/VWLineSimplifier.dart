@@ -101,7 +101,7 @@ class VWLineSimplifier
       return first;
     }
     
-    static double MAX_AREA = Double.MAX_VALUE;
+    static double MAX_AREA = double.maxFinite
     
    /**private */Coordinate pt;
    /**private */VWLineSimplifier.VWVertex prev;

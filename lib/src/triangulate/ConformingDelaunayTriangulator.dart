@@ -520,7 +520,7 @@ class ConformingDelaunayTriangulator
 		// For each point found, test if it falls strictly in the circle
 		// find closest point
 		Coordinate closestNonGabriel = null;
-		double minDist = Double.MAX_VALUE;
+		double minDist = double.maxFinite
 		for (Iterator i = result.iterator(); i.moveNext();) {
 			KdNode nextNode = (KdNode) i.current;
 			Coordinate testPt = nextNode.getCoordinate();

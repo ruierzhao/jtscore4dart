@@ -214,7 +214,7 @@ class GeometrySnapper
 
  /**private */double computeMinimumSegmentLength(List<Coordinate> pts)
   {
-    double minSegLen = Double.MAX_VALUE;
+    double minSegLen = double.maxFinite
     for (int i = 0; i < pts.length - 1; i++) {
       double segLen = pts[i].distance(pts[i + 1]);
       if (segLen < minSegLen)

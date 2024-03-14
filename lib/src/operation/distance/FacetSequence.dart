@@ -174,7 +174,7 @@ class FacetSequence
  /**private */double computeDistanceLineLine(FacetSequence facetSeq, GeometryLocation[] locs)
   {
     // both linear - compute minimum segment-segment distance
-    double minDistance = Double.MAX_VALUE;
+    double minDistance = double.maxFinite
 
     for (int i = start; i < end - 1; i++) {
       Coordinate p0 = pts.getCoordinate(i);
@@ -205,7 +205,7 @@ class FacetSequence
   
  /**private */double computeDistancePointLine(Coordinate pt, FacetSequence facetSeq, GeometryLocation[] locs) 
   {
-    double minDistance = Double.MAX_VALUE;
+    double minDistance = double.maxFinite
 
     for (int i = facetSeq.start; i < facetSeq.end - 1; i++) {
       Coordinate q0 = facetSeq.pts.getCoordinate(i);

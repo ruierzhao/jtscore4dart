@@ -47,8 +47,9 @@ class DirectedEdge
   {
     if (currLocation == Location.EXTERIOR && nextLocation == Location.INTERIOR) {
       return 1;
-    } else if (currLocation == Location.INTERIOR && nextLocation == Location.EXTERIOR)
+    } else if (currLocation == Location.INTERIOR && nextLocation == Location.EXTERIOR){
        return -1;
+    }
     return 0;
   }
 
@@ -82,14 +83,23 @@ class DirectedEdge
   }
   @override
   Edge getEdge() { return edge; }
+
   void setInResult(bool isInResult) { this._isInResult = isInResult; }
+
   bool isInResult() { return _isInResult; }
+
   bool isVisited() { return _isVisited; }
+
   void setVisited(bool isVisited) { this._isVisited = isVisited; }
+
   void setEdgeRing(EdgeRing edgeRing) { this.edgeRing = edgeRing; }
+
   EdgeRing getEdgeRing() { return edgeRing; }
+
   void setMinEdgeRing(EdgeRing minEdgeRing) { this.minEdgeRing = minEdgeRing; }
+
   EdgeRing getMinEdgeRing() { return minEdgeRing; }
+  
   int getDepth(int position) { return depth[position]; }
 
   /**

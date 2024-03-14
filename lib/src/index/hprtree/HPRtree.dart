@@ -266,10 +266,10 @@ class HPRtree
     double[] a = new double[4*size];
     for (int i = 0; i < size; i++) {
       int index = 4*i;
-      a[index] = Double.MAX_VALUE;
-      a[index+1] = Double.MAX_VALUE;
-      a[index+2] = -Double.MAX_VALUE;
-      a[index+3] = -Double.MAX_VALUE;
+      a[index] = double.maxFinite
+      a[index+1] = double.maxFinite
+      a[index+2] = -double.maxFinite
+      a[index+3] = -double.maxFinite
     }
     return a;
   }

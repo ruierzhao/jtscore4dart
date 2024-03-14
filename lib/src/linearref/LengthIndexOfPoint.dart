@@ -90,7 +90,7 @@ class LengthIndexOfPoint
 
  /**private */double indexOfFromStart(Coordinate inputPt, double minIndex)
   {
-    double minDistance = Double.MAX_VALUE;
+    double minDistance = double.maxFinite
 
     double ptMeasure = minIndex;
     double segmentStartMeasure = 0.0;

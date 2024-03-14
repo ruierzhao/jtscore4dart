@@ -42,6 +42,17 @@
 // import org.locationtech.jts.geomgraph.index.SimpleMCSweepLineIntersector;
 // import org.locationtech.jts.util.Assert;
 
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+
+import 'PlanarGraph.dart';
+import 'index/EdgeSetIntersector.dart';
+import 'index/SimpleMCSweepLineIntersector.dart';
+
 /**
  * A GeometryGraph is a graph that models a given Geometry
  * @version 1.7
@@ -125,22 +136,24 @@ class GeometryGraph
     return new SimpleMCSweepLineIntersector();
   }
 
-  GeometryGraph(int argIndex, Geometry parentGeom)
-  {
-    this(argIndex, parentGeom,
-         BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE
-         );
-  }
+  // GeometryGraph(int argIndex, Geometry parentGeom)
+  // {
+  //   this(argIndex, parentGeom,
+  //        BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE
+  //        );
+  // }
 
-  GeometryGraph(int argIndex, Geometry parentGeom, BoundaryNodeRule boundaryNodeRule) {
-    this.argIndex = argIndex;
-    this.parentGeom = parentGeom;
-    this.boundaryNodeRule = boundaryNodeRule;
-    if (parentGeom != null) {
-//      precisionModel = parentGeom.getPrecisionModel();
-//      SRID = parentGeom.getSRID();
-      add(parentGeom);
-    }
+  GeometryGraph(this.argIndex, this.parentGeom, [BoundaryNodeRule? boundaryNodeRule]) {
+    // TODO: ruier edit.
+//     if (parentGeom != null) {
+// //      precisionModel = parentGeom.getPrecisionModel();
+// //      SRID = parentGeom.getSRID();
+//       add(parentGeom);
+//     }
+  if (boundaryNodeRule == null ) {
+    this.boundaryNodeRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+  }
+    add(parentGeom);
   }
 
   /*

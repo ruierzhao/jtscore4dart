@@ -355,8 +355,8 @@ class BufferBuilder
   {
   	GeometryFactory fact = new GeometryFactory();
   	List lines = [];
-  	while (it.hasNext()) {
-  		SegmentString ss = (SegmentString) it.current;
+  	while (it.moveNext()) {
+  		SegmentString ss = it.current as SegmentString;
   		LineString line = fact.createLineString(ss.getCoordinates());
   		lines.add(line);
   	}

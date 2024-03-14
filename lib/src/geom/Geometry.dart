@@ -1641,9 +1641,11 @@ abstract class Geometry{
   ///      s are considered to be equal by the <code>equalsExact</code> method.
   /**protected */ 
   // TODO: ruier edit.
-  // bool isEquivalentClass(Geometry other) {
-  //   return this.getClass().getName().equals(other.getClass().getName());
-  // }
+  bool isEquivalentClass(Geometry other) {
+    /// TODO:always return true
+    return true;
+    // return this.getClass().getName().equals(other.getClass().getName());
+  }
 
   ///  Throws an exception if <code>g</code>'s type is a <code>GeometryCollection</code>.
   ///  (Its subclasses do not trigger an exception).
@@ -1684,7 +1686,8 @@ abstract class Geometry{
   ///      this object is greater than, equal to, or less than <code>o</code>, as
   ///      defined in "Normal Form For Geometry" in the JTS Technical
   ///      Specifications
-  /**protected abstract*/ int compareToSameClass(Object o);
+  /**protected abstract*/ 
+  int compareToSameClass(Object o);
 
   ///  Returns whether this <code>Geometry</code> is greater than, equal to,
   ///  or less than another <code>Geometry</code> of the same class.

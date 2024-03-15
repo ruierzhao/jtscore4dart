@@ -236,8 +236,8 @@ class BufferBuilder
       nv.checkValid();
     }
     
-// DEBUGGING ONLY
-//BufferDebug.saveEdges(nodedEdges, "run" + BufferDebug.runCount + "_nodedEdges");
+    // DEBUGGING ONLY
+    //BufferDebug.saveEdges(nodedEdges, "run" + BufferDebug.runCount + "_nodedEdges");
 
     for (Iterator i = nodedSegStrings.iterator; i.moveNext(); ) {
       SegmentString segStr =  i.current as SegmentString;

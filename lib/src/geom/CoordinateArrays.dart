@@ -473,7 +473,7 @@ abstract class CoordinateArrays {
   /// constructs a new array containing no repeated points.
   /// Otherwise, returns the argument.
   /// 
-  /// @param coord an array of coordinates
+  /// @param [coord] an array of coordinates
   /// @return the array with repeated and invalid coordinates removed
   /// @see #hasRepeatedOrInvalidPoints(List<Coordinate>)
   /// @see Coordinate#isValid() 

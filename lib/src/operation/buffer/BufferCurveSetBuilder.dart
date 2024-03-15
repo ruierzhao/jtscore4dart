@@ -154,9 +154,7 @@ class BufferCurveSetBuilder {
   {
     if (g.isEmpty()) return;
 
-    if (g is Polygon) {
-      addPolygon( g );
-    } 
+    if (g is Polygon)                 addPolygon( g );
     else if (g is LineString)         addLineString( g);
     else if (g is Point)              addPoint( g);
     else if (g is MultiPoint)         addCollection( g);
@@ -233,6 +231,7 @@ class BufferCurveSetBuilder {
   {
     double offsetDistance = distance;
     int offsetSide = Position.LEFT;
+
     if (distance < 0.0) {
       offsetDistance = -distance;
       offsetSide = Position.RIGHT;
@@ -300,11 +299,11 @@ class BufferCurveSetBuilder {
    * this is detected and 
    * the left and right locations are interchanged and the side is flipped.)
    *
-   * @param coord the coordinates of the ring (must not contain repeated points)
-   * @param offsetDistance the positive distance at which to create the buffer
-   * @param side the side {@link Position} of the ring on which to construct the buffer line
-   * @param cwLeftLoc the location on the L side of the ring (if it is CW)
-   * @param cwRightLoc the location on the R side of the ring (if it is CW)
+   * @param [coord] the coordinates of the ring (must not contain repeated points)
+   * @param [offsetDistance] the positive distance at which to create the buffer
+   * @param [side] the side {@link Position} of the ring on which to construct the buffer line
+   * @param [cwLeftLoc] the location on the L side of the ring (if it is CW)
+   * @param [cwRightLoc] the location on the R side of the ring (if it is CW)
    */
  /**private */void addRingSide(List<Coordinate> coord, double offsetDistance, int side, int cwLeftLoc, int cwRightLoc)
   {
@@ -417,8 +416,8 @@ class BufferCurveSetBuilder {
    * It may be degenerate (i.e. contain only 1, 2, or 3 points).
    * In this case it has no area, and hence has a minimum diameter of 0.
    *
-   * @param ringCoord
-   * @param offsetDistance
+   * @param [ringCoord]
+   * @param [offsetDistance]
    * @return
    */
  /**private */static bool isErodedCompletely(LinearRing ring, double bufferDistance)
@@ -436,6 +435,7 @@ class BufferCurveSetBuilder {
     }
 
     // if envelope is narrower than twice the buffer distance, ring is eroded
+    // ring 的宽度比两倍的buffer 距离小就是无效的
     Envelope env = ring.getEnvelopeInternal();
     double envMinDimension = min(env.getHeight(), env.getWidth());
     if (bufferDistance < 0.0

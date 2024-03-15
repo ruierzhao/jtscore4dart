@@ -22,6 +22,23 @@
 // import org.locationtech.jts.geom.Position;
 // import org.locationtech.jts.geom.PrecisionModel;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/algorithm/Angle.dart';
+import 'package:jtscore4dart/src/algorithm/Distance.dart';
+import 'package:jtscore4dart/src/algorithm/Intersection.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import '../../utils.dart';
+import 'BufferParameters.dart';
+import 'OffsetSegmentString.dart';
+
 /**
  * Generates segments which form an offset curve.
  * Supports all end cap and join options 
@@ -44,22 +61,22 @@ class OffsetSegmentGenerator
    * reduces the number of offset curve vertices.
    * and improves the robustness of mitre construction.
    */
- /**private */static final double OFFSET_SEGMENT_SEPARATION_FACTOR = .05;
+ /**private */static const double OFFSET_SEGMENT_SEPARATION_FACTOR = .05;
   
   /**
    * Factor controlling how close curve vertices on inside turns can be to be snapped 
    */
- /**private */static final double INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3;
+ /**private */static const double INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3;
 
   /**
    * Factor which controls how close curve vertices can be to be snapped
    */
- /**private */static final double CURVE_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-6;
+ /**private */static const double CURVE_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-6;
 
   /**
    * Factor which determines how short closing segs can be for round buffers
    */
- /**private */static final int MAX_CLOSING_SEG_LEN_FACTOR = 80;
+ /**private */static const int MAX_CLOSING_SEG_LEN_FACTOR = 80;
 
   /**
    * the max error of approximation (distance) between a quad segment and the true fillet curve
@@ -70,7 +87,7 @@ class OffsetSegmentGenerator
    * The angle quantum with which to approximate a fillet curve
    * (based on the input # of quadrant segments)
    */
- /**private */double filletAngleQuantum;
+ /**private */late double filletAngleQuantum;
 
   /**
    * The Closing Segment Length Factor controls how long
@@ -89,32 +106,26 @@ class OffsetSegmentGenerator
    */
  /**private */int closingSegLengthFactor = 1;
 
- /**private */OffsetSegmentString segList;
+ /**private */late OffsetSegmentString segList;
  /**private */double distance = 0.0;
  /**private */PrecisionModel precisionModel;
  /**private */BufferParameters bufParams;
- /**private */LineIntersector li;
+ /**private */late LineIntersector li;
 
- /**private */Coordinate s0, s1, s2;
- /**private */LineSegment seg0 = new LineSegment();
- /**private */LineSegment seg1 = new LineSegment();
- /**private */LineSegment offset0 = new LineSegment();
- /**private */LineSegment offset1 = new LineSegment();
+ /**private */late Coordinate s0, s1, s2;
+ /**private */LineSegment seg0 = new LineSegment.empty();
+ /**private */LineSegment seg1 = new LineSegment.empty();
+ /**private */LineSegment offset0 = new LineSegment.empty();
+ /**private */LineSegment offset1 = new LineSegment.empty();
  /**private */int side = 0;
- /**private */bool hasNarrowConcaveAngle = false;
+ /**private */bool _hasNarrowConcaveAngle = false;
 
-  OffsetSegmentGenerator(PrecisionModel precisionModel,
-      BufferParameters bufParams, double distance) {
-    this.precisionModel = precisionModel;
-    this.bufParams = bufParams;
-
-    // compute intersections in full precision, to provide accuracy
-    // the points are rounded as they are inserted into the curve line
-    li = new RobustLineIntersector();
+  OffsetSegmentGenerator(this.precisionModel,this.bufParams, double distance) {
+    this.li = new RobustLineIntersector();
     
     int quadSegs = bufParams.getQuadrantSegments();
     if (quadSegs < 1) quadSegs = 1;
-    filletAngleQuantum = Angle.PI_OVER_2 / quadSegs;
+    this.filletAngleQuantum = Angle.PI_OVER_2 / quadSegs;
 
     /**
      * Non-round joins cause issues with short closing segments, so don't use
@@ -122,8 +133,9 @@ class OffsetSegmentGenerator
      * small buffer distances.
      */
     if (bufParams.getQuadrantSegments() >= 8
-        && bufParams.getJoinStyle() == BufferParameters.JOIN_ROUND)
+        && bufParams.getJoinStyle() == BufferParameters.JOIN_ROUND) {
       closingSegLengthFactor = MAX_CLOSING_SEG_LEN_FACTOR;
+    }
     init(distance);
   }
 
@@ -141,13 +153,13 @@ class OffsetSegmentGenerator
    */
   bool hasNarrowConcaveAngle()
   {
-    return hasNarrowConcaveAngle;
+    return _hasNarrowConcaveAngle;
   }
   
  /**private */void init(double distance)
   {
     this.distance = (distance).abs();
-    maxCurveSegmentError = this.distance * (1 - math.cos(filletAngleQuantum / 2.0));
+    maxCurveSegmentError = this.distance * (1 - cos(filletAngleQuantum / 2.0));
     segList = new OffsetSegmentString();
     segList.setPrecisionModel(precisionModel);
     /**
@@ -162,7 +174,7 @@ class OffsetSegmentGenerator
     this.s1 = s1;
     this.s2 = s2;
     this.side = side;
-    seg1.setCoordinates(s1, s2);
+    seg1.setCoordinatesFromCoord(s1, s2);
     computeOffsetSegment(seg1, side, distance, offset1);
   }
 
@@ -203,9 +215,9 @@ class OffsetSegmentGenerator
     s0 = s1;
     s1 = s2;
     s2 = p;
-    seg0.setCoordinates(s0, s1);
+    seg0.setCoordinatesFromCoord(s0, s1);
     computeOffsetSegment(seg0, side, distance, offset0);
-    seg1.setCoordinates(s1, s2);
+    seg1.setCoordinatesFromCoord(s1, s2);
     computeOffsetSegment(seg1, side, distance, offset1);
 
     // do nothing if points are equal
@@ -347,7 +359,7 @@ class OffsetSegmentGenerator
        * close, don't add closing segments but simply use one of the offset
        * points
        */
-      hasNarrowConcaveAngle = true;
+      _hasNarrowConcaveAngle = true;
       //System.out.println("NARROW ANGLE - distance = " + distance);
       if (offset0.p1.distance(offset1.p0) < distance
           * INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR) {
@@ -398,7 +410,7 @@ class OffsetSegmentGenerator
     int sideSign = side == Position.LEFT ? 1 : -1;
     double dx = seg.p1.x - seg.p0.x;
     double dy = seg.p1.y - seg.p0.y;
-    double len = math.hypot(dx, dy);
+    double len = hypot(dx, dy);
     // u is the vector that is the length of the offset, in the direction of the segment
     double ux = sideSign * distance * dx / len;
     double uy = sideSign * distance * dy / len;
@@ -415,14 +427,14 @@ class OffsetSegmentGenerator
   {
     LineSegment seg = new LineSegment(p0, p1);
 
-    LineSegment offsetL = new LineSegment();
+    LineSegment offsetL = new LineSegment.empty();
     computeOffsetSegment(seg, Position.LEFT, distance, offsetL);
-    LineSegment offsetR = new LineSegment();
+    LineSegment offsetR = new LineSegment.empty();
     computeOffsetSegment(seg, Position.RIGHT, distance, offsetR);
 
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
-    double angle = math.atan2(dy, dx);
+    double angle = atan2(dy, dx);
 
     switch (bufParams.getEndCapStyle()) {
       case BufferParameters.CAP_ROUND:
@@ -438,7 +450,7 @@ class OffsetSegmentGenerator
         break;
       case BufferParameters.CAP_SQUARE:
         // add a square defined by extensions of the offset segment endpoints
-        Coordinate squareCapSideOffset = new Coordinate();
+        Coordinate squareCapSideOffset = new Coordinate.empty2D();
         squareCapSideOffset.x = (distance).abs() * Angle.cosSnap(angle);
         squareCapSideOffset.y = (distance).abs() * Angle.sinSnap(angle);
 
@@ -483,7 +495,7 @@ class OffsetSegmentGenerator
      * However, this situation should have been eliminated earlier by the check
      * for whether the offset segment endpoints are almost coincident
      */
-    Coordinate intPt = Intersection.intersection(offset0.p0, offset0.p1, offset1.p0, offset1.p1);
+    Coordinate? intPt = Intersection.intersection(offset0.p0, offset0.p1, offset1.p0, offset1.p1);
     if (intPt != null && intPt.distance(cornerPt) <= mitreLimitDistance) {
         segList.addPt(intPt);
         return;
@@ -538,11 +550,11 @@ class OffsetSegmentGenerator
     
     // compute the candidate bevel segment by projecting both sides of the midpoint
     Coordinate bevel0 = project(bevelMidPt, distance, dirBevel);
-    Coordinate bevel1 = project(bevelMidPt, distance, dirBevel + math.PI);
+    Coordinate bevel1 = project(bevelMidPt, distance, dirBevel + pi);
     
     // compute actual bevel segment between the offset lines
-    Coordinate bevelInt0 = Intersection.lineSegment(offset0.p0, offset0.p1, bevel0, bevel1);
-    Coordinate bevelInt1 = Intersection.lineSegment(offset1.p0, offset1.p1, bevel0, bevel1);
+    Coordinate? bevelInt0 = Intersection.lineSegment(offset0.p0, offset0.p1, bevel0, bevel1);
+    Coordinate? bevelInt1 = Intersection.lineSegment(offset1.p0, offset1.p1, bevel0, bevel1);
 
     //-- add the limited bevel, if it intersects the offsets
     if (bevelInt0 != null && bevelInt1 != null) {
@@ -601,10 +613,10 @@ class OffsetSegmentGenerator
   {
     double dx0 = p0.x - p.x;
     double dy0 = p0.y - p.y;
-    double startAngle = math.atan2(dy0, dx0);
+    double startAngle = atan2(dy0, dx0);
     double dx1 = p1.x - p.x;
     double dy1 = p1.y - p.y;
-    double endAngle = math.atan2(dy1, dx1);
+    double endAngle = atan2(dy1, dx1);
 
     if (direction == Orientation.CLOCKWISE) {
       if (startAngle <= endAngle) startAngle += Angle.PI_TIMES_2;
@@ -631,14 +643,14 @@ class OffsetSegmentGenerator
     int directionFactor = direction == Orientation.CLOCKWISE ? -1 : 1;
 
     double totalAngle = (startAngle - endAngle).abs();
-    int nSegs = (int) (totalAngle / filletAngleQuantum + 0.5);
+    int nSegs = /**(int) */ (totalAngle / filletAngleQuantum + 0.5).floor();
 
     if (nSegs < 1) return;    // no segments because angle is less than increment - nothing to do!
 
      // choose angle increment so that each segment has equal length
     double angleInc = totalAngle / nSegs;
 
-    Coordinate pt = new Coordinate();
+    Coordinate pt = new Coordinate.empty2D();
     for (int i = 0; i < nSegs; i++) {
       double angle = startAngle + directionFactor * i * angleInc;
       pt.x = p.x + radius * Angle.cosSnap(angle);

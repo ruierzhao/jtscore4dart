@@ -56,17 +56,18 @@ import 'RightmostEdgeFinder.dart';
 class BufferSubgraph
   implements Comparable
 {
- /**private */RightmostEdgeFinder finder;
- /**private */List dirEdgeList  = [];
- /**private */List nodes        = [];
- /**private */Coordinate? rightMostCoord ;
- /**private */Envelope? env;
+ /**private */ RightmostEdgeFinder finder;
+ /**private */ List dirEdgeList  = [];
+ /**private */ List nodes        = [];
+ /**private */ Coordinate? rightMostCoord ;
+ /**private */ Envelope? env;
 
   BufferSubgraph()
   :finder = new RightmostEdgeFinder();
   
 
   List getDirectedEdges() { return dirEdgeList; }
+
   List getNodes() { return nodes; }
 
   /**
@@ -96,7 +97,7 @@ class BufferSubgraph
    */
   Coordinate getRightmostCoordinate()
   {
-    return rightMostCoord;
+    return rightMostCoord!;
   }
 
   /**
@@ -138,8 +139,8 @@ class BufferSubgraph
   {
     node.setVisited(true);
     nodes.add(node);
-    for (Iterator i = ( node.getEdges() as DirectedEdgeStar).iterator(); i.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.current;
+    for (Iterator i = ( node.getEdges() as DirectedEdgeStar).iterator; i.moveNext(); ) {
+      DirectedEdge de = i.current as DirectedEdge;
       dirEdgeList.add(de);
       DirectedEdge sym = de.getSym();
       Node symNode = sym.getNode();
@@ -154,8 +155,8 @@ class BufferSubgraph
 
  /**private */void clearVisitedEdges()
   {
-    for (Iterator it = dirEdgeList.iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+    for (Iterator it = dirEdgeList.iterator; it.moveNext(); ) {
+      DirectedEdge de = it.current as DirectedEdge;
       de.setVisited(false);
     }
   }
@@ -191,8 +192,8 @@ class BufferSubgraph
     startEdge.setVisited(true);
 
     while (! nodeQueue.isEmpty()) {
-//System.out.println(nodes.size() + " queue: " + nodeQueue.size());
-      Node n = (Node) nodeQueue.removeFirst();
+      //System.out.println(nodes.size() + " queue: " + nodeQueue.size());
+      Node n = nodeQueue.removeFirst() as Node;
       nodesVisited.add(n);
       // compute depths around node, starting at this edge since it has depths assigned
       computeNodeDepth(n);
@@ -257,8 +258,8 @@ class BufferSubgraph
    */
   void findResultEdges()
   {
-    for (Iterator it = dirEdgeList.iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+    for (Iterator it = dirEdgeList.iterator; it.moveNext(); ) {
+      DirectedEdge de = it.current as DirectedEdge;
       /**
        * Select edges which have an interior depth on the RHS
        * and an exterior depth on the LHS.
@@ -267,9 +268,9 @@ class BufferSubgraph
        * count as "outside".
        */
       // <FIX> - handle negative depths
-      if (    de.getDepth(Position.RIGHT) >= 1
-          &&  de.getDepth(Position.LEFT)  <= 0
-          &&  ! de.isInteriorAreaEdge()) {
+      if (de.getDepth(Position.RIGHT) >= 1
+          && de.getDepth(Position.LEFT)  <= 0
+          && !de.isInteriorAreaEdge()) {
         de.setInResult(true);
 //Debug.print("in result "); Debug.println(de);
       }

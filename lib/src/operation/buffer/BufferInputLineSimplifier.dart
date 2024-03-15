@@ -17,6 +17,12 @@
 // import org.locationtech.jts.geom.CoordinateArrays;
 // import org.locationtech.jts.geom.CoordinateList;
 
+import 'package:jtscore4dart/src/algorithm/Distance.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+
 /**
  * Simplifies a buffer input line to 
  * remove concavities with shallow depth.
@@ -24,6 +30,8 @@
  * The major benefit of doing this
  * is to reduce the number of points and the complexity of
  * shape which will be buffered.
+ * 减少复杂图形点的数量
+ * 
  * This improve performance and robustness.
  * It also reduces the risk of gores created by
  * the quantized fillet arcs (although this issue
@@ -54,35 +62,35 @@
 class BufferInputLineSimplifier 
 {
   /**
+   * 简化输入的coordinates 串，如果 distance 容差为正，则凹形在左边为 simplified
+   * 反之在右边为 simplified 
    * Simplify the input coordinate list.
    * If the distance tolerance is positive, 
    * concavities on the LEFT side of the line are simplified.
    * If the supplied distance tolerance is negative,
    * concavities on the RIGHT side of the line are simplified.
    * 
-   * @param inputLine the coordinate list to simplify
-   * @param distanceTol simplification distance tolerance to use
+   * @param [inputLine] the coordinate list to simplify
+   * @param [distanceTol] simplification distance tolerance to use
    * @return the simplified coordinate list
    */
   static List<Coordinate> simplify(List<Coordinate> inputLine, double distanceTol)
   {
     BufferInputLineSimplifier simp = new BufferInputLineSimplifier(inputLine);
-    return simp.simplify(distanceTol);
+    return simp.simplify_(distanceTol);
   }
   
  /**private */static final int DELETE = 1;
   
  /**private */List<Coordinate> inputLine;
- /**private */double distanceTol;
+ /**private */late double distanceTol;
  /**private */bool isRing;
- /**private */bool[] isDeleted;
+ /**private */late List<bool> isDeleted;
  /**private */int angleOrientation = Orientation.COUNTERCLOCKWISE;
 
   
-  BufferInputLineSimplifier(List<Coordinate> inputLine) {
-    this.inputLine = inputLine;
-    isRing = CoordinateArrays.isRing(inputLine);
-  }
+  BufferInputLineSimplifier(this.inputLine)
+  :isRing = CoordinateArrays.isRing(inputLine);
 
   /**
    * Simplify the input coordinate list.
@@ -94,15 +102,17 @@ class BufferInputLineSimplifier
    * @param distanceTol simplification distance tolerance to use
    * @return the simplified coordinate list
    */
-  List<Coordinate> simplify(double distanceTol)
+  List<Coordinate> simplify_(double distanceTol)
   {
     this.distanceTol = (distanceTol).abs();
     angleOrientation = Orientation.COUNTERCLOCKWISE;
-    if (distanceTol < 0)
+    if (distanceTol < 0) {
       angleOrientation = Orientation.CLOCKWISE;
+    }
     
     // rely on fact that bool array is filled with false values
-    isDeleted = new bool[inputLine.length];
+    // isDeleted = new bool[inputLine.length];
+    isDeleted = List.filled(inputLine.length, false,growable: false);
     
     bool isChanged = false;
     do {
@@ -141,10 +151,11 @@ class BufferInputLineSimplifier
         isChanged = true;
       }
       // move simplification window forward
-      if (isMiddleVertexDeleted)
-      	index = lastIndex;
-      else 
-      	index = midIndex;
+      if (isMiddleVertexDeleted) {
+        index = lastIndex;
+      } else {
+        index = midIndex;
+      }
       
       midIndex = nextIndex(index);
       lastIndex = nextIndex(midIndex);
@@ -161,8 +172,9 @@ class BufferInputLineSimplifier
  /**private */int nextIndex(int index)
   {
     int next = index + 1;
-    while (next < inputLine.length && isDeleted[next])
+    while (next < inputLine.length && isDeleted[next]) {
       next++;
+    }
     return next;  
   }
   
@@ -170,8 +182,9 @@ class BufferInputLineSimplifier
   {
     CoordinateList coordList = new CoordinateList();
     for (int i = 0; i < inputLine.length; i++) {
-      if (! isDeleted[i])
-        coordList.add(inputLine[i]);
+      if (! isDeleted[i]) {
+        coordList.add(inputLine[i], true);
+      }
     }
     return coordList.toCoordinateArray();
   }
@@ -205,7 +218,7 @@ class BufferInputLineSimplifier
  /**private */bool isShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
   {
     // check every n'th point to see if it is within tolerance
-  	int inc = (i2 - i0) / NUM_PTS_TO_CHECK;
+  	int inc = ((i2 - i0) / NUM_PTS_TO_CHECK).floor();
   	if (inc <= 0) inc = 1;
   	
   	for (int i = i0; i < i2; i += inc) {

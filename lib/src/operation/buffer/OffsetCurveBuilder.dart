@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateArrays;
 // import org.locationtech.jts.geom.Geometry;
@@ -45,11 +44,11 @@ import 'OffsetSegmentGenerator.dart';
  */
 class OffsetCurveBuilder 
 {  
- /**private */double distance = 0.0;
- /**private */PrecisionModel precisionModel;
- /**private */BufferParameters bufParams;
+ /**private */ double distance = 0.0;
+ /**private */ PrecisionModel precisionModel;
+ /**private */ BufferParameters bufParams;
   
-  OffsetCurveBuilder(this.precisionModel,this.bufParams);
+  OffsetCurveBuilder(this.precisionModel, this.bufParams);
 
   /**
    * Gets the buffer parameters being used to generate the curve.
@@ -66,8 +65,8 @@ class OffsetCurveBuilder
    * LineStrings are assumed <b>not</b> to be closed (the function will not
    * fail for closed lines, but will generate superfluous line caps).
    *
-   * @param inputPts the vertices of the line to offset
-   * @param distance the offset distance
+   * @param [inputPts] the vertices of the line to offset
+   * @param [distance] the offset distance
    * 
    * @return a Coordinate array representing the curve
    * or null if the curve is empty

@@ -150,7 +150,7 @@ abstract class LineIntersector
  /**protected */Coordinate pb;
   /// If makePrecise is true, computed intersection coordinates will be made precise
   /// using Coordinate#makePrecise
- /**protected */PrecisionModel precisionModel = null;
+ /**protected */PrecisionModel? precisionModel = null;
 //int numIntersects = 0;
 
   LineIntersector() {
@@ -228,19 +228,19 @@ abstract class LineIntersector
     return str;
   }
 */
-
-  String toString() {
-    return WKTWriter.toLineString(inputLines[0][0], inputLines[0][1]) + " - "
-    + WKTWriter.toLineString(inputLines[1][0], inputLines[1][1])
-                 + getTopologySummary();
-  }
+/// TODO:not implement....late add some code.
+  // String toString() {
+  //   return WKTWriter.toLineString(inputLines[0][0], inputLines[0][1]) + " - "
+  //   + WKTWriter.toLineString(inputLines[1][0], inputLines[1][1])
+  //                + getTopologySummary();
+  // }
 
  /**private */String getTopologySummary()
   {
-    StringBuilder catBuilder = StringBuilder();
-    if (isEndPoint()) catBuilder.append(" endpoint");
-    if (isProper) catBuilder.append(" proper");
-    if (isCollinear()) catBuilder.append(" collinear");
+    StringBuffer catBuilder = StringBuffer();
+    if (isEndPoint()) catBuilder.write(" endpoint");
+    if (isProper) catBuilder.write(" proper");
+    if (isCollinear()) catBuilder.write(" collinear");
     return catBuilder.toString();
   }
 

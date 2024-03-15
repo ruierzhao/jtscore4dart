@@ -147,9 +147,9 @@ class BufferOp
    * The scale factor is based on the absolute magnitude of the (geometry + buffer distance).
    * since this determines the number of digits of precision which must be handled.
    *
-   * @param g the Geometry being buffered
-   * @param distance the buffer distance
-   * @param maxPrecisionDigits the max # of digits that should be allowed by
+   * @param [g] the Geometry being buffered
+   * @param [distance] the buffer distance
+   * @param [maxPrecisionDigits] the max # of digits that should be allowed by
    *          the precision determined by the computed scale factor
    *
    * @return a scale factor for the buffer computation
@@ -231,9 +231,9 @@ class BufferOp
    * Computes the buffer for a geometry for a given buffer distance
    * and accuracy of approximation.
    *
-   * @param g the geometry to buffer
-   * @param distance the buffer distance
-   * @param quadrantSegments the number of segments used to approximate a quarter circle
+   * @param [g] the geometry to buffer
+   * @param [distance] the buffer distance
+   * @param [quadrantSegments] the number of segments used to approximate a quarter circle
    * @return the buffer of the input geometry
    *
    */
@@ -249,10 +249,10 @@ class BufferOp
    * Computes the buffer for a geometry for a given buffer distance
    * and accuracy of approximation.
    *
-   * @param g the geometry to buffer
-   * @param distance the buffer distance
-   * @param quadrantSegments the number of segments used to approximate a quarter circle
-   * @param endCapStyle the end cap style to use
+   * @param [g] the geometry to buffer
+   * @param [distance] the buffer distance
+   * @param [quadrantSegments] the number of segments used to approximate a quarter circle
+   * @param [endCapStyle] the end cap style to use
    * @return the buffer of the input geometry
    *
    */
@@ -317,8 +317,8 @@ class BufferOp
    * The input geometries must be non-adjacent(相邻的), to avoid
    * creating an invalid result.
    * 
-   * @param poly0 a polygonal geometry (which may be empty)
-   * @param poly1 a polygonal geometry (which may be empty)
+   * @param [poly0] a polygonal geometry (which may be empty)
+   * @param [poly1] a polygonal geometry (which may be empty)
    * @return a combined polygonal geometry
    */
  /**private */
@@ -396,18 +396,17 @@ class BufferOp
   /**
    * Returns the buffer computed for a geometry for a given buffer distance.
    *
-   * @param distance the buffer distance
+   * @param [distance] the buffer distance
    * @return the buffer of the input geometry
    */
   Geometry getResultGeometry(double distance)
   {
     this.distance = distance;
-    computeGeometry();
+    _computeGeometry();
     return resultGeometry!;
   }
 
- /**private */
- void computeGeometry()
+ void _computeGeometry()
   {
     bufferOriginalPrecision();
     if (resultGeometry != null) return;

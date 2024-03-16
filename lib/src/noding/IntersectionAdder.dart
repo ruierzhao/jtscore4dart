@@ -14,6 +14,10 @@
 // import org.locationtech.jts.algorithm.LineIntersector;
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/noding/SegmentIntersector.dart';
+
 /**
  * Computes the possible intersections between two line segments in {@link NodedSegmentString}s
  * and adds them to each string 
@@ -21,8 +25,7 @@
  *
  * @version 1.7
  */
-class IntersectionAdder
-    implements SegmentIntersector
+class IntersectionAdder implements SegmentIntersector
 {
   static bool isAdjacentSegments(int i1, int i2)
   {
@@ -39,10 +42,10 @@ class IntersectionAdder
  /**private */bool hasInterior = false;
 
   // the proper intersection point found
- /**private */Coordinate properIntersectionPoint = null;
+ /**private */Coordinate? properIntersectionPoint = null;
 
  /**private */LineIntersector li;
- /**private */bool isSelfIntersection;
+ /**private */late bool isSelfIntersection;
   //private bool intersectionFound;
   int numIntersections = 0;
   int numInteriorIntersections = 0;
@@ -51,10 +54,7 @@ class IntersectionAdder
   // testing only
   int numTests = 0;
 
-  IntersectionAdder(LineIntersector li)
-  {
-    this.li = li;
-  }
+  IntersectionAdder(this.li);
 
   LineIntersector getLineIntersector() { return li; }
 

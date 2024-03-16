@@ -32,12 +32,13 @@ import 'Label.dart';
 /**
  * @version 1.7
  */
-/**ruieredit*/ abstract class Node extends GraphComponent
+/**ruier edit*/ 
+abstract class Node extends GraphComponent
 {
  /**protected */Coordinate coord; // only non-null if this node is precise
- /**protected */EdgeEndStar edges;
+ /**protected */EdgeEndStar? edges;
 
-  Node(this.coord, this.edges) : super(new Label.GeomIndex(0, Location.NONE));
+  Node(this.coord, [this.edges]) : super(new Label.GeomIndex(0, Location.NONE));
   // {
   //   label = new Label.GeomIndex(0, Location.NONE);
   // }

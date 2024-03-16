@@ -14,6 +14,7 @@
 // import java.util.Collection;
 
 import 'Noder.dart';
+import 'SegmentIntersector.dart';
 
 /**
  * Base class for {@link Noder}s which make a single
@@ -28,14 +29,12 @@ abstract class SinglePassNoder
     implements Noder
 {
 
- /**protected */SegmentIntersector segInt;
+ /**protected */SegmentIntersector? segInt;
 
-  SinglePassNoder() {
-  }
+  // SinglePassNoder() {
+  // }
 
-  SinglePassNoder(SegmentIntersector segInt) {
-    setSegmentIntersector(segInt);
-  }
+  SinglePassNoder([this.segInt]) ;
 
   /**
    * Sets the SegmentIntersector to use with this noder.
@@ -58,7 +57,9 @@ abstract class SinglePassNoder
    *
    * @param segStrings a collection of {@link SegmentString}s to node
    */
-  abstract void computeNodes(Collection segStrings);
+  /**abstract */ 
+  @override
+  void computeNodes(Iterable segStrings);
 
   /**
    * Returns a {@link Collection} of fully noded {@link SegmentString}s.
@@ -66,6 +67,8 @@ abstract class SinglePassNoder
    *
    * @return a Collection of SegmentStrings
    */
-  abstract Collection getNodedSubstrings();
+  @override
+  /**abstract */ 
+  Iterable getNodedSubstrings();
 
 }

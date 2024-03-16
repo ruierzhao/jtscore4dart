@@ -22,6 +22,20 @@
 // import org.locationtech.jts.geom.TopologyException;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geom/Quadrant.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'DirectedEdge.dart';
+import 'Edge.dart';
+import 'EdgeEnd.dart';
+import 'EdgeEndStar.dart';
+import 'EdgeRing.dart';
+import 'GeometryGraph.dart';
+import 'Label.dart';
+
 /**
  * A DirectedEdgeStar is an ordered list of <b>outgoing</b> DirectedEdges around a node.
  * It supports labelling the edges as well as linking the edges to form both
@@ -36,17 +50,17 @@ class DirectedEdgeStar
   /**
    * A list of all outgoing edges in the result, in CCW order
    */
- /**private */List resultAreaEdgeList;
- /**private */Label label;
+ /**private */late List resultAreaEdgeList;
+ /**private */ late Label label;
 
-  DirectedEdgeStar() {
-  }
+  DirectedEdgeStar();
   /**
    * Insert a directed edge in the list
    */
+  @override
   void insert(EdgeEnd ee)
   {
-    DirectedEdge de = (DirectedEdge) ee;
+    DirectedEdge de = ee as DirectedEdge;
     insertEdgeEnd(de, de);
   }
 
@@ -56,7 +70,7 @@ class DirectedEdgeStar
   {
     int degree = 0;
     for (Iterator it = iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+      DirectedEdge de =  it.current as DirectedEdge;
       if (de.isInResult()) degree++;
     }
     return degree;
@@ -65,34 +79,36 @@ class DirectedEdgeStar
   {
     int degree = 0;
     for (Iterator it = iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+      DirectedEdge de =  it.current as DirectedEdge;
       if (de.getEdgeRing() == er) degree++;
     }
     return degree;
   }
 
-  DirectedEdge getRightmostEdge()
+  DirectedEdge? getRightmostEdge()
   {
     List edges = getEdges();
-    int size = edges.size();
+    int size = edges.length;
     if (size < 1) return null;
-    DirectedEdge de0 = (DirectedEdge) edges.get(0);
+    DirectedEdge de0 =  edges[0] as DirectedEdge;
     if (size == 1) return de0;
-    DirectedEdge deLast = (DirectedEdge) edges.get(size - 1);
+    DirectedEdge deLast = edges[size - 1] as DirectedEdge;
 
     int quad0 = de0.getQuadrant();
     int quad1 = deLast.getQuadrant();
-    if (Quadrant.isNorthern(quad0) && Quadrant.isNorthern(quad1))
+    if (Quadrant.isNorthern(quad0) && Quadrant.isNorthern(quad1)) {
       return de0;
-    else if (! Quadrant.isNorthern(quad0) && ! Quadrant.isNorthern(quad1))
+    } else if (! Quadrant.isNorthern(quad0) && ! Quadrant.isNorthern(quad1)){
+
       return deLast;
+    }
     else {
       // edges are in different hemispheres - make sure we return one that is non-horizontal
       //Assert.isTrue(de0.getDy() != 0, "should never return horizontal edge!");
-      DirectedEdge nonHorizontalEdge = null;
-      if (de0.getDy() != 0)
+      DirectedEdge? nonHorizontalEdge = null;
+      if (de0.getDy() != 0) {
         return de0;
-      else if (deLast.getDy() != 0)
+      } else if (deLast.getDy() != 0)
         return deLast;
     }
     Assert.shouldNeverReachHere("found two horizontal edges incident on node");
@@ -103,7 +119,8 @@ class DirectedEdgeStar
    * Compute the labelling for all dirEdges in this star, as well
    * as the overall labelling
    */
-  void computeLabelling(GeometryGraph[] geom)
+  @override
+  void computeLabelling(List<GeometryGraph> geom)
   {
 //Debug.print(this);
     super.computeLabelling(geom);
@@ -112,13 +129,14 @@ class DirectedEdgeStar
     // (i.e. for the node it is based at)
     label = new Label(Location.NONE);
     for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeEnd ee = (EdgeEnd) it.current;
+      EdgeEnd ee =  it.current as EdgeEnd;
       Edge e = ee.getEdge();
       Label eLabel = e.getLabel();
       for (int i = 0; i < 2; i++) {
         int eLoc = eLabel.getLocation(i);
-        if (eLoc == Location.INTERIOR || eLoc == Location.BOUNDARY)
-          label.setLocation(i, Location.INTERIOR);
+        if (eLoc == Location.INTERIOR || eLoc == Location.BOUNDARY) {
+          label.setLocationOn(i, Location.INTERIOR);
+        }
       }
     }
 //Debug.print(this);
@@ -131,7 +149,7 @@ class DirectedEdgeStar
   void mergeSymLabels()
   {
     for (Iterator it = iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+      DirectedEdge de =  it.current;
       Label label = de.getLabel();
       label.merge(de.getSym().getLabel());
     }
@@ -145,7 +163,7 @@ class DirectedEdgeStar
   void updateLabelling(Label nodeLabel)
   {
     for (Iterator it = iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+      DirectedEdge de =  it.current;
       Label label = de.getLabel();
       label.setAllLocationsIfNull(0, nodeLabel.getLocation(0));
       label.setAllLocationsIfNull(1, nodeLabel.getLocation(1));
@@ -158,15 +176,16 @@ class DirectedEdgeStar
     if (resultAreaEdgeList != null) return resultAreaEdgeList;
     resultAreaEdgeList = [];
     for (Iterator it = iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
-      if (de.isInResult() || de.getSym().isInResult() )
+      DirectedEdge de = it.current;
+      if (de.isInResult() || de.getSym().isInResult() ) {
         resultAreaEdgeList.add(de);
+      }
     }
     return resultAreaEdgeList;
   }
 
- /**private */static final int SCANNING_FOR_INCOMING = 1;
- /**private */static final int LINKING_TO_OUTGOING = 2;
+ /**private */static const int SCANNING_FOR_INCOMING = 1;
+ /**private */static const int LINKING_TO_OUTGOING = 2;
   /**
    * Traverse the star of DirectedEdges, linking the included edges together.
    * To link two dirEdges, the <code>next</code> pointer for an incoming dirEdge
@@ -190,12 +209,12 @@ class DirectedEdgeStar
     // make sure edges are copied to resultAreaEdges list
     getResultAreaEdges();
     // find first area edge (if any) to start linking at
-    DirectedEdge firstOut = null;
-    DirectedEdge incoming = null;
+    DirectedEdge? firstOut = null;
+    DirectedEdge? incoming = null;
     int state = SCANNING_FOR_INCOMING;
     // link edges in CCW order
     for (int i = 0; i < resultAreaEdgeList.size(); i++) {
-      DirectedEdge nextOut = (DirectedEdge) resultAreaEdgeList.get(i);
+      DirectedEdge nextOut = resultAreaEdgeList.get(i);
       DirectedEdge nextIn = nextOut.getSym();
 
       // skip de's that we're not interested in
@@ -221,8 +240,9 @@ class DirectedEdgeStar
 //Debug.print(this);
     if (state == LINKING_TO_OUTGOING) {
 //Debug.print(firstOut == null, this);
-      if (firstOut == null)
+      if (firstOut == null) {
         throw new TopologyException("no outgoing dirEdge found", getCoordinate());
+      }
       //Assert.isTrue(firstOut != null, "no outgoing dirEdge found (at " + getCoordinate() );
       Assert.isTrue(firstOut.isInResult(), "unable to link last incoming dirEdge");
       incoming.setNext(firstOut);
@@ -302,7 +322,7 @@ class DirectedEdgeStar
      */
     int startLoc = Location.NONE ;
     for (Iterator it = iterator(); it.moveNext(); ) {
-      DirectedEdge nextOut  = (DirectedEdge) it.current;
+      DirectedEdge nextOut  = it.current;
       DirectedEdge nextIn   = nextOut.getSym();
       if (! nextOut.isLineEdge()) {
         if (nextOut.isInResult()) {
@@ -325,17 +345,19 @@ class DirectedEdgeStar
      */
     int currLoc = startLoc;
     for (Iterator it = iterator(); it.moveNext(); ) {
-      DirectedEdge nextOut  = (DirectedEdge) it.current;
+      DirectedEdge nextOut  =  it.current;
       DirectedEdge nextIn   = nextOut.getSym();
       if (nextOut.isLineEdge()) {
         nextOut.getEdge().setCovered(currLoc == Location.INTERIOR);
 //Debug.println(nextOut);
       }
       else {  // edge is an Area edge
-        if (nextOut.isInResult())
+        if (nextOut.isInResult()) {
           currLoc = Location.EXTERIOR;
-        if (nextIn.isInResult())
+        }
+        if (nextIn.isInResult()) {
           currLoc = Location.INTERIOR;
+        }
       }
     }
   }
@@ -351,8 +373,10 @@ class DirectedEdgeStar
     int lastDepth = computeDepths(0, edgeIndex, nextDepth);
 //Debug.print(lastDepth != targetLastDepth, this);
 //Debug.print(lastDepth != targetLastDepth, "mismatch: " + lastDepth + " / " + targetLastDepth);
-    if (lastDepth != targetLastDepth)
-      throw new TopologyException("depth mismatch at " + de.getCoordinate());
+    if (lastDepth != targetLastDepth) {
+      // throw new TopologyException("depth mismatch at ${de.getCoordinate()}");
+      throw new Exception("depth mismatch at ${de.getCoordinate()}");
+    }
     //Assert.isTrue(lastDepth == targetLastDepth, "depth mismatch at " + de.getCoordinate());
   }
 
@@ -372,17 +396,19 @@ class DirectedEdgeStar
     return currDepth;
   }
 
-  void print(PrintStream out)
-  {
-    out.println("DirectedEdgeStar: " + getCoordinate());
-    for (Iterator it = iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
-      out.print("out ");
-      de.print(out);
-      out.println();
-      out.print("in ");
-      de.getSym().print(out);
-      out.println();
-    }
-  }
+  /// TODO: @ruier edit.
+  // @override
+  // void print(PrintStream out)
+  // {
+  //   out.println("DirectedEdgeStar: " + getCoordinate());
+  //   for (Iterator it = iterator(); it.moveNext(); ) {
+  //     DirectedEdge de = (DirectedEdge) it.current;
+  //     out.print("out ");
+  //     de.print(out);
+  //     out.println();
+  //     out.print("in ");
+  //     de.getSym().print(out);
+  //     out.println();
+  //   }
+  // }
 }

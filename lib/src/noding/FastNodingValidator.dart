@@ -21,6 +21,13 @@
 // import org.locationtech.jts.io.WKTWriter;
 
 
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'MCIndexNoder.dart';
+import 'NodingIntersectionFinder.dart';
+
 /**
  * Validates that a collection of {@link SegmentString}s is correctly noded.
  * Indexing is used to improve performance.
@@ -55,7 +62,7 @@ class FastNodingValidator
    * @param segStrings a collection of SegmentStrings
    * @return a list of Coordinate
    */
-  static List computeIntersections(Collection segStrings)
+  static List computeIntersections(Iterable segStrings)
   {
     FastNodingValidator nv = new FastNodingValidator(segStrings);
     nv.setFindAllIntersections(true);
@@ -65,20 +72,17 @@ class FastNodingValidator
   
  /**private */LineIntersector li = new RobustLineIntersector();
 
- /**private */Collection segStrings;
+ /**private */Iterable segStrings;
  /**private */bool findAllIntersections = false;
- /**private */NodingIntersectionFinder segInt = null;
- /**private */bool isValid = true;
+ /**private */NodingIntersectionFinder? segInt = null;
+ /**private */bool _isValid = true;
   
   /**
    * Creates a new noding validator for a given set of linework.
    * 
    * @param segStrings a collection of {@link SegmentString}s
    */
-  FastNodingValidator(Collection segStrings)
-  {
-    this.segStrings = segStrings;
-  }
+  FastNodingValidator(this.segStrings);
 
   void setFindAllIntersections(bool findAllIntersections)
   {
@@ -92,9 +96,9 @@ class FastNodingValidator
    * 
    * @return a list of Coordinate
    */
-  List getIntersections()
+  List<Coordinate> getIntersections()
   {
-    return segInt.getIntersections();
+    return segInt!.getIntersections();
   }
 
   /**
@@ -106,7 +110,7 @@ class FastNodingValidator
   bool isValid()
   {
   	execute();
-  	return isValid;
+  	return _isValid;
   }
   
   /**
@@ -115,15 +119,27 @@ class FastNodingValidator
    * 
    * @return an error message documenting the intersection location
    */
+  /// TODO: ruier edit.late add . 
+  // String getErrorMessage()
+  // {
+  // 	if (_isValid) return "no intersections found";
+  	
+	// 	List<Coordinate> intSegs = segInt.getIntersectionSegments();
+  //   return "found non-noded intersection between "
+  //       + WKTWriter.toLineString(intSegs[0], intSegs[1])
+  //       + " and "
+  //       + WKTWriter.toLineString(intSegs[2], intSegs[3]);
+  // }
   String getErrorMessage()
   {
-  	if (isValid) return "no intersections found";
+  	if (_isValid) return "no intersections found";
   	
-		List<Coordinate> intSegs = segInt.getIntersectionSegments();
+		// List<Coordinate> intSegs = segInt!.getIntersectionSegments();
     return "found non-noded intersection between "
-        + WKTWriter.toLineString(intSegs[0], intSegs[1])
-        + " and "
-        + WKTWriter.toLineString(intSegs[2], intSegs[3]);
+        // + WKTWriter.toLineString(intSegs[0], intSegs[1])
+        // + " and "
+        // + WKTWriter.toLineString(intSegs[2], intSegs[3])
+        ;
   }
   
   /**
@@ -135,14 +151,18 @@ class FastNodingValidator
   void checkValid()
   {
   	execute();
-  	if (! isValid)
-  		throw new TopologyException(getErrorMessage(), segInt.getIntersection());
+  	if (! _isValid) {
+  	  // throw new TopologyException(getErrorMessage(), segInt.getIntersection());
+      /// TODO: @ruier edit.
+  	  throw new Exception(getErrorMessage());
+  	}
   }
 
  /**private */void execute()
   {
-  	if (segInt != null) 
-  		return;
+  	if (segInt != null) {
+  	  return;
+  	}
     checkInteriorIntersections();
   }
 
@@ -153,14 +173,14 @@ class FastNodingValidator
   	 * end segments (of SegmentStrings) have an interior intersection,
   	 * since noding should have split any true interior intersections already.
   	 */
-  	isValid = true;
+  	_isValid = true;
   	segInt = new NodingIntersectionFinder(li);
-    segInt.setFindAllIntersections(findAllIntersections);
+    segInt!.setFindAllIntersections(findAllIntersections);
   	MCIndexNoder noder = new MCIndexNoder();
-  	noder.setSegmentIntersector(segInt);
+  	noder.setSegmentIntersector(segInt!);
   	noder.computeNodes(segStrings);
-  	if (segInt.hasIntersection()) {
-  		isValid = false;
+  	if (segInt!.hasIntersection()) {
+  		_isValid = false;
   		return;
   	}
   }

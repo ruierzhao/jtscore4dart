@@ -103,13 +103,11 @@ abstract class EdgeEndStar
    */
   Iterator iterator()
   {
-    return getEdges().iterator();
+    return getEdges().iterator;
   }
   List getEdges()
   {
-    if (edgeList == null) {
-      edgeList = new ArrayList(edgeMap.values());
-    }
+    edgeList ??= new ArrayList(edgeMap.values());
     return edgeList;
   }
   EdgeEnd getNextCW(EdgeEnd ee)
@@ -117,9 +115,10 @@ abstract class EdgeEndStar
     getEdges();
     int i = edgeList.indexOf(ee);
     int iNextCW = i - 1;
-    if (i == 0)
+    if (i == 0) {
       iNextCW = edgeList.size() - 1;
-    return (EdgeEnd) edgeList.get(iNextCW);
+    }
+    return edgeList.get(iNextCW) as EdgeEnd;
   }
 
   void computeLabelling(GeometryGraph[] geomGraph)
@@ -169,8 +168,9 @@ abstract class EdgeEndStar
       EdgeEnd e = (EdgeEnd) it.current;
       Label label = e.getLabel();
       for (int geomi = 0; geomi < 2; geomi++) {
-        if (label.isLine(geomi) && label.getLocation(geomi) == Location.BOUNDARY)
+        if (label.isLine(geomi) && label.getLocation(geomi) == Location.BOUNDARY) {
           hasDimensionalCollapseEdge[geomi] = true;
+        }
       }
     }
 //Debug.print(this);
@@ -227,8 +227,9 @@ abstract class EdgeEndStar
     // As we move around the ring we move from the right to the left side of the edge
     List edges = getEdges();
     // if no edges, trivially consistent
-    if (edges.size() <= 0)
+    if (edges.size() <= 0) {
       return true;
+    }
     // initialize startLoc to location of last L side (if any)
     int lastEdgeIndex = edges.size() - 1;
     Label startLabel = ((EdgeEnd) edges.get(lastEdgeIndex)).getLabel();
@@ -270,8 +271,9 @@ abstract class EdgeEndStar
     for (Iterator it = iterator(); it.moveNext(); ) {
       EdgeEnd e = (EdgeEnd) it.current;
       Label label = e.getLabel();
-      if (label.isArea(geomIndex) && label.getLocation(geomIndex, Position.LEFT) != Location.NONE)
+      if (label.isArea(geomIndex) && label.getLocation(geomIndex, Position.LEFT) != Location.NONE) {
         startLoc = label.getLocation(geomIndex, Position.LEFT);
+      }
     }
     
     // no labelled sides found, so no labels to propagate
@@ -282,8 +284,9 @@ abstract class EdgeEndStar
       EdgeEnd e = (EdgeEnd) it.current;
       Label label = e.getLabel();
       // set null ON values to be in current location
-      if (label.getLocation(geomIndex, Position.ON) == Location.NONE)
-          label.setLocation(geomIndex, Position.ON, currLoc);
+      if (label.getLocation(geomIndex, Position.ON) == Location.NONE) {
+        label.setLocation(geomIndex, Position.ON, currLoc);
+      }
       // set side labels (if any)
       if (label.isArea(geomIndex)) {
         int leftLoc   = label.getLocation(geomIndex, Position.LEFT);
@@ -291,8 +294,9 @@ abstract class EdgeEndStar
         // if there is a right location, that is the next location to propagate
         if (rightLoc != Location.NONE) {
 //Debug.print(rightLoc != currLoc, this);
-          if (rightLoc != currLoc)
+          if (rightLoc != currLoc) {
             throw new TopologyException("side location conflict", e.getCoordinate());
+          }
           if (leftLoc == Location.NONE) {
             Assert.shouldNeverReachHere("found single null side (at " + e.getCoordinate() + ")");
           }

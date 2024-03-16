@@ -23,6 +23,16 @@
 // import org.locationtech.jts.index.chain.MonotoneChainOverlapAction;
 // import org.locationtech.jts.index.hprtree.HPRtree;
 
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/index/SpatialIndex.dart';
+import 'package:jtscore4dart/src/index/chain/MonotoneChain.dart';
+import 'package:jtscore4dart/src/index/chain/MonotoneChainBuilder.dart';
+import 'package:jtscore4dart/src/index/chain/MonotoneChainOverlapAction.dart';
+import 'package:jtscore4dart/src/index/hprtree/HPRtree.dart';
+
+import 'NodedSegmentString.dart';
+import 'SegmentIntersector.dart';
+import 'SegmentString.dart';
 import 'SinglePassNoder.dart';
 
 /**
@@ -38,68 +48,66 @@ import 'SinglePassNoder.dart';
  *
  * @version 1.7
  */
-class MCIndexNoder
-    extends SinglePassNoder
+class MCIndexNoder extends SinglePassNoder
 {
  /**private */List monoChains = [];
- /**private */SpatialIndex index= new HPRtree();
+ /**private */SpatialIndex index= HPRtree();
  /**private */int idCounter = 0;
- /**private */Collection nodedSegStrings;
+ /**private */late Iterable nodedSegStrings;
   // statistics
  /**private */int nOverlaps = 0;
  /**private */double overlapTolerance = 0;
 
-  MCIndexNoder()
-  {
-  }
+  // MCIndexNoder()
+  // {
+  // }
   
-  MCIndexNoder(SegmentIntersector si)
-  {
-    super(si);
-  }
+  // MCIndexNoder([SegmentIntersector? si])
+  // {
+  //   super(si);
+  // }
 
   /**
    * Creates a new noder with a given {@link SegmentIntersector}
    * and an overlap tolerance distance to expand intersection tests with.
    * 
-   * @param si the segment intersector
-   * @param overlapTolerance the expansion distance for overlap tests
+   * @param [si] the segment intersector
+   * @param [overlapTolerance] the expansion distance for overlap tests
    */
-  MCIndexNoder(SegmentIntersector si, double overlapTolerance)
-  {
-    super(si);
-    this.overlapTolerance = overlapTolerance;
-  }
+  MCIndexNoder([SegmentIntersector? si, this.overlapTolerance=0]): super(si);
+  
 
   List getMonotoneChains() { return monoChains; }
 
   SpatialIndex getIndex() { return index; }
 
-  Collection getNodedSubstrings()
+  @override
+  Iterable getNodedSubstrings()
   {
     return  NodedSegmentString.getNodedSubstrings(nodedSegStrings);
   }
 
-  void computeNodes(Collection inputSegStrings)
+  @override
+  void computeNodes(Iterable inputSegStrings)
   {
     this.nodedSegStrings = inputSegStrings;
-    for (Iterator i = inputSegStrings.iterator(); i.moveNext(); ) {
-      add((SegmentString) i.next());
+    for (Iterator i = inputSegStrings.iterator; i.moveNext(); ) {
+      add( i.current as SegmentString);
     }
     intersectChains();
-//System.out.println("MCIndexNoder: # chain overlaps = " + nOverlaps);
+  //System.out.println("MCIndexNoder: # chain overlaps = " + nOverlaps);
   }
 
  /**private */void intersectChains()
   {
     MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(segInt);
 
-    for (Iterator i = monoChains.iterator(); i.moveNext(); ) {
-      MonotoneChain queryChain = (MonotoneChain) i.current;
+    for (Iterator i = monoChains.iterator; i.moveNext(); ) {
+      MonotoneChain queryChain = i.current as MonotoneChain;
       Envelope queryEnv = queryChain.getEnvelope(overlapTolerance);
       List overlapChains = index.query(queryEnv);
-      for (Iterator j = overlapChains.iterator(); j.moveNext(); ) {
-        MonotoneChain testChain = (MonotoneChain) j.current;
+      for (Iterator j = overlapChains.iterator; j.moveNext(); ) {
+        MonotoneChain testChain = j.current as MonotoneChain;
         /**
          * following test makes sure we only compare each pair of chains once
          * and that we don't compare a chain to itself
@@ -109,8 +117,9 @@ class MCIndexNoder
           nOverlaps++;
         }
         // short-circuit if possible
-        if (segInt.isDone())
-        	return;
+        if (segInt.isDone()) {
+          return;
+        }
       }
     }
   }
@@ -118,31 +127,30 @@ class MCIndexNoder
  /**private */void add(SegmentString segStr)
   {
     List segChains = MonotoneChainBuilder.getChains(segStr.getCoordinates(), segStr);
-    for (Iterator i = segChains.iterator(); i.moveNext(); ) {
-      MonotoneChain mc = (MonotoneChain) i.current;
+    for (Iterator i = segChains.iterator; i.moveNext(); ) {
+      MonotoneChain mc = i.current as MonotoneChain;
       mc.setId(idCounter++);
       //mc.setOverlapDistance(overlapDistance);
       index.insert(mc.getEnvelope(overlapTolerance), mc);
       monoChains.add(mc);
     }
   }
+}
 
-  static class SegmentOverlapAction
-      extends MonotoneChainOverlapAction
+  /// 静态内部类
+  /**static */ 
+  class SegmentOverlapAction extends MonotoneChainOverlapAction
   {
-   /**private */SegmentIntersector si = null;
+   /**private */SegmentIntersector? si;
 
-    SegmentOverlapAction(SegmentIntersector si)
-    {
-      this.si = si;
-    }
+    SegmentOverlapAction([this.si]);
+    
 
     void overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
     {
-      SegmentString ss1 = (SegmentString) mc1.getContext();
-      SegmentString ss2 = (SegmentString) mc2.getContext();
+      SegmentString ss1 = mc1.getContext() as SegmentString;
+      SegmentString ss2 = mc2.getContext() as SegmentString;
       si.processIntersections(ss1, start1, ss2, start2);
     }
 
   }
-}

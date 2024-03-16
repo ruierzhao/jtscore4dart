@@ -10,7 +10,7 @@
 		"scope": "dart",
 		"prefix": "TD",
 		"body": [
-			"// TODO: ruier edit.",
+			"/// TODO: @ruier edit.",
 		],
 		"description": "add a TODO mark vvv"
 	}

@@ -597,7 +597,7 @@ class Envelope
   /// Note that this is <b>not</b> the same definition as the SFS <tt>contains</tt>,
   /// which would exclude the envelope boundary.
   ///
-  ///@param  p  the point which this <code>Envelope</code> is
+  ///@param  [p]  the point which this <code>Envelope</code> is
   ///      being checked for containing
   ///@return    <code>true</code> if the point lies in the interior or
   ///      on the boundary of this <code>Envelope</code>.
@@ -612,9 +612,9 @@ class Envelope
   /// Note that this is <b>not</b> the same definition as the SFS <tt>contains</tt>,
   /// which would exclude the envelope boundary.
   ///
-  ///@param  x  the x-coordinate of the point which this <code>Envelope</code> is
+  ///@param  [x]  the x-coordinate of the point which this <code>Envelope</code> is
   ///      being checked for containing
-  ///@param  y  the y-coordinate of the point which this <code>Envelope</code> is
+  ///@param  [y]  the y-coordinate of the point which this <code>Envelope</code> is
   ///      being checked for containing
   ///@return    <code>true</code> if <code>(x, y)</code> lies in the interior or
   ///      on the boundary of this <code>Envelope</code>.
@@ -628,7 +628,7 @@ class Envelope
   /// The envelope is properly contained if it is contained 
   /// by this one but not equal to it.
   /// 
-  /// @param other the envelope to test
+  /// @param [other] the envelope to test
   /// @return true if the envelope is properly contained
   bool containsProperly(Envelope other) {
     if (equals(other)) {

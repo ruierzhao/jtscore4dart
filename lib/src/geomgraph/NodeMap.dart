@@ -55,9 +55,9 @@ class NodeMap
    * @param coord Coordinate
    * @return node for the provided coord
    */
-  Node addNode(Coordinate coord)
+  Node addNodeCoord(Coordinate coord)
   {
-    Node node = (Node) nodeMap.get(coord);
+    Node node = nodeMap.get(coord) as Node;
     if (node == null) {
       node = nodeFact.createNode(coord);
       nodeMap.put(coord, node);

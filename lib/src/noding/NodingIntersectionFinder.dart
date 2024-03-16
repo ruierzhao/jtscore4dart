@@ -18,6 +18,12 @@
 // import org.locationtech.jts.geom.Coordinate;
 
 
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'SegmentIntersector.dart';
+import 'SegmentString.dart';
+
 /**
  * Finds non-noded intersections in a set of {@link SegmentString}s,
  * if any exist.
@@ -119,9 +125,9 @@ class NodingIntersectionFinder
  /**private */bool isInteriorIntersectionsOnly = false;
   
  /**private */LineIntersector li;
- /**private */Coordinate interiorIntersection = null;
- /**private */List<Coordinate> intSegments = null;
- /**private */List intersections = [];
+ /**private */Coordinate? interiorIntersection = null;
+ /**private */List<Coordinate>? intSegments = null;
+ /**private */List<Coordinate> intersections = [];
  /**private */int intersectionCount = 0;
 
   /**
@@ -130,9 +136,8 @@ class NodingIntersectionFinder
    *
    * @param li the LineIntersector to use
    */
-  NodingIntersectionFinder(LineIntersector li)
+  NodingIntersectionFinder(this.li)
   {
-    this.li = li;
     interiorIntersection = null;
   }
 
@@ -191,7 +196,7 @@ class NodingIntersectionFinder
    * 
    * @return a List of {@link Coordinate}
    */
-  List getIntersections()
+  List<Coordinate> getIntersections()
   {
     return intersections;
   }
@@ -224,7 +229,7 @@ class NodingIntersectionFinder
    */
   Coordinate getIntersection()  
   {    
-  	return interiorIntersection;  
+  	return interiorIntersection!;  
   }
 
   /**
@@ -234,7 +239,7 @@ class NodingIntersectionFinder
    */
   List<Coordinate> getIntersectionSegments()
   {
-  	return intSegments;
+  	return intSegments!;
   }
   
   /**
@@ -245,6 +250,7 @@ class NodingIntersectionFinder
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
+  @override
   void processIntersections(
       SegmentString e0,  int segIndex0,
       SegmentString e1,  int segIndex1
@@ -278,7 +284,7 @@ class NodingIntersectionFinder
     bool isEnd10 = segIndex1 == 0;
     bool isEnd11 = segIndex1 + 2 == e1.size();
     
-    li.computeIntersection(p00, p01, p10, p11);
+    li.computeIntersection4Coord(p00, p01, p10, p11);
 //if (li.hasIntersection() && li.isProper()) Debug.println(li);
 
     /**
@@ -297,15 +303,16 @@ class NodingIntersectionFinder
     
     if (isInteriorInt || isInteriorVertexInt) {
       // found an intersection!
-    	intSegments = new Coordinate[4];
-    	intSegments[0] = p00;
-    	intSegments[1] = p01;
-    	intSegments[2] = p10;
-    	intSegments[3] = p11;
+    	// intSegments = new Coordinate[4];
+    	intSegments = List.filled(4, Coordinate.empty2D(),growable: false);
+    	intSegments![0] = p00;
+    	intSegments![1] = p01;
+    	intSegments![2] = p10;
+    	intSegments![3] = p11;
     	
     	//TODO: record endpoint intersection(s)
     	interiorIntersection = li.getIntersection(0);
-    	if (keepIntersections) intersections.add(interiorIntersection);
+    	if (keepIntersections) intersections.add(interiorIntersection!);
     	intersectionCount++;
     }
   }
@@ -315,14 +322,14 @@ class NodingIntersectionFinder
    * Note that intersections between two endpoint vertices are valid noding, 
    * and are not flagged.
    * 
-   * @param p00 a segment vertex
-   * @param p01 a segment vertex
-   * @param p10 a segment vertex
-   * @param p11 a segment vertex
-   * @param isEnd00 true if vertex is a segmentString endpoint
-   * @param isEnd01 true if vertex is a segmentString endpoint
-   * @param isEnd10 true if vertex is a segmentString endpoint
-   * @param isEnd11 true if vertex is a segmentString endpoint
+   * @param [p00] a segment vertex
+   * @param [p01] a segment vertex
+   * @param [p10] a segment vertex
+   * @param [p11] a segment vertex
+   * @param [isEnd00] true if vertex is a segmentString endpoint
+   * @param [isEnd01] true if vertex is a segmentString endpoint
+   * @param [isEnd10] true if vertex is a segmentString endpoint
+   * @param [isEnd11] true if vertex is a segmentString endpoint
    * @return true if an intersection is found
    */
  /**private */static bool isInteriorVertexIntersection(
@@ -330,10 +337,10 @@ class NodingIntersectionFinder
       Coordinate p10, Coordinate p11,
       bool isEnd00, bool isEnd01,
       bool isEnd10, bool isEnd11) {
-    if (isInteriorVertexIntersection(p00, p10, isEnd00, isEnd10)) return true;
-    if (isInteriorVertexIntersection(p00, p11, isEnd00, isEnd11)) return true;
-    if (isInteriorVertexIntersection(p01, p10, isEnd01, isEnd10)) return true;
-    if (isInteriorVertexIntersection(p01, p11, isEnd01, isEnd11)) return true;
+    if (isInteriorVertexIntersection$2(p00, p10, isEnd00, isEnd10)) return true;
+    if (isInteriorVertexIntersection$2(p00, p11, isEnd00, isEnd11)) return true;
+    if (isInteriorVertexIntersection$2(p01, p10, isEnd01, isEnd10)) return true;
+    if (isInteriorVertexIntersection$2(p01, p11, isEnd01, isEnd11)) return true;
     return false;
   }
   
@@ -347,7 +354,7 @@ class NodingIntersectionFinder
    * @param isEnd1 true if vertex is a segmentString endpoint
    * @return true if an intersection is found
    */
- /**private */static bool isInteriorVertexIntersection(
+ /**private */static bool isInteriorVertexIntersection$2(
       Coordinate p0, Coordinate p1,
       bool isEnd0, bool isEnd1) {
     
@@ -378,6 +385,7 @@ class NodingIntersectionFinder
   /**
    * 
    */
+  @override
   bool isDone()
   { 
   	if (findAllIntersections) return false;

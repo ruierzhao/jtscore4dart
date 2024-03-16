@@ -16,6 +16,11 @@
 // import org.locationtech.jts.geom.LineSegment;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+
+import 'MonotoneChainOverlapAction.dart';
+
 /**
  * Monotone Chains are a way of partitioning the segments of a linestring to
  * allow for fast searching of intersections.
@@ -74,8 +79,10 @@ class MonotoneChain {
 
  /**private */List<Coordinate> pts;
  /**private */int start, end;
- /**private */Envelope env = null;
- /**private */Object context = null;// user-defined information
+//  /**private */Envelope env = null;
+ /**private */Envelope? env = null;
+//  /**private */Object context = null;// user-defined information
+ /**private */Object? context = null;// user-defined information
  /**private */int id;// useful for optimizing chain comparisons
   //private double overlapDistance;
 
@@ -316,8 +323,8 @@ class MonotoneChain {
     if (! overlaps(start0, end0, mc, start1, end1, overlapTolerance)) return;
 
     // the chains overlap, so split each in half and iterate  (binary search)
-    int mid0 = (start0 + end0) / 2;
-    int mid1 = (start1 + end1) / 2;
+    int mid0 = ((start0 + end0) / 2).floor();
+    int mid1 = ((start1 + end1) / 2).floor();
 
     // Assert: mid != start or end (since we checked above for end - start <= 1)
     // check terminating conditions before recursing

@@ -139,23 +139,28 @@ abstract class LineIntersector
     return dist;
   }
 
- /**protected */int result;
- /**protected */List<List<Coordinate>> inputLines = Coordinate[2][2];
- /**protected */List<Coordinate> intPt = Coordinate[2];
+ /**protected */late int result;
+//  /**protected */List<List<Coordinate>> inputLines = Coordinate[2][2];
+ /**protected */
+ List<List<Coordinate>> inputLines = 
+ List<List<Coordinate>>.filled(2, List<Coordinate>.filled(2, Coordinate.empty2D(),growable: false),growable: false);
+//  /**protected */List<Coordinate> intPt = Coordinate[2];
+ /**protected */late List<Coordinate> intPt;
   /// The indexes of the endpoints of the intersection lines, in order along
   /// the corresponding line
- /**protected */List<List<int>> intLineIndex;
- /**protected */bool isProper;
- /**protected */Coordinate pa;
- /**protected */Coordinate pb;
+ /**protected */List<List<int>>? intLineIndex;
+ /**protected */late bool isProper;
+ /**protected */late Coordinate pa;
+ /**protected */late Coordinate pb;
   /// If makePrecise is true, computed intersection coordinates will be made precise
   /// using Coordinate#makePrecise
- /**protected */PrecisionModel? precisionModel = null;
+ /**protected */PrecisionModel? precisionModel;
 //int numIntersects = 0;
 
   LineIntersector() {
-    intPt[0] = Coordinate();
-    intPt[1] = Coordinate();
+    // intPt[0] = Coordinate();
+    // intPt[1] = Coordinate();
+    intPt = List.filled(2, Coordinate.empty2D(),growable: false);
     // alias the intersection points for ease of reference
     pa = intPt[0];
     pb = intPt[1];
@@ -180,8 +185,8 @@ abstract class LineIntersector
 
   /// Gets an endpoint of an input segment.
   /// 
-  /// @param segmentIndex the index of the input segment (0 or 1)
-  /// @param ptIndex the index of the endpoint (0 or 1)
+  /// @param [segmentIndex] the index of the input segment (0 or 1)
+  /// @param [ptIndex] the index of the endpoint (0 or 1)
   /// @return the specified endpoint
   Coordinate getEndpoint(int segmentIndex, int ptIndex)
   {
@@ -192,9 +197,8 @@ abstract class LineIntersector
   /// This function computes the bool value of the hasIntersection test.
   /// The actual value of the intersection (if there is one)
   /// is equal to the value of <code>p</code>.
-  /**abstract */ void computeIntersection(
-        Coordinate p,
-        Coordinate p1, Coordinate p2);
+  /**abstract */ 
+  void computeIntersection(Coordinate p,Coordinate p1, Coordinate p2);
 
  /**protected */bool isCollinear() {
     return result == COLLINEAR_INTERSECTION;
@@ -203,7 +207,7 @@ abstract class LineIntersector
   /// Computes the intersection of the lines p1-p2 and p3-p4.
   /// This function computes both the bool value of the hasIntersection test
   /// and the (approximate) value of the intersection point itself (if there is one).
-  void computeIntersection(
+  void computeIntersection4Coord(
                 Coordinate p1, Coordinate p2,
                 Coordinate p3, Coordinate p4) {
     inputLines[0][0] = p1;
@@ -214,7 +218,8 @@ abstract class LineIntersector
 //numIntersects++;
   }
 
- /**protected abstract */int computeIntersect(
+ /**protected abstract */
+ int computeIntersect(
                 Coordinate p1, Coordinate p2,
                 Coordinate q1, Coordinate q2);
 
@@ -228,7 +233,7 @@ abstract class LineIntersector
     return str;
   }
 */
-/// TODO:not implement....late add some code.
+/// TODO:@ruier not implement....late add some code.
   // String toString() {
   //   return WKTWriter.toLineString(inputLines[0][0], inputLines[0][1]) + " - "
   //   + WKTWriter.toLineString(inputLines[1][0], inputLines[1][1])
@@ -267,11 +272,14 @@ abstract class LineIntersector
   /// @return the intIndex'th intersection point
   Coordinate getIntersection(int intIndex)  { return intPt[intIndex]; }
 
- /**protected */void computeIntLineIndex() {
+ /**protected */
+ void computeIntLineIndex() {
     if (intLineIndex == null) {
-      intLineIndex = int[2][2];
-      computeIntLineIndex(0);
-      computeIntLineIndex(1);
+      // intLineIndex = int[2][2];
+      // TODO: ruier edit.because int default is 0 in java.
+      intLineIndex = List.filled(2, List<int>.filled(2, 0));
+      computeIntLineIndexOf(0);
+      computeIntLineIndexOf(1);
     }
   }
 
@@ -296,15 +304,15 @@ abstract class LineIntersector
   /// @return <code>true</code> if either intersection point is in the interior of one of the input segments
   bool isInteriorIntersection()
   {
-    if (isInteriorIntersection(0)) return true;
-    if (isInteriorIntersection(1)) return true;
+    if (isInteriorIntersection_(0)) return true;
+    if (isInteriorIntersection_(1)) return true;
     return false;
   }
 
   /// Tests whether either intersection point is an interior point of the specified input segment.
   ///
   /// @return <code>true</code> if either intersection point is in the interior of the input segment
-  bool isInteriorIntersection(int inputLineIndex)
+  bool isInteriorIntersection_(int inputLineIndex)
   {
     for (int i = 0; i < result; i++) {
       if (! (   intPt[i].equals2D(inputLines[inputLineIndex][0])
@@ -327,7 +335,7 @@ abstract class LineIntersector
   /// either of the endpoints).
   ///
   /// @return true if the intersection is proper
-  bool isProper() {
+  bool getIsProper() {
     return hasIntersection() && isProper;
   }
 
@@ -341,31 +349,31 @@ abstract class LineIntersector
   Coordinate getIntersectionAlongSegment(int segmentIndex, int intIndex) {
     // lazily compute int line array
     computeIntLineIndex();
-    return intPt[intLineIndex[segmentIndex][intIndex]];
+    return intPt[intLineIndex![segmentIndex][intIndex]];
   }
 
   /// Computes the index (order) of the intIndex'th intersection point in the direction of
   /// a specified input line segment
   ///
-  /// @param segmentIndex is 0 or 1
-  /// @param intIndex is 0 or 1
+  /// @param [segmentIndex] is 0 or 1
+  /// @param [intIndex] is 0 or 1
   ///
   /// @return the index of the intersection point along the input segment (0 or 1)
   int getIndexAlongSegment(int segmentIndex, int intIndex) {
     computeIntLineIndex();
-    return intLineIndex[segmentIndex][intIndex];
+    return intLineIndex![segmentIndex][intIndex];
   }
 
- /**protected */void computeIntLineIndex(int segmentIndex) {
+ /**protected */void computeIntLineIndexOf(int segmentIndex) {
     double dist0 = getEdgeDistance(segmentIndex, 0);
     double dist1 = getEdgeDistance(segmentIndex, 1);
     if (dist0 > dist1) {
-      intLineIndex[segmentIndex][0] = 0;
-      intLineIndex[segmentIndex][1] = 1;
+      intLineIndex![segmentIndex][0] = 0;
+      intLineIndex![segmentIndex][1] = 1;
     }
     else {
-      intLineIndex[segmentIndex][0] = 1;
-      intLineIndex[segmentIndex][1] = 0;
+      intLineIndex![segmentIndex][0] = 1;
+      intLineIndex![segmentIndex][1] = 0;
     }
   }
 

@@ -121,10 +121,10 @@ class OffsetCurveBuilder
    * This method handles the degenerate cases of single points and lines,
    * as well as valid rings.
    *
-   * @param inputPts the coordinates of the ring (must not contain repeated points)
-   * @param side side the side {@link Position} of the ring on which to construct the buffer line
-   * @param distance the positive distance at which to create the offset
-   * @return a Coordinate array representing the curve,
+   * @param [inputPts] the coordinates of the ring (must not contain repeated points)
+   * @param [side] side the side {@link Position} of the ring on which to construct the buffer line
+   * @param [distance] the positive distance at which to create the offset
+   * @return a [Coordinate] array representing the curve,
    * or null if the curve is empty
    */
   List<Coordinate>? getRingCurve(List<Coordinate> inputPts, int side, double distance)

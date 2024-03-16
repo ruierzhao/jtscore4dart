@@ -15,6 +15,10 @@
 
 // import org.locationtech.jts.geom.Envelope;
 
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+
+import 'ItemVisitor.dart';
+
 /**
  * The basic operations supported by classes
  * implementing spatial index algorithms.
@@ -52,7 +56,7 @@ abstract class SpatialIndex
    * @param searchEnv the envelope to query for
    * @param visitor a visitor object to apply to the items found
    */
-  void query(Envelope searchEnv, ItemVisitor visitor);
+  void query(Envelope searchEnv, [ItemVisitor visitor]);
 
   /**
    * Removes a single item from the tree.

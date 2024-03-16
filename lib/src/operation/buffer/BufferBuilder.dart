@@ -216,7 +216,7 @@ class BufferBuilder
     MCIndexNoder noder = new MCIndexNoder();
     LineIntersector li = new RobustLineIntersector();
     li.setPrecisionModel(precisionModel);
-    noder.setSegmentIntersector(new IntersectionAdder(li));
+    noder.setSegmentIntersector(IntersectionAdder(li));
 //    Noder noder = new IteratedNoder(precisionModel);
     return noder;
 //    Noder noder = new SimpleSnapRounder(precisionModel);
@@ -327,7 +327,8 @@ class BufferBuilder
    * @param subgraphList the subgraphs to build
    * @param polyBuilder the PolygonBuilder which will build the final polygons
    */
- /**private */void buildSubgraphs(List subgraphList, PolygonBuilder polyBuilder)
+ /**private */
+ void buildSubgraphs(List subgraphList, PolygonBuilder polyBuilder)
   {
     List processedGraphs = [];
     for (Iterator i = subgraphList.iterator; i.moveNext(); ) {
@@ -348,7 +349,7 @@ class BufferBuilder
 //      }
       subgraph.findResultEdges();
       processedGraphs.add(subgraph);
-      polyBuilder.add(subgraph.getDirectedEdges(), subgraph.getNodes());
+      polyBuilder.add$2(subgraph.getDirectedEdges(), subgraph.getNodes());
     }
   }
   

@@ -11,6 +11,8 @@
  */
 
 
+import 'SegmentString.dart';
+
 /**
  * Processes possible intersections detected by a {@link Noder}.
  * The {@link SegmentIntersector} is passed to a {@link Noder}.

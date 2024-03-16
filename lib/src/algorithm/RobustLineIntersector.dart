@@ -15,7 +15,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Envelope;
 
+import 'dart:math';
+
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/Distance.dart';
+import 'package:jtscore4dart/src/algorithm/Intersection.dart';
 
 import 'LineIntersector.dart';
 import 'Orientation.dart';
@@ -24,6 +28,7 @@ import 'Orientation.dart';
 ///
 /// @version 1.7
 class RobustLineIntersector extends LineIntersector{
+  @override
   void computeIntersection(Coordinate p, Coordinate p1, Coordinate p2) {
     isProper = false;
     // do between check first, since it is faster than the orientation test
@@ -34,21 +39,26 @@ class RobustLineIntersector extends LineIntersector{
         if (p.equals(p1) || p.equals(p2)) {
           isProper = false;
         }
-        result = POINT_INTERSECTION;
+        result = LineIntersector.POINT_INTERSECTION;
         return;
       }
     }
-    result = NO_INTERSECTION;
+    // result = NO_INTERSECTION;
+    result = LineIntersector.NO_INTERSECTION;
   }
 
- /**protected */int computeIntersect(
+ /**protected */
+  @override
+  int computeIntersect(
                 Coordinate p1, Coordinate p2,
                 Coordinate q1, Coordinate q2  ) {
     isProper = false;
 
     // first try a fast test to see if the envelopes of the lines intersect
-    if (! Envelope.intersects(p1, p2, q1, q2))
-      return NO_INTERSECTION;
+    if (! Envelope.intersects(p1, p2, q1, q2)) {
+      // return NO_INTERSECTION;
+      return LineIntersector.NO_INTERSECTION;
+    }
 
     // for each endpoint, compute which side of the other segment it lies
     // if both endpoints lie on the same side of the other segment,
@@ -57,14 +67,14 @@ class RobustLineIntersector extends LineIntersector{
     int Pq2 = Orientation.index(p1, p2, q2);
 
     if ((Pq1>0 && Pq2>0) || (Pq1<0 && Pq2<0)) {
-      return NO_INTERSECTION;
+      return LineIntersector.NO_INTERSECTION;
     }
 
     int Qp1 = Orientation.index(q1, q2, p1);
     int Qp2 = Orientation.index(q1, q2, p2);
 
     if ((Qp1>0 && Qp2>0) || (Qp1<0 && Qp2<0)) {
-        return NO_INTERSECTION;
+        return LineIntersector.NO_INTERSECTION;
     }
     /**
      * Intersection is collinear if each endpoint lies on the other line.
@@ -90,7 +100,7 @@ class RobustLineIntersector extends LineIntersector{
      *  the other line, since at this point we know that the inputLines must
      *  intersect.
      */
-    Coordinate p = null;
+    Coordinate? p = null;
     double z = double.nan;
     if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0) {
       isProper = false;
@@ -150,10 +160,10 @@ class RobustLineIntersector extends LineIntersector{
     else {
       isProper = true;
       p = intersection(p1, p2, q1, q2);
-      z = zInterpolate(p, p1, p2, q1, q2);
+      z = zInterpolate5(p, p1, p2, q1, q2);
     }
-    intPt[0] = copyWithZ(p, z);
-    return POINT_INTERSECTION;
+    intPt[0] = copyWithZ(p!, z);
+    return LineIntersector.POINT_INTERSECTION;
   }
 
  /**private */int computeCollinearIntersection(Coordinate p1, Coordinate p2,
@@ -166,38 +176,38 @@ class RobustLineIntersector extends LineIntersector{
     if (q1inP && q2inP) {
       intPt[0] = copyWithZInterpolate(q1, p1, p2);
       intPt[1] = copyWithZInterpolate(q2, p1, p2);
-      return COLLINEAR_INTERSECTION;
+      return LineIntersector.COLLINEAR_INTERSECTION;
     }
     if (p1inQ && p2inQ) {
       intPt[0] = copyWithZInterpolate(p1, q1, q2);
       intPt[1] = copyWithZInterpolate(p2, q1, q2);
-      return COLLINEAR_INTERSECTION;
+      return LineIntersector.COLLINEAR_INTERSECTION;
     }
     if (q1inP && p1inQ) {
       // if pts are equal Z is chosen arbitrarily
       intPt[0] = copyWithZInterpolate(q1, p1, p2);
       intPt[1] = copyWithZInterpolate(p1, q1, q2);
-      return q1.equals(p1) && !q2inP && !p2inQ ? POINT_INTERSECTION : COLLINEAR_INTERSECTION;
+      return q1.equals(p1) && !q2inP && !p2inQ ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
     }
     if (q1inP && p2inQ) {
       // if pts are equal Z is chosen arbitrarily
       intPt[0] = copyWithZInterpolate(q1, p1, p2);
       intPt[1] = copyWithZInterpolate(p2, q1, q2);
-      return q1.equals(p2) && !q2inP && !p1inQ ? POINT_INTERSECTION : COLLINEAR_INTERSECTION;
+      return q1.equals(p2) && !q2inP && !p1inQ ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
     }
     if (q2inP && p1inQ) {
       // if pts are equal Z is chosen arbitrarily
       intPt[0] = copyWithZInterpolate(q2, p1, p2);
       intPt[1] = copyWithZInterpolate(p1, q1, q2);
-      return q2.equals(p1) && !q1inP && !p2inQ ? POINT_INTERSECTION : COLLINEAR_INTERSECTION;
+      return q2.equals(p1) && !q1inP && !p2inQ ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
     }
     if (q2inP && p2inQ) {
       // if pts are equal Z is chosen arbitrarily
       intPt[0] = copyWithZInterpolate(q2, p1, p2);
       intPt[1] = copyWithZInterpolate(p2, q1, q2);
-      return q2.equals(p2) && !q1inP && !p1inQ ? POINT_INTERSECTION : COLLINEAR_INTERSECTION;
+      return q2.equals(p2) && !q1inP && !p1inQ ? LineIntersector.POINT_INTERSECTION : LineIntersector.COLLINEAR_INTERSECTION;
     }
-    return NO_INTERSECTION;
+    return LineIntersector.NO_INTERSECTION;
   }
 
  /**private */static Coordinate copyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
@@ -237,7 +247,7 @@ class RobustLineIntersector extends LineIntersector{
 //      checkDD(p1, p2, q1, q2, intPt);
     }
     if (precisionModel != null) {
-      precisionModel.makePrecise(intPt);
+      precisionModel!.makePreciseFromCoord(intPt);
     }
     return intPt;
   }
@@ -269,9 +279,8 @@ class RobustLineIntersector extends LineIntersector{
    */
  /**private */Coordinate intersectionSafe(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
   {
-    Coordinate intPt = Intersection.intersection(p1, p2, q1, q2);
-    if (intPt == null)
-      intPt = nearestEndpoint(p1, p2, q1, q2);
+    Coordinate? intPt = Intersection.intersection(p1, p2, q1, q2);
+    intPt ??= nearestEndpoint(p1, p2, q1, q2);
  //     System.out.println("Snapped to " + intPt);
     return intPt;
   }
@@ -287,9 +296,9 @@ class RobustLineIntersector extends LineIntersector{
    */
  /**private */bool isInSegmentEnvelopes(Coordinate intPt)
   {
-    Envelope env0 = new Envelope(inputLines[0][0], inputLines[0][1]);
-    Envelope env1 = new Envelope(inputLines[1][0], inputLines[1][1]);
-    return env0.contains(intPt) && env1.contains(intPt);
+    Envelope env0 = new Envelope.fromCoord2(inputLines[0][0], inputLines[0][1]);
+    Envelope env1 = new Envelope.fromCoord2(inputLines[1][0], inputLines[1][1]);
+    return env0.containsCoord(intPt) && env1.containsCoord(intPt);
   }
 
   /**
@@ -364,8 +373,9 @@ class RobustLineIntersector extends LineIntersector{
    */
  /**private */static double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2) {
     double z = p.getZ();
-    if (! (z).isNaN) 
+    if (! (z).isNaN) {
       return z;
+    }
     return zInterpolate(p, p1, p2); // may be NaN
   }
 
@@ -408,7 +418,7 @@ class RobustLineIntersector extends LineIntersector{
     double xoff = (p.x - p1.x);
     double yoff = (p.y - p1.y);
     double plen = (xoff * xoff + yoff * yoff);
-    double frac = math.sqrt(plen / seglen);
+    double frac = sqrt(plen / seglen);
     double zoff = dz * frac;
     double zInterpolated = p1z + zoff;
     return zInterpolated;
@@ -428,7 +438,7 @@ class RobustLineIntersector extends LineIntersector{
    * @param q2 a segment endpoint, possibly with Z
    * @return the averaged interpolated Z value (may be NaN)
    */
- /**private */static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
+ /**private */static double zInterpolate5(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) {
     double zp = zInterpolate(p, p1, p2);
     double zq = zInterpolate(p, q1, q2);
     if ((zp).isNaN) {

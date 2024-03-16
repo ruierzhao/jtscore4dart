@@ -20,6 +20,11 @@
 // import org.locationtech.jts.geomgraph.NodeFactory;
 // import org.locationtech.jts.geomgraph.PlanarGraph;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geomgraph/NodeFactory.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdgeStar.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
+
 /**
  * Creates nodes for use in the {@link PlanarGraph}s constructed during
  * overlay operations.
@@ -29,6 +34,7 @@
 class OverlayNodeFactory
   extends NodeFactory
 {
+  @override
   Node createNode(Coordinate coord)
   {
     return new Node(coord, new DirectedEdgeStar());

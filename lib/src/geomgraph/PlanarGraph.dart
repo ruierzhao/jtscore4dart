@@ -26,6 +26,20 @@
 // import org.locationtech.jts.geom.Quadrant;
 // import org.locationtech.jts.util.Debug;
 
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Quadrant.dart';
+
+import 'DirectedEdge.dart';
+import 'DirectedEdgeStar.dart';
+import 'Edge.dart';
+import 'EdgeEnd.dart';
+import 'Label.dart';
+import 'Node.dart';
+import 'NodeFactory.dart';
+import 'NodeMap.dart';
+
 /**
  * The computation of the <code>IntersectionMatrix</code> relies on the use of a structure
  * called a "topology graph".  The topology graph contains nodes and edges
@@ -54,11 +68,11 @@ class PlanarGraph
    *
    * @param nodes Collection of nodes
    */
-  static void linkResultDirectedEdges(Collection nodes)
+  static void linkResultDirectedEdges(Iterable nodes)
   {
-    for (Iterator nodeit = nodes.iterator(); nodeit.moveNext(); ) {
-      Node node = (Node) nodeit.current;
-      ((DirectedEdgeStar) node.getEdges()).linkResultDirectedEdges();
+    for (Iterator nodeit = nodes.iterator; nodeit.moveNext(); ) {
+      Node node = nodeit.current as Node;
+      ( node.getEdges() as DirectedEdgeStar).linkResultDirectedEdges();
     }
   }
 
@@ -66,16 +80,17 @@ class PlanarGraph
  /**protected */NodeMap nodes;
  /**protected */List edgeEndList  = [];
 
-  PlanarGraph(NodeFactory nodeFact) {
-    nodes = new NodeMap(nodeFact);
-  }
+  PlanarGraph([NodeFactory? nodeFact]):
+    nodes = new NodeMap(nodeFact??=NodeFactory());
+  
 
-  PlanarGraph() {
-    nodes = new NodeMap(new NodeFactory());
-  }
+  // PlanarGraph() {
+  //   nodes = new NodeMap(new NodeFactory());
+  // }
 
-  Iterator getEdgeIterator() { return edges.iterator(); }
-  Collection getEdgeEnds() { return edgeEndList; }
+  Iterator getEdgeIterator() { return edges.iterator; }
+  
+  Iterable getEdgeEnds() { return edgeEndList; }
 
   bool isBoundaryNode(int geomIndex, Coordinate coord)
   {
@@ -96,9 +111,11 @@ class PlanarGraph
   }
 
   Iterator getNodeIterator() { return nodes.iterator(); }
-  Collection getNodes() { return nodes.values(); }
+  Iterable getNodes() { return nodes.values(); }
+  
   Node addNode(Node node) { return nodes.addNode(node); }
-  Node addNode(Coordinate coord) { return nodes.addNode(coord); }
+
+  Node addNodeCoord(Coordinate coord) { return nodes.addNodeCoord(coord); }
   /**
    * Find coordinate.
    *
@@ -116,8 +133,8 @@ class PlanarGraph
   void addEdges(List edgesToAdd)
   {
     // create all the nodes for the edges
-    for (Iterator it = edgesToAdd.iterator(); it.moveNext(); ) {
-      Edge e = (Edge) it.current;
+    for (Iterator it = edgesToAdd.iterator; it.moveNext(); ) {
+      Edge e =  it.current as Edge;
       edges.add(e);
 
       DirectedEdge de1 = new DirectedEdge(e, true);
@@ -135,11 +152,11 @@ class PlanarGraph
    * This allows clients to link only a subset of nodes in the graph, for
    * efficiency (because they know that only a subset is of interest).
    */
-  void linkResultDirectedEdges()
+  void linkResultDirectedEdges_()
   {
     for (Iterator nodeit = nodes.iterator(); nodeit.moveNext(); ) {
-      Node node = (Node) nodeit.current;
-      ((DirectedEdgeStar) node.getEdges()).linkResultDirectedEdges();
+      Node node = nodeit.current as Node;
+      ( node.getEdges() as DirectedEdgeStar).linkResultDirectedEdges();
     }
   }
   /**
@@ -150,8 +167,8 @@ class PlanarGraph
   void linkAllDirectedEdges()
   {
     for (Iterator nodeit = nodes.iterator(); nodeit.moveNext(); ) {
-      Node node = (Node) nodeit.current;
-      ((DirectedEdgeStar) node.getEdges()).linkAllDirectedEdges();
+      Node node = nodeit.current as Node;
+      ( node.getEdges() as DirectedEdgeStar).linkAllDirectedEdges();
     }
   }
   /**
@@ -162,12 +179,13 @@ class PlanarGraph
    * @return the edge, if found
    *    <code>null</code> if the edge was not found
    */
-  EdgeEnd findEdgeEnd(Edge e)
+  EdgeEnd? findEdgeEnd(Edge e)
   {
-    for (Iterator i = getEdgeEnds().iterator(); i.moveNext(); ) {
-      EdgeEnd ee = (EdgeEnd) i.current;
-      if (ee.getEdge() == e)
+    for (Iterator i = getEdgeEnds().iterator; i.moveNext(); ) {
+      EdgeEnd ee = i.current as EdgeEnd;
+      if (ee.getEdge() == e) {
         return ee;
+      }
     }
     return null;
   }
@@ -180,13 +198,14 @@ class PlanarGraph
    * @return the edge, if found
    *    <code>null</code> if the edge was not found
    */
-  Edge findEdge(Coordinate p0, Coordinate p1)
+  Edge? findEdge(Coordinate p0, Coordinate p1)
   {
-    for (int i = 0; i < edges.size(); i++) {
-      Edge e = (Edge) edges.get(i);
+    for (int i = 0; i < edges.length; i++) {
+      Edge e = edges[i] as Edge;
       List<Coordinate> eCoord = e.getCoordinates();
-      if (p0.equals(eCoord[0]) && p1.equals(eCoord[1]) )
+      if (p0.equals(eCoord[0]) && p1.equals(eCoord[1]) ) {
         return e;
+      }
     }
     return null;
   }
@@ -199,17 +218,19 @@ class PlanarGraph
    * @return matching edge, if found
    *    <code>null</code> if the edge was not found
    */
-  Edge findEdgeInSameDirection(Coordinate p0, Coordinate p1)
+  Edge? findEdgeInSameDirection(Coordinate p0, Coordinate p1)
   {
-    for (int i = 0; i < edges.size(); i++) {
-      Edge e = (Edge) edges.get(i);
+    for (int i = 0; i < edges.length; i++) {
+      Edge e = edges[i] as Edge;
 
       List<Coordinate> eCoord = e.getCoordinates();
-      if (matchInSameDirection(p0, p1, eCoord[0], eCoord[1]) )
+      if (matchInSameDirection(p0, p1, eCoord[0], eCoord[1]) ) {
         return e;
+      }
 
-      if (matchInSameDirection(p0, p1, eCoord[eCoord.length - 1], eCoord[eCoord.length - 2]) )
+      if (matchInSameDirection(p0, p1, eCoord[eCoord.length - 1], eCoord[eCoord.length - 2]) ) {
         return e;
+      }
     }
     return null;
   }
@@ -221,24 +242,27 @@ class PlanarGraph
    */
  /**private */bool matchInSameDirection(Coordinate p0, Coordinate p1, Coordinate ep0, Coordinate ep1)
   {
-    if (! p0.equals(ep0))
+    if (! p0.equals(ep0)) {
       return false;
+    }
 
     if (Orientation.index(p0, p1, ep1) == Orientation.COLLINEAR
-         && Quadrant.quadrant(p0, p1) == Quadrant.quadrant(ep0, ep1) )
+         && Quadrant.quadrant$2(p0, p1) == Quadrant.quadrant$2(ep0, ep1) ) {
       return true;
+    }
     return false;
   }
 
-  void printEdges(PrintStream out)
-  {
-    out.println("Edges:");
-    for (int i = 0; i < edges.size(); i++) {
-      out.println("edge " + i + ":");
-      Edge e = (Edge) edges.get(i);
-      e.print(out);
-      e.eiList.print(out);
-    }
-  }
+  /// TODO: @ruier edit.
+  // void printEdges(PrintStream out)
+  // {
+  //   out.println("Edges:");
+  //   for (int i = 0; i < edges.size(); i++) {
+  //     out.println("edge " + i + ":");
+  //     Edge e = (Edge) edges.get(i);
+  //     e.print(out);
+  //     e.eiList.print(out);
+  //   }
+  // }
 
 }

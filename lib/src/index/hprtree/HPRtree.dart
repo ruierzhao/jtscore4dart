@@ -21,6 +21,8 @@
 // import org.locationtech.jts.index.strtree.STRtree;
 // import org.locationtech.jts.util.IntArrayList;
 
+import '../SpatialIndex.dart';
+
 /**
  * A Hilbert-Packed R-tree.  This is a static R-tree
  * which is packed by using the Hilbert ordering 
@@ -87,18 +89,16 @@ class HPRtree
   /**
    * Creates a new index with the default node capacity.
    */
-  HPRtree() {
-    this(DEFAULT_NODE_CAPACITY);
-  }
+  // HPRtree() {
+  //   this(DEFAULT_NODE_CAPACITY);
+  // }
   
   /**
    * Creates a new index with the given node capacity.
    * 
    * @param nodeCapacity the node capacity to use
    */
-  HPRtree(int nodeCapacity) {
-    this.nodeCapacity = nodeCapacity;
-  }
+  HPRtree([this.nodeCapacity=DEFAULT_NODE_CAPACITY]);
   
   /**
    * Gets the number of items in the index.

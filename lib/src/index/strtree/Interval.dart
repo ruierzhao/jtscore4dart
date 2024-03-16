@@ -12,6 +12,10 @@
 
 
 // import org.locationtech.jts.util.Assert;
+import "dart:math" as math;
+
+
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 /**
  * A contiguous portion of 1D-space. Used internally by SIRtree.
@@ -21,14 +25,12 @@
  */
 class Interval {
 
-  Interval(Interval other) {
-    this(other.min, other.max);
-  }
+  Interval.fromAnother(Interval other) 
+    :this(other.min, other.max);
+  
 
-  Interval(double min, double max) {
+  Interval(this.min, this.max) {
     Assert.isTrue(min <= max);
-    this.min = min;
-    this.max = max;
   }
 
  /**private */double min;
@@ -50,23 +52,23 @@ class Interval {
   }
   
   bool equals(Object o) {
-    if (! (o is Interval)) { return false; }
-    Interval other = (Interval) o;
+    if (o is! Interval) { return false; }
+    Interval other =  o;
     return min == other.min && max == other.max;
   }
   
   /* (non-Javadoc)
    * @see java.lang.Object#hashCode()
    */
-  @Override
-  int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    int temp;
-    temp = Double.doubleToLongBits(max);
-    result = prime * result + (int) (temp ^ (temp >>> 32));
-    temp = Double.doubleToLongBits(min);
-    result = prime * result + (int) (temp ^ (temp >>> 32));
-    return result;
-  }
+  // @override
+  // int hashCode() {
+  //   final int prime = 31;
+  //   int result = 1;
+  //   int temp;
+  //   temp = Double.doubleToLongBits(max);
+  //   result = prime * result + (int) (temp ^ (temp >>> 32));
+  //   temp = Double.doubleToLongBits(min);
+  //   result = prime * result + (int) (temp ^ (temp >>> 32));
+  //   return result;
+  // }
 }

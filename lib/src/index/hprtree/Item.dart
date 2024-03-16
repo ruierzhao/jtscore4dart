@@ -13,15 +13,14 @@
 
 // import org.locationtech.jts.geom.Envelope;
 
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+
 class Item {
 
  /**private */Envelope env;
  /**private */Object item;
 
-  Item(Envelope env, Object item) {
-    this.env = env;
-    this.item = item;
-  }
+  Item(this.env, this.item);
 
   Envelope getEnvelope() {
     return env;
@@ -31,7 +30,8 @@ class Item {
     return item;
   }
   
+  @override
   String toString() {
-    return "Item: " + env.toString();
+    return "Item: ${env.toString()}" ;
   }
 }

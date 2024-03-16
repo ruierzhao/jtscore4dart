@@ -17,6 +17,10 @@
 
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'Boundable.dart';
+
 /**
  * A node of an {@link AbstractSTRtree}. A node is one of:
  * <ul>
@@ -28,30 +32,28 @@
  *
  * @version 1.7
  */
-abstract class AbstractNode implements Boundable, Serializable {
+abstract class AbstractNode implements Boundable /**, Serializable */ {
   /**
    * 
    */
- /**private */static final int serialVersionUID = 6493722185909573708L;
+//  /**private */static final int serialVersionUID = 6493722185909573708L;
   
- /**private */ArrayList childBoundables = [];
- /**private */Object bounds = null;
- /**private */int level;
+ /**private */List childBoundables = [];
+ /**private */Object? bounds = null;
+ /**private */int? level;
 
   /**
    * Default constructor required for serialization.
    */
-  AbstractNode() {
-  }
+  // AbstractNode() {
+  // }
 
   /**
    * Constructs an AbstractNode at the given level in the tree
    * @param level 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
    * root node will have the highest level
    */
-  AbstractNode(int level) {
-    this.level = level;
-  }
+  AbstractNode([this.level]);
 
   /**
    * Returns either child {@link AbstractNode}s, or if this is a leaf node, real data (wrapped
@@ -73,7 +75,7 @@ abstract class AbstractNode implements Boundable, Serializable {
    *         object (for other subclasses of AbstractSTRtree)
    * @see AbstractSTRtree.IntersectsOp
    */
- /**protected */abstract Object computeBounds();
+ /**protected abstract */ Object computeBounds();
 
   /**
    * Gets the bounds of this node
@@ -81,10 +83,8 @@ abstract class AbstractNode implements Boundable, Serializable {
    * @return the object representing bounds in this index
    */
   Object getBounds() {
-    if (bounds == null) {
-      bounds = computeBounds();
-    }
-    return bounds;
+    bounds ??= computeBounds();
+    return bounds!;
   }
 
   /**
@@ -93,7 +93,7 @@ abstract class AbstractNode implements Boundable, Serializable {
    * 
    * @return the node level
    */
-  int getLevel() {
+  int? getLevel() {
     return level;
   }
 
@@ -104,7 +104,7 @@ abstract class AbstractNode implements Boundable, Serializable {
    */
   int size()
   {
-    return childBoundables.size();
+    return childBoundables.length;
   }
   
   /**
@@ -114,7 +114,7 @@ abstract class AbstractNode implements Boundable, Serializable {
    */
   bool isEmpty()
   {
-    return childBoundables.isEmpty();
+    return childBoundables.isEmpty;
   }
   
   /**
@@ -128,7 +128,7 @@ abstract class AbstractNode implements Boundable, Serializable {
     childBoundables.add(childBoundable);
   }
 
-  void setChildBoundables(ArrayList childBoundables)
+  void setChildBoundables(List childBoundables)
   {
     this.childBoundables = childBoundables;
   }

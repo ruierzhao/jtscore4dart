@@ -15,6 +15,9 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Envelope;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+
 /**
  * A node of a {@link KdTree}, which represents one or more points in the same location.
  * 
@@ -22,26 +25,24 @@
  */
 class KdNode {
 
-   /**private */Coordinate p = null;
-   /**private */Object     data;
-   /**private */KdNode     left;
-   /**private */KdNode     right;
-   /**private */int        count;
+   /**private */Coordinate  p;
+   /**private */Object?     data;
+   /**private */KdNode?     left;
+   /**private */KdNode?     right;
+   /**private */int         count;
 
     /**
      * Creates a new KdNode.
      * 
-     * @param _x coordinate of point
-     * @param _y coordinate of point
-     * @param data a data objects to associate with this node
+     * @param [_x] coordinate of point
+     * @param [_y] coordinate of point
+     * @param [data] a data objects to associate with this node
      */
-    KdNode(double _x, double _y, Object data) {
-        p = new Coordinate(_x, _y);
-        left = null;
-        right = null;
-        count = 1;
-        this.data = data;
-    }
+        
+    // KdNode.fromXY(double _x, double _y, data)
+    // :this(Coordinate(_x, _y),data);
+    KdNode.fromXY(double _x, double _y, this.data)
+    :p = new Coordinate(_x, _y), count = 1;
 
     /**
      * Creates a new KdNode.
@@ -49,13 +50,9 @@ class KdNode {
      * @param p point location of new node
      * @param data a data objects to associate with this node
      */
-    KdNode(Coordinate p, Object data) {
-        this.p = new Coordinate(p);
-        left = null;
-        right = null;
-        count = 1;
-        this.data = data;
-    }
+    KdNode(Coordinate p, [this.data]) 
+    :this.p = new Coordinate.fromAnother(p),
+    count = 1;
 
     /**
      * Returns the X coordinate of the node
@@ -105,7 +102,7 @@ class KdNode {
      * Gets the user data object associated with this node.
      * @return user data
      */
-    Object getData() {
+    Object? getData() {
         return data;
     }
 
@@ -114,7 +111,8 @@ class KdNode {
      * 
      * @return left node
      */
-    KdNode getLeft() {
+    /// TODO: @ruier edit.
+    KdNode? getLeft() {
         return left;
     }
 
@@ -123,7 +121,8 @@ class KdNode {
      * 
      * @return right node
      */
-    KdNode getRight() {
+    /// TODO: @ruier edit.
+    KdNode? getRight() {
         return right;
     }
 
@@ -175,8 +174,8 @@ class KdNode {
       } else {
         envMin = env.getMinY();
       }
-      double splitValue = splitValue(isSplitOnX);
-      bool isInRange = envMin < splitValue;
+      double _splitValue = splitValue(isSplitOnX);
+      bool isInRange = envMin < _splitValue;
       return isInRange;
     }
     
@@ -195,8 +194,8 @@ class KdNode {
        } else {
         envMax = env.getMaxY();
       }
-      double splitValue = splitValue(isSplitOnX);
-      bool isInRange = splitValue <= envMax;
+      double _splitValue = splitValue(isSplitOnX);
+      bool isInRange = _splitValue <= envMax;
       return isInRange;
     }
 
@@ -222,8 +221,8 @@ class KdNode {
       else {
           ptOrdinate = pt.y;
       }
-      double splitValue = splitValue(isSplitOnX);
-      bool isInRange = (ptOrdinate < splitValue);
+      double _splitValue = splitValue(isSplitOnX);
+      bool isInRange = (ptOrdinate < _splitValue);
       return isInRange;
     }
     

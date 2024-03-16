@@ -21,7 +21,14 @@
 // import org.locationtech.jts.index.strtree.STRtree;
 // import org.locationtech.jts.util.IntArrayList;
 
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/index/ItemVisitor.dart';
+import 'package:jtscore4dart/src/util/IntArrayList.dart';
+
+import '../ArrayListVisitor.dart';
 import '../SpatialIndex.dart';
+import 'HilbertEncoder.dart';
+import 'Item.dart';
 
 /**
  * A Hilbert-Packed R-tree.  This is a static R-tree
@@ -59,16 +66,16 @@ import '../SpatialIndex.dart';
  * @author Martin Davis
  *
  */
-class HPRtree
-  implements SpatialIndex
+class HPRtree implements SpatialIndex
 {
- /**private */static final int ENV_SIZE = 4;
+ /**private */static const int ENV_SIZE = 4;
 
- /**private */static final int HILBERT_LEVEL = 12;
+ /**private */static const int HILBERT_LEVEL = 12;
 
- /**private */static final int DEFAULT_NODE_CAPACITY = 16;
+ /**private */static const int DEFAULT_NODE_CAPACITY = 16;
   
- /**private */List<Item> itemsToLoad = new ArrayList<>();
+//  /**private */List<Item> itemsToLoad = new ArrayList<>();
+ /**private */List<Item> itemsToLoad = [];
 
  /**private */final int nodeCapacity;
 
@@ -76,15 +83,16 @@ class HPRtree
 
  /**private */final Envelope totalExtent = new Envelope();
 
- /**private */int[] layerStartIndex;
+ /**private */late List<int>  layerStartIndex;
 
- /**private */double[] nodeBounds;
+ /**private */late List<double>  nodeBounds;
 
- /**private */double[] itemBounds;
+ /**private */late List<double>  itemBounds;
 
- /**private */Object[] itemValues;
+//  /**private */Object[] itemValues;
+ /**private */late List<Object> itemValues;
 
- /**private */volatile bool isBuilt = false;
+ /**private volatile*/ bool isBuilt = false;
 
   /**
    * Creates a new index with the default node capacity.
@@ -109,33 +117,36 @@ class HPRtree
     return numItems;
   }
   
-  @Override
+  @override
   void insert(Envelope itemEnv, Object item) {
     if (isBuilt) {
-      throw new IllegalStateException("Cannot insert items after tree is built.");
+      // throw new IllegalStateException("Cannot insert items after tree is built.");
+      throw new Exception("IllegalStateException: Cannot insert items after tree is built.");
     }
     numItems++;
     itemsToLoad.add( new Item(itemEnv, item) );
-    totalExtent.expandToInclude(itemEnv);
+    totalExtent.expandToIncludeEnvelope(itemEnv);
   }
 
-  @Override
+  @override
   List query(Envelope searchEnv) {
     build();
     
-    if (! totalExtent.intersects(searchEnv)) 
+    if (! totalExtent.intersects(searchEnv)) {
       return [];
+    }
     
     ArrayListVisitor visitor = new ArrayListVisitor();
     query(searchEnv, visitor);
     return visitor.getItems();
   }
 
-  @Override
+  @override
   void query(Envelope searchEnv, ItemVisitor visitor) {
     build();
-    if (! totalExtent.intersects(searchEnv)) 
+    if (! totalExtent.intersects(searchEnv)) {
       return;
+    }
     if (layerStartIndex == null) {
       queryItems(0, searchEnv, visitor);
     }
@@ -146,9 +157,9 @@ class HPRtree
 
  /**private */void queryTopLayer(Envelope searchEnv, ItemVisitor visitor) {
     int layerIndex = layerStartIndex.length - 2;
-    int layerSize = layerSize(layerIndex);
+    int _layerSize = layerSize(layerIndex);
     // query each node in layer
-    for (int i = 0; i < layerSize; i += ENV_SIZE) {
+    for (int i = 0; i < _layerSize; i += ENV_SIZE) {
       queryNode(layerIndex, i, searchEnv, visitor);
     }
   }
@@ -158,7 +169,7 @@ class HPRtree
     int nodeIndex = layerStart + nodeOffset;
     if (! intersects(nodeBounds, nodeIndex, searchEnv)) return;
     if (layerIndex == 0) {
-      int childNodesOffset = nodeOffset / ENV_SIZE  * nodeCapacity;
+      int childNodesOffset = (nodeOffset / ENV_SIZE  * nodeCapacity).floor();
       queryItems(childNodesOffset, searchEnv, visitor);
     }
     else {
@@ -167,7 +178,7 @@ class HPRtree
     }
   }
 
- /**private */static bool intersects(double[] bounds, int nodeIndex, Envelope env) {
+ /**private */static bool intersects(List<double>  bounds, int nodeIndex, Envelope env) {
     bool isBeyond = (env.getMaxX() < bounds[nodeIndex])
     || (env.getMaxY() < bounds[nodeIndex+1])
     || (env.getMinX() > bounds[nodeIndex+2])
@@ -204,7 +215,7 @@ class HPRtree
     return layerEnd - layerStart;
   }
 
-  @Override
+  @override
   bool remove(Envelope itemEnv, Object item) {
     // TODO Auto-generated method stub
     return false;
@@ -248,9 +259,11 @@ class HPRtree
     // copy item contents out to arrays for querying
     int boundsIndex = 0;
     int valueIndex = 0;
-    itemBounds = new double[itemsToLoad.size() * 4];
-    itemValues = new Object[itemsToLoad.size()];
-    for (Item item : itemsToLoad) {
+    // itemBounds = new double[itemsToLoad.size() * 4];
+    // itemValues = new Object[itemsToLoad.size()];
+    itemBounds = List.filled(itemsToLoad.length * 4, 0.0, growable: false);
+    itemValues = List.filled(itemsToLoad.length , Object(), growable: false);
+    for (Item item in itemsToLoad) {
       Envelope envelope = item.getEnvelope();
       itemBounds[boundsIndex++] = envelope.getMinX();
       itemBounds[boundsIndex++] = envelope.getMinY();
@@ -259,11 +272,13 @@ class HPRtree
       itemValues[valueIndex++] = item.getItem();
     }
     // and let GC free the original list
-    itemsToLoad = null;
+    /// TODO: @ruier edit.主动释放内存
+    // itemsToLoad = null;
   }
 
- /**private */static double[] createBoundsArray(int size) {
-    double[] a = new double[4*size];
+ /**private */
+ static List<double>  createBoundsArray(int size) {
+    List<double>  a = new double[4*size];
     for (int i = 0; i < size; i++) {
       int index = 4*i;
       a[index] = double.maxFinite
@@ -315,7 +330,7 @@ class HPRtree
     if (maxY > nodeBounds[nodeIndex+3]) nodeBounds[nodeIndex+3] = maxY;
   }
   
- /**private */static int[] computeLayerIndices(int itemSize, int nodeCapacity) {
+ /**private */static List<int>  computeLayerIndices(int itemSize, int nodeCapacity) {
     IntArrayList layerIndexList = new IntArrayList();
     int layerSize = itemSize;
     int index = 0;
@@ -347,9 +362,10 @@ class HPRtree
    * 
    * @return a list of the internal node extents
    */
-  Envelope[] getBounds() {
-    int numNodes = nodeBounds.length / 4;
-    Envelope[] bounds = new Envelope[numNodes];
+  List<Envelope> getBounds() {
+    int numNodes = (nodeBounds.length / 4).floor();
+    // List<Envelope> bounds = new Envelope[numNodes];
+    List<Envelope> bounds = List.filled(numNodes, Envelope.init(),growable: false);
     // create from largest to smallest
     for (int i = numNodes - 1; i >= 0; i--) {
       int boundIndex = 4 * i;
@@ -359,9 +375,11 @@ class HPRtree
     return bounds;
   }
   
- /**private */void sortItems() {
+ /**private */
+ void sortItems() {
     HilbertEncoder encoder = new HilbertEncoder(HILBERT_LEVEL, totalExtent);
-    int[] hilbertValues = new int[itemsToLoad.size()];
+    // List<int>  hilbertValues = new int[itemsToLoad.size()];
+    List<int>  hilbertValues = new int[itemsToLoad.size()];
     int pos = 0;
     for (Item item : itemsToLoad) {
       hilbertValues[pos++] = encoder.encode(item.getEnvelope());
@@ -369,7 +387,7 @@ class HPRtree
     quickSortItemsIntoNodes(hilbertValues, 0, itemsToLoad.size() - 1);
   }
 
- /**private */void quickSortItemsIntoNodes(int[] values, int lo, int hi) {
+ /**private */void quickSortItemsIntoNodes(List<int>  values, int lo, int hi) {
     // stop sorting when left/right pointers are within the same node
     // because queryItems just searches through them all sequentially
     if (lo / nodeCapacity < hi / nodeCapacity) {
@@ -379,20 +397,24 @@ class HPRtree
     }
   }
 
- /**private */int hoarePartition(int[] values, int lo, int hi) {
+ /**private */int hoarePartition(List<int>  values, int lo, int hi) {
     int pivot = values[(lo + hi) >> 1];
     int i = lo - 1;
     int j = hi + 1;
 
     while (true) {
-      do i++; while (values[i] < pivot);
-      do j--; while (values[j] > pivot);
+      do {
+        i++;
+      } while (values[i] < pivot);
+      do {
+        j--;
+      } while (values[j] > pivot);
       if (i >= j) return j;
       swapItems(values, i, j);
     }
   }
 
- /**private */void swapItems(int[] values, int i, int j) {
+ /**private */void swapItems(List<int>  values, int i, int j) {
     Item tmpItemp = itemsToLoad.get(i);
     itemsToLoad.set(i, itemsToLoad.get(j));
     itemsToLoad.set(j, tmpItemp);

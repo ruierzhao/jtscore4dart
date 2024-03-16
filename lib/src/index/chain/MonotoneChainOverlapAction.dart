@@ -13,6 +13,10 @@
 
 // import org.locationtech.jts.geom.LineSegment;
 
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+
+import 'MonotoneChain.dart';
+
 /**
  * The action for the internal iterator for performing
  * overlap queries on a MonotoneChain
@@ -21,8 +25,8 @@
  */
 class MonotoneChainOverlapAction
 {
- /**protected */LineSegment overlapSeg1 = new LineSegment();
- /**protected */LineSegment overlapSeg2 = new LineSegment();
+ /**protected */LineSegment overlapSeg1 = new LineSegment.empty();
+ /**protected */LineSegment overlapSeg2 = new LineSegment.empty();
 
   /**
    * This function can be overridden if the original chains are needed
@@ -34,7 +38,7 @@ class MonotoneChainOverlapAction
   {
     mc1.getLineSegment(start1, overlapSeg1);
     mc2.getLineSegment(start2, overlapSeg2);
-    overlap(overlapSeg1, overlapSeg2);
+    overlapAbs(overlapSeg1, overlapSeg2);
   }
 
   /**
@@ -43,7 +47,7 @@ class MonotoneChainOverlapAction
    * @param seg1
    * @param seg2
    */
-  void overlap(LineSegment seg1, LineSegment seg2)
+  void overlapAbs(LineSegment seg1, LineSegment seg2)
   {
   }
 }

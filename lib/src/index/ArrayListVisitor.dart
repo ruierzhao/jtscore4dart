@@ -14,28 +14,29 @@
 
 // import java.util.ArrayList;
 
+import 'ItemVisitor.dart';
+
 /**
  * Builds an array of all visited items.
  * 
  * @version 1.7
  */
-class ArrayListVisitor
-    implements ItemVisitor
+class ArrayListVisitor implements ItemVisitor
 {
 
- /**private */ArrayList items = [];
+ /**private */List items = [];
   
   /**
    * Creates a new instance.
    */
-  ArrayListVisitor() {
-  }
+  ArrayListVisitor();
 
   /**
    * Visits an item.
    * 
    * @param item the item to visit
    */
+  @override
   void visitItem(Object item)
   {
     items.add(item);
@@ -46,6 +47,6 @@ class ArrayListVisitor
    * 
    * @return the array of items
    */
-  ArrayList getItems() { return items; }
+  List getItems() { return items; }
 
 }

@@ -17,6 +17,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Quadrant;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Quadrant.dart';
+
+import 'MonotoneChain.dart';
+
 /**
  * Constructs {@link MonotoneChain}s
  * for sequences of {@link Coordinate}s.
@@ -32,10 +37,10 @@ class MonotoneChainBuilder {
    * @param pts the list of points to compute chains for
    * @return a list of the monotone chains for the points 
    */
-  static List getChains(List<Coordinate> pts)
-  {
-    return getChains(pts, null);
-  }
+  // static List getChains(List<Coordinate> pts)
+  // {
+  //   return getChains(pts, null);
+  // }
 
   /**
    * Computes a list of the {@link MonotoneChain}s
@@ -46,11 +51,12 @@ class MonotoneChainBuilder {
    * @param context a data object to attach to each chain
    * @return a list of the monotone chains for the points 
    */
-  static List getChains(List<Coordinate> pts, Object context)
+  static List getChains(List<Coordinate> pts, [Object? context])
   {
     List mcList = [];
-    if (pts.length == 0)
+    if (pts.isEmpty) {
       return mcList;
+    }
     int chainStart = 0;
     do {
       int chainEnd = findChainEnd(pts, chainStart);
@@ -85,13 +91,13 @@ class MonotoneChainBuilder {
   		return pts.length - 1;
   	}
     // determine overall quadrant for chain (which is the starting quadrant)
-    int chainQuad = Quadrant.quadrant(pts[safeStart], pts[safeStart + 1]);
+    int chainQuad = Quadrant.quadrant$2(pts[safeStart], pts[safeStart + 1]);
     int last = start + 1;
     while (last < pts.length) {
     	// skip zero-length segments, but include them in the chain
     	if (! pts[last - 1].equals2D(pts[last])) {
         // compute quadrant for next possible segment in chain
-    		int quad = Quadrant.quadrant(pts[last - 1], pts[last]);
+    		int quad = Quadrant.quadrant$2(pts[last - 1], pts[last]);
       	if (quad != chainQuad) break;
     	}
       last++;

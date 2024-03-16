@@ -20,17 +20,17 @@ import 'dart:math';
 /// @author Martin Davis
 ///
 class IntArrayList {
-  List<int> _data;
+  late List<int> _data;
   int _size = 0;
 
   /// Constructs an empty list.
-  IntArrayList.default() :this(10);
+  IntArrayList.Init() :this(10);
 
   /// Constructs an empty list with the specified initial capacity
   /// 
   /// @param initialCapacity the initial capacity of the list
   IntArrayList(int initialCapacity) {
-    _data = List.filled(initialCapacity, 0);
+    this._data = List.filled(initialCapacity, 0);
   }
 
   /// Returns the number of values in this list.
@@ -44,7 +44,7 @@ class IntArrayList {
   /// to ensure that it can hold at least the number of elements 
   /// specified by the capacity argument.
   /// 
-  /// @param capacity the desired capacity
+  /// @param [capacity] the desired capacity
   void ensureCapacity(final int capacity) {
     if (capacity <= _data.length) return;
     int newLength  = max(capacity, _data.length * 2);

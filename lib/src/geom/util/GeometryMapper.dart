@@ -49,20 +49,22 @@ class GeometryMapper
     List mapped = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry g = op.map(geom.getGeometryN(i));
-      if (g != null)
+      if (g != null) {
         mapped.add(g);
+      }
     }
     return geom.getFactory().buildGeometry(mapped);
   }
   
-  static Collection map(Collection geoms, MapOp op)
+  static Iterable map(Iterable geoms, MapOp op)
   {
     List mapped = [];
-    for (Iterator i = geoms.iterator(); i.moveNext(); ) {
-      Geometry g = (Geometry) i.current;
+    for (Iterator i = geoms.iterator; i.moveNext(); ) {
+      Geometry g = i.current;
       Geometry gr = op.map(g);
-      if (gr != null)
+      if (gr != null) {
         mapped.add(gr);
+      }
     }
     return mapped;
   }
@@ -89,8 +91,9 @@ class GeometryMapper
     if (mapped.size() == 0) {
       return geom.getFactory().createEmpty(emptyDim);
     }
-    if (mapped.size() == 1)
+    if (mapped.size() == 1) {
       return mapped.get(0);
+    }
     return geom.getFactory().buildGeometry(mapped);
   }
   

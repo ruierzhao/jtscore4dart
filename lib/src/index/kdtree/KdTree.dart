@@ -23,6 +23,13 @@
 // import org.locationtech.jts.geom.CoordinateList;
 // import org.locationtech.jts.geom.Envelope;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+
+import 'KdNode.dart';
+import 'KdNodeVisitor.dart';
+
 /**
  * An implementation of a 
  * <a href='https://en.wikipedia.org/wiki/K-d_tree'>KD-Tree</a> 
@@ -65,9 +72,9 @@ class KdTree {
    *          a collection of nodes
    * @return an array of the coordinates represented by the nodes
    */
-  static List<Coordinate> toCoordinates(Collection kdnodes) {
-    return toCoordinates(kdnodes, false);
-  }
+  // static List<Coordinate> toCoordinates(Iterable kdnodes) {
+  //   return toCoordinates(kdnodes, false);
+  // }
 
   /**
    * Converts a collection of {@link KdNode}s 
@@ -75,15 +82,15 @@ class KdTree {
    * specifying whether repeated nodes should be represented
    * by multiple coordinates.
    * 
-   * @param kdnodes a collection of nodes
-   * @param includeRepeated true if repeated nodes should 
+   * @param [kdnodes] a collection of nodes
+   * @param [includeRepeated] true if repeated nodes should 
    *   be included multiple times
    * @return an array of the coordinates represented by the nodes
    */
-  static List<Coordinate> toCoordinates(Collection kdnodes, bool includeRepeated) {
+  static List<Coordinate> toCoordinates(Iterable kdnodes, [bool includeRepeated=false]) {
     CoordinateList coord = new CoordinateList();
-    for (Iterator it = kdnodes.iterator(); it.moveNext();) {
-      KdNode node = (KdNode) it.current;
+    for (Iterator it = kdnodes.iterator; it.moveNext();) {
+      KdNode node =  it.current;
       int count = includeRepeated ? node.getCount() : 1;
       for (int i = 0; i < count; i++) {
        coord.add(node.getCoordinate(), true);
@@ -92,17 +99,17 @@ class KdTree {
     return coord.toCoordinateArray();
   }
 
- /**private */KdNode root = null;
- /**private */long numberOfNodes;
+ /**private */KdNode? root = null;
+ /**private */late int numberOfNodes;
  /**private */double tolerance;
 
   /**
    * Creates a new instance of a KdTree with a snapping tolerance of 0.0. (I.e.
    * distinct points will <i>not</i> be snapped)
    */
-  KdTree() {
-    this(0.0);
-  }
+  // KdTree() {
+  //   this(0.0);
+  // }
 
   /**
    * Creates a new instance of a KdTree, specifying a snapping distance
@@ -112,16 +119,14 @@ class KdTree {
    * @param tolerance
    *          the tolerance distance for considering two points equal
    */
-  KdTree(double tolerance) {
-    this.tolerance = tolerance;
-  }
+  KdTree([this.tolerance=0.0]);
 
   /**
    * Gets the root node of this tree.
    * 
    * @return the root node of the tree
    */
-  KdNode getRoot() {
+  KdNode? getRoot() {
     return root;
   }
   
@@ -131,8 +136,9 @@ class KdTree {
    * @return true if the index does not contain any items
    */
   bool isEmpty() {
-    if (root == null)
+    if (root == null) {
       return true;
+    }
     return false;
   }
 
@@ -143,9 +149,9 @@ class KdTree {
    *          the point to insert
    * @return the kdnode containing the point
    */
-  KdNode insert(Coordinate p) {
-    return insert(p, null);
-  }
+  // KdNode insert(Coordinate p) {
+  //   return insert(p, null);
+  // }
 
   /**
    * Inserts a new point into the kd-tree.
@@ -158,10 +164,10 @@ class KdTree {
    *         node is returned with its counter incremented. This can be checked
    *         by testing returnedNode.getCount() &gt; 1.
    */
-  KdNode insert(Coordinate p, Object data) {
+  KdNode insert(Coordinate p, [Object? data]) {
     if (root == null) {
       root = new KdNode(p, data);
-      return root;
+      return root!;
     }
     
     /**
@@ -169,7 +175,7 @@ class KdTree {
      * If tolerance is zero, this phase of the insertion can be skipped.
      */
     if ( tolerance > 0 ) {
-      KdNode matchNode = findBestMatchNode(p);
+      KdNode? matchNode = _findBestMatchNode(p);
       if (matchNode != null) {
         // point already in index - increment counter
         matchNode.increment();
@@ -192,53 +198,13 @@ class KdTree {
    * @return the best matching node
    * @return null if no match was found
    */
- /**private */KdNode findBestMatchNode(Coordinate p) {
+ /**private */
+ KdNode? _findBestMatchNode(Coordinate p) {
     BestMatchVisitor visitor = new BestMatchVisitor(p, tolerance);
     query(visitor.queryEnvelope(), visitor);
-    return visitor.getNode();
+    return visitor.getNode()!;
   }
 
-  static/**private */class BestMatchVisitor implements KdNodeVisitor {
-
-   /**private */double tolerance;
-   /**private */KdNode matchNode = null;
-   /**private */double matchDist = 0.0;
-   /**private */Coordinate p;
-    
-    BestMatchVisitor(Coordinate p, double tolerance) {
-      this.p = p;
-      this.tolerance = tolerance;
-    }
-    
-    Envelope queryEnvelope() {
-      Envelope queryEnv = new Envelope(p);
-      queryEnv.expandBy(tolerance);
-      return queryEnv;
-    }
-
-    KdNode getNode() {
-      return matchNode;
-    }
-
-    void visit(KdNode node) {
-      double dist = p.distance(node.getCoordinate());
-      bool isInTolerance =  dist <= tolerance; 
-      if (! isInTolerance) return;
-      bool update = false;
-      if (matchNode == null
-          || dist < matchDist
-          // if distances are the same, record the lesser coordinate
-          || (matchNode != null && dist == matchDist 
-          && node.getCoordinate().compareTo(matchNode.getCoordinate()) < 1))
-        update = true;
-
-      if (update) {
-        matchNode = node;
-        matchDist = dist;
-      }
-    }
-  }
-  
   /**
    * Inserts a point known to be beyond the distance tolerance of any existing node.
    * The point is inserted at the bottom of the exact splitting path, 
@@ -248,9 +214,10 @@ class KdTree {
    * @param data the data for the point
    * @return the created node
    */
- /**private */KdNode insertExact(Coordinate p, Object data) {
-    KdNode currentNode = root;
-    KdNode leafNode = root;
+ /**private */
+ KdNode insertExact(Coordinate p, [Object? data]) {
+    KdNode? currentNode = root;
+    KdNode? leafNode = root;
     bool isXLevel = true;
     bool isLessThan = true;
 
@@ -290,9 +257,9 @@ class KdTree {
     numberOfNodes = numberOfNodes + 1;
     KdNode node = new KdNode(p, data);
     if (isLessThan) {
-      leafNode.setLeft(node);
+      leafNode!.setLeft(node);
     } else {
-      leafNode.setRight(node);
+      leafNode!.setRight(node);
     }
     return node;
   }
@@ -306,7 +273,7 @@ class KdTree {
   void query(Envelope queryEnv, KdNodeVisitor visitor) {
     //-- Deque is faster than Stack
     Deque<QueryStackFrame> queryStack = new ArrayDeque<QueryStackFrame>();
-    KdNode currentNode = root;
+    KdNode? currentNode = root;
     bool isXLevel = true;
 
     // search is computed via in-order traversal
@@ -332,7 +299,7 @@ class KdTree {
         isXLevel = frame.isXLevel();
 
         //-- check if search matches current node
-        if ( queryEnv.contains(currentNode.getCoordinate()) ) {
+        if ( queryEnv.containsCoord(currentNode.getCoordinate()) ) {
           visitor.visit(currentNode);
         }
 
@@ -353,24 +320,6 @@ class KdTree {
     }
   }
 
- /**private */static class QueryStackFrame {
-   /**private */KdNode node;
-   /**private */bool isXLevel = false;
-    
-    QueryStackFrame(KdNode node, bool isXLevel) {
-      this.node = node;
-      this.isXLevel = isXLevel;
-    }
-    
-    KdNode getNode() {
-      return node;
-    }
-    
-    bool isXLevel() {
-      return isXLevel;
-    }
-  }
-  
   /**
    * Performs a range search of the points in the index.
    * 
@@ -407,13 +356,14 @@ class KdTree {
    * @param queryPt the point to query
    * @return the point node, if it is found in the index, or null if not
    */
-  KdNode query(Coordinate queryPt) {
+  KdNode? query(Coordinate queryPt) {
     KdNode currentNode = root;
     bool isXLevel = true;
     
     while (currentNode != null) {
-      if ( currentNode.getCoordinate().equals2D(queryPt) )
+      if ( currentNode.getCoordinate().equals2D(queryPt) ) {
         return currentNode;
+      }
 
       bool searchLeft = currentNode.isPointOnLeft(isXLevel, queryPt);
       if ( searchLeft ) {
@@ -437,8 +387,9 @@ class KdTree {
   }
   
  /**private */int depthNode(KdNode currentNode) {
-    if (currentNode == null)
+    if (currentNode == null) {
       return 0;
+    }
 
     int dL = depthNode(currentNode.getLeft());
     int dR = depthNode(currentNode.getRight());
@@ -454,9 +405,11 @@ class KdTree {
     return sizeNode(root);
   }
   
- /**private */int sizeNode(KdNode currentNode) {
-    if (currentNode == null)
+ /**private */
+ int sizeNode(KdNode currentNode) {
+    if (currentNode == null) {
       return 0;
+    }
 
     int sizeL = sizeNode(currentNode.getLeft());
     int sizeR = sizeNode(currentNode.getRight());
@@ -464,3 +417,64 @@ class KdTree {
   }
   
 }
+
+/// =======================================================================================
+
+ /**private static*/
+ class QueryStackFrame {
+   /**private */KdNode node;
+   /**private */bool _isXLevel = false;
+    
+    QueryStackFrame(this.node, this._isXLevel);
+    
+    KdNode getNode() {
+      return node;
+    }
+    
+    bool isXLevel() {
+      return _isXLevel;
+    }
+  }
+  
+/// =======================================================================================
+  /**static private */ 
+class BestMatchVisitor implements KdNodeVisitor {
+
+  /**private */double tolerance;
+  /**private */KdNode? matchNode = null;
+  /**private */double matchDist = 0.0;
+  /**private */Coordinate p;
+  
+  BestMatchVisitor(this.p, this.tolerance);
+  
+  Envelope queryEnvelope() {
+    Envelope queryEnv = new Envelope.fromCoord1(p);
+    queryEnv.expandBy(tolerance);
+    return queryEnv;
+  }
+
+  KdNode? getNode() {
+    return matchNode;
+  }
+
+  @override
+    void visit(KdNode node) {
+    double dist = p.distance(node.getCoordinate());
+    bool isInTolerance =  dist <= tolerance; 
+    if (! isInTolerance) return;
+    bool update = false;
+    if (matchNode == null
+        || dist < matchDist
+        // if distances are the same, record the lesser coordinate
+        || (matchNode != null && dist == matchDist 
+        && node.getCoordinate().compareTo(matchNode!.getCoordinate()) < 1)) {
+      update = true;
+    }
+
+    if (update) {
+      matchNode = node;
+      matchDist = dist;
+    }
+  }
+}
+  

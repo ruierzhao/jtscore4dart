@@ -16,6 +16,11 @@
 // import org.locationtech.jts.math.MathUtil;
 // import org.locationtech.jts.util.IntArrayList;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/math/MathUtil.dart';
+import 'package:jtscore4dart/src/util/IntArrayList.dart';
+
 /**
  * A semi-static spatial index for points which occur 
  * in a spatially-coherent sequence.
@@ -41,13 +46,16 @@ class VertexSequencePackedRtree {
    * Number of items/nodes in a parent node.
    * Determined empirically.  Performance is not too sensitive to this.
    */
- /**private */static final int NODE_CAPACITY = 16;
+ /**private */static const int NODE_CAPACITY = 16;
   
  /**private */List<Coordinate> items;
- /**private */int[] levelOffset;
+//  /**private */int[] levelOffset;
+ /**private */late List<int> levelOffset;
  /**private */int nodeCapacity  = NODE_CAPACITY;
- /**private */Envelope[] bounds;
- /**private */bool[] isRemoved;
+//  /**private */Envelope[] bounds;
+ /**private */late List<Envelope> bounds;
+//  /**private */bool[] isRemoved;
+ /**private */late List<bool> isRemoved;
 
   /**
    * Creates a new tree over the given sequence of coordinates.
@@ -55,13 +63,18 @@ class VertexSequencePackedRtree {
    * 
    * @param pts a sequence of points
    */
-  VertexSequencePackedRtree(List<Coordinate> pts) {
-    this.items = pts;
-    isRemoved = new bool[pts.length];
+  // VertexSequencePackedRtree(List<Coordinate> pts) {
+  //   this.items = pts;
+  //   isRemoved = new bool[pts.length];
+  //   build();
+  // }
+  VertexSequencePackedRtree(this.items) {
+    // isRemoved = new bool[pts.length];
+    this.isRemoved = List.filled(this.items.length, false,growable: false);
     build();
   }
 
-  Envelope[] getBounds() {
+  List<Envelope>  getBounds() {
     return bounds.clone();
   }
   
@@ -80,7 +93,7 @@ class VertexSequencePackedRtree {
    * 
    * @return the level offsets
    */
- /**private */int[] computeLevelOffsets() {
+ /**private */List<int>  computeLevelOffsets() {
     IntArrayList offsets = new IntArrayList();
     offsets.add(0);
     int levelSize = items.length;
@@ -97,9 +110,10 @@ class VertexSequencePackedRtree {
     return MathUtil.ceil(numNodes, nodeCapacity);
   }
   
- /**private */Envelope[] createBounds() {
+ /**private */List<Envelope>  createBounds() {
     int boundsSize = levelOffset[levelOffset.length - 1] + 1;
-    Envelope[] bounds = new Envelope[boundsSize];
+    // List<Envelope>  bounds = new Envelope[boundsSize];
+    List<Envelope>  bounds = List.filled(boundsSize, Envelope.init(),growable: false);
     fillItemBounds(bounds);
     
     for (int lvl = 1; lvl < levelOffset.length; lvl++) {
@@ -108,7 +122,7 @@ class VertexSequencePackedRtree {
     return bounds;
   }
   
- /**private */void fillLevelBounds(int lvl, Envelope[] bounds) {
+ /**private */void fillLevelBounds(int lvl, List<Envelope>  bounds) {
     int levelStart = levelOffset[lvl - 1]; 
     int levelEnd = levelOffset[lvl];
     int nodeStart = levelStart;
@@ -121,7 +135,7 @@ class VertexSequencePackedRtree {
     while (nodeStart < levelEnd);
   }
 
- /**private */void fillItemBounds(Envelope[] bounds) {
+ /**private */void fillItemBounds(List<Envelope>  bounds) {
     int nodeStart = 0;
     int boundIndex = 0;
     do {
@@ -132,18 +146,18 @@ class VertexSequencePackedRtree {
     while (nodeStart < items.length);
   }
 
- /**private */static Envelope computeNodeEnvelope(Envelope[] bounds, int start, int end) {
-    Envelope env = new Envelope();
+ /**private */static Envelope computeNodeEnvelope(List<Envelope>  bounds, int start, int end) {
+    Envelope env = new Envelope.init();
     for (int i = start; i < end; i++) {
-      env.expandToInclude(bounds[i]);
+      env.expandToIncludeEnvelope(bounds[i]);
     }
     return env;
   }
   
  /**private */static Envelope computeItemEnvelope(List<Coordinate> items, int start, int end) {
-    Envelope env = new Envelope();
+    Envelope env = new Envelope.init();
     for (int i = start; i < end; i++) {
-      env.expandToInclude(items[i]);
+      env.expandToIncludeCoordinate(items[i]);
     }
     return env;
   }
@@ -155,14 +169,14 @@ class VertexSequencePackedRtree {
    * The query result is a list of the indices of input coordinates
    * which intersect the extent.
    * 
-   * @param queryEnv the query extent
+   * @param [queryEnv] the query extent
    * @return an array of the indices of the input coordinates
    */
-  int[] query(Envelope queryEnv) {
-    IntArrayList resultList = new IntArrayList();
+  List<int>  query(Envelope queryEnv) {
+    IntArrayList resultList = new IntArrayList.Init();
     int level = levelOffset.length - 1;
     queryNode(queryEnv, level, 0, resultList);
-    int[] result = resultList.toArray();
+    List<int>  result = resultList.toArray();
     return result;
   }
   
@@ -170,10 +184,12 @@ class VertexSequencePackedRtree {
     int boundsIndex = levelOffset[level] + nodeIndex;
     Envelope nodeEnv = bounds[boundsIndex];
     //--- node is empty
-    if (nodeEnv == null)
+    if (nodeEnv == null) {
       return;
-    if (! queryEnv.intersects(nodeEnv))
+    }
+    if (! queryEnv.intersects(nodeEnv)) {
       return;
+    }
     
     int childNodeIndex = nodeIndex * nodeCapacity;
     if (level == 0) {
@@ -188,8 +204,9 @@ class VertexSequencePackedRtree {
     int levelMax = levelSize(level);
     for (int i = 0; i < nodeCapacity; i++) {
       int index = nodeStartIndex + i;
-      if (index >= levelMax) 
+      if (index >= levelMax) {
         return;
+      }
       queryNode(queryEnv, level, index, resultList);
     }    
   }
@@ -201,12 +218,14 @@ class VertexSequencePackedRtree {
  /**private */void queryItemRange(Envelope queryEnv, int itemIndex, IntArrayList resultList) {
     for (int i = 0; i < nodeCapacity; i++) {
       int index = itemIndex + i;
-      if (index >= items.length) 
+      if (index >= items.length) {
         return;
+      }
       Coordinate p = items[index];
       if (! isRemoved[index]         
-          && queryEnv.contains(p))
+          && queryEnv.contains(p)) {
         resultList.add(index);
+      }
     }
   }
 
@@ -223,18 +242,21 @@ class VertexSequencePackedRtree {
     
     //--- prune the item parent node if all its items are removed
     int nodeIndex = index / nodeCapacity;
-    if (! isItemsNodeEmpty(nodeIndex))
+    if (! isItemsNodeEmpty(nodeIndex)) {
       return;
+    }
     
     bounds[nodeIndex] = null;
     
-    if (levelOffset.length <= 2)
+    if (levelOffset.length <= 2) {
       return;
+    }
 
     //-- prune the node parent if all children removed
     int nodeLevelIndex = nodeIndex / nodeCapacity;
-    if (! isNodeEmpty(1, nodeLevelIndex))
+    if (! isNodeEmpty(1, nodeLevelIndex)) {
       return;
+    }
     int nodeIndex1 = levelOffset[1] + nodeLevelIndex;
     bounds[nodeIndex1] = null;
     

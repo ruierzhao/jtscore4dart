@@ -379,7 +379,22 @@ test_sort(){
   // List<Coordinate> coords = List.generate(, (index) => null)
 }
 
+class Ruier5 {
+  int age;
+  int name;
+
+  Ruier5(this.name):age=name-8
+  {
+    print(age);
+  }
+  ruier(){}
+}
+
+
 
 void main() {
-  test_sort();
+  List vv = [];
+  vv[0] = 10;
+  vv[1] = 5;
+print(vv);
 }

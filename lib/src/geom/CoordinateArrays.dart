@@ -20,7 +20,7 @@
 import "dart:math";
 
 import 'package:jtscore4dart/src/math/MathUtil.dart';
-import 'package:jtscore4dart/src/util/Comparator.dart';
+import 'package:jtscore4dart/src/patch/Comparator.dart';
 
 import 'Coordinate.dart';
 import 'CoordinateList.dart';

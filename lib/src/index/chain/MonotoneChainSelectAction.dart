@@ -12,6 +12,10 @@
 
 
 // import org.locationtech.jts.geom.LineSegment;
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+
+import 'MonotoneChain.dart';
+
 /**
  * The action for the internal iterator for performing
  * envelope select queries on a MonotoneChain
@@ -23,7 +27,7 @@ class MonotoneChainSelectAction
   // these envelopes are used during the MonotoneChain search process
   //Envelope tempEnv1 = new Envelope();
 
-  LineSegment selectedSegment = new LineSegment();
+  LineSegment selectedSegment = new LineSegment.empty();
 
   /**
    * This method is overridden 
@@ -37,16 +41,15 @@ class MonotoneChainSelectAction
   {
     mc.getLineSegment(startIndex, selectedSegment);
     // call this routine in case select(segmenet) was overridden
-    select(selectedSegment);
+    selectAbs(selectedSegment);
   }
 
   /**
    * This is a convenience method which can be overridden to obtain the actual
    * line segment which is selected.
    * 
-   * @param seg
+   * @param [seg]
    */
-  void select(LineSegment seg)
-  {
-  }
+  void selectAbs(LineSegment seg){}
+  
 }

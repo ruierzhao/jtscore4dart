@@ -357,7 +357,7 @@ class Envelope
   /// Both positive and negative distances are supported.
   ///
   /// @param distance the distance to expand the envelope
-  void expandByDistance(double distance)
+  void expandBy(double distance)
   {
     expandByDelXY(distance, distance);
   }

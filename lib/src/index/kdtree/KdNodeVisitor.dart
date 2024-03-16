@@ -12,6 +12,8 @@
 
 
 
+import 'KdNode.dart';
+
 /**
  * A visitor for {@link KdNode}s in a {@link KdTree} index.
  *

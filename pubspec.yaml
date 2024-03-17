@@ -5,16 +5,18 @@ homepage:
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
-  flutter: ">=1.17.0"
+  # flutter: ">=1.17.0"
 
 dependencies:
+  intl: '>=0.16.1'
   stack: ^0.2.2
-  flutter:
-    sdk: flutter
+  collection: '>=1.14.13' # for dart_jts::io
+  # flutter:
+  #   sdk: flutter
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  # flutter_test:
+    # sdk: flutter
   flutter_lints: ^2.0.0
   path: "1.9.0"
   yaml: "3.1.2" # 读取 rule 文件

@@ -23,6 +23,9 @@
 // import org.locationtech.jts.index.ItemVisitor;
 // import org.locationtech.jts.util.Assert;
 
+import 'AbstractNode.dart';
+import 'Boundable.dart';
+
 /**
  * Base class for STRtree and SIRtree. STR-packed R-trees are described in:
  * P. Rigaux, Michel Scholl and Agnes Voisard. <i>Spatial Databases With
@@ -40,18 +43,18 @@
  *
  * @version 1.7
  */
-abstract class AbstractSTRtree implements Serializable {
+abstract class AbstractSTRtree /** implements Serializable  */ {
 
   /**
    * 
    */
- /**private */static final int serialVersionUID = -3886435814360241337L;
+//  /**private */static final int serialVersionUID = -3886435814360241337L;
 
   /**
    * A test for intersection between two bounds, necessary because subclasses
    * of AbstractSTRtree have different implementations of bounds.
    */
- /**protected */static abstract class IntersectsOp {
+ /**protected static*/ abstract class IntersectsOp {
     /**
      * For STRtrees, the bounds will be Envelopes; for SIRtrees, Intervals;
      * for other subclasses of AbstractSTRtree, some other class.
@@ -122,7 +125,7 @@ abstract class AbstractSTRtree implements Serializable {
    * called once, and thus can be called only after all of the data has been
    * inserted into the tree.
    */
-  synchronized void build() {
+  /**synchronized */ void build() {
     if (built) return;
     root = itemBoundables.isEmpty()
            ? createNode(0)
@@ -132,7 +135,7 @@ abstract class AbstractSTRtree implements Serializable {
     built = true;
   }
 
- /**protected */abstract AbstractNode createNode(int level);
+ /**protected abstract*/ AbstractNode createNode(int level);
 
   /**
    * Sorts the childBoundables then divides them into groups of size M, where
@@ -155,7 +158,7 @@ abstract class AbstractSTRtree implements Serializable {
   }
 
  /**protected */AbstractNode lastNode(List nodes) {
-    return (AbstractNode) nodes.get(nodes.size() - 1);
+    return nodes.get(nodes.size() - 1) as AbstractNode;
   }
 
  /**protected */static int compareDoubles(double a, double b) {
@@ -248,7 +251,7 @@ abstract class AbstractSTRtree implements Serializable {
  /**protected */int depth(AbstractNode node)
   {
     int maxChildDepth = 0;
-    for (Iterator i = node.getChildBoundables().iterator(); i.moveNext(); ) {
+    for (Iterator i = node.getChildBoundables().iterator; i.moveNext(); ) {
       Boundable childBoundable = (Boundable) i.current;
       if (childBoundable is AbstractNode) {
         int childDepth = depth((AbstractNode) childBoundable);

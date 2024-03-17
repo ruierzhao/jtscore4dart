@@ -575,7 +575,7 @@ class LineSegment
   Coordinate? intersection(LineSegment line)
   {
     LineIntersector li = new RobustLineIntersector();
-    li.computeIntersection(p0, p1, line.p0, line.p1);
+    li.computeIntersection4Coord(p0, p1, line.p0, line.p1);
     if (li.hasIntersection()) {
       return li.getIntersection(0);
     }

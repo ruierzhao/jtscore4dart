@@ -21,6 +21,8 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Quadrant;
 
+import 'GraphComponent.dart';
+
 /**
  * Represents a directed edge in a {@link PlanarGraph}. A DirectedEdge may or
  * may not have a reference to a parent {@link Edge} (some applications of
@@ -38,11 +40,11 @@ class DirectedEdge
    * Returns a List containing the parent Edge (possibly null) for each of the given
    * DirectedEdges.
    */
-  static List toEdges(Collection dirEdges)
+  static List toEdges(Iterable dirEdges)
   {
     List edges = [];
-    for (Iterator i = dirEdges.iterator(); i.moveNext(); ) {
-      edges.add( ((DirectedEdge) i.next()).parentEdge);
+    for (Iterator i = dirEdges.iterator; i.moveNext(); ) {
+      edges.add( ( i.current as DirectedEdge).parentEdge);
     }
     return edges;
   }

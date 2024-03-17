@@ -34,13 +34,8 @@ import 'NodedSegmentString.dart';
 import 'SegmentNode.dart';
 import 'SegmentString.dart';
 
-// 扩展to兼容java 方法
-extension SplayTreeMapExtension<K, V> on Map<K, V>{
-  int size() => this.length;
-  V? get(Object? key) => this[key];
-  put(K key,V value) => this[key]=value; 
-}
-
+import 'package:jtscore4dart/src/patch/Map.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 /**
  * A list of the {@link SegmentNode}s present along a noded {@link SegmentString}.
  *
@@ -173,7 +168,7 @@ class SegmentNodeList
     if (! ei0.coord.equals2D(ei1.coord)) return false;
 
     int numVerticesBetween = ei1.segmentIndex - ei0.segmentIndex;
-    if (! ei1.isInterior) {
+    if (! ei1.isInterior()) {
       numVerticesBetween--;
     }
 
@@ -193,7 +188,7 @@ class SegmentNodeList
    * (this is so a single list can be used to accumulate all split edges
    * for a set of {@link SegmentString}s).
    */
-  void addSplitEdges(Iterable edgeList)
+  void addSplitEdges(List edgeList)
   {
     // ensure that the list has entries for the first and last point of the edge
     addEndpoints();
@@ -282,7 +277,8 @@ class SegmentNodeList
       npts--;
     }
 
-    List<Coordinate> pts = new Coordinate[npts];
+    // List<Coordinate> pts = new Coordinate[npts];
+    List<Coordinate> pts = List.filled(npts, Coordinate.empty2D());
     int ipt = 0;
     pts[ipt++] = ei0.coord.copy();
     for (int i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
@@ -321,7 +317,7 @@ class SegmentNodeList
  /**private */void addEdgeCoordinates(SegmentNode ei0, SegmentNode ei1,
       CoordinateList coordList) {
     List<Coordinate> pts = createSplitEdgePts(ei0, ei1);
-    coordList.add(pts, false);
+    coordList.addList(pts, false);
   }
   /// TODO: ruier edit.
   // void print(PrintStream out)
@@ -345,9 +341,9 @@ class NodeVertexIterator /**implements Iterator */
  /**private */int currSegIndex = 0;
 
   NodeVertexIterator(this.nodeList)
+   :edge = nodeList.getEdge(),
+    nodeIt = nodeList.iterator()
   {
-    edge = nodeList.getEdge();
-    nodeIt = nodeList.iterator();
     readNextNode();
   }
 
@@ -356,25 +352,25 @@ class NodeVertexIterator /**implements Iterator */
     return true;
   }
 
-  Object next()
+  Object? next()
   {
     if (currNode == null) {
       currNode = nextNode;
-      currSegIndex = currNode.segmentIndex;
+      currSegIndex = currNode!.segmentIndex;
       readNextNode();
-      return currNode;
+      return currNode!;
     }
     // check for trying to read too far
     if (nextNode == null) return null;
 
-    if (nextNode.segmentIndex == currNode.segmentIndex) {
+    if (nextNode!.segmentIndex == currNode!.segmentIndex) {
       currNode = nextNode;
-      currSegIndex = currNode.segmentIndex;
+      currSegIndex = currNode!.segmentIndex;
       readNextNode();
       return currNode;
     }
 
-    if (nextNode.segmentIndex > currNode.segmentIndex) {
+    if (nextNode!.segmentIndex > currNode!.segmentIndex) {
 
     }
     return null;
@@ -382,10 +378,11 @@ class NodeVertexIterator /**implements Iterator */
 
  /**private */void readNextNode()
   {
-    if (nodeIt.hasNext())
-      nextNode = (SegmentNode) nodeIt.current;
-    else
+    if (nodeIt.moveNext()) {
+      nextNode =  nodeIt.current;
+    } else {
       nextNode = null;
+    }
   }
   /**
    *  Not implemented.

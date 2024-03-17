@@ -8,5 +8,15 @@ extension JavaList<T> on List<T>{
     this[i] = value;
     return temp;
   } 
+  int size() => this.length;
+
+  // java 中数组和list 不一样
+  List<T> toArray(){
+    return List<T>.from(this, growable: false);
+  }
+  // 实现2
+  List<T> toArray2(){
+    return this.toList(growable: false);
+  }
 }
 

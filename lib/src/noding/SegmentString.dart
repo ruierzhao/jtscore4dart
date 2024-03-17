@@ -32,7 +32,7 @@ abstract class SegmentString
    *
    * @return the user-defined data
    */
-  Object getData();
+  Object? getData();
 
   /**
    * Sets the user-defined data for this segment string.

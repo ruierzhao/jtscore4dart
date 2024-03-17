@@ -40,5 +40,13 @@
 		],
 		"description": "import dart geometry."
 	}
+	,"import patch": {
+		"scope": "dart",
+		"prefix": "ipatch",
+		"body": [
+			"import 'package:jtscore4dart/src/patch/$0.dart';",
+		],
+		"description": "import java patch."
+	}
 }
 

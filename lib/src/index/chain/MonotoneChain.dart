@@ -290,6 +290,7 @@ class MonotoneChain {
    * @param [overlapTolerance] the distance tolerance for the overlap test
    * @param [mco] the overlap action to execute on selected segments
    */
+  /// TODO: @ruier edit.修改之后需要交换后两个参数位置
   void computeOverlaps(MonotoneChain mc,  MonotoneChainOverlapAction mco, [double overlapTolerance=0.0])
   {
     _computeOverlaps(start, end, mc, mc.start, mc.end, overlapTolerance, mco);
@@ -315,7 +316,7 @@ class MonotoneChain {
     double overlapTolerance,
     MonotoneChainOverlapAction mco)
   {
-//Debug.println("computeIntersectsForChain:" + p00 + p01 + p10 + p11);
+    //Debug.println("computeIntersectsForChain:" + p00 + p01 + p10 + p11);
     // terminating condition for the recursion
     if (end0 - start0 == 1 && end1 - start1 == 1) {
       mco.overlap(this, start0, mc, start1);

@@ -104,7 +104,7 @@ class MCIndexNoder extends SinglePassNoder
 
     for (Iterator i = monoChains.iterator; i.moveNext(); ) {
       MonotoneChain queryChain = i.current as MonotoneChain;
-      Envelope queryEnv = queryChain.getEnvelope(overlapTolerance);
+      Envelope queryEnv = queryChain.getEnvelopeExpandOf(overlapTolerance);
       List overlapChains = index.query(queryEnv);
       for (Iterator j = overlapChains.iterator; j.moveNext(); ) {
         MonotoneChain testChain = j.current as MonotoneChain;
@@ -113,11 +113,11 @@ class MCIndexNoder extends SinglePassNoder
          * and that we don't compare a chain to itself
          */
         if (testChain.getId() > queryChain.getId()) {
-          queryChain.computeOverlaps(testChain, overlapTolerance, overlapAction);
+          queryChain.computeOverlaps(testChain,  overlapAction, overlapTolerance);
           nOverlaps++;
         }
         // short-circuit if possible
-        if (segInt.isDone()) {
+        if (segInt!.isDone()) {
           return;
         }
       }
@@ -131,7 +131,7 @@ class MCIndexNoder extends SinglePassNoder
       MonotoneChain mc = i.current as MonotoneChain;
       mc.setId(idCounter++);
       //mc.setOverlapDistance(overlapDistance);
-      index.insert(mc.getEnvelope(overlapTolerance), mc);
+      index.insert(mc.getEnvelopeExpandOf(overlapTolerance), mc);
       monoChains.add(mc);
     }
   }
@@ -146,11 +146,12 @@ class MCIndexNoder extends SinglePassNoder
     SegmentOverlapAction([this.si]);
     
 
+    @override
     void overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
     {
       SegmentString ss1 = mc1.getContext() as SegmentString;
       SegmentString ss2 = mc2.getContext() as SegmentString;
-      si.processIntersections(ss1, start1, ss2, start2);
+      si!.processIntersections(ss1, start1, ss2, start2);
     }
 
   }

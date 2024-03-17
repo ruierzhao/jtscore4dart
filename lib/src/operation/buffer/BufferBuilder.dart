@@ -225,7 +225,8 @@ class BufferBuilder
 //                                  precisionModel.getScale());
   }
 
- /**private */void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
+ /**private */
+ void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
   {
     Noder noder = getNoder(precisionModel);
     noder.computeNodes(bufferSegStrList);
@@ -264,9 +265,10 @@ class BufferBuilder
    * If so, the edge is not inserted, but its label is merged
    * with the existing edge.
    */
- /**protected */void insertUniqueEdge(Edge e)
+ /**protected */
+ void insertUniqueEdge(Edge e)
   {
-//<FIX> MD 8 Oct 03  speed up identical edge lookup
+    //<FIX> MD 8 Oct 03  speed up identical edge lookup
     // fast lookup
     Edge existingEdge = edgeList.findEqualEdge(e);
 
@@ -297,12 +299,13 @@ class BufferBuilder
     }
   }
 
- /**private */List createSubgraphs(PlanarGraph graph)
+ /**private */
+ List createSubgraphs(PlanarGraph graph)
   {
     List subgraphList = [];
     for (Iterator i = graph.getNodes().iterator; i.moveNext(); ) {
       Node node = i.current as Node;
-      if (! node.isVisited()) {
+      if (!node.isVisited()) {
         BufferSubgraph subgraph = new BufferSubgraph();
         subgraph.create(node);
         subgraphList.add(subgraph);
@@ -315,6 +318,7 @@ class BufferBuilder
      * any holes they contain.
      */
     // Collections.sort(subgraphList, Collections.reverseOrder());
+    /// TODO: @ruier edit. dart reverseOrder
     subgraphList.sort();
     return subgraphList;
   }
@@ -353,7 +357,8 @@ class BufferBuilder
     }
   }
   
- /**private */static Geometry convertSegStrings(Iterator it)
+ /**private */
+ static Geometry convertSegStrings(Iterator it)
   {
   	GeometryFactory fact = new GeometryFactory();
   	List lines = [];
@@ -372,7 +377,8 @@ class BufferBuilder
    * 
    * @return the empty result geometry
    */
- /**private */Geometry createEmptyResultGeometry()
+ /**private */
+ Geometry createEmptyResultGeometry()
   {
     Geometry emptyGeom = geomFact.createPolygon();
     return emptyGeom;

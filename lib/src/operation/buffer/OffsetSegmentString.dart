@@ -18,6 +18,12 @@
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.geom.PrecisionModel;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 /**
  * A dynamic list of the vertices in a constructed offset curve.
  * Automatically removes adjacent vertices
@@ -28,10 +34,11 @@
  */
 class OffsetSegmentString 
 {
- /**private */static final List<Coordinate> COORDINATE_ARRAY_TYPE = new Coordinate[0];
+//  /**private */static final List<Coordinate> COORDINATE_ARRAY_TYPE = new Coordinate[0];
 
- /**private */ArrayList ptList;
- /**private */PrecisionModel precisionModel = null;
+//  /**private */List ptList;
+ /**private */List<Coordinate> ptList;
+ /**private */PrecisionModel? precisionModel = null;
   
   /**
    * The distance below which two adjacent points on the curve 
@@ -40,11 +47,9 @@ class OffsetSegmentString
    */
  /**private */double minimimVertexDistance = 0.0;
 
-  OffsetSegmentString()
-  {
-  	ptList = [];
-  }
-  
+  OffsetSegmentString():ptList = [];
+
+
   void setPrecisionModel(PrecisionModel precisionModel)
   {
   	this.precisionModel = precisionModel;
@@ -57,11 +62,12 @@ class OffsetSegmentString
   
   void addPt(Coordinate pt)
   {
-    Coordinate bufPt = new Coordinate(pt);
-    precisionModel.makePrecise(bufPt);
+    Coordinate bufPt = new Coordinate.fromAnother(pt);
+    precisionModel!.makePreciseFromCoord(bufPt);
     // don't add duplicate (or near-duplicate) points
-    if (isRedundant(bufPt))
-        return;
+    if (isRedundant(bufPt)) {
+      return;
+    }
     ptList.add(bufPt);
 //System.out.println(bufPt);
   }
@@ -90,20 +96,22 @@ class OffsetSegmentString
    */
  /**private */bool isRedundant(Coordinate pt)
   {
-    if (ptList.size() < 1)
-    	return false;
-    Coordinate lastPt = (Coordinate) ptList.get(ptList.size() - 1);
+    if (ptList.size() < 1) {
+      return false;
+    }
+    Coordinate lastPt =  ptList.get(ptList.size() - 1);
     double ptDist = pt.distance(lastPt);
-    if (ptDist < minimimVertexDistance)
-    	return true;
+    if (ptDist < minimimVertexDistance) {
+      return true;
+    }
     return false;
   }
   
   void closeRing()
   {
     if (ptList.size() < 1) return;
-    Coordinate startPt = new Coordinate((Coordinate) ptList.get(0));
-    Coordinate lastPt = (Coordinate) ptList.get(ptList.size() - 1);
+    Coordinate startPt = new Coordinate.fromAnother( ptList.get(0));
+    Coordinate lastPt = ptList.get(ptList.size() - 1);
     if (startPt.equals(lastPt)) return;
     ptList.add(startPt);
   }
@@ -123,10 +131,11 @@ class OffsetSegmentString
       if (! start.equals(end) ) addPt(start);
     }
     */
-    List<Coordinate> coord = (List<Coordinate>) ptList.toArray(COORDINATE_ARRAY_TYPE);
+    List<Coordinate> coord =  ptList.toArray() as List<Coordinate>;
     return coord;
   }
 
+  @override
   String toString()
   {
   	GeometryFactory fact = new GeometryFactory();

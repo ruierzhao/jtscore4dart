@@ -31,6 +31,8 @@
 // import org.locationtech.jts.geomgraph.Label;
 // import org.locationtech.jts.geomgraph.Node;
 
+import 'dart:collection';
+
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
@@ -139,7 +141,7 @@ class BufferSubgraph
   {
     node.setVisited(true);
     nodes.add(node);
-    for (Iterator i = ( node.getEdges() as DirectedEdgeStar).iterator; i.moveNext(); ) {
+    for (Iterator i = ( node.getEdges() as DirectedEdgeStar).iterator(); i.moveNext(); ) {
       DirectedEdge de = i.current as DirectedEdge;
       dirEdgeList.add(de);
       DirectedEdge sym = de.getSym();

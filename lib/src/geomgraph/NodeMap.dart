@@ -22,12 +22,16 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Location;
 
+import 'dart:collection';
+
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
 
 import 'EdgeEnd.dart';
 import 'Node.dart';
 import 'NodeFactory.dart';
 
+import 'package:jtscore4dart/src/patch/Map.dart';
 /**
  * A map of nodes, indexed by the coordinate of the node
  * @version 1.7
@@ -36,7 +40,8 @@ class NodeMap
 
 {
   //Map nodeMap = new Map();
-  Map nodeMap = new TreeMap();
+  // Map nodeMap = new TreeMap();
+  Map nodeMap = new SplayTreeMap();
   NodeFactory nodeFact;
 
   NodeMap(this.nodeFact);
@@ -67,7 +72,7 @@ class NodeMap
 
   Node addNode(Node n)
   {
-    Node node = (Node) nodeMap.get(n.getCoordinate());
+    Node node =  nodeMap.get(n.getCoordinate());
     if (node == null) {
       nodeMap.put(n.getCoordinate(), n);
       return n;
@@ -86,7 +91,7 @@ class NodeMap
   void add(EdgeEnd e)
   {
     Coordinate p = e.getCoordinate();
-    Node n = addNode(p);
+    Node n = addNodeCoord(p);
     n.add(e);
   }
   /**
@@ -99,30 +104,39 @@ class NodeMap
 
   Iterator iterator()
   {
-    return nodeMap.values().iterator();
+    return nodeMap.values.iterator;
   }
-  Collection values()
+  Iterable values()
   {
-    return nodeMap.values();
+    return nodeMap.values;
   }
 
-  Collection getBoundaryNodes(int geomIndex)
+  Iterable getBoundaryNodes(int geomIndex)
   {
-    Collection bdyNodes = [];
+    // Collection bdyNodes = [];
+    List bdyNodes = [];
     for (Iterator i = iterator(); i.moveNext(); ) {
-      Node node = (Node) i.current;
+      Node node =  i.current;
       if (node.getLabel().getLocation(geomIndex) == Location.BOUNDARY)
         bdyNodes.add(node);
     }
     return bdyNodes;
   }
 
-  void print(PrintStream out)
+  // void print(PrintStream out)
+  // {
+  //   for (Iterator it = iterator(); it.moveNext(); )
+  //   {
+  //     Node n = (Node) it.current;
+  //     n.print(out);
+  //   }
+  // }
+  void printOut()
   {
     for (Iterator it = iterator(); it.moveNext(); )
     {
-      Node n = (Node) it.current;
-      n.print(out);
+      Node n = it.current;
+      n.printOut();
     }
   }
 }

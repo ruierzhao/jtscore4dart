@@ -22,7 +22,9 @@
 
 import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
 
+import 'BasicSegmentString.dart';
 import 'NodableSegmentString.dart';
 import 'Octant.dart';
 import 'SegmentNode.dart';
@@ -30,6 +32,12 @@ import 'SegmentNodeList.dart';
 import 'SegmentString.dart';
 
 /**
+ * 代表一系列相邻的可连接线串
+ * 支持链接起来
+ * 
+ * [SegmentString]s可以携带保存了拓扑信息和来源信息的上下文对象（maybe [Label]）
+ * 对于只读的应用程序(?) - 应该使用更加轻量化的[BasicSegmentString]
+ * 
  * Represents a list of contiguous line segments,
  * and supports noding the segments.
  * The line segments are represented by an array of {@link Coordinate}s.
@@ -73,14 +81,15 @@ class NodedSegmentString extends NodableSegmentString
     if (resultEdgelist == null) resultEdgelist = [];
     for (Object segString in segStrings) {
       NodedSegmentString ss = segString as NodedSegmentString;
-      ss.getNodeList().addSplitEdges(resultEdgelist);
+      ss.getNodeList().addSplitEdges(resultEdgelist  as List);
     }
     return resultEdgelist.toList();
   }
 
- /**private */SegmentNodeList nodeList = SegmentNodeList(this);
+//  /**private */SegmentNodeList nodeList = SegmentNodeList(this);
+ /**private */late SegmentNodeList nodeList;
  /**private */List<Coordinate> pts;
- /**private */Object data;
+ /**private */Object? data;
 
   /**
    * Creates a instance from a list of vertices and optional data object.
@@ -88,7 +97,10 @@ class NodedSegmentString extends NodableSegmentString
    * @param pts the vertices of the segment string
    * @param data the user-defined data of this segment string (may be null)
    */
-  NodedSegmentString(this.pts, this.data);
+  // NodedSegmentString(this.pts, this.data);
+  NodedSegmentString(this.pts, this.data){
+    nodeList = SegmentNodeList(this);
+  }
 
   /**
    * Creates a new instance from a {@link SegmentString}.
@@ -96,7 +108,7 @@ class NodedSegmentString extends NodableSegmentString
    * @param ss the segment string to use
    */
   NodedSegmentString.FromSS(SegmentString ss)
-  :this.pts = ss.getCoordinates(),
+    :this.pts = ss.getCoordinates(),
     this.data = ss.getData();
   
 
@@ -106,7 +118,7 @@ class NodedSegmentString extends NodableSegmentString
    * @return the user-defined data
    */
   @override
-  Object getData() { return data; }
+  Object? getData() { return data; }
 
   /**
    * Sets the user-defined data for this segment string.

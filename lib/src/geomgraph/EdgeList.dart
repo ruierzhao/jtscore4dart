@@ -23,6 +23,15 @@
 // import org.locationtech.jts.noding.OrientedCoordinateArray;
 
 
+import 'dart:collection';
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/noding/OrientedCoordinateArray.dart';
+
+import 'Edge.dart';
+
+import 'package:jtscore4dart/src/patch/Map.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 /**
  * A EdgeList is a list of Edges.  It supports locating edges
  * that are pointwise equals to a target edge.
@@ -35,10 +44,10 @@ class EdgeList
    * An index of the edges, for fast lookup.
    *
    */
- /**private */Map ocaMap = new TreeMap();
+//  /**private */Map ocaMap = new TreeMap();
+ /**private */Map ocaMap = SplayTreeMap();
 
-  EdgeList() {
-  }
+  EdgeList();
 
   /**
    * Insert an edge unless it is already in the list
@@ -52,10 +61,10 @@ class EdgeList
     ocaMap.put(oca, e);
   }
 
-  void addAll(Collection edgeColl)
+  void addAll(Iterable edgeColl)
   {
-    for (Iterator i = edgeColl.iterator(); i.moveNext(); ) {
-      add((Edge) i.next());
+    for (Iterator i = edgeColl.iterator; i.moveNext(); ) {
+      add( i.current as Edge);
     }
   }
 
@@ -72,13 +81,13 @@ class EdgeList
   {
     OrientedCoordinateArray oca = new OrientedCoordinateArray(e.getCoordinates());
     // will return null if no edge matches
-    Edge matchEdge = (Edge) ocaMap.get(oca);
+    Edge matchEdge = ocaMap.get(oca);
     return matchEdge; 
   }
   
-  Iterator iterator() { return edges.iterator(); }
+  Iterator iterator() { return edges.iterator; }
 
-  Edge get(int i) { return (Edge) edges.get(i); }
+  Edge get(int i) { return edges.get(i); }
 
   /**
    * If the edge e is already in the list, return its index.
@@ -89,26 +98,43 @@ class EdgeList
   int findEdgeIndex(Edge e)
   {
     for (int i = 0; i < edges.size(); i++) {
-      if ( ((Edge) edges.get(i)).equals(e) ) return i;
+      if ( ( edges.get(i)).equals(e) ) return i;
     }
     return -1;
   }
 
-  void print(PrintStream out)
+  // void print(PrintStream out)
+  // {
+  //   out.print("MULTILINESTRING ( ");
+  //   for (int j = 0; j < edges.size(); j++) {
+  //     Edge e = (Edge) edges.get(j);
+  //     if (j > 0) out.print(",");
+  //     out.print("(");
+  //     List<Coordinate> pts = e.getCoordinates();
+  //     for (int i = 0; i < pts.length; i++) {
+  //       if (i > 0) out.print(",");
+  //       out.print(pts[i].x + " " + pts[i].y);
+  //     }
+  //     out.println(")");
+  //   }
+  //   out.print(")  ");
+  // }
+
+  void printOut()
   {
-    out.print("MULTILINESTRING ( ");
+    print("MULTILINESTRING ( ");
     for (int j = 0; j < edges.size(); j++) {
-      Edge e = (Edge) edges.get(j);
-      if (j > 0) out.print(",");
-      out.print("(");
+      Edge e = edges.get(j);
+      if (j > 0) print(",");
+      print("(");
       List<Coordinate> pts = e.getCoordinates();
       for (int i = 0; i < pts.length; i++) {
-        if (i > 0) out.print(",");
-        out.print(pts[i].x + " " + pts[i].y);
+        if (i > 0) print(",");
+        print("${pts[i].x} ${pts[i].y}");
       }
-      out.println(")");
+      print(")");
     }
-    out.print(")  ");
+    print(")  ");
   }
 
 

@@ -56,7 +56,7 @@ abstract class SpatialIndex
    * @param searchEnv the envelope to query for
    * @param visitor a visitor object to apply to the items found
    */
-  void query(Envelope searchEnv, [ItemVisitor visitor]);
+  void query$1(Envelope searchEnv, [ItemVisitor visitor]);
 
   /**
    * Removes a single item from the tree.

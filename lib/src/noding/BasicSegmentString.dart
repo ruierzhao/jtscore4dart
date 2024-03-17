@@ -15,7 +15,9 @@
 // import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/impl/CoordinateArraySequence.dart';
 
 import 'Octant.dart';
 import 'SegmentString.dart';
@@ -32,7 +34,8 @@ import 'SegmentString.dart';
  * @see NodedSegmentString
  */
 class BasicSegmentString
-	implements SegmentString 
+	extends SegmentString 
+	// implements SegmentString 
 {
  /**private */List<Coordinate> pts;
  /**private */Object data;
@@ -43,17 +46,14 @@ class BasicSegmentString
    * @param pts the vertices of the segment string
    * @param data the user-defined data of this segment string (may be null)
    */
-  BasicSegmentString(List<Coordinate> pts, Object data)
-  {
-    this.pts = pts;
-    this.data = data;
-  }
+  BasicSegmentString(this.pts, this.data);
 
   /**
    * Gets the user-defined data for this segment string.
    *
    * @return the user-defined data
    */
+  @override
   Object getData() { return data; }
 
   /**
@@ -61,12 +61,17 @@ class BasicSegmentString
    *
    * @param data an Object containing user-defined data
    */
+  @override
   void setData(Object data) { this.data = data; }
 
+  @override
   int size() { return pts.length; }
+  @override
   Coordinate getCoordinate(int i) { return pts[i]; }
+  @override
   List<Coordinate> getCoordinates() { return pts; }
 
+  @override
   bool isClosed()
   {
     return pts[0].equals(pts[pts.length - 1]);
@@ -85,8 +90,10 @@ class BasicSegmentString
     return Octant.octant(getCoordinate(index), getCoordinate(index + 1));
   }
 
+  @override
   String toString()
   {
-    return WKTWriter.toLineString(new CoordinateArraySequence(pts));
+    // return WKTWriter.toLineString(new CoordinateArraySequence(pts));
+    return WKTWriter.toLineString(pts);
   }
 }

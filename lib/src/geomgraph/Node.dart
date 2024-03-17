@@ -33,7 +33,7 @@ import 'Label.dart';
  * @version 1.7
  */
 /**ruier edit*/ 
-abstract class Node extends GraphComponent
+class Node extends GraphComponent
 {
  /**protected */Coordinate coord; // only non-null if this node is precise
  /**protected */EdgeEndStar? edges;
@@ -45,7 +45,7 @@ abstract class Node extends GraphComponent
 
   @override
   Coordinate getCoordinate() { return coord; }
-  EdgeEndStar getEdges() { return edges; }
+  EdgeEndStar getEdges() { return edges!; }
 
   /**
    * Tests whether any incident edge is flagged as
@@ -76,8 +76,10 @@ abstract class Node extends GraphComponent
    * Basic nodes do not compute IMs
    */
  /**protected */
- @override
-  void computeIM(IntersectionMatrix im);
+  @override
+  void computeIM(IntersectionMatrix im){
+    /// TODO: @ruier edit. nothing todo, maybe error
+  }
 //  /**protected */void computeIM(IntersectionMatrix im) {}
 
   /**
@@ -88,7 +90,7 @@ abstract class Node extends GraphComponent
   void add(EdgeEnd e)
   {
     // Assert: start pt of e is equal to node point
-    edges.insert(e);
+    edges!.insert(e);
     e.setNode(this);
   }
 
@@ -174,6 +176,10 @@ abstract class Node extends GraphComponent
   // {
   //   out.println("node " + coord + " lbl: " + label);
   // }
+  void printOut()
+  {
+    print("node $coord lbl: $label");
+  }
   
   @override
   String toString() {

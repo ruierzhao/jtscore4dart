@@ -29,10 +29,6 @@ import 'PointPairDistance.dart';
  */
 class DistanceToPoint 
 {
-
-  DistanceToPoint() {
-  }
-
   //@ruier edit. // static void computeDistance(Geometry geom, Coordinate pt, PointPairDistance ptDist)
   static void computeDistance(Geometry geom, Coordinate pt, PointPairDistance ptDist)
   {
@@ -50,26 +46,26 @@ class DistanceToPoint
       }
     }
     else { // assume geom is Point
-      ptDist.setMinimum(geom.getCoordinate(), pt);
+      ptDist.setMinimumCoord(geom.getCoordinate()!, pt);
     }
   }
   
   static void computeDistanceLine(LineString line, Coordinate pt, PointPairDistance ptDist)
   {
-    LineSegment tempSegment = new LineSegment();
+    LineSegment tempSegment = new LineSegment.empty();
     List<Coordinate> coords = line.getCoordinates();
     for (int i = 0; i < coords.length - 1; i++) {
-      tempSegment.setCoordinates(coords[i], coords[i + 1]);
+      tempSegment.setCoordinatesFromCoord(coords[i], coords[i + 1]);
       // this is somewhat inefficient - could do better
       Coordinate closestPt = tempSegment.closestPoint(pt);
-      ptDist.setMinimum(closestPt, pt);
+      ptDist.setMinimumCoord(closestPt, pt);
     }
   }
 
   static void computeDistanceLineSeg(LineSegment segment, Coordinate pt, PointPairDistance ptDist)
   {
     Coordinate closestPt = segment.closestPoint(pt);
-    ptDist.setMinimum(closestPt, pt);
+    ptDist.setMinimumCoord(closestPt, pt);
   }
 
   static void computeDistancePoly(Polygon poly, Coordinate pt, PointPairDistance ptDist)

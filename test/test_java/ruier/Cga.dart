@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/patch/StringBufferExt.dart';
 
 class Envelope implements Comparable {
   static final double _DP_SAFE_EPSILON = 1e-15;
@@ -390,11 +391,27 @@ class Ruier5 {
   ruier(){}
 }
 
-
+extension JavaStringBuilder on StringBuffer{
+  /// TODO: @ruier edit.优化实现一下
+  setCharAt(int index, String newChar){
+    String simpleReplace(){
+      String old = this.toString();
+      String newString = old.replaceRange(index, index+1, newChar);
+      return newString;
+    }
+    List<String> oldArr = List.from(this.toString().split(""), growable: false);
+    String onlyReplace(){
+      // List<String> oldArr = this.toString().split("");
+      oldArr[index] = newChar;
+      return oldArr.join();
+    }
+    return simpleReplace();
+  }
+}
 
 void main() {
-  List vv = [];
-  vv[0] = 10;
-  vv[1] = 5;
-print(vv);
+  var sb = StringBuilder("Z赵rueir");
+  sb.setCharAt(2, "R");
+  sb.setCharAt(6, "云");
+  print(sb.toString());
 }

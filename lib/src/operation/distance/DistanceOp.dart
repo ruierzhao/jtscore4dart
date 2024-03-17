@@ -39,6 +39,7 @@ import 'package:jtscore4dart/src/geom/util/PolygonExtracter.dart';
 import 'ConnectedElementLocationFilter.dart';
 import 'GeometryLocation.dart';
 
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 /**
  * Find two points on two {@link Geometry}s which lie
  * within a given distance, or else are the nearest points
@@ -75,9 +76,9 @@ class DistanceOp
 
   /**
    * Test whether two geometries lie within a given distance of each other.
-   * @param g0 a {@link Geometry}
-   * @param g1 another {@link Geometry}
-   * @param distance the distance to test
+   * @param [g0] a {@link Geometry}
+   * @param [g1] another {@link Geometry}
+   * @param [distance] the distance to test
    * @return true if g0.distance(g1) &lt;= distance
    */
   static bool isWithinDistance(Geometry g0, Geometry g1, double distance)
@@ -272,7 +273,7 @@ class DistanceOp
     
   	int locationsIndex = 1 - polyGeomIndex;
     List polys = PolygonExtracter.getPolygons(polyGeom);
-    if (polys.length > 0) {
+    if (polys.isNotEmpty) {
       List insideLocs = ConnectedElementLocationFilter.getLocations(geom[locationsIndex]);
       computeContainmentDistance$2(insideLocs, polys, locPtPoly);
       if (minDistance <= terminateDistance) {
@@ -287,7 +288,7 @@ class DistanceOp
  /**private */void computeContainmentDistance$2(List locs, List polys, List<GeometryLocation> locPtPoly)
   {
     for (int i = 0; i < locs.length; i++) {
-      GeometryLocation loc = (GeometryLocation) locs.get(i);
+      GeometryLocation loc = locs.get(i) as GeometryLocation;
       for (int j = 0; j < polys.length; j++) {
       	computeContainmentDistance(loc, (Polygon) polys.get(j), locPtPoly);
         if (minDistance <= terminateDistance) return;

@@ -15,6 +15,8 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
 /**
  * Contains a pair of points and the distance between them.
  * Provides methods to update with a new point pair with
@@ -22,21 +24,20 @@
  */
 class PointPairDistance {
 
- /**private */final List<Coordinate> pt = { new Coordinate(), new Coordinate() };
+ /**private */final List<Coordinate> pt = [ Coordinate.empty2D(), new Coordinate.empty2D() ];
  /**private */double distance = double.nan;
  /**private */bool isNull = true;
 
   /**
    * Creates an instance of this class
    */
-  PointPairDistance()
-  {
-  }
+  PointPairDistance();
 
   /**
    * Initializes this instance.
    */
-  void initialize() { isNull = true; }
+  /// TODO: @ruier 没什么屌用
+  // void initialize() { isNull = true; }
 
   /**
    * Initializes the points, computing the distance between them.
@@ -44,7 +45,7 @@ class PointPairDistance {
    * @param p1 the 2nd point
    */
   void initialize(Coordinate p0, Coordinate p1)  {
-    initialize(p0, p1, p0.distance(p1));
+    initialize$2(p0, p1, p0.distance(p1));
   }
 
   /**
@@ -53,7 +54,7 @@ class PointPairDistance {
    * @param p1 the 2nd point
    * @param distance the distance between p0 and p1
    */
-  void initialize(Coordinate p0, Coordinate p1, double distance)
+  void initialize$2(Coordinate p0, Coordinate p1, double distance)
   {
     pt[0].setCoordinate(p0);
     pt[1].setCoordinate(p1);
@@ -82,38 +83,40 @@ class PointPairDistance {
 
   void setMaximum(PointPairDistance ptDist)
   {
-    setMaximum(ptDist.pt[0], ptDist.pt[1]);
+    setMaximumCoord(ptDist.pt[0], ptDist.pt[1]);
   }
 
-  void setMaximum(Coordinate p0, Coordinate p1)
+  void setMaximumCoord(Coordinate p0, Coordinate p1)
   {
     if (isNull) {
       initialize(p0, p1);
       return;
     }
     double dist = p0.distance(p1);
-    if (dist > distance)
-      initialize(p0, p1, dist);
+    if (dist > distance) {
+      initialize$2(p0, p1, dist);
+    }
   }
 
   void setMinimum(PointPairDistance ptDist)
   {
-    setMinimum(ptDist.pt[0], ptDist.pt[1]);
+    setMinimumCoord(ptDist.pt[0], ptDist.pt[1]);
   }
 
-  void setMinimum(Coordinate p0, Coordinate p1)
+  void setMinimumCoord(Coordinate p0, Coordinate p1)
   {
     if (isNull) {
       initialize(p0, p1);
       return;
     }
     double dist = p0.distance(p1);
-    if (dist < distance)
-      initialize(p0, p1, dist);
+    if (dist < distance) {
+      initialize$2(p0, p1, dist);
+    }
   }
-
-  String toString()
-  {
-  	return WKTWriter.toLineString(pt[0], pt[1]);
-  }
+  /// TODO: @ruier edit.add late .
+  // String toString()
+  // {
+  // 	return WKTWriter.toLineString(pt[0], pt[1]);
+  // }
 }

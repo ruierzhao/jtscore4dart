@@ -19,6 +19,11 @@
 // import org.locationtech.jts.geom.GeometryFilter;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryCollection.dart';
+import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+
 /**
  * Extracts all the {@link Polygon} elements from a {@link Geometry}.
  *
@@ -35,8 +40,11 @@ class PolygonExtracter
    * @param geom the geometry from which to extract
    * @param list the list to add the extracted elements to
    */
-  static List getPolygons(Geometry geom, List list)
+  static List getPolygons(Geometry geom, [List? list])
   {
+    if (list == null) {
+      list = [];
+    }
   	if (geom is Polygon) {
   		list.add(geom);
   	}
@@ -54,20 +62,18 @@ class PolygonExtracter
    * 
    * @param geom the geometry from which to extract
    */
-  static List getPolygons(Geometry geom)
-  {
-    return getPolygons(geom, new ArrayList());
-  }
+  // static List getPolygons(Geometry geom)
+  // {
+  //   return getPolygons(geom, new ArrayList());
+  // }
 
  /**private */List comps;
   /**
    * Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
    */
-  PolygonExtracter(List comps)
-  {
-    this.comps = comps;
-  }
+  PolygonExtracter(this.comps);
 
+  @override
   void filter(Geometry geom)
   {
     if (geom is Polygon) comps.add(geom);

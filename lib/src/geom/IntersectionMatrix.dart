@@ -11,6 +11,8 @@
  */
 
 
+import 'package:jtscore4dart/src/patch/StringBufferExt.dart';
+
 import 'Dimension.dart';
 import 'Location.dart';
 
@@ -168,7 +170,7 @@ class IntersectionMatrix /**implements Cloneable  */ {
   ///      against. Possible values are <code>{T, F, * , 0, 1, 2}</code>.
   ///@return                           true if each of the required dimension
   ///      symbols encompass the corresponding actual dimension symbol
-  static bool matches(String actualDimensionSymbols, String requiredDimensionSymbols) {
+  static bool matches$2(String actualDimensionSymbols, String requiredDimensionSymbols) {
     IntersectionMatrix m = new IntersectionMatrix(actualDimensionSymbols);
     return m.matches_(requiredDimensionSymbols);
   }
@@ -242,7 +244,8 @@ class IntersectionMatrix /**implements Cloneable  */ {
     for (int i = 0; i < minimumDimensionSymbols.length; i++) {
       int row = (i / 3).floor();
       int col = i % 3;
-      setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
+      // setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
+      setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols[i]));
     }
   }
 
@@ -518,8 +521,9 @@ class IntersectionMatrix /**implements Cloneable  */ {
   ///
   ///@return    the nine dimension symbols of this <code>IntersectionMatrix</code>
   ///      in row-major order.
+  @override
   String toString() {
-    StringBuffer builder = new StringBuffer("123456789");
+    StringBuilder builder = new StringBuilder("123456789");
     for (int ai = 0; ai < 3; ai++) {
       for (int bi = 0; bi < 3; bi++) {
         builder.setCharAt(3 * ai + bi, Dimension.toDimensionSymbol(matrix[ai][bi]));
@@ -527,5 +531,14 @@ class IntersectionMatrix /**implements Cloneable  */ {
     }
     return builder.toString();
   }
+  // String toString() {
+  //   StringBuffer builder = new StringBuffer("123456789");
+  //   for (int ai = 0; ai < 3; ai++) {
+  //     for (int bi = 0; bi < 3; bi++) {
+  //       builder.setCharAt(3 * ai + bi, Dimension.toDimensionSymbol(matrix[ai][bi]));
+  //     }
+  //   }
+  //   return builder.toString();
+  // }
 }
 

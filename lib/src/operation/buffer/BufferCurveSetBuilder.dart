@@ -205,7 +205,7 @@ class BufferCurveSetBuilder {
      * 
      * Singled-sided buffers currently treat rings as if they are lines.
      */
-    if (CoordinateArrays.isRing(coord) && ! curveBuilder.getBufferParameters().isSingleSided) {
+    if (CoordinateArrays.isRing(coord) && !curveBuilder.getBufferParameters().isSingleSided) {
       addRingBothSides(coord, distance);
     }
     else {

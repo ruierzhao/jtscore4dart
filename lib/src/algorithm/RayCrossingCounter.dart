@@ -16,6 +16,13 @@
 // import org.locationtech.jts.geom.Location;
 // import org.locationtech.jts.geom.Polygonal;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/Polygonal.dart';
+
+import 'Orientation.dart';
+
 /**
  * Counts the number of segments crossed by a horizontal ray extending to the right
  * from a given point, in an incremental fashion.
@@ -64,8 +71,9 @@ class RayCrossingCounter
       Coordinate p1 = ring[i];
       Coordinate p2 = ring[i-1];
       counter.countSegment(p1, p2);
-      if (counter.isOnSegment())
-      	return counter.getLocation();
+      if (counter.isOnSegment()) {
+        return counter.getLocation();
+      }
     }
     return counter.getLocation();
 	}
@@ -79,11 +87,11 @@ class RayCrossingCounter
    *            a coordinate sequence forming a ring
    * @return the location of the point in the ring
    */
-  static int locatePointInRing(Coordinate p, CoordinateSequence ring) {
+  static int locatePointInRingSeq(Coordinate p, CoordinateSequence ring) {
     RayCrossingCounter counter = new RayCrossingCounter(p);
 
-    Coordinate p1 = new Coordinate();
-    Coordinate p2 = new Coordinate();
+    Coordinate p1 = new Coordinate.empty2D();
+    Coordinate p2 = new Coordinate.empty2D();
     for (int i = 1; i < ring.size(); i++) {
       //ring.getCoordinate(i, p1); // throws exception if ring contains M ordinate
       p1.x = ring.getOrdinate(i, CoordinateSequence.X);
@@ -92,21 +100,19 @@ class RayCrossingCounter
       p2.x = ring.getOrdinate(i - 1, CoordinateSequence.X);
       p2.y = ring.getOrdinate(i - 1, CoordinateSequence.Y);
       counter.countSegment(p1, p2);
-      if (counter.isOnSegment())
+      if (counter.isOnSegment()) {
         return counter.getLocation();
+      }
     }
     return counter.getLocation();
   }
 
-	private Coordinate p;
-	private int crossingCount = 0;
+	/**private */ Coordinate p;
+	/**private */ int crossingCount = 0;
 	// true if the test point lies on an input segment
-	private bool isPointOnSegment = false;
+	/**private */ bool isPointOnSegment = false;
 	
-	RayCrossingCounter(Coordinate p)
-	{
-		this.p = p;
-	}
+	RayCrossingCounter(this.p);
 	
 	/**
 	 * Counts a segment
@@ -121,8 +127,9 @@ class RayCrossingCounter
 		 */
 		
 		// check if the segment is strictly to the left of the test point
-		if (p1.x < p.x && p2.x < p.x)
-			return;
+		if (p1.x < p.x && p2.x < p.x) {
+		  return;
+		}
 		
 		// check if the point is equal to the current ring vertex
 		if (p.x == p2.x && p.y == p2.y) {
@@ -206,8 +213,9 @@ class RayCrossingCounter
 	 */
 	int getLocation() 
 	{
-		if (isPointOnSegment)
-			return Location.BOUNDARY;
+		if (isPointOnSegment) {
+		  return Location.BOUNDARY;
+		}
 		
     // The point is in the interior of the ring if the number of X-crossings is
 		// odd.

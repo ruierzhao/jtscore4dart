@@ -11,6 +11,10 @@
  */
 
 
+import 'DirectedEdge.dart';
+import 'GraphComponent.dart';
+import 'Node.dart';
+
 /**
  * Represents an undirected edge of a {@link PlanarGraph}. An undirected edge
  * in fact simply acts as a central point of reference for two opposite
@@ -21,32 +25,34 @@
  *
  * @version 1.7
  */
-class Edge
-    extends GraphComponent
+class Edge extends GraphComponent
 {
 
   /**
    * The two DirectedEdges associated with this Edge.
    * Index 0 is forward, 1 is reverse.
    */
- /**protected */DirectedEdge[] dirEdge;
+ /**protected */late List<DirectedEdge>? dirEdge;
 
   /**
    * Constructs an Edge whose DirectedEdges are not yet set. Be sure to call
    * {@link #setDirectedEdges(DirectedEdge, DirectedEdge)}
    */
-  Edge()
-  {
-  }
-
+  // Edge();
   /**
    * Constructs an Edge initialized with the given DirectedEdges, and for each
    * DirectedEdge: sets the Edge, sets the symmetric DirectedEdge, and adds
    * this Edge to its from-Node.
    */
-  Edge(DirectedEdge de0, DirectedEdge de1)
+  // Edge(DirectedEdge de0, DirectedEdge de1)
+  // {
+  //   setDirectedEdges(de0, de1);
+  // }
+  Edge([DirectedEdge? de0, DirectedEdge? de1])
   {
-    setDirectedEdges(de0, de1);
+    if (de0 != null && de1 != null) {
+      setDirectedEdges(de0, de1);
+    }
   }
 
   /**
@@ -55,7 +61,8 @@ class Edge
    */
   void setDirectedEdges(DirectedEdge de0, DirectedEdge de1)
   {
-    dirEdge = new DirectedEdge[] { de0, de1 };
+    // dirEdge = new DirectedEdge[] { de0, de1 };
+    this.dirEdge = [de0, de1];
     de0.setEdge(this);
     de1.setEdge(this);
     de0.setSym(de1);
@@ -70,17 +77,17 @@ class Edge
    */
   DirectedEdge getDirEdge(int i)
   {
-    return dirEdge[i];
+    return dirEdge![i];
   }
 
   /**
    * Returns the {@link DirectedEdge} that starts from the given node, or null if the
    * node is not one of the two nodes associated with this Edge.
    */
-  DirectedEdge getDirEdge(Node fromNode)
+  DirectedEdge? getDirEdgeFromNode(Node fromNode)
   {
-    if (dirEdge[0].getFromNode() == fromNode) return dirEdge[0];
-    if (dirEdge[1].getFromNode() == fromNode) return dirEdge[1];
+    if (dirEdge![0].getFromNode() == fromNode) return dirEdge![0];
+    if (dirEdge![1].getFromNode() == fromNode) return dirEdge![1];
     // node not found
     // possibly should throw an exception here?
     return null;
@@ -90,10 +97,10 @@ class Edge
    * If <code>node</code> is one of the two nodes associated with this Edge,
    * returns the other node; otherwise returns null.
    */
-  Node getOppositeNode(Node node)
+  Node? getOppositeNode(Node node)
   {
-    if (dirEdge[0].getFromNode() == node) return dirEdge[0].getToNode();
-    if (dirEdge[1].getFromNode() == node) return dirEdge[1].getToNode();
+    if (dirEdge![0].getFromNode() == node) return dirEdge![0].getToNode();
+    if (dirEdge![1].getFromNode() == node) return dirEdge![1].getToNode();
     // node not found
     // possibly should throw an exception here?
     return null;
@@ -111,6 +118,7 @@ class Edge
    *
    * @return <code>true</code> if this edge is removed
    */
+  @override
   bool isRemoved()
   {
     return dirEdge == null;

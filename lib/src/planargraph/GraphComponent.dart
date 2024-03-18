@@ -41,10 +41,10 @@ abstract class GraphComponent
    * @param i the Iterator to scan
    * @param visited the state to set the visited flag to
    */
-  static void setVisited(Iterator i, bool visited)
+  static void setVisitedS(Iterator i, bool visited)
   {
-    while (i.hasNext()) {
-      GraphComponent comp = (GraphComponent) i.current;
+    while (i.moveNext()) {
+      GraphComponent comp =  i.current as GraphComponent;
       comp.setVisited(visited);
     }
   }
@@ -55,10 +55,10 @@ abstract class GraphComponent
    * @param i the Iterator to scan
    * @param marked the state to set the Marked flag to
    */
-  static void setMarked(Iterator i, bool marked)
+  static void setMarkedS(Iterator i, bool marked)
   {
-    while (i.hasNext()) {
-      GraphComponent comp = (GraphComponent) i.current;
+    while (i.moveNext()) {
+      GraphComponent comp = i.current as GraphComponent;
       comp.setMarked(marked);
     }
   }
@@ -71,47 +71,49 @@ abstract class GraphComponent
    * @param visitedState the visited state to test
    * @return the first component found, or <code>null</code> if none found
    */
-  static GraphComponent getComponentWithVisitedState(Iterator i, bool visitedState)
+  static GraphComponent? getComponentWithVisitedState(Iterator i, bool visitedState)
   {
-    while (i.hasNext()) {
-      GraphComponent comp = (GraphComponent) i.current;
-      if (comp.isVisited() == visitedState)
+    while (i.moveNext()) {
+      GraphComponent comp = i.current as GraphComponent;
+      if (comp.isVisited() == visitedState) {
         return comp;
+      }
     }
     return null;
   }
 
- /**protected */bool isMarked = false;
- /**protected */bool isVisited = false;
- /**private */Object data;
+ /**protected */bool isMarked_ = false;
+ /**protected */bool isVisited_ = false;
+ /**private */late Object data;
 
-  GraphComponent() {
-  }
+  GraphComponent();
 
   /**
    * Tests if a component has been visited during the course of a graph algorithm
    * @return <code>true</code> if the component has been visited
    */
-  bool isVisited() { return isVisited; }
+  /// TODO: @ruier edit.
+  // bool isVisited() { return isVisited; }
+  bool isVisited() { return isVisited_; }
 
   /**
    * Sets the visited flag for this component.
    * @param isVisited the desired value of the visited flag
    */
-  void setVisited(bool isVisited) { this.isVisited = isVisited; }
+  void setVisited(bool isVisited) { this.isVisited_ = isVisited; }
 
   /**
    * Tests if a component has been marked at some point during the processing
    * involving this graph.
    * @return <code>true</code> if the component has been marked
    */
-  bool isMarked() { return isMarked; }
+  bool isMarked() { return isMarked_; }
 
   /**
    * Sets the marked flag for this component.
    * @param isMarked the desired value of the marked flag
    */
-  void setMarked(bool isMarked) { this.isMarked = isMarked; }
+  void setMarked(bool isMarked) { this.isMarked_ = isMarked; }
 
   /**
    * Sets the user-defined data for this component.
@@ -146,5 +148,5 @@ abstract class GraphComponent
    *
    * @return <code>true</code> if this component is removed
    */
-  abstract bool isRemoved();
+  /**abstract */ bool isRemoved();
 }

@@ -34,15 +34,14 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/LineSegment.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/utils.dart';
 
-import '../../utils.dart';
 import 'BufferParameters.dart';
 import 'OffsetSegmentString.dart';
 
 /**
  * Generates segments which form an offset curve.
- * Supports all end cap and join options 
- * provided for buffering.
+ * Supports all end cap and join options provided for buffering.
  * This algorithm implements various heuristics to 
  * produce smoother, simpler curves which are
  * still within a reasonable tolerance of the 

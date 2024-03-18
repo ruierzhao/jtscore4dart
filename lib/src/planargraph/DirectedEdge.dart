@@ -21,7 +21,15 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Quadrant;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Quadrant.dart';
+
+import 'Edge.dart';
 import 'GraphComponent.dart';
+import 'Node.dart';
 
 /**
  * Represents a directed edge in a {@link PlanarGraph}. A DirectedEdge may or
@@ -49,14 +57,14 @@ class DirectedEdge
     return edges;
   }
 
- /**protected */Edge parentEdge;
+ /**protected */late Edge? parentEdge;
  /**protected */Node from;
  /**protected */Node to;
  /**protected */Coordinate p0, p1;
- /**protected */DirectedEdge sym = null;  // optional
+ /**protected */DirectedEdge? sym = null;  // optional
  /**protected */bool edgeDirection;
- /**protected */int quadrant;
- /**protected */double angle;
+ /**protected */late int quadrant;
+ /**protected */late double angle;
 
   /**
    * Constructs a DirectedEdge connecting the <code>from</code> node to the
@@ -70,24 +78,21 @@ class DirectedEdge
    *   whether this DirectedEdge's direction is the same as or
    *   opposite to that of the parent Edge (if any)
    */
-  DirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
+  DirectedEdge(this.from, this.to, Coordinate directionPt, this.edgeDirection)
+    :p0 = from.getCoordinate(),
+    p1 = directionPt
   {
-    this.from = from;
-    this.to = to;
-    this.edgeDirection = edgeDirection;
-    p0 = from.getCoordinate();
-    p1 = directionPt;
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
     quadrant = Quadrant.quadrant(dx, dy);
-    angle = math.atan2(dy, dx);
+    angle = atan2(dy, dx);
     //Assert.isTrue(! (dx == 0 && dy == 0), "EdgeEnd with identical endpoints found");
   }
 
   /**
    * Returns this DirectedEdge's parent Edge, or null if it has none.
    */
-  Edge getEdge() { return parentEdge; }
+  Edge? getEdge() { return parentEdge; }
   /**
    * Associates this DirectedEdge with an Edge (possibly null, indicating no associated
    * Edge).
@@ -129,7 +134,7 @@ class DirectedEdge
    * Returns the symmetric DirectedEdge -- the other DirectedEdge associated with
    * this DirectedEdge's parent Edge.
    */
-  DirectedEdge getSym() { return sym; }
+  DirectedEdge getSym() { return sym!; }
   /**
    * Sets this DirectedEdge's symmetric DirectedEdge, which runs in the opposite
    * direction.
@@ -149,6 +154,7 @@ class DirectedEdge
    *
    * @return <code>true</code> if this directed edge is removed
    */
+  @override
   bool isRemoved()
   {
     return parentEdge == null;
@@ -169,9 +175,10 @@ class DirectedEdge
    * function can be used to decide the relative orientation of the vectors.
    * </ul>
    */
-  int compareTo(Object obj)
+  @override
+  int compareTo(var obj)
   {
-      DirectedEdge de = (DirectedEdge) obj;
+      DirectedEdge de = obj as DirectedEdge;
       return compareDirection(de);
   }
 
@@ -203,12 +210,13 @@ class DirectedEdge
   /**
    * Prints a detailed string representation of this DirectedEdge to the given PrintStream.
    */
-  void print(PrintStream out)
-  {
-    String className = getClass().getName();
-    int lastDotPos = className.lastIndexOf('.');
-    String name = className.substring(lastDotPos + 1);
-    out.print("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle);
-  }
+  /// TODO: @ruier edit.
+  // void print(PrintStream out)
+  // {
+  //   String className = getClass().getName();
+  //   int lastDotPos = className.lastIndexOf('.');
+  //   String name = className.substring(lastDotPos + 1);
+  //   out.print("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle);
+  // }
 
 }

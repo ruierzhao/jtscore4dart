@@ -51,7 +51,7 @@ class DirectedEdgeStar
    * A list of all outgoing edges in the result, in CCW order
    */
  /**private */late List resultAreaEdgeList;
- /**private */ late Label label;
+ /**private */late Label label;
 
   DirectedEdgeStar();
   /**

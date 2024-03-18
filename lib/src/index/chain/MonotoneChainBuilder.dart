@@ -47,8 +47,8 @@ class MonotoneChainBuilder {
    * for a list of coordinates, 
    * attaching a context data object to each.
    * 
-   * @param pts the list of points to compute chains for
-   * @param context a data object to attach to each chain
+   * @param [pts] the list of points to compute chains for
+   * @param [context] a data object to attach to each chain
    * @return a list of the monotone chains for the points 
    */
   static List getChains(List<Coordinate> pts, [Object? context])

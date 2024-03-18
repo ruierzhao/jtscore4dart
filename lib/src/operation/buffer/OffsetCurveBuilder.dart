@@ -244,7 +244,8 @@ class OffsetCurveBuilder
     segGen.closeRing();
   }
   
- /**private */void computeSingleSidedBufferCurve(List<Coordinate> inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
+ /**private */
+ void computeSingleSidedBufferCurve(List<Coordinate> inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
   {
     double distTol = simplifyTolerance(distance);
     
@@ -256,7 +257,7 @@ class OffsetCurveBuilder
       // Simplify the appropriate side of the line before generating
       List<Coordinate> simp2 = BufferInputLineSimplifier.simplify(inputPts, -distTol);
       // MD - used for testing only (to eliminate simplification)
-  //    List<Coordinate> simp2 = inputPts;
+      //    List<Coordinate> simp2 = inputPts;
       int n2 = simp2.length - 1;
      
       // since we are traversing line in opposite order, offset position is still LEFT
@@ -287,7 +288,8 @@ class OffsetCurveBuilder
     segGen.closeRing();
   }
 
- /**private */void computeOffsetCurve(List<Coordinate> inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
+ /**private */
+ void computeOffsetCurve(List<Coordinate> inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
   {
     double distTol = simplifyTolerance((distance).abs());
     

@@ -14,6 +14,11 @@
 // import org.locationtech.jts.geom.Location;
 // import org.locationtech.jts.geom.Position;
 
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+
+import 'Label.dart';
+
 /**
  * A Depth object records the topological depth of the sides
  * of an Edge for up to two Geometries.
@@ -21,7 +26,7 @@
  */
 class Depth {
 
- /**private */final static int NULL_VALUE = -1;
+ /**private */const static int NULL_VALUE = -1;
 
   static int depthAtLocation(int location)
   {

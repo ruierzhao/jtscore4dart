@@ -65,17 +65,17 @@ class SimplePointInAreaLocator
    * <li>{@link Location#EXTERIOR} if the point is outside the geometry
    * </ul>
    * 
-   * @param p the point to test
-   * @param geom the areal geometry to test
+   * @param [p] the point to test
+   * @param [geom] the areal geometry to test
    * @return the Location of the point in the geometry  
    */
-  static int locate(Coordinate p, Geometry geom)
+  static int locateS(Coordinate p, Geometry geom)
   {
     if (geom.isEmpty()) return Location.EXTERIOR;
     /**
      * Do a fast check against the geometry envelope first
      */
-    if (! geom.getEnvelopeInternal().intersectsWith(p)) {
+    if (! geom.getEnvelopeInternal().intersectsWithCoord(p)) {
       return Location.EXTERIOR;
     }
     
@@ -95,13 +95,13 @@ class SimplePointInAreaLocator
    * @return true if the point lies in or on the geometry  
    */
   static bool isContained(Coordinate p, Geometry geom) {
-    return Location.EXTERIOR != locate(p, geom);
+    return Location.EXTERIOR != locateS(p, geom);
   }
   
  /**private */static int locateInGeometry(Coordinate p, Geometry geom)
   {
     if (geom is Polygon) {
-      return locatePointInPolygon(p, (Polygon) geom);
+      return locatePointInPolygon(p,  geom as Polygon);
     }
     
     if (geom is GeometryCollection) {
@@ -194,9 +194,7 @@ class SimplePointInAreaLocator
 	 * 
 	 * @param geom the areal geometry to locate in
 	 */
-	SimplePointInAreaLocator(Geometry geom) {
-		this.geom = geom;
-	}
+	SimplePointInAreaLocator(this.geom);
 
   /**
    * Determines the {@link Location} of a point in an areal {@link Geometry}.
@@ -210,9 +208,9 @@ class SimplePointInAreaLocator
    * @param p the point to test
    * @return the Location of the point in the geometry  
    */
-	@override
+	 @override
    int locate(Coordinate p) {
-		return SimplePointInAreaLocator.locate(p, geom);
+		return SimplePointInAreaLocator.locateS(p, geom);
 	}
 
 }

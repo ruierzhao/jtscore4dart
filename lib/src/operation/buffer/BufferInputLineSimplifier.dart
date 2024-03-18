@@ -80,7 +80,7 @@ class BufferInputLineSimplifier
     return simp.simplify_(distanceTol);
   }
   
- /**private */static final int DELETE = 1;
+ /**private */static const int DELETE = 1;
   
  /**private */List<Coordinate> inputLine;
  /**private */late double distanceTol;
@@ -90,7 +90,7 @@ class BufferInputLineSimplifier
 
   
   BufferInputLineSimplifier(this.inputLine)
-  :isRing = CoordinateArrays.isRing(inputLine);
+    :isRing = CoordinateArrays.isRing(inputLine);
 
   /**
    * Simplify the input coordinate list.
@@ -112,7 +112,7 @@ class BufferInputLineSimplifier
     
     // rely on fact that bool array is filled with false values
     // isDeleted = new bool[inputLine.length];
-    isDeleted = List.filled(inputLine.length, false,growable: false);
+    isDeleted = List.filled(inputLine.length, false, growable: false);
     
     bool isChanged = false;
     do {
@@ -165,7 +165,7 @@ class BufferInputLineSimplifier
   
   /**
    * Finds the next non-deleted index, or the end of the point array if none
-   * @param index
+   * @param [index]
    * @return the next non-deleted index, if any
    * or inputLine.length if there are no more non-deleted indices
    */
@@ -178,14 +178,17 @@ class BufferInputLineSimplifier
     return next;  
   }
   
- /**private */List<Coordinate> collapseLine()
+ /**private */
+  List<Coordinate> collapseLine()
   {
     CoordinateList coordList = new CoordinateList();
     for (int i = 0; i < inputLine.length; i++) {
+      // 筛选出应该buffer的点
       if (! isDeleted[i]) {
         coordList.add(inputLine[i], true);
       }
     }
+    /// TODO: @ruier edit. 需要测试剩下的点
     return coordList.toCoordinateArray();
   }
   
@@ -195,30 +198,36 @@ class BufferInputLineSimplifier
   	Coordinate p1 = inputLine[i1];
   	Coordinate p2 = inputLine[i2];
   	
-  	if (! isConcave(p0, p1, p2)) return false;
-  	if (! isShallow(p0, p1, p2, distanceTol)) return false;
+    // p2 在 p0 p1 的不在左侧返回 false
+    // 删除在左侧的点
+  	if (!isConcave(p0, p1, p2)) return false; 
+    // 中间点 p1 到 两边点的距离不小于buffer 返回false
+    // 删除小于buffer的点
+  	if (!isShallow(p0, p1, p2, distanceTol)) return false; 
   	
   	return isShallowSampled(p0, p1, i0, i2, distanceTol);
   }
   
- /**private */static final int NUM_PTS_TO_CHECK = 10;
+ /**private */
+ static const int _NUM_PTS_TO_CHECK = 10;
   
   /**
    * Checks for shallowness over a sample of points in the given section.
    * This helps prevents the simplification from incrementally
    * "skipping" over points which are in fact non-shallow.
    * 
-   * @param p0 start coordinate of section
-   * @param p2 end coordinate of section
-   * @param i0 start index of section
-   * @param i2 end index of section
-   * @param distanceTol distance tolerance
+   * @param [p0] start coordinate of section
+   * @param [p2] end coordinate of section
+   * @param [i0] start index of section
+   * @param [i2] end index of section
+   * @param [distanceTol] distance tolerance
    * @return
    */
- /**private */bool isShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
+ /**private */
+ bool isShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
   {
     // check every n'th point to see if it is within tolerance
-  	int inc = ((i2 - i0) / NUM_PTS_TO_CHECK).floor();
+  	int inc = ((i2 - i0) ~/ _NUM_PTS_TO_CHECK);
   	if (inc <= 0) inc = 1;
   	
   	for (int i = i0; i < i2; i += inc) {
@@ -227,13 +236,17 @@ class BufferInputLineSimplifier
   	return true;
   }
   
- /**private */static bool isShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
+ /**private */
+ /// [p1]（中间点）到 [p0]-[p2] 两边点的距离小于buffer 距离
+ static bool isShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
   {
     double dist = Distance.pointToSegment(p1, p0, p2);
     return dist < distanceTol;
   }
   
- /**private */bool isConcave(Coordinate p0, Coordinate p1, Coordinate p2)
+ /**private */
+ /// [p2] 在 [p0]-[p1]的左侧
+ bool isConcave(Coordinate p0, Coordinate p1, Coordinate p2)
   {
     int orientation = Orientation.index(p0, p1, p2);
     bool isConcave = (orientation == angleOrientation);

@@ -239,25 +239,26 @@ class DirectedEdge
     setDepth(position, depth);
     setDepth(oppositePos, oppositeDepth);
   }
+  /// TODO: @ruier edit.
+  // void print(PrintStream out)
+  // {
+  //   super.print(out);
+  //   out.print(" " + depth[Position.LEFT] + "/" + depth[Position.RIGHT]);
+  //   out.print(" (" + getDepthDelta() + ")");
+  //   //out.print(" " + this.hashCode());
+  //   //if (next != null) out.print(" next:" + next.hashCode());
+  //   if (isInResult) out.print(" inResult");
+  // }
 
-  void print(PrintStream out)
-  {
-    super.print(out);
-    out.print(" " + depth[Position.LEFT] + "/" + depth[Position.RIGHT]);
-    out.print(" (" + getDepthDelta() + ")");
-    //out.print(" " + this.hashCode());
-    //if (next != null) out.print(" next:" + next.hashCode());
-    if (isInResult) out.print(" inResult");
-  }
-  void printEdge(PrintStream out)
-  {
-    print(out);
-    out.print(" ");
-    if (_isForward) {
-      edge.print(out);
-    } else {
-      edge.printReverse(out);
-    }
-  }
+  // void printEdge(PrintStream out)
+  // {
+  //   print(out);
+  //   out.print(" ");
+  //   if (_isForward) {
+  //     edge.print(out);
+  //   } else {
+  //     edge.printReverse(out);
+  //   }
+  // }
 
 }

@@ -131,7 +131,7 @@ class OffsetSegmentString
       if (! start.equals(end) ) addPt(start);
     }
     */
-    List<Coordinate> coord =  ptList.toArray() as List<Coordinate>;
+    List<Coordinate> coord =  ptList.toArray();
     return coord;
   }
 

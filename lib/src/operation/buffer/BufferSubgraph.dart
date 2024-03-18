@@ -36,9 +36,9 @@ import 'dart:collection';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
 import 'package:jtscore4dart/src/geomgraph/DirectedEdgeStar.dart';
 import 'package:jtscore4dart/src/geomgraph/Node.dart';
-import 'package:jtscore4dart/src/planargraph/DirectedEdge.dart';
 import 'package:stack/stack.dart';
 
 import 'RightmostEdgeFinder.dart';
@@ -65,7 +65,7 @@ class BufferSubgraph
  /**private */ Envelope? env;
 
   BufferSubgraph()
-  :finder = new RightmostEdgeFinder();
+    :finder = new RightmostEdgeFinder();
   
 
   List getDirectedEdges() { return dirEdgeList; }
@@ -119,7 +119,7 @@ class BufferSubgraph
    * Adds all nodes and edges reachable from this node to the subgraph.
    * Uses an explicit stack to avoid a large depth of recursion.
    *
-   * @param node a node known to be in the subgraph
+   * @param [node] a node known to be in the subgraph
    */
  /**private */void addReachable(Node startNode)
   {
@@ -205,7 +205,7 @@ class BufferSubgraph
       for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.moveNext(); ) {
         DirectedEdge de = (DirectedEdge) i.current;
         DirectedEdge sym = de.getSym();
-        if (sym.isVisited()) continue;
+        if (sym.isVisited_()) continue;
         Node adjNode = sym.getNode();
         if (! (nodesVisited.contains(adjNode)) ) {
           nodeQueue.addLast(adjNode);
@@ -221,7 +221,7 @@ class BufferSubgraph
     DirectedEdge startEdge = null;
     for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.moveNext(); ) {
       DirectedEdge de = (DirectedEdge) i.current;
-      if (de.isVisited() || de.getSym().isVisited()) {
+      if (de.isVisited_() || de.getSym().isVisited_()) {
         startEdge = de;
         break;
       }

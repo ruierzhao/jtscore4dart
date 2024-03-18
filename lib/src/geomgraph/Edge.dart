@@ -33,8 +33,7 @@ import 'GraphComponent.dart';
 import 'Label.dart';
 
 /// @version 1.7
-class Edge
-  extends GraphComponent
+class Edge extends GraphComponent
 {
 
   /// Updates an IM from the label for an edge.
@@ -59,9 +58,8 @@ class Edge
  /**private */Depth depth = new Depth();
  /**private */int depthDelta = 0;   // the change in area depth from the R to L side of this edge
 
-  Edge(List<Coordinate> pts, Label label)
+  Edge(this.pts, Label label)
   {
-    this.pts = pts;
     this.label = label;
   }
   Edge(List<Coordinate> pts)

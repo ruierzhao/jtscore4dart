@@ -21,6 +21,9 @@
 // import org.locationtech.jts.index.chain.MonotoneChainSelectAction;
 // import org.locationtech.jts.index.strtree.STRtree;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
+
 /**
  * A spatial index over a segment sequence 
  * using {@link MonotoneChain}s.

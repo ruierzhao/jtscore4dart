@@ -29,6 +29,10 @@
 // import org.locationtech.jts.index.intervalrtree.SortedPackedIntervalRTree;
 
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
+import 'PointOnGeometryLocator.dart';
+
 /**
  * Determines the {@link Location} of {@link Coordinate}s relative to
  * an areal geometry, using indexing for efficiency.

@@ -44,7 +44,7 @@ class Node extends GraphComponent
   // }
 
   @override
-  Coordinate getCoordinate() { return coord; }
+  Coordinate getCoordinate([int? i]) { return coord; }
   EdgeEndStar getEdges() { return edges!; }
 
   /**
@@ -69,7 +69,7 @@ class Node extends GraphComponent
   @override
   bool isIsolated()
   {
-    return (label.getGeometryCount() == 1);
+    return (label!.getGeometryCount() == 1);
   }
 
   /**
@@ -96,7 +96,7 @@ class Node extends GraphComponent
 
   void mergeLabel(Node n)
   {
-    mergeLabelFromLabel(n.label);
+    mergeLabelFromLabel(n.label!);
   }
 
   /**

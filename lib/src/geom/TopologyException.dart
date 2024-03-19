@@ -18,29 +18,29 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 /// @version 1.7
 // TODO: ruier edit.
 class TopologyException
-  // extends Exception
+  extends Error
 {
-  // static String _msgWithCoord(String msg, [Coordinate? pt])
-  // {
-  //   if (pt != null) {
-  //     return "$msg [ $pt ]";
-  //   }
-  //   return msg;
-  // }
+  static String _msgWithCoord(String msg, [Coordinate? pt])
+  {
+    if (pt != null) {
+      return "$msg [ $pt ]";
+    }
+    return msg;
+  }
 
-  // Coordinate? _pt;
+  Coordinate? pt;
 
-  // // TopologyException(String msg):super(msg);
+  TopologyException(String msg):super();
 
-  // TopologyException(String msg, [this._pt])
+  // TopologyException(String msg, [this.pt])
   // {
   //   if (pt == null) {
   //     super(msg);
   //   }
-  //   _pt = Coordinate.fromAnother(pt);
+  //   pt = Coordinate.fromAnother(pt!);
   //   super(_msgWithCoord(msg, pt));
   // }
 
-  // Coordinate getCoordinate() { return _pt; }
+  Coordinate? getCoordinate() { return pt; }
 
 }

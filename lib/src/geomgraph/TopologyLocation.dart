@@ -10,9 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-
-
 // import org.locationtech.jts.geom.Location;
 // import org.locationtech.jts.geom.Position;
 
@@ -54,9 +51,9 @@ class TopologyLocation {
    * parameters are Location.NULL, Location.EXTERIOR, Location.BOUNDARY,
    * and Location.INTERIOR.
    * @see Location
-   * @param on on position
-   * @param left left position
-   * @param right right position
+   * @param [on] on position
+   * @param [left] left position
+   * @param [right] right position
    */
   TopologyLocation.From3(int on, int left, int right) {
    init(3);
@@ -108,13 +105,16 @@ class TopologyLocation {
     }
     return false;
   }
+
   bool isEqualOnSide(TopologyLocation le, int locIndex)
   {
     return location[locIndex] == le.location[locIndex];
   }
+  
   bool isArea() { return location.length > 1; }
   bool isLine() { return location.length == 1; }
 
+  // 翻转
   void flip()
   {
     if (location.length <= 1) return;

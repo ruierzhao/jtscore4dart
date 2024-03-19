@@ -44,17 +44,18 @@ abstract class GraphComponent {
 
   GraphComponent(this.label);
 
-  Label getLabel() { return label; }
+  Label getLabel() { return label!; }
 
   void setLabel(Label label) { this.label = label; }
   
-  void setInResult(bool isInResult) { this._isInResult = isInResult; }
+  void setInResult(bool isInResult) { this._isInResult = isInResult;}
   bool isInResult() { return _isInResult; }
   void setCovered(bool isCovered)
   {
     this._isCovered = isCovered;
     this._isCoveredSet = true;
   }
+
   bool isCovered()    { return _isCovered; }
   bool isCoveredSet() { return _isCoveredSet; }
   bool isVisited() { return _isVisited; }
@@ -62,13 +63,14 @@ abstract class GraphComponent {
   /**
    * @return a coordinate in this component (or null, if there are none)
    */
-   Coordinate getCoordinate();
+   Coordinate? getCoordinate([int? i]);
   /**
    * Compute the contribution to an IM for this component.
    *
    * @param im Intersection matrix
    */
-  /**protected */void computeIM(IntersectionMatrix im);
+  /**protected */
+  void computeIM(IntersectionMatrix im);
   /**
    * An isolated component is one that does not intersect or touch any other
    * component.  This is the case if the label has valid locations for
@@ -84,7 +86,7 @@ abstract class GraphComponent {
    */
   void updateIM(IntersectionMatrix im)
   {
-    Assert.isTrue(label.getGeometryCount() >= 2, "found partial label");
+    Assert.isTrue(label!.getGeometryCount() >= 2, "found partial label");
     computeIM(im);
   }
 

@@ -30,6 +30,8 @@
 
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/algorithm/PointLocation.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
@@ -46,14 +48,14 @@ import 'package:jtscore4dart/src/patch/ArrayList.dart';
  */
 abstract class EdgeRing {
 
- /**protected */DirectedEdge startDe; // the directed edge which starts the list of edges for this EdgeRing
+ /**protected */late DirectedEdge startDe; // the directed edge which starts the list of edges for this EdgeRing
  /**private */int maxNodeDegree = -1;
  /**private */List edges = []; // the DirectedEdges making up this EdgeRing
  /**private */List pts = [];
  /**private */Label label = new Label(Location.NONE); // label stores the locations of each geometry on the face surrounded by this ring
- /**private */LinearRing ring;  // the ring created for this EdgeRing
- /**private */bool _isHole;
- /**private */EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
+ /**private */late LinearRing ring;  // the ring created for this EdgeRing
+ /**private */late bool _isHole;
+ /**private */late EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
  /**private */List holes = []; // a list of EdgeRings which are holes in this EdgeRing
 
  /**protected */GeometryFactory geometryFactory;
@@ -74,10 +76,15 @@ abstract class EdgeRing {
   }
 
   Coordinate getCoordinate(int i) { return  pts.get(i) as Coordinate;  }
+
   LinearRing getLinearRing() { return ring; }
+
   Label getLabel() { return label; }
+
   bool isShell() { return shell == null; }
+
   EdgeRing getShell() { return shell; }
+
   void setShell(EdgeRing shell)
   {
     this.shell = shell;
@@ -104,16 +111,17 @@ abstract class EdgeRing {
   void computeRing()
   {
     if (ring != null) return;   // don't compute more than once
-    List<Coordinate> coord = new Coordinate[pts.size()];
-    for (int i = 0; i < pts.size(); i++) {
-      coord[i] = (Coordinate) pts.get(i);
-    }
+    // List<Coordinate> coord = new Coordinate[pts.size()];
+    // for (int i = 0; i < pts.size(); i++) {
+    //   coord[i] = pts.get(i) as Coordinate;
+    // }
+    List<Coordinate> coord = List.generate(pts.size(), (i) => pts.get(i),growable: false);
     ring = geometryFactory.createLinearRing(coord);
     _isHole = Orientation.isCCW(ring.getCoordinates());
 //Debug.println( (isHole ? "hole - " : "shell - ") + WKTWriter.toLineString(new CoordinateArraySequence(ring.getCoordinates())));
   }
-  abstract DirectedEdge getNext(DirectedEdge de);
-  abstract void setEdgeRing(DirectedEdge de, EdgeRing er);
+  /**abstract */ DirectedEdge getNext(DirectedEdge de);
+  /**abstract */ void setEdgeRing(DirectedEdge de, EdgeRing er);
 
   /**
    * Returns the list of DirectedEdges that make up this EdgeRing
@@ -127,19 +135,19 @@ abstract class EdgeRing {
    */
  /**protected */void computePoints(DirectedEdge start)
   {
-//System.out.println("buildRing");
+    //System.out.println("buildRing");
     startDe = start;
     DirectedEdge? de = start;
     bool isFirstEdge = true;
     do {
-//      Assert.isTrue(de != null, "found null Directed Edge");
+      // Assert.isTrue(de != null, "found null Directed Edge");
       if (de == null) {
         // throw new TopologyException("Found null DirectedEdge");
         throw new Exception("TopologyException: Found null DirectedEdge");
       }
       if (de.getEdgeRing() == this) {
         // throw new TopologyException("Directed Edge visited twice during ring-building at " + de.getCoordinate());
-        throw new Exception("TopologyException: Directed Edge visited twice during ring-building at " + de.getCoordinate());
+        throw new Exception("TopologyException: Directed Edge visited twice during ring-building at ${de.getCoordinate()}");
       }
 
       edges.add(de);
@@ -167,7 +175,7 @@ abstract class EdgeRing {
     DirectedEdge de = startDe;
     do {
       Node node = de.getNode();
-      int degree = ( node.getEdges() as DirectedEdgeStar).getOutgoingDegree(this);
+      int degree = ( node.getEdges() as DirectedEdgeStar).getOutgoingDegree$2(this);
       if (degree > maxNodeDegree) maxNodeDegree = degree;
       de = getNext(de);
     } while (de != startDe);
@@ -186,8 +194,8 @@ abstract class EdgeRing {
 
  /**protected */void mergeLabel(Label deLabel)
   {
-    mergeLabel(deLabel, 0);
-    mergeLabel(deLabel, 1);
+    mergeLabel$2(deLabel, 0);
+    mergeLabel$2(deLabel, 1);
   }
   /**
    * Merge the RHS label from a DirectedEdge into the label for this EdgeRing.
@@ -196,7 +204,7 @@ abstract class EdgeRing {
    * (e.g. the end node of a LinearRing).  In this case the DirectedEdge label
    * does not contribute any information to the overall labelling, and is simply skipped.
    */
- /**protected */void mergeLabel(Label deLabel, int geomIndex)
+ /**protected */void mergeLabel$2(Label deLabel, int geomIndex)
   {
     int loc = deLabel.getLocation(geomIndex, Position.RIGHT);
     // no information to be had from this label
@@ -237,11 +245,11 @@ abstract class EdgeRing {
   {
     LinearRing shell = getLinearRing();
     Envelope env = shell.getEnvelopeInternal();
-    if (! env.contains(p)) return false;
+    if (! env.containsCoord(p)) return false;
     if (! PointLocation.isInRing(p, shell.getCoordinates()) ) return false;
 
-    for (Iterator i = holes.iterator(); i.moveNext(); ) {
-      EdgeRing hole = (EdgeRing) i.current;
+    for (Iterator i = holes.iterator; i.moveNext(); ) {
+      EdgeRing hole = i.current as EdgeRing;
       if (hole.containsPoint(p) ) {
         return false;
       }

@@ -26,7 +26,8 @@ import 'Label.dart';
  */
 class Depth {
 
- /**private */const static int NULL_VALUE = -1;
+ /**private */
+ static const  int NULL_VALUE = -1;
 
   static int depthAtLocation(int location)
   {
@@ -35,16 +36,26 @@ class Depth {
     return NULL_VALUE;
   }
 
- /**private */int[][] depth = new int[2][3];
+//  /**private */List<List<int>> depth = new int[2][3];
+ /**private */
+ List<List<int>> depth ;
 
-  Depth() {
+  Depth() 
+  :depth = List.filled(2, List.filled(3, NULL_VALUE,growable: false),growable: false);
     // initialize depth array to a sentinel value
-    for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < 3; j++) {
-        depth[i][j] = NULL_VALUE;
-      }
-    }
-  }
+    // for (int i = 0; i < 2; i++) {
+    //   for (int j = 0; j < 3; j++) {
+    //     depth[i][j] = NULL_VALUE;
+    //   }
+    // }
+  // Depth() {
+  //   // initialize depth array to a sentinel value
+  //   // for (int i = 0; i < 2; i++) {
+  //   //   for (int j = 0; j < 3; j++) {
+  //   //     depth[i][j] = NULL_VALUE;
+  //   //   }
+  //   // }
+  // }
 
   int getDepth(int geomIndex, int posIndex)
   {
@@ -61,8 +72,9 @@ class Depth {
   }
   void add(int geomIndex, int posIndex, int location)
   {
-    if (location == Location.INTERIOR)
+    if (location == Location.INTERIOR) {
       depth[geomIndex][posIndex]++;
+    }
   }
   /**
    * A Depth object is null (has never been initialized) if all depths are null.
@@ -73,32 +85,34 @@ class Depth {
   {
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 3; j++) {
-        if (depth[i][j] != NULL_VALUE)
+        if (depth[i][j] != NULL_VALUE) {
           return false;
+        }
       }
     }
     return true;
   }
-  bool isNull(int geomIndex)
+  bool isNull$1(int geomIndex)
   {
     return depth[geomIndex][1] == NULL_VALUE;
   }
-  bool isNull(int geomIndex, int posIndex)
+  bool isNull$2(int geomIndex, int posIndex)
   {
     return depth[geomIndex][posIndex] == NULL_VALUE;
   }
-  void add(Label lbl)
+  void add$2(Label lbl)
   {
     for (int i = 0; i < 2; i++) {
       for (int j = 1; j < 3; j++) {
         int loc = lbl.getLocation(i, j);
         if (loc == Location.EXTERIOR || loc == Location.INTERIOR) {
           // initialize depth if it is null, otherwise add this location value
-          if (isNull(i, j)) {
+          if (isNull$2(i, j)) {
             depth[i][j] = depthAtLocation(loc);
           }
-          else
+          else {
             depth[i][j] += depthAtLocation(loc);
+          }
         }
       }
     }
@@ -118,16 +132,18 @@ class Depth {
   void normalize()
   {
     for (int i = 0; i < 2; i++) {
-      if (! isNull(i)) {
+      if (! isNull$1(i)) {
         int minDepth = depth[i][1];
-        if (depth[i][2] < minDepth)
+        if (depth[i][2] < minDepth) {
           minDepth = depth[i][2];
+        }
 
         if (minDepth < 0) minDepth = 0;
         for (int j = 1; j < 3; j++) {
           int newValue = 0;
-          if (depth[i][j] > minDepth)
+          if (depth[i][j] > minDepth) {
             newValue = 1;
+          }
           depth[i][j] = newValue;
         }
       }
@@ -136,8 +152,13 @@ class Depth {
 
   String toString()
   {
-    return
-        "A: " + depth[0][1] + "," + depth[0][2]
-      + " B: " + depth[1][1] + "," + depth[1][2];
+    return "A: ${depth[0][1]} ,${depth[0][2]} "
+           "B: ${depth[1][1]} ,${depth[1][2]}";
   }
+  // String toString()
+  // {
+  //   return
+  //       "A: " + depth[0][1] + "," + depth[0][2]
+  //     + " B: " + depth[1][1] + "," + depth[1][2];
+  // }
 }

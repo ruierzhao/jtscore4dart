@@ -15,20 +15,19 @@
 ///  with the code.
 ///
 ///@version 1.7
-class AssertionFailedException {
+class AssertionFailedException extends AssertionError {
 
   ///  Creates an <code>AssertionFailedException</code>.
-  AssertionFailedException() {
-    super();
-  }
+  // AssertionFailedException() {
+  //   super();
+  // }
 
   ///  Creates a <code>AssertionFailedException</code> with the given detail
   ///  message.
   ///
   ///@param  message  a description of the assertion
-  AssertionFailedException(String message) {
-    super(message);
-  }
+  AssertionFailedException([String? message]) 
+    :super(message);
 }
 
 

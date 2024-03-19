@@ -20,6 +20,9 @@
 // import org.locationtech.jts.geom.CoordinateFilter;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
+
 ///  A {@link CoordinateFilter} that extracts a unique array of <code>Coordinate</code>s.
 ///  The array of coordinates contains no duplicate points.
 ///  It preserves the order of the input points.
@@ -40,18 +43,23 @@ class UniqueCoordinateArrayFilter implements CoordinateFilter
     return filter.getCoordinates();
   }
   
- /**private */Set<Coordinate> coordSet = new HashSet<Coordinate>();
+//  /**private */Set<Coordinate> coordSet = new HashSet<Coordinate>();
+ /**private */Set<Coordinate> coordSet = {};
   // Use an auxiliary list as well in order to preserve coordinate order
- /**private */List<Coordinate> list = new ArrayList<Coordinate>();
+//  /**private */List<Coordinate> list = new ArrayList<Coordinate>();
+ /**private */List<Coordinate> list = [];
 
   UniqueCoordinateArrayFilter() { }
 
   ///  Returns the gathered <code>Coordinate</code>s.
   ///
   ///@return    the <code>Coordinate</code>s collected by this <code>CoordinateArrayFilter</code>
+  /// TODO: @ruier edit.没用
   List<Coordinate> getCoordinates() {
-    List<Coordinate> coordinates = new Coordinate[list.size()];
-    return (List<Coordinate>) list.toArray(coordinates);
+    // List<Coordinate> coordinates = new Coordinate[list.size()];
+    // return list.toArray(coordinates);
+    // List<Coordinate>.of(list,growable: false);
+    return List<Coordinate>.from(list,growable: false);
   }
 
   /// @see CoordinateFilter#filter(Coordinate)

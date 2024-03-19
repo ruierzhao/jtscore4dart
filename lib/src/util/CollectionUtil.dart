@@ -31,10 +31,10 @@ class CollectionUtil {
   /// @param coll the collection to process
   /// @param func the Function to execute
   /// @return a list of the transformed objects
-  static List transform(Collection coll, _Function func) {
-    List result = ArrayList();
-    for (Iterator i = coll.iterator(); i.moveNext();) {
-      result.add(func.execute(i.next()));
+  static List transform(Iterable coll, _Function func) {
+    List result = [];
+    for (Iterator i = coll.iterator; i.moveNext();) {
+      result.add(func.execute(i.current));
     }
     return result;
   }
@@ -44,9 +44,9 @@ class CollectionUtil {
   ///
   /// @param coll the collection to process
   /// @param func the Function to execute
-  static void apply(Collection coll, _Function func) {
-    for (Iterator i = coll.iterator(); i.moveNext();) {
-      func.execute(i.next());
+  static void apply(Iterable coll, _Function func) {
+    for (Iterator i = coll.iterator; i.moveNext();) {
+      func.execute(i.current);
     }
   }
 
@@ -54,14 +54,15 @@ class CollectionUtil {
   /// and collects all the entries for which the result
   /// of the function is equal to {@link Boolean} <tt>true</tt>.
   ///
-  /// @param collection the collection to process
-  /// @param func the Function to execute
+  /// @param [collection] the collection to process
+  /// @param [func] the Function to execute
   /// @return a list of objects for which the function was true
-  static List select(Collection collection, _Function func) {
+  static List select(Iterable collection, _Function func) {
     List result = [];
-    for (Iterator i = collection.iterator(); i.moveNext();) {
+    for (Iterator i = collection.iterator; i.moveNext();) {
       Object item = i.current;
-      if (Boolean.TRUE.equals(func.execute(item))) {
+      // if (Boolean.TRUE.equals(func.execute(item))) {
+      if (func.execute(item) == true) {
         result.add(item);
       }
     }

@@ -36,6 +36,8 @@ import 'EdgeRing.dart';
 import 'GeometryGraph.dart';
 import 'Label.dart';
 
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
 /**
  * A DirectedEdgeStar is an ordered list of <b>outgoing</b> DirectedEdges around a node.
  * It supports labelling the edges as well as linking the edges to form both
@@ -75,7 +77,7 @@ class DirectedEdgeStar
     }
     return degree;
   }
-  int getOutgoingDegree(EdgeRing er)
+  int getOutgoingDegree$2(EdgeRing er)
   {
     int degree = 0;
     for (Iterator it = iterator(); it.moveNext(); ) {
@@ -122,7 +124,7 @@ class DirectedEdgeStar
   @override
   void computeLabelling(List<GeometryGraph> geom)
   {
-//Debug.print(this);
+    // Debug.print(this);
     super.computeLabelling(geom);
 
     // determine the overall labelling for this DirectedEdgeStar
@@ -241,7 +243,7 @@ class DirectedEdgeStar
     if (state == LINKING_TO_OUTGOING) {
 //Debug.print(firstOut == null, this);
       if (firstOut == null) {
-        throw new TopologyException("no outgoing dirEdge found", getCoordinate());
+        throw new TopologyException("no outgoing dirEdge found ${getCoordinate()}", );
       }
       //Assert.isTrue(firstOut != null, "no outgoing dirEdge found (at " + getCoordinate() );
       Assert.isTrue(firstOut.isInResult(), "unable to link last incoming dirEdge");
@@ -251,8 +253,8 @@ class DirectedEdgeStar
   void linkMinimalDirectedEdges(EdgeRing er)
   {
     // find first area edge (if any) to start linking at
-    DirectedEdge firstOut = null;
-    DirectedEdge incoming = null;
+    DirectedEdge? firstOut = null;
+    DirectedEdge? incoming = null;
     int state = SCANNING_FOR_INCOMING;
     // link edges in CW order
     for (int i = resultAreaEdgeList.size() - 1; i >= 0; i--) {
@@ -286,11 +288,11 @@ class DirectedEdgeStar
   {
     getEdges();
     // find first area edge (if any) to start linking at
-    DirectedEdge prevOut = null;
-    DirectedEdge firstIn = null;
+    DirectedEdge? prevOut = null;
+    DirectedEdge? firstIn = null;
     // link edges in CW order
     for (int i = edgeList.size() - 1; i >= 0; i--) {
-      DirectedEdge nextOut = (DirectedEdge) edgeList.get(i);
+      DirectedEdge nextOut =  edgeList.get(i);
       DirectedEdge nextIn = nextOut.getSym();
       if (firstIn == null) firstIn = nextIn;
       if (prevOut != null) nextIn.setNext(prevOut);
@@ -368,9 +370,9 @@ class DirectedEdgeStar
     int startDepth = de.getDepth(Position.LEFT);
     int targetLastDepth = de.getDepth(Position.RIGHT);
     // compute the depths from this edge up to the end of the edge array
-    int nextDepth = computeDepths(edgeIndex + 1, edgeList.size(), startDepth);
+    int nextDepth = _computeDepths(edgeIndex + 1, edgeList.size(), startDepth);
     // compute the depths for the initial part of the array
-    int lastDepth = computeDepths(0, edgeIndex, nextDepth);
+    int lastDepth = _computeDepths(0, edgeIndex, nextDepth);
 //Debug.print(lastDepth != targetLastDepth, this);
 //Debug.print(lastDepth != targetLastDepth, "mismatch: " + lastDepth + " / " + targetLastDepth);
     if (lastDepth != targetLastDepth) {
@@ -385,7 +387,7 @@ class DirectedEdgeStar
    *
    * @return the last depth assigned (from the R side of the last edge visited)
    */
- /**private */int computeDepths(int startIndex, int endIndex, int startDepth)
+ /**private */int _computeDepths(int startIndex, int endIndex, int startDepth)
   {
     int currDepth = startDepth;
     for (int i = startIndex; i < endIndex ; i++) {

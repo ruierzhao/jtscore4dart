@@ -38,6 +38,7 @@ import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
 import 'package:jtscore4dart/src/geomgraph/DirectedEdgeStar.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
 import 'package:jtscore4dart/src/geomgraph/Node.dart';
 import 'package:stack/stack.dart';
 
@@ -173,7 +174,7 @@ class BufferSubgraph
     // find an outside edge to assign depth to
     DirectedEdge de = finder.getEdge();
     Node n = de.getNode();
-    Label label = de.getLabel();
+    Label label = de.getLabel()!;
     // right side of line returned by finder is on the outside
     de.setEdgeDepths(Position.RIGHT, outsideDepth);
     copySymDepths(de);
@@ -190,14 +191,17 @@ class BufferSubgraph
  /**private */void computeDepths(DirectedEdge startEdge)
   {
     Set nodesVisited = new HashSet();
-    LinkedList nodeQueue = new LinkedList();
+    /// TODO: @ruier edit. use Queue try
+    // LinkedList nodeQueue = LinkedList();
+    Queue nodeQueue = Queue<Node>();
+    
 
     Node startNode = startEdge.getNode();
     nodeQueue.addLast(startNode);
     nodesVisited.add(startNode);
     startEdge.setVisited(true);
 
-    while (! nodeQueue.isEmpty()) {
+    while ( nodeQueue.isNotEmpty) {
       //System.out.println(nodes.size() + " queue: " + nodeQueue.size());
       Node n = nodeQueue.removeFirst() as Node;
       nodesVisited.add(n);
@@ -206,10 +210,10 @@ class BufferSubgraph
 
       // add all adjacent nodes to process queue,
       // unless the node has been visited already
-      for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.moveNext(); ) {
-        DirectedEdge de = (DirectedEdge) i.current;
+      for (Iterator i = ( n.getEdges() as DirectedEdgeStar).iterator(); i.moveNext(); ) {
+        DirectedEdge de =  i.current as DirectedEdge;
         DirectedEdge sym = de.getSym();
-        if (sym.isVisited_()) continue;
+        if (sym.isVisited()) continue;
         Node adjNode = sym.getNode();
         if (! (nodesVisited.contains(adjNode)) ) {
           nodeQueue.addLast(adjNode);
@@ -222,10 +226,10 @@ class BufferSubgraph
  /**private */void computeNodeDepth(Node n)
   {
     // find a visited dirEdge to start at
-    DirectedEdge startEdge = null;
-    for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.current;
-      if (de.isVisited_() || de.getSym().isVisited_()) {
+    DirectedEdge? startEdge = null;
+    for (Iterator i = (n.getEdges() as DirectedEdgeStar).iterator(); i.moveNext(); ) {
+      DirectedEdge de = i.current as DirectedEdge;
+      if (de.isVisited() || de.getSym().isVisited()) {
         startEdge = de;
         break;
       }
@@ -234,14 +238,15 @@ class BufferSubgraph
     //if (startEdge == null) return;
     
     // only compute string append if assertion would fail
-    if (startEdge == null)
-    	throw new TopologyException("unable to find edge to compute depths at " + n.getCoordinate());
+    if (startEdge == null) {
+      throw new Exception("TopologyException: unable to find edge to compute depths at ${n.getCoordinate()}");
+    }
 
-    ((DirectedEdgeStar) n.getEdges()).computeDepths(startEdge);
+    ( n.getEdges() as DirectedEdgeStar).computeDepths(startEdge);
 
     // copy depths to sym edges
-    for (Iterator i = ((DirectedEdgeStar) n.getEdges()).iterator(); i.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) i.current;
+    for (Iterator i = ( n.getEdges() as DirectedEdgeStar).iterator(); i.moveNext(); ) {
+      DirectedEdge de = i.current as DirectedEdge;
       de.setVisited(true);
       copySymDepths(de);
     }
@@ -294,12 +299,13 @@ class BufferSubgraph
    * This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
    * be built before holes.
    */
-  int compareTo(Object o) {
-    BufferSubgraph graph = (BufferSubgraph) o;
-    if (this.rightMostCoord.x < graph.rightMostCoord.x) {
+  @override
+  int compareTo(var o) {
+    BufferSubgraph graph =  o as BufferSubgraph;
+    if (this.rightMostCoord!.x < graph.rightMostCoord!.x) {
       return -1;
     }
-    if (this.rightMostCoord.x > graph.rightMostCoord.x) {
+    if (this.rightMostCoord!.x > graph.rightMostCoord!.x) {
       return 1;
     }
     return 0;

@@ -37,6 +37,7 @@ import 'package:jtscore4dart/src/geomgraph/EdgeRing.dart';
 import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
 import 'package:jtscore4dart/src/operation/overlay/MaximalEdgeRing.dart';
 import 'package:jtscore4dart/src/operation/overlay/MinimalEdgeRing.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 /**
  * Forms {@link Polygon}s out of a graph of {@link DirectedEdge}s.
@@ -147,13 +148,13 @@ class PolygonBuilder {
     EdgeRing? shell = null;
     for (Iterator it = minEdgeRings.iterator; it.moveNext(); ) {
       EdgeRing er = it.current as MinimalEdgeRing;
-      if (! er._isHole()) {
+      if (! er.isHole()) {
         shell = er;
         shellCount++;
       }
     }
     Assert.isTrue(shellCount <= 1, "found two shells in MinimalEdgeRing list");
-    return shell;
+    return shell!;
   }
   /**
    * This method assigns the holes for a Polygon (formed from a list of
@@ -168,9 +169,9 @@ class PolygonBuilder {
    */
  /**private */void placePolygonHoles(EdgeRing shell, List minEdgeRings)
   {
-    for (Iterator it = minEdgeRings.iterator(); it.moveNext(); ) {
-      MinimalEdgeRing er = (MinimalEdgeRing) it.current;
-      if (er._isHole()) {
+    for (Iterator it = minEdgeRings.iterator; it.moveNext(); ) {
+      MinimalEdgeRing er = it.current as MinimalEdgeRing;
+      if (er.isHole()) {
         er.setShell(shell);
       }
     }
@@ -184,10 +185,10 @@ class PolygonBuilder {
    */
  /**private */void sortShellsAndHoles(List edgeRings, List shellList, List freeHoleList)
   {
-    for (Iterator it = edgeRings.iterator(); it.moveNext(); ) {
-      EdgeRing er = (EdgeRing) it.current;
+    for (Iterator it = edgeRings.iterator; it.moveNext(); ) {
+      EdgeRing er =  it.current as EdgeRing;
 //      er.setInResult();
-      if (er._isHole() ) {
+      if (er.isHole() ) {
         freeHoleList.add(er);
       }
       else {
@@ -210,13 +211,14 @@ class PolygonBuilder {
    */
  /**private */void placeFreeHoles(List shellList, List freeHoleList)
   {
-    for (Iterator it = freeHoleList.iterator(); it.moveNext(); ) {
-      EdgeRing hole = (EdgeRing) it.current;
+    for (Iterator it = freeHoleList.iterator; it.moveNext(); ) {
+      EdgeRing hole =  it.current as EdgeRing;
       // only place this hole if it doesn't yet have a shell
       if (hole.getShell() == null) {
         EdgeRing shell = findEdgeRingContaining(hole, shellList);
         if (shell == null) {
-          throw new TopologyException("unable to assign hole to a shell", hole.getCoordinate(0));
+          // throw new TopologyException("unable to assign hole to a shell", hole.getCoordinate(0));
+          throw new Exception("TopologyException: unable to assign hole to a shell ${hole.getCoordinate(0)}" );
         }
 //        Assert.isTrue(shell != null, "unable to assign hole to a shell");
         hole.setShell(shell);
@@ -242,7 +244,7 @@ class PolygonBuilder {
   {
     LinearRing testRing = testEr.getLinearRing();
     Envelope testEnv = testRing.getEnvelopeInternal();
-    Coordinate testPt = testRing.getCoordinateN(0);
+    Coordinate? testPt = testRing.getCoordinateN(0);
 
     EdgeRing? minShell = null;
     Envelope? minShellEnv = null;
@@ -258,20 +260,20 @@ class PolygonBuilder {
       
       testPt = CoordinateArrays.ptNotInList(testRing.getCoordinates(), tryShellRing.getCoordinates());
       bool isContained = false;
-      if (PointLocation.isInRing(testPt, tryShellRing.getCoordinates()) ) {
+      if (PointLocation.isInRing(testPt!, tryShellRing.getCoordinates()) ) {
         isContained = true;
       }
 
       // check if this new containing ring is smaller than the current minimum ring
       if (isContained) {
         if (minShell == null
-            || minShellEnv.contains(tryShellEnv)) {
+            || minShellEnv!.contains(tryShellEnv)) {
           minShell = tryShell;
           minShellEnv = minShell.getLinearRing().getEnvelopeInternal();
         }
       }
     }
-    return minShell;
+    return minShell!;
   }
  /**private */List computePolygons(List shellList)
   {

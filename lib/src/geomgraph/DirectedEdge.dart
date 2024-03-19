@@ -39,8 +39,8 @@ class DirectedEdge
    * E.g. if crossing from the {@link Location#INTERIOR} to the{@link Location#EXTERIOR}
    * the depth decreases, so the factor is -1.
    *
-   * @param currLocation Current location
-   * @param nextLocation Next location
+   * @param [currLocation] Current location
+   * @param [nextLocation] Next location
    * @return change of depth moving from currLocation to nextLocation
    */
   static int depthFactor(int currLocation, int nextLocation)
@@ -57,30 +57,34 @@ class DirectedEdge
  /**private */bool _isInResult = false;
  /**private */bool _isVisited = false;
 
- /**private */DirectedEdge sym; // the symmetric edge
- /**private */DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
- /**private */DirectedEdge nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
- /**private */EdgeRing edgeRing;  // the EdgeRing that this edge is part of
- /**private */EdgeRing minEdgeRing;  // the MinimalEdgeRing that this edge is part of
+ /**private */late DirectedEdge sym; // the symmetric edge
+ /**private */late DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
+ /**private */late DirectedEdge nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
+ /**private */late EdgeRing edgeRing;  // the EdgeRing that this edge is part of
+ /**private */late EdgeRing minEdgeRing;  // the MinimalEdgeRing that this edge is part of
   /**
    * The depth of each side (position) of this edge.
    * The 0 element of the array is never used.
    */
- /**private */List<int> depth = [ 0, -999, -999];
+ /**private */
+ List<int> depth = [ 0, -999, -999];
 
   DirectedEdge(Edge edge, bool isForward)
+  :this._isForward = isForward,
+  super(edge)
   {
-    super(edge);
-    this._isForward = _isForward;
-    if (_isForward) {
-      init(edge.getCoordinate(0), edge.getCoordinate(1));
+    // super(edge);
+    // this._isForward = isForward;
+    if (isForward) {
+      init(edge.getCoordinate(0)!, edge.getCoordinate(1)!);
     }
     else {
       int n = edge.getNumPoints() - 1;
-      init(edge.getCoordinate(n), edge.getCoordinate(n-1));
+      init(edge.getCoordinate(n)!, edge.getCoordinate(n-1)!);
     }
     computeDirectedLabel();
   }
+
   @override
   Edge getEdge() { return edge; }
 
@@ -118,7 +122,7 @@ class DirectedEdge
 //        Debug.print(this);
 //      }
       if (depth[position] != depthVal) {
-        throw new TopologyException("assigned depths do not match", getCoordinate());
+        throw new Exception("TopologyException: assigned depths do not match ${getCoordinate()}");
       }
       //Assert.isTrue(depth[position] == depthVal, "assigned depths do not match at " + getCoordinate());
     }
@@ -172,11 +176,11 @@ class DirectedEdge
    */
   bool isLineEdge()
   {
-    bool isLine = label.isLine(0) || label.isLine(1);
+    bool isLine = label!.isLine(0) || label!.isLine(1);
     bool isExteriorIfArea0 =
-      ! label.isArea(0) || label.allPositionsEqual(0, Location.EXTERIOR);
+      ! label!.isArea(0) || label!.allPositionsEqual(0, Location.EXTERIOR);
     bool isExteriorIfArea1 =
-      ! label.isArea(1) || label.allPositionsEqual(1, Location.EXTERIOR);
+      ! label!.isArea(1) || label!.allPositionsEqual(1, Location.EXTERIOR);
 
     return isLine && isExteriorIfArea0 && isExteriorIfArea1;
   }
@@ -193,9 +197,9 @@ class DirectedEdge
   {
     bool isInteriorAreaEdge = true;
     for (int i = 0; i < 2; i++) {
-      if (! ( label.isArea(i)
-            && label.getLocation(i, Position.LEFT ) == Location.INTERIOR
-            && label.getLocation(i, Position.RIGHT) == Location.INTERIOR) ) {
+      if (! ( label!.isArea(i)
+            && label!.getLocation(i, Position.LEFT ) == Location.INTERIOR
+            && label!.getLocation(i, Position.RIGHT) == Location.INTERIOR) ) {
         isInteriorAreaEdge = false;
       }
     }
@@ -207,9 +211,9 @@ class DirectedEdge
    */
  /**private */void computeDirectedLabel()
   {
-    label = new Label(edge.getLabel());
+    label = new Label.FromAnother(edge.getLabel());
     if (! _isForward) {
-      label.flip();
+      label!.flip();
     }
   }
 

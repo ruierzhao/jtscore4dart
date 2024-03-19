@@ -12,12 +12,17 @@
 
 
 // import java.util.ArrayList;
-// import java.util.Collection;
+// import java.util.Iterable;
 // import java.util.Iterator;
 
 // import org.locationtech.jts.geom.TopologyException;
 // import org.locationtech.jts.noding.BasicSegmentString;
 // import org.locationtech.jts.noding.FastNodingValidator;
+
+import 'package:jtscore4dart/src/noding/BasicSegmentString.dart';
+import 'package:jtscore4dart/src/noding/FastNodingValidator.dart';
+
+import 'Edge.dart';
 
 /**
  * Validates that a collection of {@link Edge}s is correctly noded.
@@ -39,34 +44,33 @@ class EdgeNodingValidator
    * @throws TopologyException if the SegmentStrings are not correctly noded
    *
    */
-	static void checkValid(Collection edges)
+	static void checkValid(Iterable edges)
 	{
 		EdgeNodingValidator validator = new EdgeNodingValidator(edges);
-		validator.checkValid();
+		validator.checkValid_();
 	}
 	
-  static Collection toSegmentStrings(Collection edges)
+  static Iterable toSegmentStrings(Iterable edges)
   {
     // convert Edges to SegmentStrings
-    Collection segStrings = [];
-    for (Iterator i = edges.iterator(); i.moveNext(); ) {
-      Edge e = (Edge) i.current;
+    List segStrings = [];
+    for (Iterator i = edges.iterator; i.moveNext(); ) {
+      Edge e =  i.current;
       segStrings.add(new BasicSegmentString(e.getCoordinates(), e));
     }
     return segStrings;
   }
 
- /**private */FastNodingValidator nv;
+ /**private */
+ FastNodingValidator nv;
 
   /**
    * Creates a new validator for the given collection of {@link Edge}s.
    * 
    * @param edges a collection of Edges.
    */
-  EdgeNodingValidator(Collection edges)
-  {
-    nv = new FastNodingValidator(toSegmentStrings(edges));
-  }
+  EdgeNodingValidator(Iterable edges)
+    :nv = new FastNodingValidator(toSegmentStrings(edges));
 
   /**
    * Checks whether the supplied edges
@@ -75,7 +79,7 @@ class EdgeNodingValidator
    * @throws TopologyException if the SegmentStrings are not correctly noded
    *
    */
-  void checkValid()
+  void checkValid_()
   {
     nv.checkValid();
   }

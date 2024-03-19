@@ -21,12 +21,15 @@
 // import org.locationtech.jts.geomgraph.index.MonotoneChainEdge;
 
 
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
-import 'package:jtscore4dart/src/geomgraph/index/MonotoneChainEdge.dart';
 
+import 'index/MonotoneChainEdge.dart';
+
+import 'EdgeIntersection.dart';
 import 'Depth.dart';
 import 'EdgeIntersectionList.dart';
 import 'GraphComponent.dart';
@@ -38,9 +41,10 @@ class Edge extends GraphComponent
 
   /// Updates an IM from the label for an edge.
   /// Handles edges from both L and A geometries.
-  /// @param label Label defining position
-  /// @param im intersection matrix
-  static void updateIM(Label label, IntersectionMatrix im)
+  /// @param [label] Label defining position
+  /// @param [im] intersection matrix
+  /// TODO: @ruier edit.区别父类的命名。
+  static void _updateIM(Label label, IntersectionMatrix im)
   {
     im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1);
     if (label.isArea()) {
@@ -50,42 +54,58 @@ class Edge extends GraphComponent
   }
 
   List<Coordinate> pts;
- /**private */Envelope env;
-  EdgeIntersectionList eiList = new EdgeIntersectionList(this);
- /**private */String name;
- /**private */MonotoneChainEdge mce;
- /**private */bool isIsolated = true;
+ /**private */late Envelope env;
+  late EdgeIntersectionList eiList;
+ /**private */late String name;
+ /**private */late MonotoneChainEdge mce;
+ /**private */bool _isIsolated = true;
  /**private */Depth depth = new Depth();
  /**private */int depthDelta = 0;   // the change in area depth from the R to L side of this edge
 
-  Edge(this.pts, Label label)
+ /// TODO: @ruier edit. label must init.
+  Edge(this.pts, super.label)
   {
-    this.label = label;
+    this.eiList = new EdgeIntersectionList(this);
   }
-  Edge(List<Coordinate> pts)
-  {
-    this(pts, null);
-  }
+
+  // Edge(Coordinate[] pts, Label label)
+  // {
+  //   this.pts = pts;
+  //   this.label = label;
+  // }
+  // Edge(Coordinate[] pts)
+  // {
+  //   this(pts, null);
+  // }
+
 
   int getNumPoints() { return pts.length; }
   void setName(String name) { this.name = name; }
   List<Coordinate> getCoordinates()  {    return pts;  }
-  Coordinate getCoordinate(int i)
+  
+  @override
+  Coordinate? getCoordinate([int? i])
   {
+    if (i == null) {
+      if (pts.isNotEmpty) return pts[0];
+      return null; 
+    }
     return pts[i];
   }
-  Coordinate getCoordinate()
-  {
-    if (pts.length > 0) return pts[0];
-    return null;
-  }
+
+  // Coordinate? getCoordinate()
+  // {
+  //   if (pts.isNotEmpty) return pts[0];
+  //   return null;
+  // }
+
   Envelope getEnvelope()
   {
     // compute envelope lazily
     if (env == null) {
-      env = new Envelope();
+      env = new Envelope.init();
       for (int i = 0; i < pts.length; i++) {
-        env.expandToInclude(pts[i]);
+        env.expandToIncludeCoordinate(pts[i]);
       }
     }
     return env;
@@ -106,7 +126,7 @@ class Edge extends GraphComponent
 
   MonotoneChainEdge getMonotoneChainEdge()
   {
-    if (mce == null) mce = new MonotoneChainEdge(this);
+    mce ??= MonotoneChainEdge(this);
     return mce;
   }
 
@@ -120,27 +140,29 @@ class Edge extends GraphComponent
   /// @return zero-width V area edge, consisting of two segments which are equal and of oppose orientation
   bool isCollapsed()
   {
-    if (! label.isArea()) return false;
+    if (! label!.isArea()) return false;
     if (pts.length != 3) return false;
     if (pts[0].equals(pts[2]) ) return true;
     return false;
   }
   Edge getCollapsedEdge()
   {
-    Coordinate newPts[] = new Coordinate[2];
-    newPts[0] = pts[0];
-    newPts[1] = pts[1];
-    Edge newe = new Edge(newPts, Label.toLineLabel(label));
+    // Coordinate newPts[] = new Coordinate[2];
+    // newPts[0] = pts[0];
+    // newPts[1] = pts[1];
+    List<Coordinate> newPts = List.generate(2, (i) => pts[i], growable: false);
+    Edge newe = new Edge(newPts, Label.toLineLabel(label!));
     return newe;
   }
 
   void setIsolated(bool isIsolated)
   {
-    this.isIsolated = isIsolated;
+    this._isIsolated = isIsolated;
   }
+  @override
   bool isIsolated()
   {
-    return isIsolated;
+    return _isIsolated;
   }
 
   /// Adds EdgeIntersections for one or both
@@ -164,20 +186,20 @@ class Edge extends GraphComponent
   /// @param intIndex intIndex is 0 or 1
   void addIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
   {
-      Coordinate intPt = new Coordinate(li.getIntersection(intIndex));
+      Coordinate intPt = new Coordinate.fromAnother(li.getIntersection(intIndex));
       int normalizedSegmentIndex = segmentIndex;
       double dist = li.getEdgeDistance(geomIndex, intIndex);
-//Debug.println("edge intpt: " + intPt + " dist: " + dist);
+      //Debug.println("edge intpt: " + intPt + " dist: " + dist);
       // normalize the intersection point location
       int nextSegIndex = normalizedSegmentIndex + 1;
       if (nextSegIndex < pts.length) {
         Coordinate nextPt = pts[nextSegIndex];
-//Debug.println("next pt: " + nextPt);
+      //Debug.println("next pt: " + nextPt);
 
         // Normalize segment index if intPt falls on vertex
         // The check for point equality is 2D only - Z values are ignored
         if (intPt.equals2D(nextPt)) {
-//Debug.println("normalized distance");
+      //Debug.println("normalized distance");
             normalizedSegmentIndex = nextSegIndex;
             dist = 0.0;
         }
@@ -186,15 +208,16 @@ class Edge extends GraphComponent
       * Add the intersection point to edge intersection list.
       */
       EdgeIntersection ei = eiList.add(intPt, normalizedSegmentIndex, dist);
-//ei.print(System.out);
+      //ei.print(System.out);
 
   }
 
   /// Update the IM with the contribution for this component.
   /// A component only contributes if it has a labelling for both parent geometries
+  @override
   void computeIM(IntersectionMatrix im)
   {
-    updateIM(label, im);
+    _updateIM(label!, im);
   }
 
   /// equals is defined to be:
@@ -204,8 +227,8 @@ class Edge extends GraphComponent
   /// the coordinates of e1 are the same or the reverse of the coordinates in e2
   bool equals(Object o)
   {
-    if (! (o is Edge)) return false;
-    Edge e = (Edge) o;
+    if (o is! Edge) return false;
+    Edge e = o as Edge;
 
     if (pts.length != e.pts.length) return false;
 
@@ -227,20 +250,20 @@ class Edge extends GraphComponent
   /* (non-Javadoc)
    * @see java.lang.Object#hashCode()
    */
-  @Override
-  int hashCode() {
-    final int prime = 31;
+  @override
+  int get hashCode {
+    const int prime = 31;
     int result = 1;
     result = prime * result + pts.length;
-    if (pts.length > 0) {
+    if (pts.isNotEmpty) {
       Coordinate p0 = pts[0];
       Coordinate p1 = pts[pts.length - 1];
       if (1 == p0.compareTo(p1)) {
         p0 = pts[pts.length - 1];
         p1 = pts[0];
       }
-      result = prime * result + p0.hashCode();
-      result = prime * result + p1.hashCode();
+      result = prime * result + p0.hashCode;
+      result = prime * result + p1.hashCode;
     }
     return result;
   }
@@ -261,35 +284,38 @@ class Edge extends GraphComponent
     return true;
   }
 
+  @override
   String toString()
   {
-    StringBuilder builder = new StringBuilder();
-    builder.append("edge " + name + ": ");
-    builder.append("LINESTRING (");
+    StringBuffer builder = new StringBuffer();
+    builder.write("edge " + name + ": ");
+    builder.write("LINESTRING (");
     for (int i = 0; i < pts.length; i++) {
-      if (i > 0) builder.append(",");
-      builder.append(pts[i].x + " " + pts[i].y);
+      if (i > 0) builder.write(",");
+      builder.write("${pts[i].x} ${pts[i].y}");
     }
-    builder.append(")  " + label + " " + depthDelta);
+    builder.write(")  $label $depthDelta" );
     return builder.toString();
   }
-  void print(PrintStream out)
-  {
-    out.print("edge " + name + ": ");
-    out.print("LINESTRING (");
-    for (int i = 0; i < pts.length; i++) {
-      if (i > 0) out.print(",");
-      out.print(pts[i].x + " " + pts[i].y);
-    }
-    out.print(")  " + label + " " + depthDelta);
-  }
-  void printReverse(PrintStream out)
-  {
-    out.print("edge " + name + ": ");
-    for (int i = pts.length - 1; i >= 0; i--) {
-      out.print(pts[i] + " ");
-    }
-    out.println("");
-  }
+  
+
+  // void print(PrintStream out)
+  // {
+  //   out.print("edge " + name + ": ");
+  //   out.print("LINESTRING (");
+  //   for (int i = 0; i < pts.length; i++) {
+  //     if (i > 0) out.print(",");
+  //     out.print(pts[i].x + " " + pts[i].y);
+  //   }
+  //   out.print(")  " + label + " " + depthDelta);
+  // }
+  // void printReverse(PrintStream out)
+  // {
+  //   out.print("edge " + name + ": ");
+  //   for (int i = pts.length - 1; i >= 0; i--) {
+  //     out.print(pts[i] + " ");
+  //   }
+  //   out.println("");
+  // }
 
 }

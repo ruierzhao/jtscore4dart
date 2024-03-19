@@ -19,6 +19,17 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
+import "dart:collection";
+
+import "package:jtscore4dart/src/geom/Coordinate.dart";
+
+import "Edge.dart";
+import "EdgeIntersection.dart";
+
+import 'package:jtscore4dart/src/patch/Map.dart';
+
+import "Label.dart";
+
 /**
  * A list of edge intersections along an {@link Edge}.
  * Implements splitting an edge with intersections
@@ -29,13 +40,11 @@
 class EdgeIntersectionList
 {
   // a Map <EdgeIntersection, EdgeIntersection>
- /**private */Map nodeMap = new TreeMap();
+//  /**private */Map nodeMap = new TreeMap();
+ /**private */Map nodeMap = new SplayTreeMap();
   Edge edge;  // the parent edge
 
-  EdgeIntersectionList(Edge edge)
-  {
-    this.edge = edge;
-  }
+  EdgeIntersectionList(this.edge);
 
   /**
    * Adds an intersection into the list, if it isn't already there.
@@ -50,7 +59,7 @@ class EdgeIntersectionList
   EdgeIntersection add(Coordinate intPt, int segmentIndex, double dist)
   {
     EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
-    EdgeIntersection ei = (EdgeIntersection) nodeMap.get(eiNew);
+    EdgeIntersection ei = nodeMap.get(eiNew) as EdgeIntersection;
     if (ei != null) {
       return ei;
     }
@@ -63,7 +72,7 @@ class EdgeIntersectionList
    *
    * @return an Iterator of EdgeIntersections
    */
-  Iterator iterator() { return nodeMap.values().iterator(); }
+  Iterator iterator() { return nodeMap.values.iterator; }
 
   /**
    * Tests if the given point is an edge intersection
@@ -74,9 +83,10 @@ class EdgeIntersectionList
   bool isIntersection(Coordinate pt)
   {
     for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeIntersection ei = (EdgeIntersection) it.current;
-      if (ei.coord.equals(pt))
-       return true;
+      EdgeIntersection ei = it.current as EdgeIntersection;
+      if (ei.coord.equals(pt)) {
+        return true;
+      }
     }
     return false;
   }
@@ -106,9 +116,9 @@ class EdgeIntersectionList
 
     Iterator it = iterator();
     // there should always be at least two entries in the list
-    EdgeIntersection eiPrev = (EdgeIntersection) it.current;
-    while (it.hasNext()) {
-      EdgeIntersection ei = (EdgeIntersection) it.current;
+    EdgeIntersection eiPrev =  it.current as EdgeIntersection;
+    while (it.moveNext()) {
+      EdgeIntersection ei = it.current as EdgeIntersection;
       Edge newEdge = createSplitEdge(eiPrev, ei);
       edgeList.add(newEdge);
 
@@ -122,7 +132,7 @@ class EdgeIntersectionList
    */
   Edge createSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
   {
-//Debug.print("\ncreateSplitEdge"); Debug.print(ei0); Debug.print(ei1);
+  //Debug.print("\ncreateSplitEdge"); Debug.print(ei0); Debug.print(ei1);
     int npts = ei1.segmentIndex - ei0.segmentIndex + 2;
 
     Coordinate lastSegStartPt = edge.pts[ei1.segmentIndex];
@@ -135,22 +145,23 @@ class EdgeIntersectionList
       npts--;
     }
 
-    List<Coordinate> pts = new Coordinate[npts];
+    // List<Coordinate> pts = new Coordinate[npts];
+    List<Coordinate> pts = List.filled(npts, Coordinate.empty2D(),growable: false);
     int ipt = 0;
-    pts[ipt++] = new Coordinate(ei0.coord);
+    pts[ipt++] = new Coordinate.fromAnother(ei0.coord);
     for (int i = ei0.segmentIndex + 1; i <= ei1.segmentIndex; i++) {
       pts[ipt++] = edge.pts[i];
     }
     if (useIntPt1) pts[ipt] = ei1.coord;
-    return new Edge(pts, new Label(edge.label));
+    return new Edge(pts, new Label.FromAnother(edge.label));
   }
 
-  void print(PrintStream out)
-  {
-    out.println("Intersections:");
-    for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeIntersection ei = (EdgeIntersection) it.current;
-      ei.print(out);
-    }
-  }
+  // void print(PrintStream out)
+  // {
+  //   out.println("Intersections:");
+  //   for (Iterator it = iterator(); it.moveNext(); ) {
+  //     EdgeIntersection ei = (EdgeIntersection) it.current;
+  //     ei.print(out);
+  //   }
+  // }
 }

@@ -45,10 +45,21 @@
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/algorithm/locate/IndexedPointInAreaLocator.dart';
 import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geomgraph/index/SegmentIntersector.dart';
 
+import 'Edge.dart';
+import 'EdgeIntersection.dart';
+import 'Label.dart';
+import 'Node.dart';
 import 'PlanarGraph.dart';
 import 'index/EdgeSetIntersector.dart';
 import 'index/SimpleMCSweepLineIntersector.dart';
@@ -106,7 +117,7 @@ class GeometryGraph
    */
  /**private */Map lineEdgeMap = new Map();
 
- /**private */BoundaryNodeRule boundaryNodeRule = null;
+ /**private */BoundaryNodeRule? boundaryNodeRule = null;
 
   /**
    * If this flag is true, the Boundary Determination Rule will used when deciding
@@ -116,9 +127,9 @@ class GeometryGraph
  /**private */int argIndex;  // the index of this geometry as an argument to a spatial function (used for labelling)
  /**private */Collection boundaryNodes;
  /**private */bool hasTooFewPoints = false;
- /**private */Coordinate invalidPoint = null;
+ /**private */Coordinate? invalidPoint = null;
 
- /**private */PointOnGeometryLocator areaPtLocator = null;
+ /**private */PointOnGeometryLocator? areaPtLocator = null;
   // for use if geometry is not Polygonal
  /**private */final PointLocator ptLocator = new PointLocator();
   
@@ -182,8 +193,9 @@ class GeometryGraph
 
   Collection getBoundaryNodes()
   {
-    if (boundaryNodes == null)
+    if (boundaryNodes == null) {
       boundaryNodes = nodes.getBoundaryNodes(argIndex);
+    }
     return boundaryNodes;
   }
 
@@ -193,7 +205,7 @@ class GeometryGraph
     List<Coordinate> pts = new Coordinate[coll.size()];
     int i = 0;
     for (Iterator it = coll.iterator(); it.moveNext(); ) {
-      Node node = (Node) it.current;
+      Node node =  it.current;
       pts[i++] = node.getCoordinate().copy();
     }
     return pts;
@@ -201,13 +213,13 @@ class GeometryGraph
 
   Edge findEdge(LineString line)
   {
-    return (Edge) lineEdgeMap.get(line);
+    return  lineEdgeMap.get(line);
   }
 
   void computeSplitEdges(List edgelist)
   {
-    for (Iterator i = edges.iterator(); i.moveNext(); ) {
-      Edge e = (Edge) i.current;
+    for (Iterator i = edges.iterator; i.moveNext(); ) {
+      Edge e =  i.current;
       e.eiList.addSplitEdges(edgelist);
     }
   }
@@ -217,12 +229,13 @@ class GeometryGraph
 
     // check if this Geometry should obey the Boundary Determination Rule
     // all collections except MultiPolygons obey the rule
-    if (g is MultiPolygon)
+    if (g is MultiPolygon) {
       useBoundaryDeterminationRule = false;
+    }
 
-    if (g is Polygon)                 addPolygon((Polygon) g);
-                        // LineString also handles LinearRings
-    else if (g is LineString)         addLineString((LineString) g);
+    if (g is Polygon) {
+      addPolygon((Polygon) g);
+    } else if (g is LineString)         addLineString((LineString) g);
     else if (g is Point)              addPoint((Point) g);
     else if (g is MultiPoint)         addCollection((MultiPoint) g);
     else if (g is MultiLineString)    addCollection((MultiLineString) g);
@@ -275,7 +288,7 @@ class GeometryGraph
       right = cwLeft;
     }
     Edge e = new Edge(coord,
-                        new Label(argIndex, Location.BOUNDARY, left, right));
+                        new Label.GeomFrom3(argIndex, Location.BOUNDARY, left, right));
     lineEdgeMap.put(lr, e);
 
     insertEdge(e);
@@ -315,7 +328,7 @@ class GeometryGraph
 
     // add the edge for the LineString
     // line edges do not have locations for their left and right sides
-    Edge e = new Edge(coord, new Label(argIndex, Location.INTERIOR));
+    Edge e = new Edge(coord, new Label.GeomIndex(argIndex, Location.INTERIOR));
     lineEdgeMap.put(line, e);
     insertEdge(e);
     /*
@@ -403,10 +416,11 @@ Debug.print(e.getEdgeIntersectionList());
     Node n = nodes.addNode(coord);
     Label lbl = n.getLabel();
     if (lbl == null) {
-      n.label = new Label(argIndex, onLocation);
+      n.label = new Label.GeomIndex(argIndex, onLocation);
     }
-    else
+    else {
       lbl.setLocation(argIndex, onLocation);
+    }
   }
 
   /**
@@ -428,16 +442,16 @@ Debug.print(e.getEdgeIntersectionList());
 
     // determine the boundary status of the point according to the Boundary Determination Rule
     int newLoc = determineBoundary(boundaryNodeRule, boundaryCount);
-    lbl.setLocation(argIndex, newLoc);
+    lbl.setLocationOn(argIndex, newLoc);
   }
 
  /**private */void addSelfIntersectionNodes(int argIndex)
   {
-    for (Iterator i = edges.iterator(); i.moveNext(); ) {
-      Edge e = (Edge) i.current;
+    for (Iterator i = edges.iterator; i.moveNext(); ) {
+      Edge e =  i.current;
       int eLoc = e.getLabel().getLocation(argIndex);
       for (Iterator eiIt = e.eiList.iterator(); eiIt.moveNext(); ) {
-        EdgeIntersection ei = (EdgeIntersection) eiIt.current;
+        EdgeIntersection ei = eiIt.current;
         addSelfIntersectionNode(argIndex, ei.coord, eLoc);
       }
     }
@@ -452,10 +466,11 @@ Debug.print(e.getEdgeIntersectionList());
   {
     // if this node is already a boundary node, don't change it
     if (isBoundaryNode(argIndex, coord)) return;
-    if (loc == Location.BOUNDARY && useBoundaryDeterminationRule)
-        insertBoundaryPoint(argIndex, coord);
-    else
+    if (loc == Location.BOUNDARY && useBoundaryDeterminationRule) {
+      insertBoundaryPoint(argIndex, coord);
+    } else {
       insertPoint(argIndex, coord, loc);
+    }
   }
 
   // MD - experimental for now
@@ -470,9 +485,7 @@ Debug.print(e.getEdgeIntersectionList());
   {
   	if (parentGeom is Polygonal && parentGeom.getNumGeometries() > 50) {
   		// lazily init point locator
-  		if (areaPtLocator == null) {
-  			areaPtLocator = new IndexedPointInAreaLocator(parentGeom);
-  		}
+  		areaPtLocator ??= new IndexedPointInAreaLocator(parentGeom);
   		return areaPtLocator.locate(pt);
   	}
   	return ptLocator.locate(pt, parentGeom);

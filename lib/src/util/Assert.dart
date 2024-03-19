@@ -45,9 +45,9 @@ class Assert {
   ///@param  message                    a description of the assertion
   ///@throws  AssertionFailedException  if the two objects are not equal
   static void equals(Object expectedValue, Object actualValue, [String? message]) {
-    if (actualValue != expectedValue) {
-      throw AssertionFailedException("Expected $expectedValue but encountered "
-           + actualValue + (message != null ? ": " + message : ""));
+    if ( actualValue != expectedValue) {
+      throw new AssertionFailedException("Expected $expectedValue but encountered + $actualValue + ${(message != null ? ": " + message : "")}");
+      // throw new Exception("Expected $expectedValue but encountered + $actualValue + ${(message != null ? ": " + message : "")}");
     }
   }
 

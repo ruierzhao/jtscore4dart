@@ -15,6 +15,8 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
 /**
  * Represents a point on an
  * edge which intersects with another edge.
@@ -41,15 +43,13 @@ class EdgeIntersection
   /**
    * EdgeIntersection.
    *
-   * @param coord Point of intersection
-   * @param segmentIndex Index of the containing line segment in the parent edge
-   * @param dist Edge distance of this point along the containing line segment
+   * @param [coord] Point of intersection
+   * @param [segmentIndex] Index of the containing line segment in the parent edge
+   * @param [dist] Edge distance of this point along the containing line segment
    */
-  EdgeIntersection(Coordinate coord, int segmentIndex, double dist) {
-    this.coord = new Coordinate(coord);
-    this.segmentIndex = segmentIndex;
-    this.dist = dist;
-  }
+  EdgeIntersection(Coordinate coord, this.segmentIndex, this.dist) :
+    this.coord = new Coordinate.fromAnother(coord);
+  
 
   Coordinate getCoordinate() { return coord; }
 
@@ -57,16 +57,17 @@ class EdgeIntersection
 
   double getDistance() { return dist; }
 
-  int compareTo(Object obj)
+  @override
+  int compareTo(var obj)
   {
-    EdgeIntersection other = (EdgeIntersection) obj;
+    EdgeIntersection other =  obj as EdgeIntersection;
     return compare(other.segmentIndex, other.dist);
   }
   /**
    * Comparison with segment and distance.
    *
-   * @param segmentIndex index of the containing line segment
-   * @param dist dge distance of this point along the containing line segment
+   * @param [segmentIndex] index of the containing line segment
+   * @param [dist] dge distance of this point along the containing line segment
    * @return {@code 1} this EdgeIntersection is located before the argument location,
    *         {@code 0} this EdgeIntersection is at the argument location,
    *         {@code 1} this EdgeIntersection is located after the argument location
@@ -87,14 +88,15 @@ class EdgeIntersection
     return false;
   }
 
-  void print(PrintStream out)
-  {
-    out.print(coord);
-    out.print(" seg # = " + segmentIndex);
-    out.println(" dist = " + dist);
-  }
+  // void print(PrintStream out)
+  // {
+  //   out.print(coord);
+  //   out.print(" seg # = " + segmentIndex);
+  //   out.println(" dist = " + dist);
+  // }
+  @override
   String toString()
   {
-    return coord + " seg # = " + segmentIndex + " dist = " + dist;
+    return "$coord seg # = $segmentIndex  dist = $dist";
   }
 }

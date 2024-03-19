@@ -38,11 +38,11 @@ import 'package:jtscore4dart/src/geomgraph/GeometryGraph.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
 
 import 'EdgeEnd.dart';
+import 'Label.dart';
 
 import 'package:jtscore4dart/src/patch/Map.dart';
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
 
-import 'Label.dart';
 /**
  * A EdgeEndStar is an ordered list of EdgeEnds around a node.
  * They are maintained in CCW order (starting with the positive x-axis) around the node

@@ -20,6 +20,10 @@
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.LineString;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
 /**
  * Models a section of a raw offset curve,
  * starting at a given location along the raw curve.
@@ -35,10 +39,12 @@ class OffsetCurveSection
 implements Comparable<OffsetCurveSection> {
   
   static Geometry toGeometry(List<OffsetCurveSection> sections, GeometryFactory geomFactory) {
-    if (sections.size() == 0)
-      return geomFactory.createLineString();
-    if (sections.size() == 1)
+    if (sections.size() == 0) {
+      return geomFactory.createLineString([]);
+    }
+    if (sections.size() == 1) {
       return geomFactory.createLineString(sections.get(0).getCoordinates());
+    }
     
     //-- sort sections in order along the offset curve
     Collections.sort(sections);
@@ -60,10 +66,12 @@ implements Comparable<OffsetCurveSection> {
    * @return the simplified linestring for the joined sections
    */
   static Geometry toLine(List<OffsetCurveSection> sections, GeometryFactory geomFactory) {
-    if (sections.size() == 0)
+    if (sections.size() == 0) {
       return geomFactory.createLineString();
-    if (sections.size() == 1)
+    }
+    if (sections.size() == 1) {
       return geomFactory.createLineString(sections.get(0).getCoordinates());
+    }
     
     //-- sort sections in order along the offset curve
     Collections.sort(sections);
@@ -80,8 +88,9 @@ implements Comparable<OffsetCurveSection> {
       }
       List<Coordinate> sectionPts = section.getCoordinates();
       for (int j = 0; j < sectionPts.length; j++) {
-        if ((removeStartPt && j == 0) || (removeEndPt && j == sectionPts.length-1))
+        if ((removeStartPt && j == 0) || (removeEndPt && j == sectionPts.length-1)) {
           continue;
+        }
         pts.add(sectionPts[j], false);        
       }
       removeStartPt = removeEndPt;
@@ -91,8 +100,9 @@ implements Comparable<OffsetCurveSection> {
 
   static OffsetCurveSection create(List<Coordinate> srcPts, int start, int end, double loc, double locLast) {
     int len = end - start + 1;
-    if (end <= start) 
+    if (end <= start) {
       len = srcPts.length - start + end;
+    }
       
     List<Coordinate> sectionPts = new Coordinate[len];
     for (int i = 0; i < len; i++) {
@@ -106,26 +116,22 @@ implements Comparable<OffsetCurveSection> {
  /**private */double location;
  /**private */double locLast;
 
-  OffsetCurveSection(List<Coordinate> pts, double loc, double locLast) {
-    this.sectionPts = pts;
-    this.location = loc;
-    this.locLast = locLast;
-  }
+  OffsetCurveSection(this.sectionPts, this.location, this.locLast);
   
  /**private */List<Coordinate> getCoordinates() {
     return sectionPts;
   }
 
  /**private */bool isEndInSameSegment(double nextLoc) {
-    int segIndex = (int) locLast;
-    int nextIndex = (int) nextLoc;
+    int segIndex = locLast.toInt();
+    int nextIndex = nextLoc.toInt();
     return segIndex == nextIndex;
   }
   
   /**
    * Orders sections by their location along the raw offset curve.
    */
-  @Override
+  @override
   int compareTo(OffsetCurveSection section) {
     return Double.compare(location, section.location);
   }

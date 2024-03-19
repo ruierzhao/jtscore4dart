@@ -64,6 +64,7 @@ import 'PlanarGraph.dart';
 import 'index/EdgeSetIntersector.dart';
 import 'index/SimpleMCSweepLineIntersector.dart';
 
+import 'package:jtscore4dart/src/patch/Map.dart';
 /**
  * A GeometryGraph is a graph that models a given Geometry
  * @version 1.7
@@ -234,7 +235,7 @@ class GeometryGraph
     }
 
     if (g is Polygon) {
-      addPolygon((Polygon) g);
+      addPolygon( g);
     } else if (g is LineString)         addLineString((LineString) g);
     else if (g is Point)              addPoint((Point) g);
     else if (g is MultiPoint)         addCollection((MultiPoint) g);

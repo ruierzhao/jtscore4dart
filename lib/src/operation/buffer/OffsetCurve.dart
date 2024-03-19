@@ -469,15 +469,15 @@ class OffsetCurve {
  int findSectionStart(List<double> loc, int end) {
     int start = end;
     do {
-      int next = next(start, loc.length);
+      int _next = next(start, loc.length);
       //-- skip ahead if segment is not in raw curve
       if (loc[start] == NOT_IN_CURVE) {
-        start = next;
+        start = _next;
         continue;
       }
-      int prev = prev(start, loc.length);
+      int _prev = prev(start, loc.length);
       //-- if prev segment is not in raw curve then have found a start
-      if (loc[prev] == NOT_IN_CURVE) {
+      if (loc[_prev] == NOT_IN_CURVE) {
         return start;
       }
       if (isJoined) {
@@ -486,12 +486,12 @@ class OffsetCurve {
          *  Only needed for joined curve, since otherwise
          *  contiguous buffer segments can be in same curve section.
          */
-        double locDelta = (loc[start] - loc[prev]).abs();
+        double locDelta = (loc[start] - loc[_prev]).abs();
         if (locDelta > 1) {
           return start;
         }
         }
-      start = next;
+      start = _next;
     } while (start != end);
     return start;
   }
@@ -499,11 +499,11 @@ class OffsetCurve {
  /**private */int findSectionEnd(List<double> loc, int start, int firstStartIndex) {
     // assert: pos[start] is IN CURVE
     int end = start;
-    int next;
+    int _next;
     do {
-      next = next(end, loc.length);
-      if (loc[next] == NOT_IN_CURVE) {
-        return next;
+      _next = next(end, loc.length);
+      if (loc[_next] == NOT_IN_CURVE) {
+        return _next;
       }
       if (isJoined) {
         /**
@@ -511,12 +511,12 @@ class OffsetCurve {
          *  Only needed for joined curve, since otherwise
          *  contigous buffer segments can be in same section
          */
-        double locDelta = (loc[next] - loc[end]).abs();
+        double locDelta = (loc[_next] - loc[end]).abs();
         if (locDelta > 1) {
-          return next;
+          return _next;
         }
       }
-      end = next;
+      end = _next;
     } while (end != start && end != firstStartIndex);
     return end;
   }

@@ -22,6 +22,11 @@
 // import org.locationtech.jts.index.strtree.STRtree;
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/index/ItemVisitor.dart';
+import 'package:jtscore4dart/src/index/chain/MonotoneChain.dart';
+import 'package:jtscore4dart/src/index/chain/MonotoneChainBuilder.dart';
+import 'package:jtscore4dart/src/index/chain/MonotoneChainSelectAction.dart';
 import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
 
 /**
@@ -34,14 +39,14 @@ import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
 class SegmentMCIndex {
  /**private */STRtree index;
   
-  SegmentMCIndex(List<Coordinate> segs) {
+  SegmentMCIndex(List<Coordinate> segs) :
     index = buildIndex(segs);
-  }
   
- /**private */STRtree buildIndex(List<Coordinate> segs) {
+ /**private */
+ static STRtree buildIndex(List<Coordinate> segs) {
     STRtree index = new STRtree();
     List<MonotoneChain> segChains = MonotoneChainBuilder.getChains(segs, segs);
-    for (MonotoneChain mc : segChains ) {
+    for (MonotoneChain mc in segChains ) {
       index.insert(mc.getEnvelope(), mc);
     }
     return index;

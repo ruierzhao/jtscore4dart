@@ -13,9 +13,16 @@
 
 import 'dart:math';
 
+import 'package:jtscore4dart/src/geom/LineString.dart';
+
 import 'Coordinate.dart';
+import 'CoordinateList.dart';
+import 'CoordinateSequence.dart';
 import 'Envelope.dart';
 import 'Geometry.dart';
+import 'GeometryComponentFilter.dart';
+import 'GeometryFactory.dart';
+import 'PrecisionModel.dart';
 
 /// A bounding container for a {@link Geometry} which is in the shape of a general octagon.
 /// The OctagonalEnvelope of a geometric object
@@ -298,14 +305,14 @@ class OctagonalEnvelope
     Coordinate py11 = new Coordinate(maxA - maxY, maxY);
 
     PrecisionModel pm = geomFactory.getPrecisionModel();
-    pm.makePrecise(px00);
-    pm.makePrecise(px01);
-    pm.makePrecise(px10);
-    pm.makePrecise(px11);
-    pm.makePrecise(py00);
-    pm.makePrecise(py01);
-    pm.makePrecise(py10);
-    pm.makePrecise(py11);
+    pm.makePreciseFromCoord(px00);
+    pm.makePreciseFromCoord(px01);
+    pm.makePreciseFromCoord(px10);
+    pm.makePreciseFromCoord(px11);
+    pm.makePreciseFromCoord(py00);
+    pm.makePreciseFromCoord(py01);
+    pm.makePreciseFromCoord(py10);
+    pm.makePreciseFromCoord(py11);
 
     CoordinateList coordList = new CoordinateList();
     coordList.add(px00, false);
@@ -330,23 +337,23 @@ class OctagonalEnvelope
     return geomFactory.createPolygon(geomFactory.createLinearRing(pts));
   }
 
- /**private */static class BoundingOctagonComponentFilter
+}
+
+
+ /**private static */ class BoundingOctagonComponentFilter
   implements GeometryComponentFilter
   {
     OctagonalEnvelope oe;
     
-    BoundingOctagonComponentFilter(OctagonalEnvelope oe) {
-      this.oe = oe;
-    }
+    BoundingOctagonComponentFilter(this.oe);
     
      void filter(Geometry geom)
      {
        if (geom is LineString) {
-         oe.expandToInclude( ((LineString) geom).getCoordinateSequence());
+         oe.expandToInclude(geom.getCoordinateSequence());
        }
        else if (geom is Point) {
-         oe.expandToInclude( ((Point) geom).getCoordinateSequence());
+         oe.expandToInclude( ( geom as Point).getCoordinateSequence());
        }
      }
   }
-}

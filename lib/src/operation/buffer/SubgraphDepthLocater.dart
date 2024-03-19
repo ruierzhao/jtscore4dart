@@ -35,6 +35,8 @@ import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
 
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
+import 'BufferSubgraph.dart';
 /**
  * Locates a subgraph inside a set of subgraphs,
  * in order to determine the outside depth of the subgraph.
@@ -47,7 +49,7 @@ class SubgraphDepthLocater
 {
 //  /**private */Collection subgraphs;
  /**private */Iterable subgraphs;
- /**private */LineSegment seg = new LineSegment();
+ /**private */LineSegment seg = new LineSegment.empty();
 
   SubgraphDepthLocater(List this.subgraphs);
 
@@ -72,8 +74,8 @@ class SubgraphDepthLocater
  /**private */List findStabbedSegments(Coordinate stabbingRayLeftPt)
   {
     List stabbedSegments = [];
-    for (Iterator i = subgraphs.iterator(); i.moveNext(); ) {
-      BufferSubgraph bsg = (BufferSubgraph) i.current;
+    for (Iterator i = subgraphs.iterator; i.moveNext(); ) {
+      BufferSubgraph bsg = i.current as BufferSubgraph;
 
       // optimization - don't bother checking subgraphs which the ray does not intersect
       Envelope env = bsg.getEnvelope();
@@ -82,7 +84,7 @@ class SubgraphDepthLocater
         continue;
       }
 
-      findStabbedSegments(stabbingRayLeftPt, bsg.getDirectedEdges(), stabbedSegments);
+      _findStabbedSegments(stabbingRayLeftPt, bsg.getDirectedEdges(), stabbedSegments);
     }
     return stabbedSegments;
   }
@@ -95,7 +97,7 @@ class SubgraphDepthLocater
    * @param stabbingRayLeftPt the left-hand origin of the stabbing line
    * @param stabbedSegments the current list of {@link DepthSegments} intersecting the stabbing line
    */
- /**private */void findStabbedSegments(Coordinate stabbingRayLeftPt,
+ /**private */void _findStabbedSegments(Coordinate stabbingRayLeftPt,
                                    List dirEdges,
                                    List stabbedSegments)
   {
@@ -108,7 +110,7 @@ class SubgraphDepthLocater
       if (! de.isForward()) {
         continue;
       }
-      findStabbedSegments(stabbingRayLeftPt, de, stabbedSegments);
+      __findStabbedSegments(stabbingRayLeftPt, de, stabbedSegments);
     }
   }
 
@@ -120,7 +122,7 @@ class SubgraphDepthLocater
    * @param stabbingRayLeftPt the left-hand origin of the stabbing line
    * @param stabbedSegments the current list of {@link DepthSegments} intersecting the stabbing line
    */
- /**private */void findStabbedSegments(Coordinate stabbingRayLeftPt,
+ /**private */void __findStabbedSegments(Coordinate stabbingRayLeftPt,
                                    DirectedEdge dirEdge,
                                    List stabbedSegments)
   {

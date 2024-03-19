@@ -20,6 +20,8 @@
 // import org.locationtech.jts.geomgraph.EdgeRing;
 // import org.locationtech.jts.geomgraph.Node;
 
+import 'package:jtscore4dart/src/geomgraph/EdgeRing.dart';
+
 /**
  * A ring of {@link DirectedEdge}s which may contain nodes of degree &gt; 2.
  * A <tt>MaximalEdgeRing</tt> may represent two different spatial entities:

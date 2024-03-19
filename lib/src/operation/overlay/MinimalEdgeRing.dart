@@ -16,6 +16,11 @@
 // import org.locationtech.jts.geomgraph.Edge;
 // import org.locationtech.jts.geomgraph.EdgeRing;
 
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeRing.dart';
+
 /**
  * A ring of {@link Edge}s with the property that no node
  * has degree greater than 2.  These are the form of rings required
@@ -32,10 +37,12 @@ class MinimalEdgeRing
     super(start, geometryFactory);
   }
 
+  @override
   DirectedEdge getNext(DirectedEdge de)
   {
     return de.getNextMin();
   }
+  @override
   void setEdgeRing(DirectedEdge de, EdgeRing er)
   {
     de.setMinEdgeRing(er);

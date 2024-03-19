@@ -30,9 +30,17 @@
 
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 import 'DirectedEdge.dart';
+import 'Edge.dart';
+import 'DirectedEdgeStar.dart';
+import 'Label.dart';
+import 'Node.dart';
 
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 /**
  * @version 1.7
  */
@@ -44,14 +52,13 @@ abstract class EdgeRing {
  /**private */List pts = [];
  /**private */Label label = new Label(Location.NONE); // label stores the locations of each geometry on the face surrounded by this ring
  /**private */LinearRing ring;  // the ring created for this EdgeRing
- /**private */bool isHole;
+ /**private */bool _isHole;
  /**private */EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
- /**private */ArrayList holes = []; // a list of EdgeRings which are holes in this EdgeRing
+ /**private */List holes = []; // a list of EdgeRings which are holes in this EdgeRing
 
  /**protected */GeometryFactory geometryFactory;
 
-  EdgeRing(DirectedEdge start, GeometryFactory geometryFactory) {
-    this.geometryFactory = geometryFactory;
+  EdgeRing(DirectedEdge start, this.geometryFactory) {
     computePoints(start);
     computeRing();
   }
@@ -63,7 +70,7 @@ abstract class EdgeRing {
   bool isHole()
   {
     //computePoints();
-    return isHole;
+    return _isHole;
   }
 
   Coordinate getCoordinate(int i) { return  pts.get(i) as Coordinate;  }
@@ -80,10 +87,12 @@ abstract class EdgeRing {
 
   Polygon toPolygon(GeometryFactory geometryFactory)
   {
-    List<LinearRing> holeLR = new LinearRing[holes.size()];
-    for (int i = 0; i < holes.size(); i++) {
-      holeLR[i] = ((EdgeRing) holes.get(i)).getLinearRing();
-    }
+    // List<LinearRing> holeLR = new LinearRing[holes.size()];
+    List<LinearRing> holeLR = List.generate(holes.size(), (i)=> (holes.get(i) as EdgeRing).getLinearRing(),growable: false);
+    /// TODO: @ruier edit.
+    // for (int i = 0; i < holes.size(); i++) {
+    //   holeLR[i] = ((EdgeRing) holes.get(i)).getLinearRing();
+    // }
     Polygon poly = geometryFactory.createPolygon(getLinearRing(), holeLR);
     return poly;
   }
@@ -100,7 +109,7 @@ abstract class EdgeRing {
       coord[i] = (Coordinate) pts.get(i);
     }
     ring = geometryFactory.createLinearRing(coord);
-    isHole = Orientation.isCCW(ring.getCoordinates());
+    _isHole = Orientation.isCCW(ring.getCoordinates());
 //Debug.println( (isHole ? "hole - " : "shell - ") + WKTWriter.toLineString(new CoordinateArraySequence(ring.getCoordinates())));
   }
   abstract DirectedEdge getNext(DirectedEdge de);
@@ -120,19 +129,23 @@ abstract class EdgeRing {
   {
 //System.out.println("buildRing");
     startDe = start;
-    DirectedEdge de = start;
+    DirectedEdge? de = start;
     bool isFirstEdge = true;
     do {
 //      Assert.isTrue(de != null, "found null Directed Edge");
-      if (de == null)
-        throw new TopologyException("Found null DirectedEdge");
-      if (de.getEdgeRing() == this)
-        throw new TopologyException("Directed Edge visited twice during ring-building at " + de.getCoordinate());
+      if (de == null) {
+        // throw new TopologyException("Found null DirectedEdge");
+        throw new Exception("TopologyException: Found null DirectedEdge");
+      }
+      if (de.getEdgeRing() == this) {
+        // throw new TopologyException("Directed Edge visited twice during ring-building at " + de.getCoordinate());
+        throw new Exception("TopologyException: Directed Edge visited twice during ring-building at " + de.getCoordinate());
+      }
 
       edges.add(de);
 //Debug.println(de);
 //Debug.println(de.getEdge());
-      Label label = de.getLabel();
+      Label label = de.getLabel()!;
       Assert.isTrue(label.isArea());
       mergeLabel(label);
       addPoints(de.getEdge(), de.isForward(), isFirstEdge);
@@ -154,7 +167,7 @@ abstract class EdgeRing {
     DirectedEdge de = startDe;
     do {
       Node node = de.getNode();
-      int degree = ((DirectedEdgeStar) node.getEdges()).getOutgoingDegree(this);
+      int degree = ( node.getEdges() as DirectedEdgeStar).getOutgoingDegree(this);
       if (degree > maxNodeDegree) maxNodeDegree = degree;
       de = getNext(de);
     } while (de != startDe);
@@ -190,7 +203,7 @@ abstract class EdgeRing {
     if (loc == Location.NONE) return;
     // if there is no current RHS value, set it
     if (label.getLocation(geomIndex) == Location.NONE) {
-      label.setLocation(geomIndex, loc);
+      label.setLocationOn(geomIndex, loc);
       return;
     }
   }
@@ -229,8 +242,9 @@ abstract class EdgeRing {
 
     for (Iterator i = holes.iterator(); i.moveNext(); ) {
       EdgeRing hole = (EdgeRing) i.current;
-      if (hole.containsPoint(p) )
+      if (hole.containsPoint(p) ) {
         return false;
+      }
     }
     return true;
   }

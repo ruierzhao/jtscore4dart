@@ -36,6 +36,7 @@ import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
 import 'package:jtscore4dart/src/geomgraph/EdgeRing.dart';
 import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
 import 'package:jtscore4dart/src/operation/overlay/MaximalEdgeRing.dart';
+import 'package:jtscore4dart/src/operation/overlay/MinimalEdgeRing.dart';
 
 /**
  * Forms {@link Polygon}s out of a graph of {@link DirectedEdge}s.
@@ -92,7 +93,7 @@ class PolygonBuilder {
     List maxEdgeRings     = [];
     for (Iterator it = dirEdges.iterator; it.moveNext(); ) {
       DirectedEdge de = it.current as DirectedEdge;
-      if (de.isInResult() && de.getLabel().isArea() ) {
+      if (de.isInResult() && de.getLabel()!.isArea() ) {
         // if this edge has not yet been processed
         if (de.getEdgeRing() == null) {
           MaximalEdgeRing er = new MaximalEdgeRing(de, geometryFactory);
@@ -108,8 +109,8 @@ class PolygonBuilder {
  /**private */List buildMinimalEdgeRings(List maxEdgeRings, List shellList, List freeHoleList)
   {
     List edgeRings = [];
-    for (Iterator it = maxEdgeRings.iterator(); it.moveNext(); ) {
-      MaximalEdgeRing er = (MaximalEdgeRing) it.current;
+    for (Iterator it = maxEdgeRings.iterator; it.moveNext(); ) {
+      MaximalEdgeRing er = it.current as MaximalEdgeRing;
       if (er.getMaxNodeDegree() > 2) {
         er.linkDirectedEdgesForMinimalEdgeRings();
         List minEdgeRings = er.buildMinimalRings();
@@ -143,10 +144,10 @@ class PolygonBuilder {
  /**private */EdgeRing findShell(List minEdgeRings)
   {
     int shellCount = 0;
-    EdgeRing shell = null;
-    for (Iterator it = minEdgeRings.iterator(); it.moveNext(); ) {
-      EdgeRing er = (MinimalEdgeRing) it.current;
-      if (! er.isHole()) {
+    EdgeRing? shell = null;
+    for (Iterator it = minEdgeRings.iterator; it.moveNext(); ) {
+      EdgeRing er = it.current as MinimalEdgeRing;
+      if (! er._isHole()) {
         shell = er;
         shellCount++;
       }
@@ -169,7 +170,7 @@ class PolygonBuilder {
   {
     for (Iterator it = minEdgeRings.iterator(); it.moveNext(); ) {
       MinimalEdgeRing er = (MinimalEdgeRing) it.current;
-      if (er.isHole()) {
+      if (er._isHole()) {
         er.setShell(shell);
       }
     }
@@ -186,7 +187,7 @@ class PolygonBuilder {
     for (Iterator it = edgeRings.iterator(); it.moveNext(); ) {
       EdgeRing er = (EdgeRing) it.current;
 //      er.setInResult();
-      if (er.isHole() ) {
+      if (er._isHole() ) {
         freeHoleList.add(er);
       }
       else {

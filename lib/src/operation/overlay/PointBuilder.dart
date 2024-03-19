@@ -22,6 +22,8 @@
 // import org.locationtech.jts.geomgraph.Label;
 // import org.locationtech.jts.geomgraph.Node;
 
+import 'OverlayOp.dart';
+
 /**
  * Constructs {@link Point}s from the nodes of an overlay graph.
  * @version 1.7

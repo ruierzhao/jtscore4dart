@@ -26,5 +26,22 @@ extension JavaList<T> on List<T>{
   List<T> toArray2(){
     return this.toList(growable: false);
   }
+
+// 原文链接：https://blog.csdn.net/yaomingyang/article/details/80711193
+    // static <E> T min(Iterable<E extends T> coll, [Comptor? comp]) {
+    //     if (comp==null)
+    //         return min((Iterable<SelfComparable>) (Iterable) coll);
+
+    //     Iterator<? extends T> i = coll.iterator();
+    //     T candidate = i.next();
+
+    //     while (i.hasNext()) {
+    //         T next = i.next();
+    //         if (comp.compare(next, candidate) < 0)
+    //             candidate = next;
+    //     }
+    //     return candidate;
+    // }
+  
 }
 

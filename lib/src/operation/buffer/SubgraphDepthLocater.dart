@@ -25,6 +25,16 @@
 // import org.locationtech.jts.geom.Position;
 // import org.locationtech.jts.geomgraph.DirectedEdge;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import "package:jtscore4dart/src/geom/Coordinate.dart";
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
+
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 /**
  * Locates a subgraph inside a set of subgraphs,
  * in order to determine the outside depth of the subgraph.
@@ -35,21 +45,20 @@
  */
 class SubgraphDepthLocater
 {
- /**private */Collection subgraphs;
+//  /**private */Collection subgraphs;
+ /**private */Iterable subgraphs;
  /**private */LineSegment seg = new LineSegment();
 
-  SubgraphDepthLocater(List subgraphs)
-  {
-    this.subgraphs = subgraphs;
-  }
+  SubgraphDepthLocater(List this.subgraphs);
 
   int getDepth(Coordinate p)
   {
     List stabbedSegments = findStabbedSegments(p);
     // if no segments on stabbing line subgraph must be outside all others.
-    if (stabbedSegments.size() == 0)
+    if (stabbedSegments.size() == 0) {
       return 0;
-    DepthSegment ds = (DepthSegment) Collections.min(stabbedSegments);
+    }
+    DepthSegment ds =  Collections.min(stabbedSegments) as DepthSegment;
     return ds.leftDepth;
   }
 
@@ -69,8 +78,9 @@ class SubgraphDepthLocater
       // optimization - don't bother checking subgraphs which the ray does not intersect
       Envelope env = bsg.getEnvelope();
       if (stabbingRayLeftPt.y < env.getMinY()
-          || stabbingRayLeftPt.y > env.getMaxY())
+          || stabbingRayLeftPt.y > env.getMaxY()) {
         continue;
+      }
 
       findStabbedSegments(stabbingRayLeftPt, bsg.getDirectedEdges(), stabbedSegments);
     }
@@ -93,10 +103,11 @@ class SubgraphDepthLocater
      * Check all forward DirectedEdges only.  This is still general,
      * because each Edge has a forward DirectedEdge.
      */
-    for (Iterator i = dirEdges.iterator(); i.moveNext();) {
-      DirectedEdge de = (DirectedEdge) i.current;
-      if (! de.isForward())
+    for (Iterator i = dirEdges.iterator; i.moveNext();) {
+      DirectedEdge de =  i.current as DirectedEdge;
+      if (! de.isForward()) {
         continue;
+      }
       findStabbedSegments(stabbingRayLeftPt, de, stabbedSegments);
     }
   }
@@ -118,54 +129,71 @@ class SubgraphDepthLocater
       seg.p0 = pts[i];
       seg.p1 = pts[i + 1];
       // ensure segment always points upwards
-      if (seg.p0.y > seg.p1.y)
+      if (seg.p0.y > seg.p1.y) {
         seg.reverse();
+      }
 
       // skip segment if it is left of the stabbing line
-      double maxx = math.max(seg.p0.x, seg.p1.x);
-      if (maxx < stabbingRayLeftPt.x)
+      double maxx = max(seg.p0.x, seg.p1.x);
+      if (maxx < stabbingRayLeftPt.x) {
         continue;
+      }
 
       // skip horizontal segments (there will be a non-horizontal one carrying the same depth info
-      if (seg.isHorizontal())
+      if (seg.isHorizontal()) {
         continue;
+      }
 
       // skip if segment is above or below stabbing line
-      if (stabbingRayLeftPt.y < seg.p0.y || stabbingRayLeftPt.y > seg.p1.y)
+      if (stabbingRayLeftPt.y < seg.p0.y || stabbingRayLeftPt.y > seg.p1.y) {
         continue;
+      }
 
       // skip if stabbing ray is right of the segment
       if (Orientation.index(seg.p0, seg.p1, stabbingRayLeftPt)
-          == Orientation.RIGHT)
+          == Orientation.RIGHT) {
         continue;
+      }
 
       // stabbing line cuts this segment, so record it
       int depth = dirEdge.getDepth(Position.LEFT);
       // if segment direction was flipped, use RHS depth instead
-      if (! seg.p0.equals(pts[i]))
+      if (! seg.p0.equals(pts[i])) {
         depth = dirEdge.getDepth(Position.RIGHT);
+      }
       DepthSegment ds = new DepthSegment(seg, depth);
       stabbedSegments.add(ds);
     }
   }
 
 
+}
+
+
+
   /**
    * A segment from a directed edge which has been assigned a depth value
    * for its sides.
    */
-  static class DepthSegment
+
+  /**static */ class DepthSegment
       implements Comparable
   {
    /**private */LineSegment upwardSeg;
    /**private */int leftDepth;
 
-    DepthSegment(LineSegment seg, int depth)
-    {
-      // Assert: input seg is upward (p0.y <= p1.y)
-      upwardSeg = new LineSegment(seg);
-      this.leftDepth = depth;
-    }
+    DepthSegment(LineSegment seg, this.leftDepth)
+      :upwardSeg = new LineSegment.fromAnother(seg);
+    // {
+    //   // Assert: input seg is upward (p0.y <= p1.y)
+    //   this.leftDepth = depth;
+    // }
+    // DepthSegment(LineSegment seg, int depth)
+    // {
+    //   // Assert: input seg is upward (p0.y <= p1.y)
+    //   upwardSeg = new LineSegment(seg);
+    //   this.leftDepth = depth;
+    // }
     
     bool isUpward() {
       return upwardSeg.p0.y <= upwardSeg.p1.y;
@@ -185,9 +213,9 @@ class SubgraphDepthLocater
      * @param obj a DepthSegment
      * @return the comparison value
      */
-    int compareTo(Object obj)
+    int compareTo(var obj)
     {
-      DepthSegment other = (DepthSegment) obj;
+      DepthSegment other =  obj as DepthSegment;
       
       /**
        * If segment envelopes do not overlap, then
@@ -198,14 +226,14 @@ class SubgraphDepthLocater
           || upwardSeg.minY() >= other.upwardSeg.maxY()
           || upwardSeg.maxY() <= other.upwardSeg.minY()) {
         return upwardSeg.compareTo(other.upwardSeg);
-      };
+      }
       
       /**
        * Otherwise if envelopes overlap, use relative segment orientation.
        * 
        * Collinear segments should be evaluated by previous logic
        */
-      int orientIndex = upwardSeg.orientationIndex(other.upwardSeg);
+      int orientIndex = upwardSeg.orientationIndexOf(other.upwardSeg);
       if (orientIndex != 0) return orientIndex;
 
       /**
@@ -213,7 +241,7 @@ class SubgraphDepthLocater
        * try the opposite call order.
        * The sign of the result needs to be flipped.
        */
-      orientIndex = -1 * other.upwardSeg.orientationIndex(upwardSeg);
+      orientIndex = -1 * other.upwardSeg.orientationIndexOf(upwardSeg);
       if (orientIndex != 0) return orientIndex;
 
       /**
@@ -226,7 +254,7 @@ class SubgraphDepthLocater
     
     int OLDcompareTo(Object obj)
     {
-      DepthSegment other = (DepthSegment) obj;
+      DepthSegment other =  obj as DepthSegment;
       
       // fast check if segments are trivially ordered along X
       if (upwardSeg.minX() > other.upwardSeg.maxX()) return 1;
@@ -236,7 +264,7 @@ class SubgraphDepthLocater
        * try and compute a determinate orientation for the segments.
        * Test returns 1 if other is left of this (i.e. this > other)
        */
-      int orientIndex = upwardSeg.orientationIndex(other.upwardSeg);
+      int orientIndex = upwardSeg.orientationIndexOf(other.upwardSeg);
       if (orientIndex != 0) return orientIndex;
 
       /**
@@ -244,7 +272,7 @@ class SubgraphDepthLocater
        * try the opposite call order.
        * The sign of the result needs to be flipped.
        */
-      orientIndex = -1 * other.upwardSeg.orientationIndex(upwardSeg);
+      orientIndex = -1 * other.upwardSeg.orientationIndexOf(upwardSeg);
       if (orientIndex != 0) return orientIndex;
 
       // otherwise, use standard lexicographic segment ordering
@@ -256,4 +284,3 @@ class SubgraphDepthLocater
       return upwardSeg.toString();
     }
   }
-}

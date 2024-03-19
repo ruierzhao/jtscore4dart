@@ -44,6 +44,8 @@ import 'package:stack/stack.dart';
 import 'RightmostEdgeFinder.dart';
 
 /**
+ * 连接
+ * 
  * A connected subset of the graph of
  * {@link DirectedEdge}s and {@link Node}s.
  * Its edges will generate either
@@ -134,8 +136,8 @@ class BufferSubgraph
 
   /**
    * Adds the argument node and all its out edges to the subgraph
-   * @param node the node to add
-   * @param nodeStack the current set of nodes being traversed
+   * @param [node] the node to add
+   * @param [nodeStack] the current set of nodes being traversed
    */
  /**private */void add(Node node, Stack nodeStack)
   {
@@ -147,6 +149,8 @@ class BufferSubgraph
       DirectedEdge sym = de.getSym();
       Node symNode = sym.getNode();
       /**
+       * 深度优先遍历
+       * 
        * NOTE: this is a depth-first traversal of the graph.
        * This will cause a large depth of recursion.
        * It might be better to do a breadth-first traversal.

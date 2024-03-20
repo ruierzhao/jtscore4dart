@@ -122,7 +122,7 @@ class OffsetCurve {
    * @param mitreLimit the mitre limit (-1 for default)
    * @return the offset curve
    */
-  static Geometry getCurve(Geometry geom, double distance, [int? quadSegs, int? joinStyle, double? mitreLimit]) {
+  static Geometry getCurveS(Geometry geom, double distance, [int? quadSegs, int? joinStyle, double? mitreLimit]) {
     BufferParameters bufferParams = new BufferParameters();
     if (quadSegs != null && quadSegs >= 0) bufferParams.setQuadrantSegments(quadSegs);
     if (joinStyle != null && joinStyle >= 0) bufferParams.setJoinStyle(joinStyle);
@@ -177,8 +177,8 @@ class OffsetCurve {
    * @param bufParams the buffer parameters to use
    */
   OffsetCurve(this.inputGeom, this.distance, [BufferParameters? bufParams])
-  :matchDistance = (distance).abs() / MATCH_DISTANCE_FACTOR,
-  geomFactory = inputGeom.getFactory()
+    :matchDistance = (distance).abs() / MATCH_DISTANCE_FACTOR,
+    geomFactory = inputGeom.getFactory()
   {
     //-- make new buffer params since the end cap style must be the default
     // this.bufferParams = new BufferParameters();
@@ -214,32 +214,7 @@ class OffsetCurve {
    * @return the offset curve geometry
    */
   Geometry getCurve() {
-    return GeometryMapper.flatMap(inputGeom, 1, new GeometryMapper.MapOp() {
-      
-      @Override
-      Geometry map(Geometry geom) {
-        if (geom is Point) return null;
-        if (geom is Polygon ) {
-          return toLineString(geom.buffer(distance).getBoundary());
-        } 
-        return computeCurve((LineString) geom, distance);
-      }
-
-      /**
-       * Force LinearRings to be LineStrings.
-       * 
-       * @param geom a geometry which may be a LinearRing
-       * @return a geometry which will be a LineString or MultiLineString
-       */
-     /**private */
-     Geometry toLineString(Geometry geom) {
-        if (geom is LinearRing) {
-          LinearRing ring = (LinearRing) geom;
-          return geom.getFactory().createLineString(ring.getCoordinateSequence());
-        }
-        return geom;
-      }
-    });
+    return GeometryMapper.flatMap(inputGeom, 1, );
   }
   
   /**
@@ -255,14 +230,15 @@ class OffsetCurve {
    * @param bufParams the buffer parameters to use
    * @return the raw offset curve points
    */
-  static List<Coordinate> rawOffset(LineString line, double distance, BufferParameters bufParams)
+  static List<Coordinate> rawOffset(LineString line, double distance, [BufferParameters? bufParams])
   {
+    bufParams ??= new BufferParameters();
     List<Coordinate> pts = line.getCoordinates();
     List<Coordinate> cleanPts = CoordinateArrays.removeRepeatedOrInvalidPoints(pts);
     OffsetCurveBuilder ocb = new OffsetCurveBuilder(
         line.getFactory().getPrecisionModel(), bufParams
         );
-    List<Coordinate> rawPts = ocb.getOffsetCurve(cleanPts, distance);
+    List<Coordinate> rawPts = ocb.getOffsetCurve(cleanPts, distance)!;
     return rawPts;
   }
   
@@ -274,10 +250,10 @@ class OffsetCurve {
    * @param distance the offset distance (positive for left, negative for right)
    * @return the raw offset curve points
    */
-  static List<Coordinate> rawOffset(LineString line, double distance)
-  {
-    return rawOffset(line, distance, new BufferParameters());
-  }
+  // static List<Coordinate> rawOffset(LineString line, double distance)
+  // {
+  //   return rawOffset(line, distance, new BufferParameters());
+  // }
 
  /**private */Geometry computeCurve(LineString lineGeom, double distance) {
     //-- first handle simple cases
@@ -634,4 +610,35 @@ class OffsetCurve {
       return true;
     }  
   }
+
+class _flatMap implements MapOp {
+  var geom;
+  
+  var distance;
+
+  _flatMap(this.geom,this.distance);
+  @override
+  Geometry map(Geometry geom) {
+    if (geom is Point) return null;
+    if (geom is Polygon ) {
+      return toLineString(geom.buffer(distance).getBoundary());
+    } 
+    return computeCurve( geom as LineString, distance);
+  }
+
+  /**
+   * Force LinearRings to be LineStrings.
+   * 
+   * @param geom a geometry which may be a LinearRing
+   * @return a geometry which will be a LineString or MultiLineString
+   */
+  /**private */
+  Geometry toLineString(Geometry geom) {
+    if (geom is LinearRing) {
+      LinearRing ring =  geom as LinearRing;
+      return geom.getFactory().createLineStringFromSeq(ring.getCoordinateSequence());
+    }
+    return geom;
+  }
+}
 

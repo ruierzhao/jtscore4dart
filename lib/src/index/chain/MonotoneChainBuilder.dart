@@ -51,9 +51,9 @@ class MonotoneChainBuilder {
    * @param [context] a data object to attach to each chain
    * @return a list of the monotone chains for the points 
    */
-  static List getChains(List<Coordinate> pts, [Object? context])
+  static List<MonotoneChain> getChains(List<Coordinate> pts, [Object? context])
   {
-    List mcList = [];
+    List<MonotoneChain> mcList = <MonotoneChain>[];
     if (pts.isEmpty) {
       return mcList;
     }

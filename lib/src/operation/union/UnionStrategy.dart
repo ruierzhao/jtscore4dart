@@ -13,6 +13,8 @@
 
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 /**
  * A strategy class that adapts UnaryUnion to different 
  * kinds of overlay algorithms.

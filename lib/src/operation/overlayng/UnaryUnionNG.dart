@@ -11,7 +11,7 @@
  */
 
 
-import static org.locationtech.jts.operation.overlayng.OverlayNG.UNION;
+import org.locationtech.jts.operation.overlayng.OverlayNG.UNION;
 
 // import java.util.Collection;
 

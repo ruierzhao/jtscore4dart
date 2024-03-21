@@ -24,6 +24,14 @@
 // import org.locationtech.jts.geom.Puntal;
 // import org.locationtech.jts.operation.linemerge.LineMerger;
 
+import 'package:jtscore4dart/geometry.dart';
+
+import 'CascadedPolygonUnion.dart';
+import 'InputExtracter.dart';
+import 'UnionStrategy.dart';
+
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
 /**
  * Unions a <code>Collection</code> of {@link Geometry}s or a single Geometry 
  * (which may be a {@link GeometryCollection}) together.
@@ -107,21 +115,20 @@ class UnaryUnionOp
 		return op.union();
 	}
 	
-	private GeometryFactory geomFact = null;
+	/**private */ GeometryFactory? geomFact = null;
 
- /**private */InputExtracter extracter;
- /**private */UnionStrategy unionFunction = CascadedPolygonUnion.CLASSIC_UNION;
+ /**private */ InputExtracter extracter;
+ /**private */ UnionStrategy unionFunction = CascadedPolygonUnion.CLASSIC_UNION;
 
 	/**
 	 * Constructs a unary union operation for a {@link Collection} 
 	 * of {@link Geometry}s.
 	 * 
-	 * @param geoms a collection of geometries
-	 * @param geomFact the geometry factory to use if the collection is empty
+	 * @param [geoms] a collection of geometries
+	 * @param [geomFact] the geometry factory to use if the collection is empty
 	 */
-	UnaryUnionOp(Collection geoms, GeometryFactory geomFact)
+	UnaryUnionOp(Iterable geoms, [this.geomFact])
 	{
-		this.geomFact = geomFact;
 		extract(geoms);
 	}
 	
@@ -132,10 +139,10 @@ class UnaryUnionOp
 	 * 
 	 * @param geoms a collection of geometries
 	 */
-	UnaryUnionOp(Collection geoms)
-	{
-		extract(geoms);
-	}
+	// UnaryUnionOp(Collection geoms)
+	// {
+	// 	extract(geoms);
+	// }
 	
 	/**
 	 * Constructs a unary union operation for a {@link Geometry}
@@ -151,12 +158,12 @@ class UnaryUnionOp
 	  this.unionFunction = unionFun;
 	}
 	
-	private void extract(Collection geoms)
+	/**private */ void extract(Collection geoms)
 	{
 	  extracter = InputExtracter.extract(geoms);
 	}
 	
-	private void extract(Geometry geom)
+	/**private */ void extract(Geometry geom)
 	{
 		extracter = InputExtracter.extract(geom);
 	}
@@ -178,10 +185,9 @@ class UnaryUnionOp
 	 * or an empty atomic geometry, or an empty GEOMETRYCOLLECTION,
 	 * or <code>null</code> if no GeometryFactory was provided
 	 */
-	Geometry union()
+	Geometry? union()
 	{
-	  if (geomFact == null)
-	    geomFact = extracter.getFactory();
+	  geomFact ??= extracter.getFactory();
 	  
 	  // Case 3
 		if (geomFact == null) {
@@ -190,7 +196,7 @@ class UnaryUnionOp
 		
 		// Case 1 & 2
 		if (extracter.isEmpty()) {
-		  return geomFact.createEmpty( extracter.getDimension() );
+		  return geomFact!.createEmpty( extracter.getDimension() );
 		}
     List points = extracter.getExtract(0);
     List lines = extracter.getExtract(1);
@@ -202,7 +208,7 @@ class UnaryUnionOp
 		 * MultiPoint and MultiLineStrings.
 		 * This is not the case for polygons, so Cascaded Union is required.
 		 */
-		Geometry unionPoints = null;
+		Geometry? unionPoints = null;
 		if (points.size() > 0) {
 			Geometry ptGeom = geomFact.buildGeometry(points);
 			unionPoints = unionNoOpt(ptGeom);
@@ -272,7 +278,7 @@ class UnaryUnionOp
    * @param g0 a geometry
    * @return the union of the input geometry
    */
-	private Geometry unionNoOpt(Geometry g0)
+	/**private */ Geometry unionNoOpt(Geometry g0)
 	{
     Geometry empty = geomFact.createPoint();
 		return unionFunction.union(g0, empty);

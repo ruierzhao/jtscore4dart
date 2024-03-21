@@ -59,16 +59,16 @@ class GeometryOverlay
 
  /**private */static bool isOverlayNG = OVERLAY_NG_DEFAULT;
 
-  static {
-    setOverlayImpl(System.getProperty(OVERLAY_PROPERTY_NAME));
-  }
+  // static {
+  //   setOverlayImpl(System.getProperty(OVERLAY_PROPERTY_NAME));
+  // }
   
   /**
    * This function is provided primarily for unit testing.
    * It is not recommended to use it dynamically, since 
    * that may result in inconsistent overlay behaviour.
    * 
-   * @param overlayImplCode the code for the overlay method (may be null)
+   * @param [overlayImplCode] the code for the overlay method (may be null)
    */
   static void setOverlayImpl([String? overlayImplCode]) {
     if (overlayImplCode == null) {

@@ -26,6 +26,16 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'package:jtscore4dart/src/geom/Dimension.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryCollection.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
 /**
  * Extracts atomic elements from 
  * input geometries or collections, 
@@ -41,12 +51,12 @@ class InputExtracter implements GeometryFilter
   /**
    * Extracts elements from a collection of geometries.
    * 
-   * @param geoms a collection of geometries
+   * @param [geoms] a collection of geometries
    * @return an extracter over the geometries
    */
-  static InputExtracter extract(Collection<Geometry> geoms) {
+  static InputExtracter extractAll(Iterable<Geometry> geoms) {
     InputExtracter extracter = new InputExtracter();
-    extracter.add(geoms);
+    extracter.addAll(geoms);
     return extracter;
   }
   
@@ -62,19 +72,20 @@ class InputExtracter implements GeometryFilter
     return extracter;
   }
   
- /**private */GeometryFactory geomFactory = null;
- /**private */List<Polygon> polygons = new ArrayList<Polygon>();
- /**private */List<LineString> lines = new ArrayList<LineString>();
- /**private */List<Point> points = new ArrayList<Point>();
+ /**private */GeometryFactory? geomFactory = null;
+//  /**private */List<Polygon> polygons = new ArrayList<Polygon>();
+//  /**private */List<LineString> lines = new ArrayList<LineString>();
+//  /**private */List<Point> points = new ArrayList<Point>();
+  List<Polygon> polygons = <Polygon>[];
+  List<LineString> lines = <LineString>[];
+  List<Point> points = <Point>[];
   
   /**
    * The default dimension for an empty GeometryCollection
    */
  /**private */int dimension = Dimension.FALSE;
   
-  InputExtracter() {
-    
-  }
+  InputExtracter();
   
   /**
    * Tests whether there were any non-empty geometries extracted.
@@ -82,9 +93,9 @@ class InputExtracter implements GeometryFilter
    * @return true if there is a non-empty geometry present
    */
   bool isEmpty() {
-    return polygons.isEmpty() 
-        && lines.isEmpty()
-        && points.isEmpty();
+    return polygons.isEmpty 
+        && lines.isEmpty
+        && points.isEmpty;
   }
   
   /**
@@ -103,40 +114,39 @@ class InputExtracter implements GeometryFilter
    * 
    * @return a geometry factory, or null if one could not be determined
    */
-  GeometryFactory getFactory() {
+  GeometryFactory? getFactory() {
     return geomFactory;
   }
   
   /**
    * Gets the extracted atomic geometries of the given dimension <code>dim</code>.
    * 
-   * @param dim the dimension of geometry to return
+   * @param [dim] the dimension of geometry to return
    * @return a list of the extracted geometries of dimension dim.
    */
   List getExtract(int dim) {
     switch (dim) {
-    case 0: return points;
-    case 1: return lines;
-    case 2: return polygons;
+      case 0: return points;
+      case 1: return lines;
+      case 2: return polygons;
     }
-    Assert.shouldNeverReachHere("Invalid dimension: "  + dim);
-    return null;
+    Assert.shouldNeverReachHere("Invalid dimension: $dim" );
+    return [];
   }
   
- /**private */void add(Collection<Geometry> geoms) {
-    for (Geometry geom : geoms) {
+ /**private */void addAll(Iterable<Geometry> geoms) {
+    for (Geometry geom in geoms) {
       add(geom);
     }
   }
   
  /**private */void add(Geometry geom) {
-    if (geomFactory == null)
-      geomFactory = geom.getFactory();
+    geomFactory ??= geom.getFactory();
     
     geom.apply(this);
   }
 
-  @Override
+  @override
   void filter(Geometry geom) {
     recordDimension( geom.getDimension() );
     
@@ -146,26 +156,28 @@ class InputExtracter implements GeometryFilter
     /**
      * Don't keep empty geometries
      */
-    if (geom.isEmpty()) 
+    if (geom.isEmpty()) {
       return;
+    }
     
     if (geom is Polygon) {
-      polygons.add((Polygon) geom);
+      polygons.add( geom);
       return;
     }
     else if (geom is LineString) {
-      lines.add((LineString) geom);
+      lines.add( geom);
       return;
     }
     else if (geom is Point) {
-      points.add((Point) geom);
+      points.add( geom);
       return;
     }
     Assert.shouldNeverReachHere("Unhandled geometry type: " + geom.getGeometryType());
   }
 
  /**private */void recordDimension(int dim) {
-    if (dim > dimension )
+    if (dim > dimension ) {
       dimension = dim;
+    }
   }
 }

@@ -23,6 +23,33 @@
 // import org.locationtech.jts.operation.union.UnaryUnionOp;
 // import org.locationtech.jts.operation.union.UnionStrategy;
 
+import "dart:math";
+
+import "package:jtscore4dart/src/geom/Envelope.dart";
+import "package:jtscore4dart/src/geom/Geometry.dart";
+import "package:jtscore4dart/src/geom/GeometryFactory.dart";
+import "package:jtscore4dart/src/geom/PrecisionModel.dart";
+import "package:jtscore4dart/src/noding/snap/SnappingNoder.dart";
+
+import "../union/UnaryUnionOp.dart";
+import "../union/UnionStrategy.dart";
+import "OverlayNG.dart";
+import "PrecisionUtil.dart";
+
+
+class _UnionStrategy implements UnionStrategy {
+
+    @override
+    Geometry union(Geometry g0, Geometry g1) {
+       return OverlayNGRobust.overlay(g0, g1, OverlayNG.UNION );
+    }
+
+    @override
+    bool isFloatingPrecision() {
+      return true;
+    }
+  }
+
 /**
  * Performs an overlay operation using {@link OverlayNG}, 
  * providing full robustness by using a series of
@@ -59,7 +86,7 @@ class OverlayNGRobust
   /**
    * Computes the unary union of a geometry using robust computation.
    * 
-   * @param geom the geometry to union
+   * @param [geom] the geometry to union
    * @return the union result
    * 
    * @see UnaryUnionOp
@@ -97,17 +124,7 @@ class OverlayNGRobust
     return op.union();
   }
   
- /**private */static UnionStrategy OVERLAY_UNION = new UnionStrategy() {
-
-    Geometry union(Geometry g0, Geometry g1) {
-       return overlay(g0, g1, OverlayNG.UNION );
-    }
-
-    @Override
-    bool isFloatingPrecision() {
-      return true;
-    }
-  };
+ /**private */static UnionStrategy OVERLAY_UNION = _UnionStrategy();
   
   /**
    * Overlay two geometries, using heuristics to ensure
@@ -124,7 +141,9 @@ class OverlayNGRobust
   static Geometry overlay(Geometry geom0, Geometry geom1, int opCode)
   {
     Geometry result;
-    RuntimeException exOriginal;
+    // RuntimeException exOriginal;
+    /// TODO: @ruier edit.
+    Exception exOriginal;
     
     /**
      * First try overlay with a FLOAT noder, which is fast and causes least
@@ -137,7 +156,7 @@ class OverlayNGRobust
       result = OverlayNG.overlay(geom0, geom1, opCode );       
       return result;
     }
-    catch (RuntimeException ex) {
+     on /**RuntimeException */ Exception catch (ex)  {
       /**
        * Capture original exception,
        * so it can be rethrown if the remaining strategies all fail.
@@ -167,7 +186,7 @@ class OverlayNGRobust
     throw exOriginal;
   }
 
- /**private */static final int NUM_SNAP_TRIES = 5;
+ /**private */static const int NUM_SNAP_TRIES = 5;
 
   /**
    * Attempt overlay using snapping with repeated tries with increasing snap tolerances.
@@ -252,8 +271,8 @@ class OverlayNGRobust
    * Collapsed artifacts are removed from the result to allow using
    * it in further overlay operations.
    * 
-   * @param geom geometry to self-snap
-   * @param snapTol snap tolerance
+   * @param [geom] geometry to self-snap
+   * @param [snapTol] snap tolerance
    * @return the snapped geometry (homogeneous)
    */
  /**private */static Geometry snapSelf(Geometry geom, double snapTol) {
@@ -280,7 +299,7 @@ class OverlayNGRobust
    * A factor for a snapping tolerance distance which 
    * should allow noding to be computed robustly.
    */
- /**private */static final double SNAP_TOL_FACTOR = 1e12;
+ /**private */static const double SNAP_TOL_FACTOR = 1e12;
 
   /**
    * Computes a heuristic snap tolerance distance
@@ -291,13 +310,13 @@ class OverlayNGRobust
    * @return the snap tolerance
    */
  /**private */static double snapTolerance(Geometry geom0, Geometry geom1) {
-    double tol0 = snapTolerance(geom0);
-    double tol1 = snapTolerance(geom1);
-    double snapTol = math.max(tol0,  tol1);
+    double tol0 = snapTolerance$1(geom0);
+    double tol1 = snapTolerance$1(geom1);
+    double snapTol = max(tol0,  tol1);
     return snapTol;
   }
   
- /**private */static double snapTolerance(Geometry geom) {
+ /**private */static double snapTolerance$1(Geometry geom) {
     double magnitude = ordinateMagnitude(geom);
     return magnitude / SNAP_TOL_FACTOR;
   }
@@ -312,11 +331,11 @@ class OverlayNGRobust
  /**private */static double ordinateMagnitude(Geometry geom) {
     if (geom == null || geom.isEmpty()) return 0;
     Envelope env = geom.getEnvelopeInternal();
-    double magMax = math.max(
+    double magMax = max(
         (env.getMaxX().abs()), (env.getMaxY().abs()));
-    double magMin = math.max(
+    double magMin = max(
         (env.getMinX().abs()), (env.getMinY().abs()));
-    return math.max(magMax, magMin);
+    return max(magMax, magMin);
   }
   
   //===============================================
@@ -337,7 +356,8 @@ class OverlayNGRobust
    * @param opCode
    * @return the computed overlay result, or null if the overlay fails
    */
- /**private */static Geometry overlaySR(Geometry geom0, Geometry geom1, int opCode)
+ /**private */
+ static Geometry? overlaySR(Geometry geom0, Geometry geom1, int opCode)
   {
     Geometry result;
     try {

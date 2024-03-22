@@ -33,31 +33,33 @@ import 'UnionStrategy.dart';
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
 
 /**
+ * 合并 Collection 为一个
+ * 
  * Unions a <code>Collection</code> of {@link Geometry}s or a single Geometry 
  * (which may be a {@link GeometryCollection}) together.
  * By using this special-purpose operation over a collection of geometries
  * it is possible to take advantage of various optimizations to improve performance.
  * Heterogeneous {@link GeometryCollection}s are fully supported.
  * <p>
- * The result obeys the following contract:
- * <ul>
- * <li>Unioning a set of {@link Polygon}s has the effect of
- * merging the areas (i.e. the same effect as 
- * iteratively unioning all individual polygons together).
+ *   The result obeys the following contract:
+ *   <ul>
+ *     <li>Unioning a set of {@link Polygon}s has the effect of
+ *         merging the areas (i.e. the same effect as 
+ *         iteratively unioning all individual polygons together).
  * 
- * <li>Unioning a set of {@link LineString}s has the effect of <b>noding</b> 
- * and <b>dissolving</b> the input linework.
- * In this context "fully noded" means that there will be 
- * an endpoint or node in the result 
- * for every endpoint or line segment crossing in the input.
- * "Dissolved" means that any duplicate (i.e. coincident) line segments or portions
- * of line segments will be reduced to a single line segment in the result.  
- * This is consistent with the semantics of the 
- * {@link Geometry#union(Geometry)} operation.
- * If <b>merged</b> linework is required, the {@link LineMerger} class can be used.
+ *     <li>Unioning a set of {@link LineString}s has the effect of <b>noding</b> 
+ *          and <b>dissolving</b> the input linework.
+ *          In this context "fully noded" means that there will be 
+ *          an endpoint or node in the result 
+ *          for every endpoint or line segment crossing in the input.
+ *          "Dissolved" means that any duplicate (i.e. coincident) line segments or portions
+ *          of line segments will be reduced to a single line segment in the result.  
+ *          This is consistent with the semantics of the 
+ *          {@link Geometry#union(Geometry)} operation.
+ *          If <b>merged</b> linework is required, the {@link LineMerger} class can be used.
  * 
- * <li>Unioning a set of {@link Point}s has the effect of merging
- * all identical points (producing a set with no duplicates).
+ *      <li>Unioning a set of {@link Point}s has the effect of merging
+ *          all identical points (producing a set with no duplicates).
  * </ul>
  * 
  * <tt>UnaryUnion</tt> always operates on the individual components of MultiGeometries.
@@ -77,9 +79,9 @@ class UnaryUnionOp
 	 * @return the union of the geometries, 
 	 * or <code>null</code> if the input is empty
 	 */
-	static Geometry union(Collection geoms)
+	static Geometry unionAll(Iterable geoms)
 	{
-		UnaryUnionOp op = new UnaryUnionOp(geoms);
+		UnaryUnionOp op = new UnaryUnionOp.all(geoms);
 		return op.union();
 	}
 	
@@ -95,9 +97,9 @@ class UnaryUnionOp
 	 * @return the union of the geometries,
 	 * or an empty GEOMETRYCOLLECTION
 	 */
-	static Geometry union(Collection geoms, GeometryFactory geomFact)
+	static Geometry union(Iterable geoms, [GeometryFactory? geomFact])
 	{
-		UnaryUnionOp op = new UnaryUnionOp(geoms, geomFact);
+		UnaryUnionOp op = new UnaryUnionOp.all(geoms, geomFact);
 		return op.union();
 	}
 	
@@ -115,9 +117,9 @@ class UnaryUnionOp
 		return op.union();
 	}
 	
-	/**private */ GeometryFactory? geomFact = null;
+	/**private */ GeometryFactory? geomFact;
 
- /**private */ InputExtracter extracter;
+ /**private */ late  InputExtracter extracter;
  /**private */ UnionStrategy unionFunction = CascadedPolygonUnion.CLASSIC_UNION;
 
 	/**
@@ -127,9 +129,9 @@ class UnaryUnionOp
 	 * @param [geoms] a collection of geometries
 	 * @param [geomFact] the geometry factory to use if the collection is empty
 	 */
-	UnaryUnionOp(Iterable geoms, [this.geomFact])
+	UnaryUnionOp.all(Iterable geoms, [this.geomFact])
 	{
-		extract(geoms);
+		extractAll(geoms);
 	}
 	
 	/**
@@ -158,9 +160,9 @@ class UnaryUnionOp
 	  this.unionFunction = unionFun;
 	}
 	
-	/**private */ void extract(Collection geoms)
+	/**private */ void extractAll(Iterable<Geometry> geoms)
 	{
-	  extracter = InputExtracter.extract(geoms);
+	  extracter = InputExtracter.extractAll(geoms);
 	}
 	
 	/**private */ void extract(Geometry geom)
@@ -208,19 +210,19 @@ class UnaryUnionOp
 		 * MultiPoint and MultiLineStrings.
 		 * This is not the case for polygons, so Cascaded Union is required.
 		 */
-		Geometry? unionPoints = null;
+		Geometry? unionPoints;
 		if (points.size() > 0) {
-			Geometry ptGeom = geomFact.buildGeometry(points);
+			Geometry ptGeom = geomFact!.buildGeometry(points);
 			unionPoints = unionNoOpt(ptGeom);
 		}
 		
-		Geometry unionLines = null;
+		Geometry? unionLines;
 		if (lines.size() > 0) {
-			Geometry lineGeom = geomFact.buildGeometry(lines);
+			Geometry lineGeom = geomFact!.buildGeometry(lines);
 			unionLines = unionNoOpt(lineGeom);
 		}
 		
-		Geometry unionPolygons = null;
+		Geometry? unionPolygons;
 		if (polygons.size() > 0) {
 			unionPolygons = CascadedPolygonUnion.union(polygons, unionFunction);
 		}
@@ -230,16 +232,19 @@ class UnaryUnionOp
      * but is mitigated by unioning lines and points first
      */
 		Geometry unionLA = unionWithNull(unionLines, unionPolygons);
-		Geometry union = null;
-		if (unionPoints == null)
-			union = unionLA;
-		else if (unionLA == null)
-			union = unionPoints;
-		else 
-			union = PointGeometryUnion.union((Puntal) unionPoints, unionLA);
+		Geometry? union = null;
+		if (unionPoints == null) {
+		  union = unionLA;
+		} else if (unionLA == null){
+      union = unionPoints;
+    }else {
+      union = PointGeometryUnion.union((Puntal) unionPoints, unionLA);
+    }
+			
 		
-		if (union == null)
-			return geomFact.createGeometryCollection();
+		if (union == null) {
+		  return geomFact.createGeometryCollection();
+		}
 		
 		return union;
 	}
@@ -253,15 +258,18 @@ class UnaryUnionOp
    * @return the union of the input(s)
    * or null if both inputs are null
    */
- /**private */Geometry unionWithNull(Geometry g0, Geometry g1)
+ /**private */Geometry? unionWithNull(Geometry g0, Geometry g1)
   {
-  	if (g0 == null && g1 == null)
-  		return null;
+  	if (g0 == null && g1 == null) {
+  	  return null;
+  	}
 
-  	if (g1 == null)
-  		return g0;
-  	if (g0 == null)
-  		return g1;
+  	if (g1 == null) {
+  	  return g0;
+  	}
+  	if (g0 == null) {
+  	  return g1;
+  	}
   	
   	return g0.union(g1);
   }
@@ -280,7 +288,7 @@ class UnaryUnionOp
    */
 	/**private */ Geometry unionNoOpt(Geometry g0)
 	{
-    Geometry empty = geomFact.createPoint();
+    Geometry empty = geomFact!.createPoint();
 		return unionFunction.union(g0, empty);
 	}
 	

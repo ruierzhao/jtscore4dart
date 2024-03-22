@@ -30,6 +30,17 @@ import 'GeometryCollection.dart';
 import 'util/GeometryCollectionMapper.dart';
 import 'util/GeometryMapper.dart';
 
+class _ implements MapOp {
+  final Geometry g2;
+
+  _(this.g2);
+
+  @override
+  Geometry map(Geometry g) {
+    return g.intersection(g2);
+  }
+}
+
 /**
  * Internal class which encapsulates the runtime switch to use OverlayNG,
  * and some additional extensions for optimization and GeometryCollection handling.
@@ -77,7 +88,8 @@ class GeometryOverlay
     // set flag explicitly since current value may not be default
     isOverlayNG = OVERLAY_NG_DEFAULT;
     
-    if (OVERLAY_PROPERTY_VALUE_NG.equalsIgnoreCase(overlayImplCode) ) {
+    // if (OVERLAY_PROPERTY_VALUE_NG.equalsIgnoreCase(overlayImplCode) ) {
+    if (OVERLAY_PROPERTY_VALUE_NG.toLowerCase() == overlayImplCode.toLowerCase() ) {
       isOverlayNG = true;
     }
   }
@@ -119,12 +131,16 @@ class GeometryOverlay
     if (a.isGeometryCollection()) {
       final Geometry g2 = b;
       return GeometryCollectionMapper.map(
-          (GeometryCollection) a,
-          new GeometryMapper.MapOp() {
-            Geometry map(Geometry g) {
-              return g.intersection(g2);
-            }
-      });
+          a as GeometryCollection,
+          _(g2)
+          );
+      // return GeometryCollectionMapper.map(
+      //     (GeometryCollection) a,
+      //     new GeometryMapper.MapOp() {
+      //       Geometry map(Geometry g) {
+      //         return g.intersection(g2);
+      //       }
+      // });
     }
 
     // No longer needed since GCs are handled by previous code
@@ -165,7 +181,6 @@ class GeometryOverlay
       if (a.isEmpty()) return b.copy();
       if (b.isEmpty()) return a.copy();
     }
-
     // TODO: optimize if envelopes of geometries do not intersect
 
     Geometry.checkNotGeometryCollection(a);

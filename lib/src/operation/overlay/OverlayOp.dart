@@ -34,6 +34,31 @@
 // import org.locationtech.jts.operation.GeometryGraphOperation;
 // import org.locationtech.jts.util.Assert;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geomgraph/Depth.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdgeStar.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeList.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeNodingValidator.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
+import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import '../GeometryGraphOperation.dart';
+import 'LineBuilder.dart';
+import 'OverlayNodeFactory.dart';
+import 'PointBuilder.dart';
+import 'PolygonBuilder.dart';
+
 /**
  * Computes the geometric overlay of two {@link Geometry}s.  The overlay
  * can be used to determine any bool combination of the geometries.
@@ -51,22 +76,22 @@ class OverlayOp
   /**
    * The code for the Intersection overlay operation.
    */
-  static final int INTERSECTION  = 1;
+  static const int INTERSECTION  = 1;
   
   /**
    * The code for the Union overlay operation.
    */
-  static final int UNION         = 2;
+  static const int UNION         = 2;
   
   /**
    *  The code for the Difference overlay operation.
    */
-  static final int DIFFERENCE    = 3;
+  static const int DIFFERENCE    = 3;
   
   /**
    *  The code for the Symmetric Difference overlay operation.
    */
-  static final int SYMDIFFERENCE = 4;
+  static const int SYMDIFFERENCE = 4;
 
   /**
    * Computes an overlay operation for 
@@ -260,8 +285,8 @@ class OverlayOp
 
  /**private */void insertUniqueEdges(List edges)
   {
-    for (Iterator i = edges.iterator(); i.moveNext(); ) {
-      Edge e = (Edge) i.current;
+    for (Iterator i = edges.iterator; i.moveNext(); ) {
+      Edge e = i.current;
       insertUniqueEdge(e);
     }
   }
@@ -286,7 +311,7 @@ class OverlayOp
       // check if new edge is in reverse direction to existing edge
       // if so, must flip the label before merging it
       if (! existingEdge.isPointwiseEqual(e)) {
-        labelToMerge = new Label(e.getLabel());
+        labelToMerge = new Label.FromAnother(e.getLabel());
         labelToMerge.flip();
       }
       Depth depth = existingEdge.getDepth();
@@ -344,7 +369,7 @@ class OverlayOp
  /**private */void computeLabelsFromDepths()
   {
     for (Iterator it = edgeList.iterator(); it.moveNext(); ) {
-      Edge e = (Edge) it.current;
+      Edge e =  it.current;
       Label lbl = e.getLabel();
       Depth depth = e.getDepth();
       /**
@@ -390,7 +415,7 @@ class OverlayOp
   {
     List newEdges = [];
     for (Iterator it = edgeList.iterator(); it.moveNext(); ) {
-      Edge e = (Edge) it.current;
+      Edge e = it.current;
       if (e.isCollapsed()) {
 //Debug.print(e);
         it.remove();
@@ -411,7 +436,7 @@ class OverlayOp
  /**private */void copyPoints(int argIndex)
   {
     for (Iterator i = arg[argIndex].getNodeIterator(); i.moveNext(); ) {
-      Node graphNode = (Node) i.current;
+      Node graphNode =  i.current;
       Node newNode = graph.addNode(graphNode.getCoordinate());
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
     }
@@ -426,8 +451,8 @@ class OverlayOp
    */
  /**private */void computeLabelling()
   {
-    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.moveNext(); ) {
-      Node node = (Node) nodeit.current;
+    for (Iterator nodeit = graph.getNodes().iterator; nodeit.moveNext(); ) {
+      Node node = nodeit.current;
 //if (node.getCoordinate().equals(new Coordinate(222, 100)) ) Debug.addWatch(node.getEdges());
       node.getEdges().computeLabelling(arg);
     }
@@ -442,9 +467,9 @@ class OverlayOp
    */
  /**private */void mergeSymLabels()
   {
-    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.moveNext(); ) {
-      Node node = (Node) nodeit.current;
-      ((DirectedEdgeStar) node.getEdges()).mergeSymLabels();
+    for (Iterator nodeit = graph.getNodes().iterator; nodeit.moveNext(); ) {
+      Node node =  nodeit.current;
+      ( node.getEdges() as DirectedEdgeStar).mergeSymLabels();
 //node.print(System.out);
     }
   }
@@ -454,9 +479,9 @@ class OverlayOp
     // The label for a node is updated from the edges incident on it
     // (Note that a node may have already been labelled
     // because it is a point in one of the input geometries)
-    for (Iterator nodeit = graph.getNodes().iterator(); nodeit.moveNext(); ) {
-      Node node = (Node) nodeit.current;
-      Label lbl = ((DirectedEdgeStar) node.getEdges()).getLabel();
+    for (Iterator nodeit = graph.getNodes().iterator; nodeit.moveNext(); ) {
+      Node node =  nodeit.current;
+      Label lbl = ( node.getEdges() as DirectedEdgeStar).getLabel();
       node.getLabel().merge(lbl);
     }
   }
@@ -479,18 +504,19 @@ class OverlayOp
  /**private */void labelIncompleteNodes()
   {
   	// int nodeCount = 0;
-    for (Iterator ni = graph.getNodes().iterator(); ni.moveNext(); ) {
-      Node n = (Node) ni.current;
+    for (Iterator ni = graph.getNodes().iterator; ni.moveNext(); ) {
+      Node n =  ni.current;
       Label label = n.getLabel();
       if (n.isIsolated()) {
       	// nodeCount++;
-        if (label.isNull(0))
+        if (label.isNull(0)) {
           labelIncompleteNode(n, 0);
-        else
+        } else {
           labelIncompleteNode(n, 1);
+        }
       }
       // now update the labelling for the DirectedEdges incident on this node
-      ((DirectedEdgeStar) n.getEdges()).updateLabelling(label);
+      ( n.getEdges() as DirectedEdgeStar).updateLabelling(label);
 //n.print(System.out);
     }
     /*
@@ -511,7 +537,7 @@ class OverlayOp
   	
   	// MD - 2008-10-24 - experimental for now
 //    int loc = arg[targetIndex].locate(n.getCoordinate());
-    n.getLabel().setLocation(targetIndex, loc);
+    n.getLabel().setLocationOn(targetIndex, loc);
   }
 
   /**
@@ -524,8 +550,8 @@ class OverlayOp
    */
  /**private */void findResultAreaEdges(int opCode)
   {
-    for (Iterator it = graph.getEdgeEnds().iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+    for (Iterator it = graph.getEdgeEnds().iterator; it.moveNext(); ) {
+      DirectedEdge de = it.current;
     // mark all dirEdges with the appropriate label
       Label label = de.getLabel();
       if (label.isArea()
@@ -547,8 +573,8 @@ class OverlayOp
   {
     // remove any dirEdges whose sym is also included
     // (they "cancel each other out")
-    for (Iterator it = graph.getEdgeEnds().iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+    for (Iterator it = graph.getEdgeEnds().iterator; it.moveNext(); ) {
+      DirectedEdge de =  it.current as DirectedEdge;
       DirectedEdge sym = de.getSym();
       if (de.isInResult() && sym.isInResult()) {
         de.setInResult(false);
@@ -586,8 +612,8 @@ class OverlayOp
    */
  /**private */bool isCovered(Coordinate coord, List geomList)
   {
-    for (Iterator it = geomList.iterator(); it.moveNext(); ) {
-      Geometry geom = (Geometry) it.current;
+    for (Iterator it = geomList.iterator; it.moveNext(); ) {
+      Geometry geom = it.current;
       int loc = ptLocator.locate(coord, geom);
       if (loc != Location.EXTERIOR) return true;
     }
@@ -606,8 +632,9 @@ class OverlayOp
     geomList.addAll(resultPolyList);
     
     //*
-    if (geomList.isEmpty())
-    	return createEmptyResult(opcode, arg[0].getGeometry(), arg[1].getGeometry(), geomFact);
+    if (geomList.isEmpty) {
+      return createEmptyResult(opcode, arg[0].getGeometry(), arg[1].getGeometry(), geomFact);
+    }
     //*/
     
     // build the most specific geometry possible
@@ -637,7 +664,7 @@ class OverlayOp
    */
   static Geometry createEmptyResult(int overlayOpCode, Geometry a, Geometry b, GeometryFactory geomFact)
   {
-    Geometry result = null;
+    Geometry? result = null;
     int resultDim = resultDimension(overlayOpCode, a, b);
 
     /**
@@ -654,10 +681,10 @@ class OverlayOp
   	int resultDimension = -1;
   	switch (opCode) {
   	case INTERSECTION: 
-  		resultDimension = math.min(dim0, dim1);
+  		resultDimension = min(dim0, dim1);
   		break;
   	case UNION: 
-  		resultDimension = math.max(dim0, dim1);
+  		resultDimension = max(dim0, dim1);
   		break;
   	case DIFFERENCE: 
   		resultDimension = dim0;
@@ -670,7 +697,7 @@ class OverlayOp
   	   * </pre>
   	   * and Union has the dimension of the highest-dimension argument.
   	   */
-  		resultDimension = math.max(dim0, dim1);
+  		resultDimension = max(dim0, dim1);
   		break;
   	}
   	return resultDimension;

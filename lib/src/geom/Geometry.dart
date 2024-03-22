@@ -1626,7 +1626,7 @@ abstract class Geometry{
     if (other.isEmpty()) {
       return 1;
     }
-    return compareToSameClass(o, comp);
+    return compareToSameClassWithCompar(o, comp);
   }
 
   ///  Returns whether the two <code>Geometry</code>s are equal, from the point

@@ -15,6 +15,9 @@
 // import org.locationtech.jts.geom.CoordinateFilter;
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
+
 /**
  *  A {@link CoordinateFilter} that creates an array containing every
  *  coordinate in a {@link Geometry}.
@@ -22,7 +25,7 @@
  *@version 1.7
  */
 class CoordinateArrayFilter implements CoordinateFilter {
-  List<Coordinate> pts = null;
+  List<Coordinate> pts ;
   int n = 0;
 
   /**
@@ -31,9 +34,10 @@ class CoordinateArrayFilter implements CoordinateFilter {
    *@param  size  the number of points that the <code>CoordinateArrayFilter</code>
    *      will collect
    */
-  CoordinateArrayFilter(int size) {
-    pts = new Coordinate[size];
-  }
+  CoordinateArrayFilter(int size):pts = List.filled(size, Coordinate.empty2D(),growable: false);
+  // CoordinateArrayFilter(int size) {
+  //   pts = new Coordinate[size];
+  // }
 
   /**
    *  Returns the gathered <code>Coordinate</code>s.

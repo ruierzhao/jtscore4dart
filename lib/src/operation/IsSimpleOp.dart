@@ -39,9 +39,16 @@
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeIntersection.dart';
+import 'package:jtscore4dart/src/geomgraph/GeometryGraph.dart';
+import 'package:jtscore4dart/src/geomgraph/index/SegmentIntersector.dart';
 
 /**
- * Polygon: isSimple不能判断自相交，使用isValid
+ * Polygon: isSimple 不能判断自相交，使用isValid
  * Linear: isSimple 说明两个线部件满足 Geometry#touches(Geometry)
  * point: isSimple 说明两个点未重合
  * 
@@ -122,7 +129,7 @@ class IsSimpleOp
    * @param boundaryNodeRule the rule to use.
    */
   // IsSimpleOp(Geometry geom, BoundaryNodeRule boundaryNodeRule)
-  IsSimpleOp([this.inputGeom,BoundaryNodeRule boundaryNodeRule])
+  IsSimpleOp([this.inputGeom, BoundaryNodeRule boundaryNodeRule])
   :isClosedEndpointsInInterior = ! boundaryNodeRule.isInBoundary(2);
   // {
   //   this.inputGeom = geom;
@@ -146,7 +153,7 @@ class IsSimpleOp
     if (geom.isEmpty()) return true;
     if (geom is LineString) return isSimpleLinearGeometry(geom);
     if (geom is MultiLineString) return isSimpleLinearGeometry(geom);
-    if (geom is MultiPoint) return isSimpleMultiPoint((MultiPoint) geom);
+    if (geom is MultiPoint) return isSimpleMultiPoint( geom);
     if (geom is Polygonal) return isSimplePolygonal(geom);
     if (geom is GeometryCollection) return isSimpleGeometryCollection(geom);
     // all other geometry types are simple by definition

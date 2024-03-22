@@ -188,7 +188,7 @@ implements SpatialIndex /**, Serializable  */
     return slices;
   }
 
- /**private */static final int DEFAULT_NODE_CAPACITY = 10;
+ /**private */static const int DEFAULT_NODE_CAPACITY = 10;
   
   /**
    * Constructs an STRtree with the default node capacity.

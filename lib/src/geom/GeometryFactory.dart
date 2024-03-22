@@ -503,12 +503,14 @@ class GeometryFactory{
   	/**
   	 * Determine some facts about the geometries in the list
   	 */
-    Class geomClass = null;
+    // Class geomClass = null;
+    var geomClass = null;
     bool isHeterogeneous = false;
     bool hasGeometryCollection = false;
     for (Iterator i = geomList.iterator; i.moveNext(); ) {
       Geometry geom =  i.current as Geometry;
-      Class partClass = geom.getClass();
+      // Class partClass = geom.getClass();
+      var partClass = geom.runtimeType;
       // ignore: prefer_conditional_assignment
       if (geomClass == null) {
         geomClass = partClass;

@@ -14,6 +14,8 @@
 // import java.util.Map;
 // import java.util.Map;
 
+import 'package:jtscore4dart/src/patch/Map.dart';
+
 /**
  * Counts occurrences of objects.
  * 
@@ -25,51 +27,51 @@ class ObjectCounter
 
  /**private */Map counts = new Map();
   
-  ObjectCounter() {
-  }
+  ObjectCounter();
 
   void add(Object o)
   {
-    Counter counter = (Counter) counts.get(o);
-    if (counter == null)
+    Counter counter = counts.get(o);
+    if (counter == null) {
       counts.put(o, new Counter(1));
-    else
+    } else {
       counter.increment();
+    }
   }
   
   // TODO: add remove(Object o)
   
   int count(Object o)
   {
-    Counter counter = (Counter) counts.get(o);
-    if (counter == null)
+    Counter counter = counts.get(o);
+    if (counter == null) {
       return 0;
-    else
-      return counter.count();
+    } else {
+      return counter.count;
+    }
    
   }
- /**private */static class Counter
+  
+}
+
+
+ /**private static*/ class Counter
   {
-    int count = 0;
+    // int count = 0;
+    int count;
     
-    Counter()
-    {
-      
-    }
-    
-    Counter(int count)
+    Counter([this.count=0])
     {
       this.count = count;
     }
-    
-    int count()
-    {
-      return count;
-    }
+    /// TODO: @ruier edit.
+    // int count()
+    // {
+    //   return count;
+    // }
     
     void increment()
     {
       count++;
     }
   }
-}

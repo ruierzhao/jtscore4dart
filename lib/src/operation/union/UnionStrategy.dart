@@ -29,8 +29,8 @@ abstract class UnionStrategy {
    * This method may throw a {@link org.locationtech.jts.geom.TopologyException}
    * if one is encountered.
    * 
-   * @param g0 a geometry
-   * @param g1 a geometry
+   * @param [g0] a geometry
+   * @param [g1] a geometry
    * @return the union of the inputs
    */
   Geometry union(Geometry g0, Geometry g1);

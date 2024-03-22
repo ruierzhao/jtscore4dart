@@ -30,6 +30,39 @@
 // import org.locationtech.jts.util.Debug;
 
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+import 'package:jtscore4dart/src/geom/util/PolygonExtracter.dart';
+import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
+
+import '../overlay/snap/SnapIfNeededOverlayOp.dart';
+import '../overlayng/OverlayNG.dart';
+import '../overlayng/OverlayNGRobust.dart';
+import 'UnionStrategy.dart';
+
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
+// ignore: camel_case_types
+class _ implements UnionStrategy {
+    @override
+    Geometry union(Geometry g0, Geometry g1) {
+      try {
+        return SnapIfNeededOverlayOp.union(g0, g1);
+      }
+      on TopologyException catch (__) {
+        return OverlayNGRobust.overlay(g0, g1, OverlayNG.UNION);
+      }
+    }
+
+    @override
+    bool isFloatingPrecision() {
+      return true;
+    }
+  }
+
 /**
  * Provides an efficient method of unioning a collection of
  * {@link Polygonal} geometries.
@@ -53,21 +86,7 @@ class CascadedPolygonUnion
    * A union strategy that uses the classic JTS {@link SnapIfNeededOverlayOp},
    * with a robustness fallback to OverlayNG.
    */
-  final static  UnionStrategy CLASSIC_UNION = new UnionStrategy() {
-    Geometry union(Geometry g0, Geometry g1) {
-      try {
-        return SnapIfNeededOverlayOp.union(g0, g1);
-      }
-      catch (TopologyException ex) {
-        return OverlayNGRobust.overlay(g0, g1, OverlayNG.UNION);
-      }
-    }
-
-    @Override
-    bool isFloatingPrecision() {
-      return true;
-    }
-  };
+  static final  UnionStrategy CLASSIC_UNION = _();
 
   
   /**
@@ -76,7 +95,7 @@ class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  static Geometry union(Collection polys)
+  static Geometry union(Iterable polys)
   {
     CascadedPolygonUnion op = new CascadedPolygonUnion(polys);
     return op.union();
@@ -88,18 +107,18 @@ class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  static Geometry union(Collection polys, UnionStrategy unionFun)
+  static Geometry union(Iterable polys, UnionStrategy unionFun)
   {
     CascadedPolygonUnion op = new CascadedPolygonUnion(polys, unionFun);
     return op.union();
   }
 
-	private Collection inputPolys;
-	private GeometryFactory geomFactory = null;
- /**private */UnionStrategy unionFun;
+	/**private */ Iterable? inputPolys;
+	/**private */ GeometryFactory? geomFactory;
+ /**private */ UnionStrategy unionFun;
 
- /**private */int countRemainder = 0;
- /**private */int countInput = 0;
+ /**private */ int countRemainder = 0;
+ /**private */ int countInput = 0;
 
   /**
    * Creates a new instance to union
@@ -107,10 +126,10 @@ class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  CascadedPolygonUnion(Collection polys)
-  {
-    this(polys, CLASSIC_UNION );
-  }
+  // CascadedPolygonUnion(Iterable polys)
+  // {
+  //   this(polys, CLASSIC_UNION );
+  // }
 
 	 /**
    * Creates a new instance to union
@@ -118,16 +137,23 @@ class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  CascadedPolygonUnion(Collection polys, UnionStrategy unionFun)
-  {
-    this.inputPolys = polys;
-    this.unionFun = unionFun;
-    // guard against null input
-    if (inputPolys == null)
-      inputPolys = [];
-    this.countInput = inputPolys.size();
-    this.countRemainder = countInput;
-  }
+  // CascadedPolygonUnion(Iterable polys, UnionStrategy unionFun)
+  // {
+  //   this.inputPolys = polys;
+  //   this.unionFun = unionFun;
+  //   // guard against null input
+  //   if (inputPolys == null)
+  //     inputPolys = [];
+  //   this.countInput = inputPolys.size();
+  //   this.countRemainder = countInput;
+  // }
+   CascadedPolygonUnion(this.inputPolys, [UnionStrategy? unionFun])
+   :
+    this.unionFun = (unionFun??= CLASSIC_UNION),
+    // this.countInput = inputPolys.size();
+    this.countInput = inputPolys!.length,
+    this.countRemainder = inputPolys.length;
+  
   /**
    * The effectiveness of the index is somewhat sensitive
    * to the node capacity.
@@ -135,7 +161,7 @@ class CascadedPolygonUnion
    * For an STRtree, 4 is probably a good number (since
    * this produces 2x2 "squares").
    */
- /**private */static final int STRTREE_NODE_CAPACITY = 4;
+ /**private */static const int STRTREE_NODE_CAPACITY = 4;
 
 	/**
 	 * Computes the union of the input geometries.
@@ -151,13 +177,15 @@ class CascadedPolygonUnion
 	 * or null if no input geometries were provided
 	 * @throws IllegalStateException if this method is called more than once
 	 */
-	Geometry union()
+	Geometry? union()
 	{
-	  if (inputPolys == null)
-	    throw new IllegalStateException("union() method cannot be called twice");
-		if (inputPolys.isEmpty())
-			return null;
-		geomFactory = ((Geometry) inputPolys.iterator().next()).getFactory();
+	  if (inputPolys == null) {
+	    throw new Exception("IllegalStateException: union() method cannot be called twice");
+	  }
+		if (inputPolys!.isEmpty) {
+		  return null;
+		}
+		geomFactory = ( inputPolys!.iterator.current as Geometry).getFactory();
 
 		/**
 		 * A spatial index to organize the collection
@@ -167,8 +195,8 @@ class CascadedPolygonUnion
 		 */
 //    STRtree index = new STRtree();
     STRtree index = new STRtree(STRTREE_NODE_CAPACITY);
-    for (Iterator i = inputPolys.iterator(); i.moveNext(); ) {
-      Geometry item = (Geometry) i.current;
+    for (Iterator i = inputPolys!.iterator; i.moveNext(); ) {
+      Geometry item = i.current as Geometry;
       index.insert(item.getEnvelopeInternal(), item);
     }
     // To avoiding holding memory remove references to the input geometries,
@@ -247,7 +275,8 @@ class CascadedPolygonUnion
   	}
   	else {
   		// recurse on both halves of the list
-  		int mid = (end + start) / 2;
+  		// int mid = (end + start) / 2;
+  		int mid = (end + start) ~/ 2;
   		Geometry g0 = binaryUnion(geoms, start, mid);
   		Geometry g1 = binaryUnion(geoms, mid, end);
   		return unionSafe(g0, g1);
@@ -263,10 +292,10 @@ class CascadedPolygonUnion
    * @return the geometry at the given index
    * or null if the index is out of range
    */
- /**private */static Geometry getGeometry(List list, int index)
+ /**private */static Geometry? getGeometry(List list, int index)
   {
   	if (index >= list.size()) return null;
-  	return (Geometry) list.get(index);
+  	return list.get(index) as Geometry;
   }
 
   /**
@@ -279,14 +308,14 @@ class CascadedPolygonUnion
  /**private */List reduceToGeometries(List geomTree)
   {
     List geoms = [];
-    for (Iterator i = geomTree.iterator(); i.moveNext(); ) {
+    for (Iterator i = geomTree.iterator; i.moveNext(); ) {
       Object o = i.current;
-      Geometry geom = null;
+      Geometry? geom = null;
       if (o is List) {
-        geom = unionTree((List) o);
+        geom = unionTree( o as List);
       }
       else if (o is Geometry) {
-        geom = (Geometry) o;
+        geom =  o;
       }
       geoms.add(geom);
     }
@@ -302,15 +331,18 @@ class CascadedPolygonUnion
    * @return the union of the input(s)
    * or null if both inputs are null
    */
- /**private */Geometry unionSafe(Geometry g0, Geometry g1)
+ /**private */Geometry? unionSafe(Geometry g0, Geometry g1)
   {
-  	if (g0 == null && g1 == null)
-  		return null;
+  	if (g0 == null && g1 == null) {
+  	  return null;
+  	}
 
-  	if (g0 == null)
-  		return g1.copy();
-  	if (g1 == null)
-  		return g0.copy();
+  	if (g0 == null) {
+  	  return g1.copy();
+  	}
+  	if (g1 == null) {
+  	  return g0.copy();
+  	}
 
   	countRemainder--;
   	if (Debug.isDebugging()) {
@@ -359,8 +391,9 @@ class CascadedPolygonUnion
       return g;
     }
     List polygons = PolygonExtracter.getPolygons(g);
-    if (polygons.size() == 1)
-      return (Polygon) polygons.get(0);
+    if (polygons.size() == 1) {
+      return polygons.get(0) as Polygon;
+    }
     return g.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polygons));
   }
 }

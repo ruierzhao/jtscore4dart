@@ -30,6 +30,27 @@
 // import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
 // import org.locationtech.jts.operation.overlay.OverlayOp;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/noding/Noder.dart';
+import 'package:jtscore4dart/src/operation/overlayng/OverlayGraph.dart';
+
+import '../overlay/OverlayOp.dart';
+import 'EdgeNodingBuilder.dart';
+import 'ElevationModel.dart';
+import 'InputGeometry.dart';
+import 'IntersectionPointBuilder.dart';
+import 'LineBuilder.dart';
+import 'OverlayEdge.dart';
+import 'OverlayLabel.dart';
+import 'OverlayLabeller.dart';
+import 'OverlayMixedPoints.dart';
+import 'OverlayPoints.dart';
+import 'OverlayUtil.dart';
+import 'PolygonBuilder.dart';
+
 /**
  * Computes the geometric overlay of two {@link Geometry}s, 
  * using an explicit precision model to allow robust computation.
@@ -109,22 +130,22 @@ class OverlayNG
   /**
    * The code for the Intersection overlay operation.
    */
-  static final int INTERSECTION  = OverlayOp.INTERSECTION;
+  static const int INTERSECTION  = OverlayOp.INTERSECTION;
   
   /**
    * The code for the Union overlay operation.
    */
-  static final int UNION         = OverlayOp.UNION;
+  static const int UNION         = OverlayOp.UNION;
   
   /**
    *  The code for the Difference overlay operation.
    */
-  static final int DIFFERENCE    = OverlayOp.DIFFERENCE;
+  static const int DIFFERENCE    = OverlayOp.DIFFERENCE;
   
   /**
    *  The code for the Symmetric Difference overlay operation.
    */
-  static final int SYMDIFFERENCE = OverlayOp.SYMDIFFERENCE;
+  static const int SYMDIFFERENCE = OverlayOp.SYMDIFFERENCE;
 
   /**
    * The default setting for Strict Mode.
@@ -135,7 +156,7 @@ class OverlayNG
    *   due to inclusion of intersection components of all dimensions
    * - Results can include lines caused by Area topology collapse
    */
-  static final bool STRICT_MODE_DEFAULT = false;
+  static const bool STRICT_MODE_DEFAULT = false;
 
   /**
    * Tests whether a point with a given topological {@link Label}
@@ -558,7 +579,7 @@ class OverlayNG
 
  /**private */OverlayGraph buildGraph(Collection<Edge> edges) {
     OverlayGraph graph = new OverlayGraph();
-    for (Edge e : edges) {
+    for (Edge e in edges) {
       graph.addEdge(e.getCoordinates(), e.createLabel());
     }
     return graph;

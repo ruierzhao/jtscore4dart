@@ -29,6 +29,7 @@ import "package:jtscore4dart/src/geom/Envelope.dart";
 import "package:jtscore4dart/src/geom/Geometry.dart";
 import "package:jtscore4dart/src/geom/GeometryFactory.dart";
 import "package:jtscore4dart/src/geom/PrecisionModel.dart";
+import "package:jtscore4dart/src/geom/TopologyException.dart";
 import "package:jtscore4dart/src/noding/snap/SnappingNoder.dart";
 
 import "../union/UnaryUnionOp.dart";
@@ -367,7 +368,7 @@ class OverlayNGRobust
       result = OverlayNG.overlay(geom0, geom1, opCode, pmSafe);
       return result;
     }
-    catch (TopologyException ex) {
+    on TopologyException catch (ex) {
       //---- ignore exception, return null result to indicate failure
     }
     return null;

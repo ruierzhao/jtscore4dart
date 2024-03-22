@@ -63,7 +63,7 @@ class InputExtracter implements GeometryFilter
   /**
    * Extracts elements from a geometry.
    * 
-   * @param geoms a geometry to extract from
+   * @param [geoms] a geometry to extract from
    * @return an extracter over the geometry
    */
   static InputExtracter extract(Geometry geom) {
@@ -72,7 +72,7 @@ class InputExtracter implements GeometryFilter
     return extracter;
   }
   
- /**private */GeometryFactory? geomFactory = null;
+ /**private */GeometryFactory? geomFactory;
 //  /**private */List<Polygon> polygons = new ArrayList<Polygon>();
 //  /**private */List<LineString> lines = new ArrayList<LineString>();
 //  /**private */List<Point> points = new ArrayList<Point>();
@@ -148,7 +148,7 @@ class InputExtracter implements GeometryFilter
 
   @override
   void filter(Geometry geom) {
-    recordDimension( geom.getDimension() );
+    _recordDimension( geom.getDimension() );
     
     if (geom is GeometryCollection) {
       return;
@@ -172,10 +172,10 @@ class InputExtracter implements GeometryFilter
       points.add( geom);
       return;
     }
-    Assert.shouldNeverReachHere("Unhandled geometry type: " + geom.getGeometryType());
+    Assert.shouldNeverReachHere("Unhandled geometry type: ${geom.getGeometryType()}");
   }
 
- /**private */void recordDimension(int dim) {
+ void _recordDimension(int dim) {
     if (dim > dimension ) {
       dimension = dim;
     }

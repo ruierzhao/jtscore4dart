@@ -18,8 +18,10 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 /// @version 1.7
 // TODO: ruier edit.
 class TopologyException
-  extends Error
+  // implements Error
+  implements Exception
 {
+
   static String _msgWithCoord(String msg, [Coordinate? pt])
   {
     if (pt != null) {
@@ -28,9 +30,10 @@ class TopologyException
     return msg;
   }
 
+  String msg;
   Coordinate? pt;
 
-  TopologyException(String msg):super();
+  TopologyException(this.msg, [this.pt]);
 
   // TopologyException(String msg, [this.pt])
   // {
@@ -43,4 +46,9 @@ class TopologyException
 
   Coordinate? getCoordinate() { return pt; }
 
+  @override
+  String toString() {
+    return _msgWithCoord(msg, getCoordinate());
+  }
+  
 }

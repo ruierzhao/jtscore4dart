@@ -30,6 +30,7 @@ class StringBuilder{
     this._strArr[index] = newChar;
   }
 
+  @override
   String toString(){
     StringBuffer newStr = StringBuffer("");
     for (var char in _strArr) {

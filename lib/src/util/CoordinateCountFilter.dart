@@ -14,6 +14,9 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateFilter;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
+
 /**
  *  A {@link CoordinateFilter} that counts the total number of coordinates
  *  in a <code>Geometry</code>.
@@ -23,7 +26,7 @@
 class CoordinateCountFilter implements CoordinateFilter {
  /**private */int n = 0;
 
-  CoordinateCountFilter() { }
+  CoordinateCountFilter();
 
   /**
    *  Returns the result of the filtering.
@@ -34,6 +37,7 @@ class CoordinateCountFilter implements CoordinateFilter {
     return n;
   }
 
+  @override
   void filter(Coordinate coord) {
     n++;
   }

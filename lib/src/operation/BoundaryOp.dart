@@ -29,9 +29,10 @@
 // import org.locationtech.jts.geom.MultiPoint;
 // import org.locationtech.jts.geom.Point;
 
+import 'dart:collection';
+
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
-import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 import 'package:jtscore4dart/src/geom/Dimension.dart';
 
 
@@ -177,9 +178,10 @@ class BoundaryOp
   {
     // List bdyPts = [];
     List bdyPts = [];
-    endpointMap = new TreeMap();
+    // endpointMap = new TreeMap();
+    endpointMap = new SplayTreeMap();
     for (int i = 0; i < mLine.getNumGeometries(); i++) {
-      LineString line = (LineString) mLine.getGeometryN(i);
+      LineString line = mLine.getGeometryN(i) as LineString;
       if (line.getNumPoints() == 0) {
         continue;
       }

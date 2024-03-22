@@ -306,7 +306,7 @@ class GeometryFactory{
   /// @return an empty MultiPolygon
   MultiPolygon createMultiPolygonEmpty() {
     // TODO: ruier edit.
-    return MultiPolygon(null!, this);
+    return MultiPolygon(List<Polygon>.empty(growable: true), this);
   }
 
   /// Creates a MultiPolygon using the given Polygons; a null or empty array

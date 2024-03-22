@@ -55,7 +55,9 @@ class GeometryCollection extends Geometry {
   ///            or <code>null</code> or an empty array to create the empty
   ///            geometry. Elements may be empty <code>Geometry</code>s,
   ///            but not <code>null</code>s.
-  GeometryCollection(this.geometries, GeometryFactory factory):super(factory) {
+  GeometryCollection(this.geometries, GeometryFactory factory)
+  :super(factory) 
+  {
     if (Geometry.hasNullElements(geometries)) {
       throw new ArgumentError("geometries must not contain null elements");
     }

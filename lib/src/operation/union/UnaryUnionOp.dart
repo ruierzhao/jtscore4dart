@@ -25,9 +25,11 @@
 // import org.locationtech.jts.operation.linemerge.LineMerger;
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/Puntal.dart';
 
 import 'CascadedPolygonUnion.dart';
 import 'InputExtracter.dart';
+import 'PointGeometryUnion.dart';
 import 'UnionStrategy.dart';
 
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
@@ -238,12 +240,12 @@ class UnaryUnionOp
 		} else if (unionLA == null){
       union = unionPoints;
     }else {
-      union = PointGeometryUnion.union((Puntal) unionPoints, unionLA);
+      union = PointGeometryUnion.union( unionPoints as Puntal, unionLA);
     }
 			
 		
 		if (union == null) {
-		  return geomFact.createGeometryCollection();
+		  return geomFact!.createGeometryCollection();
 		}
 		
 		return union;

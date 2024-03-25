@@ -376,27 +376,27 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
   {
     build();
 
-    List<Boundable> valuesTree = _itemsTree(root);
+    List<Boundable>? valuesTree = _itemsTree(root);
     if (valuesTree == null) {
       return [];
     }
     return valuesTree;
   }
   
- /**private */List<Boundable>? _itemsTree(AbstractNode node) 
+ /**private */List<Boundable>? _itemsTree(AbstractNode node)
   {
     List<Boundable> valuesTreeForNode = [];
     for (Iterator i = node.getChildBoundables().iterator; i.moveNext(); ) {
       Boundable childBoundable =  i.current as Boundable;
       if (childBoundable is AbstractNode) {
-        List<Boundable> valuesTreeForChild = _itemsTree( childBoundable as AbstractNode);
+        List<Boundable>? valuesTreeForChild = _itemsTree( childBoundable as AbstractNode);
         // only add if not null (which indicates an item somewhere in this tree
         if (valuesTreeForChild != null) {
-          valuesTreeForNode.add(valuesTreeForChild);
+          valuesTreeForNode.addAll(valuesTreeForChild);
         }
       }
       else if (childBoundable is ItemBoundable) {
-        valuesTreeForNode.add((childBoundable as ItemBoundable).getItem());
+        valuesTreeForNode.add(childBoundable.getItem() as Boundable);
       }
       else {
         Assert.shouldNeverReachHere();

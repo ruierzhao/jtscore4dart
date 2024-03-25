@@ -37,6 +37,7 @@ import 'package:jtscore4dart/src/geom/Polygonal.dart';
 import 'package:jtscore4dart/src/geom/TopologyException.dart';
 import 'package:jtscore4dart/src/geom/util/PolygonExtracter.dart';
 import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
+import 'package:jtscore4dart/src/util/Debug.dart';
 
 import '../overlay/snap/SnapIfNeededOverlayOp.dart';
 import '../overlayng/OverlayNG.dart';
@@ -95,11 +96,11 @@ class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  static Geometry union(Iterable polys)
-  {
-    CascadedPolygonUnion op = new CascadedPolygonUnion(polys);
-    return op.union();
-  }
+  // static Geometry union(Iterable polys)
+  // {
+  //   CascadedPolygonUnion op = new CascadedPolygonUnion(polys);
+  //   return op.union();
+  // }
 
   /**
    * Computes the union of
@@ -107,7 +108,13 @@ class CascadedPolygonUnion
    *
    * @param polys a collection of {@link Polygonal} {@link Geometry}s
    */
-  static Geometry union(Iterable polys, UnionStrategy unionFun)
+  // static Geometry union(Iterable polys, [UnionStrategy? unionFun])
+  // {
+  //   CascadedPolygonUnion op = new CascadedPolygonUnion(polys, unionFun);
+  //   return op.union();
+  // }
+  // Alias of CascadedPolygonUnion.union()
+  static Geometry? of(Iterable polys, [UnionStrategy? unionFun])
   {
     CascadedPolygonUnion op = new CascadedPolygonUnion(polys, unionFun);
     return op.union();
@@ -115,7 +122,7 @@ class CascadedPolygonUnion
 
 	/**private */ Iterable? inputPolys;
 	/**private */ GeometryFactory? geomFactory;
- /**private */ UnionStrategy unionFun;
+  /**private */ UnionStrategy unionFun;
 
  /**private */ int countRemainder = 0;
  /**private */ int countInput = 0;
@@ -148,8 +155,7 @@ class CascadedPolygonUnion
   //   this.countRemainder = countInput;
   // }
    CascadedPolygonUnion(this.inputPolys, [UnionStrategy? unionFun])
-   :
-    this.unionFun = (unionFun??= CLASSIC_UNION),
+   :this.unionFun = (unionFun??= CLASSIC_UNION),
     // this.countInput = inputPolys.size();
     this.countInput = inputPolys!.length,
     this.countRemainder = inputPolys.length;
@@ -161,7 +167,7 @@ class CascadedPolygonUnion
    * For an STRtree, 4 is probably a good number (since
    * this produces 2x2 "squares").
    */
- /**private */static const int STRTREE_NODE_CAPACITY = 4;
+ static const int _STRTREE_NODE_CAPACITY = 4;
 
 	/**
 	 * Computes the union of the input geometries.
@@ -194,7 +200,7 @@ class CascadedPolygonUnion
 		 * to be eliminated on each round.
 		 */
 //    STRtree index = new STRtree();
-    STRtree index = new STRtree(STRTREE_NODE_CAPACITY);
+    STRtree index = new STRtree(_STRTREE_NODE_CAPACITY);
     for (Iterator i = inputPolys!.iterator; i.moveNext(); ) {
       Geometry item = i.current as Geometry;
       index.insert(item.getEnvelopeInternal(), item);
@@ -326,33 +332,33 @@ class CascadedPolygonUnion
    * Computes the union of two geometries,
    * either or both of which may be null.
    *
-   * @param g0 a Geometry
-   * @param g1 a Geometry
+   * @param [g0] a Geometry
+   * @param [g1] a Geometry
    * @return the union of the input(s)
    * or null if both inputs are null
    */
- /**private */Geometry? unionSafe(Geometry g0, Geometry g1)
+ /**private */Geometry unionSafe(Geometry g0, Geometry g1)
   {
-  	if (g0 == null && g1 == null) {
-  	  return null;
-  	}
+  	// if (g0 == null && g1 == null) {
+  	//   return null;
+  	// }
 
-  	if (g0 == null) {
-  	  return g1.copy();
-  	}
-  	if (g1 == null) {
-  	  return g0.copy();
-  	}
+  	// if (g0 == null) {
+  	//   return g1.copy();
+  	// }
+  	// if (g1 == null) {
+  	//   return g0.copy();
+  	// }
 
   	countRemainder--;
   	if (Debug.isDebugging()) {
   	  Debug.println("Remainder: " + countRemainder + " out of " + countInput);
-      Debug.print("Union: A: " + g0.getNumPoints() + " / B: " + g1.getNumPoints() + "  ---  "  );
+      Debug.print("Union: A: ${g0.getNumPoints()} / B: ${g1.getNumPoints()}  ---  "  );
   	}
 
   	Geometry union = unionActual( g0, g1 );
   	
-    if (Debug.isDebugging()) Debug.println(" Result: " + union.getNumPoints());
+    if (Debug.isDebugging()) Debug.println(" Result: ${union.getNumPoints()}");
     //if (TestBuilderProxy.isActive()) TestBuilderProxy.showIndicator(union);
     
     return union;

@@ -16,6 +16,8 @@
 // import org.locationtech.jts.operation.overlay.OverlayOp;
 // import org.locationtech.jts.precision.CommonBitsRemover;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 /**
  * Performs an overlay operation using snapping and enhanced precision
  * to improve the robustness of the result.

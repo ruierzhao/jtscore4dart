@@ -412,7 +412,8 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
    * Removes an item from the tree.
    * (Builds the tree, if necessary.)
    */
- /**protected */bool remove(Object searchBounds, Object item) {
+  /**protected */
+  bool remove(Object searchBounds, Object item) {
     build();
     if (getIntersectsOp().intersects(root.getBounds(), searchBounds)) {
       return _removeByBounds(searchBounds, root, item);
@@ -420,7 +421,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     return false;
   }
 
- /**private */bool _remove(AbstractNode node, Object item)
+ bool _remove(AbstractNode node, Object item)
   {
     Boundable? childToRemove;
     for (Iterator i = node.getChildBoundables().iterator; i.moveNext(); ) {
@@ -438,7 +439,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     return false;
   }
 
- /**private */bool _removeByBounds(Object searchBounds, AbstractNode node, Object item) {
+  bool _removeByBounds(Object searchBounds, AbstractNode node, Object item) {
     // first try removing item from this node
     bool found = _remove(node, item);
     if (found) {
@@ -470,8 +471,8 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     return found;
   }
 
- /**protected */List boundablesAtLevel(int level) {
-    ArrayList boundables = [];
+  /**protected */List boundablesAtLevel(int level) {
+    List boundables = [];
     boundablesAtLevel(level, root, boundables);
     return boundables;
   }
@@ -479,16 +480,16 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
   /**
    * @param level -1 to get items
    */
- /**private */void boundablesAtLevel(int level, AbstractNode top, Iterable boundables) {
+ /**private */void _boundablesAtLevel(int level, AbstractNode top, Iterable boundables) {
     Assert.isTrue(level > -2);
     if (top.getLevel() == level) {
       boundables.add(top);
       return;
     }
-    for (Iterator i = top.getChildBoundables().iterator(); i.moveNext(); ) {
+    for (Iterator i = top.getChildBoundables().iterator; i.moveNext(); ) {
       Boundable boundable =  i.current as Boundable;
       if (boundable is AbstractNode) {
-        boundablesAtLevel(level, boundable as AbstractNode, boundables);
+        _boundablesAtLevel(level, boundable as AbstractNode, boundables);
       }
       else {
         Assert.isTrue(boundable is ItemBoundable);
@@ -498,9 +499,9 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     return;
   }
 
- /**protected abstract*/ Comparator getComparator();
+  /**protected abstract*/ Comparator getComparator();
 
-  ArrayList  getItemBoundables()
+  List  getItemBoundables()
   {
     return itemBoundables;
   }

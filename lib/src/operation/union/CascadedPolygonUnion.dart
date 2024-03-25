@@ -258,7 +258,7 @@ class CascadedPolygonUnion
    */
  /**private */Geometry binaryUnion(List geoms)
   {
-  	return binaryUnion(geoms, 0, geoms.size());
+  	return binaryUnion$1(geoms, 0, geoms.size());
   }
 
   /**
@@ -270,7 +270,7 @@ class CascadedPolygonUnion
    * @param end the index after the end of the section
    * @return the union of the list section
    */
- /**private */Geometry binaryUnion(List geoms, int start, int end)
+ /**private */Geometry binaryUnion$1(List geoms, int start, int end)
   {
   	if (end - start <= 1) {
   		Geometry g0 = getGeometry(geoms, start);
@@ -283,8 +283,8 @@ class CascadedPolygonUnion
   		// recurse on both halves of the list
   		// int mid = (end + start) / 2;
   		int mid = (end + start) ~/ 2;
-  		Geometry g0 = binaryUnion(geoms, start, mid);
-  		Geometry g1 = binaryUnion(geoms, mid, end);
+  		Geometry g0 = binaryUnion$1(geoms, start, mid);
+  		Geometry g1 = binaryUnion$1(geoms, mid, end);
   		return unionSafe(g0, g1);
   	}
   }
@@ -352,7 +352,7 @@ class CascadedPolygonUnion
 
   	countRemainder--;
   	if (Debug.isDebugging()) {
-  	  Debug.println("Remainder: " + countRemainder + " out of " + countInput);
+  	  Debug.println("Remainder: $countRemainder out of $countInput");
       Debug.print("Union: A: ${g0.getNumPoints()} / B: ${g1.getNumPoints()}  ---  "  );
   	}
 

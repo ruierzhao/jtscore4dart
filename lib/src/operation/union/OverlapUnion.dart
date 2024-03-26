@@ -26,6 +26,11 @@
 // import org.locationtech.jts.geom.LineSegment;
 // import org.locationtech.jts.geom.util.GeometryCombiner;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
+
+import 'UnionStrategy.dart';
+
 /**
  * Unions MultiPolygons efficiently by
  * using full topological union only for polygons which may overlap,
@@ -89,8 +94,8 @@ class OverlapUnion
    * Union a pair of geometries,
    * using the more performant overlap union algorithm if possible.
    * 
-   * @param g0 a geometry to union
-   * @param g1 a geometry to union
+   * @param [g0] a geometry to union
+   * @param [g1] a geometry to union
    * @param unionFun 
    * @return the union of the inputs
    */
@@ -100,10 +105,10 @@ class OverlapUnion
 		return union.union();
 	}
 	
-	private GeometryFactory geomFactory;
+	/**private */ GeometryFactory geomFactory;
 	
-	private Geometry g0;
-	private Geometry g1;
+	/**private */ Geometry g0;
+	/**private */ Geometry g1;
 
  /**private */bool isUnionSafe;
 
@@ -273,27 +278,32 @@ class OverlapUnion
   }
 
  /**private */static void extractBorderSegments(Geometry geom, Envelope env, List<LineSegment> segs) {
-    geom.apply(new CoordinateSequenceFilter() {
+    geom.applyCoordSeq(_());
+  }
 
-      void filter(CoordinateSequence seq, int i) {
+}
+
+
+class _ implements CoordinateSequenceFilter {
+
+  @override
+  void filter(CoordinateSequence seq, int i) {
         if (i <= 0) return;
         
         // extract LineSegment
         Coordinate p0 = seq.getCoordinate(i - 1);
         Coordinate p1 = seq.getCoordinate(i);
-        bool isBorder = intersects(env, p0, p1) && ! containsProperly(env, p0, p1);
+        bool isBorder = OverlapUnion.intersects(env, p0, p1) && ! OverlapUnion.containsProperly(env, p0, p1);
         if (isBorder) {
           LineSegment seg = new LineSegment(p0, p1);
           segs.add(seg);
         }
       }
 
-      bool isDone() {   return false;   }
+  @override
+  bool isDone() {   return false;   }
 
-      bool isGeometryChanged() {   return false;   }
+  @override
+  bool isGeometryChanged() {   return false;   }
       
-    });
-  }
-
 }
-

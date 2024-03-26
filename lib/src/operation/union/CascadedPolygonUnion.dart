@@ -265,19 +265,19 @@ class CascadedPolygonUnion
    * Unions a section of a list using a recursive binary union on each half
    * of the section.
    *
-   * @param geoms the list of geometries containing the section to union
-   * @param start the start index of the section
-   * @param end the index after the end of the section
+   * @param [geoms] the list of geometries containing the section to union
+   * @param [start] the start index of the section
+   * @param [end] the index after the end of the section
    * @return the union of the list section
    */
  /**private */Geometry binaryUnion$1(List geoms, int start, int end)
   {
   	if (end - start <= 1) {
-  		Geometry g0 = getGeometry(geoms, start);
+  		Geometry g0 = getGeometry(geoms, start)!;
   		return unionSafe(g0, null);
   	}
   	else if (end - start == 2) {
-  		return unionSafe(getGeometry(geoms, start), getGeometry(geoms, start + 1));
+  		return unionSafe(getGeometry(geoms, start)!, getGeometry(geoms, start + 1));
   	}
   	else {
   		// recurse on both halves of the list
@@ -337,18 +337,18 @@ class CascadedPolygonUnion
    * @return the union of the input(s)
    * or null if both inputs are null
    */
- /**private */Geometry unionSafe(Geometry g0, Geometry g1)
+ /**private */Geometry unionSafe(Geometry g0, [Geometry? g1])
   {
   	// if (g0 == null && g1 == null) {
   	//   return null;
   	// }
 
   	// if (g0 == null) {
-  	//   return g1.copy();
+  	//   return g1!.copy();
   	// }
-  	// if (g1 == null) {
-  	//   return g0.copy();
-  	// }
+  	if (g1 == null) {
+  	  return g0.copy();
+  	}
 
   	countRemainder--;
   	if (Debug.isDebugging()) {

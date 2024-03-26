@@ -151,7 +151,7 @@ class GeometryFactory{
   // }
   static List<Polygon> toPolygonArray(Iterable polygons) {
     // List<Polygon> polygonArray = new Polygon[polygons.size()];
-    return polygons.toList() as  List<Polygon>; 
+    return polygons.toList(growable: false) as  List<Polygon>; 
   }
 
   ///  Converts the <code>List</code> to an array.

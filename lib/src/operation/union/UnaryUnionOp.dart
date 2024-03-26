@@ -77,7 +77,7 @@ class UnaryUnionOp
 	 * Computes the geometric union of a {@link Collection} 
 	 * of {@link Geometry}s.
 	 * 
-	 * @param geoms a collection of geometries
+	 * @param [geoms] a collection of geometries
 	 * @return the union of the geometries, 
 	 * or <code>null</code> if the input is empty
 	 */
@@ -226,7 +226,7 @@ class UnaryUnionOp
 		
 		Geometry? unionPolygons;
 		if (polygons.size() > 0) {
-			unionPolygons = CascadedPolygonUnion.union(polygons, unionFunction);
+			unionPolygons = CascadedPolygonUnion.of(polygons, unionFunction);
 		}
 		
     /**

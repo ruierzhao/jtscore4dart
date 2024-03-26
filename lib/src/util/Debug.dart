@@ -26,6 +26,7 @@
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.LineString;
 
+
 import 'package:jtscore4dart/geometry.dart';
 
 /// Provides routines to simplify and localize debugging output.
@@ -302,8 +303,9 @@ class Debug {
         instancePrint(obj.toString());
       }
     }
-    catch (Exception ex) {
-      ex.printStackTrace(out);
+    on Exception catch ( ex) {
+      // ex.printStackTrace(out);
+      PrintHandler;
     }
   }
 
@@ -311,7 +313,8 @@ class Debug {
     out.println();
   }
 
- /**private */void instanceAddWatch(Object obj) {
+ /**private */
+ void instanceAddWatch(var obj) {
     watchObj = obj;
   }
 

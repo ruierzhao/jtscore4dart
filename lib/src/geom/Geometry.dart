@@ -43,18 +43,18 @@ import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/Point.dart';
 import 'package:jtscore4dart/src/geom/Polygon.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
-import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
-import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
-import 'package:jtscore4dart/src/operation/predicate/RectangleContains.dart';
-import 'package:jtscore4dart/src/operation/predicate/RectangleIntersects.dart';
-import 'package:jtscore4dart/src/operation/relate/RelateOp.dart';
-import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
-import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
+// import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
+// import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
+// import 'package:jtscore4dart/src/operation/predicate/RectangleContains.dart';
+// import 'package:jtscore4dart/src/operation/predicate/RectangleIntersects.dart';
+// import 'package:jtscore4dart/src/operation/relate/RelateOp.dart';
+// import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
+// import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
 
 import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
 import 'GeometryFilter.dart';
-import 'GeometryOverlay.dart';
+// import 'GeometryOverlay.dart';
 import 'IntersectionMatrix.dart';
 
 

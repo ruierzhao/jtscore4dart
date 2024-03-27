@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 
 import 'geometry.dart';
 import 'src/geom/CoordinateSequenceFilter.dart';
-import 'src/geom/PrecisionModel.dart';
 import 'src/geom/CoordinateSequenceFactory.dart';
 import 'src/geom/impl/CoordinateArraySequenceFactory.dart';
 import 'src/utils.dart';

@@ -46,7 +46,7 @@ class GeometryMapper
    */
   static Geometry map(Geometry geom, MapOp op)
   {
-    List mapped = [];
+    List<Geometry> mapped = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry g = op.map(geom.getGeometryN(i));
       if (g != null) {
@@ -56,7 +56,7 @@ class GeometryMapper
     return geom.getFactory().buildGeometry(mapped);
   }
   
-  static Iterable map(Iterable geoms, MapOp op)
+  static Iterable mapAll(Iterable geoms, MapOp op)
   {
     List mapped = [];
     for (Iterator i = geoms.iterator; i.moveNext(); ) {
@@ -85,24 +85,25 @@ class GeometryMapper
    */
   static Geometry flatMap(Geometry geom, int emptyDim, MapOp op)
   {
-    List<Geometry> mapped = new ArrayList<Geometry>();
-    flatMap(geom, op, mapped);
+    // List<Geometry> mapped = new ArrayList<Geometry>();
+    List<Geometry> mapped = <Geometry>[];
+    _flatMap(geom, op, mapped);
 
-    if (mapped.size() == 0) {
+    if (mapped.isEmpty) {
       return geom.getFactory().createEmpty(emptyDim);
     }
-    if (mapped.size() == 1) {
-      return mapped.get(0);
+    if (mapped.length == 1) {
+      return mapped[0];
     }
     return geom.getFactory().buildGeometry(mapped);
   }
   
- /**private */static void flatMap(Geometry geom, MapOp op, List<Geometry> mapped)
+  static void _flatMap(Geometry geom, MapOp op, List<Geometry> mapped)
   {
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry g = geom.getGeometryN(i);
       if (g is GeometryCollection) {
-        flatMap(g, op, mapped);
+        _flatMap(g, op, mapped);
       }
       else {
         Geometry res = op.map(g);

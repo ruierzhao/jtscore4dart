@@ -19,8 +19,8 @@
  */
 class Stopwatch {
 
- /**private */long startTimestamp;
- /**private */long totalTime = 0;
+ /**private */int startTimestamp;
+ /**private */int totalTime = 0;
  /**private */bool isRunning = false;
 
   Stopwatch()

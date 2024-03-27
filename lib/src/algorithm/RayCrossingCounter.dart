@@ -19,7 +19,6 @@
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
-import 'package:jtscore4dart/src/geom/Polygonal.dart';
 
 import 'Orientation.dart';
 

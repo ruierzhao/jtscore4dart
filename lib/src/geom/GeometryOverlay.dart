@@ -189,7 +189,7 @@ class GeometryOverlay
     return overlay(a, b, OverlayOp.UNION);
   }
   
-  static Geometry union(Geometry a) {
+  static Geometry unaryUnion(Geometry a) {
     if (isOverlayNG) {
       return OverlayNGRobust.union(a);
     }

@@ -25,6 +25,9 @@
 // import org.locationtech.jts.geom.Puntal;
 // import org.locationtech.jts.geom.util.GeometryCombiner;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/Puntal.dart';
+
 /**
  * Computes the union of a {@link Puntal} geometry with 
  * another arbitrary {@link Geometry}.
@@ -41,13 +44,13 @@ class PointGeometryUnion
 		return unioner.union();
 	}
 	
-	private Geometry pointGeom;
-	private Geometry otherGeom;
-	private GeometryFactory geomFact;
+	/**private */ Geometry pointGeom;
+	/**private */ Geometry otherGeom;
+	/**private */ GeometryFactory geomFact;
 	
 	PointGeometryUnion(Puntal pointGeom, Geometry otherGeom)
 	{
-		this.pointGeom = (Geometry) pointGeom;
+		this.pointGeom =  pointGeom;
 		this.otherGeom = otherGeom;
 		geomFact = otherGeom.getFactory();
 	}

@@ -290,9 +290,9 @@ class OverlayNG
    * </ul>
    * 
    * 
-   * @param geom0 the first argument geometry
-   * @param geom1 the second argument geometry
-   * @param opCode the code for the desired overlay operation
+   * @param [geom0] the first argument geometry
+   * @param [geom1] the second argument geometry
+   * @param [opCode] the code for the desired overlay operation
    * @return the result of the overlay operation
    */
   static Geometry overlay(Geometry geom0, Geometry geom1, int opCode)
@@ -364,10 +364,10 @@ class OverlayNG
    * with a defined precision model.
    * The noding strategy is determined by the precision model.
    * 
-   * @param geom0 the A operand geometry
-   * @param geom1 the B operand geometry (may be null)
-   * @param pm the precision model to use
-   * @param opCode the overlay opcode
+   * @param [geom0] the A operand geometry
+   * @param [geom1] the B operand geometry (may be null)
+   * @param [pm] the precision model to use
+   * @param [opCode] the overlay opcode
    */
   OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, int opCode) {
     this.pm = pm;

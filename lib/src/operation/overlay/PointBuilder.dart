@@ -22,6 +22,13 @@
 // import org.locationtech.jts.geomgraph.Label;
 // import org.locationtech.jts.geomgraph.Node;
 
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
+
 import 'OverlayOp.dart';
 
 /**
@@ -33,11 +40,7 @@ class PointBuilder {
  /**private */GeometryFactory geometryFactory;
  /**private */List resultPointList = [];
 
-  PointBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator) {
-    this.op = op;
-    this.geometryFactory = geometryFactory;
-    // ptLocator is never used in this class
-  }
+  PointBuilder(this.op, this.geometryFactory, PointLocator ptLocator);
 
   /**
    * Computes the Point geometries which will appear in the result,
@@ -47,7 +50,7 @@ class PointBuilder {
    */
   List build(int opCode)
   {
-    extractNonCoveredResultNodes(opCode);
+    _extractNonCoveredResultNodes(opCode);
     /**
      * It can happen that connected result nodes are still covered by
      * result geometries, so must perform this filter.
@@ -64,20 +67,22 @@ class PointBuilder {
    *
    * @param opCode the overlay operation
    */
- /**private */void extractNonCoveredResultNodes(int opCode)
+  void _extractNonCoveredResultNodes(int opCode)
   {
     // testing only
     //if (true) return resultNodeList;
 
-    for (Iterator nodeit = op.getGraph().getNodes().iterator(); nodeit.moveNext(); ) {
-      Node n = (Node) nodeit.current;
+    for (Iterator nodeit = op.getGraph().getNodes().iterator; nodeit.moveNext(); ) {
+      Node n = nodeit.current;
 
       // filter out nodes which are known to be in the result
-      if (n.isInResult())
+      if (n.isInResult()) {
         continue;
+      }
       // if an incident edge is in the result, then the node coordinate is included already
-      if (n.isIncidentEdgeInResult())
+      if (n.isIncidentEdgeInResult()) {
         continue;
+      }
       if (n.getEdges().getDegree() == 0 || opCode == OverlayOp.INTERSECTION) {
 
         /**
@@ -86,7 +91,7 @@ class PointBuilder {
          */
           Label label = n.getLabel();
           if (OverlayOp.isResultOfOp(label, opCode)) {
-            filterCoveredNodeToPoint(n);
+            _filterCoveredNodeToPoint(n);
           }
       }
     }
@@ -102,7 +107,7 @@ class PointBuilder {
    *
    * @param n the node to test
    */
- /**private */void filterCoveredNodeToPoint(Node n)
+  void _filterCoveredNodeToPoint(Node n)
   {
     Coordinate coord = n.getCoordinate();
     if (! op.isCoveredByLA(coord)) {

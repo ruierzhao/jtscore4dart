@@ -1352,7 +1352,7 @@ abstract class Geometry{
 	///
 	/// @see UnaryUnionOp
 	Geometry union() {
-    return GeometryOverlay.union(this);
+    return GeometryOverlay.unaryUnion(this);
 	}
 
   /// Returns true if the two <code>Geometry</code>s are exactly equal,

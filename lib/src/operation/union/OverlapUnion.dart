@@ -112,7 +112,7 @@ class OverlapUnion
 	/**private */ Geometry g0;
 	/**private */ Geometry g1;
 
- /**private */bool isUnionSafe;
+ /**private */late bool isUnionSafe;
 
  /**private */UnionStrategy unionFun;
 
@@ -123,17 +123,15 @@ class OverlapUnion
    * @param g0 a geometry to union
    * @param g1 a geometry to union
    */
-	OverlapUnion(Geometry g0, Geometry g1)
-	{
-		this(g0, g1, CascadedPolygonUnion.CLASSIC_UNION);
-	}
+	// OverlapUnion(Geometry g0, Geometry g1)
+	// {
+	// 	this(g0, g1, CascadedPolygonUnion.CLASSIC_UNION);
+	// }
 	
-	OverlapUnion(Geometry g0, Geometry g1, UnionStrategy unionFun) {
-    this.g0 = g0;
-    this.g1 = g1;
-    geomFactory = g0.getFactory();
-    this.unionFun = unionFun;
-  }
+	OverlapUnion(this.g0, this.g1, [UnionStrategy? unionFun]):
+    geomFactory = g0.getFactory(),
+    this.unionFun = (unionFun??= CascadedPolygonUnion.CLASSIC_UNION);
+  
 
   /**
    * Unions the input geometries,

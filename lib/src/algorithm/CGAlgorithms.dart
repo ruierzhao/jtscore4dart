@@ -387,7 +387,7 @@ class CGAlgorithms
   /// @deprecated Use
   ///             {@link Distance#pointToSegmentString(Coordinate, List<Coordinate>)}
   ///             instead.
-  static double distancePointLine(Coordinate p, List<Coordinate> line)
+  static double distancePointLine$1(Coordinate p, List<Coordinate> line)
   {
     if (line.isEmpty) {
       throw ArgumentError(
@@ -419,7 +419,7 @@ class CGAlgorithms
   /// @deprecated Use
   ///             {@link Distance#segmentToSegment(Coordinate, Coordinate, Coordinate, Coordinate)}
   ///             instead.
-  static double distanceLineLine(Coordinate A, Coordinate B,
+  static double distanceLineLine4(Coordinate A, Coordinate B,
       Coordinate C, Coordinate D)
   {
     // check for zero-length segments

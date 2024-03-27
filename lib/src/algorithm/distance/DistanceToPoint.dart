@@ -19,7 +19,6 @@
 // import org.locationtech.jts.geom.Polygon;
 
 import 'package:jtscore4dart/geometry.dart';
-import 'package:jtscore4dart/src/geom/LineSegment.dart';
 
 import 'PointPairDistance.dart';
 

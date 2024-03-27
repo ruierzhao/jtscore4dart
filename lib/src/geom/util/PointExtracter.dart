@@ -21,6 +21,12 @@
 // import org.locationtech.jts.geom.Point;
 
 
+
+import '../Geometry.dart';
+import '../GeometryCollection.dart';
+import '../GeometryFilter.dart';
+import '../Point.dart';
+
 /// Extracts all the 0-dimensional ({@link Point}) components from a {@link Geometry}.
 ///
 /// @version 1.7

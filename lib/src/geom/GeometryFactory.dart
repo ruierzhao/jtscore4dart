@@ -498,7 +498,7 @@ class GeometryFactory{
   ///      .
   // Geometry buildGeometry(Collection geomList) {
   // TODO: ruier edit.
-  Geometry buildGeometry(Iterable geomList) {
+  Geometry buildGeometry(Iterable<Geometry> geomList) {
   	
   	/**
   	 * Determine some facts about the geometries in the list

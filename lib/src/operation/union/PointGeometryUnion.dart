@@ -26,7 +26,9 @@
 // import org.locationtech.jts.geom.util.GeometryCombiner;
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
 import 'package:jtscore4dart/src/geom/Puntal.dart';
+import 'package:jtscore4dart/src/geom/util/GeometryCombiner.dart';
 
 /**
  * Computes the union of a {@link Puntal} geometry with 

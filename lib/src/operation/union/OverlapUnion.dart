@@ -28,7 +28,9 @@
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
+import 'package:jtscore4dart/src/geom/util/GeometryCombiner.dart';
 
+import 'CascadedPolygonUnion.dart';
 import 'UnionStrategy.dart';
 
 /**
@@ -96,7 +98,7 @@ class OverlapUnion
    * 
    * @param [g0] a geometry to union
    * @param [g1] a geometry to union
-   * @param unionFun 
+   * @param [unionFun] 
    * @return the union of the inputs
    */
 	static Geometry union(Geometry g0, Geometry g1, UnionStrategy unionFun)
@@ -152,7 +154,7 @@ class OverlapUnion
       return GeometryCombiner.combine(g0Copy, g1Copy);
     }
     
-    List<Geometry> disjointPolys = new ArrayList<Geometry>();
+    List<Geometry> disjointPolys = <Geometry>[];
     
     Geometry g0Overlap = extractByEnvelope(overlapEnv, g0, disjointPolys);
     Geometry g1Overlap = extractByEnvelope(overlapEnv, g1, disjointPolys);
@@ -160,7 +162,7 @@ class OverlapUnion
 //    System.out.println("# geoms in common: " + intersectingPolys.size());
     Geometry unionGeom = unionFull(g0Overlap, g1Overlap); 
     
-    Geometry result = null;
+    Geometry? result = null;
     isUnionSafe = isBorderSegmentsSame(unionGeom, overlapEnv);
     if (! isUnionSafe) {
       // overlap union changed border segments... need to do full union
@@ -193,8 +195,10 @@ class OverlapUnion
   }
   
  /**private */Geometry combine(Geometry unionGeom, List<Geometry> disjointPolys) {
-    if (disjointPolys.size() <= 0)
+    // if (disjointPolys.size() <= 0)
+    if (disjointPolys.isEmpty) {
       return unionGeom;
+    }
     
     disjointPolys.add(unionGeom);
     Geometry result = GeometryCombiner.combine(disjointPolys);
@@ -221,8 +225,9 @@ class OverlapUnion
  /**private */Geometry unionFull(Geometry geom0, Geometry geom1) {
     // if both are empty collections, just return a copy of one of them
     if (geom0.getNumGeometries() == 0 
-        && geom1.getNumGeometries() == 0)
+        && geom1.getNumGeometries() == 0) {
       return geom0.copy();
+    }
     
     Geometry union = unionFun.union(geom0, geom1);
     return union;
@@ -239,12 +244,13 @@ class OverlapUnion
   }
   
  /**private */bool isEqual(List<LineSegment> segs0, List<LineSegment> segs1) {
-    if (segs0.size() != segs1.size())
+    if (segs0.size() != segs1.size()) {
       return false;
+    }
     
     Set<LineSegment> segIndex = new HashSet<LineSegment>(segs0);
     
-    for (LineSegment seg : segs1) {
+    for (LineSegment seg in segs1) {
       if (! segIndex.contains(seg)) {
         //System.out.println("Found changed border seg: " + seg);
         return false;
@@ -256,8 +262,9 @@ class OverlapUnion
  /**private */List<LineSegment> extractBorderSegments(Geometry geom0, Geometry geom1, Envelope env) {
     List<LineSegment> segs = new ArrayList<LineSegment>();
     extractBorderSegments(geom0, env, segs);
-    if (geom1 != null)
+    if (geom1 != null) {
       extractBorderSegments(geom1, env, segs);
+    }
     return segs;
   }
   

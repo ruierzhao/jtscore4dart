@@ -23,6 +23,10 @@
 // import org.locationtech.jts.geom.Polygonal;
 
 
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+
+import '../Geometry.dart';
+
 /**
  * Combines {@link Geometry}s
  * to produce a {@link GeometryCollection} of the most appropriate type.
@@ -43,7 +47,7 @@ class GeometryCombiner
 	 * @param geoms the geometries to combine
 	 * @return the combined geometry
 	 */
-	static Geometry combine(Collection geoms)
+	static Geometry combine(Iterable<Geometry> geoms)
 	{
 		GeometryCombiner combiner = new GeometryCombiner(geoms);
 		return combiner.combine();
@@ -107,9 +111,9 @@ class GeometryCombiner
 		return list;
   }
   
-	private GeometryFactory geomFactory;
-	private bool skipEmpty = false;
-	private Collection inputGeoms;
+	/**private */ GeometryFactory geomFactory;
+	/**private */ bool skipEmpty = false;
+	/**private */ Collection inputGeoms;
 		
 	/**
 	 * Creates a new combiner for a collection of geometries
@@ -128,10 +132,11 @@ class GeometryCombiner
 	 * @param geoms
 	 * @return a GeometryFactory
 	 */
-	static GeometryFactory extractFactory(Collection geoms) {
-		if (geoms.isEmpty())
-			return null;
-		return ((Geometry) geoms.iterator().next()).getFactory();
+	static GeometryFactory extractFactory(Iterable<Geometry> geoms) {
+		if (geoms.isEmpty) {
+		  return null;
+		}
+		return (geoms.iterator.current).getFactory();
 	}
 	
 	/**
@@ -144,7 +149,7 @@ class GeometryCombiner
   {
   	List elems = [];
   	for (Iterator i = inputGeoms.iterator(); i.moveNext(); ) {
-  		Geometry g = (Geometry) i.current;
+  		Geometry g =  i.current;
   		extractElements(g, elems);
   	}
     
@@ -161,13 +166,15 @@ class GeometryCombiner
   
  /**private */void extractElements(Geometry geom, List elems)
   {
-    if (geom == null)
+    if (geom == null) {
       return;
+    }
     
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry elemGeom = geom.getGeometryN(i);
-      if (skipEmpty && elemGeom.isEmpty())
+      if (skipEmpty && elemGeom.isEmpty()) {
         continue;
+      }
       elems.add(elemGeom);
     }
   }

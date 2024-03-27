@@ -1286,7 +1286,7 @@ abstract class Geometry{
   /// @throws ArgumentError
   ///           if either input is a non-empty GeometryCollection
   /// @see LineMerger
-  Geometry union(Geometry other)
+  Geometry unionWith(Geometry other)
   {
     return GeometryOverlay.union(this, other);
   }

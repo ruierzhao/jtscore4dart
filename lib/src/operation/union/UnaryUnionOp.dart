@@ -26,6 +26,7 @@
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/geom/Puntal.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 import 'CascadedPolygonUnion.dart';
 import 'InputExtracter.dart';
@@ -81,11 +82,11 @@ class UnaryUnionOp
 	 * @return the union of the geometries, 
 	 * or <code>null</code> if the input is empty
 	 */
-	static Geometry unionAll(Iterable geoms)
-	{
-		UnaryUnionOp op = new UnaryUnionOp.all(geoms);
-		return op.union();
-	}
+	// static Geometry unionAll(Iterable<Geometry> geoms)
+	// {
+	// 	UnaryUnionOp op = new UnaryUnionOp.all(geoms);
+	// 	return op.union_();
+	// }
 	
 	/**
 	 * Computes the geometric union of a {@link Collection} 
@@ -99,10 +100,10 @@ class UnaryUnionOp
 	 * @return the union of the geometries,
 	 * or an empty GEOMETRYCOLLECTION
 	 */
-	static Geometry union(Iterable geoms, [GeometryFactory? geomFact])
+	static Geometry unionAll(Iterable<Geometry> geoms, [GeometryFactory? geomFact])
 	{
 		UnaryUnionOp op = new UnaryUnionOp.all(geoms, geomFact);
-		return op.union();
+		return op.union_();
 	}
 	
 	/**
@@ -116,7 +117,7 @@ class UnaryUnionOp
 	static Geometry union(Geometry geom)
 	{
 		UnaryUnionOp op = new UnaryUnionOp(geom);
-		return op.union();
+		return op.union_();
 	}
 	
 	/**private */ GeometryFactory? geomFact;
@@ -131,7 +132,7 @@ class UnaryUnionOp
 	 * @param [geoms] a collection of geometries
 	 * @param [geomFact] the geometry factory to use if the collection is empty
 	 */
-	UnaryUnionOp.all(Iterable geoms, [this.geomFact])
+	UnaryUnionOp.all(Iterable<Geometry> geoms, [this.geomFact])
 	{
 		extractAll(geoms);
 	}
@@ -189,13 +190,15 @@ class UnaryUnionOp
 	 * or an empty atomic geometry, or an empty GEOMETRYCOLLECTION,
 	 * or <code>null</code> if no GeometryFactory was provided
 	 */
-	Geometry? union()
+	Geometry union_()
 	{
 	  geomFact ??= extracter.getFactory();
 	  
 	  // Case 3
 		if (geomFact == null) {
-			return null;
+			// return null;
+      // throw Exception("geomFact is null");
+      Assert.shouldNeverReachHere("UnaryUnionOp#geomFact is null");
 		}
 		
 		// Case 1 & 2
@@ -233,7 +236,7 @@ class UnaryUnionOp
      * Performing two unions is somewhat inefficient,
      * but is mitigated by unioning lines and points first
      */
-		Geometry unionLA = unionWithNull(unionLines, unionPolygons);
+		Geometry? unionLA = unionWithNull(unionLines, unionPolygons);
 		Geometry? union = null;
 		if (unionPoints == null) {
 		  union = unionLA;
@@ -260,7 +263,7 @@ class UnaryUnionOp
    * @return the union of the input(s)
    * or null if both inputs are null
    */
- /**private */Geometry? unionWithNull(Geometry g0, Geometry g1)
+ /**private */Geometry? unionWithNull([Geometry? g0, Geometry? g1])
   {
   	if (g0 == null && g1 == null) {
   	  return null;
@@ -273,7 +276,7 @@ class UnaryUnionOp
   	  return g1;
   	}
   	
-  	return g0.union(g1);
+  	return g0.unionWith(g1);
   }
 
   /**

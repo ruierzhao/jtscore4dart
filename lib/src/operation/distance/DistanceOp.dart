@@ -30,7 +30,6 @@
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/Distance.dart';
 import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
-import 'package:jtscore4dart/src/geom/LineSegment.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/util/LinearComponentExtracter.dart';
 import 'package:jtscore4dart/src/geom/util/PointExtracter.dart';

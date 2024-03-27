@@ -24,7 +24,7 @@ class Area {
 
   /// Computes the area for a ring. 
   /// 
-  /// @param ring the coordinates forming the ring
+  /// @param [ring] the coordinates forming the ring
   /// @return the area of the ring
   static double ofRing(List<Coordinate> ring)
   {
@@ -35,12 +35,13 @@ class Area {
   /// 
   /// @param ring the coordinates forming the ring
   /// @return the area of the ring
-  // TODO：ruier edit. not implement.
-  // static double ofRing(CoordinateSequence ring)
-  // {
-  //   return (ofRingSigned(ring).abs());
-  // }
+  static double ofRingSeq(CoordinateSequence ring)
+  {
+    return (ofRingSignedFromSequence(ring).abs());
+  }
 
+  /// 顺时针面积为正，逆时针为负
+  /// 
   /// Computes the signed area for a ring. The signed area is positive if the
   /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the
   /// ring is degenerate or flat.

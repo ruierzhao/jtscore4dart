@@ -19,15 +19,15 @@
 // import org.locationtech.jts.geom.util.GeometryEditor;
 // import org.locationtech.jts.util.Assert;
 
-import 'package:jtscore4dart/src/geom/Coordinate.dart';
-import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
-import 'package:jtscore4dart/src/geom/CoordinateSequenceFactory.dart';
-import 'package:jtscore4dart/src/geom/Envelope.dart';
-import 'package:jtscore4dart/src/geom/Geometry.dart';
-import 'package:jtscore4dart/src/geom/Point.dart';
-import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
 
+import 'Coordinate.dart';
+import 'CoordinateSequence.dart';
+import 'CoordinateSequenceFactory.dart';
+import 'Envelope.dart';
+import 'Geometry.dart';
+import 'Point.dart';
+import 'PrecisionModel.dart';
 import 'CoordinateSequences.dart';
 import 'GeometryCollection.dart';
 import 'LineString.dart';
@@ -37,7 +37,7 @@ import 'MultiPoint.dart';
 import 'MultiPolygon.dart';
 import 'Polygon.dart';
 import 'impl/CoordinateArraySequenceFactory.dart';
-import 'util/GeometryEditor.dart' show GeometryEditor, CoordinateSequenceOperation;
+import 'util/GeometryEditor.dart';
 
 /// Supplies a set of utility methods for building Geometry objects from lists
 /// of Coordinates.
@@ -638,7 +638,7 @@ class GeometryFactory{
     CoordSeqCloneOp(this.coordinateSequenceFactory);
     
     @override
-    CoordinateSequence edit(CoordinateSequence coordSeq, Geometry geometry) {
+    CoordinateSequence editCoordSeq(CoordinateSequence coordSeq, Geometry geometry) {
       return coordinateSequenceFactory.createFromCoordSeq(coordSeq);
     }
   }

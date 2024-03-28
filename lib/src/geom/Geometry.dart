@@ -32,17 +32,9 @@
 // import org.locationtech.jts.util.Assert;
 
 
-import 'package:jtscore4dart/src/algorithm/Centroid.dart';
-import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
-import 'package:jtscore4dart/src/algorithm/InteriorPoint.dart';
-import 'package:jtscore4dart/src/geom/Coordinate.dart';
-import 'package:jtscore4dart/src/geom/CoordinateSequenceComparator.dart';
-import 'package:jtscore4dart/src/geom/Envelope.dart';
-import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
-import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
-import 'package:jtscore4dart/src/geom/Point.dart';
-import 'package:jtscore4dart/src/geom/Polygon.dart';
-import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+// import 'package:jtscore4dart/src/algorithm/Centroid.dart';
+// import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
+// import 'package:jtscore4dart/src/algorithm/InteriorPoint.dart';
 // import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
 // import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
 // import 'package:jtscore4dart/src/operation/predicate/RectangleContains.dart';
@@ -51,6 +43,14 @@ import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 // import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
 // import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
 
+import 'CoordinateSequenceComparator.dart';
+import 'Coordinate.dart';
+import 'Envelope.dart';
+import 'GeometryComponentFilter.dart';
+import 'GeometryFactory.dart';
+import 'Point.dart';
+import 'Polygon.dart';
+import 'PrecisionModel.dart';
 import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
 import 'GeometryFilter.dart';
@@ -490,11 +490,12 @@ abstract class Geometry{
   /// @return a {@link Point} which is the centroid of this Geometry
   Point getCentroid()
   {
-    if (isEmpty()) {
-      return factory.createPoint();
-    }
-    Coordinate? centPt = Centroid.getCentroid(this);
-    return createPointFromInternalCoord(centPt, this);
+    throw UnimplementedError("");
+    // if (isEmpty()) {
+    //   return factory.createPoint();
+    // }
+    // Coordinate? centPt = Centroid.getCentroid(this);
+    // return createPointFromInternalCoord(centPt, this);
   }
 
   /// Computes an interior point of this <code>Geometry</code>.
@@ -507,9 +508,10 @@ abstract class Geometry{
   /// @return a {@link Point} which is in the interior of this Geometry
   Point getInteriorPoint()
   {
-    if (isEmpty()) return factory.createPoint();
-    Coordinate? pt = InteriorPoint.of(this);
-    return createPointFromInternalCoord(pt, this);
+    throw UnimplementedError("");
+    // if (isEmpty()) return factory.createPoint();
+    // Coordinate? pt = InteriorPoint.of(this);
+    // return createPointFromInternalCoord(pt, this);
   }
 
   /// Returns the dimension of this geometry.

@@ -13,7 +13,7 @@
 
 // import org.locationtech.jts.operation.BoundaryOp;
 
-import 'package:jtscore4dart/src/operation/BoundaryOp.dart';
+// import 'package:jtscore4dart/src/operation/BoundaryOp.dart';
 
 import 'Dimension.dart';
 import 'Geometry.dart';
@@ -102,7 +102,9 @@ class MultiLineString
   @override
   Geometry getBoundary()
   {
-    return (new BoundaryOp(this)).getBoundary();
+    /// TODO: @ruier edit.
+    throw UnimplementedError("");
+    // return (new BoundaryOp(this)).getBoundary();
   }
 
   /// Creates a {@link MultiLineString} in the reverse

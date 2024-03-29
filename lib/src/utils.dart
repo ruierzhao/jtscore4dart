@@ -1,6 +1,7 @@
 import "dart:math";
 
-// import "package:collection/collection.dart";
+import "package:collection/collection.dart";
+
 
 // 补充的 java 方法
 double hypot(double dx, double dy){
@@ -57,10 +58,10 @@ class CollectionsUtils {
     return false;
   }
 
-  // static bool areEqual<T>(List<T> listA, List<T> listB) {
-  //   Function eq = const ListEquality().equals;
-  //   return eq(listA, listB);
-  // }
+  static bool areEqual<T>(List<T> listA, List<T> listB) {
+    Function eq = const ListEquality().equals;
+    return eq(listA, listB);
+  }
 }
 
 

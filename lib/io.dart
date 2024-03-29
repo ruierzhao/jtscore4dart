@@ -1402,8 +1402,7 @@ class WKTReader {
 
   GeometryFactory geometryFactory;
   late CoordinateSequenceFactory csFactory;
-  static CoordinateSequenceFactory csFactoryXYZM =
-      CoordinateArraySequenceFactory();
+  static CoordinateSequenceFactory csFactoryXYZM = CoordinateArraySequenceFactory();
   late PrecisionModel precisionModel;
 
   /// Flag indicating that the old notation of coordinates in JTS
@@ -1517,8 +1516,7 @@ class WKTReader {
   ///
   ///@throws  IOException     if an I/O error occurs
   ///@throws  ParseException  if an unexpected token was encountered
-  CoordinateSequence getCoordinate(
-      WKTTokenizer tokenizer, List<Ordinate> ordinateFlags, bool tryParen) {
+  CoordinateSequence getCoordinate(WKTTokenizer tokenizer, List<Ordinate> ordinateFlags, bool tryParen) {
     bool opened = false;
     if (tryParen && isOpenerNext(tokenizer)) {
       tokenizer.next();
@@ -1527,8 +1525,8 @@ class WKTReader {
 
 // create a sequence for one coordinate
     int offsetM = ordinateFlags.contains(Ordinate.Z) ? 1 : 0;
-    CoordinateSequence sequence = csFactory.createWithSize(1,
-        toDimension(ordinateFlags), ordinateFlags.contains(Ordinate.M) ? 1 : 0);
+    print('==============${csFactory}=====================');
+    CoordinateSequence sequence = csFactory.createWithSize(1, toDimension(ordinateFlags), ordinateFlags.contains(Ordinate.M) ? 1 : 0);
     sequence.setOrdinate(0, CoordinateSequence.X,
         precisionModel.makePrecise(getNextNumber(tokenizer)));
     sequence.setOrdinate(0, CoordinateSequence.Y,
@@ -1571,8 +1569,7 @@ class WKTReader {
   ///
   ///@throws  IOException     if an I/O error occurs
   ///@throws  ParseException  if an unexpected token was encountered
-  CoordinateSequence getCoordinateSequence(
-      WKTTokenizer tokenizer, List<Ordinate> ordinateFlags) {
+  CoordinateSequence getCoordinateSequence(WKTTokenizer tokenizer, List<Ordinate> ordinateFlags) {
     return getCoordinateSequenceTryParen(tokenizer, ordinateFlags, false);
   }
 
@@ -2027,8 +2024,7 @@ class WKTReader {
   ///@throws  IOException     if an I/O error occurs
   ///@throws  ParseException  if an unexpected token was encountered
   Point readPointText(WKTTokenizer tokenizer, List<Ordinate> ordinateFlags) {
-    Point point = geometryFactory
-        .createPointFromCoordSeq(getCoordinateSequence(tokenizer, ordinateFlags));
+    Point point = geometryFactory.createPointFromCoordSeq(getCoordinateSequence(tokenizer, ordinateFlags));
     return point;
   }
 

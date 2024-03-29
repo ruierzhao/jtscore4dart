@@ -30,6 +30,7 @@
 
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
 
 /// A class which supports creating new {@link Geometry}s 
@@ -81,8 +82,8 @@ class GeometryEditor
 {
   /// The factory used to create the modified Geometry.
   /// If <tt>null</tt> the GeometryFactory of the input is used.
- /**private */GeometryFactory? factory ;
- /**private */bool isUserDataCopied = false;
+  GeometryFactory? _factory;
+  bool _isUserDataCopied = false;
 
   /// Creates a new GeometryEditor object which will create
   /// edited {@link Geometry}s with the same {@link GeometryFactory} as the input Geometry.
@@ -94,7 +95,7 @@ class GeometryEditor
   /// edited {@link Geometry}s with the given {@link GeometryFactory}.
   ///
   /// @param factory the GeometryFactory to create  edited Geometrys with
-  GeometryEditor([this.factory]);
+  GeometryEditor([this._factory]);
 
   /// 
   /// Sets whether the User Data is copied to the edit result.
@@ -103,7 +104,7 @@ class GeometryEditor
   /// @param isUserDataCopied true if the input user data should be copied.
   void setCopyUserData(bool isUserDataCopied)
   {
-    this.isUserDataCopied = isUserDataCopied;
+    this._isUserDataCopied = isUserDataCopied;
   }
   
   /// Edit the input {@link Geometry} with the given edit operation.
@@ -119,17 +120,17 @@ class GeometryEditor
     // TODO: ruier edit.
     // if (geometry == null) return null;
     
-    Geometry result = editInternal(geometry, operation);
-    if (isUserDataCopied) {
-      result.setUserData(geometry.getUserData()!);
+    Geometry result = editInternal(geometry, operation)!;
+    if (_isUserDataCopied) {
+      result.setUserData(geometry.getUserData());
     }
     return result;
   }
   
- /**private */Geometry editInternal(Geometry geometry, GeometryEditorOperation operation)
+ /**private */Geometry? editInternal(Geometry geometry, GeometryEditorOperation operation)
   {
     // if client did not supply a GeometryFactory, use the one from the input Geometry
-    factory ??= geometry.getFactory();
+    _factory ??= geometry.getFactory();
 
     if (geometry is GeometryCollection) {
       return editGeometryCollection( geometry, operation);
@@ -140,50 +141,50 @@ class GeometryEditor
     }
 
     if (geometry is Point) {
-      return operation.edit(geometry, factory!);
+      return operation.edit(geometry, _factory!);
     }
 
     if (geometry is LineString) {
-      return operation.edit(geometry, factory!);
+      return operation.edit(geometry, _factory!);
     }
 
     // Assert.shouldNeverReachHere("Unsupported Geometry class: " + geometry.getClass().getName());
     Assert.shouldNeverReachHere("Unsupported Geometry class:  ${geometry.runtimeType}");
-    // return null;
+    return null;
   }
 
- /**private */Polygon editPolygon(Polygon polygon,GeometryEditorOperation operation) {
-    Polygon newPolygon = operation.edit(polygon, factory);
+ /**private */Polygon editPolygon(Polygon polygon, GeometryEditorOperation operation) {
+    Polygon newPolygon = operation.edit(polygon, _factory!) as Polygon;
     // create one if needed
-    newPolygon ??= factory!.createPolygon();
+    newPolygon ??= _factory!.createPolygon();
     if (newPolygon.isEmpty()) {
       //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
       return newPolygon;
     }
 
-    LinearRing shell = edit(newPolygon.getExteriorRing(), operation);
+    LinearRing shell = edit(newPolygon.getExteriorRing(), operation) as LinearRing;
     if (shell == null || shell.isEmpty()) {
       //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
-      return factory.createPolygon();
+      return _factory!.createPolygon();
     }
 
-    List holes = [];
+    List<LinearRing> holes = [];
     for (int i = 0; i < newPolygon.getNumInteriorRing(); i++) {
-      LinearRing hole = edit(newPolygon.getInteriorRingN(i), operation);
+      LinearRing hole = edit(newPolygon.getInteriorRingN(i), operation) as LinearRing;
       if (hole == null || hole.isEmpty()) {
         continue;
       }
       holes.add(hole);
     }
 
-    return factory.createPolygon(shell, holes);
+    return _factory!.createPolygon(shell, holes);
   }
 
  /**private */
  GeometryCollection editGeometryCollection(GeometryCollection collection, GeometryEditorOperation operation) {
     // first edit the entire collection
     // MD - not sure why this is done - could just check original collection?
-    GeometryCollection collectionForType = (GeometryCollection) operation.edit(collection,factory);
+    GeometryCollection collectionForType = operation.edit(collection, _factory!) as GeometryCollection;
     
     // edit the component geometries
     List<Geometry> geometries = [];
@@ -198,18 +199,15 @@ class GeometryEditor
     // if (collectionForType.getClass() == MultiPoint.class) {
     if (collectionForType.runtimeType == MultiPoint) {
       // return factory.createMultiPoint(geometries.toArray(new Point[] {  }));
-      return factory.createMultiPoint(geometries);
+      return _factory!.createMultiPointFromPoints(geometries as List<Point>);
     }
     if (collectionForType.runtimeType == MultiLineString) {
-      return factory.createMultiLineString((List<LineString>) geometries.toArray(
-            new List<LineString> {  }));
+      return _factory!.createMultiLineString(geometries.toList(growable: false) as List<LineString>);
     }
     if (collectionForType.runtimeType == MultiPolygon) {
-      return factory.createMultiPolygon((List<Polygon>) geometries.toArray(
-            new List<Polygon> {  }));
+      return _factory!.createMultiPolygon( geometries.toArray() as List<Polygon>);
     }
-    return factory.createGeometryCollection((List<Geometry>) geometries.toArray(
-          new List<Geometry> {  }));
+    return _factory!.createGeometryCollection( geometries.toArray());
   }
 
   
@@ -310,25 +308,25 @@ class NoOpGeometryOperation implements GeometryEditorOperation
    * Operates on Geometry subclasses which contains a single coordinate list.
    */
   /**abstract static */ 
-  class CoordinateSequenceOperation extends GeometryEditorOperation
+abstract class CoordinateSequenceOperation extends GeometryEditorOperation
   {
   @override
   Geometry edit(Geometry geometry, GeometryFactory factory) {
       if (geometry is LinearRing) {
-        return factory.createLinearRing(editCoordSeq(
+        return factory.createLinearRingFromCoordSeq(editCoordSeq(
             geometry.getCoordinateSequence(),
             geometry));
       }
 
       if (geometry is LineString) {
-        return factory.createLineString(editCoordSeq(
-            ((LineString)geometry).getCoordinateSequence(),
+        return factory.createLineStringFromSeq(editCoordSeq(
+            (geometry).getCoordinateSequence(),
             geometry));
       }
 
       if (geometry is Point) {
-        return factory.createPoint(editCoordSeq(
-            ((Point)geometry).getCoordinateSequence(),
+        return factory.createPointFromCoordSeq(editCoordSeq(
+            (geometry).getCoordinateSequence(),
             geometry));
       }
 

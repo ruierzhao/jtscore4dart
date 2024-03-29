@@ -51,12 +51,11 @@ import 'util/GeometryEditor.dart';
 /// @version 1.7
 class GeometryFactory{
   ///**private */static final int serialVersionUID = -6820524753094095635L;
-  /**private */ PrecisionModel precisionModel;
+  PrecisionModel _precisionModel;
 
-  /**private */ CoordinateSequenceFactory coordinateSequenceFactory;
+  CoordinateSequenceFactory _coordinateSequenceFactory;
   
-  /**private */ int SRID;
-
+  int _SRID;
 
   static Point createPointFromInternalCoord(Coordinate coord, Geometry exemplar)
   {
@@ -75,13 +74,13 @@ class GeometryFactory{
     //     precisionModel ??= PrecisionModel();
     //     coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
     //   }
-    GeometryFactory([PrecisionModel? _precisionModel, this.SRID=0, CoordinateSequenceFactory? coordinateSequenceFactory])
-    :this.precisionModel = _precisionModel ??= PrecisionModel(),
-    coordinateSequenceFactory = coordinateSequenceFactory ??= getDefaultCoordinateSequenceFactory();
+    GeometryFactory([PrecisionModel? precisionModel, this._SRID=0, CoordinateSequenceFactory? coordinateSequenceFactory])
+    :this._precisionModel = precisionModel ??= PrecisionModel(),
+    _coordinateSequenceFactory = coordinateSequenceFactory ??= _getDefaultCoordinateSequenceFactory();
 
 
 
-  /**private */ static CoordinateSequenceFactory getDefaultCoordinateSequenceFactory()
+  static CoordinateSequenceFactory _getDefaultCoordinateSequenceFactory()
   {
     return CoordinateArraySequenceFactory.instance();
   }
@@ -96,7 +95,7 @@ class GeometryFactory{
   //   return (List<Point>) points.toArray(pointArray);
   // }
   static List<Point> toPointArray(Iterable points) {
-    return points.toList() as List<Point>;
+    return points.toList(growable: false) as List<Point>;
   }
 
   ///  Converts the <code>List</code> to an array.
@@ -110,7 +109,7 @@ class GeometryFactory{
   //   return (List<Geometry>) geometries.toArray(geometryArray);
   // }
   static List<Geometry>? toGeometryArray(Iterable geometries) {
-    return geometries.toList() as  List<Geometry>;
+    return geometries.toList(growable: false) as  List<Geometry>;
   }
 
   ///  Converts the <code>List</code> to an array.
@@ -119,7 +118,7 @@ class GeometryFactory{
   ///@return              the <code>List</code> in array format
   static List<LinearRing> toLinearRingArray(Iterable linearRings) {
     // List<LinearRing> linearRingArray = new LinearRing[linearRings.size()];
-    return linearRings.toList() as List<LinearRing>;
+    return linearRings.toList(growable: false) as List<LinearRing>;
   }
   // static List<LinearRing> toLinearRingArray(Collection linearRings) {
   //   List<LinearRing> linearRingArray = new LinearRing[linearRings.size()];
@@ -138,7 +137,7 @@ class GeometryFactory{
     // lineStrings.length;
     // TODO: ruier edit.可以优化
     // List<LineString> lineStringArray = new LineString[lineStrings.size()];
-    return lineStrings.toList() as List<LineString>;
+    return lineStrings.toList(growable: false) as List<LineString>;
   }
 
   ///  Converts the <code>List</code> to an array.
@@ -160,7 +159,7 @@ class GeometryFactory{
   ///@return                the <code>List</code> in array format
   static List<MultiPolygon> toMultiPolygonArray(Iterable multiPolygons) {
     // List<MultiPolygon> multiPolygonArray = new MultiPolygon[multiPolygons.size()];
-    return multiPolygons.toList() as  List<MultiPolygon>; 
+    return multiPolygons.toList(growable: false) as  List<MultiPolygon>; 
   }
   // static MultiList<Polygon> toMultiPolygonArray(Collection multiPolygons) {
   //   MultiList<Polygon> multiPolygonArray = new MultiPolygon[multiPolygons.size()];
@@ -174,7 +173,7 @@ class GeometryFactory{
   ///@return                   the <code>List</code> in array format
   static List<MultiLineString> toMultiLineStringArray(Iterable multiLineStrings) {
     // List<MultiLineString> multiLineStringArray = new MultiLineString[multiLineStrings.size()];
-    return multiLineStrings.toList() as List<MultiLineString>;
+    return multiLineStrings.toList(growable: false) as List<MultiLineString>;
   }
 
   ///  Converts the <code>List</code> to an array.
@@ -183,7 +182,7 @@ class GeometryFactory{
   ///@return              the <code>List</code> in array format
   static List<MultiPoint> toMultiPointArray(Iterable multiPoints) {
     // List<MultiPoint> multiPointArray = new MultiPoint[multiPoints.size()];
-    return multiPoints.toList() as List<MultiPoint>;
+    return multiPoints.toList(growable: false) as List<MultiPoint>;
   }
 
   /// Creates a {@link Geometry} with the same extent as the given envelope.
@@ -238,7 +237,7 @@ class GeometryFactory{
   /// 
   /// @return the PrecisionModel for this factory
   PrecisionModel getPrecisionModel() {
-    return precisionModel;
+    return _precisionModel;
   }
 
   /// Constructs an empty {@link Point} geometry.
@@ -504,7 +503,7 @@ class GeometryFactory{
   	 * Determine some facts about the geometries in the list
   	 */
     // Class geomClass = null;
-    var geomClass = null;
+    Type? geomClass = null;
     bool isHeterogeneous = false;
     bool hasGeometryCollection = false;
     for (Iterator i = geomList.iterator; i.moveNext(); ) {
@@ -536,7 +535,7 @@ class GeometryFactory{
     // at this point we know the collection is hetereogenous.
     // Determine the type of the result from the first Geometry in the list
     // this should always return a geometry, since otherwise an empty collection would have already been returned
-    Geometry geom0 = geomList.iterator.current as Geometry;
+    Geometry geom0 = geomList.iterator.current;
     bool isCollection = geomList.length > 1;
     if (isCollection) {
       if (geom0 is Polygon) {
@@ -611,7 +610,7 @@ class GeometryFactory{
   Geometry? createGeometry(Geometry g)
   {
     GeometryEditor editor = new GeometryEditor(this);
-    return editor.edit(g, new CoordSeqCloneOp(coordinateSequenceFactory));
+    return editor.edit(g, new CoordSeqCloneOp(_coordinateSequenceFactory));
   }
 
 
@@ -619,12 +618,12 @@ class GeometryFactory{
   /// 
   /// @return the factory SRID value
   int getSRID() {
-    return SRID;
+    return _SRID;
   }
 
 
   CoordinateSequenceFactory getCoordinateSequenceFactory() {
-    return coordinateSequenceFactory;
+    return _coordinateSequenceFactory;
   }
 
 }

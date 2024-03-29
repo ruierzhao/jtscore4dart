@@ -24,8 +24,7 @@ import '../CoordinateSequenceFactory.dart';
 /// Creates {@link CoordinateSequence}s represented as an array of {@link Coordinate}s.
 ///
 /// @version 1.7
-final class CoordinateArraySequenceFactory
-    implements CoordinateSequenceFactory {
+final class CoordinateArraySequenceFactory implements CoordinateSequenceFactory {
   ///**private */static final int serialVersionUID = -4099577099607551657L;
   static final CoordinateArraySequenceFactory _instanceObject = CoordinateArraySequenceFactory();
 
@@ -79,6 +78,8 @@ final class CoordinateArraySequenceFactory
 
   @override
   CoordinateSequence createWithSize(int size, int dimension, [int? measures]) {
+    print('============== createWithSize ruier =====================');
+
     if (measures == null) {
       return createBySize(size, dimension);
     }

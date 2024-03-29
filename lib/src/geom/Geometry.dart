@@ -320,7 +320,7 @@ abstract class Geometry{
   ///
   /// @param userData an object, the semantics for which are defined by the
   /// application using this Geometry
-  void setUserData(Object userData) {
+  void setUserData(Object? userData) {
         this.userData = userData;
   }
 

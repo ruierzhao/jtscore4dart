@@ -64,7 +64,8 @@ abstract class CoordinateSequenceFactory
   /// otherwise ignored)
   /// @param measures the number of measures of the coordinates in the sequence (if user-specifiable,
   /// otherwise ignored)
-  CoordinateSequence createWithSize(int size, int dimension, [int? measures]) {
-      return createBySize(size, dimension);
-  }
+  CoordinateSequence createWithSize(int size, int dimension, [int? measures]);
+  // CoordinateSequence createWithSize(int size, int dimension, [int? measures]) {
+  //     return createBySize(size, dimension);
+  // }
 }

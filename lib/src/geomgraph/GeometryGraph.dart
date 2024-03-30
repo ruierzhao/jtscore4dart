@@ -50,7 +50,6 @@ import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
 import 'package:jtscore4dart/src/algorithm/locate/IndexedPointInAreaLocator.dart';
 import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
-import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Polygonal.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
@@ -65,6 +64,7 @@ import 'index/EdgeSetIntersector.dart';
 import 'index/SimpleMCSweepLineIntersector.dart';
 
 import 'package:jtscore4dart/src/patch/Map.dart';
+
 /**
  * A GeometryGraph is a graph that models a given Geometry
  * @version 1.7
@@ -126,7 +126,7 @@ class GeometryGraph
    */
  /**private */bool useBoundaryDeterminationRule = true;
  /**private */int argIndex;  // the index of this geometry as an argument to a spatial function (used for labelling)
- /**private */Collection boundaryNodes;
+ /**private */Iterable boundaryNodes;
  /**private */bool hasTooFewPoints = false;
  /**private */Coordinate? invalidPoint = null;
 
@@ -145,7 +145,7 @@ class GeometryGraph
   //private EdgeSetIntersector esi = new MCSweepLineIntersector();
 
     //return new SimpleEdgeSetIntersector();
-    return new SimpleMCSweepLineIntersector();
+    return SimpleMCSweepLineIntersector();
   }
 
   // GeometryGraph(int argIndex, Geometry parentGeom)
@@ -236,13 +236,16 @@ class GeometryGraph
 
     if (g is Polygon) {
       addPolygon( g);
-    } else if (g is LineString)         addLineString((LineString) g);
+    } 
+    // ignore_for_file: curly_braces_in_flow_control_structures
+    else if (g is LineString)         addLineString((LineString) g);
     else if (g is Point)              addPoint((Point) g);
     else if (g is MultiPoint)         addCollection((MultiPoint) g);
     else if (g is MultiLineString)    addCollection((MultiLineString) g);
     else if (g is MultiPolygon)       addCollection((MultiPolygon) g);
     else if (g is GeometryCollection) addCollection((GeometryCollection) g);
-    else  throw new UnsupportedOperationException(g.getClass().getName());
+    // else  throw new UnsupportedOperationException(g.getClass().getName());
+    else  throw Exception(g.runtimeType);
   }
 
  /**private */void addCollection(GeometryCollection gc)

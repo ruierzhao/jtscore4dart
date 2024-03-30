@@ -17,6 +17,11 @@
 // import org.locationtech.jts.operation.overlay.OverlayOp;
 
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
+import '../OverlayOp.dart';
+import 'SnapOverlayOp.dart';
+
 /**
  * Performs an overlay operation using snapping and enhanced precision
  * to improve the robustness of the result.
@@ -57,29 +62,34 @@ class SnapIfNeededOverlayOp
      return overlayOp(g0, g1, OverlayOp.SYMDIFFERENCE);
   }
   
- /**private */List<Geometry> geom = new Geometry[2];
+//  /**private */List<Geometry> geom = new Geometry[2];
+ /**private */List<Geometry> geom;
 
+  // SnapIfNeededOverlayOp(Geometry g1, Geometry g2)
+  // {
+  //   geom[0] = g1;
+  //   geom[1] = g2;
+  // }
   SnapIfNeededOverlayOp(Geometry g1, Geometry g2)
-  {
-    geom[0] = g1;
-    geom[1] = g2;
-  }
+  :geom= List.from([g1,g2], growable: false);
 
   Geometry getResultGeometry(int opCode)
   {
-    Geometry result = null;
+    Geometry? result = null;
     bool isSuccess = false;
-    RuntimeException savedException = null;
+    // RuntimeException savedException = null;
+    Exception? savedException = null;
     try {
       // try basic operation with input geometries
       result = OverlayOp.overlayOp(geom[0], geom[1], opCode); 
       bool isValid = true;
       // not needed if noding validation is used
 //      bool isValid = OverlayResultValidator.isValid(geom[0], geom[1], OverlayOp.INTERSECTION, result);
-      if (isValid)
-      	isSuccess = true;
+      if (isValid) {
+        isSuccess = true;
+      }
     }
-    catch (RuntimeException ex) {
+    on Exception catch ( ex) {
     	savedException = ex;
     	// ignore this exception, since the operation will be rerun
 //    	System.out.println(ex.getMessage());
@@ -94,10 +104,10 @@ class SnapIfNeededOverlayOp
     	try {
     		result = SnapOverlayOp.overlayOp(geom[0], geom[1], opCode);
     	}
-    	catch (RuntimeException ex) {
-    		throw savedException;
+    	on Exception catch ( ex) {
+    		throw savedException!;
     	}
     }
-    return result;
+    return result!;
   }
 }

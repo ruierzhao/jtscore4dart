@@ -34,8 +34,6 @@
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/Distance.dart';
-import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
-import 'package:jtscore4dart/src/geom/LineSegment.dart';
 import 'package:jtscore4dart/src/geom/util/GeometryMapper.dart';
 import 'package:jtscore4dart/src/index/chain/MonotoneChain.dart';
 import 'package:jtscore4dart/src/index/chain/MonotoneChainSelectAction.dart';
@@ -46,6 +44,33 @@ import 'BufferParameters.dart';
 import 'OffsetCurveBuilder.dart';
 import 'OffsetCurveSection.dart';
 import 'SegmentMCIndex.dart';
+
+
+class _ implements MapOp {
+      @override
+      Geometry map(Geometry geom) {
+        if (geom is Point) return null;
+        if (geom is Polygon ) {
+          return toLineString(geom.buffer(distance).getBoundary());
+        } 
+        return computeCurve( geom, distance);
+      }
+
+      /**
+       * Force LinearRings to be LineStrings.
+       * 
+       * @param geom a geometry which may be a LinearRing
+       * @return a geometry which will be a LineString or MultiLineString
+       */
+     /**private */
+     Geometry toLineString(Geometry geom) {
+        if (geom is LinearRing) {
+          LinearRing ring = geom;
+          return geom.getFactory().createLineStringFromSeq(ring.getCoordinateSequence());
+        }
+        return geom;
+      }
+    }
 
 /**
  * Computes an offset curve from a geometry.
@@ -214,7 +239,8 @@ class OffsetCurve {
    * @return the offset curve geometry
    */
   Geometry getCurve() {
-    return GeometryMapper.flatMap(inputGeom, 1, );
+
+    return GeometryMapper.flatMap(inputGeom, 1, _());
   }
   
   /**

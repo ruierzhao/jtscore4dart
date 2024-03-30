@@ -37,8 +37,8 @@ class PolygonExtracter
    * Extracts the {@link Polygon} elements from a single {@link Geometry}
    * and adds them to the provided {@link List}.
    * 
-   * @param geom the geometry from which to extract
-   * @param list the list to add the extracted elements to
+   * @param [geom] the geometry from which to extract
+   * @param [list] the list to add the extracted elements to
    */
   static List getPolygons(Geometry geom, [List? list])
   {

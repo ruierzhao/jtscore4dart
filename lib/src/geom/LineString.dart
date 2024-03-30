@@ -24,7 +24,7 @@ import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
 import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
 import 'package:jtscore4dart/src/geom/Lineal.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
-import 'package:jtscore4dart/src/operation/BoundaryOp.dart';
+// import 'package:jtscore4dart/src/operation/BoundaryOp.dart';
 
 import 'CoordinateSequenceComparator.dart';
 import 'CoordinateSequences.dart';
@@ -194,7 +194,9 @@ class LineString
   /// @see Geometry#getBoundary
   @override
   Geometry getBoundary() {
-    return (BoundaryOp(this)).getBoundary();
+    /// TODO: @ruier edit.
+    throw UnimplementedError();
+    // return (BoundaryOp(this)).getBoundary();
   }
 
   /// Creates a {@link LineString} whose coordinates are in the reverse

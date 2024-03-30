@@ -15,6 +15,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.math.Vector3D;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/math/Vector3D.dart';
+
 /// Basic computational geometry algorithms 
 /// for geometry and coordinates defined in 3-dimensional Cartesian space.
 /// 
@@ -27,20 +32,22 @@ abstract class CGAlgorithms3D
 	static double distance(Coordinate p0, Coordinate p1)
 	{
 		// default to 2D distance if either Z is not set
-		if (p0.getZ().isnan || (p1.getZ().isNaN))
-			return p0.distance(p1);
+		if (p0.getZ().isNaN || (p1.getZ().isNaN)) {
+		  return p0.distance(p1);
+		}
 		
 	    double dx = p0.x - p1.x;
 	    double dy = p0.y - p1.y;
 	    double dz = p0.getZ() - p1.getZ();
-	    return math.sqrt(dx * dx + dy * dy + dz * dz);
+	    return sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
 	static double distancePointSegment(Coordinate p,
 			Coordinate A, Coordinate B) {
 	    // if start = end, then just compute distance to one of the endpoints
-	    if (A.equals3D(B))
+	    if (A.equals3D(B)) {
 	      return distance(p, A);
+	    }
 
 	    // otherwise use comp.graphics.algorithms Frequently Asked Questions method
 	    /*
@@ -57,15 +64,18 @@ abstract class CGAlgorithms3D
 	     */
 
 	    double len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y) + (B.getZ() - A.getZ()) * (B.getZ() - A.getZ());
-	    if ((len2).isNaN)
-	    	throw new ArgumentError("Ordinates must not be NaN");
+	    if ((len2).isNaN) {
+	      throw new ArgumentError("Ordinates must not be NaN");
+	    }
 	    double r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y) + (p.getZ() - A.getZ()) * (B.getZ() - A.getZ()))
 	        / len2;
 
-	    if (r <= 0.0)
+	    if (r <= 0.0) {
 	      return distance(p, A);
-	    if (r >= 1.0)
+	    }
+	    if (r >= 1.0) {
 	      return distance(p, B);
+	    }
 
 	    // compute closest point q on line segment
 	    double qx = A.x + r * (B.x - A.x);
@@ -75,7 +85,7 @@ abstract class CGAlgorithms3D
 	    double dx = p.x - qx;
 	    double dy = p.y - qy;
 	    double dz = p.getZ() - qz;
-	    return math.sqrt(dx*dx + dy*dy + dz*dz);
+	    return sqrt(dx*dx + dy*dy + dz*dz);
 	}
 	
 
@@ -94,10 +104,12 @@ abstract class CGAlgorithms3D
 		  passed large ordinate values.
 		  It may be possible to improve this by using {@link DD} arithmetic.
 		 */
-	    if (A.equals3D(B))
-		      return distancePointSegment(A, C, D);
-	    if (C.equals3D(B))
-		      return distancePointSegment(C, A, B);
+	    if (A.equals3D(B)) {
+	      return distancePointSegment(A, C, D);
+	    }
+	    if (C.equals3D(B)) {
+	      return distancePointSegment(C, A, B);
+	    }
 	    
 	    /*
 	      Algorithm derived from http://softsurfer.com/Archive/algorithm_0106/algorithm_0106.htm
@@ -109,8 +121,9 @@ abstract class CGAlgorithms3D
 		double e = Vector3D.dot(C, D, C, A);
 		
 		double denom = a*c - b*b;
-	    if ((denom).isNaN)
-	    	throw new ArgumentError("Ordinates must not be NaN");
+	    if ((denom).isNaN) {
+	      throw new ArgumentError("Ordinates must not be NaN");
+	    }
 		
 		double s;
 		double t;
@@ -121,18 +134,19 @@ abstract class CGAlgorithms3D
 			 */
 			s = 0;
 			// choose largest denominator for optimal numeric conditioning
-			if (b > c)
-				t = d/b;
-			else 
-				t = e/c;
+			if (b > c) {
+			  t = d/b;
+			} else {
+			  t = e/c;
+			}
 		}
 		else {
 			s = (b*e - c*d) / denom;
 			t = (a*e - b*d) / denom;
 		}
-		if (s < 0) 
-			return distancePointSegment(A, C, D);
-		else if (s > 1)
+		if (s < 0) {
+		  return distancePointSegment(A, C, D);
+		} else if (s > 1)
 			return distancePointSegment(B, C, D);
 		else if (t < 0)	
 			return distancePointSegment(C, A, B);

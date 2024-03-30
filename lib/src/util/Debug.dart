@@ -26,6 +26,9 @@
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.LineString;
 
+
+import 'package:jtscore4dart/geometry.dart';
+
 /// Provides routines to simplify and localize debugging output.
 /// Debugging is controlled via a Java system property value.
 /// If the system property with the name given in
@@ -45,16 +48,17 @@ class Debug {
   static String DEBUG_PROPERTY_VALUE_ON = "on";
   static String DEBUG_PROPERTY_VALUE_TRUE = "true";
 
-  /**private */ static bool debugOn = false;
-
-  static {
-    String debugValue = System.getProperty(DEBUG_PROPERTY_NAME);
-    if (debugValue != null) {
-      if (debugValue.equalsIgnoreCase(DEBUG_PROPERTY_VALUE_ON)
-          || debugValue.equalsIgnoreCase(DEBUG_PROPERTY_VALUE_TRUE) )
-        debugOn = true;
-    }
-  }
+  /**private */ 
+  static bool debugOn = false;
+  /// TODO: @ruier edit.
+  // static {
+  //   String debugValue = System.getProperty(DEBUG_PROPERTY_NAME);
+  //   if (debugValue != null) {
+  //     if (debugValue.equalsIgnoreCase(DEBUG_PROPERTY_VALUE_ON)
+  //         || debugValue.equalsIgnoreCase(DEBUG_PROPERTY_VALUE_TRUE) )
+  //       debugOn = true;
+  //   }
+  // }
 
  /**private */static Stopwatch stopwatch = new Stopwatch();
  /**private */static int lastTimePrinted;
@@ -299,8 +303,9 @@ class Debug {
         instancePrint(obj.toString());
       }
     }
-    catch (Exception ex) {
-      ex.printStackTrace(out);
+    on Exception catch ( ex) {
+      // ex.printStackTrace(out);
+      PrintHandler;
     }
   }
 
@@ -308,11 +313,13 @@ class Debug {
     out.println();
   }
 
- /**private */void instanceAddWatch(Object obj) {
+ /**private */
+ void instanceAddWatch(var obj) {
     watchObj = obj;
   }
 
- /**private */void instancePrint(String str) {
+  /**private */
+  void instancePrint(String str) {
     out.print(DEBUG_LINE_TAG);
     out.print(str);
   }

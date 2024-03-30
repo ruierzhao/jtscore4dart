@@ -2,6 +2,7 @@ import "dart:math";
 
 import "package:collection/collection.dart";
 
+
 // 补充的 java 方法
 double hypot(double dx, double dy){
   return sqrt(dx * dx + dy * dy);

@@ -23,6 +23,11 @@
 // import org.locationtech.jts.geom.Polygonal;
 
 
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
+import '../Geometry.dart';
+
 /**
  * Combines {@link Geometry}s
  * to produce a {@link GeometryCollection} of the most appropriate type.
@@ -43,10 +48,10 @@ class GeometryCombiner
 	 * @param geoms the geometries to combine
 	 * @return the combined geometry
 	 */
-	static Geometry combine(Collection geoms)
+	static Geometry combineAll(Iterable<Geometry> geoms)
 	{
 		GeometryCombiner combiner = new GeometryCombiner(geoms);
-		return combiner.combine();
+		return combiner.combine_();
 	}
 	
 	/**
@@ -56,11 +61,11 @@ class GeometryCombiner
 	 * @param g1 a geometry to combine
 	 * @return the combined geometry
 	 */
-	static Geometry combine(Geometry g0, Geometry g1)
-	{
-		GeometryCombiner combiner = new GeometryCombiner(createList(g0, g1));
-		return combiner.combine();
-	}
+	// static Geometry combine(Geometry g0, Geometry g1)
+	// {
+	// 	GeometryCombiner combiner = new GeometryCombiner(createList(g0, g1));
+	// 	return combiner.combine();
+	// }
 	
 	/**
 	 * Combines three geometries.
@@ -70,10 +75,10 @@ class GeometryCombiner
 	 * @param g2 a geometry to combine
 	 * @return the combined geometry
 	 */
-	static Geometry combine(Geometry g0, Geometry g1, Geometry g2)
+	static Geometry combine(Geometry g0, Geometry g1,[ Geometry? g2])
 	{
 		GeometryCombiner combiner = new GeometryCombiner(createList(g0, g1, g2));
-		return combiner.combine();
+		return combiner.combine_();
 	}
 	
 	/**
@@ -83,13 +88,13 @@ class GeometryCombiner
 	 * @param obj1
 	 * @return a List containing the two items
 	 */
- /**private */static List createList(Object obj0, Object obj1)
-  {
-		List list = [];
-		list.add(obj0);
-		list.add(obj1);
-		return list;
-  }
+//  /**private */static List createList(Object obj0, Object obj1)
+//   {
+// 		List list = [];
+// 		list.add(obj0);
+// 		list.add(obj1);
+// 		return list;
+//   }
   
 	/**
 	 * Creates a list from two items
@@ -98,29 +103,28 @@ class GeometryCombiner
 	 * @param obj1
 	 * @return a List containing the two items
 	 */
- /**private */static List createList(Object obj0, Object obj1, Object obj2)
+ /**private */static List<Geometry> createList(Geometry obj0, Geometry obj1, [Geometry? obj2])
   {
-		List list = [];
+		List<Geometry> list = [];
 		list.add(obj0);
 		list.add(obj1);
-		list.add(obj2);
+    if (obj2 != null) {
+      list.add(obj2);      
+    }
 		return list;
   }
   
-	private GeometryFactory geomFactory;
-	private bool skipEmpty = false;
-	private Collection inputGeoms;
+	/**private */ GeometryFactory? geomFactory;
+	/**private */ bool skipEmpty = false;
+	/**private */ Iterable<Geometry> inputGeoms;
 		
 	/**
 	 * Creates a new combiner for a collection of geometries
 	 * 
 	 * @param geoms the geometries to combine
 	 */
-	GeometryCombiner(Collection geoms)
-	{
-		geomFactory = extractFactory(geoms);
-		this.inputGeoms = geoms;
-	}
+	GeometryCombiner(this.inputGeoms)
+	:geomFactory = extractFactory(inputGeoms);
 	
 	/**
 	 * Extracts the GeometryFactory used by the geometries in a collection
@@ -128,10 +132,11 @@ class GeometryCombiner
 	 * @param geoms
 	 * @return a GeometryFactory
 	 */
-	static GeometryFactory extractFactory(Collection geoms) {
-		if (geoms.isEmpty())
-			return null;
-		return ((Geometry) geoms.iterator().next()).getFactory();
+	static GeometryFactory? extractFactory(Iterable<Geometry> geoms) {
+		if (geoms.isEmpty) {
+		  return null;
+		}
+		return (geoms.iterator.current).getFactory();
 	}
 	
 	/**
@@ -140,34 +145,37 @@ class GeometryCombiner
 	 * 
 	 * @return a Geometry which is the combination of the inputs
 	 */
-  Geometry combine()
+  Geometry combine_()
   {
-  	List elems = [];
-  	for (Iterator i = inputGeoms.iterator(); i.moveNext(); ) {
-  		Geometry g = (Geometry) i.current;
+  	List<Geometry> elems = [];
+  	for (Iterator i = inputGeoms.iterator; i.moveNext(); ) {
+  		Geometry g =  i.current;
   		extractElements(g, elems);
   	}
     
     if (elems.size() == 0) {
     	if (geomFactory != null) {
       // return an empty GC
-    		return geomFactory.createGeometryCollection();
+    		return geomFactory!.createGeometryCollection([]);
     	}
-    	return null;
+      /// TODO: @ruier edit.it just work.
+    	// return null;
     }
     // return the "simplest possible" geometry
-    return geomFactory.buildGeometry(elems);
+    return geomFactory!.buildGeometry(elems);
   }
   
- /**private */void extractElements(Geometry geom, List elems)
+ /**private */void extractElements(Geometry? geom, List elems)
   {
-    if (geom == null)
+    if (geom == null) {
       return;
+    }
     
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry elemGeom = geom.getGeometryN(i);
-      if (skipEmpty && elemGeom.isEmpty())
+      if (skipEmpty && elemGeom.isEmpty()) {
         continue;
+      }
       elems.add(elemGeom);
     }
   }

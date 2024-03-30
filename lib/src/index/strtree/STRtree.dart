@@ -26,6 +26,7 @@
 
 
 import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 import 'package:jtscore4dart/src/util/PriorityQueue.dart';
 
 import '../SpatialIndex.dart';
@@ -39,8 +40,8 @@ import 'ItemDistance.dart';
 
 
 
-  /**static */ 
-  final class STRtreeNode extends AbstractNode
+/**static */ 
+final class STRtreeNode extends AbstractNode
   {
     STRtreeNode(int level)
       :super(level);
@@ -96,7 +97,7 @@ implements SpatialIndex /**, Serializable  */
   //static final int serialVersionUID = 259274702368956900L;
   
  /**private */
- static Comparator xComparator =
+ static Comparator xComparator = 
     new Comparator() {
       int compare(Object o1, Object o2) {
         return compareDoubles(
@@ -144,7 +145,7 @@ implements SpatialIndex /**, Serializable  */
  /**protected */
   @override
   List createParentBoundables(List childBoundables, int newLevel) {
-    Assert.isTrue(!childBoundables.isEmpty());
+    Assert.isTrue(childBoundables.isNotEmpty);
     int minLeafCount = (int) math.ceil((childBoundables.size() / (double) getNodeCapacity()));
     ArrayList sortedChildBoundables = new ArrayList(childBoundables);
     Collections.sort(sortedChildBoundables, xComparator);
@@ -172,7 +173,8 @@ implements SpatialIndex /**, Serializable  */
    * @param childBoundables Must be sorted by the x-value of the envelope midpoints
    */
  /**protected */List verticalSlices(List childBoundables, int sliceCount) {
-    int sliceCapacity =  math.ceil(childBoundables.size() / (double) sliceCount);
+    // int sliceCapacity =  math.ceil(childBoundables.size() / (double) sliceCount);
+    int sliceCapacity =  (childBoundables.size() / sliceCount.toDouble()).ceil();
     // List[] slices = new List[sliceCount];
     List slices = [];
     Iterator i = childBoundables.iterator;
@@ -188,15 +190,15 @@ implements SpatialIndex /**, Serializable  */
     return slices;
   }
 
- /**private */static final int DEFAULT_NODE_CAPACITY = 10;
+ /**private */static const int DEFAULT_NODE_CAPACITY = 10;
   
   /**
    * Constructs an STRtree with the default node capacity.
    */
-  STRtree() 
-  { 
-    this(DEFAULT_NODE_CAPACITY); 
-  }
+  // STRtree() 
+  // { 
+  //   this(DEFAULT_NODE_CAPACITY); 
+  // }
 
   /**
    * Constructs an STRtree with the given maximum number of child nodes that
@@ -205,9 +207,9 @@ implements SpatialIndex /**, Serializable  */
    * The minimum recommended capacity setting is 4.
    * 
    */
-  STRtree(int nodeCapacity) {
+  STRtree([int nodeCapacity=DEFAULT_NODE_CAPACITY])
+  :
     super(nodeCapacity);
-  }
 
   /**
    * Constructs an STRtree with the given maximum number of child nodes that

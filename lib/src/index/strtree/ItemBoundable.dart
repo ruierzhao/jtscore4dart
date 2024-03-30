@@ -13,21 +13,21 @@
 
 // import java.io.Serializable;
 
+import 'Boundable.dart';
+
 /**
  * Boundable wrapper for a non-Boundable spatial object. Used internally by
  * AbstractSTRtree.
  *
  * @version 1.7
  */
-class ItemBoundable implements Boundable, Serializable {
+class ItemBoundable implements Boundable /** , Serializable */   {
  /**private */Object bounds;
  /**private */Object item;
 
-  ItemBoundable(Object bounds, Object item) {
-    this.bounds = bounds;
-    this.item = item;
-  }
+  ItemBoundable(this.bounds, this.item);
 
+  @override
   Object getBounds() {
     return bounds;
   }

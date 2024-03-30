@@ -201,25 +201,25 @@ class CoordinateSequences {
   /// 
   /// @param cs the sequence to output
   /// @return the string representation of the sequence
-  static String ToString(CoordinateSequence cs)
-  {
-    int size = cs.size();
-    if (size == 0) {
-      return "()";
-    }
-    int dim = cs.getDimension();
-    StringBuffer builder = StringBuffer();
-    builder.write('(');
-    for (int i = 0; i < size; i++) {
-      if (i > 0) builder.write(" ");
-      for (int d = 0; d < dim; d++) {
-        if (d > 0) builder.write(",");
-        builder.write(OrdinateFormat.DEFAULT.format(cs.getOrdinate(i, d)) ); /// error
-      }
-    }
-    builder.write(')');
-    return builder.toString();
-  }
+  // static String ToString(CoordinateSequence cs)
+  // {
+  //   int size = cs.size();
+  //   if (size == 0) {
+  //     return "()";
+  //   }
+  //   int dim = cs.getDimension();
+  //   StringBuffer builder = StringBuffer();
+  //   builder.write('(');
+  //   for (int i = 0; i < size; i++) {
+  //     if (i > 0) builder.write(" ");
+  //     for (int d = 0; d < dim; d++) {
+  //       if (d > 0) builder.write(",");
+  //       builder.write(OrdinateFormat.DEFAULT.format(cs.getOrdinate(i, d)) ); // TODO:
+  //     }
+  //   }
+  //   builder.write(')');
+  //   return builder.toString();
+  // }
 
   /// 获取最小的坐标
   ///  Returns the minimum coordinate, using the usual lexicographic comparison.

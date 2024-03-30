@@ -1,8 +1,11 @@
 library geometry;
 
 export 'src/geom/Coordinate.dart';
+export 'src/geom/CoordinateList.dart';
+export 'src/geom/CoordinateArrays.dart';
 export 'src/geom/Envelope.dart';
 export 'src/geom/Point.dart';
+export 'src/geom/LineSegment.dart';
 export 'src/geom/LineString.dart';
 export 'src/geom/LinearRing.dart';
 export 'src/geom/Polygon.dart';
@@ -13,3 +16,4 @@ export 'src/geom/Geometry.dart';
 export "src/geom/GeometryFactory.dart";
 export 'src/geom/GeometryCollection.dart';
 export 'src/geom/CoordinateSequence.dart';
+export 'src/geom/PrecisionModel.dart';

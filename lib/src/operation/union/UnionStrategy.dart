@@ -13,6 +13,8 @@
 
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 /**
  * A strategy class that adapts UnaryUnion to different 
  * kinds of overlay algorithms.
@@ -27,8 +29,8 @@ abstract class UnionStrategy {
    * This method may throw a {@link org.locationtech.jts.geom.TopologyException}
    * if one is encountered.
    * 
-   * @param g0 a geometry
-   * @param g1 a geometry
+   * @param [g0] a geometry
+   * @param [g1] a geometry
    * @return the union of the inputs
    */
   Geometry union(Geometry g0, Geometry g1);

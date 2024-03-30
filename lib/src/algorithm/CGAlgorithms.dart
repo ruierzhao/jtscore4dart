@@ -20,8 +20,16 @@ import "dart:math" as math;
 
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/math/MathUtil.dart';
 import 'package:jtscore4dart/src/utils.dart';
+
+import 'CGAlgorithmsDD.dart';
+import 'LineIntersector.dart';
+import 'RayCrossingCounter.dart';
+import 'RobustLineIntersector.dart';
 
 /// Specifies and implements various fundamental Computational Geometric
 /// algorithms. The algorithms supplied in this class are robust for
@@ -191,9 +199,10 @@ class CGAlgorithms
     // # of points without closing endpoint
     int nPts = ring.length - 1;
     // sanity check
-    if (nPts < 3)
+    if (nPts < 3) {
       throw new ArgumentError(
           "Ring has fewer than 4 points, so orientation cannot be determined");
+    }
 
     // find highest point
     Coordinate hiPt = ring[0];
@@ -210,8 +219,9 @@ class CGAlgorithms
     int iPrev = hiIndex;
     do {
       iPrev = iPrev - 1;
-      if (iPrev < 0)
+      if (iPrev < 0) {
         iPrev = nPts;
+      }
     } while (ring[iPrev].equals2D(hiPt) && iPrev != hiIndex);
 
     // find distinct point after highest point
@@ -229,8 +239,9 @@ class CGAlgorithms
       (including the case where the input array has fewer than 4 elements), or
       it contains coincident line segments.
      */
-    if (prev.equals2D(hiPt) || next.equals2D(hiPt) || prev.equals2D(next))
+    if (prev.equals2D(hiPt) || next.equals2D(hiPt) || prev.equals2D(next)) {
       return false;
+    }
 
     int disc = computeOrientation(prev, hiPt, next);
 
@@ -291,8 +302,9 @@ class CGAlgorithms
       Coordinate B)
   {
     // if start = end, then just compute distance to one of the endpoints
-    if (A.x == B.x && A.y == B.y)
+    if (A.x == B.x && A.y == B.y) {
       return p.distance(A);
+    }
 
     // otherwise use comp.graphics.algorithms Frequently Asked Questions method
     /*
@@ -312,10 +324,12 @@ class CGAlgorithms
     double r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y))
         / len2;
 
-    if (r <= 0.0)
+    if (r <= 0.0) {
       return p.distance(A);
-    if (r >= 1.0)
+    }
+    if (r >= 1.0) {
       return p.distance(B);
+    }
 
     /*
      * (2) s = (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay) 
@@ -373,9 +387,9 @@ class CGAlgorithms
   /// @deprecated Use
   ///             {@link Distance#pointToSegmentString(Coordinate, List<Coordinate>)}
   ///             instead.
-  static double distancePointLine(Coordinate p, List<Coordinate> line)
+  static double distancePointLine$1(Coordinate p, List<Coordinate> line)
   {
-    if (line.length == 0) {
+    if (line.isEmpty) {
       throw ArgumentError(
           "Line array must contain at least one vertex");
     }
@@ -405,14 +419,16 @@ class CGAlgorithms
   /// @deprecated Use
   ///             {@link Distance#segmentToSegment(Coordinate, Coordinate, Coordinate, Coordinate)}
   ///             instead.
-  static double distanceLineLine(Coordinate A, Coordinate B,
+  static double distanceLineLine4(Coordinate A, Coordinate B,
       Coordinate C, Coordinate D)
   {
     // check for zero-length segments
-    if (A.equals(B))
+    if (A.equals(B)) {
       return distancePointLine(A, C, D);
-    if (C.equals(D))
+    }
+    if (C.equals(D)) {
       return distancePointLine(D, A, B);
+    }
 
     // AB and CD are line segments
     /*
@@ -485,8 +501,9 @@ class CGAlgorithms
   ///             {@link Area#ofRingSigned(List<Coordinate>)} instead.
   static double signedArea(List<Coordinate> ring)
   {
-    if (ring.length < 3)
+    if (ring.length < 3) {
       return 0.0;
+    }
     double sum = 0.0;
     /*
       Based on the Shoelace formula.
@@ -514,11 +531,12 @@ class CGAlgorithms
   /// @return the signed area of the ring
   /// @deprecated Use {@link Area#ofRing(CoordinateSequence)} or
   ///             {@link Area#ofRingSigned(CoordinateSequence)} instead.
-  static double signedArea(CoordinateSequence ring)
+  static double signedAreaSeq(CoordinateSequence ring)
   {
     int n = ring.size();
-    if (n < 3)
+    if (n < 3) {
       return 0.0;
+    }
     /*
       Based on the Shoelace formula.
       http://en.wikipedia.org/wiki/Shoelace_formula
@@ -526,8 +544,8 @@ class CGAlgorithms
     Coordinate p0 = Coordinate.empty2D();
     Coordinate p1 = Coordinate.empty2D();
     Coordinate p2 = Coordinate.empty2D();
-    ring.getCoordinate(0, p1);
-    ring.getCoordinate(1, p2);
+    ring.getCoordinateTo(0, p1);
+    ring.getCoordinateTo(1, p2);
     double x0 = p1.x;
     p2.x -= x0;
     double sum = 0.0;
@@ -535,7 +553,7 @@ class CGAlgorithms
       p0.y = p1.y;
       p1.x = p2.x;
       p1.y = p2.y;
-      ring.getCoordinate(i + 1, p2);
+      ring.getCoordinateTo(i + 1, p2);
       p2.x -= x0;
       sum += p1.x * (p0.y - p2.y);
     }
@@ -552,18 +570,19 @@ class CGAlgorithms
   {
     // optimized for processing CoordinateSequences
     int n = pts.size();
-    if (n <= 1)
+    if (n <= 1) {
       return 0.0;
+    }
 
     double len = 0.0;
 
     Coordinate p = Coordinate.empty2D();
-    pts.getCoordinate(0, p);
+    pts.getCoordinateTo(0, p);
     double x0 = p.x;
     double y0 = p.y;
 
     for (int i = 1; i < n; i++) {
-      pts.getCoordinate(i, p);
+      pts.getCoordinateTo(i, p);
       double x1 = p.x;
       double y1 = p.y;
       double dx = x1 - x0;

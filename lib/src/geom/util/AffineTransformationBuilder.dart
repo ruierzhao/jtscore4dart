@@ -15,6 +15,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.math.Matrix;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/math/Matrix.dart';
+
+import 'AffineTransformation.dart';
+
 /**
  * Builds an {@link AffineTransformation} defined by a set of control vectors. 
  * A control vector consists of a source point and a destination point, 
@@ -50,7 +55,7 @@ class AffineTransformationBuilder
  /**private */Coordinate dest2;
   
   // the matrix entries for the transformation
- /**private */double m00, m01, m02, m10, m11, m12;
+ /**private */late double m00, m01, m02, m10, m11, m12;
   
  
   /**
@@ -65,20 +70,13 @@ class AffineTransformationBuilder
    * @param dest1 the image of control point 1 under the required transformation
    * @param dest2 the image of control point 2 under the required transformation
    */
-  AffineTransformationBuilder(Coordinate src0,
-      Coordinate src1,
-      Coordinate src2,
-      Coordinate dest0,
-      Coordinate dest1,
-      Coordinate dest2)
-  {
-    this.src0 = src0;
-    this.src1 = src1;
-    this.src2 = src2;
-    this.dest0 = dest0;
-    this.dest1 = dest1;
-    this.dest2 = dest2;
-  }
+  AffineTransformationBuilder(
+    this.src0,
+    this.src1,
+    this.src2,
+    this.dest0,
+    this.dest1,
+    this.dest2);
     
   /**
    * Computes the {@link AffineTransformation}
@@ -91,8 +89,9 @@ class AffineTransformationBuilder
   {
   	// compute full 3-point transformation
     bool isSolvable = compute();
-    if (isSolvable)
+    if (isSolvable) {
       return new AffineTransformation(m00, m01, m02, m10, m11, m12);
+    }
     return null;
   }
     
@@ -106,15 +105,17 @@ class AffineTransformationBuilder
    */
  /**private */bool compute()
   {
-    double[] bx = new double[] { dest0.x, dest1.x, dest2.x };
-    double[] row0 = solve(bx);
+    // double[] bx = new double[] { dest0.x, dest1.x, dest2.x };
+    List<double> bx = List.from([dest0.x, dest1.x, dest2.x],growable: false);
+    List<double> row0 = solve(bx);
     if (row0 == null) return false;
     m00 = row0[0];
     m01 = row0[1];
     m02 = row0[2];
     
-    double[] by = new double[] { dest0.y, dest1.y, dest2.y };
-    double[] row1 = solve(by);
+    // List<double> by = List.from([dest0.y, dest1.y, dest2.y],growable: false);
+    List<double> by = List.from([dest0.y, dest1.y, dest2.y],growable: false);
+    List<double> row1 = solve(by);
     if (row1 == null) return false;
     m10 = row1[0];
     m11 = row1[1];
@@ -129,13 +130,18 @@ class AffineTransformationBuilder
    * @param b the vector for the right-hand side of the system
    * @return the solution vector, or <code>null</code> if no solution could be determined
    */
- /**private */double[] solve(double[] b)
+ /**private */List<double> solve(List<double> b)
   {
-    double[][] a = new double[][] {
-        { src0.x, src0.y, 1 },
-        { src1.x, src1.y, 1},
-        { src2.x, src2.y, 1}
-    };
+    List<List<double>> a =  [
+        [ src0.x, src0.y, 1],
+        [ src1.x, src1.y, 1],
+        [ src2.x, src2.y, 1]
+    ];
+    // double[][] a = new double[][] {
+    //     { src0.x, src0.y, 1 },
+    //     { src1.x, src1.y, 1},
+    //     { src2.x, src2.y, 1}
+    // };
     return Matrix.solve(a, b);
   }
 }

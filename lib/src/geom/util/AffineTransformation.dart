@@ -18,6 +18,10 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.util.Assert;
 import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 /**
  * Represents an affine transformation on the 2D Cartesian plane. 
@@ -265,7 +269,7 @@ class AffineTransformation
    * @throws NullPointerException if matrix is null
    * @throws ArrayIndexOutOfBoundsException if matrix is too small 
    */
-  AffineTransformation(double[] matrix)
+  AffineTransformation(List<double> matrix)
   {
     m00 = matrix[0];
     m01 = matrix[1];
@@ -321,15 +325,15 @@ class AffineTransformation
    * 
    * @deprecated use AffineTransformationFactory
    */
-  AffineTransformation(Coordinate src0,
-      Coordinate src1,
-      Coordinate src2,
-      Coordinate dest0,
-      Coordinate dest1,
-      Coordinate dest2)
-  {
-    throw new UnsupportedOperationException("Use AffineTransformationFactory instead");
-  }
+  // AffineTransformation(Coordinate src0,
+  //     Coordinate src1,
+  //     Coordinate src2,
+  //     Coordinate dest0,
+  //     Coordinate dest1,
+  //     Coordinate dest2)
+  // {
+  //   throw new UnsupportedOperationException("Use AffineTransformationFactory instead");
+  // }
   
   /**
    * Sets this transformation to be the identity transformation.
@@ -399,9 +403,10 @@ class AffineTransformation
    * 
    * @return an array of length 6
    */
-  double[] getMatrixEntries()
+  List<double> getMatrixEntries()
   {
-    return new double[] { m00, m01, m02, m10, m11, m12 };
+    // return new double[] { m00, m01, m02, m10, m11, m12 };
+    return List.from([m00, m01, m02, m10, m11, m12],growable: false);
   }
   
   /**
@@ -1116,7 +1121,7 @@ class AffineTransformation
   {
   	try {
   		return super.clone();
-  	} catch(Exception ex) {
+  	} on Exception catch( ex) {
   		Assert.shouldNeverReachHere();
   	}
   	return null;

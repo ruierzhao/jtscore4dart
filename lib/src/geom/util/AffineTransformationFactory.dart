@@ -15,6 +15,12 @@
 // import org.locationtech.jts.algorithm.Angle;
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/algorithm/Angle.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'AffineTransformation.dart';
+import 'AffineTransformationBuilder.dart';
+
 /**
  * Supports creating {@link AffineTransformation}s defined by various kinds of
  * inputs and transformation mapping rules.
@@ -59,8 +65,9 @@ class AffineTransformationFactory {
 	 * @param dest1
 	 * @return the computed transformation, or null if the control vectors do not determine a well-defined transformation
 	 */
-	static AffineTransformation createFromControlVectors(Coordinate src0,
-			Coordinate src1, Coordinate dest0, Coordinate dest1) {
+	static AffineTransformation? createFromControlVectors(
+    Coordinate src0,Coordinate src1, Coordinate dest0, Coordinate dest1) 
+  {
 		Coordinate rotPt = new Coordinate(dest1.x - dest0.x, dest1.y - dest0.y);
 
 		double ang = Angle.angleBetweenOriented(src1, src0, rotPt);
@@ -68,8 +75,9 @@ class AffineTransformationFactory {
 		double srcDist = src1.distance(src0);
 		double destDist = dest1.distance(dest0);
 
-		if (srcDist == 0.0)
-			return null;
+		if (srcDist == 0.0) {
+		  return null;
+		}
 
 		double scale = destDist / srcDist;
 
@@ -115,18 +123,23 @@ class AffineTransformationFactory {
 	 */
 	static AffineTransformation createFromControlVectors(List<Coordinate> src,
 			List<Coordinate> dest) {
-		if (src.length != dest.length)
-			throw new ArgumentError(
+		if (src.length != dest.length) {
+		  throw new ArgumentError(
 					"Src and Dest arrays are not the same length");
-		if (src.length <= 0)
-			throw new ArgumentError("Too few control points");
-		if (src.length > 3)
-			throw new ArgumentError("Too many control points");
+		}
+		if (src.isEmpty) {
+		  throw new ArgumentError("Too few control points");
+		}
+		if (src.length > 3) {
+		  throw new ArgumentError("Too many control points");
+		}
 
-		if (src.length == 1)
-			return createFromControlVectors(src[0], dest[0]);
-		if (src.length == 2)
-			return createFromControlVectors(src[0], src[1], dest[0], dest[1]);
+		if (src.length == 1) {
+		  return createFromControlVectors(src[0], dest[0]);
+		}
+		if (src.length == 2) {
+		  return createFromControlVectors(src[0], src[1], dest[0], dest[1]);
+		}
 
 		return createFromControlVectors(src[0], src[1], src[2], dest[0], dest[1],
 				dest[2]);
@@ -161,8 +174,9 @@ class AffineTransformationFactory {
 		double destDist = dest1.distance(dest0);
 
 		// return identity if transformation would be degenerate
-		if (srcDist == 0.0)
-			return new AffineTransformation();
+		if (srcDist == 0.0) {
+		  return new AffineTransformation();
+		}
 
 		double scale = destDist / srcDist;
 

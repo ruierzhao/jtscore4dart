@@ -19,6 +19,11 @@
 // import org.locationtech.jts.geom.MultiPolygon;
 // import org.locationtech.jts.geom.Polygon;
 
+import '../Geometry.dart';
+import '../GeometryCollection.dart';
+import '../MultiPolygon.dart';
+import '../Polygon.dart';
+
 /**
  * Extracts the {@link Polygon} and {@link MultiPolygon} elements from a {@link Geometry}.
  */
@@ -31,8 +36,9 @@ class PolygonalExtracter
    * @param geom the geometry from which to extract
    * @param list the list to add the extracted elements to
    */
-  static List<Geometry> getPolygonals(Geometry geom, List<Geometry> list)
+  static List<Geometry> getPolygonals(Geometry geom, [List<Geometry>? list])
   {
+    list ??= <Geometry>[];
   	if (geom is Polygon || geom is MultiPolygon) {
   		list.add(geom);
   	}
@@ -51,9 +57,9 @@ class PolygonalExtracter
    * 
    * @param geom the geometry from which to extract
    */
-  static List<Geometry> getPolygonals(Geometry geom)
-  {
-    return getPolygonals(geom, new ArrayList<Geometry>());
-  }
+  // static List<Geometry> getPolygonals(Geometry geom)
+  // {
+  //   return getPolygonals(geom, <Geometry>[]);
+  // }
 
 }

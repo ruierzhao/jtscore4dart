@@ -33,8 +33,7 @@ import '../GeometryFilter.dart';
  * @version 1.7
  * @see GeometryExtracter
  */
-class LineStringExtracter
-  implements GeometryFilter
+class LineStringExtracter implements GeometryFilter
 {
   /**
    * Extracts the {@link LineString} elements from a single {@link Geometry}
@@ -44,7 +43,7 @@ class LineStringExtracter
    * @param lines the list to add the extracted LineStrings to
    * @return the list argument
    */
-  static List getLines(Geometry geom, [List? lines])
+  static List<LineString> getLines(Geometry geom, [List<LineString>? lines])
   {
     lines ??= [];
   	if (geom is LineString) {
@@ -82,7 +81,8 @@ class LineStringExtracter
     return geom.getFactory().buildGeometry(getLines(geom));
   }
 
- /**private */List comps;
+  /**private */
+  List comps;
   
   /**
    * Constructs a filter with a list in which to store the elements found.

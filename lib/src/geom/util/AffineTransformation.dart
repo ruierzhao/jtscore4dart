@@ -17,6 +17,8 @@
 // import org.locationtech.jts.geom.CoordinateSequenceFilter;
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.util.Assert;
+import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
+
 /**
  * Represents an affine transformation on the 2D Cartesian plane. 
  * It can be used to transform a {@link Coordinate} or {@link Geometry}.
@@ -73,7 +75,7 @@
  *
  */
 class AffineTransformation
-	implements Cloneable, CoordinateSequenceFilter
+	implements /**Cloneable, */ CoordinateSequenceFilter
 {
   
   /**

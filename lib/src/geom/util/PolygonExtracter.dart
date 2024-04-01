@@ -40,7 +40,7 @@ class PolygonExtracter
    * @param [geom] the geometry from which to extract
    * @param [list] the list to add the extracted elements to
    */
-  static List getPolygons(Geometry geom, [List? list])
+  static List<Geometry> getPolygons(Geometry geom, [List<Geometry>? list])
   {
     if (list == null) {
       list = [];

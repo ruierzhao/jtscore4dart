@@ -27,6 +27,7 @@
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Puntal.dart';
 import 'package:jtscore4dart/src/geom/util/GeometryCombiner.dart';
 
@@ -40,43 +41,45 @@ import 'package:jtscore4dart/src/geom/util/GeometryCombiner.dart';
  */
 class PointGeometryUnion 
 {
-	static Geometry union(Puntal pointGeom, Geometry otherGeom)
+  /// TODO: @ruier edit.
+	// static Geometry union(Puntal pointGeom, Geometry otherGeom)
+	static Geometry of(Puntal pointGeom, Geometry otherGeom)
 	{
 		PointGeometryUnion unioner = new PointGeometryUnion(pointGeom, otherGeom);
 		return unioner.union();
 	}
 	
-	/**private */ Geometry pointGeom;
+	// /**private */ Geometry pointGeom;
+	/**private */ Puntal pointGeom;
 	/**private */ Geometry otherGeom;
 	/**private */ GeometryFactory geomFact;
 	
-	PointGeometryUnion(Puntal pointGeom, Geometry otherGeom)
-	{
-		this.pointGeom =  pointGeom;
-		this.otherGeom = otherGeom;
+	PointGeometryUnion(this.pointGeom, this.otherGeom)
+	:
 		geomFact = otherGeom.getFactory();
-	}
 	
 	Geometry union()
 	{
 		PointLocator locater = new PointLocator();
 		// use a set to eliminate duplicates, as required for union
-		Set exteriorCoords = new TreeSet();
+		Set<Coordinate> exteriorCoords = new TreeSet();
 		
 		for (int i =0 ; i < pointGeom.getNumGeometries(); i++) {
 			Point point = (Point) pointGeom.getGeometryN(i);
 			Coordinate coord = point.getCoordinate();
 			int loc = locater.locate(coord, otherGeom);
-			if (loc == Location.EXTERIOR)
-				exteriorCoords.add(coord);
+			if (loc == Location.EXTERIOR) {
+			  exteriorCoords.add(coord);
+			}
 		}
 		
 		// if no points are in exterior, return the other geom
-		if (exteriorCoords.size() == 0)
-			return otherGeom;
+		if (exteriorCoords.isEmpty) {
+		  return otherGeom;
+		}
 		
 		// make a puntal geometry of appropriate size
-		Geometry ptComp = null;
+		Geometry ptComp;
 		List<Coordinate> coords = CoordinateArrays.toCoordinateArray(exteriorCoords);
 		if (coords.length == 1) {
 			ptComp = geomFact.createPoint(coords[0]);

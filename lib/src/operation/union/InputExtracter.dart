@@ -124,7 +124,7 @@ class InputExtracter implements GeometryFilter
    * @param [dim] the dimension of geometry to return
    * @return a list of the extracted geometries of dimension dim.
    */
-  List getExtract(int dim) {
+  List<Geometry> getExtract(int dim) {
     switch (dim) {
       case 0: return points;
       case 1: return lines;

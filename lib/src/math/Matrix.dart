@@ -18,7 +18,7 @@
 ///
 class Matrix
 {
-  static void swapRows(double[][] m, int i, int j)
+  static void swapRows2(List<List<double>> m, int i, int j)
   {
     if (i == j) return;
     for (int col = 0; col < m[0].length; col++) {
@@ -28,7 +28,7 @@ class Matrix
     }
   }
   
-  static void swapRows(double[] m, int i, int j)
+  static void swapRows(List<double> m, int i, int j)
   {
     if (i == j) return;
     double temp = m[i];
@@ -47,33 +47,38 @@ class Matrix
   /// or null if the system has no or no unique solution
   /// 
   /// @throws ArgumentError if the matrix is the wrong size 
-  static double[] solve( double[][] a, double[] b )
+  static List<double>? solve( List<List<double>> a, List<double> b)
   {
     int n = b.length;
-    if ( a.length != n || a[0].length != n )
+    if ( a.length != n || a[0].length != n ) {
       throw new ArgumentError("Matrix A is incorrectly sized");
+    }
     
     // Use Gaussian Elimination with partial pivoting.
     // Iterate over each row
     for (int i = 0; i < n; i++ ) {
       // Find the largest pivot in the rows below the current one.
       int maxElementRow = i;
-      for (int j = i + 1; j < n; j++ )
-        if ( ( a[j][i] ).abs() > ( a[maxElementRow][i] ).abs() )
+      for (int j = i + 1; j < n; j++ ) {
+        if ( ( a[j][i] ).abs() > ( a[maxElementRow][i] ).abs() ) {
           maxElementRow = j;
+      }
+        }
         
-      if ( a[maxElementRow][i] == 0.0 )
+      if ( a[maxElementRow][i] == 0.0 ) {
         return null;
+      }
       
       // Exchange current row and maxElementRow in A and b.
-      swapRows(a, i, maxElementRow );
+      swapRows2(a, i, maxElementRow );
       swapRows(b, i, maxElementRow );
       
       // Eliminate using row i
       for (int j = i + 1; j < n; j++ ) {
         double rowFactor = a[j][i] / a[i][i];
-        for (int k = n - 1; k >= i; k-- )
+        for (int k = n - 1; k >= i; k-- ) {
           a[j][k] -= a[i][k] * rowFactor;
+        }
         b[j] -= b[i] * rowFactor;
       }
     }
@@ -82,11 +87,14 @@ class Matrix
      * A is now (virtually) in upper-triangular form.
      * The solution vector is determined by back-substitution.
      */
-    double[] solution = new double[n];
+    /// TODO: @ruier edit.
+    // List<double> solution = new double[n];
+    List<double> solution = List.filled(n, 0.0, growable: false);
     for (int j = n - 1; j >= 0; j-- ) {
       double t = 0.0;
-      for (int k = j + 1; k < n; k++ )
+      for (int k = j + 1; k < n; k++ ) {
         t += a[j][k] * solution[k];
+      }
       solution[j] = ( b[j] - t ) / a[j][j];
     }
     return solution;

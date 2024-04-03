@@ -85,7 +85,7 @@ class AffineTransformationBuilder
    * 
    * @return an affine transformation, or null if the control vectors do not determine a well-defined transformation
    */
-  AffineTransformation getTransformation()
+  AffineTransformation? getTransformation()
   {
   	// compute full 3-point transformation
     bool isSolvable = compute();
@@ -107,7 +107,7 @@ class AffineTransformationBuilder
   {
     // double[] bx = new double[] { dest0.x, dest1.x, dest2.x };
     List<double> bx = List.from([dest0.x, dest1.x, dest2.x],growable: false);
-    List<double> row0 = solve(bx);
+    List<double>? row0 = solve(bx);
     if (row0 == null) return false;
     m00 = row0[0];
     m01 = row0[1];
@@ -115,7 +115,7 @@ class AffineTransformationBuilder
     
     // List<double> by = List.from([dest0.y, dest1.y, dest2.y],growable: false);
     List<double> by = List.from([dest0.y, dest1.y, dest2.y],growable: false);
-    List<double> row1 = solve(by);
+    List<double>? row1 = solve(by);
     if (row1 == null) return false;
     m10 = row1[0];
     m11 = row1[1];
@@ -130,7 +130,7 @@ class AffineTransformationBuilder
    * @param b the vector for the right-hand side of the system
    * @return the solution vector, or <code>null</code> if no solution could be determined
    */
- /**private */List<double> solve(List<double> b)
+ /**private */List<double>? solve(List<double> b)
   {
     List<List<double>> a =  [
         [ src0.x, src0.y, 1],

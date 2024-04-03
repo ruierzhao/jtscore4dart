@@ -23,7 +23,32 @@
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.geom.Polygon;
 
+/**
+   * Adds every linear element in a {@link Geometry} into the polygonizer graph.
+   */
+ import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
 
+import 'EdgeRing.dart';
+import 'PolygonizeGraph.dart';
+
+/**private static */ class LineStringAdder
+      implements GeometryComponentFilter
+  {
+    Polygonizer p;
+    
+    LineStringAdder(this.p);
+    
+    @override
+      void filter(Geometry g) {
+      if (g is LineString) {
+        p.add( g);
+      }
+    }
+  }
 /**
  * Polygonizes a set of {@link Geometry}s which contain linework that
  * represents the edges of a planar graph.
@@ -51,30 +76,14 @@
  */
 class Polygonizer
 {  
-  /**
-   * Adds every linear element in a {@link Geometry} into the polygonizer graph.
-   */
- /**private */static class LineStringAdder
-      implements GeometryComponentFilter
-  {
-    Polygonizer p;
-    
-    LineStringAdder(Polygonizer p) {
-      this.p = p;
-    }
-    
-    void filter(Geometry g) {
-      if (g is LineString)
-        p.add((LineString) g);
-    }
-  }
+  
 
   // default factory
  /**private */LineStringAdder lineStringAdder = new LineStringAdder(this);
 
  /**protected */PolygonizeGraph graph;
   // initialize with empty collections, in case nothing is computed
- /**protected */Collection<LineString> dangles = new ArrayList<LineString>();
+ /**protected */Iterable<LineString> dangles = new ArrayList<LineString>();
  /**protected */List<LineString> cutEdges = new ArrayList<LineString>();
  /**protected */List<LineString> invalidRingLines = new ArrayList<LineString>();
 
@@ -90,10 +99,10 @@ class Polygonizer
   /**
    * Creates a polygonizer that extracts all polygons.
    */
-  Polygonizer()
-  {
-    this(false);
-  }
+  // Polygonizer()
+  // {
+  //   this(false);
+  // }
   
   /**
    * Creates a polygonizer, specifying whether a valid polygonal geometry must be created.
@@ -103,10 +112,7 @@ class Polygonizer
    * 
    * @param extractOnlyPolygonal true if a valid polygonal geometry should be extracted
    */
-  Polygonizer(bool extractOnlyPolygonal)
-  {
-    this.extractOnlyPolygonal = extractOnlyPolygonal;
-  }
+  Polygonizer([bool? extractOnlyPolygonal=false]);
 
   /**
    * Adds a collection of geometries to the edges to be polygonized.
@@ -116,10 +122,10 @@ class Polygonizer
    *
    * @param geomList a list of {@link Geometry}s with linework to be polygonized
    */
-  void add(Collection geomList)
+  void addAll(Iterable geomList)
   {
-    for (Iterator i = geomList.iterator(); i.moveNext(); ) {
-      Geometry geometry = (Geometry) i.current;
+    for (Iterator i = geomList.iterator; i.moveNext(); ) {
+      Geometry geometry =  i.current;
       add(geometry);
     }
   }
@@ -134,7 +140,7 @@ class Polygonizer
    */
   void add(Geometry g)
   {
-    g.apply(lineStringAdder);
+    g.applyGeometryComonent(lineStringAdder);
   }
 
   /**
@@ -147,8 +153,7 @@ class Polygonizer
     // record the geometry factory for later use
     geomFactory  = line.getFactory();
     // create a new graph using the factory from the input Geometry
-    if (graph == null)
-      graph = new PolygonizeGraph(geomFactory);
+    graph ??= new PolygonizeGraph(geomFactory);
     graph.addEdge(line);
   }
 
@@ -272,10 +277,11 @@ class Polygonizer
   {
     for (EdgeRing er : edgeRingList) {
       er.computeValid();
-      if (er.isValid())
+      if (er.isValid()) {
         validEdgeRingList.add(er);
-      else
+      } else {
         invalidRingList.add(er);
+      }
     }
   }
 
@@ -285,10 +291,11 @@ class Polygonizer
     shellList = new ArrayList<EdgeRing>();
     for (EdgeRing er : edgeRingList) {
       er.computeHole();
-      if (er.isHole())
+      if (er.isHole()) {
         holeList.add(er);
-      else
+      } else {
         shellList.add(er);
+      }
     }
   }
 
@@ -299,8 +306,9 @@ class Polygonizer
     do {
       isMoreToScan = false;
       for (EdgeRing er : shellList) {
-        if (er.isIncludedSet()) 
+        if (er.isIncludedSet()) {
           continue;
+        }
         er.updateIncluded();
         if (! er.isIncludedSet()) {
           isMoreToScan = true;
@@ -380,8 +388,9 @@ class Polygonizer
        * 
        */
       bool isEdgeIncluded = erAdj.isValid() || erAdj.isProcessed();
-      if ( ! isEdgeIncluded) 
+      if ( ! isEdgeIncluded) {
         return true;
+      }
     }
     return false;
   }

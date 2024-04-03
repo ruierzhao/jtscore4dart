@@ -14,6 +14,12 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Envelope;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+
+import 'LineIntersector.dart';
+import 'RobustLineIntersector.dart';
+
 /**
  * Computes whether a rectangle intersects line segments.
  * <p>
@@ -48,20 +54,17 @@ class RectangleLineIntersector
    * 
    * @param rectEnv the query rectangle, specified as an Envelope
    */
-  RectangleLineIntersector(Envelope rectEnv)
-  {
-    this.rectEnv = rectEnv;
-    
+  RectangleLineIntersector(this.rectEnv)
+  :
     /**
      * Up and Down are the diagonal orientations
      * relative to the Left side of the rectangle.
      * Index 0 is the left side, 1 is the right side.
      */
-    diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY());
-    diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY());
-    diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY());
+    diagUp0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMinY()),
+    diagUp1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMaxY()),
+    diagDown0 = new Coordinate(rectEnv.getMinX(), rectEnv.getMaxY()),
     diagDown1 = new Coordinate(rectEnv.getMaxX(), rectEnv.getMinY());
-  }
   
   /**
    * Tests whether the query rectangle intersects a 
@@ -79,16 +82,17 @@ class RectangleLineIntersector
      * If the segment envelope is disjoint from the
      * rectangle envelope, there is no intersection
      */
-    Envelope segEnv = new Envelope(p0, p1);
-    if (! rectEnv.intersects(segEnv))
+    Envelope segEnv = new Envelope.fromCoord2(p0, p1);
+    if (! rectEnv.intersectsWith(segEnv)) {
       return false;
+    }
     
     /**
      * If either segment endpoint lies in the rectangle,
      * there is an intersection.
      */
-    if (rectEnv.intersects(p0)) return true;
-    if (rectEnv.intersects(p1)) return true;
+    if (rectEnv.intersectsWithCoord(p0)) return true;
+    if (rectEnv.intersectsWithCoord(p1)) return true;
     
     /**
      * Normalize segment.
@@ -108,8 +112,9 @@ class RectangleLineIntersector
      * "Upwards" means relative to the left end of the segment.
      */
     bool isSegUpwards = false;
-    if (p1.y > p0.y)
+    if (p1.y > p0.y) {
       isSegUpwards = true;
+    }
     
     /**
      * Since we now know that neither segment endpoint
@@ -131,13 +136,14 @@ class RectangleLineIntersector
      * still sufficient.)  
      */
     if (isSegUpwards) {
-      li.computeIntersection(p0, p1, diagDown0, diagDown1);
+      li.computeIntersection4Coord(p0, p1, diagDown0, diagDown1);
     }
     else {
-      li.computeIntersection(p0, p1, diagUp0, diagUp1);      
+      li.computeIntersection4Coord(p0, p1, diagUp0, diagUp1);      
     }
-    if (li.hasIntersection())
+    if (li.hasIntersection()) {
       return true;
+    }
     return false;
 
       

@@ -42,6 +42,7 @@ import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
 import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
 import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/geom/util/LinearComponentExtracter.dart';
 import 'package:jtscore4dart/src/geomgraph/Edge.dart';
 import 'package:jtscore4dart/src/geomgraph/EdgeIntersection.dart';
 import 'package:jtscore4dart/src/geomgraph/GeometryGraph.dart';
@@ -235,9 +236,10 @@ class IsSimpleOp
   {
     List rings = LinearComponentExtracter.getLines(geom);
     for (Iterator i = rings.iterator(); i.moveNext(); ) {
-      LinearRing ring = (LinearRing) i.current;
-      if (! isSimpleLinearGeometry(ring))
+      LinearRing ring = i.current;
+      if (! isSimpleLinearGeometry(ring)) {
         return false;
+      }
     }
     return true;
   }
@@ -253,8 +255,9 @@ class IsSimpleOp
   {
     for (int i = 0; i < geom.getNumGeometries(); i++ ) {
       Geometry comp = geom.getGeometryN(i);
-      if (! computeSimple(comp))
+      if (! computeSimple(comp)) {
         return false;
+      }
     }
     return true;
   }

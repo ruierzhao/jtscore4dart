@@ -205,9 +205,9 @@ class UnaryUnionOp
 		if (extracter.isEmpty()) {
 		  return geomFact!.createEmpty( extracter.getDimension() );
 		}
-    List points = extracter.getExtract(0);
-    List lines = extracter.getExtract(1);
-    List polygons = extracter.getExtract(2);
+    List<Point> points = extracter.getExtract(0) as List<Point>;
+    List<LineString> lines = extracter.getExtract(1) as List<LineString>;
+    List<Polygon> polygons = extracter.getExtract(2) as List<Polygon>;
     
 		/**
 		 * For points and lines, only a single union operation is 

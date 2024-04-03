@@ -17,11 +17,14 @@
 // import org.locationtech.jts.geom.CoordinateSequenceFilter;
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.util.Assert;
+import "dart:math"as math;
+
 import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
+import 'package:jtscore4dart/src/utils.dart';
 
 /**
  * Represents an affine transformation on the 2D Cartesian plane. 
@@ -126,7 +129,7 @@ class AffineTransformation
    */
   static AffineTransformation rotationInstance(double theta)
   {
-    return rotationInstance(Math.sin(theta), math.cos(theta));
+    return rotationInstance(math.sin(theta), math.cos(theta));
   }
   
   /**
@@ -532,14 +535,14 @@ class AffineTransformation
     // rotate vector to positive x axis direction
     double dx = x1 - x0;
     double dy = y1 - y0;
-    double d = math.hypot(dx, dy);
-    double sin = dy / d;
-    double cos = dx / d;
-    rotate(-sin, cos);
+    double d = hypot(dx, dy);
+    double _sin = dy / d;
+    double _cos = dx / d;
+    rotate(-_sin, _cos);
     // reflect about the x axis
     scale(1, -1);
     // rotate back
-    rotate(sin, cos);
+    rotate(_sin, _cos);
     // translate back
     translate(x0, y0);
     return this;
@@ -583,7 +586,7 @@ class AffineTransformation
     }
     
     // rotate vector to positive x axis direction
-    double d = math.hypot(x, y);
+    double d = hypot(x, y);
     double sin = y / d;
     double cos = x / d;
     rotate(-sin, cos);

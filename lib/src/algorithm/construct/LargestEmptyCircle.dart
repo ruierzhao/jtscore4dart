@@ -26,7 +26,16 @@
 // import org.locationtech.jts.geom.Polygonal;
 // import org.locationtech.jts.operation.distance.IndexedFacetDistance;
 
+import 'dart:math';
+
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/locate/IndexedPointInAreaLocator.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/operation/distance/IndexedFacetDistance.dart';
+
+import 'IndexedDistanceToPoint.dart';
+import 'MaximumInscribedCircle.dart';
 
 /// Constructs the Largest Empty Circle for a set
 /// of obstacle geometries, up to a given accuracy distance tolerance.
@@ -130,11 +139,11 @@ class LargestEmptyCircle {
  /**private */Envelope gridEnv;
  /**private */Cell farthestCell;
   
- /**private */Cell centerCell = null;
+ /**private */Cell? centerCell = null;
  /**private */Coordinate centerPt;
- /**private */Point centerPoint = null;
+ /**private */Point? centerPoint = null;
  /**private */Coordinate radiusPt;
- /**private */Point radiusPoint = null;
+ /**private */Point? radiusPoint = null;
  /**private */Geometry bounds;
 
   /// Creates a new instance of a Largest Empty Circle construction,
@@ -155,7 +164,7 @@ class LargestEmptyCircle {
       throw new ArgumentError("Boundary must be polygonal");
     }
     if (tolerance <= 0) {
-      throw new ArgumentError("Accuracy tolerance is non-positive: " + tolerance);
+      throw new ArgumentError("Accuracy tolerance is non-positive: $tolerance");
     }
     this.obstacles = obstacles;
     this.boundary = boundary;
@@ -191,8 +200,9 @@ class LargestEmptyCircle {
   /// @return a line from the center of the circle to a point on the edge
   LineString getRadiusLine() {
     compute();
-    LineString radiusLine = factory.createLineString(
-        new List<Coordinate> { centerPt.copy(), radiusPt.copy() });
+    // LineString radiusLine = factory.createLineString(new List<Coordinate> { centerPt.copy(), radiusPt.copy() });
+    LineString radiusLine = factory.createLineString( 
+      List<Coordinate>.from([centerPt.copy(), radiusPt.copy()] ,growable: false));
     return radiusLine;
   }
   
@@ -204,7 +214,7 @@ class LargestEmptyCircle {
   /// 
   /// @param p the point to compute the distance for
   /// @return the signed distance to the constraints (negative indicates outside the boundary)
- /**private */double distanceToConstraints(Point p) {
+ /**private */double _distanceToConstraints(Point p) {
     bool isOutide = Location.EXTERIOR == boundaryPtLocater.locate(p.getCoordinate());
     if (isOutide) {
       double boundaryDist = boundaryDistance.distance(p);
@@ -217,7 +227,7 @@ class LargestEmptyCircle {
  /**private */double distanceToConstraints(double x, double y) {
     Coordinate coord = new Coordinate(x, y);
     Point pt = factory.createPoint(coord);
-    return distanceToConstraints(pt);
+    return _distanceToConstraints(pt);
   }
   
  /**private */void initBoundary() {
@@ -316,8 +326,9 @@ class LargestEmptyCircle {
      * Every point in the cell lies outside the boundary,
      * so they cannot be the center point
      */
-    if (cell.isFullyOutside())
+    if (cell.isFullyOutside()) {
       return false;
+    }
     
     /**
      * The cell is outside, but overlaps the boundary
@@ -345,7 +356,7 @@ class LargestEmptyCircle {
   /// @param env the area extent to cover
   /// @param cellQueue the queue to initialize
  /**private */void createInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue) {
-    double cellSize = math.max(env.getWidth(), env.getHeight());
+    double cellSize = max(env.getWidth(), env.getHeight());
     double hSide = cellSize / 2.0;
 
     // Check for flat collapsed input and if so short-circuit
@@ -366,6 +377,8 @@ class LargestEmptyCircle {
     return new Cell(p.getX(), p.getY(), 0, distanceToConstraints(p));
   }
 
+}
+
   /// A square grid cell centered on a given point 
   /// with a given side half-length, 
   /// and having a given distance from the center point to the constraints.
@@ -373,30 +386,23 @@ class LargestEmptyCircle {
   /// constraints can be computed.
   /// This is used as the ordering and upper-bound function in
   /// the branch-and-bound algorithm. 
- /**private */static class Cell implements Comparable<Cell> {
+ /**private static */ class Cell implements Comparable<Cell> {
 
-   /**private */static final double SQRT2 = 1.4142135623730951;
+   /**private */static const double SQRT2 = 1.4142135623730951;
 
-   /**private */double x;
-   /**private */double y;
-   /**private */double hSide;
-   /**private */double distance;
+   /**private */double x; // cell center x
+   /**private */double y; // cell center y
+   /**private */double hSide; //// half the cell size
+   /**private */double distance; //// the distance from cell center to constraints distanceToConstraints
    /**private */double maxDist;
 
-    Cell(double x, double y, double hSide, double distanceToConstraints) {
-      this.x = x; // cell center x
-      this.y = y; // cell center y
-      this.hSide = hSide; // half the cell size
-
-      // the distance from cell center to constraints
-      distance = distanceToConstraints;
-
+    Cell(this.x, this.y, this.hSide, this.distance ) :
       /**
        * The maximum possible distance to the constraints for points in this cell
        * is the center distance plus the radius (half the diagonal length).
        */
       this.maxDist = distance + hSide * SQRT2;
-    }
+
 
     bool isFullyOutside() {
       return getMaxDistance() < 0;
@@ -434,5 +440,3 @@ class LargestEmptyCircle {
       return -Double.compare(maxDist, o.maxDist);
     }
   }
-
-}

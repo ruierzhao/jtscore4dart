@@ -24,6 +24,24 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+
+import 'LineMergeGraph.dart';
+
+
+class _ implements GeometryComponentFilter {
+      void filter(Geometry component) {
+        if (component is LineString) {
+          add(component as LineString);
+        }
+      }      
+    }
+
+
+
 /**
  * Merges a collection of linear components to form maximal-length linestrings. 
  * <p> 
@@ -49,8 +67,9 @@
 class LineMerger 
 {
  /**private */LineMergeGraph graph = new LineMergeGraph();
- /**private */Collection mergedLineStrings = null;
- /**private */GeometryFactory factory = null;
+//  /**private */Iterable mergedLineStrings = null;
+ /**private */late Iterable mergedLineStrings;
+ /**private */late GeometryFactory factory;
   
   /**
    * Creates a new line merger.
@@ -69,13 +88,7 @@ class LineMerger
    * @param geometry geometry to be line-merged
    */  
   void add(Geometry geometry) {
-    geometry.apply(new GeometryComponentFilter() {
-      void filter(Geometry component) {
-        if (component is LineString) {
-          add((LineString)component);
-        }
-      }      
-    });
+    geometry.applyGeometryComonent(_());
   }
   /**
    * Adds a collection of Geometries to be processed. May be called multiple times.
@@ -84,7 +97,7 @@ class LineMerger
    * 
    * @param geometries the geometries to be line-merged
    */
-  void add(Collection geometries) 
+  void add(Iterable geometries) 
   {
   	mergedLineStrings = null;
     for (Iterator i = geometries.iterator(); i.moveNext(); ) {
@@ -99,7 +112,7 @@ class LineMerger
     graph.addEdge(lineString);
   }
   
- /**private */Collection edgeStrings = null;
+ /**private */Iterable edgeStrings = null;
   
  /**private */void merge() 
   {
@@ -170,7 +183,7 @@ class LineMerger
    * 
    * @return the collection of merged LineStrings
    */
-  Collection getMergedLineStrings() {
+  Iterable getMergedLineStrings() {
     merge();
     return mergedLineStrings;
   }

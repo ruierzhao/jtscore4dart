@@ -25,6 +25,7 @@ import 'package:jtscore4dart/src/geom/Polygon.dart';
 
 class Rectangle {
   
+  /// 
   /// Creates a rectangular {@link Polygon} from a base segment
   /// defining the position and orientation of one side of the rectangle, and 
   /// three points defining the locations of the line segments 
@@ -39,11 +40,11 @@ class Rectangle {
   /// <p>
   /// The first side of the constructed rectangle contains the base segment.
   /// 
-  /// @param baseRightPt the right point of the base segment
-  /// @param baseLeftPt the left point of the base segment
-  /// @param oppositePt the point defining the opposite side
-  /// @param leftSidePt the point defining the left side
-  /// @param rightSidePt the point defining the right side
+  /// @param [baseRightPt] the right point of the base segment
+  /// @param [baseLeftPt] the left point of the base segment
+  /// @param [oppositePt] the point defining the opposite side
+  /// @param [leftSidePt] the point defining the left side
+  /// @param [rightSidePt] the point defining the right side
   /// @param factory the geometry factory to use
   /// @return the rectangular polygon
   static Polygon createFromSidePts(Coordinate baseRightPt, Coordinate baseLeftPt, 
@@ -76,14 +77,15 @@ class Rectangle {
      * If a corner coincides with a input point
      * the exact value is used to avoid numerical inaccuracy.
      */
+    /// TODO: @ruier edit.
     Coordinate p0 = rightSidePt.equals2D(baseRightPt) ? baseRightPt.copy() 
-        : baseLine.lineIntersection(rightLine);
+        : baseLine.lineIntersection(rightLine)!;
     Coordinate p1 = leftSidePt.equals2D(baseLeftPt) ? baseLeftPt.copy() 
-        : baseLine.lineIntersection(leftLine);
+        : baseLine.lineIntersection(leftLine)!;
     Coordinate p2 = leftSidePt.equals2D(oppositePt) ? oppositePt.copy() 
-        : oppLine.lineIntersection(leftLine);
+        : oppLine.lineIntersection(leftLine)!;
     Coordinate p3 = rightSidePt.equals2D(oppositePt) ? oppositePt.copy() 
-        : oppLine.lineIntersection(rightLine);
+        : oppLine.lineIntersection(rightLine)!;
     
     // LinearRing shell = factory.createLinearRing(
     //     new List<Coordinate> { p0, p1, p2, p3, p0.copy() });

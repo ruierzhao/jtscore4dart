@@ -279,7 +279,7 @@ class ConcaveHull
     if (maxEdgeLengthRatio >= 0) {
       maxSizeInHull = computeTargetEdgeLength(triList, maxEdgeLengthRatio);
     }
-    if (triList.isEmpty()) {
+    if (triList.isEmpty) {
       return inputGeometry.convexHull();
     }
     

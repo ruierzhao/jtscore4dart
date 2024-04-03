@@ -19,6 +19,10 @@
 // import org.locationtech.jts.geom.Triangle;
 // import org.locationtech.jts.triangulate.tri.Tri;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Triangle.dart';
+import 'package:jtscore4dart/src/triangulate/tri/Tri.dart';
+
 /**
  * Tris which are used to form a concave hull.
  * If a Tri has an edge (or edges) with no adjacent tri
@@ -35,10 +39,10 @@ class HullTri extends Tri
     implements Comparable<HullTri> 
 {
  /**private */double size;
- /**private */bool isMarked = false;
+ /**private */bool _isMarked = false;
   
-  HullTri(Coordinate p0, Coordinate p1, Coordinate p2) {
-    super(p0, p1, p2);
+  HullTri(Coordinate super.p0, Coordinate super.p1, Coordinate super.p2) {
+    // super(p0, p1, p2);
     this.size = lengthOfLongestEdge();
   }
 
@@ -64,11 +68,11 @@ class HullTri extends Tri
   }
   
   bool isMarked() {
-    return isMarked;
+    return _isMarked;
   }
   
   void setMarked(bool isMarked) {
-    this.isMarked = isMarked;
+    this._isMarked = isMarked;
   }
   
   bool isRemoved() {
@@ -155,8 +159,9 @@ class HullTri extends Tri
    */
   int isolatedVertexIndex(List<HullTri> triList) {
     for (int i = 0; i < 3; i++) {
-      if (degree(i, triList) <= 1)
+      if (degree(i, triList) <= 1) {
         return i;
+      }
     }
     return -1;
   }
@@ -187,7 +192,7 @@ class HullTri extends Tri
    * which is more likely to be in the exterior of the computed hull.)
    * This improves the determinism of the queue ordering. 
    */
-  @Override
+  @override
   int compareTo(HullTri o) {
     /**
      * If size is identical compare areas to ensure a (more) deterministic ordering.
@@ -207,8 +212,9 @@ class HullTri extends Tri
    */
   bool hasBoundaryTouch() {
     for (int i = 0; i < 3; i++) {
-      if (isBoundaryTouch(i))
+      if (isBoundaryTouch(i)) {
         return true;
+      }
     }
     return false;
   }
@@ -229,15 +235,16 @@ class HullTri extends Tri
   }
   
   static bool isAllMarked(List<HullTri> triList) {
-    for (HullTri tri : triList) {
-      if (! tri.isMarked())
+    for (HullTri tri in triList) {
+      if (! tri.isMarked()) {
         return false;
+      }
     }
     return true;
   }
   
   static void clearMarks(List<HullTri> triList) {
-    for (HullTri tri : triList) {
+    for (HullTri tri in triList) {
       tri.setMarked(false);
     }
   }
@@ -249,10 +256,11 @@ class HullTri extends Tri
       HullTri tri = queue.pop();
       tri.setMarked(true);
       for (int i = 0; i < 3; i++) {
-        HullTri adj = (HullTri) tri.getAdjacent(i);
+        HullTri adj = tri.getAdjacent(i);
         //-- don't connect thru this tri
-        if (adj == exceptTri)
+        if (adj == exceptTri) {
           continue;
+        }
         if (adj != null && ! adj.isMarked() ) {
           queue.add(adj);
         }
@@ -269,7 +277,7 @@ class HullTri extends Tri
    * @return true if the triangulation is still connnected
    */
   static bool isConnected(List<HullTri> triList, HullTri removedTri) {
-    if (triList.size() == 0) return false;
+    if (triList.isEmpty) return false;
     clearMarks(triList);
     HullTri triStart = findTri(triList, removedTri);
     if (triStart == null) return false;

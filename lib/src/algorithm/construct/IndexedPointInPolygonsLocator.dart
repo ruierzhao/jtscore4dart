@@ -53,7 +53,7 @@ class IndexedPointInPolygonsLocator implements PointOnGeometryLocator {
     }
   }
   
-  @Override
+  @override
   int locate(Coordinate p) {
     init();
 

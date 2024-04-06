@@ -14,24 +14,29 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateList;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+
 class LinkedRing {
   
  /**private */static final int NO_COORD_INDEX = -1;
 
  /**private */final List<Coordinate> coord;
- /**private */int[] next = null;
- /**private */int[] prev = null;
- /**private */int size;
+//  /**private */List<int> next = null;
+ /**private */List<int> _next;
+//  /**private */List<int> prev = null;
+ /**private */List<int> _prev;
+ /**private */int _size;
   
-  LinkedRing(List<Coordinate> pts) {
-    coord = pts;
-    size = pts.length - 1;
-    next = createNextLinks(size);
-    prev = createPrevLinks(size);
-  }
+  LinkedRing(this.coord) :
+    // coord = pts;
+    _size = coord.length - 1,
+    _next = _createNextLinks(coord.length - 1),
+    _prev = _createPrevLinks(coord.length - 1);
 
- /**private */static int[] createNextLinks(int size) {
-    int[] next = new int[size];
+ /**private */static List<int> _createNextLinks(int size) {
+    // int[] next = new int[size];
+    List<int> next = List.filled(size, 0);
     for (int i = 0; i < size; i++) {
       next[i] = i + 1;
     }
@@ -39,8 +44,9 @@ class LinkedRing {
     return next;
   }
   
- /**private */static int[] createPrevLinks(int size) {
-    int[] prev = new int[size];
+ /**private */static List<int> _createPrevLinks(int size) {
+    // List<int> prev = new int[size];
+    List<int> prev = List.filled(size, 0);
     for (int i = 0; i < size; i++) {
       prev[i] = i - 1;
     }
@@ -49,15 +55,15 @@ class LinkedRing {
   }
   
   int size() {
-    return size;
+    return _size;
   }
 
   int next(int i) {
-    return next[i];
+    return _next[i];
   }
 
   int prev(int i) {
-    return prev[i];
+    return _prev[i];
   }
   
   Coordinate getCoordinate(int index) {
@@ -73,24 +79,24 @@ class LinkedRing {
   }  
   
   bool hasCoordinate(int index) {
-    return index >= 0 && index < prev.length 
-        && prev[index] != NO_COORD_INDEX;
+    return index >= 0 && index < _prev.length 
+        && _prev[index] != NO_COORD_INDEX;
   }
   
   void remove(int index) {
-    int iprev = prev[index];
-    int inext = next[index];
-    next[iprev] = inext;
-    prev[inext] = iprev;
-    prev[index] = NO_COORD_INDEX;
-    next[index] = NO_COORD_INDEX;
-    size--;
+    int iprev = _prev[index];
+    int inext = _next[index];
+    _next[iprev] = inext;
+    _prev[inext] = iprev;
+    _prev[index] = NO_COORD_INDEX;
+    _next[index] = NO_COORD_INDEX;
+    _size--;
   }
   
   List<Coordinate> getCoordinates() {
     CoordinateList coords = new CoordinateList();
     for (int i = 0; i < coord.length - 1; i++) {
-      if (prev[i] != NO_COORD_INDEX) {
+      if (_prev[i] != NO_COORD_INDEX) {
         coords.add(coord[i].copy(), false);
       }
     }

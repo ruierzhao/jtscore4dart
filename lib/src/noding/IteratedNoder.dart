@@ -18,6 +18,15 @@
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.geom.TopologyException;
 
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+
+import 'IntersectionAdder.dart';
+import 'MCIndexNoder.dart';
+import 'Noder.dart';
+
 /**
  * Nodes a set of {@link NodedSegmentString}s completely.
  * The set of segment strings is fully noded;
@@ -38,13 +47,12 @@ class IteratedNoder
 
  /**private */PrecisionModel pm;
  /**private */LineIntersector li;
- /**private */Collection nodedSegStrings;
+ /**private */late Iterable nodedSegStrings;
  /**private */int maxIter = MAX_ITER;
 
-  IteratedNoder(PrecisionModel pm)
-  {
-    li = new RobustLineIntersector();
-    this.pm = pm;
+  IteratedNoder(this.pm)
+  :
+    li = new RobustLineIntersector(){
     li.setPrecisionModel(pm);
   }
 
@@ -62,7 +70,7 @@ class IteratedNoder
     this.maxIter = maxIter;
   }
 
-  Collection getNodedSubstrings()  {    return nodedSegStrings;  }
+  Iterable getNodedSubstrings()  {    return nodedSegStrings;  }
 
   /**
    * Fully nodes a list of {@link SegmentString}s, i.e. performs noding iteratively
@@ -73,10 +81,11 @@ class IteratedNoder
    * @param segStrings a collection of SegmentStrings to be noded
    * @throws TopologyException if the iterated noding fails to converge.
    */
-  void computeNodes(Collection segStrings)
-    throws TopologyException
+  void computeNodes(Iterable segStrings)
+    // throws TopologyException
   {
-    int[] numInteriorIntersections = new int[1];
+    // int[] numInteriorIntersections = new int[1];
+    List<int> numInteriorIntersections = List.filled(1, 0);
     nodedSegStrings = segStrings;
     int nodingIterationCount = 0;
     int lastNodesCreated = -1;
@@ -93,8 +102,7 @@ class IteratedNoder
       if (lastNodesCreated > 0
           && nodesCreated >= lastNodesCreated
           && nodingIterationCount > maxIter) {
-        throw new TopologyException("Iterated noding failed to converge after "
-                                    + nodingIterationCount + " iterations");
+        throw new TopologyException("Iterated noding failed to converge after $nodingIterationCount iterations");
       }
       lastNodesCreated = nodesCreated;
 
@@ -107,7 +115,7 @@ class IteratedNoder
  * Node the input segment strings once
  * and create the split edges between the nodes
  */
- /**private */void node(Collection segStrings, int[] numInteriorIntersections)
+ /**private */void node(Iterable segStrings, List<int> numInteriorIntersections)
   {
     IntersectionAdder si = new IntersectionAdder(li);
     MCIndexNoder noder = new MCIndexNoder();

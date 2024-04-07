@@ -27,8 +27,10 @@
 
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 import 'package:jtscore4dart/src/util/PriorityQueue.dart';
 
+import '../ItemVisitor.dart';
 import '../SpatialIndex.dart';
 import 'AbstractNode.dart';
 import 'AbstractSTRtree.dart';
@@ -38,7 +40,12 @@ import 'ItemBoundable.dart';
 import 'ItemDistance.dart';
 
 
-
+class _ implements IntersectsOp {
+  @override
+  bool intersects(Object aBounds, Object bBounds) {
+      return (aBounds as Envelope).intersectsWith(bBounds as Envelope);
+    }
+  }
 
 /**static */ 
 final class STRtreeNode extends AbstractNode
@@ -97,23 +104,35 @@ implements SpatialIndex /**, Serializable  */
   //static final int serialVersionUID = 259274702368956900L;
   
  /**private */
- static Comparator xComparator = 
-    new Comparator() {
-      int compare(Object o1, Object o2) {
-        return compareDoubles(
-            centreX((Envelope)((Boundable)o1).getBounds()),
-            centreX((Envelope)((Boundable)o2).getBounds()));
-      }
-    };
+ static Comparator<Object> xComparator = 
+      (Object o1, Object o2) {
+        return AbstractSTRtree.compareDoubles(
+            centreX((o1 as Boundable).getBounds() as Envelope),
+            centreX((o2 as Boundable).getBounds() as Envelope));
+      };
+//  static Comparator xComparator = 
+//     new Comparator() {
+//       int compare(Object o1, Object o2) {
+//         return compareDoubles(
+//             centreX((Envelope)((Boundable)o1).getBounds()),
+//             centreX((Envelope)((Boundable)o2).getBounds()));
+//       }
+//     };
  /**private */
- static Comparator yComparator =
-    new Comparator() {
-      int compare(Object o1, Object o2) {
-        return compareDoubles(
-            centreY((Envelope)((Boundable)o1).getBounds()),
-            centreY((Envelope)((Boundable)o2).getBounds()));
-      }
-    };
+ static Comparator<Object> yComparator =
+      (Object o1, Object o2) {
+        return AbstractSTRtree.compareDoubles(
+            centreY((o1 as Boundable).getBounds() as Envelope),
+            centreY((o2 as Boundable).getBounds() as Envelope));
+      };
+//  static Comparator yComparator =
+//     new Comparator() {
+//       int compare(Object o1, Object o2) {
+//         return compareDoubles(
+//             centreY((Envelope)((Boundable)o1).getBounds()),
+//             centreY((Envelope)((Boundable)o2).getBounds()));
+//       }
+//     };
 
  /**private */
  static double centreX(Envelope e) {
@@ -129,11 +148,7 @@ implements SpatialIndex /**, Serializable  */
  static double avg(double a, double b) { return (a + b) / 2; }
 
  /**private */
- static IntersectsOp intersectsOp = new IntersectsOp() {
-    bool intersects(Object aBounds, Object bBounds) {
-      return ((Envelope)aBounds).intersects((Envelope)bBounds);
-    }
-  };
+ static IntersectsOp intersectsOp = _();
 
   /**
    * Creates the parent level for the given child level. First, orders the items
@@ -146,16 +161,19 @@ implements SpatialIndex /**, Serializable  */
   @override
   List createParentBoundables(List childBoundables, int newLevel) {
     Assert.isTrue(childBoundables.isNotEmpty);
-    int minLeafCount = (int) math.ceil((childBoundables.size() / (double) getNodeCapacity()));
-    ArrayList sortedChildBoundables = new ArrayList(childBoundables);
-    Collections.sort(sortedChildBoundables, xComparator);
-    List[] verticalSlices = verticalSlices(sortedChildBoundables,
-        (int) math.ceil(Math.sqrt(minLeafCount)));
+    // int minLeafCount = (int) math.ceil((childBoundables.size() / (double) getNodeCapacity()));
+    int minLeafCount = (childBoundables.size() / getNodeCapacity()).ceil();
+    // List sortedChildBoundables = new ArrayList(childBoundables);
+    // List sortedChildBoundables = childBoundables.toList(growable: false);
+    List sortedChildBoundables = childBoundables;
+    sortedChildBoundables.sort(xComparator);
+    // List verticalSlices = verticalSlices(sortedChildBoundables,(int) math.ceil(Math.sqrt(minLeafCount)));
+    List verticalSlices = verticalSlices(sortedChildBoundables,(int) math.ceil(Math.sqrt(minLeafCount)));
     return createParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
   }
 
  /**private */
- List createParentBoundablesFromVerticalSlices(List[] verticalSlices, int newLevel) {
+ List createParentBoundablesFromVerticalSlices(List verticalSlices, int newLevel) {
     Assert.isTrue(verticalSlices.length > 0);
     List parentBoundables = [];
     for (int i = 0; i < verticalSlices.length; i++) {
@@ -255,6 +273,7 @@ implements SpatialIndex /**, Serializable  */
   /**
    * Returns items whose bounds intersect the given envelope.
    */
+  @override
   List query(Envelope searchEnv) {
     //Yes this method does something. It specifies that the bounds is an
     //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -264,10 +283,10 @@ implements SpatialIndex /**, Serializable  */
   /**
    * Returns items whose bounds intersect the given envelope.
    */
-  void query(Envelope searchEnv, ItemVisitor visitor) {
+  void queryByVisitor(Envelope searchEnv, ItemVisitor visitor) {
     //Yes this method does something. It specifies that the bounds is an
     //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
-    super.query(searchEnv, visitor);
+    super.queryByVisitor(searchEnv, visitor);
   }
 
   /**
@@ -277,6 +296,7 @@ implements SpatialIndex /**, Serializable  */
    * @param item the item to remove
    * @return <code>true</code> if the item was found
    */
+  @override
   bool remove(Envelope itemEnv, Object item) {
     return super.remove(itemEnv, item);
   }
@@ -304,7 +324,7 @@ implements SpatialIndex /**, Serializable  */
   }
 
  /**protected */@override
-  Comparator getComparator() {
+  Comparator<Object> getComparator() {
     return yComparator;
   }
 

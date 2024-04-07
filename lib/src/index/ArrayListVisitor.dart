@@ -24,7 +24,7 @@ import 'ItemVisitor.dart';
 class ArrayListVisitor implements ItemVisitor
 {
 
- /**private */List items = [];
+ /**private */List _items = [];
   
   /**
    * Creates a new instance.
@@ -39,7 +39,7 @@ class ArrayListVisitor implements ItemVisitor
   @override
   void visitItem(Object item)
   {
-    items.add(item);
+    _items.add(item);
   }
 
   /**
@@ -47,6 +47,6 @@ class ArrayListVisitor implements ItemVisitor
    * 
    * @return the array of items
    */
-  List getItems() { return items; }
+  List getItems() { return _items; }
 
 }

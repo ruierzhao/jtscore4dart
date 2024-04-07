@@ -158,8 +158,9 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     List parentBoundables = [];
     parentBoundables.add(createNode(newLevel));
     // List sortedChildBoundables = new ArrayList(childBoundables);
-    List sortedChildBoundables = new ArrayList(childBoundables);
-    Collections.sort(sortedChildBoundables, getComparator());
+    List sortedChildBoundables = childBoundables.toList(growable: false);
+    // Collections.sort(sortedChildBoundables, getComparator());
+    sortedChildBoundables.sort( getComparator());
     for (Iterator i = sortedChildBoundables.iterator; i.moveNext(); ) {
       Boundable childBoundable =  i.current as Boundable;
       if (lastNode(parentBoundables).getChildBoundables().size() == getNodeCapacity()) {
@@ -480,7 +481,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
   /**
    * @param level -1 to get items
    */
- /**private */void _boundablesAtLevel(int level, AbstractNode top, Iterable boundables) {
+ /**private */void boundablesAtLevel(int level, AbstractNode top, Iterable boundables) {
     Assert.isTrue(level > -2);
     if (top.getLevel() == level) {
       boundables.add(top);
@@ -489,7 +490,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     for (Iterator i = top.getChildBoundables().iterator; i.moveNext(); ) {
       Boundable boundable =  i.current as Boundable;
       if (boundable is AbstractNode) {
-        _boundablesAtLevel(level, boundable as AbstractNode, boundables);
+        boundablesAtLevel(level, boundable as AbstractNode, boundables);
       }
       else {
         Assert.isTrue(boundable is ItemBoundable);
@@ -499,7 +500,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     return;
   }
 
-  /**protected abstract*/ Comparator getComparator();
+  /**protected abstract*/ Comparator<Object> getComparator();
 
   List  getItemBoundables()
   {

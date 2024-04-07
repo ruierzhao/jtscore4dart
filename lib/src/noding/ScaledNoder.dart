@@ -61,10 +61,10 @@ class ScaledNoder
   bool isIntegerPrecision() { return this.scaleFactor == 1.0; }
 
   @override
-  Iterable getNodedSubstrings()
+  Iterable<SegmentString> getNodedSubstrings()
   {
-    Iterable splitSS = noder.getNodedSubstrings();
-    if (isScaled) rescale(splitSS);
+    Iterable<SegmentString> splitSS = noder.getNodedSubstrings();
+    if (isScaled) _rescale(splitSS);
     return splitSS;
   }
 
@@ -73,15 +73,15 @@ class ScaledNoder
   {
     Iterable intSegStrings = inputSegStrings;
     if (isScaled) {
-      intSegStrings = scale(inputSegStrings);
+      intSegStrings = _scale(inputSegStrings);
     }
     noder.computeNodes(intSegStrings);
   }
 
- /**private */Iterable scale(Iterable segStrings)
+ /**private */Iterable _scale(Iterable segStrings)
   {
     // List nodedSegmentStrings = new ArrayList(segStrings.size());
-    List nodedSegmentStrings = new ArrayList(segStrings.size());
+    List nodedSegmentStrings = [];
     for (Iterator i = segStrings.iterator; i.moveNext(); ) {
       SegmentString ss =  i.current as SegmentString;
       nodedSegmentStrings.add(new NodedSegmentString(scale(ss.getCoordinates()), ss.getData()));
@@ -91,8 +91,8 @@ class ScaledNoder
 
  /**private */List<Coordinate> scale(List<Coordinate> pts)
   {
-    List<Coordinate> roundPts = new Coordinate[pts.length];
-    List<Coordinate> roundPts = new Coordinate[pts.length];
+    // List<Coordinate> roundPts = new Coordinate[pts.length];
+    List<Coordinate> roundPts = List.filled(pts.length, Coordinate.fromAnother(pts[0]));
     for (int i = 0; i < pts.length; i++) {
       roundPts[i] = new Coordinate(
           ((pts[i].x - offsetX) * scaleFactor).roundToDouble(),
@@ -106,7 +106,7 @@ class ScaledNoder
 
   //private double scale(double val) { return (double) math.round(val * scaleFactor); }
 
- /**private */void rescale(Iterable segStrings)
+ /**private */void _rescale(Iterable<SegmentString> segStrings)
   {
     for (Iterator i = segStrings.iterator; i.moveNext(); ) {
       SegmentString ss = i.current as SegmentString;

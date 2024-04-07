@@ -415,7 +415,7 @@ abstract class CoordinateArrays {
   // TODO: ruier edit.replace [toCoordinateArray]
   static List<Coordinate> toCoordinateArray(Iterable<Coordinate> coordList) {
     // coordList.forEach((element) { });
-    return  coordList.toList();
+    return  coordList.toList(growable: false);
   }
 
   /// Tests whether {@link Coordinate#equals(Object)} returns true for any two consecutive Coordinates

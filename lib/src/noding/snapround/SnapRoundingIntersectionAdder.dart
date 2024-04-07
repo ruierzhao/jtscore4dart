@@ -23,6 +23,16 @@
 // import org.locationtech.jts.noding.SegmentIntersector;
 // import org.locationtech.jts.noding.SegmentString;
 
+import 'package:jtscore4dart/src/algorithm/Distance.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import '../NodedSegmentString.dart';
+import '../SegmentIntersector.dart';
+import '../SegmentString.dart';
+
 /**
  * Finds intersections between line segments which will be snap-rounded,
  * and adds them as nodes to the segments.
@@ -55,17 +65,14 @@ class SnapRoundingIntersectionAdder
    *
    * @param nearnessTol the intersection distance tolerance
    */
-  SnapRoundingIntersectionAdder(double nearnessTol)
-  {
-    this.nearnessTol =  nearnessTol;
-    
+  SnapRoundingIntersectionAdder(this.nearnessTol)
+  :  
     /**
      * Intersections are detected and computed using full precision.
      * They are snapped in a subsequent phase.
      */
-    li = new RobustLineIntersector();
+    li = new RobustLineIntersector(),
     intersections = [];
-  }
 
   /**
    * Gets the created intersection nodes, 
@@ -83,6 +90,7 @@ class SnapRoundingIntersectionAdder
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
+  @override
   void processIntersections(
       SegmentString e0,  int segIndex0,
       SegmentString e1,  int segIndex1
@@ -96,7 +104,7 @@ class SnapRoundingIntersectionAdder
     Coordinate p10 = e1.getCoordinate(segIndex1);
     Coordinate p11 = e1.getCoordinate(segIndex1 + 1);
 
-    li.computeIntersection(p00, p01, p10, p11);
+    li.computeIntersection4Coord(p00, p01, p10, p11);
 //if (li.hasIntersection() && li.isProper()) Debug.println(li);
 
     if (li.hasIntersection()) {
@@ -104,8 +112,8 @@ class SnapRoundingIntersectionAdder
         for (int intIndex = 0; intIndex < li.getIntersectionNum(); intIndex++) {
           intersections.add(li.getIntersection(intIndex));
         }
-        ((NodedSegmentString) e0).addIntersections(li, segIndex0, 0);
-        ((NodedSegmentString) e1).addIntersections(li, segIndex1, 1);
+        ( e0 as NodedSegmentString).addIntersections(li, segIndex0, 0);
+        ( e1 as NodedSegmentString).addIntersections(li, segIndex1, 1);
         return;
       }
     }
@@ -154,7 +162,7 @@ class SnapRoundingIntersectionAdder
     double distSeg = Distance.pointToSegment(p, p0, p1);
     if (distSeg < nearnessTol) {
       intersections.add(p);
-      ((NodedSegmentString) edge).addIntersection(p, segIndex);
+      ( edge as NodedSegmentString).addIntersection(p, segIndex);
     }
   }
 
@@ -163,6 +171,7 @@ class SnapRoundingIntersectionAdder
    * 
    * @return false always
    */
+  @override
   bool isDone() { return false; }
 
 }

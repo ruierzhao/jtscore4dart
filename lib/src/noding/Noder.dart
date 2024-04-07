@@ -13,6 +13,8 @@
 
 // import java.util.Collection;
 
+import 'SegmentString.dart';
+
 /**
  * Computes all intersections between segments in a set of {@link SegmentString}s.
  * Intersections found are represented as {@link SegmentNode}s and added to the
@@ -40,6 +42,6 @@ abstract class Noder
    *
    * @return a Collection of SegmentStrings
    */
-  Iterable getNodedSubstrings();
+  Iterable<SegmentString> getNodedSubstrings();
 
 }

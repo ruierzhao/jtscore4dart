@@ -31,7 +31,6 @@
 
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/PointLocation.dart';
-import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
 import 'package:jtscore4dart/src/geomgraph/EdgeRing.dart';
 import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
@@ -79,9 +78,9 @@ class PolygonBuilder {
     //Assert: every hole on freeHoleList has a shell assigned to it
   }
 
-  List getPolygons()
+  List<Polygon> getPolygons()
   {
-    List resultPolyList = computePolygons(shellList);
+    List<Polygon> resultPolyList = computePolygons(shellList);
     return resultPolyList;
   }
 
@@ -275,9 +274,9 @@ class PolygonBuilder {
     }
     return minShell!;
   }
- /**private */List computePolygons(List shellList)
+ /**private */List<Polygon> computePolygons(List shellList)
   {
-    List resultPolyList   = [];
+    List<Polygon> resultPolyList   = [];
     // add Polygons for all shells
     for (Iterator it = shellList.iterator; it.moveNext(); ) {
       EdgeRing er = it.current;

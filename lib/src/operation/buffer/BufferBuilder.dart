@@ -52,7 +52,6 @@ import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
-import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/geomgraph/Edge.dart';
 import 'package:jtscore4dart/src/geomgraph/EdgeList.dart';
 import 'package:jtscore4dart/src/geomgraph/Label.dart';
@@ -196,7 +195,7 @@ class BufferBuilder
     List subgraphList = createSubgraphs(graph);
     PolygonBuilder polyBuilder = new PolygonBuilder(geomFact);
     buildSubgraphs(subgraphList, polyBuilder);
-    List resultPolyList = polyBuilder.getPolygons();
+    List<Polygon> resultPolyList = polyBuilder.getPolygons();
 
     // just in case...
     if (resultPolyList.isEmpty) {
@@ -361,7 +360,7 @@ class BufferBuilder
  static Geometry convertSegStrings(Iterator it)
   {
   	GeometryFactory fact = new GeometryFactory();
-  	List lines = [];
+  	List<LineString> lines = [];
   	while (it.moveNext()) {
   		SegmentString ss = it.current as SegmentString;
   		LineString line = fact.createLineString(ss.getCoordinates());

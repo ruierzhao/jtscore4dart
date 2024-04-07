@@ -29,7 +29,6 @@
 import 'dart:math';
 
 import 'package:jtscore4dart/geometry.dart';
-import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/math/MathUtil.dart';
 import 'package:jtscore4dart/src/noding/Noder.dart';
 import 'package:jtscore4dart/src/noding/ScaledNoder.dart';

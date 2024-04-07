@@ -303,10 +303,10 @@ class HotPixel
     return false;
   }
   
- /**private */static final int UPPER_RIGHT = 0;
- /**private */static final int UPPER_LEFT = 1;
- /**private */static final int LOWER_LEFT = 2;
- /**private */static final int LOWER_RIGHT = 3;
+ /**private */static const int UPPER_RIGHT = 0;
+ /**private */static const int UPPER_LEFT = 1;
+ /**private */static const int LOWER_LEFT = 2;
+ /**private */static const int LOWER_RIGHT = 3;
 
   /**
    * Test whether a segment intersects
@@ -335,18 +335,19 @@ class HotPixel
     corner[LOWER_RIGHT] = new Coordinate(maxx, miny);
     
     LineIntersector li = new RobustLineIntersector();
-    li.computeIntersection(p0, p1, corner[0], corner[1]);
+    li.computeIntersection4Coord(p0, p1, corner[0], corner[1]);
     if (li.hasIntersection()) return true;
-    li.computeIntersection(p0, p1, corner[1], corner[2]);
+    li.computeIntersection4Coord(p0, p1, corner[1], corner[2]);
     if (li.hasIntersection()) return true;
-    li.computeIntersection(p0, p1, corner[2], corner[3]);
+    li.computeIntersection4Coord(p0, p1, corner[2], corner[3]);
     if (li.hasIntersection()) return true;
-    li.computeIntersection(p0, p1, corner[3], corner[0]);
+    li.computeIntersection4Coord(p0, p1, corner[3], corner[0]);
     if (li.hasIntersection()) return true;
 
     return false;
   }
   
+  @override
   String toString() {
     return "HP($originalPt )";
   }

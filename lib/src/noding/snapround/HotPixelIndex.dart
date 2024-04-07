@@ -22,6 +22,17 @@
 // import org.locationtech.jts.index.kdtree.KdNodeVisitor;
 // import org.locationtech.jts.index.kdtree.KdTree;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/index/kdtree/KdNode.dart';
+import 'package:jtscore4dart/src/index/kdtree/KdNodeVisitor.dart';
+import 'package:jtscore4dart/src/index/kdtree/KdTree.dart';
+
+import 'HotPixel.dart';
+
 /**
  * An index which creates unique {@link HotPixel}s for provided points,
  * and performs range queries on them.
@@ -44,49 +55,8 @@ class HotPixelIndex {
    */
  /**private */KdTree index = new KdTree();
 
-  HotPixelIndex(PrecisionModel pm) {
-    this.precModel = pm;
-    scaleFactor = pm.getScale();
-  }
-
-  /**
-   * Utility class to shuffle an array of {@link Coordinate}s using
-   * the Fisher-Yates shuffle algorithm
-   *
-   * @see <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">Fihser-Yates shuffle</a>
-   */
- /**private */static final class CoordinateShuffler implements Iterator<Coordinate> {
-
-   /**private */final Random rnd = new Random(13);
-   /**private */final List<Coordinate> coordinates;
-   /**private */final int[] indices;
-   /**private */int index;
-
-    /**
-     * Creates an instance of this class
-     * @param pts An array of {@link Coordinate}s.
-     */
-    CoordinateShuffler(List<Coordinate> pts) {
-      coordinates = pts;
-      indices = new int[pts.length];
-      for (int i = 0; i < pts.length; i++)
-        indices[i] = i;
-      index = pts.length - 1;
-    }
-
-    @Override
-    bool hasNext() {
-      return index >= 0;
-    }
-
-    @Override
-    Coordinate next() {
-      int j = rnd.nextInt(index + 1);
-      Coordinate res = coordinates[indices[j]];
-      indices[j] = indices[index--];
-      return res;
-    }
-  }
+  HotPixelIndex(this.precModel) :
+    scaleFactor = precModel.getScale();
 
   /**
    * Adds a list of points as non-node pixels.
@@ -100,7 +70,8 @@ class HotPixelIndex {
      * causing an unbalanced KD-tree, which would create
      * performance and robustness issues.
      */
-    Iterator<Coordinate> it = new CoordinateShuffler(pts);
+    // Iterator<Coordinate> it = new CoordinateShuffler(pts);
+    CoordinateShuffler it = new CoordinateShuffler(pts);
     while (it.hasNext()) {
       add(it.next());
     }
@@ -117,7 +88,7 @@ class HotPixelIndex {
      * added after the vertex points, and hence the KD-tree should 
      * be reasonably balanced already.
      */
-    for (Coordinate pt : pts) {
+    for (Coordinate pt in pts) {
       HotPixel hp = add(pt);
       hp.setToNode();
     }
@@ -157,8 +128,9 @@ class HotPixelIndex {
 
  /**private */HotPixel find(Coordinate pixelPt) {
     KdNode kdNode = index.query(pixelPt);
-    if (kdNode == null)
+    if (kdNode == null) {
       return null;
+    }
     return (HotPixel) kdNode.getData();
   }
 
@@ -185,3 +157,54 @@ class HotPixelIndex {
     index.query(queryEnv, visitor);
   }
 }
+
+
+/**
+ * Utility class to shuffle an array of {@link Coordinate}s using
+ * the Fisher-Yates shuffle algorithm
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">Fihser-Yates shuffle</a>
+ */
+/**private static */ 
+final class CoordinateShuffler implements Iterator<Coordinate> {
+  /**private */final Random rnd = new Random(13);
+  /**private */final List<Coordinate> coordinates;
+  /**private */final List<int> indices;
+  /**private */int index;
+
+  /**
+   * Creates an instance of this class
+   * @param pts An array of {@link Coordinate}s.
+   */
+  CoordinateShuffler(this.coordinates) :
+  // indices = new int[coordinates.length]
+  indices = List.filled(coordinates.length, -1),
+  index = coordinates.length - 1
+  {
+    for (int i = 0; i < coordinates.length; i++) {
+      indices[i] = i;
+    }
+  }
+
+  bool hasNext() {
+    return index >= 0;
+  }
+  Coordinate next(){
+    return current;
+  }
+
+  @override
+  bool moveNext(){
+    throw Exception("use haveNext()");
+  }
+
+  @override
+  // Coordinate next() {
+  Coordinate get current {
+    int j = rnd.nextInt(index + 1);
+    Coordinate res = coordinates[indices[j]];
+    indices[j] = indices[index--];
+    return res;
+  }
+}
+

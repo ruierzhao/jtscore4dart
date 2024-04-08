@@ -79,7 +79,7 @@ class SnapRoundingNoder implements Noder
  /**private */final PrecisionModel pm;
  /**private */final HotPixelIndex pixelIndex;
   
- /**private */List<NodedSegmentString> snappedResult;
+ /**private */late List<NodedSegmentString> snappedResult;
 
   SnapRoundingNoder(this.pm) :
     pixelIndex = new HotPixelIndex(pm);
@@ -88,6 +88,7 @@ class SnapRoundingNoder implements Noder
 	 * @return a Collection of NodedSegmentStrings representing the substrings
 	 * 
 	 */
+  @override
   Iterable getNodedSubstrings()
   {
     return NodedSegmentString.getNodedSubstrings(snappedResult);
@@ -99,12 +100,14 @@ class SnapRoundingNoder implements Noder
    * 
    * @param inputSegmentStrings a Collection of NodedSegmentStrings
    */
-  void computeNodes(Iterable inputSegmentStrings)
+  @override
+  void computeNodes(Iterable<NodedSegmentString> inputSegmentStrings)
   {
     snappedResult = snapRound(inputSegmentStrings);
   }
   
- /**private */List<NodedSegmentString> snapRound(Iterable<NodedSegmentString> segStrings)
+ /**private */
+ List<NodedSegmentString> snapRound(Iterable<NodedSegmentString> segStrings)
   {
     /**
      * Determine hot pixels for intersections and vertices.
@@ -150,16 +153,17 @@ class SnapRoundingNoder implements Noder
    * 
    * @param segStrings the input NodedSegmentStrings
    */
- /**private */void addVertexPixels(Collection<NodedSegmentString> segStrings) {
-    for (SegmentString nss : segStrings) {
+ /**private */
+  void addVertexPixels(Iterable<NodedSegmentString> segStrings) {
+    for (SegmentString nss in segStrings) {
       List<Coordinate> pts = nss.getCoordinates();
-      pixelIndex.add(pts);
+      pixelIndex.addAll(pts);
     }
   }
 
  /**private */Coordinate round(Coordinate pt) {
     Coordinate p2 = pt.copy();
-    pm.makePrecise(p2);
+    pm.makePreciseFromCoord(p2);
     return p2;
   }
 
@@ -170,7 +174,7 @@ class SnapRoundingNoder implements Noder
    * @param pts the coordinates to round
    * @return array of rounded coordinates
    */
- /**private */List<Coordinate> round(List<Coordinate> pts) {
+ /**private */List<Coordinate> roundAll(List<Coordinate> pts) {
     CoordinateList roundPts = new CoordinateList();
     
     for (int i = 0; i < pts.length; i++ ) {
@@ -191,7 +195,7 @@ class SnapRoundingNoder implements Noder
     // List<NodedSegmentString> snapped = new ArrayList<NodedSegmentString>();
     List<NodedSegmentString> snapped = [];
     for (NodedSegmentString ss in segStrings ) {
-      NodedSegmentString snappedSS = computeSegmentSnaps(ss);
+      NodedSegmentString? snappedSS = computeSegmentSnaps(ss);
       if (snappedSS != null) {
         snapped.add(snappedSS);
       }
@@ -214,7 +218,7 @@ class SnapRoundingNoder implements Noder
    * @param ss the segment string to snap
    * @return the snapped segment string, or null if it collapses completely
    */
- /**private */NodedSegmentString computeSegmentSnaps(NodedSegmentString ss)
+ /**private */NodedSegmentString? computeSegmentSnaps(NodedSegmentString ss)
   {
     //List<Coordinate> pts = ss.getCoordinates();
     /**
@@ -223,7 +227,7 @@ class SnapRoundingNoder implements Noder
      * in preparation for snapping to the Hot Pixels
      */
     List<Coordinate> pts = ss.getNodedCoordinates();
-    List<Coordinate> ptsRound = round(pts);
+    List<Coordinate> ptsRound = roundAll(pts);
     
     // if complete collapse this edge can be eliminated
     if (ptsRound.length <= 1) {
@@ -269,7 +273,7 @@ class SnapRoundingNoder implements Noder
    * @param segIndex the index of the segment
    */
  /**private */void snapSegment(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex) {
-    pixelIndex.query(p0, p1, _visitor1(p0,p1));
+    pixelIndex.query(p0, p1, _visitor1(p0,p1,ss,segIndex));
   }
 
   /**
@@ -288,7 +292,7 @@ class SnapRoundingNoder implements Noder
   }
 
  /**private */void snapVertexNode(Coordinate p0, NodedSegmentString ss, int segIndex) {
-    pixelIndex.query(p0, p0, new _visitor2());
+    pixelIndex.query(p0, p0, new _visitor2(p0,ss,segIndex));
   }
 
 }
@@ -296,8 +300,10 @@ class SnapRoundingNoder implements Noder
 class _visitor1 implements KdNodeVisitor {
   final Coordinate p0;
   final Coordinate p1;
+  final NodedSegmentString ss;
+  final int segIndex;
 
-  _visitor1(this.p0,this.p1);
+  _visitor1(this.p0,this.p1, this.ss, this.segIndex);
 
   @override
   void visit(KdNode node) {
@@ -320,7 +326,7 @@ class _visitor1 implements KdNodeVisitor {
      * Mark the HotPixel as a node (since it may not have been one before).
      * This ensures the vertex for it is added as a node during the final vertex noding phase.
      */
-    if (hp.intersects(p0, p1)) {
+    if (hp.intersects2(p0, p1)) {
       //System.out.println("Added intersection: " + hp.getCoordinate());
       ss.addIntersection( hp.getCoordinate(), segIndex );
       hp.setToNode();
@@ -329,6 +335,12 @@ class _visitor1 implements KdNodeVisitor {
 }
 
 class _visitor2 implements KdNodeVisitor {
+  final Coordinate p0;
+  final NodedSegmentString ss;
+  final int segIndex;
+  
+  _visitor2(this.p0, this.ss, this.segIndex);
+  
   @override
   void visit(KdNode node) {
     HotPixel hp =  node.getData() as HotPixel;

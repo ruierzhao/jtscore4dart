@@ -26,6 +26,7 @@
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateList.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:stack/stack.dart';
 
 import 'KdNode.dart';
 import 'KdNodeVisitor.dart';
@@ -63,6 +64,9 @@ import 'KdNodeVisitor.dart';
  * @author David Skea
  * @author Martin Davis
  */
+/// 介绍
+/// 
+/// https://zhuanlan.zhihu.com/p/112246942
 class KdTree {
 
   /**
@@ -99,8 +103,8 @@ class KdTree {
     return coord.toCoordinateArray();
   }
 
- /**private */KdNode? root = null;
- /**private */late int numberOfNodes;
+ /**private */KdNode? root;
+ /**private */int numberOfNodes=0;
  /**private */double tolerance;
 
   /**
@@ -182,7 +186,6 @@ class KdTree {
         return matchNode;
       }
     }
-    
     return insertExact(p, data);
   }
     
@@ -201,7 +204,7 @@ class KdTree {
  /**private */
  KdNode? _findBestMatchNode(Coordinate p) {
     BestMatchVisitor visitor = new BestMatchVisitor(p, tolerance);
-    query(visitor.queryEnvelope(), visitor);
+    queryByVisitor(visitor.queryEnvelope(), visitor);
     return visitor.getNode()!;
   }
 
@@ -250,7 +253,7 @@ class KdTree {
         currentNode = currentNode.getRight();
       }
 
-      isXLevel = ! isXLevel;
+      isXLevel = !isXLevel;
     }
     //System.out.println("<<");
     // no node found, add new leaf node to tree
@@ -270,9 +273,11 @@ class KdTree {
    * @param queryEnv the range rectangle to query
    * @param visitor a visitor to visit all nodes found by the search
    */
-  void query(Envelope queryEnv, KdNodeVisitor visitor) {
+  void queryByVisitor(Envelope queryEnv, KdNodeVisitor visitor) {
     //-- Deque is faster than Stack
-    Deque<QueryStackFrame> queryStack = new ArrayDeque<QueryStackFrame>();
+    /// TODO: @ruier edit. maybe I can use Stack to replace,anyway it works.
+    // Deque<QueryStackFrame> queryStack = new ArrayDeque<QueryStackFrame>();
+    Stack<QueryStackFrame> queryStack = new Stack<QueryStackFrame>();
     KdNode? currentNode = root;
     bool isXLevel = true;
 
@@ -292,7 +297,7 @@ class KdTree {
           currentNode = null;
         }
       } 
-      else if ( ! queryStack.isEmpty() ) {
+      else if (  queryStack.isNotEmpty ) {
         // currentNode is empty, so pop stack
         QueryStackFrame frame = queryStack.pop();
         currentNode = frame.getNode();
@@ -328,7 +333,7 @@ class KdTree {
    */
   List query(Envelope queryEnv) {
     final List result = [];
-    query(queryEnv, result);
+    query$2(queryEnv, result);
     return result;
   }
 
@@ -340,15 +345,11 @@ class KdTree {
    * @param result
    *          a list to accumulate the result nodes into
    */
-  void query(Envelope queryEnv, final List result) {
-    query(queryEnv, new KdNodeVisitor() {
-
-      void visit(KdNode node) {
-        result.add(node);
-      }
-      
-    });
+  void query$2(Envelope queryEnv, final List result) {
+    queryByVisitor(queryEnv, _(result));
   }
+
+  
 
   /**
    * Searches for a given point in the index and returns its node if found.
@@ -356,8 +357,8 @@ class KdTree {
    * @param queryPt the point to query
    * @return the point node, if it is found in the index, or null if not
    */
-  KdNode? query(Coordinate queryPt) {
-    KdNode currentNode = root;
+  KdNode? queryByCoord(Coordinate queryPt) {
+    KdNode? currentNode = root;
     bool isXLevel = true;
     
     while (currentNode != null) {
@@ -383,10 +384,10 @@ class KdTree {
    * @return the depth of the tree
    */
   int depth() {
-    return depthNode(root);
+    return depthNode(root!);
   }
   
- /**private */int depthNode(KdNode currentNode) {
+ /**private */int depthNode(KdNode? currentNode) {
     if (currentNode == null) {
       return 0;
     }
@@ -406,7 +407,7 @@ class KdTree {
   }
   
  /**private */
- int sizeNode(KdNode currentNode) {
+ int sizeNode(KdNode? currentNode) {
     if (currentNode == null) {
       return 0;
     }
@@ -477,4 +478,14 @@ class BestMatchVisitor implements KdNodeVisitor {
     }
   }
 }
+class _ implements KdNodeVisitor {
+  final List result;
+
+  _(this.result);
+
+  @override
+  void visit(KdNode node) {
+    result.add(node);
+  }
   
+}

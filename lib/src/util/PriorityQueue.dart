@@ -98,7 +98,7 @@ class PriorityQueue
    * Remove the smallest item from the priority queue.
    * @return the smallest item, or null if empty
    */
-  Object? poll() 
+  Object? poll()
   {
     if (isEmpty()) {
       return null;

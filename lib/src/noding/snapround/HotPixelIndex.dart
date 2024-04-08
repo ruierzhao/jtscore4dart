@@ -63,7 +63,7 @@ class HotPixelIndex {
    *
    * @param pts the points to add
    */
-  void add(List<Coordinate> pts) {
+  void addAll(List<Coordinate> pts) {
     /**
      * Shuffle the points before adding.
      * This avoids having int monontic runs of points
@@ -105,7 +105,7 @@ class HotPixelIndex {
     // TODO: is there a faster way of doing this?
     Coordinate pRound = round(p);
 
-    HotPixel hp = find(pRound);
+    HotPixel? hp = find(pRound);
     /**
      * Hot Pixels which are added more than once
      * must have more than one vertex in them
@@ -126,17 +126,18 @@ class HotPixelIndex {
     return hp;
   }
 
- /**private */HotPixel find(Coordinate pixelPt) {
-    KdNode kdNode = index.query(pixelPt);
+ /**private */
+ HotPixel? find(Coordinate pixelPt) {
+    KdNode? kdNode = index.queryByCoord(pixelPt);
     if (kdNode == null) {
       return null;
     }
-    return (HotPixel) kdNode.getData();
+    return  kdNode.getData() as HotPixel;
   }
 
  /**private */Coordinate round(Coordinate pt) {
     Coordinate p2 = pt.copy();
-    precModel.makePrecise(p2);
+    precModel.makePreciseFromCoord(p2);
     return p2;
   }
 
@@ -150,11 +151,11 @@ class HotPixelIndex {
    * @param visitor the visitor to apply
    */
   void query(Coordinate p0, Coordinate p1, KdNodeVisitor visitor) {
-    Envelope queryEnv = new Envelope(p0, p1);
+    Envelope queryEnv = new Envelope.fromCoord2(p0, p1);
     // expand query range to account for HotPixel extent
     // expand by full width of one pixel to be safe
     queryEnv.expandBy( 1.0 / scaleFactor );
-    index.query(queryEnv, visitor);
+    index.queryByVisitor(queryEnv, visitor);
   }
 }
 

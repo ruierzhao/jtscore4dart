@@ -13,6 +13,7 @@
 
 // import java.util.Collection;
 
+import 'NodedSegmentString.dart';
 import 'SegmentString.dart';
 
 /**
@@ -34,7 +35,7 @@ abstract class Noder
    *
    * @param segStrings a collection of {@link SegmentString}s to node
    */
-  void computeNodes(Iterable segStrings);
+  void computeNodes(Iterable<NodedSegmentString> segStrings);
 
   /**
    * Returns a {@link Collection} of fully noded {@link SegmentString}s.
@@ -42,6 +43,6 @@ abstract class Noder
    *
    * @return a Collection of SegmentStrings
    */
-  Iterable<SegmentString> getNodedSubstrings();
+  Iterable getNodedSubstrings();
 
 }

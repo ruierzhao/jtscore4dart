@@ -238,12 +238,12 @@ class GeometryGraph
       addPolygon( g);
     } 
     // ignore_for_file: curly_braces_in_flow_control_structures
-    else if (g is LineString)         addLineString((LineString) g);
-    else if (g is Point)              addPoint((Point) g);
-    else if (g is MultiPoint)         addCollection((MultiPoint) g);
-    else if (g is MultiLineString)    addCollection((MultiLineString) g);
-    else if (g is MultiPolygon)       addCollection((MultiPolygon) g);
-    else if (g is GeometryCollection) addCollection((GeometryCollection) g);
+    else if (g is LineString)         addLineString( g);
+    else if (g is Point)              addPoint( g);
+    else if (g is MultiPoint)         addCollection( g);
+    else if (g is MultiLineString)    addCollection( g);
+    else if (g is MultiPolygon)       addCollection( g);
+    else if (g is GeometryCollection) addCollection( g);
     // else  throw new UnsupportedOperationException(g.getClass().getName());
     else  throw Exception(g.runtimeType);
   }

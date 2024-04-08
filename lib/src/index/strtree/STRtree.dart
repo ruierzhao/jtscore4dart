@@ -168,8 +168,8 @@ implements SpatialIndex /**, Serializable  */
     List sortedChildBoundables = childBoundables;
     sortedChildBoundables.sort(xComparator);
     // List verticalSlices = verticalSlices(sortedChildBoundables,(int) math.ceil(Math.sqrt(minLeafCount)));
-    List verticalSlices = verticalSlices(sortedChildBoundables,(int) math.ceil(Math.sqrt(minLeafCount)));
-    return createParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
+    List _verticalSlices = verticalSlices(sortedChildBoundables,(int) math.ceil(Math.sqrt(minLeafCount)));
+    return createParentBoundablesFromVerticalSlices(_verticalSlices, newLevel);
   }
 
  /**private */
@@ -404,8 +404,9 @@ implements SpatialIndex /**, Serializable  */
   
  /**private */List<Object> nearestNeighbour(BoundablePair initBndPair) 
   {
-    double distanceLowerBound = Double.POSITIVE_INFINITY;
-    BoundablePair minPair = null;
+    // double distanceLowerBound = Double.POSITIVE_INFINITY;
+    double distanceLowerBound = double.infinity;
+    BoundablePair? minPair = null;
     
     // initialize search queue
     PriorityQueue priQ = new PriorityQueue();
@@ -413,7 +414,7 @@ implements SpatialIndex /**, Serializable  */
 
     while (! priQ.isEmpty() && distanceLowerBound > 0.0) {
       // pop head of queue and expand one side of pair
-      BoundablePair bndPair = (BoundablePair) priQ.poll();
+      BoundablePair bndPair = priQ.poll();
       double pairDistance = bndPair.getDistance();
       
       /**
@@ -610,7 +611,7 @@ implements SpatialIndex /**, Serializable  */
 
     while (! priQ.isEmpty() && distanceLowerBound >= 0.0) {
       // pop head of queue and expand one side of pair
-      BoundablePair bndPair = (BoundablePair) priQ.poll();
+      BoundablePair bndPair = priQ.poll();
       double pairDistance = bndPair.getDistance();
       
       

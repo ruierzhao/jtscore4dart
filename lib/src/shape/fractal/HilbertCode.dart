@@ -13,6 +13,9 @@
 
 
 // import org.locationtech.jts.geom.Coordinate;
+import "dart:math";
+
+import "package:jtscore4dart/src/geom/Coordinate.dart";
 
 /**
  * Encodes points as the index along finite planar Hilbert curves.
@@ -52,7 +55,7 @@ class HilbertCode
   /**
    * The maximum curve level that can be represented.
    */
-  static final int MAX_LEVEL = 16;
+  static const int MAX_LEVEL = 16;
   
   /**
    * The number of points in the curve for the given level.
@@ -63,7 +66,7 @@ class HilbertCode
    */
   static int size(int level) {
     checkLevel(level);
-    return (int) math.pow(2, 2 *level);
+    return pow(2, 2 *level).toInt();
   }
   
   /**
@@ -76,7 +79,7 @@ class HilbertCode
    */
   static int maxOrdinate(int level) {
     checkLevel(level);
-    return (int) math.pow(2, level) - 1;
+    return pow(2, level).toInt() - 1;
   }
   
   /**
@@ -87,16 +90,16 @@ class HilbertCode
    * @return the level of the curve
    */
   static int level(int numPoints) {
-    int pow2 = (int) ( (Math.log(numPoints)/Math.log(2)));
-    int level = pow2 / 2;
-    int size = size(level);
-    if (size < numPoints) level += 1;
+    int pow2 =  log(numPoints)~/log(2);
+    int level = pow2 ~/ 2;
+    int _size = size(level);
+    if (_size < numPoints) level += 1;
     return level;
   }
   
  /**private */static void checkLevel(int level) {
     if (level > MAX_LEVEL) {
-      throw new ArgumentError("Level must be in range 0 to " + MAX_LEVEL);
+      throw new ArgumentError("Level must be in range 0 to $MAX_LEVEL" );
     }
   }
 
@@ -173,7 +176,7 @@ class HilbertCode
     i1 = (i1 | (i1 << 1)) & 0x55555555;
 
     int index = ((i1 << 1) | i0) >> (32 - 2 * lvl);
-    return (int) index;
+    return index;
   }
 
   /**
@@ -219,10 +222,10 @@ class HilbertCode
     int x = (a ^ i1) >> (16 - lvl);
     int y = (a ^ i0 ^ i1) >> (16 - lvl);
     
-    return new Coordinate(x, y);
+    return new Coordinate(x.toDouble(), y.toDouble());
   }
 
- /**private */static int prefixScan(long x) {
+ /**private */static int prefixScan(int x) {
     x = (x >> 8) ^ x;
     x = (x >> 4) ^ x;
     x = (x >> 2) ^ x;

@@ -23,7 +23,7 @@
 
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 import 'package:jtscore4dart/src/index/ItemVisitor.dart';
-import 'package:jtscore4dart/src/util/IntArrayList.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 
 import '../ArrayListVisitor.dart';
 import '../SpatialIndex.dart';
@@ -81,9 +81,9 @@ class HPRtree implements SpatialIndex
 
  /**private */int numItems = 0;
 
- /**private */final Envelope totalExtent = new Envelope();
+ /**private */final Envelope totalExtent = new Envelope.init();
 
- /**private */late List<int>  layerStartIndex;
+ /**private */late List<int> layerStartIndex=[];
 
  /**private */late List<double>  nodeBounds;
 
@@ -132,22 +132,23 @@ class HPRtree implements SpatialIndex
   List query(Envelope searchEnv) {
     build();
     
-    if (! totalExtent.intersects(searchEnv)) {
+    if (! totalExtent.intersectsWith(searchEnv)) {
       return [];
     }
     
     ArrayListVisitor visitor = new ArrayListVisitor();
-    query(searchEnv, visitor);
+    queryByVisitor(searchEnv, visitor);
     return visitor.getItems();
   }
 
   @override
-  void query(Envelope searchEnv, ItemVisitor visitor) {
+  void queryByVisitor(Envelope searchEnv, ItemVisitor visitor) {
     build();
-    if (! totalExtent.intersects(searchEnv)) {
+    if (! totalExtent.intersectsWith(searchEnv)) {
       return;
     }
-    if (layerStartIndex == null) {
+    // if (layerStartIndex == null) {
+    if (layerStartIndex.isEmpty) {
       queryItems(0, searchEnv, visitor);
     }
     else {
@@ -227,7 +228,7 @@ class HPRtree implements SpatialIndex
   void build() {
     // skip if already built
     if (!isBuilt) {
-      synchronized (this) {
+      /**synchronized (this) */ {
         if (!isBuilt) {
           prepareIndex();
           prepareItems();
@@ -239,13 +240,14 @@ class HPRtree implements SpatialIndex
 
  /**private */void prepareIndex() {
     // don't need to build an empty or very small tree
-    if (itemsToLoad.size() <= nodeCapacity) return;
+    if (itemsToLoad.length <= nodeCapacity) return;
 
     sortItems();
 
     layerStartIndex = computeLayerIndices(numItems, nodeCapacity);
     // allocate storage
-    int nodeCount = layerStartIndex[ layerStartIndex.length - 1 ] / 4;
+    // int nodeCount = layerStartIndex[ layerStartIndex.length - 1 ] / 4;
+    int nodeCount = layerStartIndex.last ~/ 4;
     nodeBounds = createBoundsArray(nodeCount);
 
     // compute tree nodes
@@ -278,13 +280,14 @@ class HPRtree implements SpatialIndex
 
  /**private */
  static List<double>  createBoundsArray(int size) {
-    List<double>  a = new double[4*size];
+    // List<double>  a = new double[4*size];
+    List<double>  a = List.filled(4*size, 0.0);
     for (int i = 0; i < size; i++) {
       int index = 4*i;
-      a[index] = double.maxFinite
-      a[index+1] = double.maxFinite
-      a[index+2] = -double.maxFinite
-      a[index+3] = -double.maxFinite
+      a[index] = double.maxFinite;
+      a[index+1] = double.maxFinite;
+      a[index+2] = -double.maxFinite;
+      a[index+3] = -double.maxFinite;
     }
     return a;
   }
@@ -292,9 +295,9 @@ class HPRtree implements SpatialIndex
  /**private */void computeLayerNodes(int layerIndex) {
     int layerStart = layerStartIndex[layerIndex];
     int childLayerStart = layerStartIndex[layerIndex - 1];
-    int layerSize = layerSize(layerIndex);
+    int _layerSize = layerSize(layerIndex);
     int childLayerEnd = layerStart;
-    for (int i = 0; i < layerSize; i += ENV_SIZE) {
+    for (int i = 0; i < _layerSize; i += ENV_SIZE) {
       int childStart = childLayerStart + nodeCapacity * i;
       computeNodeBounds(layerStart + i, childStart, childLayerEnd);
     }
@@ -310,15 +313,15 @@ class HPRtree implements SpatialIndex
 
  /**private */void computeLeafNodes(int layerSize) {
     for (int i = 0; i < layerSize; i += ENV_SIZE) {
-      computeLeafNodeBounds(i, nodeCapacity * i/4);
+      computeLeafNodeBounds(i, (nodeCapacity * i) ~/4);
     }
   }
 
  /**private */void computeLeafNodeBounds(int nodeIndex, int blockStart) {
     for (int i = 0; i <= nodeCapacity; i++ ) {
       int itemIndex = blockStart + i;
-      if (itemIndex >= itemsToLoad.size()) break;
-      Envelope env = itemsToLoad.get(itemIndex).getEnvelope();
+      if (itemIndex >= itemsToLoad.length) break;
+      Envelope env = itemsToLoad[itemIndex].getEnvelope();
       updateNodeBounds(nodeIndex, env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
     }
   }
@@ -331,7 +334,9 @@ class HPRtree implements SpatialIndex
   }
   
  /**private */static List<int>  computeLayerIndices(int itemSize, int nodeCapacity) {
-    IntArrayList layerIndexList = new IntArrayList();
+  /// TODO: @ruier edit.
+    // IntArrayList layerIndexList = new IntArrayList();
+    List<int> layerIndexList = [];
     int layerSize = itemSize;
     int index = 0;
     do {
@@ -339,7 +344,9 @@ class HPRtree implements SpatialIndex
       layerSize = numNodesToCover(layerSize, nodeCapacity);
       index += ENV_SIZE * layerSize;
     } while (layerSize > 1);
-    return layerIndexList.toArray();
+    /// TODO: @ruier edit.
+    // return layerIndexList.toArray();
+    return List.generate(layerIndexList.length, (index) => layerIndexList[index],growable: false);
   }
   
   /**
@@ -351,7 +358,7 @@ class HPRtree implements SpatialIndex
    * @return the number of nodes needed to cover the children
    */
  /**private */static int numNodesToCover(int nChild, int nodeCapacity) {
-    int mult = nChild / nodeCapacity;
+    int mult = nChild ~/ nodeCapacity;
     int total = mult * nodeCapacity;
     if (total == nChild) return mult;
     return mult + 1;
@@ -379,12 +386,12 @@ class HPRtree implements SpatialIndex
  void sortItems() {
     HilbertEncoder encoder = new HilbertEncoder(HILBERT_LEVEL, totalExtent);
     // List<int>  hilbertValues = new int[itemsToLoad.size()];
-    List<int>  hilbertValues = new int[itemsToLoad.size()];
+    List<int>  hilbertValues = List.filled(itemsToLoad.length, 0,growable: false);
     int pos = 0;
-    for (Item item : itemsToLoad) {
+    for (Item item in itemsToLoad) {
       hilbertValues[pos++] = encoder.encode(item.getEnvelope());
     }
-    quickSortItemsIntoNodes(hilbertValues, 0, itemsToLoad.size() - 1);
+    quickSortItemsIntoNodes(hilbertValues, 0, itemsToLoad.length - 1);
   }
 
  /**private */void quickSortItemsIntoNodes(List<int>  values, int lo, int hi) {
@@ -423,5 +430,6 @@ class HPRtree implements SpatialIndex
     values[i] = values[j];
     values[j] = tmpValue;
   }
+  
 
 }

@@ -14,6 +14,11 @@
 // import org.locationtech.jts.geom.Envelope;
 // import org.locationtech.jts.shape.fractal.HilbertCode;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/shape/fractal/HilbertCode.dart';
+
 class HilbertEncoder {
  /**private */int level;
  /**private */double minx;
@@ -21,23 +26,21 @@ class HilbertEncoder {
  /**private */double strideX;
  /**private */double strideY;
 
-  HilbertEncoder(int level, Envelope extent) {
-    this.level = level;
-    int hside = (int) math.pow(2, level) - 1;
+  HilbertEncoder(this.level, Envelope extent) :
+    // int hside = pow(2, level).toInt() - 1,
     
-    minx = extent.getMinX();
-    strideX = extent.getWidth() / hside;
+    minx = extent.getMinX(),
+    strideX = extent.getWidth() / (pow(2, level).toInt() - 1),
     
-    miny = extent.getMinY();
-    strideY = extent.getHeight() / hside;
-  }
+    miny = extent.getMinY(),
+    strideY = extent.getHeight() / (pow(2, level).toInt() - 1);
 
   int encode(Envelope env) {
     double midx = env.getWidth()/2 + env.getMinX();
-    int x = (int) ((midx - minx) / strideX);
+    int x = ((midx - minx) ~/ strideX);
 
     double midy = env.getHeight()/2 + env.getMinY();
-    int y = (int) ((midy - miny) / strideY);
+    int y = ((midy - miny) ~/ strideY);
       
     return HilbertCode.encode(level, x, y);
   }

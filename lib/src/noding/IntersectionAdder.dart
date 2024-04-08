@@ -18,6 +18,9 @@ import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/noding/SegmentIntersector.dart';
 
+import 'NodedSegmentString.dart';
+import 'SegmentString.dart';
+
 /**
  * Computes the possible intersections between two line segments in {@link NodedSegmentString}s
  * and adds them to each string 
@@ -36,13 +39,13 @@ class IntersectionAdder implements SegmentIntersector
    * These variables keep track of what types of intersections were
    * found during ALL edges that have been intersected.
    */
- /**private */bool hasIntersection = false;
+ /**private */bool _hasIntersection = false;
  /**private */bool hasProper = false;
  /**private */bool hasProperInterior = false;
  /**private */bool hasInterior = false;
 
   // the proper intersection point found
- /**private */Coordinate? properIntersectionPoint = null;
+ /**private */Coordinate? properIntersectionPoint;
 
  /**private */LineIntersector li;
  /**private */late bool isSelfIntersection;
@@ -61,9 +64,9 @@ class IntersectionAdder implements SegmentIntersector
   /**
    * @return the proper intersection point, or <code>null</code> if none was found
    */
-  Coordinate getProperIntersectionPoint()  {    return properIntersectionPoint;  }
+  Coordinate? getProperIntersectionPoint()  {    return properIntersectionPoint;  }
 
-  bool hasIntersection() { return hasIntersection; }
+  bool hasIntersection() { return _hasIntersection; }
   /**
    * A proper intersection is an intersection which is interior to at least two
    * line segments.  Note that a proper intersection is not necessarily
@@ -115,6 +118,7 @@ class IntersectionAdder implements SegmentIntersector
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
+  @override
   void processIntersections(
     SegmentString e0,  int segIndex0,
     SegmentString e1,  int segIndex1
@@ -127,7 +131,7 @@ class IntersectionAdder implements SegmentIntersector
     Coordinate p10 = e1.getCoordinate(segIndex1);
     Coordinate p11 = e1.getCoordinate(segIndex1 + 1);
 
-    li.computeIntersection(p00, p01, p10, p11);
+    li.computeIntersection4Coord(p00, p01, p10, p11);
 //if (li.hasIntersection() && li.isProper()) Debug.println(li);
     if (li.hasIntersection()) {
       //intersectionFound = true;
@@ -141,10 +145,10 @@ class IntersectionAdder implements SegmentIntersector
       // the shared endpoint.  Don't bother adding it if it is the
       // only intersection.
       if (! isTrivialIntersection(e0, segIndex0, e1, segIndex1)) {
-        hasIntersection = true;
-        ((NodedSegmentString) e0).addIntersections(li, segIndex0, 0);
-        ((NodedSegmentString) e1).addIntersections(li, segIndex1, 1);
-        if (li.isProper()) {
+        _hasIntersection = true;
+        ( e0 as NodedSegmentString).addIntersections(li, segIndex0, 0);
+        ( e1 as NodedSegmentString).addIntersections(li, segIndex1, 1);
+        if (li.getIsProper()) {
           numProperIntersections++;
 //Debug.println(li.toString());  Debug.println(li.getIntersection(0));
           //properIntersectionPoint = (Coordinate) li.getIntersection(0).clone();
@@ -160,5 +164,6 @@ class IntersectionAdder implements SegmentIntersector
    * 
    * @return false always
    */
+  @override
   bool isDone() { return false; }
 }

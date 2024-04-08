@@ -19,17 +19,18 @@ import 'dart:math';
 /// 
 /// @author Martin Davis
 ///
+/// 用处不大
 class IntArrayList {
   late List<int> _data;
   int _size = 0;
 
   /// Constructs an empty list.
-  IntArrayList.Init() :this(10);
+  // IntArrayList.Init() :this(10);
 
   /// Constructs an empty list with the specified initial capacity
   /// 
   /// @param initialCapacity the initial capacity of the list
-  IntArrayList(int initialCapacity) {
+  IntArrayList([int initialCapacity=10]) {
     this._data = List.filled(initialCapacity, 0);
   }
 

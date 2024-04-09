@@ -69,7 +69,7 @@ class SegmentNodeList
   SegmentNode add(Coordinate intPt, int segmentIndex)
   {
     SegmentNode eiNew = new SegmentNode(edge, intPt, segmentIndex, edge.getSegmentOctant(segmentIndex));
-    SegmentNode ei = nodeMap.get(eiNew) as SegmentNode;
+    SegmentNode? ei = nodeMap.get(eiNew);
     if (ei != null) {
       // debugging sanity check
       Assert.isTrue(ei.coord.equals2D(intPt), "Found equal nodes with different coordinates");
@@ -147,10 +147,12 @@ class SegmentNodeList
  /**private */void findCollapsesFromInsertedNodes(List collapsedVertexIndexes)
   {
     // List<int> collapsedVertexIndex = new int[1];
-    List<int> collapsedVertexIndex = List.filled(1, 0,growable: false);
+    List<int> collapsedVertexIndex = List.filled(1, 0, growable: false);
     Iterator it = iterator();
+      print('>>>>>>>>> ${ nodeMap.values } <<<<<<<<<<<<<<<<<<<<');
     // there should always be at least two entries in the list, since the endpoints are nodes
     SegmentNode eiPrev =  it.current as SegmentNode;
+      print('>>>>>>>>> ${ eiPrev } <<<<<<<<<<<<<<<<<<<<');
     while (it.moveNext()) {
       SegmentNode ei =  it.current as SegmentNode;
       bool isCollapsed = findCollapseIndex(eiPrev, ei, collapsedVertexIndex);

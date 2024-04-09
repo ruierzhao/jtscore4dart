@@ -66,8 +66,8 @@ class GeometryCollection extends Geometry {
   @override
   Coordinate? getCoordinate() {
     for (int i = 0; i < geometries!.length; i++) {
-      if (! geometries![i].isEmpty()) {
-        return geometries![i].getCoordinate();
+      if (! geometries[i].isEmpty()) {
+        return geometries[i].getCoordinate();
       }
     }
     return null;

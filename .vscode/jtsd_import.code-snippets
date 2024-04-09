@@ -6,6 +6,7 @@
 	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
 	// Placeholders with the same ids are connected.
 	// Example:
+	//https://blog.csdn.net/liuchaohs/article/details/105542113
 	"add a TODO mark": {
 		"scope": "dart",
 		"prefix": "TD",
@@ -45,6 +46,14 @@
 		"prefix": "ipatch",
 		"body": [
 			"import 'package:jtscore4dart/src/patch/$0.dart';",
+		],
+		"description": "import java patch."
+	}
+	,"import patch": {
+		"scope": "dart",
+		"prefix": "pr",
+		"body": [
+			"print('>>>>>>>>> ${ $CLIPBOARD } <<<<<<<<<<<<<<<<<<<<');",
 		],
 		"description": "import java patch."
 	}

@@ -21,8 +21,14 @@
 
 // import org.locationtech.jts.geomgraph.Edge;
 
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
 import 'EdgeSetIntersector.dart';
+import 'MonotoneChain.dart';
+import 'MonotoneChainEdge.dart';
 import 'SegmentIntersector.dart';
+import 'SweepLineEvent.dart';
 
 /**
  * Finds all intersections in one or two sets of edges,
@@ -39,7 +45,7 @@ class SimpleMCSweepLineIntersector extends EdgeSetIntersector
 
   List events = [];
   // statistics information
-  int nOverlaps;
+  int nOverlaps=0;
 
   /**
    * A SimpleMCSweepLineIntersector creates monotone chains from the edges
@@ -48,47 +54,52 @@ class SimpleMCSweepLineIntersector extends EdgeSetIntersector
   SimpleMCSweepLineIntersector() {
   }
 
+  @override
   void computeIntersections(List edges, SegmentIntersector si, bool testAllSegments)
   {
-    if (testAllSegments)
-      addEdges(edges, null);
-    else
-      addEdges(edges);
-    computeIntersections(si);
+    /// TODO: @ruier edit.很疑惑，不传参数和传null竟然不一样
+    if (testAllSegments) {
+      __addEdgesMBNull(edges, null);
+    } else {
+      __addEdges(edges);
+    }
+    _computeIntersections(si);
   }
 
-  void computeIntersections(List edges0, List edges1, SegmentIntersector si)
+  @override
+  void computeIntersections2Set(List edges0, List edges1, SegmentIntersector si)
   {
-    addEdges(edges0, edges0);
-    addEdges(edges1, edges1);
-    computeIntersections(si);
+    __addEdgesMBNull(edges0, edges0);
+    __addEdgesMBNull(edges1, edges1);
+    _computeIntersections(si);
   }
 
- /**private */void addEdges(List edges)
+ /**private */void __addEdges(List edges)
   {
-    for (Iterator i = edges.iterator(); i.moveNext(); ) {
-      Edge edge = (Edge) i.current;
+    for (Iterator i = edges.iterator; i.moveNext(); ) {
+      Edge edge = i.current;
       // edge is its own group
-      addEdge(edge, edge);
+      _addEdge(edge, edge);
     }
   }
- /**private */void addEdges(List edges, Object edgeSet)
-  {
-    for (Iterator i = edges.iterator(); i.moveNext(); ) {
-      Edge edge = (Edge) i.current;
-      addEdge(edge, edgeSet);
+ /**private */
+ void __addEdgesMBNull(List edges, Object? edgeSet)
+  {   
+    for (Iterator i = edges.iterator; i.moveNext(); ) {
+      Edge edge = i.current as Edge;
+      _addEdge(edge, edgeSet);
     }
   }
 
- /**private */void addEdge(Edge edge, Object edgeSet)
+ /**private */void _addEdge(Edge edge, Object? edgeSet)
   {
     MonotoneChainEdge mce = edge.getMonotoneChainEdge();
-    int[] startIndex = mce.getStartIndexes();
+    List<int> startIndex = mce.getStartIndexes();
     for (int i = 0; i < startIndex.length - 1; i++) {
       MonotoneChain mc = new MonotoneChain(mce, i);
-      SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, mce.getMinX(i), mc);
+      SweepLineEvent insertEvent = new SweepLineEvent.insert(edgeSet, mce.getMinX(i), mc);
       events.add(insertEvent);
-      events.add(new SweepLineEvent(mce.getMaxX(i), insertEvent));
+      events.add(new SweepLineEvent.delete(mce.getMaxX(i), insertEvent));
     }
   }
 
@@ -99,27 +110,29 @@ class SimpleMCSweepLineIntersector extends EdgeSetIntersector
    */
  /**private */void prepareEvents()
   {
-    Collections.sort(events);
+    // Collections.sort(events);
+    /// TODO: @ruier edit.
+    events.sort();
     // set DELETE event indexes
     for (int i = 0; i < events.size(); i++ )
     {
-      SweepLineEvent ev = (SweepLineEvent) events.get(i);
+      SweepLineEvent ev = events.get(i);
       if (ev.isDelete()) {
-        ev.getInsertEvent().setDeleteEventIndex(i);
+        ev.getInsertEvent()!.setDeleteEventIndex(i);
       }
     }
   }
 
- /**private */void computeIntersections(SegmentIntersector si)
+ /**private */void _computeIntersections(SegmentIntersector si)
   {
     nOverlaps = 0;
     prepareEvents();
 
     for (int i = 0; i < events.size(); i++ )
     {
-      SweepLineEvent ev = (SweepLineEvent) events.get(i);
+      SweepLineEvent ev = events.get(i);
       if (ev.isInsert()) {
-        processOverlaps(i, ev.getDeleteEventIndex(), ev, si);
+        processOverlaps(i, ev.getDeleteEventIndex()!, ev, si);
       }
       if (si.isDone()) {
     	  break;
@@ -129,16 +142,16 @@ class SimpleMCSweepLineIntersector extends EdgeSetIntersector
 
  /**private */void processOverlaps(int start, int end, SweepLineEvent ev0, SegmentIntersector si)
   {
-    MonotoneChain mc0 = (MonotoneChain) ev0.getObject();
+    MonotoneChain mc0 =  ev0.getObject() as MonotoneChain;
     /**
      * Since we might need to test for self-intersections,
      * include current INSERT event object in list of event objects to test.
      * Last index can be skipped, because it must be a Delete event.
      */
     for (int i = start; i < end; i++ ) {
-      SweepLineEvent ev1 = (SweepLineEvent) events.get(i);
+      SweepLineEvent ev1 =  events.get(i);
       if (ev1.isInsert()) {
-        MonotoneChain mc1 = (MonotoneChain) ev1.getObject();
+        MonotoneChain mc1 = ev1.getObject() as MonotoneChain;
         // don't compare edges in same group, if labels are present
         if (! ev0.isSameLabel(ev1)) {
           mc0.computeIntersections(mc1, si);

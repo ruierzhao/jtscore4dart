@@ -52,7 +52,7 @@ class DirectedEdgeStar
   /**
    * A list of all outgoing edges in the result, in CCW order
    */
- /**private */late List resultAreaEdgeList;
+ /**private */List? resultAreaEdgeList;
  /**private */late Label label;
 
   DirectedEdgeStar();
@@ -152,8 +152,8 @@ class DirectedEdgeStar
   {
     for (Iterator it = iterator(); it.moveNext(); ) {
       DirectedEdge de =  it.current;
-      Label label = de.getLabel();
-      label.merge(de.getSym().getLabel());
+      Label label = de.getLabel()!;
+      label.merge(de.getSym().getLabel()!);
     }
   }
 
@@ -166,24 +166,24 @@ class DirectedEdgeStar
   {
     for (Iterator it = iterator(); it.moveNext(); ) {
       DirectedEdge de =  it.current;
-      Label label = de.getLabel();
-      label.setAllLocationsIfNull(0, nodeLabel.getLocation(0));
-      label.setAllLocationsIfNull(1, nodeLabel.getLocation(1));
+      Label label = de.getLabel()!;
+      label.setAllLocationsIfNullGeom(0, nodeLabel.getLocation(0));
+      label.setAllLocationsIfNullGeom(1, nodeLabel.getLocation(1));
     }
   }
 
  /**private */List getResultAreaEdges()
   {
 //print(System.out);
-    if (resultAreaEdgeList != null) return resultAreaEdgeList;
+    if (resultAreaEdgeList != null) return resultAreaEdgeList!;
     resultAreaEdgeList = [];
     for (Iterator it = iterator(); it.moveNext(); ) {
       DirectedEdge de = it.current;
       if (de.isInResult() || de.getSym().isInResult() ) {
-        resultAreaEdgeList.add(de);
+        resultAreaEdgeList!.add(de);
       }
     }
-    return resultAreaEdgeList;
+    return resultAreaEdgeList!;
   }
 
  /**private */static const int SCANNING_FOR_INCOMING = 1;
@@ -215,12 +215,12 @@ class DirectedEdgeStar
     DirectedEdge? incoming = null;
     int state = SCANNING_FOR_INCOMING;
     // link edges in CCW order
-    for (int i = 0; i < resultAreaEdgeList.size(); i++) {
-      DirectedEdge nextOut = resultAreaEdgeList.get(i);
+    for (int i = 0; i < resultAreaEdgeList!.size(); i++) {
+      DirectedEdge nextOut = resultAreaEdgeList!.get(i);
       DirectedEdge nextIn = nextOut.getSym();
 
       // skip de's that we're not interested in
-      if (! nextOut.getLabel().isArea()) continue;
+      if (! nextOut.getLabel()!.isArea()) continue;
 
       // record first outgoing edge, in order to link the last incoming edge
       if (firstOut == null && nextOut.isInResult()) firstOut = nextOut;
@@ -234,7 +234,7 @@ class DirectedEdgeStar
         break;
       case LINKING_TO_OUTGOING:
         if (! nextOut.isInResult()) continue;
-        incoming.setNext(nextOut);
+        incoming!.setNext(nextOut);
         state = SCANNING_FOR_INCOMING;
         break;
       }
@@ -247,7 +247,7 @@ class DirectedEdgeStar
       }
       //Assert.isTrue(firstOut != null, "no outgoing dirEdge found (at " + getCoordinate() );
       Assert.isTrue(firstOut.isInResult(), "unable to link last incoming dirEdge");
-      incoming.setNext(firstOut);
+      incoming!.setNext(firstOut);
     }
   }
   void linkMinimalDirectedEdges(EdgeRing er)
@@ -257,8 +257,8 @@ class DirectedEdgeStar
     DirectedEdge? incoming = null;
     int state = SCANNING_FOR_INCOMING;
     // link edges in CW order
-    for (int i = resultAreaEdgeList.size() - 1; i >= 0; i--) {
-      DirectedEdge nextOut = (DirectedEdge) resultAreaEdgeList.get(i);
+    for (int i = resultAreaEdgeList!.size() - 1; i >= 0; i--) {
+      DirectedEdge nextOut = resultAreaEdgeList!.get(i);
       DirectedEdge nextIn = nextOut.getSym();
 
       // record first outgoing edge, in order to link the last incoming edge
@@ -272,7 +272,7 @@ class DirectedEdgeStar
         break;
       case LINKING_TO_OUTGOING:
         if (nextOut.getEdgeRing() != er) continue;
-        incoming.setNextMin(nextOut);
+        incoming!.setNextMin(nextOut);
         state = SCANNING_FOR_INCOMING;
         break;
       }
@@ -280,8 +280,8 @@ class DirectedEdgeStar
 //print(System.out);
     if (state == LINKING_TO_OUTGOING) {
       Assert.isTrue(firstOut != null, "found null for first outgoing dirEdge");
-      Assert.isTrue(firstOut.getEdgeRing() == er, "unable to link last incoming dirEdge");
-      incoming.setNextMin(firstOut);
+      Assert.isTrue(firstOut!.getEdgeRing() == er, "unable to link last incoming dirEdge");
+      incoming!.setNextMin(firstOut!);
     }
   }
   void linkAllDirectedEdges()
@@ -291,15 +291,15 @@ class DirectedEdgeStar
     DirectedEdge? prevOut = null;
     DirectedEdge? firstIn = null;
     // link edges in CW order
-    for (int i = edgeList.size() - 1; i >= 0; i--) {
-      DirectedEdge nextOut =  edgeList.get(i);
+    for (int i = edgeList!.size() - 1; i >= 0; i--) {
+      DirectedEdge nextOut =  edgeList!.get(i);
       DirectedEdge nextIn = nextOut.getSym();
       if (firstIn == null) firstIn = nextIn;
       if (prevOut != null) nextIn.setNext(prevOut);
       // record outgoing edge, in order to link the last incoming edge
       prevOut = nextOut;
     }
-    firstIn.setNext(prevOut);
+    firstIn!.setNext(prevOut!);
 //Debug.print(this);
   }
 
@@ -370,7 +370,7 @@ class DirectedEdgeStar
     int startDepth = de.getDepth(Position.LEFT);
     int targetLastDepth = de.getDepth(Position.RIGHT);
     // compute the depths from this edge up to the end of the edge array
-    int nextDepth = _computeDepths(edgeIndex + 1, edgeList.size(), startDepth);
+    int nextDepth = _computeDepths(edgeIndex + 1, edgeList!.size(), startDepth);
     // compute the depths for the initial part of the array
     int lastDepth = _computeDepths(0, edgeIndex, nextDepth);
 //Debug.print(lastDepth != targetLastDepth, this);
@@ -391,7 +391,7 @@ class DirectedEdgeStar
   {
     int currDepth = startDepth;
     for (int i = startIndex; i < endIndex ; i++) {
-      DirectedEdge nextDe = (DirectedEdge) edgeList.get(i);
+      DirectedEdge nextDe = edgeList!.get(i);
       nextDe.setEdgeDepths(Position.RIGHT, currDepth);
       currDepth = nextDe.getDepth(Position.LEFT);
     }

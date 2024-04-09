@@ -15,6 +15,9 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
 /**
  * Implements a robust method of comparing the relative position of two
  * points along the same segment.

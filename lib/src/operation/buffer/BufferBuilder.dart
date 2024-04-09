@@ -60,6 +60,7 @@ import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
 import 'package:jtscore4dart/src/noding/FastNodingValidator.dart';
 import 'package:jtscore4dart/src/noding/IntersectionAdder.dart';
 import 'package:jtscore4dart/src/noding/MCIndexNoder.dart';
+import 'package:jtscore4dart/src/noding/NodedSegmentString.dart';
 import 'package:jtscore4dart/src/noding/Noder.dart';
 import 'package:jtscore4dart/src/noding/SegmentString.dart';
 import 'package:jtscore4dart/src/operation/overlay/OverlayNodeFactory.dart';
@@ -102,10 +103,10 @@ class BufferBuilder
 
  /**private */BufferParameters bufParams;
 
- /**private */late PrecisionModel? workingPrecisionModel;
- /**private */late Noder? workingNoder;
- /**private */late GeometryFactory geomFact;
- /**private */late PlanarGraph graph;
+ /**private */PrecisionModel? workingPrecisionModel;
+ /**private */Noder? workingNoder;
+ /**private */GeometryFactory? geomFact;
+ /**private */PlanarGraph? graph;
  /**private */EdgeList edgeList     = new EdgeList();
 
  /**private */bool isInvertOrientation = false;
@@ -163,7 +164,7 @@ class BufferBuilder
     BufferCurveSetBuilder curveSetBuilder = new BufferCurveSetBuilder(g, distance, precisionModel, bufParams);
     curveSetBuilder.setInvertOrientation(isInvertOrientation);
     
-    List bufferSegStrList = curveSetBuilder.getCurves();
+    List<NodedSegmentString> bufferSegStrList = curveSetBuilder.getCurves();
 
     // short-circuit test
     if (bufferSegStrList.isEmpty) {
@@ -190,10 +191,10 @@ class BufferBuilder
     computeNodedEdges(bufferSegStrList, precisionModel, isNodingValidated);
     
     graph = new PlanarGraph(new OverlayNodeFactory());
-    graph.addEdges(edgeList.getEdges());
+    graph!.addEdges(edgeList.getEdges());
 
-    List subgraphList = createSubgraphs(graph);
-    PolygonBuilder polyBuilder = new PolygonBuilder(geomFact);
+    List subgraphList = createSubgraphs(graph!);
+    PolygonBuilder polyBuilder = new PolygonBuilder(geomFact!);
     buildSubgraphs(subgraphList, polyBuilder);
     List<Polygon> resultPolyList = polyBuilder.getPolygons();
 
@@ -202,7 +203,7 @@ class BufferBuilder
       return createEmptyResultGeometry();
     }
 
-    Geometry resultGeom = geomFact.buildGeometry(resultPolyList);
+    Geometry resultGeom = geomFact!.buildGeometry(resultPolyList);
     return resultGeom;
   }
 
@@ -225,7 +226,7 @@ class BufferBuilder
   }
 
  /**private */
- void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
+ void computeNodedEdges(List<NodedSegmentString> bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
   {
     Noder noder = getNoder(precisionModel);
     noder.computeNodes(bufferSegStrList);
@@ -379,7 +380,7 @@ class BufferBuilder
  /**private */
  Geometry createEmptyResultGeometry()
   {
-    Geometry emptyGeom = geomFact.createPolygon();
+    Geometry emptyGeom = geomFact!.createPolygon();
     return emptyGeom;
   }
 }

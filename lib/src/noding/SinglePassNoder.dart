@@ -15,6 +15,7 @@
 
 import 'Noder.dart';
 import 'SegmentIntersector.dart';
+import 'SegmentString.dart';
 
 /**
  * Base class for {@link Noder}s which make a single
@@ -69,6 +70,6 @@ abstract class SinglePassNoder
    */
   @override
   /**abstract */ 
-  Iterable getNodedSubstrings();
+  Iterable<SegmentString> getNodedSubstrings();
 
 }

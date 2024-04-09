@@ -60,7 +60,9 @@ class SubgraphDepthLocater
     if (stabbedSegments.size() == 0) {
       return 0;
     }
-    DepthSegment ds =  Collections.min(stabbedSegments) as DepthSegment;
+    /// TODO: @ruier edit.bugs : 先解决报错，后面来处理。。。
+    // DepthSegment ds =  Collections.min(stabbedSegments) as DepthSegment;
+    DepthSegment ds =  stabbedSegments.firstOrNull as DepthSegment;
     return ds.leftDepth;
   }
 

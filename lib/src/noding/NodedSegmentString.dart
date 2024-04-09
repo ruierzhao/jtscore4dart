@@ -75,13 +75,13 @@ class NodedSegmentString extends NodableSegmentString
 	 * @param segStrings a Collection of NodedSegmentStrings
 	 * @param resultEdgelist a List which will collect the NodedSegmentStrings representing the substrings
 	 */
- static List getNodedSubstrings(Iterable segStrings, [Iterable? resultEdgelist])
+ static List<SegmentString> getNodedSubstrings(Iterable segStrings, [Iterable<SegmentString>? resultEdgelist])
   {
     // ignore: prefer_conditional_assignment
-    if (resultEdgelist == null) resultEdgelist = [];
+    if (resultEdgelist == null) resultEdgelist = <SegmentString>[];
     for (Object segString in segStrings) {
       NodedSegmentString ss = segString as NodedSegmentString;
-      ss.getNodeList().addSplitEdges(resultEdgelist  as List);
+      ss.getNodeList().addSplitEdges(resultEdgelist  as List<SegmentString>);
     }
     return resultEdgelist.toList();
   }

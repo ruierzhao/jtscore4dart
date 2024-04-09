@@ -20,7 +20,13 @@
 // import org.locationtech.jts.geomgraph.EdgeRing;
 // import org.locationtech.jts.geomgraph.Node;
 
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
+import 'package:jtscore4dart/src/geomgraph/DirectedEdgeStar.dart';
 import 'package:jtscore4dart/src/geomgraph/EdgeRing.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
+
+import 'MinimalEdgeRing.dart';
 
 /**
  * A ring of {@link DirectedEdge}s which may contain nodes of degree &gt; 2.
@@ -40,18 +46,18 @@ import 'package:jtscore4dart/src/geomgraph/EdgeRing.dart';
  * @version 1.7
  * @see org.locationtech.jts.operation.overlay.MinimalEdgeRing
  */
-class MaximalEdgeRing
-  extends EdgeRing
+class MaximalEdgeRing extends EdgeRing
 {
 
-  MaximalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory) {
+  MaximalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory) :
     super(start, geometryFactory);
-  }
 
+  @override
   DirectedEdge getNext(DirectedEdge de)
   {
     return de.getNext();
   }
+  @override
   void setEdgeRing(DirectedEdge de, EdgeRing er)
   {
     de.setEdgeRing(er);
@@ -66,7 +72,7 @@ class MaximalEdgeRing
     DirectedEdge de = startDe;
     do {
       Node node = de.getNode();
-      ((DirectedEdgeStar) node.getEdges()).linkMinimalDirectedEdges(this);
+      ( node.getEdges() as DirectedEdgeStar).linkMinimalDirectedEdges(this);
       de = de.getNext();
     } while (de != startDe);
   }

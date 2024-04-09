@@ -33,9 +33,8 @@ class MinimalEdgeRing
   extends EdgeRing
 {
 
-  MinimalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory) {
+  MinimalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory) :
     super(start, geometryFactory);
-  }
 
   @override
   DirectedEdge getNext(DirectedEdge de)

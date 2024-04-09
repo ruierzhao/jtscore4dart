@@ -75,7 +75,7 @@ class ScaledNoder
     if (isScaled) {
       intSegStrings = _scale(inputSegStrings);
     }
-    noder.computeNodes(intSegStrings);
+    noder.computeNodes(intSegStrings as Iterable<NodedSegmentString>);
   }
 
  /**private */Iterable _scale(Iterable segStrings)

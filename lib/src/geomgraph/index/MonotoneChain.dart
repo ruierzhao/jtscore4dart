@@ -11,6 +11,9 @@
  */
 
 
+import 'MonotoneChainEdge.dart';
+import 'SegmentIntersector.dart';
+
 /**
  * @version 1.7
  */
@@ -19,10 +22,7 @@ class MonotoneChain {
   MonotoneChainEdge mce;
   int chainIndex;
 
-  MonotoneChain(MonotoneChainEdge mce, int chainIndex) {
-    this.mce = mce;
-    this.chainIndex = chainIndex;
-  }
+  MonotoneChain(this.mce, this.chainIndex);
 
   void computeIntersections(MonotoneChain mc, SegmentIntersector si)
   {

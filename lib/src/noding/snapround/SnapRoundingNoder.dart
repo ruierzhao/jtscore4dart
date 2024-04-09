@@ -89,7 +89,7 @@ class SnapRoundingNoder implements Noder
 	 * 
 	 */
   @override
-  Iterable getNodedSubstrings()
+  Iterable<SegmentString> getNodedSubstrings()
   {
     return NodedSegmentString.getNodedSubstrings(snappedResult);
   }

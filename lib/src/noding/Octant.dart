@@ -40,7 +40,7 @@ abstract class Octant {
   static int octantXY(double dx, double dy)
   {
     if (dx == 0.0 && dy == 0.0) {
-      throw new ArgumentError("Cannot compute the octant for point ( "+ dx + ", " + dy + " )" );
+      throw new ArgumentError("Cannot compute the octant for point ( $dx, $dy )" );
     }
 
     double adx = (dx).abs();

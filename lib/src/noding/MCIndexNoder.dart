@@ -82,7 +82,7 @@ class MCIndexNoder extends SinglePassNoder
   SpatialIndex getIndex() { return index; }
 
   @override
-  Iterable getNodedSubstrings()
+  Iterable<SegmentString> getNodedSubstrings()
   {
     return  NodedSegmentString.getNodedSubstrings(nodedSegStrings);
   }

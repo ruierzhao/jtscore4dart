@@ -61,7 +61,7 @@ class DirectedEdge
  /**private */late DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
  /**private */late DirectedEdge nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
  /**private */late EdgeRing edgeRing;  // the EdgeRing that this edge is part of
- /**private */late EdgeRing minEdgeRing;  // the MinimalEdgeRing that this edge is part of
+ /**private */EdgeRing? minEdgeRing;  // the MinimalEdgeRing that this edge is part of
   /**
    * The depth of each side (position) of this edge.
    * The 0 element of the array is never used.
@@ -102,7 +102,7 @@ class DirectedEdge
 
   void setMinEdgeRing(EdgeRing minEdgeRing) { this.minEdgeRing = minEdgeRing; }
 
-  EdgeRing getMinEdgeRing() { return minEdgeRing; }
+  EdgeRing? getMinEdgeRing() { return minEdgeRing; }
   
   int getDepth(int position) { return depth[position]; }
 

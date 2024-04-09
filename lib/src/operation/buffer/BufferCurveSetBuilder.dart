@@ -72,7 +72,7 @@ class BufferCurveSetBuilder {
  /**private */OffsetCurveBuilder curveBuilder;
 
 //  /**private */List curveList = [];
- /**private */List curveList = [];
+ /**private */List<NodedSegmentString> curveList = [];
 
  /**private */bool isInvertOrientation = false;
 
@@ -125,7 +125,7 @@ class BufferCurveSetBuilder {
    *
    * @return a Collection of SegmentStrings representing the raw buffer curves
    */
-  List getCurves()
+  List<NodedSegmentString> getCurves()
   {
     add(inputGeom);
     return curveList;
@@ -146,7 +146,7 @@ class BufferCurveSetBuilder {
     if (coord == null || coord.length < 2) return;
     // add the edge for a coordinate list which is a raw offset curve
     SegmentString e = NodedSegmentString(coord, Label.GeomFrom3(0, Location.BOUNDARY, leftLoc, rightLoc));
-    curveList.add(e);
+    curveList.add(e  as NodedSegmentString);
   }
 
 

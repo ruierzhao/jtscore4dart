@@ -17,29 +17,26 @@
 class SweepLineEvent
   implements Comparable
 { 
- /**private */static final int INSERT = 1;
- /**private */static final int DELETE = 2;
+ /**private */static const int INSERT = 1;
+ /**private */static const int DELETE = 2;
 
- /**private */Object label;    // used for red-blue intersection detection
+ /**private */Object? label;    // used for red-blue intersection detection
  /**private */double xValue;
- /**private */int eventType;
- /**private */SweepLineEvent insertEvent = null; // null if this is an INSERT event
- /**private */int deleteEventIndex;
- /**private */Object obj;
+ /**private */late int eventType;
+ /**private */SweepLineEvent? insertEvent = null; // null if this is an INSERT event
+ /**private */int? deleteEventIndex;
+ /**private */Object? obj;
 
   /**
    * Creates an INSERT event.
    * 
    * @param label the edge set label for this object
-   * @param x the event location
+   * @param xValue the event location
    * @param obj the object being inserted
    */
-  SweepLineEvent(Object label, double x, Object obj)
+  SweepLineEvent.insert(this.label, this.xValue, this.obj)
   {
     this.eventType = INSERT;
-    this.label = label;
-    xValue = x;
-    this.obj = obj;
   }
 
   /**
@@ -48,20 +45,18 @@ class SweepLineEvent
    * @param x the event location
    * @param insertEvent the corresponding INSERT event
    */
-  SweepLineEvent(double x, SweepLineEvent insertEvent)
+  SweepLineEvent.delete(this.xValue, SweepLineEvent this.insertEvent)
   {
-    eventType = DELETE;
-    xValue = x;
-    this.insertEvent = insertEvent;
+    this.eventType = DELETE;
   }
 
   bool isInsert() { return eventType == INSERT; }
   bool isDelete() { return eventType == DELETE; }
-  SweepLineEvent getInsertEvent() { return insertEvent; }
-  int getDeleteEventIndex() { return deleteEventIndex; }
+  SweepLineEvent? getInsertEvent() { return insertEvent; }
+  int? getDeleteEventIndex() { return deleteEventIndex; }
   void setDeleteEventIndex(int deleteEventIndex) { this.deleteEventIndex = deleteEventIndex; }
 
-  Object getObject() { return obj; }
+  Object? getObject() { return obj; }
 
   bool isSameLabel(SweepLineEvent ev)
   {
@@ -75,8 +70,9 @@ class SweepLineEvent
    * items whose Insert and Delete events occur at the same x-value will be
    * correctly handled.
    */
-  int compareTo(Object o) {
-    SweepLineEvent pe = (SweepLineEvent) o;
+  @override
+  int compareTo(dynamic o) {
+    SweepLineEvent pe = o as SweepLineEvent;
     if (xValue < pe.xValue) return  -1;
     if (xValue > pe.xValue) return   1;
     if (eventType < pe.eventType) return  -1;

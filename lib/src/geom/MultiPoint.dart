@@ -100,7 +100,7 @@ class MultiPoint
     // for (int i = 0; i < points.length; i++) {
     //   points[i] = (Point) this.geometries[i].copy();
     // }
-    List<Point> points = List<Point>.generate(this.geometries!.length, (index) => this.geometries![index].copy() as Point);
+    List<Point> points = List<Point>.generate(this.geometries.length, (index) => this.geometries[index].copy() as Point);
     return MultiPoint(points, factory);
   }
 

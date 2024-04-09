@@ -103,8 +103,8 @@ class MultiPolygon
     }
     // ArrayList allRings = new ArrayList();
     List allRings = [];
-    for (int i = 0; i < geometries!.length; i++) {
-      Polygon polygon =  geometries![i] as Polygon;
+    for (int i = 0; i < geometries.length; i++) {
+      Polygon polygon =  geometries[i] as Polygon;
       Geometry rings = polygon.getBoundary();
       for (int j = 0; j < rings.getNumGeometries(); j++) {
         allRings.add(rings.getGeometryN(j));
@@ -139,7 +139,7 @@ class MultiPolygon
     List<Polygon> polygons = [];
     for (int i = 0; i < polygons.length; i++) {
       // polygons[i] = (Polygon) this.geometries[i].reverse();
-      polygons.add(this.geometries![i].reverse() as Polygon);
+      polygons.add(this.geometries[i].reverse() as Polygon);
     }
     return new MultiPolygon(polygons, factory);
   }
@@ -150,7 +150,7 @@ class MultiPolygon
     List<Polygon> polygons = [];
     for (int i = 0; i < polygons.length; i++) {
       // polygons[i] = (Polygon) this.geometries[i].copy();
-      polygons.add(this.geometries![i].copy() as Polygon);
+      polygons.add(this.geometries[i].copy() as Polygon);
     }
     return new MultiPolygon(polygons, factory);
   }

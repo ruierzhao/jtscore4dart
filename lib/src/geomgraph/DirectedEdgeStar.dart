@@ -281,7 +281,7 @@ class DirectedEdgeStar
     if (state == LINKING_TO_OUTGOING) {
       Assert.isTrue(firstOut != null, "found null for first outgoing dirEdge");
       Assert.isTrue(firstOut!.getEdgeRing() == er, "unable to link last incoming dirEdge");
-      incoming!.setNextMin(firstOut!);
+      incoming!.setNextMin(firstOut);
     }
   }
   void linkAllDirectedEdges()

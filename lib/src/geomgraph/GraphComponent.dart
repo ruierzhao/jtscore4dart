@@ -86,7 +86,7 @@ abstract class GraphComponent {
    */
   void updateIM(IntersectionMatrix im)
   {
-    Assert.isTrue(label!.getGeometryCount() >= 2, "found partial label");
+    Assert.isTrue(label.getGeometryCount() >= 2, "found partial label");
     computeIM(im);
   }
 

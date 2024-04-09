@@ -76,11 +76,11 @@ class DirectedEdge
     // super(edge);
     // this._isForward = isForward;
     if (isForward) {
-      init(edge.getCoordinate(0)!, edge.getCoordinate(1)!);
+      init(edge.getCoordinate(0), edge.getCoordinate(1));
     }
     else {
       int n = edge.getNumPoints() - 1;
-      init(edge.getCoordinate(n)!, edge.getCoordinate(n-1)!);
+      init(edge.getCoordinate(n), edge.getCoordinate(n-1));
     }
     computeDirectedLabel();
   }

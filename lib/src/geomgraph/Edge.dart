@@ -142,7 +142,7 @@ class Edge extends GraphComponent
   /// @return zero-width V area edge, consisting of two segments which are equal and of oppose orientation
   bool isCollapsed()
   {
-    if (! label!.isArea()) return false;
+    if (! label.isArea()) return false;
     if (pts.length != 3) return false;
     if (pts[0].equals(pts[2]) ) return true;
     return false;
@@ -153,7 +153,7 @@ class Edge extends GraphComponent
     // newPts[0] = pts[0];
     // newPts[1] = pts[1];
     List<Coordinate> newPts = List.generate(2, (i) => pts[i], growable: false);
-    Edge newe = new Edge(newPts, Label.toLineLabel(label!));
+    Edge newe = new Edge(newPts, Label.toLineLabel(label));
     return newe;
   }
 
@@ -219,7 +219,7 @@ class Edge extends GraphComponent
   @override
   void computeIM(IntersectionMatrix im)
   {
-    _updateIM(label!, im);
+    _updateIM(label, im);
   }
 
   /// equals is defined to be:

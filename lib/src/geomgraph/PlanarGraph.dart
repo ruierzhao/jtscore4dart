@@ -94,9 +94,9 @@ class PlanarGraph
 
   bool isBoundaryNode(int geomIndex, Coordinate coord)
   {
-    Node node = nodes.find(coord);
+    Node? node = nodes.find(coord);
     if (node == null) return false;
-    Label label = node.getLabel();
+    Label? label = node.getLabel();
     if (label != null && label.getLocation(geomIndex) == Location.BOUNDARY) return true;
     return false;
   }
@@ -122,7 +122,7 @@ class PlanarGraph
    * @param coord Coordinate to find
    * @return the node if found; null otherwise
    */
-  Node find(Coordinate coord) { return nodes.find(coord); }
+  Node? find(Coordinate coord) { return nodes.find(coord); }
 
   /**
    * Add a set of edges to the graph.  For each edge two DirectedEdges

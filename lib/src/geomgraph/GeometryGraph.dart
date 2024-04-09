@@ -54,6 +54,7 @@ import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Polygonal.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geomgraph/index/SegmentIntersector.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
 
 import 'Edge.dart';
 import 'EdgeIntersection.dart';
@@ -115,9 +116,10 @@ class GeometryGraph extends PlanarGraph
    * parentGeometry to the edges which are derived from them.
    * This is used to efficiently perform findEdge queries
    */
- /**private */Map lineEdgeMap = new Map();
+//  /**private */Map lineEdgeMap = new Map();
+ /**private */Map lineEdgeMap = {};
 
- /**private */BoundaryNodeRule? boundaryNodeRule = null;
+ /**private */late BoundaryNodeRule boundaryNodeRule;
 
   /**
    * If this flag is true, the Boundary Determination Rule will used when deciding
@@ -125,16 +127,16 @@ class GeometryGraph extends PlanarGraph
    */
  /**private */bool useBoundaryDeterminationRule = true;
  /**private */int argIndex;  // the index of this geometry as an argument to a spatial function (used for labelling)
- /**private */Iterable boundaryNodes;
- /**private */bool hasTooFewPoints = false;
- /**private */Coordinate? invalidPoint = null;
+ /**private */late Iterable boundaryNodes;
+ /**private */bool _hasTooFewPoints = false;
+ /**private */late Coordinate invalidPoint;
 
  /**private */PointOnGeometryLocator? areaPtLocator = null;
   // for use if geometry is not Polygonal
  /**private */final PointLocator ptLocator = new PointLocator();
   
  /**private */EdgeSetIntersector createEdgeSetIntersector()
-  {
+ {
   // various options for computing intersections, from slowest to fastest
 
   //private EdgeSetIntersector esi = new SimpleEdgeSetIntersector();
@@ -164,7 +166,7 @@ class GeometryGraph extends PlanarGraph
   if (boundaryNodeRule == null ) {
     this.boundaryNodeRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
   }
-    add(parentGeom);
+    addG(parentGeom);
   }
 
   /*
@@ -183,7 +185,7 @@ class GeometryGraph extends PlanarGraph
 //  }
 //  int getSRID() { return SRID; }
 
-  bool hasTooFewPoints() { return hasTooFewPoints; }
+  bool hasTooFewPoints() { return _hasTooFewPoints; }
 
   Coordinate getInvalidPoint() { return invalidPoint; }
 
@@ -191,7 +193,7 @@ class GeometryGraph extends PlanarGraph
 
   BoundaryNodeRule getBoundaryNodeRule() { return boundaryNodeRule; }
 
-  Collection getBoundaryNodes()
+  Iterable getBoundaryNodes()
   {
     boundaryNodes ??= nodes.getBoundaryNodes(argIndex);
     return boundaryNodes;
@@ -199,17 +201,19 @@ class GeometryGraph extends PlanarGraph
 
   List<Coordinate> getBoundaryPoints()
   {
-    Collection coll = getBoundaryNodes();
-    List<Coordinate> pts = new Coordinate[coll.size()];
+    Iterable coll = getBoundaryNodes();
+    // List<Coordinate> pts = new Coordinate[coll.size()];
+    List<Coordinate> pts = List.filled(coll.length, Coordinate.empty2D(), growable: false);
     int i = 0;
-    for (Iterator it = coll.iterator(); it.moveNext(); ) {
+    for (Iterator it = coll.iterator; it.moveNext(); ) {
       Node node =  it.current;
       pts[i++] = node.getCoordinate().copy();
     }
     return pts;
   }
 
-  Edge findEdge(LineString line)
+  // Edge? findEdge(LineString line)
+  Edge findEdge$2(LineString line)
   {
     return  lineEdgeMap.get(line);
   }
@@ -221,7 +225,9 @@ class GeometryGraph extends PlanarGraph
       e.eiList.addSplitEdges(edgelist);
     }
   }
- /**private */void add(Geometry g)
+ /**private */
+//  void add(Geometry g)
+ void addG(Geometry g)
   {
     if (g.isEmpty()) return;
 
@@ -236,7 +242,7 @@ class GeometryGraph extends PlanarGraph
     } 
     // ignore_for_file: curly_braces_in_flow_control_structures
     else if (g is LineString)         addLineString( g);
-    else if (g is Point)              addPoint( g);
+    else if (g is Point)              _addPoint(g);
     else if (g is MultiPoint)         addCollection( g);
     else if (g is MultiLineString)    addCollection( g);
     else if (g is MultiPolygon)       addCollection( g);
@@ -248,16 +254,16 @@ class GeometryGraph extends PlanarGraph
  /**private */void addCollection(GeometryCollection gc)
   {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
-      add(gc.getGeometryN(i));
+      addG(gc.getGeometryN(i));
     }
   }
   
   /**
    * Add a Point to the graph.
    */
- /**private */void addPoint(Point p)
+ /**private */void _addPoint(Point p)
   {
-    Coordinate coord = p.getCoordinate();
+    Coordinate coord = p.getCoordinate()!;
     insertPoint(argIndex, coord, Location.INTERIOR);
   }
   
@@ -277,7 +283,7 @@ class GeometryGraph extends PlanarGraph
     List<Coordinate> coord = CoordinateArrays.removeRepeatedPoints(lr.getCoordinates());
 
     if (coord.length < 4) {
-      hasTooFewPoints = true;
+      _hasTooFewPoints = true;
       invalidPoint = coord[0];
       return;
     }
@@ -322,7 +328,7 @@ class GeometryGraph extends PlanarGraph
     List<Coordinate> coord = CoordinateArrays.removeRepeatedPoints(line.getCoordinates());
 
     if (coord.length < 2) {
-      hasTooFewPoints = true;
+      _hasTooFewPoints = true;
       invalidPoint = coord[0];
       return;
     }
@@ -402,7 +408,7 @@ class GeometryGraph extends PlanarGraph
     si.setBoundaryNodes(this.getBoundaryNodes(), g.getBoundaryNodes());
 
     EdgeSetIntersector esi = createEdgeSetIntersector();
-    esi.computeIntersections(edges, g.edges, si);
+    esi.computeIntersections2Set(edges, g.edges, si);
 /*
 for (Iterator i = g.edges.iterator(); i.moveNext();) {
 Edge e = (Edge) i.current;
@@ -414,13 +420,13 @@ Debug.print(e.getEdgeIntersectionList());
 
  /**private */void insertPoint(int argIndex, Coordinate coord, int onLocation)
   {
-    Node n = nodes.addNode(coord);
+    Node n = nodes.addNodeCoord(coord);
     Label lbl = n.getLabel();
     if (lbl == null) {
       n.label = new Label.GeomIndex(argIndex, onLocation);
     }
     else {
-      lbl.setLocation(argIndex, onLocation);
+      lbl.setLocationOn(argIndex, onLocation);
     }
   }
 
@@ -431,7 +437,7 @@ Debug.print(e.getEdgeIntersectionList());
    */
  /**private */void insertBoundaryPoint(int argIndex, Coordinate coord)
   {
-    Node n = nodes.addNode(coord);
+    Node n = nodes.addNodeCoord(coord);
     // nodes always have labels
     Label lbl = n.getLabel();
     // the new point to insert is on a boundary
@@ -487,7 +493,7 @@ Debug.print(e.getEdgeIntersectionList());
   	if (parentGeom is Polygonal && parentGeom.getNumGeometries() > 50) {
   		// lazily init point locator
   		areaPtLocator ??= new IndexedPointInAreaLocator(parentGeom);
-  		return areaPtLocator.locate(pt);
+  		return areaPtLocator!.locate(pt);
   	}
   	return ptLocator.locate(pt, parentGeom);
   }

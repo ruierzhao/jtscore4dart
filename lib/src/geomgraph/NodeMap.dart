@@ -72,7 +72,7 @@ class NodeMap
 
   Node addNode(Node n)
   {
-    Node node =  nodeMap.get(n.getCoordinate());
+    Node? node =  nodeMap.get(n.getCoordinate());
     if (node == null) {
       nodeMap.put(n.getCoordinate(), n);
       return n;
@@ -100,7 +100,7 @@ class NodeMap
    * @param coord Coordinate to find
    * @return the node if found; null otherwise
    */
-  Node find(Coordinate coord)  {    return  nodeMap.get(coord) as Node;  }
+  Node? find(Coordinate coord)  {    return  nodeMap.get(coord) as Node;  }
 
   Iterator iterator()
   {

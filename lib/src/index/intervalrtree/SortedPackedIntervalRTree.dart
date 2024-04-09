@@ -18,6 +18,13 @@
 // import org.locationtech.jts.index.ItemVisitor;
 
 
+import 'package:jtscore4dart/src/index/ItemVisitor.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
+import 'IntervalRTreeBranchNode.dart';
+import 'IntervalRTreeLeafNode.dart';
+import 'IntervalRTreeNode.dart';
+
 /**
  * A static index on a set of 1-dimensional intervals,
  * using an R-Tree packed based on the order of the interval midpoints.
@@ -35,7 +42,7 @@
  */
 class SortedPackedIntervalRTree 
 {
- /**private */final List leaves = [];
+ /**private */final List<IntervalRTreeNode> leaves = [];
   
   /**
    * If root is null that indicates
@@ -43,12 +50,12 @@ class SortedPackedIntervalRTree
    * OR nothing has been added to the tree.
    * In both cases, the tree is still open for insertions.
    */
-	private volatile IntervalRTreeNode root = null;
+	/**private volatile */ IntervalRTreeNode? root = null;
 
-	SortedPackedIntervalRTree()
-	{
+	// SortedPackedIntervalRTree()
+	// {
 		
-	}
+	// }
 	
   /**
    * Adds an item to the index which is associated with the given interval
@@ -61,12 +68,13 @@ class SortedPackedIntervalRTree
    */
 	void insert(double min, double max, Object item)
 	{
-    if (root != null)
-      throw new IllegalStateException("Index cannot be added to once it has been queried");
+    if (root != null) {
+      throw new Exception("IllegalStateException: Index cannot be added to once it has been queried");
+    }
     leaves.add(new IntervalRTreeLeafNode(min, max, item));
 	}
 	
- /**private */synchronized void init()
+ /**private synchronized */ void init()
   {
     // already built
     if (root != null) return;
@@ -75,7 +83,7 @@ class SortedPackedIntervalRTree
      * if leaves is empty then nothing has been inserted.
      * In this case it is safe to leave the tree in an open state
      */
-    if (leaves.size() == 0) return;
+    if (leaves.isEmpty) return;
     
     buildRoot();
   }
@@ -86,21 +94,23 @@ class SortedPackedIntervalRTree
     root = buildTree();
   }
   
-	private  IntervalRTreeNode buildTree()
+	/**private */ IntervalRTreeNode buildTree()
 	{
 	  
     // sort the leaf nodes
-    Collections.sort(leaves, new IntervalRTreeNode.NodeComparator());
+    // Collections.sort(leaves, new IntervalRTreeNode.NodeComparator());
+    leaves.sort( IntervalRTreeNode.NodeComparator);
     
     // now group nodes into blocks of two and build tree up recursively
 		List src = leaves;
-		List temp = null;
+		List? temp = null;
 		List dest = [];
 		
 		while (true) {
 			buildLevel(src, dest);
-			if (dest.size() == 1)
-				return (IntervalRTreeNode) dest.get(0);
+			if (dest.size() == 1) {
+			  return dest.get(0) as IntervalRTreeNode;
+			}
       
 			temp = src;
 			src = dest;
@@ -110,20 +120,19 @@ class SortedPackedIntervalRTree
 
   //private int level = 0;
 
-	private void buildLevel(List src, List dest) 
+	/**private */ void buildLevel(List src, List dest) 
   {
     //level++;
 		dest.clear();
 		for (int i = 0; i < src.size(); i += 2) {
-			IntervalRTreeNode n1 = (IntervalRTreeNode) src.get(i);
-			IntervalRTreeNode n2 = (i + 1 < src.size()) 
-						? (IntervalRTreeNode) src.get(i) : null;
+			IntervalRTreeNode n1 = src.get(i) as IntervalRTreeNode;
+			IntervalRTreeNode? n2 = (i + 1 < src.size()) ? src.get(i) : null;
 			if (n2 == null) {
 				dest.add(n1);
 			} else {
 				IntervalRTreeNode node = new IntervalRTreeBranchNode(
-						(IntervalRTreeNode) src.get(i),
-						(IntervalRTreeNode) src.get(i + 1));
+						src.get(i),
+						src.get(i + 1));
 //        printNode(node);
 //				System.out.println(node);
 				dest.add(node);
@@ -144,15 +153,16 @@ class SortedPackedIntervalRTree
    * @param max the upper bound of the query interval
    * @param visitor the visitor to pass any matched items to
    */
-	void query(double min, double max, ItemVisitor visitor)
+	void queryByVisitor(double min, double max, ItemVisitor visitor)
 	{
     init();
     
     // if root is null tree must be empty
-    if (root == null) 
+    if (root == null) {
       return;
+    }
     
-		root.query(min, max, visitor);
+		root!.queryByVisitor(min, max, visitor);
 	}
   
 }

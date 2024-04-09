@@ -34,107 +34,42 @@ import '../GeometryComponentFilter.dart';
  *
  * @version 1.7
  */
-class LinearComponentExtracter
-  implements GeometryComponentFilter
+class LinearComponentExtracter implements GeometryComponentFilter
 {
   /**
    * Extracts the linear components from a single {@link Geometry}
    * and adds them to the provided {@link Collection}.
    *
-   * @param geoms the collection of geometries from which to extract linear components
-   * @param lines the collection to add the extracted linear components to
+   * @param [geoms] the Collection of geometries from which to extract linear components
+   * @param [lines] the collection to add the extracted linear components to
+   * @param [forceToLineString] true if LinearRings should be converted to LineStrings
    * @return the collection of linear components (LineStrings or LinearRings)
    */
-  // static Collection getLines(Collection geoms, Collection lines)
-  static Iterable getLines(Iterable geoms, Iterable lines)
+  static Iterable getLinesAll(Iterable geoms, Iterable<LineString> lines, [bool forceToLineString=false])
   {
-  	for (Iterator i = geoms.iterator; i.moveNext(); ) {
-  		Geometry g =  i.current as Geometry;
-  		getLines(g, lines);
-  	}
-    return lines;
-  }
-
-  /**
-   * Extracts the linear components from a single {@link Geometry}
-   * and adds them to the provided {@link Collection}.
-   *
-   * @param geoms the Collection of geometries from which to extract linear components
-   * @param lines the collection to add the extracted linear components to
-   * @param forceToLineString true if LinearRings should be converted to LineStrings
-   * @return the collection of linear components (LineStrings or LinearRings)
-   */
-  static Iterable getLines(Iterable geoms, Iterable lines, bool forceToLineString)
-  {
+    List<LineString> _lines = lines.toList();
   	for (Iterator i = geoms.iterator; i.moveNext(); ) {
   		Geometry g = i.current as Geometry;
-  		getLines(g, lines, forceToLineString);
+  		getLines(g, _lines, forceToLineString);
   	}
     return lines;
   }
 
-  /**
-   * Extracts the linear components from a single {@link Geometry}
-   * and adds them to the provided {@link Collection}.
-   *
-   * @param geom the geometry from which to extract linear components
-   * @param lines the Collection to add the extracted linear components to
-   * @return the Collection of linear components (LineStrings or LinearRings)
-   */
-  static Iterable getLines(Geometry geom, Iterable lines)
+  static List<LineString> getLines(Geometry geom, [List<LineString>? lines, bool? forceToLineString=false])
+  {
+    lines ??= [];
+    geom.applyGeometryComonent(LinearComponentExtracter(lines, forceToLineString));
+    return lines;
+  }
+
+
+  List<LineString> getLines2(Geometry geom, List<LineString> lines)
   {
   	if (geom is LineString) {
   		lines.add(geom);
+  	}else {
+      geom.applyGeometryComonent(LinearComponentExtracter(lines));
   	}
-  	else {
-      geom.apply(new LinearComponentExtracter(lines));
-  	}
-    return lines;
-  }
-
-  /**
-   * Extracts the linear components from a single {@link Geometry}
-   * and adds them to the provided {@link Collection}.
-   *
-   * @param geom the geometry from which to extract linear components
-   * @param lines the Collection to add the extracted linear components to
-   * @param forceToLineString true if LinearRings should be converted to LineStrings
-   * @return the Collection of linear components (LineStrings or LinearRings)
-   */
-  static Iterable getLines(Geometry geom, Iterable lines, bool forceToLineString)
-  {
-    geom.apply(new LinearComponentExtracter(lines, forceToLineString));
-    return lines;
-  }
-
-  /**
-   * Extracts the linear components from a single geometry.
-   * If more than one geometry is to be processed, it is more
-   * efficient to create a single {@link LinearComponentExtracter} instance
-   * and pass it to multiple geometries.
-   *
-   * @param geom the geometry from which to extract linear components
-   * @return the list of linear components
-   */
-  static List getLines(Geometry geom)
-  {
-    return getLines(geom, false);
-  }
-
-  /**
-   * Extracts the linear components from a single geometry.
-   * If more than one geometry is to be processed, it is more
-   * efficient to create a single {@link LinearComponentExtracter} instance
-   * and pass it to multiple geometries.
-   *
-   * @param geom the geometry from which to extract linear components
-   * @param forceToLineString true if LinearRings should be converted to LineStrings
-   * @return the list of linear components
-   */
-  static List getLines(Geometry geom, bool forceToLineString)
-  {
-    List lines = [];
-    geom.apply(new LinearComponentExtracter(lines, forceToLineString));
     return lines;
   }
 
@@ -145,28 +80,20 @@ class LinearComponentExtracter
    * @param geom the geometry from which to extract
    * @return a linear geometry
    */
-  static Geometry getGeometry(Geometry geom)
+  // static Geometry getGeometry(Geometry geom)
+  // {
+  //   return geom.getFactory().buildGeometry(getLines(geom));
+  // }
+
+
+  static Geometry getGeometry(Geometry geom, [bool? forceToLineString])
   {
-    return geom.getFactory().buildGeometry(getLines(geom));
+    return geom.getFactory().buildGeometry(getLines(geom, null, forceToLineString));
   }
 
 
-  /**
-   * Extracts the linear components from a single {@link Geometry}
-   * and returns them as either a {@link LineString} or {@link MultiLineString}.
-   * 
-   * @param geom the geometry from which to extract
-   * @param forceToLineString true if LinearRings should be converted to LineStrings
-   * @return a linear geometry
-   */
-  static Geometry getGeometry(Geometry geom, bool forceToLineString)
-  {
-    return geom.getFactory().buildGeometry(getLines(geom, forceToLineString));
-  }
-
-
- /**private */Iterable lines;
- /**private */bool isForcedToLineString = false;
+ /**private */List<LineString> lines;
+ /**private */bool? isForcedToLineString = false;
   
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.
@@ -192,14 +119,15 @@ class LinearComponentExtracter
   @override
   void filter(Geometry geom)
   {
-  	if (isForcedToLineString && geom is LinearRing) {
-  		LineString line = geom.getFactory().createLineString( ((LinearRing) geom).getCoordinateSequence());
+  	if (isForcedToLineString! && geom is LinearRing) {
+  		LineString line = geom.getFactory().createLineStringFromSeq( geom.getCoordinateSequence());
   		lines.add(line);
   		return;
   	}
   	// if not being forced, and this is a linear component
-  	if (geom is LineString) 
-  		lines.add(geom);
+  	if (geom is LineString) {
+  	  lines.add(geom);
+  	}
   	
   	// else this is not a linear component, so skip it
   }

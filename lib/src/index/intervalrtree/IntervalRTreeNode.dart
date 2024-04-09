@@ -18,41 +18,58 @@
 // import org.locationtech.jts.io.WKTWriter;
 
 
+import '../ItemVisitor.dart';
+
 abstract class IntervalRTreeNode 
 {
-	protected double min = Double.POSITIVE_INFINITY;
-	protected double max = Double.NEGATIVE_INFINITY;
+  /// 代替 [NodeComparator] class
+  static Comparator<IntervalRTreeNode> NodeComparator = (IntervalRTreeNode n1, IntervalRTreeNode n2){
+    double mid1 = (n1.min + n1.max) / 2;
+    double mid2 = (n2.min + n2.max) / 2;
+    if (mid1 < mid2) return -1;
+    if (mid1 > mid2) return 1;
+    return 0;
+  };
+
+	// /**protected */ double min = Double.POSITIVE_INFINITY;
+	/**protected */ double min = double.infinity;
+	// /**protected */ double max = Double.NEGATIVE_INFINITY;
+	/**protected */ double max = double.infinity;
 
 	double getMin() { return min; }
 	double getMax() { return max; }
 	
-	abstract void query(double queryMin, double queryMax, ItemVisitor visitor);
+	/**abstract */ void queryByVisitor(double queryMin, double queryMax, ItemVisitor visitor);
 	
-	protected bool intersects(double queryMin, double queryMax)
+	/**protected */ bool intersects(double queryMin, double queryMax)
 	{
-		if (min > queryMax 
-				|| max < queryMin)
-			return false;
+		if (min > queryMax || max < queryMin) {
+		  return false;
+		}
 		return true;
 	}
-
-	String toString()
-	{
-		return WKTWriter.toLineString(new Coordinate(min, 0), new Coordinate(max, 0));
-	}
+  /// TODO: @ruier edit.
+	// String toString()
+	// {
+	// 	return WKTWriter.toLineString(new Coordinate(min, 0), new Coordinate(max, 0));
+	// }
   
-  static class NodeComparator implements Comparator
-  {
-    int compare(Object o1, Object o2)
-    {
-      IntervalRTreeNode n1 = (IntervalRTreeNode) o1;
-      IntervalRTreeNode n2 = (IntervalRTreeNode) o2;
-      double mid1 = (n1.min + n1.max) / 2;
-      double mid2 = (n2.min + n2.max) / 2;
-      if (mid1 < mid2) return -1;
-      if (mid1 > mid2) return 1;
-      return 0;
-    }
-  }
-
 }
+
+// /**static */ class NodeComparator implements Comparator
+// {
+//   int compare(Object o1, Object o2)
+//   {
+//     IntervalRTreeNode n1 = o1 as IntervalRTreeNode;
+//     IntervalRTreeNode n2 = o2 as IntervalRTreeNode;
+//     double mid1 = (n1.min + n1.max) / 2;
+//     double mid2 = (n2.min + n2.max) / 2;
+//     if (mid1 < mid2) return -1;
+//     if (mid1 > mid2) return 1;
+//     return 0;
+//   }
+// }
+
+
+
+

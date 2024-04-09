@@ -13,34 +13,37 @@
 
 // import org.locationtech.jts.index.ItemVisitor;
 
-class IntervalRTreeBranchNode 
-extends IntervalRTreeNode
+import 'dart:math' as math;
+
+import 'package:jtscore4dart/src/index/ItemVisitor.dart';
+
+import 'IntervalRTreeNode.dart';
+
+class IntervalRTreeBranchNode extends IntervalRTreeNode
 {
-	private IntervalRTreeNode node1;
-	private IntervalRTreeNode node2;
+	/**private */ IntervalRTreeNode node1;
+	/**private */ IntervalRTreeNode node2;
 	
-	IntervalRTreeBranchNode(IntervalRTreeNode n1, IntervalRTreeNode n2)
+	IntervalRTreeBranchNode(this.node1,this.node2)
 	{
-		node1 = n1;
-		node2 = n2;
-		buildExtent(node1, node2);
+		_buildExtent(node1, node2);
 	}
 	
-	private void buildExtent(IntervalRTreeNode n1, IntervalRTreeNode n2)
+  void _buildExtent(IntervalRTreeNode n1, IntervalRTreeNode n2)
 	{
-		min = math.min(n1.min, n2.min);
-		max = math.max(n1.max, n2.max);
+		super.min = math.min(n1.min, n2.min);
+		super.max = math.max(n1.max, n2.max);
 	}
 	
-	void query(double queryMin, double queryMax, ItemVisitor visitor)
+	void queryByVisitor(double queryMin, double queryMax, ItemVisitor visitor)
 	{
 		if (! intersects(queryMin, queryMax)) {
 //			System.out.println("Does NOT Overlap branch: " + this);
 			return;
 		}
 //		System.out.println("Overlaps branch: " + this);
-		if (node1 != null) node1.query(queryMin, queryMax, visitor);
-		if (node2 != null) node2.query(queryMin, queryMax, visitor);
+		if (node1 != null) node1.queryByVisitor(queryMin, queryMax, visitor);
+		if (node2 != null) node2.queryByVisitor(queryMin, queryMax, visitor);
 	}
-	
+  
 }

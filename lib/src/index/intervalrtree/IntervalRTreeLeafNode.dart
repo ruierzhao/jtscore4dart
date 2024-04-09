@@ -13,25 +13,28 @@
 
 // import org.locationtech.jts.index.ItemVisitor;
 
-class IntervalRTreeLeafNode 
-extends IntervalRTreeNode
+import '../ItemVisitor.dart';
+import 'IntervalRTreeNode.dart';
+
+class IntervalRTreeLeafNode extends IntervalRTreeNode
 {
  /**private */Object item;
 	
-	IntervalRTreeLeafNode(double min, double max, Object item)
+	IntervalRTreeLeafNode(double min, double max, this.item)
 	{
 		this.min = min;
 		this.max = max;
-		this.item = item;
 	}
 	
-	void query(double queryMin, double queryMax, ItemVisitor visitor)
+	@override
+  void queryByVisitor(double queryMin, double queryMax, ItemVisitor visitor)
 	{
-		if (! intersects(queryMin, queryMax)) 
-      return;
+		if (! intersects(queryMin, queryMax)) {
+		  return;
+		}
 		
 		visitor.visitItem(item);
 	}
-
+  
 	
 }

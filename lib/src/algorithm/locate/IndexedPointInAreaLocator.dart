@@ -29,8 +29,16 @@
 // import org.locationtech.jts.index.intervalrtree.SortedPackedIntervalRTree;
 
 
-import 'package:jtscore4dart/src/geom/Geometry.dart';
 
+import 'dart:math';
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/util/LinearComponentExtracter.dart';
+import 'package:jtscore4dart/src/index/ArrayListVisitor.dart';
+import 'package:jtscore4dart/src/index/ItemVisitor.dart';
+import 'package:jtscore4dart/src/index/intervalrtree/SortedPackedIntervalRTree.dart';
+
+import '../RayCrossingCounter.dart';
 import 'PointOnGeometryLocator.dart';
 
 /**
@@ -54,12 +62,11 @@ import 'PointOnGeometryLocator.dart';
  * @author Martin Davis
  *
  */
-class IndexedPointInAreaLocator 
-  implements PointOnGeometryLocator
+class IndexedPointInAreaLocator implements PointOnGeometryLocator
 {
   
  /**private */Geometry geom;
- /**private */volatile IntervalIndexedGeometry index = null;
+ /**private volatile*/ IntervalIndexedGeometry? index = null;
   
   /**
    * Creates a new locator for a given {@link Geometry}.
@@ -68,10 +75,7 @@ class IndexedPointInAreaLocator
    * 
    * @param g the Geometry to locate in
    */
-  IndexedPointInAreaLocator(Geometry g)
-  {
-    geom = g;
-  }
+  IndexedPointInAreaLocator(this.geom);
     
   /**
    * Determines the {@link Location} of a point in an areal {@link Geometry}.
@@ -79,6 +83,7 @@ class IndexedPointInAreaLocator
    * @param p the point to test
    * @return the location of the point in the geometry  
    */
+  @override
   int locate(Coordinate p)
   {
     // avoid calling synchronized method improves performance
@@ -87,7 +92,7 @@ class IndexedPointInAreaLocator
     RayCrossingCounter rcc = new RayCrossingCounter(p);
     
     SegmentVisitor visitor = new SegmentVisitor(rcc);
-    index.query(p.y, p.y, visitor);
+    index!.queryByVisitor(p.y, p.y, visitor);
   
     /*
      // MD - slightly slower alternative
@@ -101,88 +106,93 @@ class IndexedPointInAreaLocator
   /**
    * Creates the indexed geometry, creating it if necessary.
    */
- /**private */synchronized void createIndex() {
+ /**private synchronized*/ 
+  void createIndex() {
+    // ignore: unnecessary_new, prefer_conditional_assignment
     if (index == null) {
       index = new IntervalIndexedGeometry(geom);
       // no need to hold onto geom
-      geom = null;
+      /// TODO: @ruier edit.
+      // geom = null;
     }
   }
-  
- /**private */static class SegmentVisitor
-    implements ItemVisitor
-  {
-   /**private */final RayCrossingCounter counter;
-    
-    SegmentVisitor(RayCrossingCounter counter)
-    {
-      this.counter = counter;
-    }
-    
-    void visitItem(Object item)
-    {
-      LineSegment seg = (LineSegment) item;
-      counter.countSegment(seg.getCoordinate(0), seg.getCoordinate(1));
-    }
-  }
-  
- /**private */static class IntervalIndexedGeometry
-  {
-   /**private */final bool isEmpty;
-   /**private */final SortedPackedIntervalRTree index= new SortedPackedIntervalRTree();
 
-    IntervalIndexedGeometry(Geometry geom)
-    {
-      if (geom.isEmpty())
-        isEmpty = true;
-      else {
-        isEmpty = false;
-        init(geom);
-      }
+}
+
+/**private static */ class SegmentVisitor implements ItemVisitor
+{
+  /**private */final RayCrossingCounter counter;
+  
+  SegmentVisitor(this.counter);
+  
+  @override
+  void visitItem(Object item)
+  {
+    LineSegment seg = item as LineSegment;
+    counter.countSegment(seg.getCoordinate(0), seg.getCoordinate(1));
+  }
+}
+
+/**private static */ class IntervalIndexedGeometry
+{
+  /**private */late final bool isEmpty;
+  /**private */final SortedPackedIntervalRTree index= new SortedPackedIntervalRTree();
+
+  IntervalIndexedGeometry(Geometry geom)
+  {
+    if (geom.isEmpty()) {
+      isEmpty = true;
+    } else {
+      isEmpty = false;
+      init(geom);
     }
-    
-   /**private */void init(Geometry geom)
-    {
-      List lines = LinearComponentExtracter.getLines(geom);
-      for (Iterator i = lines.iterator(); i.moveNext(); ) {
-        LineString line = (LineString) i.current;
-        //-- only include rings of Polygons or LinearRings
-        if (! line.isClosed())
-          continue;
-        
-        List<Coordinate> pts = line.getCoordinates();
-        addLine(pts);
+  }
+  
+  /**private */
+  void init(Geometry geom)
+  {
+    List lines = LinearComponentExtracter.getLines(geom);
+    for (Iterator i = lines.iterator; i.moveNext(); ) {
+      LineString line = i.current as LineString;
+      //-- only include rings of Polygons or LinearRings
+      if (! line.isClosed()) {
+        continue;
       }
-    }
-    
-   /**private */void addLine(List<Coordinate> pts)
-    {
-      for (int i = 1; i < pts.length; i++) {
-        LineSegment seg = new LineSegment(pts[i-1], pts[i]);
-        double min = math.min(seg.p0.y, seg.p1.y);
-        double max = math.max(seg.p0.y, seg.p1.y);
-        index.insert(min, max, seg);
-      }
-    }
-    
-    List query(double min, double max)
-    {
-     if (isEmpty) 
-        return new ArrayList();
       
-      ArrayListVisitor visitor = new ArrayListVisitor();
-      index.query(min, max, visitor);
-      return visitor.getItems();
-    }
-    
-    void query(double min, double max, ItemVisitor visitor)
-    {
-      if (isEmpty) 
-        return;
-      index.query(min, max, visitor);
+      List<Coordinate> pts = line.getCoordinates();
+      addLine(pts);
     }
   }
-
+  
+  /**private */void addLine(List<Coordinate> pts)
+  {
+    for (int i = 1; i < pts.length; i++) {
+      LineSegment seg = new LineSegment(pts[i-1], pts[i]);
+      double _min = min(seg.p0.y, seg.p1.y);
+      double _max = max(seg.p0.y, seg.p1.y);
+      index.insert(_min, _max, seg);
+    }
+  }
+  
+  List query(double min, double max)
+  {
+    if (isEmpty) {
+      // return new ArrayList();
+      return [];
+    }
+    
+    ArrayListVisitor visitor = new ArrayListVisitor();
+    index.queryByVisitor(min, max, visitor);
+    return visitor.getItems();
+  }
+  
+  void queryByVisitor(double min, double max, ItemVisitor visitor)
+  {
+    if (isEmpty) {
+      return;
+    }
+    index.queryByVisitor(min, max, visitor);
+  }
 }
 
 

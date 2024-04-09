@@ -44,7 +44,7 @@ abstract class GraphComponent {
 
   GraphComponent(this.label);
 
-  Label getLabel() { return label!; }
+  Label getLabel() { return label; }
 
   void setLabel(Label label) { this.label = label; }
   

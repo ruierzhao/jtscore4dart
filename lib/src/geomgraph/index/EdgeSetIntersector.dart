@@ -16,6 +16,8 @@
  */
 // import java.util.List;
 
+import 'SegmentIntersector.dart';
+
 /**
  * An EdgeSetIntersector computes all the intersections between the
  * edges in the set.  It adds the computed intersections to each edge
@@ -38,19 +40,19 @@ abstract class EdgeSetIntersector
    * Computes all self-intersections between edges in a set of edges,
    * allowing client to choose whether self-intersections are computed.
    *
-   * @param edges a list of edges to test for intersections
-   * @param si the SegmentIntersector to use
-   * @param testAllSegments true if self-intersections are to be tested as well
+   * @param [edges] a list of edges to test for intersections
+   * @param [si] the SegmentIntersector to use
+   * @param [testAllSegments] true if self-intersections are to be tested as well
    */
-  abstract void computeIntersections(List edges, SegmentIntersector si, bool testAllSegments);
+  void computeIntersections(List edges, SegmentIntersector si, bool testAllSegments);
 
   /**
    * Computes all mutual intersections between two sets of edges.
-   * @param edges0 set of edges
-   * @param edges1 set of edges
-   * @param si segment intersector
+   * @param [edges0] set of edges
+   * @param [edges1] set of edges
+   * @param [si] segment intersector
    */
-  abstract void computeIntersections(List edges0, List edges1, SegmentIntersector si);
+  void computeIntersections2Set(List edges0, List edges1, SegmentIntersector si);
 
 
 

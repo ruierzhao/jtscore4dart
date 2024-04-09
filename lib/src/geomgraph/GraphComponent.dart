@@ -63,7 +63,7 @@ abstract class GraphComponent {
   /**
    * @return a coordinate in this component (or null, if there are none)
    */
-   Coordinate? getCoordinate([int? i]);
+   Coordinate getCoordinate(int i);
   /**
    * Compute the contribution to an IM for this component.
    *

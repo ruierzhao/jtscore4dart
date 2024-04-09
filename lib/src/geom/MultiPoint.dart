@@ -118,8 +118,8 @@ class MultiPoint
   ///      at 0
   ///@return    the <code>n</code>th <code>Coordinate</code>
  /**protected */
- Coordinate? getCoordinateN(int n) {
-    return ( geometries[n] as Point).getCoordinate();
+ Coordinate getCoordinateN(int n) {
+    return ( geometries[n] as Point).getCoordinate()!;
   }
   
  /**protected */@override
@@ -129,7 +129,7 @@ class MultiPoint
     // for (int i = 0; i < points.length; i++) {
     //   points[i] = (Point) this.geometries[i].copy();
     // }
-    List<Point> points = List<Point>.generate(this.geometries!.length, (index) => this.geometries![index].copy() as Point);
+    List<Point> points = List<Point>.generate(this.geometries.length, (index) => this.geometries[index].copy() as Point);
 
     return new MultiPoint(points, factory);
   }

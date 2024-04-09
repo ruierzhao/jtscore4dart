@@ -83,21 +83,23 @@ class Edge extends GraphComponent
   void setName(String name) { this.name = name; }
   List<Coordinate> getCoordinates()  {    return pts;  }
   
-  @override
-  Coordinate? getCoordinate([int? i])
-  {
-    if (i == null) {
-      if (pts.isNotEmpty) return pts[0];
-      return null; 
-    }
-    return pts[i];
-  }
-
-  // Coordinate? getCoordinate()
+  // @override
+  // Coordinate? getCoordinate([int? i])
   // {
-  //   if (pts.isNotEmpty) return pts[0];
-  //   return null;
+  //   if (i == null) {
+  //     if (pts.isNotEmpty) return pts[0];
+  //     return null; 
+  //   }else
+  //   return pts[i];
   // }
+
+  Coordinate getCoordinate(int i)
+  {
+    if (i>=0 && i<pts.length) {
+      return pts[i];
+    }
+    return pts[0];
+  }
 
   Envelope getEnvelope()
   {

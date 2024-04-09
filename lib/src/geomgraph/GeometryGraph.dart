@@ -69,8 +69,7 @@ import 'package:jtscore4dart/src/patch/Map.dart';
  * A GeometryGraph is a graph that models a given Geometry
  * @version 1.7
  */
-class GeometryGraph
-  extends PlanarGraph
+class GeometryGraph extends PlanarGraph
 {
 /**
  * This method implements the Boundary Determination Rule
@@ -194,9 +193,7 @@ class GeometryGraph
 
   Collection getBoundaryNodes()
   {
-    if (boundaryNodes == null) {
-      boundaryNodes = nodes.getBoundaryNodes(argIndex);
-    }
+    boundaryNodes ??= nodes.getBoundaryNodes(argIndex);
     return boundaryNodes;
   }
 

@@ -19,6 +19,10 @@
 // import org.locationtech.jts.util.IntArrayList;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Quadrant.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
 /**
  * MonotoneChains are a way of partitioning the segments of an edge to
  * allow for fast searching of intersections.
@@ -46,11 +50,11 @@
  */
 class MonotoneChainIndexer {
 
-  static int[] toIntArray(List list)
-  {
-    int[] array = new int[list.size()];
+  static /**int[] */ List<int>  toIntArray(List list){
+    // /**int[] */ List<int>  array = new int[list.size()];
+    /**int[] */ List<int>  array = List.filled(list.size(), 0,growable: false);
     for (int i = 0; i < array.length; i++) {
-      array[i] = ((Integer) list.get(i)).intValue();
+      array[i] = list.get(i);
     }
     return array;
   }
@@ -58,11 +62,12 @@ class MonotoneChainIndexer {
   MonotoneChainIndexer() {
   }
 
-  int[] getChainStartIndices(List<Coordinate> pts)
+  /**int[] */ List<int>  getChainStartIndices(List<Coordinate> pts)
   {
     // find the startpoint (and endpoints) of all monotone chains in this edge
     int start = 0;
-    IntArrayList startIndexList = new IntArrayList(pts.length / 2);
+    // IntArrayList startIndexList = new IntArrayList(pts.length / 2);
+    List<int> startIndexList = [];
     // use heuristic to size initial array
     //startIndexList.ensureCapacity(pts.length / 4);
     startIndexList.add(start);
@@ -75,7 +80,7 @@ class MonotoneChainIndexer {
     return startIndexList.toArray();
   }  
   
-  int[] OLDgetChainStartIndices(List<Coordinate> pts)
+  /**int[] */ List<int>  OLDgetChainStartIndices(List<Coordinate> pts)
   {
     // find the startpoint (and endpoints) of all monotone chains in this edge
     int start = 0;
@@ -87,7 +92,7 @@ class MonotoneChainIndexer {
       start = last;
     } while (start < pts.length - 1);
     // copy list to an array of ints, for efficiency
-    int[] startIndex = toIntArray(startIndexList);
+    /**int[] */ List<int>  startIndex = toIntArray(startIndexList);
     return startIndex;
   }
 
@@ -97,12 +102,12 @@ class MonotoneChainIndexer {
  /**private */int findChainEnd(List<Coordinate> pts, int start)
   {
     // determine quadrant for chain
-    int chainQuad = Quadrant.quadrant(pts[start], pts[start + 1]);
+    int chainQuad = Quadrant.quadrant$2(pts[start], pts[start + 1]);
     int last = start + 1;
     while (last < pts.length ) {
       //if (last - start > 100) break;
       // compute quadrant for next possible segment in chain
-      int quad = Quadrant.quadrant(pts[last - 1], pts[last]);
+      int quad = Quadrant.quadrant$2(pts[last - 1], pts[last]);
       if (quad != chainQuad) break;
       last++;
     }

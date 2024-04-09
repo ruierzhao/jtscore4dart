@@ -20,6 +20,12 @@
 // import org.locationtech.jts.geomgraph.Node;
 
 
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import '../Node.dart';
+import '../Edge.dart';
+
 /**
  * Computes the intersection of line segments,
  * and adds the intersection to the edges containing the segments.
@@ -38,37 +44,33 @@ class SegmentIntersector
    * These variables keep track of what types of intersections were
    * found during ALL edges that have been intersected.
    */
- /**private */bool hasIntersection = false;
+ /**private */bool _hasIntersection = false;
  /**private */bool hasProper = false;
  /**private */bool hasProperInterior = false;
   // the proper intersection point found
- /**private */Coordinate properIntersectionPoint = null;
+ /**private */Coordinate? properIntersectionPoint = null;
 
  /**private */LineIntersector li;
  /**private */bool includeProper;
  /**private */bool recordIsolated;
- /**private */bool isSelfIntersection;
+//  /**private */bool isSelfIntersection;
   //private bool intersectionFound;
  /**private */int numIntersections = 0;
 
   // testing only
   int numTests = 0;
 
- /**private */Collection[] bdyNodes;
+//  /**private */Collection[] bdyNodes;
+ /**private */late List<Iterable> bdyNodes;
 
-  SegmentIntersector(LineIntersector li,  bool includeProper, bool recordIsolated)
-  {
-    this.li = li;
-    this.includeProper = includeProper;
-    this.recordIsolated = recordIsolated;
-  }
+  SegmentIntersector(this.li,  this.includeProper, this.recordIsolated);
 
-  void setBoundaryNodes( Collection bdyNodes0,
-                              Collection bdyNodes1)
+  void setBoundaryNodes(Iterable bdyNodes0,Iterable bdyNodes1)
   {
-      bdyNodes = new Collection[2];
-      bdyNodes[0] = bdyNodes0;
-      bdyNodes[1] = bdyNodes1;
+      // bdyNodes = new Collection[2];
+      // bdyNodes[0] = bdyNodes0;
+      // bdyNodes[1] = bdyNodes1;
+      bdyNodes = List.from([bdyNodes0,bdyNodes1],growable: false);
   }
   
   bool isDone() {
@@ -77,9 +79,10 @@ class SegmentIntersector
   /**
    * @return the proper intersection point, or <code>null</code> if none was found
    */
-  Coordinate getProperIntersectionPoint()  {    return properIntersectionPoint;  }
+  /// TODO: @ruier edit. 解决不了的问题就交给调用的人
+  // Coordinate getProperIntersectionPoint()  {    return properIntersectionPoint;  }
 
-  bool hasIntersection() { return hasIntersection; }
+  bool hasIntersection() { return _hasIntersection; }
   /**
    * A proper intersection is an intersection which is interior to at least two
    * line segments.  Note that a proper intersection is not necessarily
@@ -115,8 +118,9 @@ class SegmentIntersector
   {
     if (e0 == e1) {
       if (li.getIntersectionNum() == 1) {
-        if (isAdjacentSegments(segIndex0, segIndex1))
+        if (isAdjacentSegments(segIndex0, segIndex1)) {
           return true;
+        }
         if (e0.isClosed()) {
           int maxSegIndex = e0.getNumPoints() - 1;
           if (    (segIndex0 == 0 && segIndex1 == maxSegIndex)
@@ -147,7 +151,7 @@ class SegmentIntersector
     Coordinate p10 = e1.getCoordinate(segIndex1);
     Coordinate p11 = e1.getCoordinate(segIndex1 + 1);
 
-    li.computeIntersection(p00, p01, p10, p11);
+    li.computeIntersection4Coord(p00, p01, p10, p11);
 //if (li.hasIntersection() && li.isProper()) Debug.println(li);
     /**
      *  Always record any non-proper intersections.
@@ -164,7 +168,7 @@ class SegmentIntersector
       // the shared endpoint.  Don't bother adding it if it is the
       // only intersection.
       if (! isTrivialIntersection(e0, segIndex0, e1, segIndex1)) {
-        hasIntersection = true;
+        _hasIntersection = true;
         /**
          * In certain cases two line segments test as having a proper intersection
          * via the robust orientation check, but due to roundoff 
@@ -175,22 +179,23 @@ class SegmentIntersector
          * is recorded as properInterior by logic below. 
          */
         bool isBoundaryPt = isBoundaryPoint(li, bdyNodes);
-        bool isNotProper = ! li.isProper() || isBoundaryPt;
+        bool isNotProper = ! li.getIsProper() || isBoundaryPt;
         if (includeProper || isNotProper ) {
           e0.addIntersections(li, segIndex0, 0);
           e1.addIntersections(li, segIndex1, 1);
         }
-        if (li.isProper()) {
+        if (li.getIsProper()) {
           properIntersectionPoint = li.getIntersection(0).copy();
           hasProper = true;
-          if (! isBoundaryPt)
+          if (! isBoundaryPt) {
             hasProperInterior = true;
+          }
         }
       }
     }
   }
 
- /**private */bool isBoundaryPoint(LineIntersector li, Collection[] bdyNodes)
+ /**private */bool isBoundaryPoint(LineIntersector li, [List<Iterable>? bdyNodes])
   {
     if (bdyNodes == null) return false;
     if (isBoundaryPointInternal(li, bdyNodes[0])) return true;
@@ -198,10 +203,10 @@ class SegmentIntersector
     return false;
   }
 
- /**private */bool isBoundaryPointInternal(LineIntersector li, Collection bdyNodes)
+ /**private */bool isBoundaryPointInternal(LineIntersector li, Iterable bdyNodes)
   {
-    for (Iterator i = bdyNodes.iterator(); i.moveNext(); ) {
-      Node node = (Node) i.current;
+    for (Iterator i = bdyNodes.iterator; i.moveNext(); ) {
+      Node node = i.current;
       Coordinate pt = node.getCoordinate();
       if (li.isIntersection(pt)) return true;
     }

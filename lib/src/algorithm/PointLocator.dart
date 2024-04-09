@@ -64,6 +64,7 @@ class PointLocator
   }
 
   /// 如果点在内部或者边界上返回true。
+  /// 
   /// Convenience method to test a point for intersection with
   /// a Geometry
   /// @param p the coordinate to test
@@ -106,8 +107,9 @@ class PointLocator
     return Location.EXTERIOR;
   }
 
-  @Deprecated("或许还需要改")
-  /**private */ void computeLocation(Coordinate p, Geometry geom)
+  @Deprecated("或许还需要改一下")
+  /**private */ 
+  void computeLocation(Coordinate p, Geometry geom)
   {
     if (geom.isEmpty()) {
       return;
@@ -123,14 +125,14 @@ class PointLocator
       updateLocationInfo(locateInPolygon(p,  geom));
     }
     else if (geom is MultiLineString) {
-      MultiLineString ml =  geom as MultiLineString;
+      MultiLineString ml =  geom;
       for (int i = 0; i < ml.getNumGeometries(); i++) {
         LineString l =  ml.getGeometryN(i) as LineString;
         updateLocationInfo(locateOnLineString(p, l));
       }
     }
     else if (geom is MultiPolygon) {
-      MultiPolygon mpoly =  geom as MultiPolygon;
+      MultiPolygon mpoly =  geom;
       for (int i = 0; i < mpoly.getNumGeometries(); i++) {
         Polygon poly =  mpoly.getGeometryN(i) as Polygon;
         updateLocationInfo(locateInPolygon(p, poly));
@@ -160,7 +162,7 @@ class PointLocator
   {
   	// no point in doing envelope test, since equality test is just as fast
   	
-    Coordinate ptCoord = pt.getCoordinate();
+    Coordinate ptCoord = pt.getCoordinate()!;
     if (ptCoord.equals2D(p)) {
       return Location.INTERIOR;
     }

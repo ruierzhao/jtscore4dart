@@ -14,6 +14,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Quadrant;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Quadrant.dart';
+
+import 'Orientation.dart';
+
 /**
  * Functions to compute topological information 
  * about nodes (ring intersections) in polygonal geometry.
@@ -85,9 +90,9 @@ class PolygonNodeTopology
       aHi = a0;
       isInteriorBetween = false;
     }
-    bool isBetween = isBetween(nodePt, b, aLo, aHi);
-    bool isInterior = (isBetween && isInteriorBetween)
-        || (! isBetween && ! isInteriorBetween);
+    bool _isBetween = isBetween(nodePt, b, aLo, aHi);
+    bool isInterior = (_isBetween && isInteriorBetween)
+        || (! _isBetween && ! isInteriorBetween);
     return isInterior;
   }
   

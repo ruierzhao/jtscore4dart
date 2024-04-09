@@ -62,11 +62,12 @@ class PointGeometryUnion
 	{
 		PointLocator locater = new PointLocator();
 		// use a set to eliminate duplicates, as required for union
-		Set<Coordinate> exteriorCoords = new TreeSet();
+		// Set<Coordinate> exteriorCoords = new TreeSet();
+		Set<Coordinate> exteriorCoords = {};
 		
-		for (int i =0 ; i < pointGeom.getNumGeometries(); i++) {
-			Point point = (Point) pointGeom.getGeometryN(i);
-			Coordinate coord = point.getCoordinate();
+		for (int i =0 ; i < (pointGeom).getNumGeometries(); i++) {
+			Point point = pointGeom.getGeometryN(i) as Point;
+			Coordinate coord = point.getCoordinate()!;
 			int loc = locater.locate(coord, otherGeom);
 			if (loc == Location.EXTERIOR) {
 			  exteriorCoords.add(coord);

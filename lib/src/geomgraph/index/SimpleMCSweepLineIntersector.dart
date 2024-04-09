@@ -21,6 +21,9 @@
 
 // import org.locationtech.jts.geomgraph.Edge;
 
+import 'EdgeSetIntersector.dart';
+import 'SegmentIntersector.dart';
+
 /**
  * Finds all intersections in one or two sets of edges,
  * using an x-axis sweepline algorithm in conjunction with Monotone Chains.
@@ -31,8 +34,7 @@
  *
  * @version 1.7
  */
-class SimpleMCSweepLineIntersector
-  extends EdgeSetIntersector
+class SimpleMCSweepLineIntersector extends EdgeSetIntersector
 {
 
   List events = [];

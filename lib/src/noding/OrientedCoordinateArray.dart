@@ -10,9 +10,11 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateArrays;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
 
 /**
  * Allows comparing {@link Coordinate} arrays
@@ -21,11 +23,9 @@
  * @author Martin Davis
  * @version 1.7
  */
-class OrientedCoordinateArray
-    implements Comparable
-{
- /**private */List<Coordinate> pts;
- /**private */bool orientation;
+class OrientedCoordinateArray implements Comparable {
+  /**private */ List<Coordinate> pts;
+  /**private */ bool _orientation;
 
   /**
    * Creates a new {@link OrientedCoordinateArray}
@@ -33,11 +33,7 @@ class OrientedCoordinateArray
    *
    * @param pts the coordinates to orient
    */
-  OrientedCoordinateArray(List<Coordinate> pts)
-  {
-    this.pts = pts;
-    orientation = orientation(pts);
-  }
+  OrientedCoordinateArray(this.pts) : _orientation = orientation(pts);
 
   /**
    * Computes the canonical orientation for a coordinate array.
@@ -46,8 +42,7 @@ class OrientedCoordinateArray
    * @return <code>true</code> if the points are oriented forwards
    * or <code>false</code if the points are oriented in reverse
    */
- /**private */static bool orientation(List<Coordinate> pts)
-  {
+  /**private */ static bool orientation(List<Coordinate> pts) {
     return CoordinateArrays.increasingDirection(pts) == 1;
   }
 
@@ -59,10 +54,10 @@ class OrientedCoordinateArray
    * 1 this one is greater
    */
 
-  int compareTo(Object o1) {
-    OrientedCoordinateArray oca = (OrientedCoordinateArray) o1;
-    int comp = compareOriented(pts, orientation,
-                               oca.pts, oca.orientation);
+  @override
+  int compareTo(dynamic o1) {
+    OrientedCoordinateArray oca = o1 as OrientedCoordinateArray;
+    int comp = compareOriented(pts, _orientation, oca.pts, oca._orientation);
 /*
     // MD - testing only
     int oldComp = SegmentStringDissolver.ptsComp.compare(pts, oca.pts);
@@ -79,11 +74,8 @@ class OrientedCoordinateArray
     return comp;
   }
 
- /**private */static int compareOriented(List<Coordinate> pts1,
-                                     bool orientation1,
-                                     List<Coordinate> pts2,
-                                     bool orientation2)
-  {
+  /**private */ static int compareOriented(List<Coordinate> pts1,
+      bool orientation1, List<Coordinate> pts2, bool orientation2) {
     int dir1 = orientation1 ? 1 : -1;
     int dir2 = orientation2 ? 1 : -1;
     int limit1 = orientation1 ? pts1.length : -1;
@@ -93,17 +85,14 @@ class OrientedCoordinateArray
     int i2 = orientation2 ? 0 : pts2.length - 1;
     while (true) {
       int compPt = pts1[i1].compareTo(pts2[i2]);
-      if (compPt != 0)
-        return compPt;
+      if (compPt != 0) return compPt;
       i1 += dir1;
       i2 += dir2;
       bool done1 = i1 == limit1;
       bool done2 = i2 == limit2;
-      if (done1 && ! done2) return -1;
-      if (! done1 && done2) return 1;
+      if (done1 && !done2) return -1;
+      if (!done1 && done2) return 1;
       if (done1 && done2) return 0;
     }
   }
-
-
 }

@@ -37,7 +37,7 @@ import 'package:jtscore4dart/src/geom/Polygonal.dart';
 import 'package:jtscore4dart/src/geom/TopologyException.dart';
 import 'package:jtscore4dart/src/geom/util/PolygonExtracter.dart';
 import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
-import 'package:jtscore4dart/src/util/Debug.dart';
+// import 'package:jtscore4dart/src/util/Debug.dart';
 
 import '../overlay/snap/SnapIfNeededOverlayOp.dart';
 import '../overlayng/OverlayNG.dart';
@@ -351,14 +351,15 @@ class CascadedPolygonUnion
   	}
 
   	countRemainder--;
-  	if (Debug.isDebugging()) {
-  	  Debug.println("Remainder: $countRemainder out of $countInput");
-      Debug.print("Union: A: ${g0.getNumPoints()} / B: ${g1.getNumPoints()}  ---  "  );
-  	}
+    /// TODO: @ruier edit.应该是调试用的
+  	// if (Debug.isDebugging()) {
+  	//   Debug.println("Remainder: $countRemainder out of $countInput");
+    //   Debug.print("Union: A: ${g0.getNumPoints()} / B: ${g1.getNumPoints()}  ---  "  );
+  	// }
 
   	Geometry union = unionActual( g0, g1 );
-  	
-    if (Debug.isDebugging()) Debug.println(" Result: ${union.getNumPoints()}");
+  	/// TODO: @ruier edit.
+    // if (Debug.isDebugging()) Debug.println(" Result: ${union.getNumPoints()}");
     //if (TestBuilderProxy.isActive()) TestBuilderProxy.showIndicator(union);
     
     return union;

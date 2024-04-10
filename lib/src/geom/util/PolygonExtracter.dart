@@ -30,8 +30,7 @@ import 'package:jtscore4dart/src/geom/Polygon.dart';
  * @version 1.7
  * @see GeometryExtracter
  */
-class PolygonExtracter
-  implements GeometryFilter
+class PolygonExtracter implements GeometryFilter
 {
   /**
    * Extracts the {@link Polygon} elements from a single {@link Geometry}

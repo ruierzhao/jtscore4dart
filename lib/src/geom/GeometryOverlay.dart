@@ -196,6 +196,7 @@ class GeometryOverlay
       return OverlayNGRobust.union(a);
     }
     else {
+      print('>>>>>>>>> 1 <<<<<<<<<<<<<<<<<<<<');
       return UnaryUnionOp.union(a);
     }
   }

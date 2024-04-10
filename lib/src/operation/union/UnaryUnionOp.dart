@@ -117,6 +117,8 @@ class UnaryUnionOp
 	static Geometry union(Geometry geom)
 	{
 		UnaryUnionOp op = new UnaryUnionOp(geom);
+    print('>>>>>>>>> 2 <<<<<<<<<<<<<<<<<<<<');
+
 		return op.union_();
 	}
 	
@@ -208,6 +210,9 @@ class UnaryUnionOp
     List<Point> points = extracter.getExtract(0) as List<Point>;
     List<LineString> lines = extracter.getExtract(1) as List<LineString>;
     List<Polygon> polygons = extracter.getExtract(2) as List<Polygon>;
+    print('>>>>>>>>> ${ points } <<<<<<<<<<<<<<<<<<<<');
+    print('>>>>>>>>> ${ lines } <<<<<<<<<<<<<<<<<<<<');
+    print('>>>>>>>>> ${ polygons } <<<<<<<<<<<<<<<<<<<<');
     
 		/**
 		 * For points and lines, only a single union operation is 
@@ -243,7 +248,7 @@ class UnaryUnionOp
 		} else if (unionLA == null){
       union = unionPoints;
     }else {
-      union = PointGeometryUnion.union( unionPoints as Puntal, unionLA);
+      union = PointGeometryUnion.of( unionPoints as Puntal, unionLA);
     }
 			
 		

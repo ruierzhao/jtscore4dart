@@ -49,14 +49,13 @@ class PointGeometryUnion
 		return unioner.union();
 	}
 	
-	// /**private */ Geometry pointGeom;
-	/**private */ Puntal pointGeom;
+	/**private */ Geometry pointGeom;
 	/**private */ Geometry otherGeom;
 	/**private */ GeometryFactory geomFact;
 	
-	PointGeometryUnion(this.pointGeom, this.otherGeom)
-	:
-		geomFact = otherGeom.getFactory();
+	PointGeometryUnion(Puntal pointGeom, this.otherGeom)
+	:this.pointGeom = pointGeom as Geometry,
+  geomFact = otherGeom.getFactory();
 	
 	Geometry union()
 	{

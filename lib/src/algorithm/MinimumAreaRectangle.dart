@@ -21,7 +21,6 @@
 // import org.locationtech.jts.geom.Polygon;
 
 import 'package:jtscore4dart/geometry.dart';
-import 'package:jtscore4dart/src/geom/LineSegment.dart';
 
 import 'ConvexHull.dart';
 import 'Rectangle.dart';
@@ -57,11 +56,12 @@ class MinimumAreaRectangle
    * If the convex hull of the input is degenerate (a line or point)
    * a {@link LineString} or {@link Point} is returned.
    * 
-   * @param geom the geometry
+   * @param [geom] the geometry
+   * @param [isConvex] the geometry
    * @return the minimum rectangle enclosing the geometry
    */
-  static Geometry of(Geometry geom) {
-    return MinimumAreaRectangle(geom).getMinimumRectangle();
+  static Geometry of(Geometry geom,[bool isConvex=false]) {
+    return MinimumAreaRectangle(geom, isConvex).getMinimumRectangle();
   }
   
  /**private */final Geometry inputGeom;
@@ -101,6 +101,7 @@ class MinimumAreaRectangle
       return computeConvex(inputGeom);
     }
     Geometry convexGeom = ConvexHull(inputGeom).getConvexHull();
+    print('>>>>>>>>> ${ convexGeom } <<<<<<<<<<<<<<<<<<<<');
     return computeConvex(convexGeom);
   }
 
@@ -153,8 +154,8 @@ class MinimumAreaRectangle
     int leftSideIndex = 1; 
     int rightSideIndex = -1; // initialized once first diameter is found
 
-    LineSegment segBase = new LineSegment();
-    LineSegment segDiam = new LineSegment();
+    LineSegment segBase = new LineSegment.empty();
+    LineSegment segDiam = new LineSegment.empty();
     // for each segment, find the next vertex which is at maximum distance
     for (int i = 0; i < ring.length - 1; i++) {
       segBase.p0 = ring[i];
@@ -198,17 +199,17 @@ class MinimumAreaRectangle
     double maxDistance = orientedDistance(baseSeg, pts[startIndex], orient);
     double nextDistance = maxDistance;
     int maxIndex = startIndex;
-    int nextIndex = maxIndex;
+    int _nextIndex = maxIndex;
     //-- rotate "caliper" while distance from base segment is non-decreasing
     while (isFurtherOrEqual(nextDistance, maxDistance, orient)) {
       maxDistance = nextDistance;
-      maxIndex = nextIndex;
+      maxIndex = _nextIndex;
 
-      nextIndex = nextIndex(pts, maxIndex);
-      if (nextIndex == startIndex) {
+      _nextIndex = nextIndex(pts, maxIndex);
+      if (_nextIndex == startIndex) {
         break;
       }
-      nextDistance = orientedDistance(baseSeg, pts[nextIndex], orient);
+      nextDistance = orientedDistance(baseSeg, pts[_nextIndex], orient);
     }
     return maxIndex;
   }

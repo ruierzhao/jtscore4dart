@@ -49,11 +49,11 @@
 		],
 		"description": "import java patch."
 	}
-	,"import patch": {
+	,"print": {
 		"scope": "dart",
 		"prefix": "pr",
 		"body": [
-			"print('>>>>>>>>> ${ $CLIPBOARD } <<<<<<<<<<<<<<<<<<<<');",
+			"print('>>>>>>>>> ${ ${1:$CLIPBOARD} } <<<<<<<<<<<<<<<<<<<<');$0",
 		],
 		"description": "import java patch."
 	}

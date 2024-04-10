@@ -1525,7 +1525,6 @@ class WKTReader {
 
 // create a sequence for one coordinate
     int offsetM = ordinateFlags.contains(Ordinate.Z) ? 1 : 0;
-    print('==============${csFactory}=====================');
     CoordinateSequence sequence = csFactory.createWithSize(1, toDimension(ordinateFlags), ordinateFlags.contains(Ordinate.M) ? 1 : 0);
     sequence.setOrdinate(0, CoordinateSequence.X,
         precisionModel.makePrecise(getNextNumber(tokenizer)));

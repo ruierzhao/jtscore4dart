@@ -43,6 +43,9 @@
 // import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
 // import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
 
+import 'package:jtscore4dart/io.dart';
+import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
+
 import 'CoordinateSequenceComparator.dart';
 import 'Coordinate.dart';
 import 'Envelope.dart';
@@ -1088,21 +1091,20 @@ abstract class Geometry{
   }
 
 
-  // @override
-  // String toString() {
-  //   return toText();
-  // }
+  @override
+  String toString() {
+    return toText();
+  }
 
   ///  Returns the Well-known Text representation of this <code>Geometry</code>.
   ///  For a definition of the Well-known Text format, see the OpenGIS Simple
   ///  Features Specification.
   ///
   ///@return    the Well-known Text representation of this <code>Geometry</code>
-  // TODO: ruier edit.之后添加
-  // String toText() {
-  //   WKTWriter writer = new WKTWriter();
-  //   return writer.write(this);
-  // }
+  String toText() {
+    WKTWriter writer = new WKTWriter();
+    return writer.write(this);
+  }
 
   /// Computes a buffer area around this geometry having the given width and with
   /// a specified accuracy of approximation for circular arcs.
@@ -1197,8 +1199,7 @@ abstract class Geometry{
   /// @see #buffer(double, int)
   /// @see BufferOp
   Geometry buffer(double distance, [int? quadrantSegments, int? endCapStyle]) {
-    throw UnimplementedError("ruier test");
-    // return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
+    return BufferOp.bufferOp(this, distance, quadrantSegments, endCapStyle);
   }
 
   ///  Computes the smallest convex <code>Polygon</code> that contains all the

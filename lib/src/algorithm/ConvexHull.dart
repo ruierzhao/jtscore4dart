@@ -80,7 +80,6 @@ class ConvexHull
   /// 1 point, a {@link Point};
   /// 0 points, an empty {@link GeometryCollection}.
   Geometry getConvexHull() {
-
     Geometry? fewPointsGeom = createFewPointsResult();
     if (fewPointsGeom != null) {
       return fewPointsGeom;

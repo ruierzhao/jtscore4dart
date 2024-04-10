@@ -24,8 +24,7 @@
  * This algorithm is too slow for production use, but is useful for testing purposes.
  * @version 1.7
  */
-class SimpleEdgeSetIntersector
-  extends EdgeSetIntersector
+class SimpleEdgeSetIntersector extends EdgeSetIntersector
 {
   // statistics information
   int nOverlaps;

@@ -500,7 +500,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     return;
   }
 
-  /**protected abstract*/ Comparator<Object> getComparator();
+  /**protected abstract*/ Comparator<dynamic> getComparator();
 
   List  getItemBoundables()
   {

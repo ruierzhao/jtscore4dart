@@ -78,8 +78,6 @@ final class CoordinateArraySequenceFactory implements CoordinateSequenceFactory 
 
   @override
   CoordinateSequence createWithSize(int size, int dimension, [int? measures]) {
-    print('============== createWithSize ruier =====================');
-
     if (measures == null) {
       return createBySize(size, dimension);
     }

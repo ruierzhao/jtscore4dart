@@ -154,7 +154,7 @@ class GeometryEditor
   }
 
  /**private */Polygon editPolygon(Polygon polygon, GeometryEditorOperation operation) {
-    Polygon newPolygon = operation.edit(polygon, _factory!) as Polygon;
+    Polygon? newPolygon = operation.edit(polygon, _factory!) as Polygon?;
     // create one if needed
     newPolygon ??= _factory!.createPolygon();
     if (newPolygon.isEmpty()) {
@@ -162,7 +162,7 @@ class GeometryEditor
       return newPolygon;
     }
 
-    LinearRing shell = edit(newPolygon.getExteriorRing(), operation) as LinearRing;
+    LinearRing? shell = edit(newPolygon.getExteriorRing(), operation) as LinearRing?;
     if (shell == null || shell.isEmpty()) {
       //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
       return _factory!.createPolygon();
@@ -170,7 +170,7 @@ class GeometryEditor
 
     List<LinearRing> holes = [];
     for (int i = 0; i < newPolygon.getNumInteriorRing(); i++) {
-      LinearRing hole = edit(newPolygon.getInteriorRingN(i), operation) as LinearRing;
+      LinearRing? hole = edit(newPolygon.getInteriorRingN(i), operation) as LinearRing?;
       if (hole == null || hole.isEmpty()) {
         continue;
       }
@@ -235,7 +235,7 @@ class GeometryEditor
      * @return a new Geometry which is a modification of the input Geometry
      * @return null if the Geometry is to be deleted completely
      */
-    Geometry edit(Geometry geometry, GeometryFactory factory);
+    Geometry? edit(Geometry geometry, GeometryFactory factory);
     /// TODO: @ruier edit.
     // Geometry edit(var geometry, GeometryFactory factory);
   }

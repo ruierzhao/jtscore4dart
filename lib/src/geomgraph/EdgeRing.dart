@@ -53,9 +53,9 @@ abstract class EdgeRing {
  /**private */List edges = []; // the DirectedEdges making up this EdgeRing
  /**private */List pts = [];
  /**private */Label label = new Label(Location.NONE); // label stores the locations of each geometry on the face surrounded by this ring
- /**private */late LinearRing ring;  // the ring created for this EdgeRing
+ /**private */LinearRing? ring;  // the ring created for this EdgeRing
  /**private */late bool _isHole;
- /**private */late EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
+ /**private */EdgeRing? shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
  /**private */List holes = []; // a list of EdgeRings which are holes in this EdgeRing
 
  /**protected */GeometryFactory geometryFactory;
@@ -77,15 +77,15 @@ abstract class EdgeRing {
 
   Coordinate getCoordinate(int i) { return  pts.get(i) as Coordinate;  }
 
-  LinearRing getLinearRing() { return ring; }
+  LinearRing? getLinearRing() { return ring; }
 
   Label getLabel() { return label; }
 
   bool isShell() { return shell == null; }
 
-  EdgeRing getShell() { return shell; }
+  EdgeRing? getShell() { return shell; }
 
-  void setShell(EdgeRing shell)
+  void setShell(EdgeRing? shell)
   {
     this.shell = shell;
     if (shell != null) shell.addHole(this);
@@ -95,7 +95,7 @@ abstract class EdgeRing {
   Polygon toPolygon(GeometryFactory geometryFactory)
   {
     // List<LinearRing> holeLR = new LinearRing[holes.size()];
-    List<LinearRing> holeLR = List.generate(holes.size(), (i)=> (holes.get(i) as EdgeRing).getLinearRing(),growable: false);
+    List<LinearRing> holeLR = List.generate(holes.size(), (i) => (holes.get(i) as EdgeRing).getLinearRing()!,growable: false);
     /// TODO: @ruier edit.
     // for (int i = 0; i < holes.size(); i++) {
     //   holeLR[i] = ((EdgeRing) holes.get(i)).getLinearRing();
@@ -117,7 +117,7 @@ abstract class EdgeRing {
     // }
     List<Coordinate> coord = List.generate(pts.size(), (i) => pts.get(i),growable: false);
     ring = geometryFactory.createLinearRing(coord);
-    _isHole = Orientation.isCCW(ring.getCoordinates());
+    _isHole = Orientation.isCCW(ring!.getCoordinates());
 //Debug.println( (isHole ? "hole - " : "shell - ") + WKTWriter.toLineString(new CoordinateArraySequence(ring.getCoordinates())));
   }
   /**abstract */ DirectedEdge getNext(DirectedEdge de);
@@ -243,7 +243,7 @@ abstract class EdgeRing {
    */
   bool containsPoint(Coordinate p)
   {
-    LinearRing shell = getLinearRing();
+    LinearRing shell = getLinearRing()!;
     Envelope env = shell.getEnvelopeInternal();
     if (! env.containsCoord(p)) return false;
     if (! PointLocation.isInRing(p, shell.getCoordinates()) ) return false;

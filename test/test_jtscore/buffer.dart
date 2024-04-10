@@ -7,5 +7,5 @@ void main() {
   var gf = GeometryFactory();
   Point p = gf.createPoint(Coordinate(13, 30));
   var g = BufferOp.bufferOp(p, 5);
-  print(g);
+  print(g.getCoordinates());
 }

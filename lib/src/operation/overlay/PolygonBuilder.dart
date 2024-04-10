@@ -241,7 +241,7 @@ class PolygonBuilder {
    */
  /**private */static EdgeRing findEdgeRingContaining(EdgeRing testEr, List shellList)
   {
-    LinearRing testRing = testEr.getLinearRing();
+    LinearRing testRing = testEr.getLinearRing()!;
     Envelope testEnv = testRing.getEnvelopeInternal();
     Coordinate? testPt = testRing.getCoordinateN(0);
 
@@ -249,7 +249,7 @@ class PolygonBuilder {
     Envelope? minShellEnv = null;
     for (Iterator it = shellList.iterator; it.moveNext(); ) {
       EdgeRing tryShell = it.current;
-      LinearRing tryShellRing = tryShell.getLinearRing();
+      LinearRing tryShellRing = tryShell.getLinearRing()!;
       Envelope tryShellEnv = tryShellRing.getEnvelopeInternal();
       // the hole envelope cannot equal the shell envelope
       // (also guards against testing rings against themselves)
@@ -268,7 +268,7 @@ class PolygonBuilder {
         if (minShell == null
             || minShellEnv!.contains(tryShellEnv)) {
           minShell = tryShell;
-          minShellEnv = minShell.getLinearRing().getEnvelopeInternal();
+          minShellEnv = minShell.getLinearRing()!.getEnvelopeInternal();
         }
       }
     }

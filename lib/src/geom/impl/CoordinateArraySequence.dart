@@ -118,6 +118,7 @@ class CoordinateArraySequence extends CoordinateSequence{
       _coordinates = List<Coordinate>.filled(size, Coordinate.empty2D());
     }else{
       // _coordinates = new Coordinate[size];
+      _coordinates = List.filled(size, Coordinate.empty2D(),growable: false);
       _dimension = dimension;
       for (int i = 0; i < size; i++) {
         _coordinates[i] = Coordinates.create(dimension);
@@ -132,6 +133,8 @@ class CoordinateArraySequence extends CoordinateSequence{
   /// @param dimension the dimension of the coordinates
   CoordinateArraySequence.init2(int size, int dimension,int measures) {
     // _coordinates = new Coordinate[size];
+    _coordinates = List.filled(size, Coordinate.empty2D(),growable: false);
+
     _dimension = dimension;
     _measures = measures;
     for (int i = 0; i < size; i++) {

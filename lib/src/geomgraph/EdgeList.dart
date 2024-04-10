@@ -77,11 +77,11 @@ class EdgeList
    * @return  equal edge, if there is one already in the list
    *          null otherwise
    */
-  Edge findEqualEdge(Edge e)
+  Edge? findEqualEdge(Edge e)
   {
     OrientedCoordinateArray oca = new OrientedCoordinateArray(e.getCoordinates());
     // will return null if no edge matches
-    Edge matchEdge = ocaMap.get(oca);
+    Edge? matchEdge = ocaMap.get(oca);
     return matchEdge; 
   }
   

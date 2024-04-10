@@ -60,7 +60,7 @@ class DirectedEdge
  /**private */late DirectedEdge sym; // the symmetric edge
  /**private */late DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
  /**private */late DirectedEdge nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
- /**private */late EdgeRing edgeRing;  // the EdgeRing that this edge is part of
+ /**private */EdgeRing? edgeRing;  // the EdgeRing that this edge is part of
  /**private */EdgeRing? minEdgeRing;  // the MinimalEdgeRing that this edge is part of
   /**
    * The depth of each side (position) of this edge.
@@ -98,7 +98,7 @@ class DirectedEdge
 
   void setEdgeRing(EdgeRing edgeRing) { this.edgeRing = edgeRing; }
 
-  EdgeRing getEdgeRing() { return edgeRing; }
+  EdgeRing? getEdgeRing() { return edgeRing; }
 
   void setMinEdgeRing(EdgeRing minEdgeRing) { this.minEdgeRing = minEdgeRing; }
 

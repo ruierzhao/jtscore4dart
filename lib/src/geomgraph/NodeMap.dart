@@ -62,7 +62,7 @@ class NodeMap
    */
   Node addNodeCoord(Coordinate coord)
   {
-    Node node = nodeMap.get(coord) as Node;
+    Node? node = nodeMap.get(coord) as Node?;
     if (node == null) {
       node = nodeFact.createNode(coord);
       nodeMap.put(coord, node);

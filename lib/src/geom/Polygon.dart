@@ -141,7 +141,7 @@ class Polygon
       return [];
     }
     // List<Coordinate> coordinates = new Coordinate[getNumPoints()];
-    List<Coordinate> coordinates = [];
+    List<Coordinate> coordinates = List.filled(getNumPoints(), Coordinate.empty2D());
     int k = -1;
     List<Coordinate> shellCoordinates = shell!.getCoordinates();
     for (int x = 0; x < shellCoordinates.length; x++) {

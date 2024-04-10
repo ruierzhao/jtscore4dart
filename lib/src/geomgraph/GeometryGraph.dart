@@ -127,7 +127,7 @@ class GeometryGraph extends PlanarGraph
    */
  /**private */bool useBoundaryDeterminationRule = true;
  /**private */int argIndex;  // the index of this geometry as an argument to a spatial function (used for labelling)
- /**private */late Iterable boundaryNodes;
+ /**private */Iterable? boundaryNodes;
  /**private */bool _hasTooFewPoints = false;
  /**private */late Coordinate invalidPoint;
 
@@ -196,7 +196,7 @@ class GeometryGraph extends PlanarGraph
   Iterable getBoundaryNodes()
   {
     boundaryNodes ??= nodes.getBoundaryNodes(argIndex);
-    return boundaryNodes;
+    return boundaryNodes!;
   }
 
   List<Coordinate> getBoundaryPoints()

@@ -57,7 +57,7 @@ class Edge extends GraphComponent
  /**private */late Envelope env;
   late EdgeIntersectionList eiList;
  /**private */late String name;
- /**private */late MonotoneChainEdge mce;
+ /**private */MonotoneChainEdge? mce;
  /**private */bool _isIsolated = true;
  /**private */Depth depth = new Depth();
  /**private */int depthDelta = 0;   // the change in area depth from the R to L side of this edge
@@ -128,8 +128,8 @@ class Edge extends GraphComponent
 
   MonotoneChainEdge getMonotoneChainEdge()
   {
-    mce ??= MonotoneChainEdge(this);
-    return mce;
+    // mce ??= MonotoneChainEdge(this);
+    return mce ??= MonotoneChainEdge(this);
   }
 
   bool isClosed()

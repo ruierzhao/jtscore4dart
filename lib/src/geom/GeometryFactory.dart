@@ -535,7 +535,7 @@ class GeometryFactory{
     // at this point we know the collection is hetereogenous.
     // Determine the type of the result from the first Geometry in the list
     // this should always return a geometry, since otherwise an empty collection would have already been returned
-    Geometry geom0 = geomList.iterator.current;
+    Geometry geom0 = geomList.first;
     bool isCollection = geomList.length > 1;
     if (isCollection) {
       if (geom0 is Polygon) {

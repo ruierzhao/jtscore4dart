@@ -270,7 +270,7 @@ class BufferBuilder
   {
     //<FIX> MD 8 Oct 03  speed up identical edge lookup
     // fast lookup
-    Edge existingEdge = edgeList.findEqualEdge(e);
+    Edge? existingEdge = edgeList.findEqualEdge(e);
 
     // If an identical edge already exists, simply update its label
     if (existingEdge != null) {

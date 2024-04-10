@@ -71,10 +71,12 @@ class GeometryOverlay
  /**private */static bool isOverlayNG = OVERLAY_NG_DEFAULT;
 
   // static {
-  //   setOverlayImpl(System.getProperty(OVERLAY_PROPERTY_NAME));
+    // setOverlayImpl(System.getProperty(OVERLAY_PROPERTY_NAME));
   // }
   
   /**
+   * 主要为了测试
+   * 不推荐动态使用，可能引起不一致的overlay行为。
    * This function is provided primarily for unit testing.
    * It is not recommended to use it dynamically, since 
    * that may result in inconsistent overlay behaviour.

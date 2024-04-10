@@ -1231,8 +1231,8 @@ abstract class Geometry{
   ///
   ///@return    the minimum-area convex polygon containing this <code>Geometry</code>'
   ///      s points
+  @Deprecated("some situation is not true,waiting for correcting")
   Geometry convexHull() {
-    // throw UnimplementedError("ruier test");
     return (ConvexHull(this)).getConvexHull();
   }
 

@@ -65,7 +65,8 @@
 			"WKTWriter writer = WKTWriter();",
 			"Geometry g = reader.read(wktstr);",
 			"$0",
-			"print('>>>>>>>>> ${ ${1:writer.write(${2:$CLIPBOARD})} } <<<<<<<<<<<<<<<<<<<<');"
+			"print('>>>>>>>>> ${ ${1:writer.write(${2:newg})} } <<<<<<<<<<<<<<<<<<<<');",
+			"${3:import 'package:jtscore4dart/io.dart';\nimport 'package:jtscore4dart/src/geom/Geometry.dart';}"
 		],
 		"description": "import java patch."
 	}

@@ -57,5 +57,17 @@
 		],
 		"description": "import java patch."
 	}
+	,"wkt reader and writer template": {
+		"scope": "dart",
+		"prefix": "wktr",
+		"body": [
+			"WKTReader reader = WKTReader();",
+			"WKTWriter writer = WKTWriter();",
+			"Geometry g = reader.read(wktstr);",
+			"$0",
+			"print('>>>>>>>>> ${ ${1:writer.write(${2:$CLIPBOARD})} } <<<<<<<<<<<<<<<<<<<<');"
+		],
+		"description": "import java patch."
+	}
 }
 

@@ -402,11 +402,11 @@ abstract class CoordinateArrays {
   /// @param destStart the destination index to start copying to
   /// @param length    the number of items to copy
   // TODO: ruier edit.省略实现
-  // static void copyDeep(List<Coordinate> src, int srcStart, List<Coordinate> dest, int destStart, int length) {
-  //   for (int i = 0; i < length; i++) {
-  //     dest[destStart + i] = src[srcStart + i].copy();
-  //   }
-  // }
+  static void copyDeep$2(List<Coordinate> src, int srcStart, List<Coordinate> dest, int destStart, int length) {
+    for (int i = 0; i < length; i++) {
+      dest[destStart + i] = src[srcStart + i].copy();
+    }
+  }
 
   /// Converts the given Collection of Coordinates into a Coordinate array.
   // static List<Coordinate> toCoordinateArray(Collection coordList) {

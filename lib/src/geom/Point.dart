@@ -200,6 +200,7 @@ class Point
   ///
   /// @return a clone of this instance
   /// @deprecated
+  @Deprecated("")
   @override
   Object clone() {
     return copy();
@@ -233,7 +234,7 @@ class Point
     return getCoordinate()!.compareTo(point.getCoordinate()!);
   }
 
-  /**protected */ @override
+  /**protected */@override
   int compareToSameClassWithCompar(Object other, CoordinateSequenceComparator comp)
   {
     Point point = other as Point;

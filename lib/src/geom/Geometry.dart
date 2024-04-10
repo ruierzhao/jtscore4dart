@@ -44,6 +44,7 @@
 // import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
 
 import 'package:jtscore4dart/io.dart';
+import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
 import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
 
 import 'CoordinateSequenceComparator.dart';
@@ -1231,8 +1232,8 @@ abstract class Geometry{
   ///@return    the minimum-area convex polygon containing this <code>Geometry</code>'
   ///      s points
   Geometry convexHull() {
-    throw UnimplementedError("ruier test");
-    // return (ConvexHull(this)).getConvexHull();
+    // throw UnimplementedError("ruier test");
+    return (ConvexHull(this)).getConvexHull();
   }
 
   /// Computes a new geometry which has all component coordinate sequences
@@ -1798,7 +1799,7 @@ abstract class Geometry{
   }
   
   @override
-  bool operator ==(Object other) {
+  bool operator == (Object other) {
     // TODO: implement ==
     return super == other;
   }

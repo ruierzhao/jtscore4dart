@@ -330,7 +330,7 @@ class WKTWriter {
 
     // determine the precision model
     PrecisionModel? pm = this.precisionModel;
-    if (pm == null) pm = geometry.getFactory().getPrecisionModel();
+    pm ??= geometry.getFactory().getPrecisionModel();
 
     try {
       writeFormatted4Args(geometry, false, sw, pm);

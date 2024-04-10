@@ -107,7 +107,7 @@ class LineString
   }
 
   CoordinateSequence getCoordinateSequence() {
-      return points;
+    return points;
   }
 
   Coordinate getCoordinateN(int n) {

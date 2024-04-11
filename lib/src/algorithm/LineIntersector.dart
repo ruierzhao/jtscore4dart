@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 /**
  * @version 1.7
  */
@@ -22,13 +21,14 @@
 import 'dart:math';
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 
 import '../util/Assert.dart';
 import '../utils.dart';
 
 /// 判断两条线段是否相交并计算交点
-/// 
+///
 /// A <code>LineIntersector</code> is an algorithm that can both test whether
 /// two line segments intersect and compute the intersection point(s)
 /// if they do.
@@ -40,39 +40,41 @@ import '../utils.dart';
 /// <li>{@link #COLLINEAR_INTERSECTION} - the segments are collinear and they intersect in a line segment
 /// </ul>
 /// For segments which intersect in a single point, the point may be either an endpoint
-/// or in the interior of each segment.  
-/// If the point lies in the interior of both segments, 
+/// or in the interior of each segment.
+/// If the point lies in the interior of both segments,
 /// this is termed a <i>proper intersection</i>.
 /// The method {@link #isProper()} test for this situation.
 /// <p>
 /// The intersection point(s) may be computed in a precise or non-precise manner.
-/// Computing an intersection point precisely involves rounding it 
-/// via a supplied {@link PrecisionModel}.  
+/// Computing an intersection point precisely involves rounding it
+/// via a supplied {@link PrecisionModel}.
 /// <p>
-/// LineIntersectors do not perform an initial envelope intersection test 
+/// LineIntersectors do not perform an initial envelope intersection test
 /// to determine if the segments are disjoint.
-/// This is because this class is likely to be used in a context where 
+/// This is because this class is likely to be used in a context where
 /// envelope overlap is already known to occur (or be likely).
 ///
 /// @version 1.7
-abstract class LineIntersector 
-{
-/// These are deprecated, due to ambiguous naming
-  @Deprecated("These are deprecated, due to ambiguous naming, #NO_INTERSECTION")
-  static const  int DONT_INTERSECT = 0;
-  @Deprecated("These are deprecated, due to ambiguous naming,use #POINT_INTERSECTION")
-  static const  int DO_INTERSECT = 1;
-  @Deprecated("These are deprecated, due to ambiguous naming, use #COLLINEAR_INTERSECTION")
-  static const  int COLLINEAR = 2;
-  
+abstract class LineIntersector {
+  /// These are deprecated, due to ambiguous naming
+  @Deprecated(
+      "These are deprecated, due to ambiguous naming,use #NO_INTERSECTION")
+  static const int DONT_INTERSECT = 0;
+  @Deprecated(
+      "These are deprecated, due to ambiguous naming,use #POINT_INTERSECTION")
+  static const int DO_INTERSECT = 1;
+  @Deprecated(
+      "These are deprecated, due to ambiguous naming, use #COLLINEAR_INTERSECTION")
+  static const int COLLINEAR = 2;
+
   /// Indicates that line segments do not intersect
-  static const  int NO_INTERSECTION = 0;
-  
+  static const int NO_INTERSECTION = 0;
+
   /// Indicates that line segments intersect in a single point
-  static const  int POINT_INTERSECTION = 1;
-  
+  static const int POINT_INTERSECTION = 1;
+
   /// Indicates that line segments intersect in a line segment
-  static const  int COLLINEAR_INTERSECTION = 2;
+  static const int COLLINEAR_INTERSECTION = 2;
 
   /// Computes the "edge distance" of an intersection point [p] along a segment.
   /// The edge distance is a metric of the point along the edge.
@@ -90,25 +92,20 @@ abstract class LineIntersector
   /// result of <b>rounding</b> points which lie on the line,
   /// but not safe to use for <b>truncated</b> points.
   static double computeEdgeDistance(
-        Coordinate p,
-        Coordinate p0,
-        Coordinate p1)
-  {
+      Coordinate p, Coordinate p0, Coordinate p1) {
     double dx = (p1.x - p0.x).abs();
     double dy = (p1.y - p0.y).abs();
 
-    double dist = -1.0;   // sentinel value
+    double dist = -1.0; // sentinel value
     if (p.equals(p0)) {
       dist = 0.0;
-    }
-    else if (p.equals(p1)) {
+    } else if (p.equals(p1)) {
       if (dx > dy) {
         dist = dx;
       } else {
         dist = dy;
       }
-    }
-    else {
+    } else {
       double pdx = (p.x - p0.x).abs();
       double pdy = (p.y - p0.y).abs();
       if (dx > dy) {
@@ -118,49 +115,49 @@ abstract class LineIntersector
       }
       // <FIX>
       // hack to ensure that non-endpoints always have a non-zero distance
-      if (dist == 0.0 && ! p.equals(p0))
-      {
+      if (dist == 0.0 && !p.equals(p0)) {
         dist = max(pdx, pdy);
       }
     }
-    Assert.isTrue(! (dist == 0.0 && ! p.equals(p0)), "Bad distance calculation");
+    Assert.isTrue(!(dist == 0.0 && !p.equals(p0)), "Bad distance calculation");
     return dist;
   }
 
   static double nonRobustComputeEdgeDistance(
-        Coordinate p,
-        Coordinate p1,
-        Coordinate p2)
-  {
+      Coordinate p, Coordinate p1, Coordinate p2) {
     double dx = p.x - p1.x;
     double dy = p.y - p1.y;
-    double dist = hypot(dx, dy);   // dummy value
-    Assert.isTrue(! (dist == 0.0 && ! p.equals(p1)), "Invalid distance calculation");
+    double dist = hypot(dx, dy); // dummy value
+    Assert.isTrue(
+        !(dist == 0.0 && !p.equals(p1)), "Invalid distance calculation");
     return dist;
   }
 
- /**protected */late int result;
+  /**protected */ late int result;
 //  /**protected */List<List<Coordinate>> inputLines = Coordinate[2][2];
- /**protected */
- List<List<Coordinate>> inputLines = 
- List<List<Coordinate>>.filled(2, List<Coordinate>.filled(2, Coordinate.empty2D(),growable: false),growable: false);
+  /**protected */
+  List<List<Coordinate>> inputLines = List<List<Coordinate>>.filled(
+      2, List<Coordinate>.filled(2, Coordinate.empty2D(), growable: false),
+      growable: false);
 //  /**protected */List<Coordinate> intPt = Coordinate[2];
- /**protected */late List<Coordinate> intPt;
+  /**protected */ late List<Coordinate> intPt;
+
   /// The indexes of the endpoints of the intersection lines, in order along
   /// the corresponding line
- /**protected */List<List<int>>? intLineIndex;
- /**protected */late bool isProper;
- /**protected */late Coordinate pa;
- /**protected */late Coordinate pb;
+  /**protected */ List<List<int>>? intLineIndex;
+  /**protected */ late bool isProper;
+  /**protected */ late Coordinate pa;
+  /**protected */ late Coordinate pb;
+
   /// If makePrecise is true, computed intersection coordinates will be made precise
   /// using Coordinate#makePrecise
- /**protected */PrecisionModel? precisionModel;
+  /**protected */ PrecisionModel? precisionModel;
 //int numIntersects = 0;
 
   LineIntersector() {
     // intPt[0] = Coordinate();
     // intPt[1] = Coordinate();
-    intPt = List.filled(2, Coordinate.empty2D(),growable: false);
+    intPt = List.filled(2, Coordinate.empty2D(), growable: false);
     // alias the intersection points for ease of reference
     pa = intPt[0];
     pb = intPt[1];
@@ -170,37 +167,34 @@ abstract class LineIntersector
   /// Force computed intersection to be rounded to a given precision model
   /// @param precisionModel
   /// @deprecated use <code>setPrecisionModel</code> instead
-  void setMakePrecise(PrecisionModel precisionModel)
-  {
+  void setMakePrecise(PrecisionModel precisionModel) {
     this.precisionModel = precisionModel;
   }
 
   /// Force computed intersection to be rounded to a given precision model.
   /// No getter is provided, because the precision model is not required to be specified.
   /// @param precisionModel
-  void setPrecisionModel(PrecisionModel precisionModel)
-  {
+  void setPrecisionModel(PrecisionModel precisionModel) {
     this.precisionModel = precisionModel;
   }
 
   /// Gets an endpoint of an input segment.
-  /// 
+  ///
   /// @param [segmentIndex] the index of the input segment (0 or 1)
   /// @param [ptIndex] the index of the endpoint (0 or 1)
   /// @return the specified endpoint
-  Coordinate getEndpoint(int segmentIndex, int ptIndex)
-  {
+  Coordinate getEndpoint(int segmentIndex, int ptIndex) {
     return inputLines[segmentIndex][ptIndex];
   }
-  
+
   /// Compute the intersection of a point p and the line p1-p2.
   /// This function computes the bool value of the hasIntersection test.
   /// The actual value of the intersection (if there is one)
   /// is equal to the value of <code>p</code>.
-  /**abstract */ 
-  void computeIntersection(Coordinate p,Coordinate p1, Coordinate p2);
+  /**abstract */
+  void computeIntersection(Coordinate p, Coordinate p1, Coordinate p2);
 
- /**protected */bool isCollinear() {
+  /**protected */ bool isCollinear() {
     return result == COLLINEAR_INTERSECTION;
   }
 
@@ -208,8 +202,7 @@ abstract class LineIntersector
   /// This function computes both the bool value of the hasIntersection test
   /// and the (approximate) value of the intersection point itself (if there is one).
   void computeIntersection4Coord(
-                Coordinate p1, Coordinate p2,
-                Coordinate p3, Coordinate p4) {
+      Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) {
     inputLines[0][0] = p1;
     inputLines[0][1] = p2;
     inputLines[1][0] = p3;
@@ -218,9 +211,9 @@ abstract class LineIntersector
 //numIntersects++;
   }
 
- /**protected abstract */
- int computeIntersect(Coordinate p1, Coordinate p2,
-                Coordinate q1, Coordinate q2);
+  /**protected abstract */
+  int computeIntersect(
+      Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
 
 /*
   String toString() {
@@ -232,15 +225,14 @@ abstract class LineIntersector
     return str;
   }
 */
-/// TODO:@ruier not implement....late add some code.
-  // String toString() {
-  //   return WKTWriter.toLineString(inputLines[0][0], inputLines[0][1]) + " - "
-  //   + WKTWriter.toLineString(inputLines[1][0], inputLines[1][1])
-  //                + getTopologySummary();
-  // }
+  @override
+  String toString() {
+    return WKTWriter.toLineStringFromCoords(inputLines[0][0], inputLines[0][1]) + " - "
+    + WKTWriter.toLineStringFromCoords(inputLines[1][0], inputLines[1][1])
+                 + getTopologySummary();
+  }
 
- /**private */String getTopologySummary()
-  {
+  /**private */ String getTopologySummary() {
     StringBuffer catBuilder = StringBuffer();
     if (isEndPoint()) catBuilder.write(" endpoint");
     if (isProper) catBuilder.write(" proper");
@@ -248,7 +240,7 @@ abstract class LineIntersector
     return catBuilder.toString();
   }
 
- /**protected */bool isEndPoint() {
+  /**protected */ bool isEndPoint() {
     return hasIntersection() && !isProper;
   }
 
@@ -260,19 +252,23 @@ abstract class LineIntersector
   }
 
   /// Returns the number of intersection points found.  This will be either 0, 1 or 2.
-  /// 
+  ///
   /// @return the number of intersection points found (0, 1, or 2)
-  int getIntersectionNum() { return result; }
+  int getIntersectionNum() {
+    return result;
+  }
 
   /// Returns the intIndex'th intersection point
   ///
   /// @param intIndex is 0 or 1
   ///
   /// @return the intIndex'th intersection point
-  Coordinate getIntersection(int intIndex)  { return intPt[intIndex]; }
+  Coordinate getIntersection(int intIndex) {
+    return intPt[intIndex];
+  }
 
- /**protected */
- void computeIntLineIndex() {
+  /**protected */
+  void computeIntLineIndex() {
     if (intLineIndex == null) {
       // intLineIndex = int[2][2];
       // TODO: ruier edit.because int default is 0 in java.
@@ -301,8 +297,7 @@ abstract class LineIntersector
   /// Tests whether either intersection point is an interior point of one of the input segments.
   ///
   /// @return <code>true</code> if either intersection point is in the interior of one of the input segments
-  bool isInteriorIntersection()
-  {
+  bool isInteriorIntersection() {
     if (isInteriorIntersection_(0)) return true;
     if (isInteriorIntersection_(1)) return true;
     return false;
@@ -311,11 +306,10 @@ abstract class LineIntersector
   /// Tests whether either intersection point is an interior point of the specified input segment.
   ///
   /// @return <code>true</code> if either intersection point is in the interior of the input segment
-  bool isInteriorIntersection_(int inputLineIndex)
-  {
+  bool isInteriorIntersection_(int inputLineIndex) {
     for (int i = 0; i < result; i++) {
-      if (! (   intPt[i].equals2D(inputLines[inputLineIndex][0])
-             || intPt[i].equals2D(inputLines[inputLineIndex][1]) )) {
+      if (!(intPt[i].equals2D(inputLines[inputLineIndex][0]) ||
+          intPt[i].equals2D(inputLines[inputLineIndex][1]))) {
         return true;
       }
     }
@@ -363,14 +357,13 @@ abstract class LineIntersector
     return intLineIndex![segmentIndex][intIndex];
   }
 
- /**protected */void computeIntLineIndexOf(int segmentIndex) {
+  /**protected */ void computeIntLineIndexOf(int segmentIndex) {
     double dist0 = getEdgeDistance(segmentIndex, 0);
     double dist1 = getEdgeDistance(segmentIndex, 1);
     if (dist0 > dist1) {
       intLineIndex![segmentIndex][0] = 0;
       intLineIndex![segmentIndex][1] = 1;
-    }
-    else {
+    } else {
       intLineIndex![segmentIndex][0] = 1;
       intLineIndex![segmentIndex][1] = 0;
     }
@@ -383,8 +376,8 @@ abstract class LineIntersector
   ///
   /// @return the edge distance of the intersection point
   double getEdgeDistance(int segmentIndex, int intIndex) {
-    double dist = computeEdgeDistance(intPt[intIndex], inputLines[segmentIndex][0],
-        inputLines[segmentIndex][1]);
+    double dist = computeEdgeDistance(intPt[intIndex],
+        inputLines[segmentIndex][0], inputLines[segmentIndex][1]);
     return dist;
   }
 }

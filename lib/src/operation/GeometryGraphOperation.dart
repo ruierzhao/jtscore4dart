@@ -33,7 +33,7 @@ import 'package:jtscore4dart/src/geomgraph/GeometryGraph.dart';
 class GeometryGraphOperation
 {
  /**protected */final LineIntersector li = new RobustLineIntersector();
- /**protected */PrecisionModel resultPrecisionModel;
+ /**protected */late PrecisionModel resultPrecisionModel;
 
   /**
    * The operation args into an array so they can be accessed by index
@@ -49,29 +49,33 @@ class GeometryGraphOperation
 //   }
 
   GeometryGraphOperation(Geometry g0, Geometry g1, [BoundaryNodeRule? boundaryNodeRule])
+   : arg = List.from([GeometryGraph(0, g0, boundaryNodeRule),GeometryGraph(1, g1, boundaryNodeRule)],growable: false)
   {
     // use the most precise model for the result
     if (g0.getPrecisionModel().compareTo(g1.getPrecisionModel()) >= 0) {
-      setComputationPrecision(g0.getPrecisionModel());
+      _setComputationPrecision(g0.getPrecisionModel());
     } else {
-      setComputationPrecision(g1.getPrecisionModel());
+      _setComputationPrecision(g1.getPrecisionModel());
     }
 
-    arg = new GeometryGraph[2];
-    arg[0] = new GeometryGraph(0, g0, boundaryNodeRule);
-    arg[1] = new GeometryGraph(1, g1, boundaryNodeRule);
+    // arg = new GeometryGraph[2];
+    // arg[0] = new GeometryGraph(0, g0, boundaryNodeRule);
+    // arg[1] = new GeometryGraph(1, g1, boundaryNodeRule);
   }
+  
+  /// TODO: @ruier edit.maybe not need..
+  // GeometryGraphOperation(Geometry g0) 
+  //  : arg = List.filled(1, GeometryGraph(0, g0),growable: false)
+  // {
+  //   setComputationPrecision(g0.getPrecisionModel());
 
-  GeometryGraphOperation(Geometry g0) {
-    setComputationPrecision(g0.getPrecisionModel());
-
-    arg = new GeometryGraph[1];
-    arg[0] = new GeometryGraph(0, g0);;
-  }
+  //   // arg = new GeometryGraph[1];
+  //   // arg[0] = new GeometryGraph(0, g0);
+  // }
 
   Geometry getArgGeometry(int i) { return arg[i].getGeometry(); }
 
- /**protected */void setComputationPrecision(PrecisionModel pm)
+ /**protected */void _setComputationPrecision(PrecisionModel pm)
   {
     resultPrecisionModel = pm;
     li.setPrecisionModel(resultPrecisionModel);

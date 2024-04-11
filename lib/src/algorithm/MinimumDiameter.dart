@@ -20,7 +20,13 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/geometry.dart';
+
+import 'MinimumAreaRectangle.dart';
+
 /**
+ * 计算 geometry 的最小宽度。
+ * 
  * Computes the minimum diameter of a {@link Geometry}.
  * The minimum diameter is defined to be the
  * width of the smallest band that contains the geometry,
@@ -45,8 +51,8 @@
  * </ul>
  * 
  *
- * @see ConvexHull
- * @see MinimumAreaRectangle
+ * @see [ConvexHull]
+ * @see [MinimumAreaRectangle]
  *
  * @version 1.7
  */
@@ -66,9 +72,11 @@ class MinimumDiameter
    * @param geom the geometry
    * @return the minimum-width rectangle enclosing the geometry
    * 
-   * @see MinimumAreaRectangle
+   * @see [MinimumAreaRectangle]
    */
-  static Geometry getMinimumRectangle(Geometry geom) {
+  // static Geometry getMinimumRectangle(Geometry geom) {
+  @Deprecated("This is not necessarily the rectangle with minimum area.use MinimumAreaRectangle")
+  static Geometry minimumRectangle(Geometry geom) {
     return (new MinimumDiameter(geom)).getMinimumRectangle();
   }
   
@@ -85,7 +93,7 @@ class MinimumDiameter
  /**private */final bool isConvex;
 
  /**private */List<Coordinate> convexHullPts = null;
- /**private */LineSegment minBaseSeg = new LineSegment();
+ /**private */LineSegment minBaseSeg = LineSegment.empty();
  /**private */Coordinate minWidthPt = null;
  /**private */int minPtIndex;
  /**private */double minWidth = 0.0;
@@ -95,10 +103,10 @@ class MinimumDiameter
    *
    * @param inputGeom a Geometry
    */
-  MinimumDiameter(Geometry inputGeom)
-  {
-    this(inputGeom, false);
-  }
+  // MinimumDiameter(Geometry inputGeom)
+  // {
+  //   this(inputGeom, false);
+  // }
 
   /**
    * Compute a minimum diameter for a giver {@link Geometry},
@@ -110,11 +118,7 @@ class MinimumDiameter
    * @param inputGeom a Geometry which is convex
    * @param isConvex <code>true</code> if the input geometry is convex
    */
-  MinimumDiameter(Geometry inputGeom, bool isConvex)
-  {
-    this.inputGeom = inputGeom;
-    this.isConvex = isConvex;
-  }
+  MinimumDiameter(this.inputGeom, [this.isConvex=false]);
 
   /**
    * Gets the length of the minimum diameter of the input Geometry
@@ -146,7 +150,7 @@ class MinimumDiameter
   LineString getSupportingSegment()
   {
     computeMinimumDiameter();
-    return inputGeom.getFactory().createLineString(new List<Coordinate> { minBaseSeg.p0, minBaseSeg.p1 } );
+    return inputGeom.getFactory().createLineString([minBaseSeg.p0, minBaseSeg.p1]);
   }
 
   /**
@@ -277,7 +281,7 @@ class MinimumDiameter
    * 
    * @return a rectangle enclosing the input (or a line or point if degenerate)
    * 
-   * @see MinimumAreaRectangle
+   * @see [MinimumAreaRectangle]
    */
   Geometry getMinimumRectangle()
   {
@@ -297,10 +301,10 @@ class MinimumDiameter
     double dx = minBaseSeg.p1.x - minBaseSeg.p0.x;
     double dy = minBaseSeg.p1.y - minBaseSeg.p0.y;
     
-    double minPara = double.maxFinite
-    double maxPara = -double.maxFinite
-    double minPerp = double.maxFinite
-    double maxPerp = -double.maxFinite
+    double minPara = double.maxFinite;
+    double maxPara = -double.maxFinite;
+    double minPerp = double.maxFinite;
+    double maxPerp = -double.maxFinite;
     
     // compute maxima and minima of lines parallel and perpendicular to base segment
     for (int i = 0; i < convexHullPts.length; i++) {
@@ -326,8 +330,9 @@ class MinimumDiameter
     Coordinate p2 = minParaLine.lineIntersection(minPerpLine);
     Coordinate p3 = maxParaLine.lineIntersection(minPerpLine);
     
-    LinearRing shell = inputGeom.getFactory().createLinearRing(
-        new List<Coordinate> { p0, p1, p2, p3, p0 });
+    // LinearRing shell = inputGeom.getFactory().createLinearRing(new List<Coordinate> { p0, p1, p2, p3, p0 });
+    /// TODO: @ruier edit.use Array.
+    LinearRing shell = inputGeom.getFactory().createLinearRing(<Coordinate>[p0, p1, p2, p3, p0]);
     return inputGeom.getFactory().createPolygon(shell);
 
   }
@@ -340,11 +345,11 @@ class MinimumDiameter
    */
  /**private */static LineString computeMaximumLine(List<Coordinate> pts, GeometryFactory factory) {
     //-- find max and min pts for X and Y
-    Coordinate ptMinX = null;
-    Coordinate ptMaxX = null;
-    Coordinate ptMinY = null;
-    Coordinate ptMaxY = null;
-    for (Coordinate p : pts) {
+    Coordinate? ptMinX = null;
+    Coordinate? ptMaxX = null;
+    Coordinate? ptMinY = null;
+    Coordinate? ptMaxY = null;
+    for (Coordinate p in pts) {
       if (ptMinX == null || p.getX() < ptMinX.getX()) ptMinX = p;
       if (ptMaxX == null || p.getX() > ptMaxX.getX()) ptMaxX = p;
       if (ptMinY == null || p.getY() < ptMinY.getY()) ptMinY = p;
@@ -357,7 +362,9 @@ class MinimumDiameter
       p0 = ptMinY;
       p1 = ptMaxY;
     }
-    return factory.createLineString(new List<Coordinate> { p0.copy(), p1.copy() });
+    // return factory.createLineString(new List<Coordinate> { p0.copy(), p1.copy() });
+    /// TODO: @ruier edit.maybe can use Array.
+    return factory.createLineString([p0.copy(), p1.copy()]);
   }
 
  /**private */static double computeC(double a, double b, Coordinate p)

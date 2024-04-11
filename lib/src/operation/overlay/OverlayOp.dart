@@ -65,8 +65,7 @@ import 'PolygonBuilder.dart';
  *
  * @version 1.7
  */
-class OverlayOp
-  extends GeometryGraphOperation
+class OverlayOp extends GeometryGraphOperation
 {
 /**
  * The spatial functions supported by this class.
@@ -97,9 +96,9 @@ class OverlayOp
    * Computes an overlay operation for 
    * the given geometry arguments.
    * 
-   * @param geom0 the first geometry argument
-   * @param geom1 the second geometry argument
-   * @param opCode the code for the desired overlay operation
+   * @param [geom0] the first geometry argument
+   * @param [geom1] the second geometry argument
+   * @param [opCode] the code for the desired overlay operation
    * @return the result of the overlay operation
    * @throws TopologyException if a robustness problem is encountered
    */
@@ -137,10 +136,10 @@ class OverlayOp
    * <p>
    * The method handles arguments of {@link Location#NONE} correctly
    *
-   * @param loc0 the code for the location in the first geometry 
-   * @param loc1 the code for the location in the second geometry 
-   * @param overlayOpCode the code for the overlay operation to test
-   * @return true if the locations correspond to the overlayOpCode
+   * @param [loc0] the code for the location in the first geometry 
+   * @param [loc1] the code for the location in the second geometry 
+   * @param [overlayOpCode] the code for the overlay operation to test
+   * @return [true] if the locations correspond to the overlayOpCode
    */
   static bool isResultOfOp(int loc0, int loc1, int overlayOpCode)
   {

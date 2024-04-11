@@ -46,6 +46,7 @@
 import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
 import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
+import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
 
 import 'CoordinateSequenceComparator.dart';
 import 'Coordinate.dart';
@@ -54,7 +55,6 @@ import 'GeometryComponentFilter.dart';
 import 'GeometryFactory.dart';
 import 'GeometryOverlay.dart';
 import 'Point.dart';
-import 'Polygon.dart';
 import 'PrecisionModel.dart';
 import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
@@ -430,14 +430,14 @@ abstract class Geometry{
   /// Returns the minimum distance between this <code>Geometry</code>
   /// and another <code>Geometry</code>.
   ///
-  /// @param  g the <code>Geometry</code> from which to compute the distance
+  /// @param  [g] the <code>Geometry</code> from which to compute the distance
   /// @return the distance between the geometries
   /// @return 0 if either input geometry is empty
   /// @throws ArgumentError if g is null
   double distance(Geometry g)
   {
-    throw UnimplementedError("ruier test");
-    // return DistanceOp.distance(this, g);
+    // throw UnimplementedError("ruier test");
+    return DistanceOp.distance(this, g);
   }
 
   /// Tests whether the distance from this <code>Geometry</code>

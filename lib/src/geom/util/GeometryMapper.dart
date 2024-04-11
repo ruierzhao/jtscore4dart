@@ -48,7 +48,7 @@ class GeometryMapper
   {
     List<Geometry> mapped = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      Geometry g = op.map(geom.getGeometryN(i));
+      Geometry? g = op.map(geom.getGeometryN(i));
       if (g != null) {
         mapped.add(g);
       }
@@ -61,7 +61,7 @@ class GeometryMapper
     List mapped = [];
     for (Iterator i = geoms.iterator; i.moveNext(); ) {
       Geometry g = i.current;
-      Geometry gr = op.map(g);
+      Geometry? gr = op.map(g);
       if (gr != null) {
         mapped.add(gr);
       }
@@ -78,9 +78,9 @@ class GeometryMapper
    * <tt>null</tt> and empty values returned from the mapping operation
    * are discarded.
    * 
-   * @param geom the geometry to map
-   * @param emptyDim the dimension of empty geometry to create
-   * @param op the mapping operation
+   * @param [geom] the geometry to map
+   * @param [emptyDim] the dimension of empty geometry to create
+   * @param [op] the mapping operation
    * @return the mapped result
    */
   static Geometry flatMap(Geometry geom, int emptyDim, MapOp op)
@@ -106,7 +106,8 @@ class GeometryMapper
         _flatMap(g, op, mapped);
       }
       else {
-        Geometry res = op.map(g);
+        Geometry? res = op.map(g);
+        /// TODO: @ruier edit.maybe null.
         if (res != null && ! res.isEmpty()) {
           addFlat(res, mapped);
         }
@@ -142,8 +143,8 @@ class GeometryMapper
     /**
      * Maps a geometry value into another value.
      * 
-     * @param geom the input geometry
+     * @param [geom] the input geometry
      * @return a result geometry
      */
-    Geometry map(Geometry geom);
+    Geometry? map(Geometry geom);
   }

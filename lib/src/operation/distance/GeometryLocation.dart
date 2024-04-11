@@ -15,6 +15,7 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 
@@ -53,7 +54,7 @@ class GeometryLocation
    * @param [pt] the coordinate of the location
    */
   GeometryLocation(this.component,this.pt,[int? segIndex])
-    : this.segIndex = segIndex??=INSIDE_AREA;
+    :this.segIndex = segIndex??=INSIDE_AREA;
 
   /**
    * Constructs a GeometryLocation specifying a point inside an area geometry.
@@ -97,6 +98,6 @@ class GeometryLocation
   // TODO: ruier edit.
   @override
   String toString() {
-    return "${component.getGeometryType()} [$segIndex] - $pt"; 
+    return "${component.getGeometryType()} [$segIndex] - ${WKTWriter.toPoint(pt)}"; 
   }
 }

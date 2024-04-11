@@ -20,6 +20,14 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+
+import 'GeometryLocation.dart';
+
 /**
  * A ConnectedElementPointFilter extracts a single point
  * from each connected element in a Geometry
@@ -49,19 +57,18 @@ class ConnectedElementLocationFilter
 
  /**private */List locations;
 
-  ConnectedElementLocationFilter(List locations)
-  {
-    this.locations = locations;
-  }
+  ConnectedElementLocationFilter(this.locations);
 
+  @override
   void filter(Geometry geom)
   {
     // empty geometries do not provide a location
     if (geom.isEmpty()) return;
     if (geom is Point
       || geom is LineString
-      || geom is Polygon )
-      locations.add(new GeometryLocation(geom, 0, geom.getCoordinate()));
+      || geom is Polygon ) {
+      locations.add(new GeometryLocation(geom, geom.getCoordinate()!, 0));
+    }
   }
 
 }

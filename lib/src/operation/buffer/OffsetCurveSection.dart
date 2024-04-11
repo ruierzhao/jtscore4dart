@@ -21,7 +21,6 @@
 // import org.locationtech.jts.geom.LineString;
 
 import 'package:jtscore4dart/geometry.dart';
-import 'package:jtscore4dart/src/geom/CoordinateList.dart';
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
 
 /**

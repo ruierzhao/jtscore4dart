@@ -38,13 +38,13 @@ class BasicSegmentString
 	// implements SegmentString 
 {
  /**private */List<Coordinate> pts;
- /**private */Object data;
+ /**private */Object? data;
 
   /**
    * Creates a new segment string from a list of vertices.
    *
    * @param pts the vertices of the segment string
-   * @param data the user-defined data of this segment string (may be null)
+   * @param [data] the user-defined data of this segment string (may be null)
    */
   BasicSegmentString(this.pts, this.data);
 
@@ -54,7 +54,7 @@ class BasicSegmentString
    * @return the user-defined data
    */
   @override
-  Object getData() { return data; }
+  Object? getData() { return data; }
 
   /**
    * Sets the user-defined data for this segment string.

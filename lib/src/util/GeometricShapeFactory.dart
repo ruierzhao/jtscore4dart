@@ -22,6 +22,8 @@
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.geom.util.AffineTransformation;
 
+import 'package:jtscore4dart/geometry.dart';
+
 /**
  * Computes various kinds of common geometric shapes.
  * Provides various ways of specifying the location and extent
@@ -43,7 +45,7 @@
 class GeometricShapeFactory
 {
  /**protected */GeometryFactory geomFact;
- /**protected */PrecisionModel precModel = null;
+ /**protected */late PrecisionModel precModel = null;
  /**protected */Dimensions dim = new Dimensions();
  /**protected */int nPts = 100;
   
@@ -389,7 +391,10 @@ class GeometricShapeFactory
   	return coord(x + trans.x, y + trans.y);
   }
   
-  static/**protected */class Dimensions
+}
+
+
+  /**static protected */class Dimensions
   {
     Coordinate base;
     Coordinate centre;
@@ -444,4 +449,3 @@ class GeometricShapeFactory
     }
     
   }
-}

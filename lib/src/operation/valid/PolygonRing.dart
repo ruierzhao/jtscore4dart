@@ -24,6 +24,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.LinearRing;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/LinearRing.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/algorithm/PolygonNodeTopology.dart';
+
 /**
  * A ring of a polygon being analyzed for topological validity.
  * The shell and hole rings of valid polygons touch only at discrete points.
@@ -60,7 +65,8 @@ class PolygonRing {
    * @return true if the ring represents a shell
    */
   static bool isShell(PolygonRing polyRing) {
-    if (polyRing == null) return true;
+    /// TODO: @ruier edit.可能不太需要
+    // if (polyRing == null) return true;
     return polyRing.isShell();
   }
 
@@ -99,7 +105,7 @@ class PolygonRing {
    * @return a vertex contained in a ring cycle, or null if none is found
    */
   static Coordinate findHoleCycleLocation(List<PolygonRing> polyRings) {
-    for (PolygonRing polyRing : polyRings) {
+    for (PolygonRing polyRing in polyRings) {
       if (! polyRing.isInTouchSet()) {
         Coordinate holeCycleLoc = polyRing.findHoleCycleLocation();
         if (holeCycleLoc != null) return holeCycleLoc;
@@ -118,7 +124,7 @@ class PolygonRing {
    * @return the location of an interior self-touch node, or null if there are none
    */
   static Coordinate findInteriorSelfNode(List<PolygonRing> polyRings) {
-    for (PolygonRing polyRing : polyRings) {
+    for (PolygonRing polyRing in polyRings) {
         Coordinate interiorSelfNode = polyRing.findInteriorSelfNode();
         if (interiorSelfNode != null) {
           return interiorSelfNode;

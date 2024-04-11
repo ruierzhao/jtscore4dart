@@ -92,6 +92,7 @@ class CoordinateArraySequence extends CoordinateSequence{
   //   }
   // }
   // TODO: ruier edit.
+  /// TODO: @ruier edit.coordinates can not be null,so getCoordinate can not be null.
   CoordinateArraySequence(List<Coordinate> coordinates, [int? dimension, int? measures]){
     _coordinates = coordinates;
     dimension ??= CoordinateArrays.dimension(coordinates);
@@ -133,7 +134,7 @@ class CoordinateArraySequence extends CoordinateSequence{
   /// @param dimension the dimension of the coordinates
   CoordinateArraySequence.init2(int size, int dimension,int measures) {
     // _coordinates = new Coordinate[size];
-    _coordinates = List.filled(size, Coordinate.empty2D(),growable: false);
+    _coordinates = List.filled(size, Coordinate.empty2D(), growable: false);
 
     _dimension = dimension;
     _measures = measures;

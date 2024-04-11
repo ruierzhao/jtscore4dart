@@ -5,10 +5,12 @@
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Coordinates.dart';
+import 'package:jtscore4dart/src/geom/impl/CoordinateArraySequenceFactory.dart';
 import 'package:jtscore4dart/src/geom/Envelope.dart';
 
 
 /// Geometry 中 一系列坐标的内部表示。
+/// 
 /// 这允许 Geometries 使用JTSCoordinate class 以外的结构来存储点
 /// 
 /// The internal representation of a list of coordinates inside a Geometry.
@@ -32,7 +34,7 @@ import 'package:jtscore4dart/src/geom/Envelope.dart';
 /// <p>
 /// For an example, see the code for ExtendedCoordinateExample.
 ///
-/// @see CoordinateArraySequenceFactory
+/// @see [CoordinateArraySequenceFactory]
 /// @see PackedCoordinateSequenceFactory
 ///
 /// @version 1.7

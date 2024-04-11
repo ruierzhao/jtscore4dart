@@ -13,13 +13,18 @@
 
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'Interval.dart';
+import 'Key.dart';
+import 'NodeBase.dart';
+
 /**
  * A node of a {@link Bintree}.
  *
  * @version 1.7
  */
-class Node
-  extends NodeBase
+class Node extends NodeBase
 {
   static Node createNode(Interval itemInterval)
   {
@@ -30,9 +35,9 @@ class Node
     return node;
   }
 
-  static Node createExpanded(Node node, Interval addInterval)
+  static Node createExpanded(Node? node, Interval addInterval)
   {
-    Interval expandInt = new Interval(addInterval);
+    Interval expandInt = new Interval.fromAnother(addInterval);
     if (node != null) expandInt.expandToInclude(node.interval);
 
     Node largerNode = createNode(expandInt);
@@ -44,12 +49,9 @@ class Node
  /**private */double centre;
  /**private */int level;
 
-  Node(Interval interval, int level)
-  {
-    this.interval = interval;
-    this.level = level;
-    centre = (interval.getMin() + interval.getMax()) / 2;
-  }
+  Node(this.interval, this.level)
+  :centre = (interval.getMin() + interval.getMax()) / 2;
+
 
   Interval getInterval() { return interval; }
 
@@ -67,7 +69,7 @@ class Node
    */
   Node getNode(Interval searchInterval)
   {
-    int subnodeIndex = getSubnodeIndex(searchInterval, centre);
+    int subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, centre);
     // if index is -1 searchEnv is not contained in a subnode
     if (subnodeIndex != -1) {
       // create the node if it does not exist
@@ -86,12 +88,13 @@ class Node
    */
   NodeBase find(Interval searchInterval)
   {
-    int subnodeIndex = getSubnodeIndex(searchInterval, centre);
-    if (subnodeIndex == -1)
+    int subnodeIndex = NodeBase.getSubnodeIndex(searchInterval, centre);
+    if (subnodeIndex == -1) {
       return this;
+    }
     if (subnode[subnodeIndex] != null) {
       // query lies in subnode, so search it
-      Node node = subnode[subnodeIndex];
+      Node node = subnode[subnodeIndex]!;
       return node.find(searchInterval);
     }
     // no existing subnode, so return this one anyway
@@ -101,7 +104,7 @@ class Node
   void insert(Node node)
   {
     Assert.isTrue(interval == null || interval.contains(node.interval));
-    int index = getSubnodeIndex(node.interval, centre);
+    int index = NodeBase.getSubnodeIndex(node.interval, centre);
     if (node.level == level - 1) {
       subnode[index] = node;
     }
@@ -123,7 +126,7 @@ class Node
     if (subnode[index] == null) {
       subnode[index] = createSubnode(index);
     }
-    return subnode[index];
+    return subnode[index]!;
   }
 
  /**private */Node createSubnode(int index)

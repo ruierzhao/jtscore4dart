@@ -42,7 +42,7 @@ abstract class SpatialIndex
    * Note that some kinds of indexes may also return objects which do not in fact
    * intersect the query envelope.
    *
-   * @param searchEnv the envelope to query for
+   * @param [searchEnv] the envelope to query for
    * @return a list of the items found by the query
    */
   List query(Envelope searchEnv);

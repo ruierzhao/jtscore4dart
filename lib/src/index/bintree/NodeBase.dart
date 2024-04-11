@@ -17,6 +17,9 @@
 
 
 
+import 'Interval.dart';
+import 'Node.dart';
+
 /**
  * The base class for nodes in a {@link Bintree}.
  *
@@ -43,10 +46,11 @@ abstract class NodeBase {
    *
    *  0 | 1
    */
- /**protected */Node[] subnode = new Node[2];
+//  /**protected */Node[] subnode = new Node[2];
+ /**protected */List<Node?> subnode = [];
 
-  NodeBase() {
-  }
+  // NodeBase() {
+  // }
 
   List getItems() { return items; }
 
@@ -59,31 +63,33 @@ abstract class NodeBase {
     items.addAll(this.items);
     for (int i = 0; i < 2; i++) {
       if (subnode[i] != null) {
-        subnode[i].addAllItems(items);
+        subnode[i]!.addAllItems(items);
       }
     }
     return items;
   }
- /**protected */abstract bool isSearchMatch(Interval interval);
+ /**protected abstract */ bool isSearchMatch(Interval interval);
 
   /**
    * Adds items in the tree which potentially overlap the query interval
    * to the given collection.
    * If the query interval is <tt>null</tt>, add all items in the tree.
    * 
-   * @param interval a query interval, or null
-   * @param resultItems the candidate items found
+   * @param [interval] a query interval, or null
+   * @param [resultItems] the candidate items found
    */
-  void addAllItemsFromOverlapping(Interval interval, Collection resultItems)
+  // void addAllItemsFromOverlapping(Interval interval, Collection resultItems)
+  void addAllItemsFromOverlapping(Interval? interval, List resultItems)
   {
-    if (interval != null && ! isSearchMatch(interval))
+    if (interval != null && ! isSearchMatch(interval)) {
       return;
+    }
 
     // some of these may not actually overlap - this is allowed by the bintree contract
     resultItems.addAll(items);
 
-    if (subnode[0] != null) subnode[0].addAllItemsFromOverlapping(interval, resultItems);
-    if (subnode[1] != null) subnode[1].addAllItemsFromOverlapping(interval, resultItems);
+    if (subnode[0] != null) subnode[0]!.addAllItemsFromOverlapping(interval, resultItems);
+    if (subnode[1] != null) subnode[1]!.addAllItemsFromOverlapping(interval, resultItems);
   }
 
   /**
@@ -96,17 +102,19 @@ abstract class NodeBase {
   bool remove(Interval itemInterval, Object item)
   {
     // use interval to restrict nodes scanned
-    if (! isSearchMatch(itemInterval))
+    if (! isSearchMatch(itemInterval)) {
       return false;
+    }
 
     bool found = false;
     for (int i = 0; i < 2; i++) {
       if (subnode[i] != null) {
-        found = subnode[i].remove(itemInterval, item);
+        found = subnode[i]!.remove(itemInterval, item);
         if (found) {
           // trim subtree if empty
-          if (subnode[i].isPrunable())
+          if (subnode[i]!.isPrunable()) {
             subnode[i] = null;
+          }
           break;
         }
       }
@@ -126,22 +134,24 @@ abstract class NodeBase {
   bool hasChildren()
   {
     for (int i = 0; i < 2; i++) {
-      if (subnode[i] != null)
+      if (subnode[i] != null) {
         return true;
+      }
     }
     return false;
   }
 
-  bool hasItems() { return ! items.isEmpty(); }
+  bool hasItems() { return  items.isNotEmpty; }
 
   int depth()
   {
     int maxSubDepth = 0;
     for (int i = 0; i < 2; i++) {
       if (subnode[i] != null) {
-        int sqd = subnode[i].depth();
-        if (sqd > maxSubDepth)
+        int sqd = subnode[i]!.depth();
+        if (sqd > maxSubDepth) {
           maxSubDepth = sqd;
+        }
       }
     }
     return maxSubDepth + 1;
@@ -152,10 +162,11 @@ abstract class NodeBase {
     int subSize = 0;
     for (int i = 0; i < 2; i++) {
       if (subnode[i] != null) {
-        subSize += subnode[i].size();
+        /// TODO: @ruier edit.maybe error???
+        subSize += subnode[i]!.size();
       }
     }
-    return subSize + items.size();
+    return (subSize + items.length).toInt();
   }
 
   int nodeSize()
@@ -163,7 +174,7 @@ abstract class NodeBase {
     int subSize = 0;
     for (int i = 0; i < 2; i++) {
       if (subnode[i] != null) {
-        subSize += subnode[i].nodeSize();
+        subSize += subnode[i]!.nodeSize();
       }
     }
     return subSize + 1;

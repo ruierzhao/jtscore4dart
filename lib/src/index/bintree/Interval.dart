@@ -32,6 +32,15 @@ class Interval {
       : min = interval.getMin(),
         max = interval.getMax();
 
+  void init(double min, double max) {
+    this.min = min;
+    this.max = max;
+    if (min > max) {
+      this.min = max;
+      this.max = min;
+    }
+  }
+
   double getMin() {
     return min < max ? min : max;
   }

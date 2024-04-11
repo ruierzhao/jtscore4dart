@@ -18,6 +18,15 @@
 // import org.locationtech.jts.geom.Envelope;
 
 
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/util/PriorityQueue.dart';
+
+import 'AbstractNode.dart';
+import 'Boundable.dart';
+import 'EnvelopeDistance.dart';
+import 'ItemBoundable.dart';
+import 'ItemDistance.dart';
+
 /**
  * A pair of {@link Boundable}s, whose leaf items 
  * support a distance metric between them.
@@ -31,21 +40,17 @@
  * @author Martin Davis
  *
  */
-class BoundablePair
-  implements Comparable
+class BoundablePair implements Comparable
 {
  /**private */Boundable boundable1;
  /**private */Boundable boundable2;
- /**private */double distance;
+ /**private */late double distance;
  /**private */ItemDistance itemDistance;
   //private double maxDistance = -1.0;
   
-  BoundablePair(Boundable boundable1, Boundable boundable2, ItemDistance itemDistance)
+  BoundablePair(this.boundable1, this.boundable2, this.itemDistance)
   {
-    this.boundable1 = boundable1;
-    this.boundable2 = boundable2;
-    this.itemDistance = itemDistance;
-    distance = distance();
+    distance = _distance();
   }
   
   /**
@@ -70,8 +75,8 @@ class BoundablePair
   double maximumDistance()
   {
     return EnvelopeDistance.maximumDistance( 
-        (Envelope) boundable1.getBounds(),
-        (Envelope) boundable2.getBounds());       
+        boundable1.getBounds() as Envelope,
+        boundable2.getBounds() as Envelope);       
   }
   
   /**
@@ -83,16 +88,16 @@ class BoundablePair
    * 
    * @return
    */
- /**private */double distance()
+ /**private */double _distance()
   {
     // if items, compute exact distance
     if (isLeaves()) {
-      return itemDistance.distance((ItemBoundable) boundable1,
-          (ItemBoundable) boundable2);
+      return itemDistance.distance(boundable1 as ItemBoundable,
+          boundable2 as ItemBoundable);
     }
     // otherwise compute distance between bounds of boundables
-    return ((Envelope) boundable1.getBounds()).distance(
-        ((Envelope) boundable2.getBounds()));
+    return (boundable1.getBounds() as Envelope).distance(
+        (boundable2.getBounds() as Envelope));
   }
   
   /**
@@ -110,9 +115,10 @@ class BoundablePair
   /**
    * Compares two pairs based on their minimum distances
    */
-  int compareTo(Object o)
+  @override
+  int compareTo(dynamic o)
   {
-    BoundablePair nd = (BoundablePair) o;
+    BoundablePair nd =  o as BoundablePair;
     if (distance < nd.distance) return -1;
     if (distance > nd.distance) return 1;
     return 0;
@@ -135,7 +141,7 @@ class BoundablePair
   
  /**private */static double area(Boundable b)
   {
-    return ((Envelope) b.getBounds()).getArea();
+    return (b.getBounds() as Envelope).getArea();
   }
   
   /**
@@ -191,9 +197,9 @@ class BoundablePair
  /**private */void expand(Boundable bndComposite, Boundable bndOther, bool isFlipped,
       PriorityQueue priQ, double minDistance)
   {
-    List children = ((AbstractNode) bndComposite).getChildBoundables();
-    for (Iterator i = children.iterator(); i.moveNext(); ) {
-      Boundable child = (Boundable) i.current;
+    List children = ( bndComposite as AbstractNode).getChildBoundables();
+    for (Iterator i = children.iterator; i.moveNext(); ) {
+      Boundable child = i.current as Boundable;
       BoundablePair bp;
       if (isFlipped) {
         bp = new BoundablePair(bndOther, child, itemDistance);

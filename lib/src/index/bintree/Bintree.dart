@@ -17,6 +17,9 @@
 // import java.util.List;
 
 
+import 'Interval.dart';
+import 'Root.dart';
+
 /**
  * An <code>BinTree</code> (or "Binary Interval Tree")
  * is a 1-dimensional version of a quadtree.
@@ -67,7 +70,7 @@ class Bintree
     return new Interval(min, max);
   }
 
- /**private */Root root;
+ /**private */late Root root;
   /**
   *  Statistics
   *
@@ -82,7 +85,7 @@ class Bintree
 
   Bintree()
   {
-    root = new Root();
+    this.root = new Root();
   }
 
   int depth()
@@ -140,12 +143,12 @@ if (newSize <= oldSize) {
   {
     List foundItems = [];
     root.addAllItems(foundItems);
-    return foundItems.iterator();
+    return foundItems.iterator;
   }
 
-  List query(double x)
+  List queryX(double x)
   {
-    return query(new Interval(x, x));
+    return query(Interval(x, x));
   }
 
   /**
@@ -155,14 +158,14 @@ if (newSize <= oldSize) {
    * 
    * min and max may be the same value
    */
-  List query(Interval interval)
+  List query(Interval? interval)
   {
     /**
      * the items that are matched are all items in intervals
      * which overlap the query interval
      */
     List foundItems = [];
-    query(interval, foundItems);
+    queryTo(interval, foundItems);
     return foundItems;
   }
 
@@ -171,10 +174,10 @@ if (newSize <= oldSize) {
    * to the given collection.
    * If the query interval is <tt>null</tt>, add all items in the tree.
    * 
-   * @param interval a query interval, or null
-   * @param foundItems the candidate items found
+   * @param [interval] a query interval, or null
+   * @param [foundItems] the candidate items found
    */
-  void query(Interval interval, Collection foundItems)
+  void queryTo(Interval? interval, List foundItems)
   {
     root.addAllItemsFromOverlapping(interval, foundItems);
   }
@@ -182,8 +185,9 @@ if (newSize <= oldSize) {
  /**private */void collectStats(Interval interval)
   {
     double del = interval.getWidth();
-    if (del < minExtent && del > 0.0)
+    if (del < minExtent && del > 0.0) {
       minExtent = del;
+    }
   }
 
 }

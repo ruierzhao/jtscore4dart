@@ -67,6 +67,7 @@ import 'ItemBoundable.dart';
  *
  * @version 1.7
  */
+/// TODO: @ruier edit.方法query,insert,queryByVisitor,remove 添加S，标记为父类方法。
 abstract class AbstractSTRtree /** implements Serializable  */ {
 
   /**
@@ -280,7 +281,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
   }
 
 
- /**protected */void insert(Object bounds, Object item) {
+ /**protected */void insertS(Object bounds, Object item) {
     Assert.isTrue(!built, "Cannot insert items into an STR packed R-tree after it has been built.");
     itemBoundables!.add(new ItemBoundable(bounds, item));
   }
@@ -288,7 +289,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
   /**
    *  Also builds the tree, if necessary.
    */
- /**protected */List query(Object searchBounds) {
+ /**protected */List queryS(Object searchBounds) {
     build();
     List matches = [];
     if (isEmpty()) {
@@ -299,12 +300,13 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
       queryInternal$1(searchBounds, root, matches);
     }
     return matches;
+    
   }
 
   /**
    *  Also builds the tree, if necessary.
    */
- /**protected */void queryByVisitor(Object searchBounds, ItemVisitor visitor) {
+ /**protected */void queryByVisitorS(Object searchBounds, ItemVisitor visitor) {
     build();
     if (isEmpty()) {
       // nothing in tree, so return
@@ -334,7 +336,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
         queryInternal$1(searchBounds,  childBoundable as AbstractNode, matches);
       }
       else if (childBoundable is ItemBoundable) {
-        matches.add((childBoundable as ItemBoundable).getItem());
+        matches.add((childBoundable ).getItem());
       }
       else {
         Assert.shouldNeverReachHere();
@@ -353,7 +355,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
         queryInternal$2(searchBounds,  childBoundable as AbstractNode, visitor);
       }
       else if (childBoundable is ItemBoundable) {
-        visitor.visitItem((childBoundable as ItemBoundable).getItem());
+        visitor.visitItem((childBoundable ).getItem());
       }
       else {
         Assert.shouldNeverReachHere();
@@ -414,7 +416,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
    * (Builds the tree, if necessary.)
    */
   /**protected */
-  bool remove(Object searchBounds, Object item) {
+  bool removeS(Object searchBounds, Object item) {
     build();
     if (getIntersectsOp().intersects(root.getBounds(), searchBounds)) {
       return _removeByBounds(searchBounds, root, item);
@@ -472,16 +474,18 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     return found;
   }
 
-  /**protected */List boundablesAtLevel(int level) {
-    List boundables = [];
-    boundablesAtLevel(level, root, boundables);
+  /**protected */List<Boundable> boundablesAtLevel(int level) {
+    List<Boundable> boundables = [];
+    _boundablesAtLevel(level, root, boundables);
     return boundables;
   }
 
   /**
    * @param level -1 to get items
    */
- /**private */void boundablesAtLevel(int level, AbstractNode top, Iterable boundables) {
+//  /**private */void _boundablesAtLevel(int level, AbstractNode top, Iterable boundables) {
+  /// TODO: @ruier edit.
+  void _boundablesAtLevel(int level, AbstractNode top, List boundables) {
     Assert.isTrue(level > -2);
     if (top.getLevel() == level) {
       boundables.add(top);
@@ -490,7 +494,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
     for (Iterator i = top.getChildBoundables().iterator; i.moveNext(); ) {
       Boundable boundable =  i.current as Boundable;
       if (boundable is AbstractNode) {
-        boundablesAtLevel(level, boundable as AbstractNode, boundables);
+        _boundablesAtLevel(level, boundable as AbstractNode, boundables);
       }
       else {
         Assert.isTrue(boundable is ItemBoundable);
@@ -502,7 +506,7 @@ abstract class AbstractSTRtree /** implements Serializable  */ {
 
   /**protected abstract*/ Comparator<dynamic> getComparator();
 
-  List  getItemBoundables()
+  List<Boundable>?  getItemBoundables()
   {
     return itemBoundables;
   }

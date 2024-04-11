@@ -29,7 +29,6 @@ import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/geom/Triangle.dart';
 
-import '../index/VertexSequencePackedRtree.dart';
 import 'LinkedRing.dart';
 import 'RingHullIndex.dart';
 

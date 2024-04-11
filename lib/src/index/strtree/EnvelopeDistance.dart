@@ -13,6 +13,11 @@
 
 // import org.locationtech.jts.geom.Envelope;
 
+import 'dart:math' as math;
+
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/utils.dart';
+
 /**
  * Functions for computing distances between {@link Envelope}s.
  * 
@@ -44,7 +49,7 @@ class EnvelopeDistance
  /**private */static double distance(double x1, double y1, double x2, double y2) {
     double dx = x2 - x1;
     double dy = y2 - y1;
-    return math.hypot(dx, dy);    
+    return hypot(dx, dy);    
   }
   
   /**

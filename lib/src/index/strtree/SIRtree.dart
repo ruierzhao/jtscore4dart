@@ -10,10 +10,43 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.Comparator;
 // import java.util.Iterator;
 // import java.util.List;
+
+import 'dart:math' as math;
+
+import 'AbstractNode.dart';
+import 'AbstractSTRtree.dart';
+import 'Boundable.dart';
+import 'Interval.dart';
+
+class _ implements IntersectsOp {
+  @override
+  bool intersects(Object aBounds, Object bBounds) {
+    return (aBounds as Interval).intersects(bBounds as Interval);
+  }
+}
+
+// new AbstractNode(level) {
+class _abstractNode extends AbstractNode {
+  _abstractNode(super.level);
+  /**protected */
+  @override
+  Object computeBounds() {
+    Interval? bounds = null;
+    for (Iterator i = getChildBoundables().iterator; i.moveNext();) {
+      Boundable childBoundable = i.current;
+      if (bounds == null) {
+        bounds =
+            new Interval.fromAnother(childBoundable.getBounds() as Interval);
+      } else {
+        bounds.expandToInclude(childBoundable.getBounds() as Interval);
+      }
+    }
+    return bounds!;
+  }
+}
 
 /**
  * One-dimensional version of an STR-packed R-tree. SIR stands for
@@ -29,80 +62,62 @@
  * @version 1.7
  */
 class SIRtree extends AbstractSTRtree {
-
- /**private */Comparator comparator = new Comparator() {
-    int compare(Object o1, Object o2) {
-      return compareDoubles(
-          ((Interval)((Boundable)o1).getBounds()).getCentre(),
-          ((Interval)((Boundable)o2).getBounds()).getCentre());
-    }
+  /**private */
+//  Comparator comparator = new Comparator() {
+//     int compare(Object o1, Object o2) {
+  Comparator comparator = (dynamic o1, dynamic o2) {
+    return AbstractSTRtree.compareDoubles(
+        ((o1 as Boundable).getBounds() as Interval).getCentre(),
+        ((o2 as Boundable).getBounds() as Interval).getCentre());
   };
 
- /**private */IntersectsOp intersectsOp = new IntersectsOp() {
-    bool intersects(Object aBounds, Object bBounds) {
-      return ((Interval)aBounds).intersects((Interval)bBounds);
-    }
-  };
-  
+  /**private */ IntersectsOp intersectsOp = _();
+
   /**
    * Constructs an SIRtree with the default node capacity.
    */
-  SIRtree() { this(10); }
-   
+  // SIRtree() { this(10); }
+
   /**
    * Constructs an SIRtree with the given maximum number of child nodes that
    * a node may have
    */
-  SIRtree(int nodeCapacity) {
-    super(nodeCapacity);
-  }
+  SIRtree([int nodeCapacity = 10]) : super(nodeCapacity);
 
- /**protected */AbstractNode createNode(int level) {
-    return new AbstractNode(level) {
-     /**protected */Object computeBounds() {
-        Interval bounds = null;
-        for (Iterator i = getChildBoundables().iterator(); i.moveNext(); ) {
-          Boundable childBoundable = (Boundable) i.current;
-          if (bounds == null) {
-            bounds = new Interval((Interval)childBoundable.getBounds());
-          }
-          else {
-            bounds.expandToInclude((Interval)childBoundable.getBounds());
-          }
-        }
-        return bounds;
-      }
-    };
+  /**protected */ @override
+  AbstractNode createNode(int level) {
+    return _abstractNode(level);
   }
 
   /**
    * Inserts an item having the given bounds into the tree.
    */
   void insert(double x1, double x2, Object item) {
-    super.insert(new Interval(Math.min(x1, x2), math.max(x1, x2)), item);
+    super.insertS(new Interval(math.min(x1, x2), math.max(x1, x2)), item);
   }
 
   /**
    * Returns items whose bounds intersect the given value.
    */
   List query(double x) {
-    return query(x, x);
+    return queryXY(x, x);
   }
 
   /**
    * Returns items whose bounds intersect the given bounds.
    * @param x1 possibly equal to x2
    */
-  List query(double x1, double x2) {
-    return super.query(new Interval(Math.min(x1, x2), math.max(x1, x2)));
+  List queryXY(double x1, double x2) {
+    return super.queryS(new Interval(math.min(x1, x2), math.max(x1, x2)));
   }
 
- /**protected */IntersectsOp getIntersectsOp() {
+  /**protected */ @override
+  IntersectsOp getIntersectsOp() {
     return intersectsOp;
   }
 
- /**protected */Comparator getComparator() {
+  /**protected */ @override
+  Comparator getComparator() {
     return comparator;
   }
-
 }

@@ -12,7 +12,9 @@
 
 // import org.locationtech.jts.index.quadtree.DoubleBits;
 
-import 'package:jtscore4dart/src/index/bintree/Interval.dart';
+import 'package:jtscore4dart/src/index/quadtree/DoubleBits.dart';
+
+import 'Interval.dart';
 
 /// A Key is a unique identifier for a node in a tree.
 /// It contains a lower-left point and a level number. The level number
@@ -34,7 +36,7 @@ class Key {
   double _pt = 0.0;
   int _level = 0;
   // auxiliary data which is derived from the key for use in computation
-  Interval _interval;
+  late Interval _interval;
 
   Key(Interval interval)
   {

@@ -14,6 +14,11 @@
 
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
+import 'ItemBoundable.dart';
+import 'ItemDistance.dart';
+
 /**
  * An {@link ItemDistance} function for 
  * items which are {@link Geometry}s,
@@ -40,10 +45,11 @@ implements ItemDistance
    * @return the distance between the geometries
    * @throws ClassCastException if either item is not a Geometry
    */
+  @override
   double distance(ItemBoundable item1, ItemBoundable item2) {
-    if (item1 == item2) return double.maxFinite
-    Geometry g1 = (Geometry) item1.getItem();
-    Geometry g2 = (Geometry) item2.getItem();
+    if (item1 == item2) return double.maxFinite;
+    Geometry g1 = item1.getItem() as Geometry;
+    Geometry g2 = item2.getItem() as Geometry;
     return g1.distance(g2);    
   }
 }

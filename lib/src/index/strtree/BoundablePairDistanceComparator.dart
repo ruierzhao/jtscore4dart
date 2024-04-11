@@ -10,55 +10,73 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.io.Serializable;
 // import java.util.Comparator;
 
+import 'BoundablePair.dart';
 
-/**
- * The Class BoundablePairDistanceComparator. It implements Java comparator and is used 
- * as a parameter to sort the BoundablePair list.
- */
-class BoundablePairDistanceComparator implements Comparator<BoundablePair>, Serializable{
-	
-	/** The normal order. */
-	bool normalOrder;
+// /**
+//  * The Class BoundablePairDistanceComparator. It implements Java comparator and is used 
+//  * as a parameter to sort the BoundablePair list.
+//  */
+// class BoundablePairDistanceComparator
+//     implements Comparator<BoundablePair> /**,Serializable */ {
+//   /** The normal order. */
+//   bool normalOrder;
 
-	/**
-	 * Instantiates a new boundable pair distance comparator.
-	 *
-	 * @param normalOrder true puts the lowest record at the head of this queue.
-	 * This is the natural order. PriorityQueue peek() will get the least element. 
-	 */
-	BoundablePairDistanceComparator(bool normalOrder)
-	{
-		this.normalOrder = normalOrder;
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-	 */
-	int compare(BoundablePair p1, BoundablePair p2) {
-		double distance1 = p1.getDistance();
-		double distance2 = p2.getDistance();
-		if(this.normalOrder)
-		{
-			if (distance1 > distance2) {
-				return 1;
-			} else if (distance1 == distance2) {
-				return 0;
-			}
-			return -1;
-		}
-		else
-		{
-			if (distance1 > distance2) {
-				return -1;
-			} else if (distance1 == distance2) {
-				return 0;
-			}
-			return 1;
-		}
+//   /**
+// 	 * Instantiates a new boundable pair distance comparator.
+// 	 *
+// 	 * @param normalOrder true puts the lowest record at the head of this queue.
+// 	 * This is the natural order. PriorityQueue peek() will get the least element. 
+// 	 */
+//   BoundablePairDistanceComparator(bool normalOrder) {
+//     this.normalOrder = normalOrder;
+//   }
 
-	}
+//   /* (non-Javadoc)
+// 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+// 	 */
+//   int compare(BoundablePair p1, BoundablePair p2) {
+//     double distance1 = p1.getDistance();
+//     double distance2 = p2.getDistance();
+//     if (this.normalOrder) {
+//       if (distance1 > distance2) {
+//         return 1;
+//       } else if (distance1 == distance2) {
+//         return 0;
+//       }
+//       return -1;
+//     } else {
+//       if (distance1 > distance2) {
+//         return -1;
+//       } else if (distance1 == distance2) {
+//         return 0;
+//       }
+//       return 1;
+//     }
+//   }
+// }
+
+/// TODO: @ruier edit.
+Comparator<BoundablePair> BoundablePairDistanceComparator(bool normalOrder) {
+  return (BoundablePair p1, BoundablePair p2) {
+    double distance1 = p1.getDistance();
+    double distance2 = p2.getDistance();
+    if (normalOrder) {
+      if (distance1 > distance2) {
+        return 1;
+      } else if (distance1 == distance2) {
+        return 0;
+      }
+      return -1;
+    } else {
+      if (distance1 > distance2) {
+        return -1;
+      } else if (distance1 == distance2) {
+        return 0;
+      }
+      return 1;
+    }
+  };
 }

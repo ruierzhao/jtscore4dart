@@ -14,6 +14,13 @@
 // import org.locationtech.jts.index.quadtree.IntervalSize;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/index/quadtree/IntervalSize.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'Interval.dart';
+import 'Node.dart';
+import 'NodeBase.dart';
+
 /**
  * The root node of a single {@link Bintree}.
  * It is centred at the origin,
@@ -26,18 +33,18 @@ class Root
 {
 
   // the singleton root node is centred at the origin.
- /**private */static final double origin = 0.0;
+ /**private */static const double origin = 0.0;
 
-  Root()
-  {
-  }
+  // Root()
+  // {
+  // }
 
   /**
    * Insert an item into the tree this is the root of.
    */
   void insert(Interval itemInterval, Object item)
   {
-    int index = getSubnodeIndex(itemInterval, origin);
+    int index = NodeBase.getSubnodeIndex(itemInterval, origin);
     // if index is -1, itemEnv must contain the origin.
     if (index == -1) {
       add(item);
@@ -47,7 +54,7 @@ class Root
      * the item must be contained in one interval, so insert it into the
      * tree for that interval (which may not yet exist)
      */
-    Node node = subnode[index];
+    Node? node = subnode[index];
     /**
      *  If the subnode doesn't exist or this item is not contained in it,
      *  have to expand the tree upward to contain the item.
@@ -61,7 +68,7 @@ class Root
      * At this point we have a subnode which exists and must contain
      * contains the env for the item.  Insert the item into the tree.
      */
-    insertContained(subnode[index], itemInterval, item);
+    insertContained(subnode[index]!, itemInterval, item);
 //System.out.println("depth = " + root.depth() + " size = " + root.size());
   }
 
@@ -80,10 +87,11 @@ class Root
     */
     bool isZeroArea = IntervalSize.isZeroWidth(itemInterval.getMin(), itemInterval.getMax());
     NodeBase node;
-    if (isZeroArea)
+    if (isZeroArea) {
       node = tree.find(itemInterval);
-    else
+    } else {
       node = tree.getNode(itemInterval);
+    }
     node.add(item);
   }
 

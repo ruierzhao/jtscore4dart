@@ -13,6 +13,8 @@
 
 
 
+import 'ItemBoundable.dart';
+
 /**
  * A function method which computes the distance
  * between two {@link ItemBoundable}s in an {@link STRtree}.
@@ -36,8 +38,8 @@ abstract class ItemDistance
   /**
    * Computes the distance between two items.
    * 
-   * @param item1
-   * @param item2
+   * @param [item1]
+   * @param [item2]
    * @return the distance between the items
    * 
    * @throws ArgumentError if the metric is not applicable to the arguments

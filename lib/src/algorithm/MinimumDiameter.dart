@@ -21,6 +21,7 @@
 // import org.locationtech.jts.geom.Polygon;
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
 
 import 'MinimumAreaRectangle.dart';
 
@@ -92,10 +93,11 @@ class MinimumDiameter
  /**private */final Geometry inputGeom;
  /**private */final bool isConvex;
 
- /**private */List<Coordinate> convexHullPts = null;
- /**private */LineSegment minBaseSeg = LineSegment.empty();
- /**private */Coordinate minWidthPt = null;
- /**private */int minPtIndex;
+//  /**private */List<Coordinate> convexHullPts = null;
+ /**private */List<Coordinate> convexHullPts = List<Coordinate>.empty();
+ /**private */LineSegment? minBaseSeg = LineSegment.empty();
+ /**private */Coordinate? minWidthPt = null;
+ /**private */int minPtIndex = 0;
  /**private */double minWidth = 0.0;
 
   /**
@@ -139,7 +141,7 @@ class MinimumDiameter
   Coordinate getWidthCoordinate()
   {
     computeMinimumDiameter();
-    return minWidthPt;
+    return minWidthPt!;
   }
 
   /**
@@ -150,7 +152,7 @@ class MinimumDiameter
   LineString getSupportingSegment()
   {
     computeMinimumDiameter();
-    return inputGeom.getFactory().createLineString([minBaseSeg.p0, minBaseSeg.p1]);
+    return inputGeom.getFactory().createLineString([minBaseSeg!.p0, minBaseSeg!.p1]);
   }
 
   /**
@@ -163,22 +165,24 @@ class MinimumDiameter
     computeMinimumDiameter();
 
     // return empty linestring if no minimum width calculated
-    if (minWidthPt == null)
-      return inputGeom.getFactory().createLineString();
+    if (minWidthPt == null) { // minBaseSeg必为null
+      return inputGeom.getFactory().createLineString([]);
+    }
 
-    Coordinate basePt = minBaseSeg.project(minWidthPt);
-    return inputGeom.getFactory().createLineString(new List<Coordinate> { basePt, minWidthPt } );
+    Coordinate basePt = minBaseSeg!.project(minWidthPt!);
+    return inputGeom.getFactory().createLineString(<Coordinate> [basePt, minWidthPt!]);
   }
 
  /**private */void computeMinimumDiameter()
   {
     // check if computation is cached
-    if (minWidthPt != null)
+    if (minWidthPt != null) {
       return;
+    }
 
-    if (isConvex)
+    if (isConvex) {
       computeWidthConvex(inputGeom);
-    else {
+    } else {
       Geometry convexGeom = (new ConvexHull(inputGeom)).getConvexHull();
       computeWidthConvex(convexGeom);
     }
@@ -187,13 +191,14 @@ class MinimumDiameter
  /**private */void computeWidthConvex(Geometry convexGeom)
   {
 //System.out.println("Input = " + geom);
-    if (convexGeom is Polygon)
-      convexHullPts = ((Polygon) convexGeom).getExteriorRing().getCoordinates();
-    else
+    if (convexGeom is Polygon) {
+      convexHullPts = convexGeom.getExteriorRing().getCoordinates();
+    } else {
       convexHullPts = convexGeom.getCoordinates();
+    }
 
     // special cases for lines or points or degenerate rings
-    if (convexHullPts.length == 0) {
+    if (convexHullPts.isEmpty) {
       minWidth = 0.0;
       minWidthPt = null;
       minBaseSeg = null;
@@ -201,17 +206,19 @@ class MinimumDiameter
     else if (convexHullPts.length == 1) {
       minWidth = 0.0;
       minWidthPt = convexHullPts[0];
-      minBaseSeg.p0 = convexHullPts[0];
-      minBaseSeg.p1 = convexHullPts[0];
+      minBaseSeg!.p0 = convexHullPts[0];
+      minBaseSeg!.p1 = convexHullPts[0];
     }
     else if (convexHullPts.length == 2 || convexHullPts.length == 3) {
       minWidth = 0.0;
       minWidthPt = convexHullPts[0];
-      minBaseSeg.p0 = convexHullPts[0];
-      minBaseSeg.p1 = convexHullPts[1];
+      minBaseSeg!.p0 = convexHullPts[0];
+      minBaseSeg!.p1 = convexHullPts[1];
     }
-    else
+    else{
       computeConvexRingMinDiameter(convexHullPts);
+    }
+      
   }
 
   /**
@@ -223,10 +230,10 @@ class MinimumDiameter
  /**private */void computeConvexRingMinDiameter(List<Coordinate> pts)
   {
     // for each segment in the ring
-    minWidth = double.maxFinite
+    minWidth = double.maxFinite;
     int currMaxIndex = 1;
 
-    LineSegment seg = new LineSegment();
+    LineSegment seg = new LineSegment.empty();
     // for each segment, find a vertex at max distance, and pick the minimum
     for (int i = 0; i < pts.length - 1; i++) {
       seg.p0 = pts[i];
@@ -240,22 +247,23 @@ class MinimumDiameter
     double maxPerpDistance = seg.distancePerpendicular(pts[startIndex]);
     double nextPerpDistance = maxPerpDistance;
     int maxIndex = startIndex;
-    int nextIndex = maxIndex;
+    int _nextIndex = maxIndex;
     while (nextPerpDistance >= maxPerpDistance) {
       maxPerpDistance = nextPerpDistance;
-      maxIndex = nextIndex;
+      maxIndex = _nextIndex;
 
-      nextIndex = nextIndex(pts, maxIndex);
-      if (nextIndex == startIndex)
+      _nextIndex = nextIndex(pts, maxIndex);
+      if (_nextIndex == startIndex) {
         break;
-      nextPerpDistance = seg.distancePerpendicular(pts[nextIndex]);
+      }
+      nextPerpDistance = seg.distancePerpendicular(pts[_nextIndex]);
     }
     // found maximum width for this segment - update global min dist if appropriate
     if (maxPerpDistance < minWidth) {
       minPtIndex = maxIndex;
       minWidth = maxPerpDistance;
       minWidthPt = pts[minPtIndex];
-      minBaseSeg = new LineSegment(seg);
+      minBaseSeg = new LineSegment.fromAnother(seg);
 //      System.out.println(minBaseSeg);
 //      System.out.println(minWidth);
     }
@@ -290,16 +298,16 @@ class MinimumDiameter
     // check if minimum rectangle is degenerate (a point or line segment)
     if (minWidth == 0.0) {
       //-- Min rectangle is a point
-      if (minBaseSeg.p0.equals2D(minBaseSeg.p1)) {
-        return inputGeom.getFactory().createPoint(minBaseSeg.p0.copy());
+      if (minBaseSeg!.p0.equals2D(minBaseSeg!.p1)) {
+        return inputGeom.getFactory().createPoint(minBaseSeg!.p0.copy());
       }
       //-- Min rectangle is a line. Use the diagonal of the extent
       return computeMaximumLine(convexHullPts, inputGeom.getFactory());
     }
     
     // deltas for the base segment of the minimum diameter
-    double dx = minBaseSeg.p1.x - minBaseSeg.p0.x;
-    double dy = minBaseSeg.p1.y - minBaseSeg.p0.y;
+    double dx = minBaseSeg!.p1.x - minBaseSeg!.p0.x;
+    double dy = minBaseSeg!.p1.y - minBaseSeg!.p0.y;
     
     double minPara = double.maxFinite;
     double maxPara = -double.maxFinite;
@@ -325,10 +333,10 @@ class MinimumDiameter
     LineSegment minParaLine = computeSegmentForLine(-dy, dx, minPara);
     
     // compute vertices of rectangle (where the para/perp max & min lines intersect)
-    Coordinate p0 = maxParaLine.lineIntersection(maxPerpLine);
-    Coordinate p1 = minParaLine.lineIntersection(maxPerpLine);
-    Coordinate p2 = minParaLine.lineIntersection(minPerpLine);
-    Coordinate p3 = maxParaLine.lineIntersection(minPerpLine);
+    Coordinate p0 = maxParaLine.lineIntersection(maxPerpLine)!;
+    Coordinate p1 = minParaLine.lineIntersection(maxPerpLine)!;
+    Coordinate p2 = minParaLine.lineIntersection(minPerpLine)!;
+    Coordinate p3 = maxParaLine.lineIntersection(minPerpLine)!;
     
     // LinearRing shell = inputGeom.getFactory().createLinearRing(new List<Coordinate> { p0, p1, p2, p3, p0 });
     /// TODO: @ruier edit.use Array.
@@ -355,12 +363,12 @@ class MinimumDiameter
       if (ptMinY == null || p.getY() < ptMinY.getY()) ptMinY = p;
       if (ptMaxY == null || p.getY() > ptMaxY.getY()) ptMaxY = p;
     }
-    Coordinate p0 = ptMinX;
-    Coordinate p1 = ptMaxX;
+    Coordinate p0 = ptMinX!;
+    Coordinate p1 = ptMaxX!;
     //-- line is vertical - use Y pts
     if (p0.getX() == p1.getX()) {
-      p0 = ptMinY;
-      p1 = ptMaxY;
+      p0 = ptMinY!;
+      p1 = ptMaxY!;
     }
     // return factory.createLineString(new List<Coordinate> { p0.copy(), p1.copy() });
     /// TODO: @ruier edit.maybe can use Array.

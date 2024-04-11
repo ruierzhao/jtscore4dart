@@ -20,6 +20,9 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
+
 /**
  * Extracts a single point
  * from each connected element in a Geometry
@@ -46,10 +49,7 @@ class ConnectedElementPointFilter
 
  /**private */List pts;
 
-  ConnectedElementPointFilter(List pts)
-  {
-    this.pts = pts;
-  }
+  ConnectedElementPointFilter(this.pts);
 
   void filter(Geometry geom)
   {

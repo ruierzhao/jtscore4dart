@@ -39,7 +39,7 @@ import 'package:jtscore4dart/src/patch/ArrayList.dart';
  */
 class EdgeList
 {
- /**private */List edges = [];
+ /**private */List<Edge> edges = [];
   /**
    * An index of the edges, for fast lookup.
    *
@@ -68,7 +68,7 @@ class EdgeList
     }
   }
 
-  List getEdges() { return edges; }
+  List<Edge> getEdges() { return edges; }
 
   /**
    * If there is an edge equal to e already in the list, return it.
@@ -101,6 +101,12 @@ class EdgeList
       if ( ( edges.get(i)).equals(e) ) return i;
     }
     return -1;
+  }
+  /// TODO: @ruier add.
+  EdgeList clear()
+  {
+    this.edges.clear();
+    return this;
   }
 
   // void print(PrintStream out)

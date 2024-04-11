@@ -100,7 +100,7 @@ class Depth {
   {
     return depth[geomIndex][posIndex] == NULL_VALUE;
   }
-  void add$2(Label lbl)
+  void addLable(Label lbl)
   {
     for (int i = 0; i < 2; i++) {
       for (int j = 1; j < 3; j++) {

@@ -39,7 +39,10 @@ import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geomgraph/Depth.dart';
 import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
@@ -114,14 +117,14 @@ class OverlayOp extends GeometryGraphOperation {
    * <p>
    * The method handles arguments of {@link Location#NONE} correctly
    * 
-   * @param label the topological label of the point
-   * @param opCode the code for the overlay operation to test
+   * @param [label] the topological label of the point
+   * @param [opCode] the code for the overlay operation to test
    * @return true if the label locations correspond to the overlayOpCode
    */
   static bool isResultOfOp(Label label, int opCode) {
     int loc0 = label.getLocation(0);
     int loc1 = label.getLocation(1);
-    return isResultOfOp(loc0, loc1, opCode);
+    return isResultOfOp$2(loc0, loc1, opCode);
   }
 
   /**
@@ -137,7 +140,7 @@ class OverlayOp extends GeometryGraphOperation {
    * @param [overlayOpCode] the code for the overlay operation to test
    * @return [true] if the locations correspond to the overlayOpCode
    */
-  static bool isResultOfOp(int loc0, int loc1, int overlayOpCode) {
+  static bool isResultOfOp$2(int loc0, int loc1, int overlayOpCode) {
     if (loc0 == Location.BOUNDARY) loc0 = Location.INTERIOR;
     if (loc1 == Location.BOUNDARY) loc1 = Location.INTERIOR;
     switch (overlayOpCode) {
@@ -156,14 +159,14 @@ class OverlayOp extends GeometryGraphOperation {
 
   /**private */ final PointLocator ptLocator = new PointLocator();
   /**private */ GeometryFactory geomFact;
-  /**private */ Geometry resultGeom;
+  /**private */ Geometry? resultGeom;
 
   /**private */ PlanarGraph graph;
   /**private */ EdgeList edgeList = new EdgeList();
 
-  /**private */ List resultPolyList = [];
-  /**private */ List resultLineList = [];
-  /**private */ List resultPointList = [];
+  /**private */ List<Polygon> resultPolyList = [];
+  /**private */ List<LineString> resultLineList = [];
+  /**private */ List<Point> resultPointList = [];
 
   /**
    * Constructs an instance to compute a single overlay operation
@@ -187,13 +190,13 @@ class OverlayOp extends GeometryGraphOperation {
    * <p>
    * Note: this method can be called once only.
    * 
-   * @param overlayOpCode the overlay operation to perform
+   * @param [overlayOpCode] the overlay operation to perform
    * @return the compute result geometry
    * @throws TopologyException if a robustness problem is encountered
    */
   Geometry getResultGeometry(int overlayOpCode) {
     computeOverlay(overlayOpCode);
-    return resultGeom;
+    return resultGeom!;
   }
 
   /**
@@ -291,7 +294,7 @@ class OverlayOp extends GeometryGraphOperation {
   /**protected */ void insertUniqueEdge(Edge e) {
 //<FIX> MD 8 Oct 03  speed up identical edge lookup
     // fast lookup
-    Edge existingEdge = edgeList.findEqualEdge(e);
+    Edge? existingEdge = edgeList.findEqualEdge(e);
 
     // If an identical edge already exists, simply update its label
     if (existingEdge != null) {
@@ -308,10 +311,10 @@ class OverlayOp extends GeometryGraphOperation {
       // if this is the first duplicate found for this edge, initialize the depths
       ///*
       if (depth.isNull()) {
-        depth.add(existingLabel);
+        depth.addLable(existingLabel);
       }
       //*/
-      depth.add(labelToMerge);
+      depth.addLable(labelToMerge);
       existingLabel.merge(labelToMerge);
 //Debug.print("inserted edge: "); Debug.println(e);
 //Debug.print("existing edge: "); Debug.println(existingEdge);
@@ -368,7 +371,7 @@ class OverlayOp extends GeometryGraphOperation {
       if (!depth.isNull()) {
         depth.normalize();
         for (int i = 0; i < 2; i++) {
-          if (!lbl.isNull(i) && lbl.isArea() && !depth.isNull(i)) {
+          if (!lbl.isNull(i) && lbl.isArea() && !depth.isNull$1(i)) {
             /**
            * if the depths are equal, this edge is the result of
            * the dimensional collapse of two or more edges.
@@ -384,11 +387,11 @@ class OverlayOp extends GeometryGraphOperation {
              * label of the edge must be updated to reflect the resultant
              * side locations indicated by the depth values.
              */
-              Assert.isTrue(!depth.isNull(i, Position.LEFT),
+              Assert.isTrue(!depth.isNull$2(i, Position.LEFT),
                   "depth of LEFT side has not been initialized");
               lbl.setLocation(
                   i, Position.LEFT, depth.getLocation(i, Position.LEFT));
-              Assert.isTrue(!depth.isNull(i, Position.RIGHT),
+              Assert.isTrue(!depth.isNull$2(i, Position.RIGHT),
                   "depth of RIGHT side has not been initialized");
               lbl.setLocation(
                   i, Position.RIGHT, depth.getLocation(i, Position.RIGHT));
@@ -403,17 +406,33 @@ class OverlayOp extends GeometryGraphOperation {
    * If edges which have undergone dimensional collapse are found,
    * replace them with a new edge which is a L edge
    */
-  /**private */ void replaceCollapsedEdges() {
-    List newEdges = [];
+  /// TODO: @ruier edit.dart 没有 remove 方法，目前先使用数组循环代替。。
+//   /**private */ void replaceCollapsedEdges() {
+//     List newEdges = [];
+//     for (Iterator it = edgeList.iterator(); it.moveNext();) {
+//       Edge e = it.current;
+//       if (e.isCollapsed()) {
+// //Debug.print(e);
+//         /// TODO: @ruier edit. catch... maybe bugs........................
+//         // it.remove();
+//         // it.remove();
+//         newEdges.add(e.getCollapsedEdge());
+//       }
+//     }
+//     edgeList.addAll(newEdges);
+//   }
+  void replaceCollapsedEdges() {
+    List<Edge>_edges = edgeList.getEdges();
+    List<Edge> newEdges = List.from(_edges, growable: false);
+    
     for (Iterator it = edgeList.iterator(); it.moveNext();) {
       Edge e = it.current;
       if (e.isCollapsed()) {
-//Debug.print(e);
-        it.remove();
+        newEdges.remove(e);
         newEdges.add(e.getCollapsedEdge());
       }
     }
-    edgeList.addAll(newEdges);
+    edgeList..clear()..addAll(newEdges);
   }
 
   /**
@@ -428,8 +447,8 @@ class OverlayOp extends GeometryGraphOperation {
   /**private */ void copyPoints(int argIndex) {
     for (Iterator i = arg[argIndex].getNodeIterator(); i.moveNext();) {
       Node graphNode = i.current;
-      Node newNode = graph.addNode(graphNode.getCoordinate());
-      newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
+      Node newNode = graph.addNodeCoord(graphNode.getCoordinate());
+      newNode.setLabelLocation(argIndex, graphNode.getLabel().getLocation(argIndex));
     }
   }
 
@@ -541,10 +560,10 @@ class OverlayOp extends GeometryGraphOperation {
     for (Iterator it = graph.getEdgeEnds().iterator; it.moveNext();) {
       DirectedEdge de = it.current;
       // mark all dirEdges with the appropriate label
-      Label label = de.getLabel();
+      Label label = de.getLabel()!;
       if (label.isArea() &&
           !de.isInteriorAreaEdge() &&
-          isResultOfOp(label.getLocation(0, Position.RIGHT),
+          isResultOfOp$2(label.getLocation(0, Position.RIGHT),
               label.getLocation(1, Position.RIGHT), opCode)) {
         de.setInResult(true);
 //Debug.print("in result "); Debug.println(de);
@@ -606,9 +625,9 @@ class OverlayOp extends GeometryGraphOperation {
     return false;
   }
 
-  /**private */ Geometry computeGeometry(List resultPointList,
-      List resultLineList, List resultPolyList, int opcode) {
-    List geomList = [];
+  /**private */ Geometry computeGeometry(List<Point> resultPointList,
+      List<LineString> resultLineList, List<Polygon> resultPolyList, int opcode) {
+    List<Geometry> geomList = [];
     // element geometries of the result are always in the order P,L,A
     geomList.addAll(resultPointList);
     geomList.addAll(resultLineList);

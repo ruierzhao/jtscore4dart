@@ -45,3 +45,12 @@ extension JavaList<T> on List<T>{
   
 }
 
+extension JavaIterator<T> on Iterator<T>{
+  getAll(){
+    
+  }
+  static List removeEles = [];
+  remove(){
+    removeEles.add(current);
+  }
+}

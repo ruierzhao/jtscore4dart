@@ -75,10 +75,10 @@ class LineMerger
    * Creates a new line merger.
    *
    */
-  LineMerger()
-  {
+  // LineMerger()
+  // {
   	
-  }
+  // }
   
   /**
    * Adds a Geometry to be processed. May be called multiple times.

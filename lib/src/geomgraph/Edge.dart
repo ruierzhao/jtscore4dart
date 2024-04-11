@@ -82,6 +82,15 @@ class Edge extends GraphComponent
   int getNumPoints() { return pts.length; }
   void setName(String name) { this.name = name; }
   List<Coordinate> getCoordinates()  {    return pts;  }
+  // public Coordinate getCoordinate(int i)
+  // {
+  //   return pts[i];
+  // }
+  // public Coordinate getCoordinate()
+  // {
+  //   if (pts.length > 0) return pts[0];
+  //   return null;
+  // }
   
   // @override
   // Coordinate? getCoordinate([int? i])

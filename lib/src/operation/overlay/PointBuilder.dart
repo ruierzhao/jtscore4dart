@@ -38,7 +38,7 @@ import 'OverlayOp.dart';
 class PointBuilder {
  /**private */OverlayOp op;
  /**private */GeometryFactory geometryFactory;
- /**private */List resultPointList = [];
+ /**private */List<Point> resultPointList = [];
 
   PointBuilder(this.op, this.geometryFactory, PointLocator ptLocator);
 
@@ -48,7 +48,7 @@ class PointBuilder {
    *
    * @return a list of the Points objects in the result
    */
-  List build(int opCode)
+  List<Point> build(int opCode)
   {
     _extractNonCoveredResultNodes(opCode);
     /**

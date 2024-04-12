@@ -59,7 +59,7 @@ class EdgeEndBuilder {
    */
   void computeEdgeEndsTo(Edge edge, List l) {
     EdgeIntersectionList eiList = edge.getEdgeIntersectionList();
-//Debug.print(eiList);
+    //Debug.print(eiList);
     // ensure that the list has entries for the first and last point of the edge
     eiList.addEndpoints();
 
@@ -76,8 +76,8 @@ class EdgeEndBuilder {
       if (it.moveNext()) eiNext = it.current as EdgeIntersection;
 
       if (eiCurr != null) {
-        createEdgeEndForPrev(edge, l, eiCurr, eiPrev!);
-        createEdgeEndForNext(edge, l, eiCurr, eiNext!);
+        createEdgeEndForPrev(edge, l, eiCurr, eiPrev);
+        createEdgeEndForNext(edge, l, eiCurr, eiNext);
       }
     } while (eiCurr != null);
   }
@@ -91,7 +91,7 @@ class EdgeEndBuilder {
    * eiCurr will always be an EdgeIntersection, but eiPrev may be null.
    */
   void createEdgeEndForPrev(
-      Edge edge, List l, EdgeIntersection eiCurr, EdgeIntersection eiPrev) {
+      Edge edge, List l, EdgeIntersection eiCurr, EdgeIntersection? eiPrev) {
     int iPrev = eiCurr.segmentIndex;
     if (eiCurr.dist == 0.0) {
       // if at the start of the edge there is no previous edge
@@ -119,7 +119,7 @@ class EdgeEndBuilder {
      * eiCurr will always be an EdgeIntersection, but eiNext may be null.
      */
   void createEdgeEndForNext(
-      Edge edge, List l, EdgeIntersection eiCurr, EdgeIntersection eiNext) {
+      Edge edge, List l, EdgeIntersection eiCurr, EdgeIntersection? eiNext) {
     int iNext = eiCurr.segmentIndex + 1;
     // if there is no next edge there is nothing to do
     if (iNext >= edge.getNumPoints() && eiNext == null) return;

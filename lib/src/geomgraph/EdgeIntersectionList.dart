@@ -59,7 +59,7 @@ class EdgeIntersectionList
   EdgeIntersection add(Coordinate intPt, int segmentIndex, double dist)
   {
     EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
-    EdgeIntersection ei = nodeMap.get(eiNew) as EdgeIntersection;
+    EdgeIntersection? ei = nodeMap.get(eiNew);
     if (ei != null) {
       return ei;
     }

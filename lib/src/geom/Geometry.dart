@@ -32,21 +32,18 @@
 // import org.locationtech.jts.util.Assert;
 
 
-// import 'package:jtscore4dart/src/algorithm/Centroid.dart';
-// import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
-// import 'package:jtscore4dart/src/algorithm/InteriorPoint.dart';
-// import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
-// import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
+import 'package:jtscore4dart/src/algorithm/Centroid.dart';
+import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
+import 'package:jtscore4dart/src/algorithm/InteriorPoint.dart';
+import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
+import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
 // import 'package:jtscore4dart/src/operation/predicate/RectangleContains.dart';
 // import 'package:jtscore4dart/src/operation/predicate/RectangleIntersects.dart';
-// import 'package:jtscore4dart/src/operation/relate/RelateOp.dart';
-// import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
+import 'package:jtscore4dart/src/operation/relate/RelateOp.dart';
+import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
 // import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
 
 import 'package:jtscore4dart/io.dart';
-import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
-import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
-// import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
 
 import 'CoordinateSequenceComparator.dart';
 import 'Coordinate.dart';
@@ -396,9 +393,9 @@ abstract class Geometry{
   /// @see #isValid
   bool isSimple()
   {
-    throw UnimplementedError("ruier test");
-    // IsSimpleOp op = new IsSimpleOp(this);
-    // return op.isSimple();
+    // throw UnimplementedError("ruier test");
+    IsSimpleOp op = new IsSimpleOp(this);
+    return op.isSimple();
   }
 
   /// Tests whether this <code>Geometry</code>
@@ -435,8 +432,8 @@ abstract class Geometry{
   /// @throws ArgumentError if g is null
   double distance(Geometry g)
   {
-    throw UnimplementedError("ruier test");
-    // return DistanceOp.distance(this, g);
+    // throw UnimplementedError("ruier test");
+    return DistanceOp.distance(this, g);
   }
 
   /// Tests whether the distance from this <code>Geometry</code>
@@ -447,8 +444,8 @@ abstract class Geometry{
   /// @return <code>true</code> if the geometries are less than <code>distance</code> apart.
   bool isWithinDistance(Geometry geom, double distance)
   {
-    throw UnimplementedError("ruier test");
-    // return DistanceOp.isWithinDistance(this, geom, distance);
+    // throw UnimplementedError("ruier test");
+    return DistanceOp.isWithinDistance(this, geom, distance);
   }
 
   /// Tests whether this is a rectangular {@link Polygon}.
@@ -494,12 +491,12 @@ abstract class Geometry{
   /// @return a {@link Point} which is the centroid of this Geometry
   Point getCentroid()
   {
-    throw UnimplementedError("");
-    // if (isEmpty()) {
-    //   return factory.createPoint();
-    // }
-    // Coordinate? centPt = Centroid.getCentroid(this);
-    // return createPointFromInternalCoord(centPt, this);
+    // throw UnimplementedError("");
+    if (isEmpty()) {
+      return factory.createPoint();
+    }
+    Coordinate? centPt = Centroid.getCentroid(this);
+    return createPointFromInternalCoord(centPt, this);
   }
 
   /// Computes an interior point of this <code>Geometry</code>.
@@ -512,10 +509,10 @@ abstract class Geometry{
   /// @return a {@link Point} which is in the interior of this Geometry
   Point getInteriorPoint()
   {
-    throw UnimplementedError("");
-    // if (isEmpty()) return factory.createPoint();
-    // Coordinate? pt = InteriorPoint.of(this);
-    // return createPointFromInternalCoord(pt, this);
+    // throw UnimplementedError("");
+    if (isEmpty()) return factory.createPoint();
+    Coordinate? pt = InteriorPoint.of(this);
+    return createPointFromInternalCoord(pt, this);
   }
 
   /// Returns the dimension of this geometry.
@@ -608,8 +605,8 @@ abstract class Geometry{
   /// and/or update any derived information it has cached (such as its {@link Envelope} ).
   /// The operation is applied to all component Geometries.
   void geometryChanged() {
-    throw UnimplementedError("ruier test");
-    // applyGeometryComonent(_geometryChangedFilter);
+    // throw UnimplementedError("ruier test");
+    applyGeometryComonent(_geometryChangedFilter);
   }
 
   /// Notifies this Geometry that its Coordinates have been changed by an external
@@ -666,12 +663,12 @@ abstract class Geometry{
   ///@return        <code>true</code> if the two <code>Geometry</code>s touch;
   ///      Returns <code>false</code> if both <code>Geometry</code>s are points
   bool touches(Geometry g) {
-    throw UnimplementedError("ruier test");
+    // throw UnimplementedError("ruier test");
     // short-circuit test
-    // if (! getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
-    //   return false;
-    // }
-    // return relate(g).isTouches(getDimension(), g.getDimension());
+    if (! getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
+      return false;
+    }
+    return relate(g).isTouches(getDimension(), g.getDimension());
   }
 
   /// Tests whether this geometry intersects the argument geometry.
@@ -871,12 +868,12 @@ abstract class Geometry{
   ///@param  g  the <code>Geometry</code> with which to compare this <code>Geometry</code>
   ///@return        <code>true</code> if the two <code>Geometry</code>s overlap.
   bool overlaps(Geometry g) {
-    throw UnimplementedError("ruier test");
+    // throw UnimplementedError("ruier test");
     // short-circuit test
-    // if (! getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
-    //   return false;
-    // }
-    // return relate(g).isOverlaps(getDimension(), g.getDimension());
+    if (! getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
+      return false;
+    }
+    return relate(g).isOverlaps(getDimension(), g.getDimension());
   }
 
   /// Tests whether this geometry covers the
@@ -980,16 +977,16 @@ abstract class Geometry{
   ///  For more information on the DE-9IM, see the <i>OpenGIS Simple Features
   ///  Specification</i>.
   ///
-  ///@param  g                the <code>Geometry</code> with which to compare
+  ///@param  [g]                the <code>Geometry</code> with which to compare
   ///      this <code>Geometry</code>
-  ///@param  intersectionPattern  the pattern against which to check the
+  ///@param  [intersectionPattern]  the pattern against which to check the
   ///      intersection matrix for the two <code>Geometry</code>s
   ///@return                      <code>true</code> if the DE-9IM intersection
   ///      matrix for the two <code>Geometry</code>s match <code>intersectionPattern</code>
   /// @see IntersectionMatrix
   bool relateOfPattern(Geometry g, String intersectionPattern) {
-    throw UnimplementedError("ruier test");
-    // return relate(g).matches(intersectionPattern);
+    // throw UnimplementedError("ruier test");
+    return relate(g).matches_(intersectionPattern);
   }
 
   ///  Returns the DE-9IM {@link IntersectionMatrix} for the two <code>Geometry</code>s.
@@ -998,10 +995,10 @@ abstract class Geometry{
   ///@return        an {@link IntersectionMatrix} describing the intersections of the interiors,
   ///      boundaries and exteriors of the two <code>Geometry</code>s
   IntersectionMatrix relate(Geometry g) {
-    throw UnimplementedError("ruier test");
-    // checkNotGeometryCollection(this);
-    // checkNotGeometryCollection(g);
-    // return RelateOp.relate(this, g);
+    // throw UnimplementedError("ruier test");
+    checkNotGeometryCollection(this);
+    checkNotGeometryCollection(g);
+    return RelateOp.relate(this, g);
   }
 
   /// Tests whether this geometry is topologically equal to the argument geometry

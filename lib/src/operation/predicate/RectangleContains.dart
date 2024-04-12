@@ -21,6 +21,8 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/geometry.dart';
+
 /**
  * Optimized implementation of the <tt>contains</tt> spatial predicate 
  * for cases where the first {@link Geometry} is a rectangle.
@@ -39,14 +41,14 @@ class RectangleContains {
   /**
    * Tests whether a rectangle contains a given geometry.
    * 
-   * @param rectangle a rectangular Polygon
-   * @param b a Geometry of any type
+   * @param [rectangle] a rectangular Polygon
+   * @param [b] a Geometry of any type
    * @return true if the geometries intersect
    */
   static bool contains(Polygon rectangle, Geometry b)
   {
     RectangleContains rc = new RectangleContains(rectangle);
-    return rc.contains(b);
+    return rc.contains_(b);
   }
 
  /**private */Envelope rectEnv;
@@ -56,23 +58,24 @@ class RectangleContains {
    *
    * @param rectangle a rectangular geometry
    */
-  RectangleContains(Polygon rectangle) {
+  RectangleContains(Polygon rectangle) :
     rectEnv = rectangle.getEnvelopeInternal();
-  }
 
-  bool contains(Geometry geom)
+  bool contains_(Geometry geom)
   {
     // the test geometry must be wholly contained in the rectangle envelope
-    if (! rectEnv.contains(geom.getEnvelopeInternal()))
+    if (! rectEnv.contains(geom.getEnvelopeInternal())) {
       return false;
+    }
     
     /**
      * Check that geom is not contained entirely in the rectangle boundary.
      * According to the somewhat odd spec of the SFS, if this
      * is the case the geometry is NOT contained.
      */
-    if (isContainedInBoundary(geom))
+    if (isContainedInBoundary(geom)) {
       return false;
+    }
     return true;
   }
 
@@ -80,20 +83,21 @@ class RectangleContains {
   {
     // polygons can never be wholely contained in the boundary
     if (geom is Polygon) return false;
-    if (geom is Point) return isPointContainedInBoundary((Point) geom);
-    if (geom is LineString) return isLineStringContainedInBoundary((LineString) geom);
+    if (geom is Point) return isPointContainedInBoundary(geom);
+    if (geom is LineString) return isLineStringContainedInBoundary(geom);
 
     for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry comp = geom.getGeometryN(i);
-      if (! isContainedInBoundary(comp))
+      if (! isContainedInBoundary(comp)) {
         return false;
+      }
     }
     return true;
   }
 
  /**private */bool isPointContainedInBoundary(Point point)
   {
-    return isPointContainedInBoundary(point.getCoordinate());
+    return _isPointContainedInBoundary(point.getCoordinate()!);
   }
 
   /**
@@ -102,7 +106,7 @@ class RectangleContains {
    * @param pt the point to test
    * @return true if the point is contained in the boundary
    */
- /**private */bool isPointContainedInBoundary(Coordinate pt)
+  bool _isPointContainedInBoundary(Coordinate pt)
   {
     /**
      * contains = false if the point is properly contained in the rectangle.
@@ -123,14 +127,15 @@ class RectangleContains {
  /**private */bool isLineStringContainedInBoundary(LineString line)
   {
     CoordinateSequence seq = line.getCoordinateSequence();
-    Coordinate p0 = new Coordinate();
-    Coordinate p1 = new Coordinate();
+    Coordinate p0 = new Coordinate.empty2D();
+    Coordinate p1 = new Coordinate.empty2D();
     for (int i = 0; i < seq.size() - 1; i++) {
-      seq.getCoordinate(i, p0);
-      seq.getCoordinate(i + 1, p1);
+      seq.getCoordinateTo(i, p0);
+      seq.getCoordinateTo(i + 1, p1);
 
-      if (! isLineSegmentContainedInBoundary(p0, p1))
+      if (! isLineSegmentContainedInBoundary(p0, p1)) {
         return false;
+      }
     }
     return true;
   }
@@ -143,19 +148,22 @@ class RectangleContains {
    */
  /**private */bool isLineSegmentContainedInBoundary(Coordinate p0, Coordinate p1)
   {
-    if (p0.equals(p1))
-      return isPointContainedInBoundary(p0);
+    if (p0.equals(p1)) {
+      return _isPointContainedInBoundary(p0);
+    }
 
     // we already know that the segment is contained in the rectangle envelope
     if (p0.x == p1.x) {
       if (p0.x == rectEnv.getMinX() ||
-          p0.x == rectEnv.getMaxX() )
+          p0.x == rectEnv.getMaxX() ) {
         return true;
+      }
     }
     else if (p0.y == p1.y) {
       if (p0.y == rectEnv.getMinY() ||
-          p0.y == rectEnv.getMaxY() )
+          p0.y == rectEnv.getMaxY() ) {
         return true;
+      }
     }
     /**
      * Either

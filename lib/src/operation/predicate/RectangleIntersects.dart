@@ -10,8 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-
 // import java.util.Iterator;
 // import java.util.List;
 
@@ -27,6 +25,11 @@
 // import org.locationtech.jts.geom.util.LinearComponentExtracter;
 // import org.locationtech.jts.geom.util.ShortCircuitedGeometryVisitor;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/RectangleLineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/locate/SimplePointInAreaLocator.dart';
+import 'package:jtscore4dart/src/geom/util/LinearComponentExtracter.dart';
+import 'package:jtscore4dart/src/geom/util/ShortCircuitedGeometryVisitor.dart';
 
 /**
  * Implementation of the <tt>intersects</tt> spatial predicate
@@ -41,8 +44,7 @@
  * 
  * @version 1.7
  */
-class RectangleIntersects
-{
+class RectangleIntersects {
   /**
    * Tests whether a rectangle intersects a given geometry.
    * 
@@ -52,15 +54,14 @@ class RectangleIntersects
    *          a Geometry of any type
    * @return true if the geometries intersect
    */
-  static bool intersects(Polygon rectangle, Geometry b)
-  {
+  static bool intersects(Polygon rectangle, Geometry b) {
     RectangleIntersects rp = new RectangleIntersects(rectangle);
-    return rp.intersects(b);
+    return rp.intersects_(b);
   }
 
- /**private */Polygon rectangle;
+  /**private */ Polygon rectangle;
 
- /**private */Envelope rectEnv;
+  /**private */ Envelope rectEnv;
 
   /**
    * Create a new intersects computer for a rectangle.
@@ -68,11 +69,8 @@ class RectangleIntersects
    * @param rectangle
    *          a rectangular Polygon
    */
-  RectangleIntersects(Polygon rectangle)
-  {
-    this.rectangle = rectangle;
-    rectEnv = rectangle.getEnvelopeInternal();
-  }
+  RectangleIntersects(this.rectangle)
+      : rectEnv = rectangle.getEnvelopeInternal();
 
   /**
    * Tests whether the given Geometry intersects
@@ -81,10 +79,10 @@ class RectangleIntersects
    * @param geom the Geometry to test (may be of any type)
    * @return true if the geometry intersects the query rectangle
    */
-  bool intersects(Geometry geom)
-  {
-    if (!rectEnv.intersects(geom.getEnvelopeInternal()))
+  bool intersects_(Geometry geom) {
+    if (!rectEnv.intersects(geom.getEnvelopeInternal())) {
       return false;
+    }
 
     /**
      * Test if rectangle envelope intersects any component envelope.
@@ -92,24 +90,29 @@ class RectangleIntersects
      */
     EnvelopeIntersectsVisitor visitor = new EnvelopeIntersectsVisitor(rectEnv);
     visitor.applyTo(geom);
-    if (visitor.intersects())
+    if (visitor.intersects()) {
       return true;
+    }
 
     /**
      * Test if any rectangle vertex is contained in the target geometry
      */
-    GeometryContainsPointVisitor ecpVisitor = new GeometryContainsPointVisitor(rectangle);
+    GeometryContainsPointVisitor ecpVisitor =
+        new GeometryContainsPointVisitor(rectangle);
     ecpVisitor.applyTo(geom);
-    if (ecpVisitor.containsPoint())
+    if (ecpVisitor.containsPoint()) {
       return true;
+    }
 
     /**
      * Test if any target geometry line segment intersects the rectangle
      */
-    RectangleIntersectsSegmentVisitor riVisitor = new RectangleIntersectsSegmentVisitor(rectangle);
+    RectangleIntersectsSegmentVisitor riVisitor =
+        new RectangleIntersectsSegmentVisitor(rectangle);
     riVisitor.applyTo(geom);
-    if (riVisitor.intersects())
+    if (riVisitor.intersects()) {
       return true;
+    }
 
     return false;
   }
@@ -122,16 +125,12 @@ class RectangleIntersects
  * @author Martin Davis
  * @version 1.7
  */
-class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
-{
- /**private */Envelope rectEnv;
+class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor {
+  /**private */ Envelope rectEnv;
 
- /**private */bool intersects = false;
+  /**private */ bool _intersects = false;
 
-  EnvelopeIntersectsVisitor(Envelope rectEnv)
-  {
-    this.rectEnv = rectEnv;
-  }
+  EnvelopeIntersectsVisitor(this.rectEnv);
 
   /**
    * Reports whether it can be concluded that an intersection occurs, 
@@ -140,13 +139,12 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
    * @return true if an intersection must occur 
    * or false if no conclusion about intersection can be made
    */
-  bool intersects()
-  {
-    return intersects;
+  bool intersects() {
+    return _intersects;
   }
 
- /**protected */void visit(Geometry element)
-  {
+  /**protected */ @override
+  void visit(Geometry element) {
     Envelope elementEnv = element.getEnvelopeInternal();
 
     // disjoint => no intersection
@@ -155,7 +153,7 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
     }
     // rectangle contains target env => must intersect
     if (rectEnv.contains(elementEnv)) {
-      intersects = true;
+      _intersects = true;
       return;
     }
     /**
@@ -167,21 +165,21 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
      * completely bisected. In this case it is not possible to make a conclusion
      * about the presence of an intersection.
      */
-    if (elementEnv.getMinX() >= rectEnv.getMinX()
-        && elementEnv.getMaxX() <= rectEnv.getMaxX()) {
-      intersects = true;
+    if (elementEnv.getMinX() >= rectEnv.getMinX() &&
+        elementEnv.getMaxX() <= rectEnv.getMaxX()) {
+      _intersects = true;
       return;
     }
-    if (elementEnv.getMinY() >= rectEnv.getMinY()
-        && elementEnv.getMaxY() <= rectEnv.getMaxY()) {
-      intersects = true;
+    if (elementEnv.getMinY() >= rectEnv.getMinY() &&
+        elementEnv.getMaxY() <= rectEnv.getMaxY()) {
+      _intersects = true;
       return;
     }
   }
 
- /**protected */bool isDone()
-  {
-    return intersects;
+  /**protected */ @override
+  bool isDone() {
+    return _intersects;
   }
 }
 
@@ -193,19 +191,16 @@ class EnvelopeIntersectsVisitor extends ShortCircuitedGeometryVisitor
  * @author Martin Davis
  * @version 1.7
  */
-class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
-{
- /**private */CoordinateSequence rectSeq;
+class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor {
+  /**private */ CoordinateSequence rectSeq;
 
- /**private */Envelope rectEnv;
+  /**private */ Envelope rectEnv;
 
- /**private */bool containsPoint = false;
+  /**private */ bool _containsPoint = false;
 
   GeometryContainsPointVisitor(Polygon rectangle)
-  {
-    this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence();
-    rectEnv = rectangle.getEnvelopeInternal();
-  }
+      : this.rectSeq = rectangle.getExteriorRing().getCoordinateSequence(),
+        rectEnv = rectangle.getEnvelopeInternal();
 
   /**
    * Reports whether it can be concluded that a corner point of the rectangle is
@@ -214,44 +209,44 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
    * @return true if a corner point is contained 
    * or false if no conclusion about intersection can be made
    */
-  bool containsPoint()
-  {
-    return containsPoint;
+  bool containsPoint() {
+    return _containsPoint;
   }
 
- /**protected */void visit(Geometry geom)
-  {
+  /**protected */ @override
+  void visit(Geometry geom) {
     // if test geometry is not polygonal this check is not needed
-    if (!(geom is Polygon))
+    if (!(geom is Polygon)) {
       return;
+    }
 
     // skip if envelopes do not intersect
     Envelope elementEnv = geom.getEnvelopeInternal();
-    if (!rectEnv.intersects(elementEnv))
+    if (!rectEnv.intersects(elementEnv)) {
       return;
+    }
 
     // test each corner of rectangle for inclusion
-    Coordinate rectPt = new Coordinate();
+    Coordinate rectPt = new Coordinate.empty2D();
     for (int i = 0; i < 4; i++) {
-      rectSeq.getCoordinate(i, rectPt);
-      if (!elementEnv.contains(rectPt))
+      rectSeq.getCoordinateTo(i, rectPt);
+      if (!elementEnv.containsCoord(rectPt)) {
         continue;
+      }
       // check rect point in poly (rect is known not to touch polygon at this
       // point)
-      if (SimplePointInAreaLocator.containsPointInPolygon(rectPt,
-          (Polygon) geom)) {
-        containsPoint = true;
+      if (SimplePointInAreaLocator.containsPointInPolygon(rectPt, geom)) {
+        _containsPoint = true;
         return;
       }
     }
   }
 
- /**protected */bool isDone()
-  {
-    return containsPoint;
+  /**protected */ @override
+  bool isDone() {
+    return _containsPoint;
   }
 }
-
 
 /**
  * A visitor to test for intersection between the query
@@ -260,12 +255,11 @@ class GeometryContainsPointVisitor extends ShortCircuitedGeometryVisitor
  * @author Martin Davis
  *
  */
-class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
-{
- /**private */Envelope rectEnv;
- /**private */RectangleLineIntersector rectIntersector;
+class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor {
+  /**private */ Envelope rectEnv;
+  /**private */ late RectangleLineIntersector rectIntersector;
 
- /**private */bool hasIntersection = false;
+  /**private */ bool hasIntersection = false;
 
   /**
    * Creates a visitor for checking rectangle intersection
@@ -274,8 +268,7 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
    * @param rectangle the query rectangle 
    */
   RectangleIntersectsSegmentVisitor(Polygon rectangle)
-  {
-    rectEnv = rectangle.getEnvelopeInternal();
+      : rectEnv = rectangle.getEnvelopeInternal() {
     rectIntersector = new RectangleLineIntersector(rectEnv);
   }
 
@@ -285,22 +278,22 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
    * @return true if a segment intersection exists
    * or false if no segment intersection exists
    */
-  bool intersects()
-  {
+  bool intersects() {
     return hasIntersection;
   }
 
- /**protected */void visit(Geometry geom)
-  {
+  /**protected */ @override
+  void visit(Geometry geom) {
     /**
      * It may be the case that the rectangle and the 
      * envelope of the geometry component are disjoint,
      * so it is worth checking this simple condition.
      */
     Envelope elementEnv = geom.getEnvelopeInternal();
-    if (!rectEnv.intersects(elementEnv))
+    if (!rectEnv.intersects(elementEnv)) {
       return;
-    
+    }
+
     // check segment intersections
     // get all lines from geometry component
     // (there may be more than one if it's a multi-ring polygon)
@@ -308,24 +301,23 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
     checkIntersectionWithLineStrings(lines);
   }
 
- /**private */void checkIntersectionWithLineStrings(List lines)
-  {
-    for (Iterator i = lines.iterator(); i.moveNext(); ) {
-      LineString testLine = (LineString) i.current;
+  /**private */ void checkIntersectionWithLineStrings(List lines) {
+    for (Iterator i = lines.iterator; i.moveNext();) {
+      LineString testLine = i.current;
       checkIntersectionWithSegments(testLine);
-      if (hasIntersection)
+      if (hasIntersection) {
         return;
+      }
     }
   }
 
- /**private */void checkIntersectionWithSegments(LineString testLine)
-  {
+  /**private */ void checkIntersectionWithSegments(LineString testLine) {
     CoordinateSequence seq1 = testLine.getCoordinateSequence();
     Coordinate p0 = seq1.createCoordinate();
     Coordinate p1 = seq1.createCoordinate();
     for (int j = 1; j < seq1.size(); j++) {
-      seq1.getCoordinate(j - 1, p0);
-      seq1.getCoordinate(j,     p1);
+      seq1.getCoordinateTo(j - 1, p0);
+      seq1.getCoordinateTo(j, p1);
 
       if (rectIntersector.intersects(p0, p1)) {
         hasIntersection = true;
@@ -334,8 +326,9 @@ class RectangleIntersectsSegmentVisitor extends ShortCircuitedGeometryVisitor
     }
   }
 
- /**protected */bool isDone()
-  {
+  /**protected */
+  @override
+  bool isDone() {
     return hasIntersection;
   }
 }

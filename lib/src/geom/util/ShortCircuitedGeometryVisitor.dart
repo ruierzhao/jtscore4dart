@@ -15,6 +15,9 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.geom.GeometryCollection;
 
+import '../Geometry.dart';
+import '../GeometryCollection.dart';
+
 /**
  * A visitor to {@link Geometry} components, which
  * allows short-circuiting when a defined condition holds.
@@ -23,18 +26,18 @@
  */
 abstract class ShortCircuitedGeometryVisitor
 {
- /**private */bool isDone = false;
+ /**private */bool _isDone = false;
 
-  ShortCircuitedGeometryVisitor() {
-  }
+  // ShortCircuitedGeometryVisitor() {
+  // }
 
   void applyTo(Geometry geom) {
-    for (int i = 0; i < geom.getNumGeometries() && ! isDone; i++) {
+    for (int i = 0; i < geom.getNumGeometries() && ! _isDone; i++) {
       Geometry element = geom.getGeometryN(i);
-      if (! (element is GeometryCollection)) {
+      if (element is! GeometryCollection) {
         visit(element);
         if (isDone()) {
-          isDone = true;
+          _isDone = true;
           return;
         }
       }
@@ -43,7 +46,7 @@ abstract class ShortCircuitedGeometryVisitor
     }
   }
 
- /**protected */abstract void visit(Geometry element);
+ /**protected abstract */ void visit(Geometry element);
 
   /**
    * Reports whether visiting components can be terminated.
@@ -52,5 +55,5 @@ abstract class ShortCircuitedGeometryVisitor
    * 
    * @return true if visiting can be terminated.
    */
- /**protected */abstract bool isDone();
+ /**protected abstract */ bool isDone();
 }

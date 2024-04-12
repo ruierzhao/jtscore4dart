@@ -38,6 +38,30 @@
 // import org.locationtech.jts.operation.BoundaryOp;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Dimension.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeEnd.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeIntersection.dart';
+import 'package:jtscore4dart/src/geomgraph/GeometryGraph.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
+import 'package:jtscore4dart/src/geomgraph/NodeMap.dart';
+import 'package:jtscore4dart/src/geomgraph/index/SegmentIntersector.dart';
+import 'package:jtscore4dart/src/operation/BoundaryOp.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'EdgeEndBuilder.dart';
+import 'RelateNode.dart';
+import 'RelateNodeFactory.dart';
+
 /**
  * Computes the topological relationship between two Geometries.
  * <p>
@@ -57,18 +81,17 @@ class RelateComputer
 {
  /**private */LineIntersector li = new RobustLineIntersector();
  /**private */PointLocator ptLocator = new PointLocator();
- /**private */GeometryGraph[] arg;  // the arg(s) of the operation
+ /**private */List<GeometryGraph> arg;  // the arg(s) of the operation
  /**private */NodeMap nodes = new NodeMap(new RelateNodeFactory());
   // this intersection matrix will hold the results compute for the relate
- /**private */IntersectionMatrix im = null;
- /**private */ArrayList isolatedEdges = [];
+ /**private */IntersectionMatrix? im = null;
+ /**private */List isolatedEdges = [];
 
   // the intersection point found (if any)
  /**private */Coordinate invalidPoint;
 
-  RelateComputer(GeometryGraph[] arg) {
-    this.arg = arg;
-  }
+  RelateComputer(this.arg);
+  
 
   IntersectionMatrix computeIM()
   {
@@ -145,8 +168,8 @@ class RelateComputer
 
  /**private */void insertEdgeEnds(List ee)
   {
-    for (Iterator i = ee.iterator(); i.moveNext(); ) {
-      EdgeEnd e = (EdgeEnd) i.current;
+    for (Iterator i = ee.iterator; i.moveNext(); ) {
+      EdgeEnd e = i.current;
       nodes.add(e);
     }
   }
@@ -209,7 +232,7 @@ class RelateComputer
  /**private */void copyNodesAndLabels(int argIndex)
   {
     for (Iterator i = arg[argIndex].getNodeIterator(); i.moveNext(); ) {
-      Node graphNode = (Node) i.current;
+      Node graphNode = i.current;
       Node newNode = nodes.addNode(graphNode.getCoordinate());
       newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
 //node.print(System.out);
@@ -225,16 +248,17 @@ class RelateComputer
  /**private */void computeIntersectionNodes(int argIndex)
   {
     for (Iterator i = arg[argIndex].getEdgeIterator(); i.moveNext(); ) {
-      Edge e = (Edge) i.current;
+      Edge e = i.current;
       int eLoc = e.getLabel().getLocation(argIndex);
       for (Iterator eiIt = e.getEdgeIntersectionList().iterator(); eiIt.moveNext(); ) {
-        EdgeIntersection ei = (EdgeIntersection) eiIt.current;
-        RelateNode n = (RelateNode) nodes.addNode(ei.coord);
-        if (eLoc == Location.BOUNDARY)
+        EdgeIntersection ei = eiIt.current;
+        RelateNode n = nodes.addNode(ei.coord) as RelateNode;
+        if (eLoc == Location.BOUNDARY) {
           n.setLabelBoundary(argIndex);
-        else {
-          if (n.getLabel().isNull(argIndex))
+        } else {
+          if (n.getLabel().isNull(argIndex)) {
             n.setLabel(argIndex, Location.INTERIOR);
+          }
         }
 //Debug.println(n);
       }
@@ -250,16 +274,17 @@ class RelateComputer
  /**private */void labelIntersectionNodes(int argIndex)
   {
     for (Iterator i = arg[argIndex].getEdgeIterator(); i.moveNext(); ) {
-      Edge e = (Edge) i.current;
+      Edge e = i.current;
       int eLoc = e.getLabel().getLocation(argIndex);
       for (Iterator eiIt = e.getEdgeIntersectionList().iterator(); eiIt.moveNext(); ) {
-        EdgeIntersection ei = (EdgeIntersection) eiIt.current;
-        RelateNode n = (RelateNode) nodes.find(ei.coord);
+        EdgeIntersection ei = eiIt.current;
+        RelateNode n = nodes.find(ei.coord);
         if (n.getLabel().isNull(argIndex)) {
-          if (eLoc == Location.BOUNDARY)
+          if (eLoc == Location.BOUNDARY) {
             n.setLabelBoundary(argIndex);
-          else
+          } else {
             n.setLabel(argIndex, Location.INTERIOR);
+          }
         }
 //n.print(System.out);
       }
@@ -308,8 +333,9 @@ class RelateComputer
        * special case for lines, since Geometry.getBoundaryDimension is not aware
        * of Boundary Node Rule.
        */
-      if (geom.getDimension() == 1)
+      if (geom.getDimension() == 1) {
         return Dimension.P;
+      }
       return geom.getBoundaryDimension();
     }
     /**
@@ -321,7 +347,7 @@ class RelateComputer
  /**private */void labelNodeEdges()
   {
     for (Iterator ni = nodes.iterator(); ni.moveNext(); ) {
-      RelateNode node = (RelateNode) ni.current;
+      RelateNode node = ni.current;
       node.getEdges().computeLabelling(arg);
 //Debug.print(node.getEdges());
 //node.print(System.out);
@@ -334,13 +360,13 @@ class RelateComputer
  /**private */void updateIM(IntersectionMatrix im)
   {
 //Debug.println(im);
-    for (Iterator ei = isolatedEdges.iterator(); ei.moveNext(); ) {
-      Edge e = (Edge) ei.current;
+    for (Iterator ei = isolatedEdges.iterator; ei.moveNext(); ) {
+      Edge e = ei.current;
       e.updateIM(im);
 //Debug.println(im);
     }
     for (Iterator ni = nodes.iterator(); ni.moveNext(); ) {
-      RelateNode node = (RelateNode) ni.current;
+      RelateNode node = ni.current;
       node.updateIM(im);
 //Debug.println(im);
       node.updateIMFromEdges(im);
@@ -359,7 +385,7 @@ class RelateComputer
  /**private */void labelIsolatedEdges(int thisIndex, int targetIndex)
   {
     for (Iterator ei = arg[thisIndex].getEdgeIterator(); ei.moveNext(); ) {
-      Edge e = (Edge) ei.current;
+      Edge e = ei.current;
       if (e.isIsolated()) {
         labelIsolatedEdge(e, targetIndex, arg[targetIndex].getGeometry());
         isolatedEdges.add(e);
@@ -399,15 +425,16 @@ class RelateComputer
  /**private */void labelIsolatedNodes()
   {
     for (Iterator ni = nodes.iterator(); ni.moveNext(); ) {
-      Node n = (Node) ni.current;
+      Node n = ni.current;
       Label label = n.getLabel();
       // isolated nodes should always have at least one geometry in their label
       Assert.isTrue(label.getGeometryCount() > 0, "node with empty label found");
       if (n.isIsolated()) {
-        if (label.isNull(0))
+        if (label.isNull(0)) {
           labelIsolatedNode(n, 0);
-        else
+        } else {
           labelIsolatedNode(n, 1);
+        }
       }
     }
   }

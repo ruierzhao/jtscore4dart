@@ -102,7 +102,7 @@ class Edge extends GraphComponent
   //   return pts[i];
   // }
 
-  Coordinate getCoordinate(int i)
+  Coordinate getCoordinate([int i=0])
   {
     if (i>=0 && i<pts.length) {
       return pts[i];

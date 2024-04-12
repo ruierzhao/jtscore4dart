@@ -366,7 +366,7 @@ class MonotoneChain {
     if (overlapTolerance > 0.0) {
       return _overlaps(pts[start0], pts[end0], mc.pts[start1], mc.pts[end1], overlapTolerance);
     }
-    return Envelope.intersects(pts[start0], pts[end0], mc.pts[start1], mc.pts[end1]);
+    return Envelope.intersects4Coord(pts[start0], pts[end0], mc.pts[start1], mc.pts[end1]);
   }
   
  /**private */bool _overlaps(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2, double overlapTolerance)

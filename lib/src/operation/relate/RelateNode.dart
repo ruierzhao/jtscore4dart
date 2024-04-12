@@ -16,6 +16,13 @@
 // import org.locationtech.jts.geomgraph.EdgeEndStar;
 // import org.locationtech.jts.geomgraph.Node;
 
+import "package:jtscore4dart/src/geom/Coordinate.dart";
+import "package:jtscore4dart/src/geom/IntersectionMatrix.dart";
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeEndStar.dart';
+
+import 'EdgeEndBundleStar.dart';
+
 /**
  * Represents a node in the topological graph used to compute spatial relationships.
  *
@@ -26,15 +33,15 @@ class RelateNode
 {
 
   RelateNode(Coordinate coord, EdgeEndStar edges)
-  {
-    super(coord, edges);
-  }
+    :super(coord, edges);
 
   /**
    * Update the IM with the contribution for this component.
    * A component only contributes if it has a labelling for both parent geometries
    */
- /**protected */void computeIM(IntersectionMatrix im)
+ /**protected */
+  @override
+  void computeIM(IntersectionMatrix im)
   {
     im.setAtLeastIfValid(label.getLocation(0), label.getLocation(1), 0);
   }
@@ -43,7 +50,7 @@ class RelateNode
    */
   void updateIMFromEdges(IntersectionMatrix im)
   {
-    ((EdgeEndBundleStar) edges).updateIM(im);
+    ( edges as EdgeEndBundleStar).updateIM(im);
   }
 
 }

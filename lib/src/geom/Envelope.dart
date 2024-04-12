@@ -57,9 +57,10 @@ class Envelope
   }
 
   // TODO: ruier add.
-  static bool intersects(Coordinate p1, Coordinate p2, Coordinate q1, [Coordinate? q2]){
+  /// TODO: @ruier edit.replace intersects => intersects4Coord
+  static bool intersects4Coord(Coordinate p1, Coordinate p2, Coordinate q1, [Coordinate? q2]){
     if (q2 == null) {
-      return _intersects$1(p1, p2, q1);
+      return _intersects(p1, p2, q1);
     }
     return _intersects$2(p1, p2, q1, q2);
   }
@@ -68,8 +69,8 @@ class Envelope
   /// @param p2 another extremal point of the envelope
   /// @param q the point to test for intersection
   /// @return <code>true</code> if q intersects the envelope p1-p2
-  /// @ruier 判断[p] 点和[p1] 和 [q1]组成的矩形是否相交
-  static bool _intersects$1(Coordinate p1, Coordinate p2, Coordinate q)
+  /// @ruier 判断[p1] 点和[p2] 和 [q]组成的矩形是否相交
+  static bool _intersects(Coordinate p1, Coordinate p2, Coordinate q)
   {
 	//OptimizeIt shows that Math#min and Math#max here are a bottleneck.
     //Replace with direct comparisons. [Jon Aquino]
@@ -492,7 +493,17 @@ class Envelope
   ///@param  other  the <code>Envelope</code> which this <code>Envelope</code> is
   ///          being checked for intersecting
   ///@return        <code>true</code> if the <code>Envelope</code>s intersect
+  /// TODO: @ruier edit.
+  @Deprecated("use #intersects")
   bool intersectsWith(Envelope other) {
+      if (isNull() || other.isNull()) { return false; }
+    return !(other._minx > _maxx ||
+        other._maxx < _minx ||
+        other._miny > _maxy ||
+        other._maxy < _miny);
+  }
+  /// TODO: @ruier edit.alias of intersectWith
+  bool intersects(Envelope other) {
       if (isNull() || other.isNull()) { return false; }
     return !(other._minx > _maxx ||
         other._maxx < _minx ||

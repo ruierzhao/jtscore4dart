@@ -16,6 +16,13 @@
 // import org.locationtech.jts.geomgraph.NodeFactory;
 // import org.locationtech.jts.geomgraph.NodeMap;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
+import 'package:jtscore4dart/src/geomgraph/NodeFactory.dart';
+
+import 'EdgeEndBundleStar.dart';
+import 'RelateNode.dart';
+
 /**
  * Used by the {@link NodeMap} in a {@link RelateNodeGraph} to create {@link RelateNode}s.
  *

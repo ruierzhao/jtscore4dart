@@ -106,7 +106,7 @@ class IntersectionMatrix /**implements Cloneable  */ {
   /// Addition is defined by taking the maximum dimension value of each position
   /// in the summand matrices.
   ///
-  /// @param im the matrix to add
+  /// @param [im] the matrix to add
   void add(IntersectionMatrix im)
   {
     for (int i = 0; i < 3; i++) {
@@ -119,7 +119,7 @@ class IntersectionMatrix /**implements Cloneable  */ {
   ///  Tests if the dimension value matches <tt>TRUE</tt>
   ///  (i.e.  has value 0, 1, 2 or TRUE).
   ///
-  ///@param  actualDimensionValue     a number that can be stored in the <code>IntersectionMatrix</code>
+  ///@param  [actualDimensionValue]     a number that can be stored in the <code>IntersectionMatrix</code>
   ///      . Possible values are <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>.
   ///@return true if the dimension value matches TRUE
   static bool isTrue(int actualDimensionValue) {

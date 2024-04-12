@@ -34,6 +34,7 @@ import 'dart:collection';
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
 import 'package:jtscore4dart/src/geom/Dimension.dart';
+import 'package:jtscore4dart/src/patch/Map.dart';
 
 
 /// Computes the boundary of a {@link Geometry}.
@@ -117,7 +118,7 @@ class BoundaryOp
   /// 
   /// @param geom the input geometry
   /// @param bnRule the Boundary Node Rule to use
-  BoundaryOp(this.geom,[BoundaryNodeRule? _bnRule]):
+  BoundaryOp(this.geom, [BoundaryNodeRule? _bnRule]):
     this.bnRule = _bnRule??=BoundaryNodeRule.MOD2_BOUNDARY_RULE, 
     geomFact = geom.getFactory();
   // {
@@ -172,14 +173,14 @@ class BoundaryOp
   }
 */
 
- /**private */late Map endpointMap;
+ /**private */Map? endpointMap;
 
  /**private */List<Coordinate> computeBoundaryCoordinates(MultiLineString mLine)
   {
     // List bdyPts = [];
-    List bdyPts = [];
+    List<Coordinate> bdyPts = [];
     // endpointMap = new TreeMap();
-    endpointMap = new SplayTreeMap();
+    endpointMap = new SplayTreeMap<Coordinate,Counter>();
     for (int i = 0; i < mLine.getNumGeometries(); i++) {
       LineString line = mLine.getGeometryN(i) as LineString;
       if (line.getNumPoints() == 0) {
@@ -189,24 +190,32 @@ class BoundaryOp
       addEndpoint(line.getCoordinateN(line.getNumPoints() - 1));
     }
 
-    for (Iterator it = endpointMap.entrySet().iterator(); it.moveNext(); ) {
-      Map.Entry entry = (Map.Entry) it.current;
-      Counter counter = (Counter) entry.getValue();
+    // for (Iterator it = endpointMap.entrySet().iterator(); it.moveNext(); ) {
+    //   Map.Entry entry = it.current;
+    //   Counter counter = entry.getValue();
+    //   int valence = counter.count;
+    //   if (bnRule.isInBoundary(valence)) {
+    //     bdyPts.add(entry.getKey());
+    //   }
+    // }
+    /// TODO: @ruier edit.dart 中 Map 未实现Iterator,使用foreach替换。
+    endpointMap!.forEach((key, value) {
+      Counter counter = value as Counter;
       int valence = counter.count;
-      if (bnRule.isInBoundary(valence)) {
-        bdyPts.add(entry.getKey());
+      if (bnRule.isInBoundary(valence)){
+        bdyPts.add(key);
       }
-    }
+    });
 
     return CoordinateArrays.toCoordinateArray(bdyPts);
   }
 
  /**private */void addEndpoint(Coordinate pt)
   {
-    Counter counter = (Counter) endpointMap.get(pt);
+    Counter? counter = endpointMap!.get(pt);
     if (counter == null) {
       counter = new Counter();
-      endpointMap.put(pt, counter);
+      endpointMap!.put(pt, counter);
     }
     counter.count++;
   }
@@ -221,7 +230,7 @@ class BoundaryOp
       // check whether endpoints of valence 2 are on the boundary or not
       bool closedEndpointOnBoundary = bnRule.isInBoundary(2);
       if (closedEndpointOnBoundary) {
-        return line.getStartPoint();
+        return line.getStartPoint()!;
       }
       else {
         return geomFact.createMultiPoint();

@@ -49,7 +49,7 @@ class GeometryGraphOperation
 //   }
 
   GeometryGraphOperation(Geometry g0, Geometry g1, [BoundaryNodeRule? boundaryNodeRule])
-   : arg = List.from([GeometryGraph(0, g0, boundaryNodeRule),GeometryGraph(1, g1, boundaryNodeRule)],growable: false)
+   :arg = List.from([GeometryGraph(0, g0, boundaryNodeRule),GeometryGraph(1, g1, boundaryNodeRule)],growable: false)
   {
     // use the most precise model for the result
     if (g0.getPrecisionModel().compareTo(g1.getPrecisionModel()) >= 0) {

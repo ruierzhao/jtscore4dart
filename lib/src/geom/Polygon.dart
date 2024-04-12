@@ -272,6 +272,7 @@ class Polygon
     if (isEmpty()) {
       return getFactory().createMultiLineString([]);
     }
+    /// TODO: @ruier edit.使用 array  优化。。。
     // List<LinearRing> rings = new LinearRing[holes.length + 1];
     List<LinearRing> rings = [];
     // rings[0] = shell;

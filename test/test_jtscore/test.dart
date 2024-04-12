@@ -2,7 +2,7 @@ library test;
 
 
 
-void assertEquals(int a,int b){
+void assertEquals(dynamic a,dynamic b){
   if (a == b) {
     print("pass");
   }else{

@@ -16,6 +16,7 @@ TODO: jts for dart. 由java 源代码翻译过来的。
 ## reference
 [OGC SFS 规范](https://www.osgeo.cn/doc_ogcstd/ogc_standard/ch02_chapter1/chapter.html)
 [java JTS](https://github1s.com/locationtech/jts/blob/master/modules/core/src/main/java/org/locationtech/jts/geom/Coordinate.java)
+[九交集解释](https://zhuanlan.zhihu.com/p/64115540)
 
 ## Features
 

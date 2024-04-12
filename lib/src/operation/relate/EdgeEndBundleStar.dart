@@ -17,6 +17,13 @@
 // import org.locationtech.jts.geomgraph.EdgeEnd;
 // import org.locationtech.jts.geomgraph.EdgeEndStar;
 
+import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeEnd.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeEndStar.dart';
+import 'package:jtscore4dart/src/patch/Map.dart';
+
+import 'EdgeEndBundle.dart';
+
 /**
  * An ordered list of {@link EdgeEndBundle}s around a {@link RelateNode}.
  * They are maintained in CCW order (starting with the positive x-axis) around the node
@@ -30,8 +37,8 @@ class EdgeEndBundleStar
   /**
    * Creates a new empty EdgeEndBundleStar
    */
-  EdgeEndBundleStar() {
-  }
+  // EdgeEndBundleStar() {
+  // }
 
   /**
    * Insert a EdgeEnd in order in the list.
@@ -42,7 +49,7 @@ class EdgeEndBundleStar
    */
   void insert(EdgeEnd e)
   {
-    EdgeEndBundle eb = (EdgeEndBundle) edgeMap.get(e);
+    EdgeEndBundle? eb = edgeMap.get(e) as EdgeEndBundle?;
     if (eb == null) {
       eb = new EdgeEndBundle(e);
       insertEdgeEnd(e, eb);
@@ -58,7 +65,7 @@ class EdgeEndBundleStar
   void updateIM(IntersectionMatrix im)
   {
     for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeEndBundle esb = (EdgeEndBundle) it.current;
+      EdgeEndBundle esb = it.current;
       esb.updateIM(im);
     }
   }

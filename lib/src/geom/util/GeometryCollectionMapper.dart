@@ -20,6 +20,8 @@
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.util.GeometryMapper.MapOp;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 import '../GeometryCollection.dart';
 import '../GeometryFactory.dart';
 import 'GeometryMapper.dart' show MapOp;
@@ -40,7 +42,7 @@ class GeometryCollectionMapper
     return mapper.map(gc);
   }
   
- /**private */MapOp mapOp = null;
+ /**private */MapOp? mapOp = null;
   
   GeometryCollectionMapper(MapOp mapOp) {
     this.mapOp = mapOp;

@@ -25,6 +25,10 @@
 // import org.locationtech.jts.geomgraph.GeometryGraph;
 // import org.locationtech.jts.geomgraph.Label;
 
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeEnd.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
+
 /**
  * A collection of {@link EdgeEnd}s which obey the following invariant:
  * They originate at the same node and have the same direction.
@@ -36,10 +40,26 @@ class EdgeEndBundle
 {
 // /**private */BoundaryNodeRule boundaryNodeRule;
  /**private */List edgeEnds = [];
+/// TODO: @ruier edit.跟单参数作用一样
+  // EdgeEndBundle(BoundaryNodeRule boundaryNodeRule, EdgeEnd e)
+  // {
+  //   super(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label.FromAnother(e.getLabel()!));
+  //   insert(e);
+  //   /*
+  //   if (boundaryNodeRule != null)
+  //     this.boundaryNodeRule = boundaryNodeRule;
+  //   else
+  //     boundaryNodeRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
+  //   */
+  // }
 
-  EdgeEndBundle(BoundaryNodeRule boundaryNodeRule, EdgeEnd e)
+  // EdgeEndBundle(EdgeEnd e)
+  // {
+  //   this(null, e);
+  // }
+  EdgeEndBundle(EdgeEnd e):
+    super.Coord2(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label.FromAnother(e.getLabel()!))
   {
-    super(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label(e.getLabel()));
     insert(e);
     /*
     if (boundaryNodeRule != null)
@@ -48,14 +68,10 @@ class EdgeEndBundle
       boundaryNodeRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
     */
   }
-
-  EdgeEndBundle(EdgeEnd e)
-  {
-    this(null, e);
   }
 
-  Label getLabel() { return label; }
-  Iterator iterator() { return edgeEnds.iterator(); }
+  Label? getLabel() { return label; }
+  Iterator iterator() { return edgeEnds.iterator; }
   List getEdgeEnds() { return edgeEnds; }
 
   void insert(EdgeEnd e)

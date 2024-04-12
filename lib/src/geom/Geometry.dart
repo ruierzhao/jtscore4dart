@@ -46,20 +46,19 @@
 import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
 import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
-import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
+// import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
 
 import 'CoordinateSequenceComparator.dart';
 import 'Coordinate.dart';
 import 'Envelope.dart';
 import 'GeometryComponentFilter.dart';
 import 'GeometryFactory.dart';
-import 'GeometryOverlay.dart';
+// import 'GeometryOverlay.dart';
 import 'Point.dart';
 import 'PrecisionModel.dart';
 import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
 import 'GeometryFilter.dart';
-// import 'GeometryOverlay.dart';
 import 'IntersectionMatrix.dart';
 
 
@@ -436,8 +435,8 @@ abstract class Geometry{
   /// @throws ArgumentError if g is null
   double distance(Geometry g)
   {
-    // throw UnimplementedError("ruier test");
-    return DistanceOp.distance(this, g);
+    throw UnimplementedError("ruier test");
+    // return DistanceOp.distance(this, g);
   }
 
   /// Tests whether the distance from this <code>Geometry</code>
@@ -1313,8 +1312,8 @@ abstract class Geometry{
   /// @see LineMerger
   Geometry unionWith(Geometry other)
   {
-    // throw UnimplementedError("ruier test");
-    return GeometryOverlay.union(this, other);
+    throw UnimplementedError("ruier test");
+    // return GeometryOverlay.union(this, other);
   }
 
   /// Computes a <code>Geometry</code> representing the closure of the point-set
@@ -1380,8 +1379,8 @@ abstract class Geometry{
 	///
 	/// @see UnaryUnionOp
 	Geometry union() {
-    // throw UnimplementedError("ruier test");
-    return GeometryOverlay.unaryUnion(this);
+    throw UnimplementedError("ruier test");
+    // return GeometryOverlay.unaryUnion(this);
 	}
 
   /// Returns true if the two <code>Geometry</code>s are exactly equal,

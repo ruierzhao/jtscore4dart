@@ -140,7 +140,7 @@ class MonotoneChainEdge {
    */
   /**private */ bool overlaps(
       int start0, int end0, MonotoneChainEdge mce, int start1, int end1) {
-    return Envelope.intersects(
+    return Envelope.intersects4Coord(
         pts[start0], pts[end0], mce.pts[start1], mce.pts[end1]);
   }
 }

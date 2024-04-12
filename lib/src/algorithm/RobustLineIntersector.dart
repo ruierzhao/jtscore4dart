@@ -32,7 +32,7 @@ class RobustLineIntersector extends LineIntersector{
   void computeIntersection(Coordinate p, Coordinate p1, Coordinate p2) {
     isProper = false;
     // do between check first, since it is faster than the orientation test
-    if (Envelope.intersects(p1, p2, p)) {
+    if (Envelope.intersects4Coord(p1, p2, p)) {
       if ((Orientation.index(p1, p2, p) == 0)
           && (Orientation.index(p2, p1, p) == 0)) {
         isProper = true;
@@ -55,7 +55,7 @@ class RobustLineIntersector extends LineIntersector{
     isProper = false;
 
     // first try a fast test to see if the envelopes of the lines intersect
-    if (! Envelope.intersects(p1, p2, q1, q2)) {
+    if (! Envelope.intersects4Coord(p1, p2, q1, q2)) {
       // return NO_INTERSECTION;
       return LineIntersector.NO_INTERSECTION;
     }
@@ -168,10 +168,10 @@ class RobustLineIntersector extends LineIntersector{
 
  /**private */int computeCollinearIntersection(Coordinate p1, Coordinate p2,
       Coordinate q1, Coordinate q2) {
-    bool q1inP = Envelope.intersects(p1, p2, q1);
-    bool q2inP = Envelope.intersects(p1, p2, q2);
-    bool p1inQ = Envelope.intersects(q1, q2, p1);
-    bool p2inQ = Envelope.intersects(q1, q2, p2);
+    bool q1inP = Envelope.intersects4Coord(p1, p2, q1);
+    bool q2inP = Envelope.intersects4Coord(p1, p2, q2);
+    bool p1inQ = Envelope.intersects4Coord(q1, q2, p1);
+    bool p2inQ = Envelope.intersects4Coord(q1, q2, p2);
 
     if (q1inP && q2inP) {
       intPt[0] = copyWithZInterpolate(q1, p1, p2);

@@ -60,7 +60,7 @@ abstract class BoundaryNodeRule
 	/// geometry component boundaries is considered to form part of the boundary
 	/// of the parent geometry.
 	/// 
-	/// @param boundaryCount the number of component boundaries that this point occurs in
+	/// @param [boundaryCount] the number of component boundaries that this point occurs in
 	/// @return true if points in this number of boundaries lie in the parent boundary
   bool isInBoundary(int boundaryCount);
 

@@ -19,9 +19,9 @@
 import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
-import 'package:jtscore4dart/src/operation/relate/RelateComputer.dart';
 
 import '../GeometryGraphOperation.dart';
+import 'RelateComputer.dart';
 
 /**
  * Implements the SFS <tt>relate()</tt> generalized spatial predicate on two {@link Geometry}s.
@@ -44,8 +44,7 @@ import '../GeometryGraphOperation.dart';
  *
  * @version 1.7
  */
-class RelateOp
-  extends GeometryGraphOperation
+class RelateOp extends GeometryGraphOperation
 {
   /**
    * Computes the {@link IntersectionMatrix} for the spatial relationship
@@ -55,12 +54,12 @@ class RelateOp
    * @param b a Geometry to test
    * @return the IntersectionMatrix for the spatial relationship between the geometries
    */
-  static IntersectionMatrix relate(Geometry a, Geometry b)
-  {
-    RelateOp relOp = new RelateOp(a, b);
-    IntersectionMatrix im = relOp.getIntersectionMatrix();
-    return im;
-  }
+  // static IntersectionMatrix relate(Geometry a, Geometry b)
+  // {
+  //   RelateOp relOp = new RelateOp(a, b);
+  //   IntersectionMatrix im = relOp.getIntersectionMatrix();
+  //   return im;
+  // }
 
   /**
    * Computes the {@link IntersectionMatrix} for the spatial relationship
@@ -69,16 +68,16 @@ class RelateOp
    * @param a a Geometry to test
    * @param b a Geometry to test
    * @param boundaryNodeRule the Boundary Node Rule to use
-   * @return the IntersectionMatrix for the spatial relationship between the input geometries
+   * @return the [IntersectionMatrix] for the spatial relationship between the input geometries
    */
-  static IntersectionMatrix relate(Geometry a, Geometry b, BoundaryNodeRule boundaryNodeRule)
+  static IntersectionMatrix relate(Geometry a, Geometry b, [BoundaryNodeRule? boundaryNodeRule])
   {
     RelateOp relOp = new RelateOp(a, b, boundaryNodeRule);
     IntersectionMatrix im = relOp.getIntersectionMatrix();
     return im;
   }
 
- /**private */RelateComputer _relate;
+ /**private */late RelateComputer _relate;
 
   /**
    * Creates a new Relate operation, using the default (OGC SFS) Boundary Node Rule.
@@ -86,11 +85,11 @@ class RelateOp
    * @param g0 a Geometry to relate
    * @param g1 another Geometry to relate
    */
-  RelateOp(Geometry g0, Geometry g1)
-  {
-    super(g0, g1);
-    _relate = new RelateComputer(arg);
-  }
+  // RelateOp(Geometry g0, Geometry g1)
+  // {
+  //   super(g0, g1);
+  //   _relate = new RelateComputer(arg);
+  // }
 
   /**
    * Creates a new Relate operation with a specified Boundary Node Rule.
@@ -99,10 +98,10 @@ class RelateOp
    * @param g1 another Geometry to relate
    * @param boundaryNodeRule the Boundary Node Rule to use
    */
-  RelateOp(Geometry g0, Geometry g1, BoundaryNodeRule boundaryNodeRule)
+  RelateOp(Geometry g0, Geometry g1, [BoundaryNodeRule? boundaryNodeRule])
+    :super(g0, g1, boundaryNodeRule)
   {
-    super(g0, g1, boundaryNodeRule);
-    _relate = new RelateComputer(arg);
+    this._relate = new RelateComputer(arg);
   }
 
   /**

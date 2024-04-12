@@ -373,7 +373,7 @@ class GeometryFactory{
   /// @param coordinates an array (without null elements), or an empty array, or <code>null</code>
   /// @return a MultiPoint object
   /// @deprecated Use {@link GeometryFactory#createMultiPointFromCoords} instead
-  MultiPoint createMultiPoint(List<Coordinate>? coordinates) {
+  MultiPoint createMultiPoint([List<Coordinate>? coordinates]) {
       return createMultiPointFromCoordSeq(coordinates != null
                               ? getCoordinateSequenceFactory().create(coordinates)
                               : null);

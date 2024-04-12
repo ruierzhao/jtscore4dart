@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayDeque;
 // import java.util.ArrayList;
 // import java.util.Collection;
@@ -24,6 +23,19 @@
 // import org.locationtech.jts.io.WKTWriter;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'InputGeometry.dart';
+import 'OverlayEdge.dart';
+import 'OverlayGraph.dart';
+import 'OverlayLabel.dart';
+import 'OverlayNG.dart';
+import 'util.dart';
+
 /**
  * Implements the logic to compute the full labeling
  * for the edges in an {@link OverlayGraph}.
@@ -32,22 +44,20 @@
  *
  */
 class OverlayLabeller {
- /**private */OverlayGraph graph;
- /**private */InputGeometry inputGeometry;
- /**private */Collection<OverlayEdge> edges;
+  /**private */OverlayGraph graph;
+  /**private */InputGeometry inputGeometry;
+  // /**private */Collection<OverlayEdge> edges;
+  /**private */Iterable<OverlayEdge> edges;
   
-  OverlayLabeller(OverlayGraph graph, InputGeometry inputGeometry) {
-    this.graph = graph;
-    this.inputGeometry = inputGeometry;
+  OverlayLabeller(this.graph, this.inputGeometry) :
     edges = graph.getEdges();
-  }
 
   /**
    * Computes the topological labelling for the edges in the graph.
    * 
    */
   void computeLabelling() {
-    Collection<OverlayEdge> nodes = graph.getNodeEdges();
+    Iterable<OverlayEdge> nodes = graph.getNodeEdges();
     
     labelAreaNodeEdges(nodes);
     labelConnectedLinearEdges();
@@ -73,8 +83,8 @@ class OverlayLabeller {
    *  
    * @param nodes the nodes to label
    */
- /**private */void labelAreaNodeEdges(Collection<OverlayEdge> nodes) {
-    for (OverlayEdge nodeEdge : nodes) {
+  /**private */void labelAreaNodeEdges(Iterable<OverlayEdge> nodes) {
+    for (OverlayEdge nodeEdge in nodes) {
       propagateAreaLocations(nodeEdge, 0);
       if (inputGeometry.hasEdges(1)) {
         propagateAreaLocations(nodeEdge, 1);
@@ -101,10 +111,11 @@ class OverlayLabeller {
      */
     if (nodeEdge.degree() == 1) return;
     
-    OverlayEdge eStart = findPropagationStartEdge(nodeEdge, geomIndex);
+    OverlayEdge? eStart = findPropagationStartEdge(nodeEdge, geomIndex);
     // no labelled edge found, so nothing to propagate
-    if ( eStart == null )
+    if ( eStart == null ) {
       return;
+    }
     
     // initialize currLoc to location of L side
     int currLoc = eStart.getLocation(geomIndex, Position.LEFT);
@@ -136,12 +147,12 @@ class OverlayLabeller {
           Debug.println("side location conflict: index= " + geomIndex + " R loc " 
         + Location.toLocationSymbol(locRight) + " <>  curr loc " + Location.toLocationSymbol(currLoc) 
         + " for " + e);
-        //*/
-          throw new TopologyException("side location conflict: arg " + geomIndex, e.getCoordinate());
+        */
+          throw new TopologyException("TopologyException: side location conflict: arg $geomIndex" , e.getCoordinate());
         }
         int locLeft = e.getLocation(geomIndex, Position.LEFT);
         if (locLeft == Location.NONE) {
-          Assert.shouldNeverReachHere("found single null side at " + e);
+          Assert.shouldNeverReachHere("found single null side at $e" );
         }
         currLoc = locLeft;
       }
@@ -160,7 +171,7 @@ class OverlayLabeller {
    * @param geomIndex the parent geometry index
    * @return a boundary edge, or null if no boundary edge exists
    */
- /**private */static OverlayEdge findPropagationStartEdge(OverlayEdge nodeEdge, int geomIndex) {
+  /**private */static OverlayEdge? findPropagationStartEdge(OverlayEdge nodeEdge, int geomIndex) {
     OverlayEdge eStart = nodeEdge;
     do {
       OverlayLabel label = eStart.getLabel();
@@ -168,7 +179,7 @@ class OverlayLabeller {
         Assert.isTrue(label.hasSides(geomIndex));
         return eStart;
       }
-      eStart = (OverlayEdge) eStart.oNext();
+      eStart =  eStart.oNext() as OverlayEdge;
     } while (eStart != nodeEdge);
     return null;
   }
@@ -197,8 +208,8 @@ class OverlayLabeller {
    * (These would get labeled anyway during subsequent disconnected labeling pass,
    * but may be more efficient and accurate to do it here.)
    */
- /**private */void labelCollapsedEdges() {
-    for (OverlayEdge edge : edges) {
+  /**private */void labelCollapsedEdges() {
+    for (OverlayEdge edge in edges) {
       if (edge.getLabel().isLineLocationUnknown(0)) {
         labelCollapsedEdge(edge, 0);
       }
@@ -208,7 +219,7 @@ class OverlayLabeller {
     }
   }
 
- /**private */void labelCollapsedEdge(OverlayEdge edge, int geomIndex) {
+  /**private */void labelCollapsedEdge(OverlayEdge edge, int geomIndex) {
     //Debug.println("\n------  labelCollapsedEdge - geomIndex= " + geomIndex);
     //Debug.print("BEFORE: " + edge.toStringNode());
     OverlayLabel label = edge.getLabel();
@@ -227,7 +238,7 @@ class OverlayLabeller {
    * but are connected to a linear edge with known location.
    * In this case linear location is propagated to the connected edges.
    */
- /**private */void labelConnectedLinearEdges() {
+  /**private */void labelConnectedLinearEdges() {
     //TODO: can these be merged to avoid two scans?
     propagateLinearLocations(0);
     if (inputGeometry.hasEdges(1)) {
@@ -241,12 +252,13 @@ class OverlayLabeller {
    * 
    * @param geomIndex the index of the input geometry to label
    */
- /**private */void propagateLinearLocations(int geomIndex) {
+  /**private */void propagateLinearLocations(int geomIndex) {
     // find located linear edges
     List<OverlayEdge> linearEdges = findLinearEdgesWithLocation(edges, geomIndex);
     if (linearEdges.size() <= 0) return;
     
     Deque<OverlayEdge> edgeStack = new ArrayDeque<OverlayEdge>(linearEdges);
+    
     bool isInputLine = inputGeometry.isLine(geomIndex);
     // traverse connected linear edges, labeling unknown ones
     while (! edgeStack.isEmpty()) {
@@ -259,7 +271,7 @@ class OverlayLabeller {
     }
   }
   
- /**private */static void propagateLinearLocationAtNode(OverlayEdge eNode, 
+  /**private */static void propagateLinearLocationAtNode(OverlayEdge eNode, 
       int geomIndex, bool isInputLine, 
       Deque<OverlayEdge> edgeStack) {
     int lineLoc = eNode.getLabel().getLineLocation(geomIndex);
@@ -300,10 +312,11 @@ class OverlayLabeller {
    * @param geomIndex the index of the input geometry
    * @return list of linear edges with known location
    */
- /**private */static List<OverlayEdge> findLinearEdgesWithLocation(
-      Collection<OverlayEdge>edges, int geomIndex) {
-    List<OverlayEdge> linearEdges = new ArrayList<OverlayEdge>();
-    for (OverlayEdge edge : edges) {
+  /**private */static List<OverlayEdge> findLinearEdgesWithLocation(
+      Iterable<OverlayEdge>edges, int geomIndex) {
+    // List<OverlayEdge> linearEdges = new ArrayList<OverlayEdge>();
+    List<OverlayEdge> linearEdges = <OverlayEdge>[];
+    for (OverlayEdge edge in edges) {
       OverlayLabel lbl = edge.getLabel();
       // keep if linear with known location
       if (lbl.isLinear(geomIndex)
@@ -328,8 +341,8 @@ class OverlayLabeller {
    * be determined via a PIP test.
    * If the input is not an Area the location is EXTERIOR. 
    */
- /**private */void labelDisconnectedEdges() {
-    for (OverlayEdge edge : edges) {
+  /**private */void labelDisconnectedEdges() {
+    for (OverlayEdge edge in edges) {
       //Debug.println("\n------  checking for Disconnected edge " + edge);
       if (edge.getLabel().isLineLocationUnknown(0)) {
         labelDisconnectedEdge(edge, 0);
@@ -351,7 +364,7 @@ class OverlayLabeller {
    * @param edge the edge to label
    * @param geomIndex the input geometry to label against
    */
- /**private */void labelDisconnectedEdge(OverlayEdge edge, int geomIndex) { 
+  /**private */void labelDisconnectedEdge(OverlayEdge edge, int geomIndex) { 
      OverlayLabel label = edge.getLabel();
      //Assert.isTrue(label.isNotPart(geomIndex));
     
@@ -394,7 +407,7 @@ class OverlayLabeller {
    * @param edge the edge to locate
    * @return the location of the edge
    */
- /**private */int locateEdge(int geomIndex, OverlayEdge edge) {
+  /**private */int locateEdge(int geomIndex, OverlayEdge edge) {
     int loc = inputGeometry.locatePointInArea(geomIndex, edge.orig());
     int edgeLoc = loc != Location.EXTERIOR ? Location.INTERIOR : Location.EXTERIOR;
     return edgeLoc;
@@ -415,7 +428,7 @@ class OverlayLabeller {
    * @param edge the edge to locate
    * @return the location of the edge
    */
- /**private */int locateEdgeBothEnds(int geomIndex, OverlayEdge edge) {
+  /**private */int locateEdgeBothEnds(int geomIndex, OverlayEdge edge) {
     /*
      * To improve the robustness of the point location,
      * check both ends of the edge.
@@ -429,7 +442,7 @@ class OverlayLabeller {
   } 
 
   void markResultAreaEdges(int overlayOpCode) {
-    for (OverlayEdge edge : edges) {
+    for (OverlayEdge edge in edges) {
       markInResultArea(edge, overlayOpCode);
     }
   }
@@ -463,25 +476,25 @@ class OverlayLabeller {
    * as required by polygon validity rules.
    */
   void unmarkDuplicateEdgesFromResultArea() {
-    for (OverlayEdge edge : edges ) {
+    for (OverlayEdge edge in edges ) {
       if ( edge.isInResultAreaBoth() ) {
         edge.unmarkFromResultAreaBoth();     
       }
     }
   }
 
-  static String toString(OverlayEdge nodeEdge) {
+  static String toString2(OverlayEdge nodeEdge) {
     Coordinate orig = nodeEdge.orig();
-    StringBuilder sb = new StringBuilder();
-    sb.append("Node( "+ WKTWriter.format(orig) + " )" + "\n");
+    StringBuffer sb = new StringBuffer();
+    sb.write("Node( "+ format(orig) + " )" + "\n");
     OverlayEdge e = nodeEdge;
     do {
-      sb.append("  -> " + e);
+      sb.write("  -> $e" );
       if (e.isResultLinked()) {
-        sb.append(" Link: ");
-        sb.append(e.nextResult());
+        sb.write(" Link: ");
+        sb.write(e.nextResult());
       }
-      sb.append("\n");
+      sb.write("\n");
       e = e.oNextOE();
     } while (e != nodeEdge);
     return sb.toString(); 

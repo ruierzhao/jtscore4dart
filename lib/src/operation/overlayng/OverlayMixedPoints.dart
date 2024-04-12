@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.HashSet;
 // import java.util.List;
@@ -29,6 +28,18 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.util.Assert;
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/locate/IndexedPointInAreaLocator.dart';
+import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
+import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'IndexedPointOnLineLocator.dart';
+import 'OverlayNG.dart';
+import 'OverlayUtil.dart';
 
 /**
  * Computes an overlay where one input is Point(s) and one is not.
@@ -60,125 +71,126 @@
  *
  */
 class OverlayMixedPoints {
-
-  static Geometry overlay(int opCode, Geometry geom0, Geometry geom1, PrecisionModel pm) {
-    OverlayMixedPoints overlay = new OverlayMixedPoints(opCode, geom0, geom1, pm);
+  static Geometry overlay(
+      int opCode, Geometry geom0, Geometry geom1, PrecisionModel pm) {
+    OverlayMixedPoints overlay =
+        new OverlayMixedPoints(opCode, geom0, geom1, pm);
     return overlay.getResult();
   }
 
- /**private */final int opCode;
- /**private */final PrecisionModel pm;
- /**private */final Geometry geomPoint;
- /**private */final Geometry geomNonPointInput;
- /**private */final GeometryFactory geometryFactory;
- /**private */final bool isPointRHS;
-  
- /**private */Geometry geomNonPoint;
- /**private */int geomNonPointDim;
- /**private */PointOnGeometryLocator locator;
- /**private */int resultDim;
+  /**private */ final int opCode;
+  /**private */ final PrecisionModel pm;
+  /**private */ late final Geometry geomPoint;
+  /**private */ late final Geometry geomNonPointInput;
+  /**private */ final GeometryFactory geometryFactory;
+  /**private */ late final bool isPointRHS;
 
-  OverlayMixedPoints(int opCode, Geometry geom0, Geometry geom1, PrecisionModel pm) {
-    this.opCode = opCode;
-    this.pm = pm;
-    geometryFactory = geom0.getFactory();
-    resultDim = OverlayUtil.resultDimension(opCode, geom0.getDimension(), geom1.getDimension());
+  /**private */ Geometry? geomNonPoint;
+  /**private */ int geomNonPointDim = 0;
+  /**private */ PointOnGeometryLocator? locator;
+  /**private */ int resultDim;
 
+  OverlayMixedPoints(
+      this.opCode, Geometry geom0, Geometry geom1, this.pm)
+      : geometryFactory = geom0.getFactory(),
+        resultDim = OverlayUtil.resultDimension(
+            opCode, geom0.getDimension(), geom1.getDimension()) {
     // name the dimensional geometries
     if (geom0.getDimension() == 0) {
       this.geomPoint = geom0;
       this.geomNonPointInput = geom1;
       this.isPointRHS = false;
-    }
-    else {
+    } else {
       this.geomPoint = geom1;
       this.geomNonPointInput = geom0;
       this.isPointRHS = true;
     }
   }
-  
+
   Geometry getResult() {
     // reduce precision of non-point input, if required
     geomNonPoint = prepareNonPoint(geomNonPointInput);
-    geomNonPointDim = geomNonPoint.getDimension();
-    locator = createLocator(geomNonPoint);
-    
+    geomNonPointDim = geomNonPoint!.getDimension();
+    locator = createLocator(geomNonPoint!);
+
     List<Coordinate> coords = extractCoordinates(geomPoint, pm);
 
     switch (opCode) {
-    case OverlayNG.INTERSECTION: 
-      return computeIntersection(coords);
-    case OverlayNG.UNION: 
-    case OverlayNG.SYMDIFFERENCE: 
-      // UNION and SYMDIFFERENCE have same output
-      return computeUnion(coords);
-    case OverlayNG.DIFFERENCE: 
-      return computeDifference(coords);
+      case OverlayNG.INTERSECTION:
+        return computeIntersection(coords);
+      case OverlayNG.UNION:
+      case OverlayNG.SYMDIFFERENCE:
+        // UNION and SYMDIFFERENCE have same output
+        return computeUnion(coords);
+      case OverlayNG.DIFFERENCE:
+        return computeDifference(coords);
     }
     Assert.shouldNeverReachHere("Unknown overlay op code");
-    return null;
+    return computeDifference(coords);
   }
 
- /**private */PointOnGeometryLocator createLocator(Geometry geomNonPoint) {
+  /**private */ PointOnGeometryLocator createLocator(Geometry geomNonPoint) {
     if (geomNonPointDim == 2) {
       return new IndexedPointInAreaLocator(geomNonPoint);
-    }
-    else {
+    } else {
       return new IndexedPointOnLineLocator(geomNonPoint);
     }
   }
 
- /**private */Geometry prepareNonPoint(Geometry geomInput) {
+  /**private */ Geometry prepareNonPoint(Geometry geomInput) {
     // if non-point not in output no need to node it
     if (resultDim == 0) {
       return geomInput;
     }
-    
+
     // Node and round the non-point geometry for output
     Geometry geomPrep = OverlayNG.union(geomNonPointInput, pm);
     return geomPrep;
   }
 
- /**private */Geometry computeIntersection(List<Coordinate> coords) {
+  /**private */ Geometry computeIntersection(List<Coordinate> coords) {
     return createPointResult(findPoints(true, coords));
   }
 
- /**private */Geometry computeUnion(List<Coordinate> coords) {
+  /**private */ Geometry computeUnion(List<Coordinate> coords) {
     List<Point> resultPointList = findPoints(false, coords);
-    List<LineString> resultLineList = null;
+    List<LineString>? resultLineList = null;
     if (geomNonPointDim == 1) {
-      resultLineList = extractLines(geomNonPoint);
+      resultLineList = extractLines(geomNonPoint!);
     }
-    List<Polygon> resultPolyList = null;
+    List<Polygon>? resultPolyList = null;
     if (geomNonPointDim == 2) {
-      resultPolyList = extractPolygons(geomNonPoint);
+      resultPolyList = extractPolygons(geomNonPoint!);
     }
-    
-    return OverlayUtil.createResultGeometry(resultPolyList, resultLineList, resultPointList, geometryFactory);
+
+    return OverlayUtil.createResultGeometry(
+        resultPolyList, resultLineList, resultPointList, geometryFactory);
   }
 
- /**private */Geometry computeDifference(List<Coordinate> coords) {
+  /**private */ Geometry computeDifference(List<Coordinate> coords) {
     if (isPointRHS) {
       return copyNonPoint();
     }
     return createPointResult(findPoints(false, coords));
   }
-  
- /**private */Geometry createPointResult(List<Point> points) {
+
+  /**private */ Geometry createPointResult(List<Point> points) {
     if (points.size() == 0) {
       return geometryFactory.createEmpty(0);
-    }
-    else if (points.size() == 1) {
+    } else if (points.size() == 1) {
       return points.get(0);
     }
-    Point[] pointsArray = GeometryFactory.toPointArray(points);
-    return geometryFactory.createMultiPoint( pointsArray );
+    List<Point> pointsArray = GeometryFactory.toPointArray(points);
+    return geometryFactory.createMultiPointFromPoints(pointsArray);
   }
 
- /**private */List<Point> findPoints(bool isCovered, List<Coordinate> coords) {
-    Set<Coordinate> resultCoords = new HashSet<Coordinate>();
+  /**private */ List<Point> findPoints(
+      bool isCovered, List<Coordinate> coords) {
+    /// TODO: @ruier edit.
+    // Set<Coordinate> resultCoords = new HashSet<Coordinate>();
+    Set<Coordinate> resultCoords = new Set<Coordinate>();
     // keep only points contained
-    for (Coordinate coord : coords) {
+    for (Coordinate coord in coords) {
       if (hasLocation(isCovered, coord)) {
         // copy coordinate to avoid aliasing
         resultCoords.add(coord.copy());
@@ -186,20 +198,20 @@ class OverlayMixedPoints {
     }
     return createPoints(resultCoords);
   }
-  
- /**private */List<Point> createPoints(Set<Coordinate> coords) {
-    List<Point> points = new ArrayList<Point>();
-    for (Coordinate coord : coords) {
-      Point point = geometryFactory.createPoint(coord); 
+
+  /**private */ List<Point> createPoints(Set<Coordinate> coords) {
+    List<Point> points = <Point>[];
+    for (Coordinate coord in coords) {
+      Point point = geometryFactory.createPoint(coord);
       points.add(point);
     }
     return points;
   }
 
- /**private */bool hasLocation(bool isCovered, Coordinate coord) {
-    bool isExterior = Location.EXTERIOR == locator.locate(coord);
+  /**private */ bool hasLocation(bool isCovered, Coordinate coord) {
+    bool isExterior = Location.EXTERIOR == locator!.locate(coord);
     if (isCovered) {
-      return ! isExterior;
+      return !isExterior;
     }
     return isExterior;
   }
@@ -210,42 +222,36 @@ class OverlayMixedPoints {
    * 
    * @return a copy of the non-point geometry
    */
- /**private */Geometry copyNonPoint() {
-    if (geomNonPointInput != geomNonPoint) 
-      return geomNonPoint;
-    return geomNonPoint.copy();
+  /**private */ Geometry copyNonPoint() {
+    if (geomNonPointInput != geomNonPoint) {
+      return geomNonPoint!;
+    }
+    return geomNonPoint!.copy();
   }
-  
- /**private */static List<Coordinate> extractCoordinates(Geometry points, PrecisionModel pm) {
-    CoordinateList coords = new CoordinateList();
-    points.apply(new CoordinateFilter() {
 
-      @Override
-      void filter(Coordinate coord) {
-        Coordinate p = OverlayUtil.round(coord, pm);
-        coords.add(p, false);
-      }
-      
-    });
+  /**private */ static List<Coordinate> extractCoordinates(
+      Geometry points, PrecisionModel pm) {
+    CoordinateList coords = new CoordinateList();
+    points.applyCoord(_(pm, coords));
     return coords.toCoordinateArray();
   }
-  
- /**private */static List<Polygon> extractPolygons(Geometry geom) {
-    List<Polygon> list = new ArrayList<Polygon>();
+
+  /**private */ static List<Polygon> extractPolygons(Geometry geom) {
+    List<Polygon> list = <Polygon>[];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      Polygon poly = (Polygon) geom.getGeometryN(i);
-      if(! poly.isEmpty()) {
+      Polygon poly = geom.getGeometryN(i) as Polygon;
+      if (!poly.isEmpty()) {
         list.add(poly);
       }
     }
     return list;
   }
 
- /**private */static List<LineString> extractLines(Geometry geom) {
-    List<LineString> list = new ArrayList<LineString>();
+  /**private */ static List<LineString> extractLines(Geometry geom) {
+    List<LineString> list = <LineString>[];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      LineString line = (LineString) geom.getGeometryN(i);
-      if (! line.isEmpty()) {
+      LineString line = geom.getGeometryN(i) as LineString;
+      if (!line.isEmpty()) {
         list.add(line);
       }
     }
@@ -253,3 +259,15 @@ class OverlayMixedPoints {
   }
 }
 
+class _ implements CoordinateFilter {
+  final PrecisionModel pm;
+  final CoordinateList coords;
+
+  _(this.pm, this.coords);
+
+  @override
+  void filter(Coordinate coord) {
+    Coordinate p = OverlayUtil.roundCoord(coord, pm);
+    coords.add(p, false);
+  }
+}

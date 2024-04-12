@@ -18,6 +18,13 @@
 // import org.locationtech.jts.io.WKTWriter;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/io.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Quadrant.dart';
+import 'package:jtscore4dart/src/operation/overlayng/util.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
 /**
  * Represents a directed component of an edge in an {@link EdgeGraph}.
  * HalfEdges link vertices whose locations are defined by {@link Coordinate}s.
@@ -65,18 +72,16 @@ class HalfEdge {
     return e0;
   }
   
- /**private */Coordinate orig;
- /**private */HalfEdge sym;
- /**private */HalfEdge next;
+ /**private */Coordinate _orig;
+ /**private */late HalfEdge _sym;
+ /**private */late HalfEdge _next;
 
   /**
    * Creates a half-edge originating from a given coordinate.
    * 
-   * @param orig the origin coordinate
+   * @param [orig] the origin coordinate
    */
-  HalfEdge(Coordinate orig) {
-    this.orig = orig;
-  }
+  HalfEdge(this._orig);
 
   /**
    * Links this edge with its sym (opposite) edge.
@@ -98,28 +103,28 @@ class HalfEdge {
    * 
    * @return the origin coordinate
    */
-  Coordinate orig() { return orig; }
+  Coordinate orig() { return _orig; }
   
   /**
    * Gets the destination coordinate of this edge.
    * 
    * @return the destination coordinate
    */
-  Coordinate dest() { return sym.orig; }
+  Coordinate dest() { return _sym._orig; }
 
   /**
    * The X component of the direction vector.
    * 
    * @return the X component of the direction vector
    */
-  double directionX() { return directionPt().getX() - orig.getX(); }
+  double directionX() { return directionPt().getX() - _orig.getX(); }
   
   /**
    * The Y component of the direction vector.
    * 
    * @return the Y component of the direction vector
    */
-  double directionY() { return directionPt().getY() - orig.getY(); }
+  double directionY() { return directionPt().getY() - _orig.getY(); }
   
   /**
    * Gets the direction point of this edge.
@@ -143,7 +148,7 @@ class HalfEdge {
    */
   HalfEdge sym()
   { 
-    return sym;
+    return _sym;
   }
   
   /**
@@ -152,7 +157,7 @@ class HalfEdge {
    * @param e the sym edge to set
    */
  /**private */void setSym(HalfEdge e) {
-    sym = e;
+    _sym = e;
   }
 
   /**
@@ -162,7 +167,7 @@ class HalfEdge {
    */
  /**private */void setNext(HalfEdge e)
   {
-    next = e;
+    _next = e;
   }
   
   /**
@@ -175,7 +180,7 @@ class HalfEdge {
    */
   HalfEdge next()
   {
-    return next;
+    return _next;
   }
   
   /**
@@ -197,7 +202,7 @@ class HalfEdge {
       prev = curr;
       curr = curr.oNext();
     } while (curr != this);
-    return prev.sym;
+    return prev._sym;
   }
 
   /**
@@ -210,7 +215,7 @@ class HalfEdge {
    * @return the next edge around the origin
    */
   HalfEdge oNext() {
-    return sym.next;
+    return _sym._next;
   }
 
   /**
@@ -222,12 +227,13 @@ class HalfEdge {
    * @return the edge with the required dest vertex, if it exists,
    * or null
    */
-  HalfEdge find(Coordinate dest) {
-    HalfEdge oNext = this;
+  HalfEdge? find(Coordinate dest) {
+    HalfEdge? oNext = this;
     do {
       if (oNext == null) return null;
-      if (oNext.dest().equals2D(dest)) 
+      if (oNext.dest().equals2D(dest)) {
         return oNext;
+      }
       oNext = oNext.oNext();
     } while (oNext != this);
     return null;
@@ -241,7 +247,7 @@ class HalfEdge {
    * @return true if the vertices are equal to the ones of this edge
    */
   bool equals(Coordinate p0, Coordinate p1) {
-    return orig.equals2D(p0) && sym.orig.equals(p1);
+    return _orig.equals2D(p0) && _sym._orig.equals(p1);
   }
   
   /**
@@ -303,7 +309,8 @@ class HalfEdge {
       ePrev = eNext;
     } while (ePrev != this);
     Assert.shouldNeverReachHere();
-    return null;
+    // return null;
+    return ePrev;
   }
   
   /**
@@ -314,9 +321,9 @@ class HalfEdge {
    * @param e the edge to insert (with same origin)
    */
  /**private */void insertAfter(HalfEdge e) {
-    Assert.equals(orig, e.orig());
+    Assert.equals(_orig, e.orig());
     HalfEdge save = oNext();
-    sym.setNext(e);
+    _sym.setNext(e);
     e.sym().setNext(save);
   }
 
@@ -356,8 +363,9 @@ class HalfEdge {
     HalfEdge lowest = this;
     HalfEdge e = this.oNext();
     do {
-      if (e.compareTo(lowest) < 0)
+      if (e.compareTo(lowest) < 0) {
         lowest = e;
+      }
       e = e.oNext();
     } while (e != this);
     return lowest;
@@ -370,7 +378,7 @@ class HalfEdge {
    */
   int compareTo(Object obj)
   {
-    HalfEdge e = (HalfEdge) obj;
+    HalfEdge e = obj as HalfEdge;
     int comp = compareAngularDirection(e);
     return comp;
   }
@@ -406,8 +414,9 @@ class HalfEdge {
     double dy2 = e.directionY();
     
     // same vector
-    if (dx == dx2 && dy == dy2)
+    if (dx == dx2 && dy == dy2) {
       return 0;
+    }
     
     int quadrant = Quadrant.quadrant(dx, dy);
     int quadrant2 = Quadrant.quadrant(dx2, dy2);
@@ -424,7 +433,7 @@ class HalfEdge {
     // this is > e if it is CCW of e
     Coordinate dir1 = directionPt();
     Coordinate dir2 = e.directionPt();
-    return Orientation.index(e.orig, dir2, dir1);
+    return Orientation.index(e._orig, dir2, dir1);
   }
   
   /**
@@ -434,10 +443,7 @@ class HalfEdge {
    */
   String toString()
   {
-    return "HE("+orig.x + " " + orig.y
-        + ", "
-        + sym.orig.x + " " + sym.orig.y
-        + ")";
+    return "HE(${_orig.x} ${ _orig.y} ,  ${_sym._orig.x} ${_sym._orig.y} )";
   }
 
   /**
@@ -448,14 +454,14 @@ class HalfEdge {
    * @return a string showing the edges around the origin
    */
   String toStringNode() {
-    Coordinate orig = orig();
-    Coordinate dest = dest();
-    StringBuilder sb = new StringBuilder();
-    sb.append("Node( " + WKTWriter.format(orig) + " )" + "\n");
+    Coordinate _orig = orig();
+    // Coordinate _dest = dest();
+    StringBuffer sb = new StringBuffer();
+    sb.write("Node( " + format(_orig) + " )" + "\n");
     HalfEdge e = this;
     do {
-      sb.append("  -> " + e);
-      sb.append("\n");
+      sb.write("  -> $e" );
+      sb.write("\n");
       e = e.oNext();
     } while (e != this);
     return sb.toString();
@@ -487,12 +493,13 @@ class HalfEdge {
    * @return an edge originating at the node prior to this edge, if any,
    *   or null if no node exists
    */
-  HalfEdge prevNode() {
+  HalfEdge? prevNode() {
     HalfEdge e = this;
     while (e.degree() == 2) {
       e = e.prev();
-      if (e == this)
+      if (e == this) {
         return null;
+      }
     }
     return e;
   }

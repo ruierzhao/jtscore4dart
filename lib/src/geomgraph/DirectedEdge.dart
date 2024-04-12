@@ -122,7 +122,7 @@ class DirectedEdge
 //        Debug.print(this);
 //      }
       if (depth[position] != depthVal) {
-        throw new Exception("TopologyException: assigned depths do not match ${getCoordinate()}");
+        throw new TopologyException("TopologyException: assigned depths do not match ${getCoordinate()}");
       }
       //Assert.isTrue(depth[position] == depthVal, "assigned depths do not match at " + getCoordinate());
     }

@@ -19,6 +19,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/patch/Map.dart';
+
+import 'HalfEdge.dart';
+
 /**
  * A graph comprised of {@link HalfEdge}s.
  * It supports tracking the vertices in the graph
@@ -39,8 +44,8 @@ class EdgeGraph
 {
  /**private */Map vertexMap = new Map();
   
-  EdgeGraph() {
-  }
+  // EdgeGraph() {
+  // }
 
   /**
    * Creates a single HalfEdge.
@@ -81,7 +86,7 @@ class EdgeGraph
    * 
    * @see #isValidEdge(Coordinate, Coordinate)
    */
-  HalfEdge addEdge(Coordinate orig, Coordinate dest) {
+  HalfEdge? addEdge(Coordinate orig, Coordinate dest) {
     if (! isValidEdge(orig, dest)) return null;
     
     /**
@@ -89,8 +94,9 @@ class EdgeGraph
      * Return it if found.
      * Otherwise, use a found edge with same origin (if any) to construct new edge. 
      */
-    HalfEdge eAdj = (HalfEdge) vertexMap.get(orig);
-    HalfEdge eSame = null;
+    // HalfEdge? eAdj = vertexMap.get(orig);
+    HalfEdge? eAdj = vertexMap[orig];
+    HalfEdge? eSame = null;
     if (eAdj != null) {
       eSame = eAdj.find(dest);
     }
@@ -122,7 +128,7 @@ class EdgeGraph
    * @param eAdj an existing edge with same orig (if any)
    * @return the created edge
    */
- /**private */HalfEdge insert(Coordinate orig, Coordinate dest, HalfEdge eAdj) {
+ /**private */HalfEdge insert(Coordinate orig, Coordinate dest, HalfEdge? eAdj) {
     // edge does not exist, so create it and insert in graph
     HalfEdge e = create(orig, dest);
     if (eAdj != null) {
@@ -133,7 +139,7 @@ class EdgeGraph
       vertexMap.put(orig, e);
     }
     
-    HalfEdge eAdjDest = (HalfEdge) vertexMap.get(dest);
+    HalfEdge? eAdjDest = vertexMap.get(dest) as HalfEdge?;
     if (eAdjDest != null) {
       eAdjDest.insert(e.sym());
     }
@@ -149,9 +155,9 @@ class EdgeGraph
    * 
    * @return a collection of the graph edges
    */
-  Collection getVertexEdges()
+  Iterable getVertexEdges()
   {
-    return vertexMap.values();
+    return vertexMap.values;
   }
 
   /**
@@ -162,8 +168,8 @@ class EdgeGraph
    * @param dest the destination location.
    * @return an edge with the given orig and dest, or null if none exists
    */
-  HalfEdge findEdge(Coordinate orig, Coordinate dest) {
-    HalfEdge e = (HalfEdge) vertexMap.get(orig);
+  HalfEdge? findEdge(Coordinate orig, Coordinate dest) {
+    HalfEdge? e = vertexMap.get(orig);
     if (e == null) return null;
     return e.find(dest);
   }

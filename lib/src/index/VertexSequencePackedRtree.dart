@@ -241,7 +241,7 @@ class VertexSequencePackedRtree {
     isRemoved[index] = true;
     
     //--- prune the item parent node if all its items are removed
-    int nodeIndex = index / nodeCapacity;
+    int nodeIndex = index ~/ nodeCapacity;
     if (! isItemsNodeEmpty(nodeIndex)) {
       return;
     }
@@ -253,7 +253,7 @@ class VertexSequencePackedRtree {
     }
 
     //-- prune the node parent if all children removed
-    int nodeLevelIndex = nodeIndex / nodeCapacity;
+    int nodeLevelIndex = nodeIndex ~/ nodeCapacity;
     if (! isNodeEmpty(1, nodeLevelIndex)) {
       return;
     }

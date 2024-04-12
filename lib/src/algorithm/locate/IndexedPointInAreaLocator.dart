@@ -73,7 +73,7 @@ class IndexedPointInAreaLocator implements PointOnGeometryLocator
    * Geometries containing {@link Polygon}s and {@link LinearRing} geometries
    * are supported.
    * 
-   * @param g the Geometry to locate in
+   * @param [g] the Geometry to locate in
    */
   IndexedPointInAreaLocator(this.geom);
     

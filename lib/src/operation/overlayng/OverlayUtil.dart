@@ -24,6 +24,16 @@
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.geom.TopologyException;
 // import org.locationtech.jts.util.Assert;
+import "dart:math" as math;
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'InputGeometry.dart';
+import 'OverlayEdge.dart';
+import 'OverlayGraph.dart';
+import 'OverlayNG.dart';
+import 'RobustClipEnvelopeComputer.dart';
 
 /**
  * Utility methods for overlay processing.
@@ -64,18 +74,19 @@ class OverlayUtil {
    * @param pm the precision model being used
    * @return an envelope for clipping and line limiting, or null if no clipping is performed
    */
-  static Envelope clippingEnvelope(int opCode, InputGeometry inputGeom, PrecisionModel pm) {   
-    Envelope resultEnv = resultEnvelope(opCode, inputGeom, pm);
-    if (resultEnv == null) 
+  static Envelope? clippingEnvelope(int opCode, InputGeometry inputGeom, PrecisionModel pm) {   
+    Envelope? resultEnv = resultEnvelope(opCode, inputGeom, pm);
+    if (resultEnv == null) {
       return null;
+    }
     
     Envelope clipEnv = RobustClipEnvelopeComputer.getEnvelope(
         inputGeom.getGeometry(0), 
         inputGeom.getGeometry(1), 
         resultEnv);
     
-    Envelope safeEnv = safeEnv( clipEnv, pm );
-    return safeEnv;
+    Envelope _safeEnv = safeEnv( clipEnv, pm );
+    return _safeEnv;
   }
 
   /**
@@ -94,8 +105,8 @@ class OverlayUtil {
    * @param pm
    * @return the result envelope, or null if the full extent
    */
- /**private */static Envelope resultEnvelope(int opCode, InputGeometry inputGeom, PrecisionModel pm) {
-    Envelope overlapEnv = null;
+ /**private */static Envelope? resultEnvelope(int opCode, InputGeometry inputGeom, PrecisionModel pm) {
+    Envelope? overlapEnv = null;
     switch (opCode) {
     case OverlayNG.INTERSECTION:
       // use safe envelopes for intersection to ensure they contain rounded coordinates
@@ -163,17 +174,20 @@ class OverlayUtil {
   static bool isEmptyResult(int opCode, Geometry a, Geometry b, PrecisionModel pm) {
     switch (opCode) {
     case OverlayNG.INTERSECTION:
-      if (isEnvDisjoint(a, b, pm)) 
+      if (isEnvDisjoint(a, b, pm)) {
         return true;
+      }
       break;
     case OverlayNG.DIFFERENCE:
-      if ( isEmpty(a) )     
+      if ( isEmpty(a) ) {
         return true;
+      }
       break;
     case OverlayNG.UNION:
     case OverlayNG.SYMDIFFERENCE:
-      if ( isEmpty(a) && isEmpty(b) )     
+      if ( isEmpty(a) && isEmpty(b) ) {
         return true;
+      }
       break;
     }
     return false;
@@ -232,7 +246,7 @@ class OverlayUtil {
    */
   static Geometry createEmptyResult(int dim, GeometryFactory geomFact)
   {
-    Geometry result = null;
+    Geometry? result = null;
     switch (dim) {
     case 0:
       result =  geomFact.createPoint();
@@ -249,7 +263,8 @@ class OverlayUtil {
     default:
       Assert.shouldNeverReachHere("Unable to determine overlay result geometry dimension");
     }
-    return result;
+    // return 占位
+    return geomFact.createPoint();
   }
 
   /**
@@ -302,14 +317,15 @@ class OverlayUtil {
   /**
    * Creates an overlay result geometry for homogeneous or mixed components.
    *  
-   * @param resultPolyList the list of result polygons (may be empty or null)
-   * @param resultLineList the list of result lines (may be empty or null)
-   * @param resultPointList the list of result points (may be empty or null)
-   * @param geometryFactory the geometry factory to use
+   * @param [resultPolyList] the list of result polygons (may be empty or null)
+   * @param [resultLineList] the list of result lines (may be empty or null)
+   * @param [resultPointList] the list of result points (may be empty or null)
+   * @param [geometryFactory] the geometry factory to use
    * @return a geometry structured according to the overlay result semantics
    */
-  static Geometry createResultGeometry(List<Polygon> resultPolyList, List<LineString> resultLineList, List<Point> resultPointList, GeometryFactory geometryFactory) {
-    List<Geometry> geomList = new ArrayList<Geometry>();
+  static Geometry createResultGeometry(List<Polygon>? resultPolyList, List<LineString>? resultLineList, List<Point>? resultPointList, GeometryFactory geometryFactory) {
+    // List<Geometry> geomList = new ArrayList<Geometry>();
+    List<Geometry> geomList = <Geometry>[];
     
     // TODO: for mixed dimension, return collection of Multigeom for each dimension (breaking change)
     
@@ -324,9 +340,10 @@ class OverlayUtil {
   }
 
   static Geometry toLines(OverlayGraph graph, bool isOutputEdges, GeometryFactory geomFact) {
-    List<LineString> lines = new ArrayList<LineString>();
-    for (OverlayEdge edge : graph.getEdges()) {
-      bool includeEdge = isOutputEdges || edge.isInResultArea();
+    // List<LineString> lines = new ArrayList<LineString>();
+    List<LineString> lines = <LineString>[];
+    for (OverlayEdge edge in graph.getEdges()) {
+      bool includeEdge = isOutputEdges || edge.isInResultAreaF();
       if (! includeEdge) continue;
       //List<Coordinate> pts = getCoords(nss);
       List<Coordinate> pts = edge.getCoordinatesOriented();
@@ -338,8 +355,8 @@ class OverlayUtil {
   }
 
  /**private */static String labelForResult(OverlayEdge edge) {
-    return edge.getLabel().toString(edge.isForward())
-        + (edge.isInResultArea() ? " Res" : "");
+    return edge.getLabel().toString2(edge.isForward())
+        + (edge.isInResultAreaF() ? " Res" : "");
   }
 
   /**
@@ -349,9 +366,9 @@ class OverlayUtil {
    * @param pt the Point to round
    * @return the rounded point coordinate, or null if empty
    */
-  static Coordinate round(Point pt, PrecisionModel pm) {
+  static Coordinate? round(Point pt, PrecisionModel pm) {
     if (pt.isEmpty()) return null;
-    return round( pt.getCoordinate(), pm );
+    return roundCoord( pt.getCoordinate()!, pm );
   }
   
   /**
@@ -361,16 +378,16 @@ class OverlayUtil {
    * @param p the coordinate to round
    * @return the rounded coordinate
    */
-  static Coordinate round(Coordinate p, PrecisionModel pm) {
+  static Coordinate roundCoord(Coordinate p, PrecisionModel pm) {
     if (! isFloating(pm)) {
       Coordinate pRound = p.copy();
-      pm.makePrecise(pRound);
+      pm.makePreciseFromCoord(pRound);
       return pRound;
     }
     return p;
   }
   
- /**private */static final double AREA_HEURISTIC_TOLERANCE = 0.1;
+ /**private */static const double AREA_HEURISTIC_TOLERANCE = 0.1;
 
   /**
    * A heuristic check for overlay result correctness
@@ -388,9 +405,10 @@ class OverlayUtil {
    * @param result the overlay result
    * @return true if the result area is consistent
    */
-  static bool isResultAreaConsistent(Geometry geom0, Geometry geom1, int opCode, Geometry result) {
-    if (geom0 == null || geom1 == null) 
+  static bool isResultAreaConsistent(Geometry? geom0, Geometry? geom1, int opCode, Geometry result) {
+    if (geom0 == null || geom1 == null) {
       return true;
+    }
     
     if (result.getDimension() < 2) return true;
     
@@ -430,8 +448,9 @@ class OverlayUtil {
    * @return true if the difference area is consistent.
    */
  /**private */static bool isDifferenceAreaConsistent(double areaA, double areaB, double areaResult, double tolFrac) {
-    if (! isLess(areaResult, areaA, tolFrac))
+    if (! isLess(areaResult, areaA, tolFrac)) {
       return false;
+    }
     double areaDiffMin = areaA - areaB - tolFrac * areaA;
     return areaResult > areaDiffMin;
   }

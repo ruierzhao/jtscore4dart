@@ -37,11 +37,11 @@ import 'package:jtscore4dart/src/geom/Polygonal.dart';
 import 'package:jtscore4dart/src/geom/TopologyException.dart';
 import 'package:jtscore4dart/src/geom/util/PolygonExtracter.dart';
 import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
+import 'package:jtscore4dart/src/operation/overlay/snap/SnapIfNeededOverlayOp.dart';
+import 'package:jtscore4dart/src/operation/overlayng/OverlayNG.dart';
+import 'package:jtscore4dart/src/operation/overlayng/OverlayNGRobust.dart';
 // import 'package:jtscore4dart/src/util/Debug.dart';
 
-import '../overlay/snap/SnapIfNeededOverlayOp.dart';
-import '../overlayng/OverlayNG.dart';
-import '../overlayng/OverlayNGRobust.dart';
 import 'UnionStrategy.dart';
 
 import 'package:jtscore4dart/src/patch/ArrayList.dart';

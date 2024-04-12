@@ -13,6 +13,10 @@
 
 // import org.locationtech.jts.geom.Dimension;
 
+import 'package:jtscore4dart/src/geom/Dimension.dart';
+
+import 'Edge.dart';
+
 /**
  * Records topological information about an 
  * edge representing a piece of linework (lineString or polygon ring)
@@ -29,21 +33,13 @@
 class EdgeSourceInfo {
  /**private */int index;
  /**private */int dim = -999;
- /**private */bool isHole = false;
+ /**private */bool _isHole = false;
  /**private */int depthDelta = 0;
   
-  EdgeSourceInfo(int index, int depthDelta, bool isHole) {
-    this.index = index;
+  EdgeSourceInfo(this.index, [this.depthDelta=0, this._isHole=false]) :
     this.dim = Dimension.A;
-    this.depthDelta = depthDelta;
-    this.isHole = isHole;
-  }
   
-  EdgeSourceInfo(int index) {
-    this.index = index;
-    this.dim = Dimension.L;
-  }
-  
+
   int getIndex() {
     return index;
   }
@@ -56,10 +52,11 @@ class EdgeSourceInfo {
   }
   
   bool isHole() {
-    return isHole;
+    return _isHole;
   }
   
+  @override
   String toString() {
-    return Edge.infoString(index, dim, isHole, depthDelta);
+    return Edge.infoString(index, dim, _isHole, depthDelta);
   }
 }

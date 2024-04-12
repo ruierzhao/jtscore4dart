@@ -21,6 +21,13 @@
 // import org.locationtech.jts.geom.LineString;
 
 
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+
+import 'EdgeGraph.dart';
+
 /**
  * Builds an edge graph from geometries containing edges.
  * 
@@ -29,18 +36,18 @@
  */
 class EdgeGraphBuilder 
 {
-  static EdgeGraph build(Collection geoms) {
+  static EdgeGraph build(Iterable geoms) {
     EdgeGraphBuilder builder = new EdgeGraphBuilder();
-    builder.add(geoms);
+    builder.addAll(geoms);
     return builder.getGraph();
   }
 
  /**private */EdgeGraph graph = new EdgeGraph();
 
-  EdgeGraphBuilder()
-  {
+  // EdgeGraphBuilder()
+  // {
     
-  }
+  // }
   
   EdgeGraph getGraph()
   {
@@ -56,13 +63,7 @@ class EdgeGraphBuilder
    * @param geometry geometry to be added
    */  
   void add(Geometry geometry) {
-    geometry.apply(new GeometryComponentFilter() {
-      void filter(Geometry component) {
-        if (component is LineString) {
-          add((LineString)component);
-        }
-      }      
-    });
+    geometry.applyGeometryComonent(_(graph));
   }
   /**
    * Adds the edges in a collection of {@link Geometry}s to the graph. 
@@ -71,20 +72,31 @@ class EdgeGraphBuilder
    * 
    * @param geometries the geometries to be added
    */
-  void add(Collection geometries) 
+  void addAll(Iterable geometries) 
   {
-    for (Iterator i = geometries.iterator(); i.moveNext(); ) {
-      Geometry geometry = (Geometry) i.current;
+    for (Iterator i = geometries.iterator; i.moveNext(); ) {
+      Geometry geometry = i.current;
       add(geometry);
     }
   }
   
- /**private */void add(LineString lineString) {
+
+  
+}
+
+class _ implements GeometryComponentFilter {
+  /// TODO: @ruier edit.或许有指针指向变化bugs。
+  final EdgeGraph graph;
+  _(this.graph);
+  /**private */void _add(LineString lineString) {
     CoordinateSequence seq = lineString.getCoordinateSequence();
     for (int i = 1; i < seq.size(); i++) {
       graph.addEdge(seq.getCoordinate(i-1), seq.getCoordinate(i));
     }
   }
-
-  
+  void filter(Geometry component) {
+    if (component is LineString) {
+      _add(component as LineString);
+    }
+  }      
 }

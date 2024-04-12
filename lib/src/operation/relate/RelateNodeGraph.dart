@@ -25,6 +25,18 @@
 // import org.locationtech.jts.geomgraph.Node;
 // import org.locationtech.jts.geomgraph.NodeMap;
 
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeEnd.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeIntersection.dart';
+import 'package:jtscore4dart/src/geomgraph/GeometryGraph.dart';
+import 'package:jtscore4dart/src/geomgraph/Node.dart';
+import 'package:jtscore4dart/src/geomgraph/NodeMap.dart';
+
+import 'EdgeEndBuilder.dart';
+import 'RelateNode.dart';
+import 'RelateNodeFactory.dart';
+
 /**
  * Implements the simple graph of Nodes and EdgeEnd which is all that is
  * required to determine topological relationships between Geometries.
@@ -87,16 +99,17 @@ class RelateNodeGraph {
   void computeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
   {
     for (Iterator edgeIt = geomGraph.getEdgeIterator(); edgeIt.moveNext(); ) {
-      Edge e = (Edge) edgeIt.current;
+      Edge e = edgeIt.current;
       int eLoc = e.getLabel().getLocation(argIndex);
       for (Iterator eiIt = e.getEdgeIntersectionList().iterator(); eiIt.moveNext(); ) {
-        EdgeIntersection ei = (EdgeIntersection) eiIt.current;
-        RelateNode n = (RelateNode) nodes.addNode(ei.coord);
-        if (eLoc == Location.BOUNDARY)
+        EdgeIntersection ei = eiIt.current;
+        RelateNode n = nodes.addNodeCoord(ei.coord) as RelateNode;
+        if (eLoc == Location.BOUNDARY) {
           n.setLabelBoundary(argIndex);
-        else {
-          if (n.getLabel().isNull(argIndex))
-            n.setLabel(argIndex, Location.INTERIOR);
+        } else {
+          if (n.getLabel().isNull(argIndex)) {
+            n.setLabelLocation(argIndex, Location.INTERIOR);
+          }
         }
 //Debug.println(n);
       }
@@ -115,17 +128,17 @@ class RelateNodeGraph {
   void copyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
   {
     for (Iterator nodeIt = geomGraph.getNodeIterator(); nodeIt.moveNext(); ) {
-      Node graphNode = (Node) nodeIt.current;
-      Node newNode = nodes.addNode(graphNode.getCoordinate());
-      newNode.setLabel(argIndex, graphNode.getLabel().getLocation(argIndex));
+      Node graphNode = nodeIt.current;
+      Node newNode = nodes.addNodeCoord(graphNode.getCoordinate());
+      newNode.setLabelLocation(argIndex, graphNode.getLabel().getLocation(argIndex));
 //node.print(System.out);
     }
   }
 
   void insertEdgeEnds(List ee)
   {
-    for (Iterator i = ee.iterator(); i.moveNext(); ) {
-      EdgeEnd e = (EdgeEnd) i.current;
+    for (Iterator i = ee.iterator; i.moveNext(); ) {
+      EdgeEnd e = i.current;
       nodes.add(e);
     }
   }

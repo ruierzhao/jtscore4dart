@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.io.PrintStream;
 // import java.util.ArrayList;
 // import java.util.Iterator;
@@ -50,23 +49,21 @@ import 'package:jtscore4dart/src/patch/ArrayList.dart';
  *
  * @version 1.7
  */
-abstract class EdgeEndStar
-{
-
+abstract class EdgeEndStar {
   /**
    * A map which maintains the edges in sorted order around the node
    */
 //  /**protected */Map edgeMap = new TreeMap();
- /**protected */Map edgeMap = new SplayTreeMap();
+  /**protected */ Map edgeMap = new SplayTreeMap();
   /**
    * A list of all outgoing edges in the result, in CCW order
    */
 //  /**protected */List edgeList;
- /**protected */List? edgeList;
+  /**protected */ List? edgeList;
   /**
    * The location of the point for this star in Geometry i Areas
    */
- /**private */List<int> ptInAreaLocation = [Location.NONE, Location.NONE];
+  /**private */ List<int> ptInAreaLocation = [Location.NONE, Location.NONE];
 
   // TODO: ruier edit.
   // EdgeEndStar()
@@ -78,7 +75,7 @@ abstract class EdgeEndStar
    * Insert a EdgeEnd into this EdgeEndStar
    * @param e EdgeEnd
    */
-   void insert(EdgeEnd e);
+  void insert(EdgeEnd e);
 
   /**
    * Insert an EdgeEnd into the map, and clear the edgeList cache,
@@ -86,24 +83,22 @@ abstract class EdgeEndStar
    * @param e EdgeEnd
    * @param obj Object
    */
- /**protected */void insertEdgeEnd(EdgeEnd e, Object obj)
-  {
+  /**protected */ void insertEdgeEnd(EdgeEnd e, Object obj) {
     edgeMap.put(e, obj);
-    edgeList = null;  // edge list has changed - clear the cache
+    edgeList = null; // edge list has changed - clear the cache
   }
 
   /**
    * @return the coordinate for the node this star is based at
    */
-  Coordinate? getCoordinate()
-  {
+  Coordinate? getCoordinate() {
     Iterator it = iterator();
-    if (! it.moveNext()) return null;
-    EdgeEnd e =  it.current as EdgeEnd;
+    if (!it.moveNext()) return null;
+    EdgeEnd e = it.current as EdgeEnd;
     return e.getCoordinate();
   }
-  int getDegree()
-  {
+
+  int getDegree() {
     return edgeMap.size();
   }
 
@@ -115,18 +110,17 @@ abstract class EdgeEndStar
    *
    * @return access to ordered list of edges
    */
-  Iterator iterator()
-  {
+  Iterator iterator() {
     return getEdges().iterator;
   }
-  List getEdges()
-  {
+
+  List getEdges() {
     // edgeList ??= new ArrayList(edgeMap.values());
     edgeList ??= List.from(edgeMap.values);
     return edgeList!;
   }
-  EdgeEnd getNextCW(EdgeEnd ee)
-  {
+
+  EdgeEnd getNextCW(EdgeEnd ee) {
     getEdges();
     int i = edgeList!.indexOf(ee);
     int iNextCW = i - 1;
@@ -136,8 +130,7 @@ abstract class EdgeEndStar
     return edgeList!.get(iNextCW) as EdgeEnd;
   }
 
-  void computeLabelling(List<GeometryGraph> geomGraph)
-  {
+  void computeLabelling(List<GeometryGraph> geomGraph) {
     computeEdgeEndLabels(geomGraph[0].getBoundaryNodeRule());
     // Propagate side labels  around the edges in the star
     // for each parent Geometry
@@ -180,17 +173,18 @@ abstract class EdgeEndStar
      */
     // bool[] hasDimensionalCollapseEdge = { false, false };
     List<bool> hasDimensionalCollapseEdge = [false, false];
-    for (Iterator it = iterator(); it.moveNext(); ) {
+    for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd e = it.current as EdgeEnd;
       Label label = e.getLabel()!;
       for (int geomi = 0; geomi < 2; geomi++) {
-        if (label.isLine(geomi) && label.getLocation(geomi) == Location.BOUNDARY) {
+        if (label.isLine(geomi) &&
+            label.getLocation(geomi) == Location.BOUNDARY) {
           hasDimensionalCollapseEdge[geomi] = true;
         }
       }
     }
 //Debug.print(this);
-    for (Iterator it = iterator(); it.moveNext(); ) {
+    for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd e = it.current as EdgeEnd;
       Label label = e.getLabel()!;
 //Debug.println(e);
@@ -199,8 +193,7 @@ abstract class EdgeEndStar
           int loc = Location.NONE;
           if (hasDimensionalCollapseEdge[geomi]) {
             loc = Location.EXTERIOR;
-          }
-          else {
+          } else {
             Coordinate p = e.getCoordinate();
             loc = getLocation(geomi, p, geomGraph);
           }
@@ -213,32 +206,30 @@ abstract class EdgeEndStar
 //Debug.printIfWatch(this);
   }
 
- /**private */void computeEdgeEndLabels(BoundaryNodeRule boundaryNodeRule)
-  {
+  /**private */ void computeEdgeEndLabels(BoundaryNodeRule boundaryNodeRule) {
     // Compute edge label for each EdgeEnd
-    for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeEnd ee =  it.current as EdgeEnd;
+    for (Iterator it = iterator(); it.moveNext();) {
+      EdgeEnd ee = it.current as EdgeEnd;
       ee.computeLabel(boundaryNodeRule);
     }
   }
-  
- /**private */int getLocation(int geomIndex, Coordinate p, List<GeometryGraph> geom)
-  {
+
+  /**private */ int getLocation(
+      int geomIndex, Coordinate p, List<GeometryGraph> geom) {
     // compute location only on demand
     if (ptInAreaLocation[geomIndex] == Location.NONE) {
-      ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.locateS(p, geom[geomIndex].getGeometry());
+      ptInAreaLocation[geomIndex] =
+          SimplePointInAreaLocator.locateS(p, geom[geomIndex].getGeometry());
     }
     return ptInAreaLocation[geomIndex];
   }
 
-  bool isAreaLabelsConsistent(GeometryGraph geomGraph)
-  {
+  bool isAreaLabelsConsistent(GeometryGraph geomGraph) {
     computeEdgeEndLabels(geomGraph.getBoundaryNodeRule());
     return checkAreaLabelsConsistent(0);
   }
 
- /**private */bool checkAreaLabelsConsistent(int geomIndex)
-  {
+  /**private */ bool checkAreaLabelsConsistent(int geomIndex) {
     // Since edges are stored in CCW order around the node,
     // As we move around the ring we move from the right to the left side of the edge
     List edges = getEdges();
@@ -248,20 +239,20 @@ abstract class EdgeEndStar
     }
     // initialize startLoc to location of last L side (if any)
     int lastEdgeIndex = edges.size() - 1;
-    Label startLabel = ( edges.get(lastEdgeIndex) as EdgeEnd).getLabel()!;
+    Label startLabel = (edges.get(lastEdgeIndex) as EdgeEnd).getLabel()!;
     int startLoc = startLabel.getLocation(geomIndex, Position.LEFT);
     Assert.isTrue(startLoc != Location.NONE, "Found unlabelled area edge");
 
     int currLoc = startLoc;
-    for (Iterator it = iterator(); it.moveNext(); ) {
+    for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd e = it.current as EdgeEnd;
       Label label = e.getLabel()!;
       // we assume that we are only checking a area
       Assert.isTrue(label.isArea(geomIndex), "Found non-area edge");
-      int leftLoc   = label.getLocation(geomIndex, Position.LEFT);
-      int rightLoc  = label.getLocation(geomIndex, Position.RIGHT);
-//System.out.println(leftLoc + " " + rightLoc);
-//Debug.print(this);
+      int leftLoc = label.getLocation(geomIndex, Position.LEFT);
+      int rightLoc = label.getLocation(geomIndex, Position.RIGHT);
+      //System.out.println(leftLoc + " " + rightLoc);
+      //Debug.print(this);
       // check that edge is really a boundary between inside and outside!
       if (leftLoc == rightLoc) {
         return false;
@@ -269,35 +260,37 @@ abstract class EdgeEndStar
       // check side location conflict
       //Assert.isTrue(rightLoc == currLoc, "side location conflict " + locStr);
       if (rightLoc != currLoc) {
-//Debug.print(this);
+        //Debug.print(this);
         return false;
       }
       currLoc = leftLoc;
     }
     return true;
   }
-  void propagateSideLabels(int geomIndex)
-  {
+
+  void propagateSideLabels(int geomIndex) {
     // Since edges are stored in CCW order around the node,
     // As we move around the ring we move from the right to the left side of the edge
-    int startLoc = Location.NONE ;
-    
+    int startLoc = Location.NONE;
+
     // initialize loc to location of last L side (if any)
-//System.out.println("finding start location");
-    for (Iterator it = iterator(); it.moveNext(); ) {
+    //System.out.println("finding start location");
+    for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd e = it.current as EdgeEnd;
+      print('>>>>>>>>> ${ e } <<<<<<<<<<<<<<<<<<<<');
       Label label = e.getLabel()!;
-      if (label.isArea(geomIndex) && label.getLocation(geomIndex, Position.LEFT) != Location.NONE) {
+      if (label.isArea(geomIndex) &&
+          label.getLocation(geomIndex, Position.LEFT) != Location.NONE) {
         startLoc = label.getLocation(geomIndex, Position.LEFT);
       }
     }
-    
+
     // no labelled sides found, so no labels to propagate
     if (startLoc == Location.NONE) return;
 
     int currLoc = startLoc;
-    for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeEnd e =  it.current as EdgeEnd;
+    for (Iterator it = iterator(); it.moveNext();) {
+      EdgeEnd e = it.current as EdgeEnd;
       Label label = e.getLabel()!;
       // set null ON values to be in current location
       if (label.getLocation(geomIndex, Position.ON) == Location.NONE) {
@@ -305,29 +298,32 @@ abstract class EdgeEndStar
       }
       // set side labels (if any)
       if (label.isArea(geomIndex)) {
-        int leftLoc   = label.getLocation(geomIndex, Position.LEFT);
-        int rightLoc  = label.getLocation(geomIndex, Position.RIGHT);
+        int leftLoc = label.getLocation(geomIndex, Position.LEFT);
+        int rightLoc = label.getLocation(geomIndex, Position.RIGHT);
         // if there is a right location, that is the next location to propagate
         if (rightLoc != Location.NONE) {
-//Debug.print(rightLoc != currLoc, this);
+          // print(rightLoc);
+          // print( currLoc);
           if (rightLoc != currLoc) {
             /// TODO: @ruier edit.
             // throw new TopologyException("side location conflict", e.getCoordinate());
             throw new Exception("side location conflict ${e.getCoordinate()}");
           }
           if (leftLoc == Location.NONE) {
-            Assert.shouldNeverReachHere("found single null side (at ${e.getCoordinate()})");
+            Assert.shouldNeverReachHere(
+                "found single null side (at ${e.getCoordinate()})");
           }
           currLoc = leftLoc;
-        }
-        else {
+        } else {
           /** RHS is null - LHS must be null too.
            *  This must be an edge from the other geometry, which has no location
            *  labelling for this geometry.  This edge must lie wholly inside or outside
            *  the other geometry (which is determined by the current location).
            *  Assign both sides to be the current location.
            */
-          Assert.isTrue(label.getLocation(geomIndex, Position.LEFT) == Location.NONE, "found single null side");
+          Assert.isTrue(
+              label.getLocation(geomIndex, Position.LEFT) == Location.NONE,
+              "found single null side");
           label.setLocation(geomIndex, Position.RIGHT, currLoc);
           label.setLocation(geomIndex, Position.LEFT, currLoc);
         }
@@ -335,10 +331,9 @@ abstract class EdgeEndStar
     }
   }
 
-  int findIndex(EdgeEnd eSearch)
-  {
-    iterator();   // force edgelist to be computed
-    for (int i = 0; i < edgeList!.size(); i++ ) {
+  int findIndex(EdgeEnd eSearch) {
+    iterator(); // force edgelist to be computed
+    for (int i = 0; i < edgeList!.size(); i++) {
       EdgeEnd e = edgeList!.get(i) as EdgeEnd;
       if (e == eSearch) return i;
     }
@@ -354,13 +349,12 @@ abstract class EdgeEndStar
   //     e.print(out);
   //   }
   // }
-  
-  String toString()
-  {
+
+  String toString() {
     StringBuffer buf = new StringBuffer();
     buf.write("EdgeEndStar:   ${getCoordinate()}");
     buf.write("\n");
-    for (Iterator it = iterator(); it.moveNext(); ) {
+    for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd e = it.current as EdgeEnd;
       buf.write(e);
       buf.write("\n");

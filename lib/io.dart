@@ -141,7 +141,7 @@ class WKTWriter {
   static String toLineString(List<Coordinate> coord) {
     StringBuffer buf = StringBuffer();
     buf.write("LINESTRING ");
-    if (coord.length == 0) {
+    if (coord.isEmpty) {
       buf.write(" EMPTY");
     } else {
       buf.write("(");
@@ -173,7 +173,7 @@ class WKTWriter {
   ///  Creates the <code>NumberFormat</code> used to write <code>double</code>s
   ///  with a sufficient number of decimal places.
   ///
-  ///@param  precisionModel  the <code>PrecisionModel</code> used to determine
+  ///@param  [precisionModel]  the <code>PrecisionModel</code> used to determine
   ///      the number of decimal places to write.
   ///@return                 a <code>NumberFormat</code> that write <code>double</code>
   ///      s without scientific notation.
@@ -191,8 +191,8 @@ class WKTWriter {
 
   ///  Returns a <code>String</code> of repeated characters.
   ///
-  ///@param  ch     the character to repeat
-  ///@param  count  the number of times to repeat the character
+  ///@param  [ch]     the character to repeat
+  ///@param  [count]  the number of times to repeat the character
   ///@return        a <code>String</code> of characters
   static String stringOfChar(String ch, int count) {
     StringBuffer buf = StringBuffer();
@@ -676,6 +676,9 @@ class WKTWriter {
   static String writeNumber(double d, NumberFormat formatter) {
     return formatter.format(d);
   }
+  // static String writeNumber(double d, NumberFormat formatter) {
+  //   return formatter.format(d);
+  // }
 
   /// Appends additional ordinate information. This function may
   /// <ul>
@@ -969,7 +972,7 @@ class WKTToken {
   const WKTToken(this.type, this.value);
 
   @override
-  String toString() => "{${type}: $value}";
+  String toString() => "{$type: $value}";
 
   bool get isKeyword => type == WKTTokenType.KEYWORD;
 

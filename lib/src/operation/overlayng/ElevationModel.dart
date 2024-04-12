@@ -18,6 +18,12 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.math.MathUtil;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 /**
  * A simple elevation model used to populate missing Z values
  * in overlay results.
@@ -45,19 +51,19 @@
  */
 class ElevationModel {
   
- /**private */static final int DEFAULT_CELL_NUM = 3;
+ /**private */static const int DEFAULT_CELL_NUM = 3;
 
   /**
    * Creates an elevation model from two geometries (which may be null).
    * 
-   * @param geom1 an input geometry 
-   * @param geom2 an input geometry, or null
+   * @param [geom1] an input geometry 
+   * @param [geom2] an input geometry, or null
    * @return the elevation model computed from the geometries
    */
-  static ElevationModel create(Geometry geom1, Geometry geom2) {
+  static ElevationModel create(Geometry geom1, Geometry? geom2) {
     Envelope extent = geom1.getEnvelopeInternal().copy();
     if (geom2 != null) {
-      extent.expandToInclude(geom2.getEnvelopeInternal());
+      extent.expandToIncludeEnvelope(geom2.getEnvelopeInternal());
     }
     ElevationModel model = new ElevationModel(extent, DEFAULT_CELL_NUM, DEFAULT_CELL_NUM);
     if (geom1 != null) model.add(geom1);
@@ -70,7 +76,7 @@ class ElevationModel {
  /**private */int numCellY;
  /**private */double cellSizeX;
  /**private */double cellSizeY;
- /**private */ElevationCell[][] cells;
+ /**private */late List<List<ElevationCell>> cells;
  /**private */bool isInitialized = false;
  /**private */bool hasZValue = false;
  /**private */double averageZ = double.nan;
@@ -78,15 +84,11 @@ class ElevationModel {
   /**
    * Creates a new elevation model covering an extent by a grid of given dimensions.
    * 
-   * @param extent the XY extent to cover
-   * @param numCellX the number of grid cells in the X dimension
-   * @param numCellY the number of grid cells in the Y dimension
+   * @param [extent] the XY extent to cover
+   * @param [numCellX] the number of grid cells in the X dimension
+   * @param [numCellY] the number of grid cells in the Y dimension
    */
-  ElevationModel(Envelope extent, int numCellX, int numCellY) {
-    this.extent = extent;
-    this.numCellX = numCellX;
-    this.numCellY = numCellY;
-    
+  ElevationModel(this.extent, this.numCellX, this.numCellY) {
     cellSizeX = extent.getWidth() / numCellX;
     cellSizeY = extent.getHeight() / numCellY;
     if(cellSizeX <= 0.0) {
@@ -104,39 +106,13 @@ class ElevationModel {
    * @param geom the geometry to scan for Z values
    */
   void add(Geometry geom) {
-    geom.apply(new CoordinateSequenceFilter() {
-
-     /**private */bool hasZ = true;
-
-      @Override
-      void filter(CoordinateSequence seq, int i) {
-        if (! seq.hasZ()) {
-          hasZ = false;;
-          return;
-        }
-        double z = seq.getOrdinate(i, Coordinate.Z);
-        add(seq.getOrdinate(i, Coordinate.X),
-            seq.getOrdinate(i, Coordinate.Y),
-            z);
-      }
-
-      @Override
-      bool isDone() {
-        // no need to scan if no Z present
-        return ! hasZ;
-      }
-
-      @Override
-      bool isGeometryChanged() {
-        return false;
-      }
-      
-    });
+    geom.apply(__());
   }
   
  /**protected */void add(double x, double y, double z) {
-    if ((z).isNaN)
+    if ((z).isNaN) {
       return;
+    }
     hasZValue = true;
     ElevationCell cell = getCell(x, y, true);
     cell.add(z);
@@ -175,11 +151,13 @@ class ElevationModel {
    * @return the computed model Z value
    */
   double getZ(double x, double y) {
-    if (! isInitialized) 
+    if (! isInitialized) {
       init();
+    }
     ElevationCell cell = getCell(x, y, false);
-    if (cell == null) 
+    if (cell == null) {
       return averageZ;
+    }
     return cell.getZ();
   }
   
@@ -193,43 +171,15 @@ class ElevationModel {
    */
   void populateZ(Geometry geom) {
     // short-circuit if no Zs are present in model
-    if (! hasZValue)
+    if (! hasZValue) {
       return;
+    }
     
-    if (! isInitialized) 
+    if (! isInitialized) {
       init();
+    }
     
-    geom.apply(new CoordinateSequenceFilter() {
-
-     /**private */bool isDone = false;
-
-      @Override
-      void filter(CoordinateSequence seq, int i) {
-        if (!seq.hasZ()) {
-          // if no Z then short-circuit evaluation
-          isDone = true;
-          return;
-        }
-        // if Z not populated then assign using model
-        if (( seq.getZ(i).isNaN )) {
-          double z = getZ(seq.getOrdinate(i, Coordinate.X),
-                          seq.getOrdinate(i, Coordinate.Y));
-          seq.setOrdinate(i, Coordinate.Z, z);
-        }
-      }
-
-      @Override
-      bool isDone() {
-        return isDone;
-      }
-
-      @Override
-      bool isGeometryChanged() {
-        // geometry extent is not changed
-        return false;
-      }
-      
-    });
+    geom.apply(_());
   }
   
  /**private */ElevationCell getCell(double x, double y, bool isCreateIfMissing) {
@@ -250,26 +200,88 @@ class ElevationModel {
     }
     return cell;
   }
+}
 
-  static class ElevationCell {
+/**static */ class ElevationCell {
 
-   /**private */int numZ = 0;
-   /**private */double sumZ = 0.0;
-   /**private */double avgZ;
+  /**private */int numZ = 0;
+  /**private */double sumZ = 0.0;
+  /**private */double avgZ;
 
-    void add(double z) {
-      numZ++;
-      sumZ += z;
-    }
-    
-    void compute() {
-      avgZ = double.nan;
-      if (numZ > 0) 
-        avgZ = sumZ / numZ;
-    }
-    
-    double getZ() {
-      return avgZ;
+  void add(double z) {
+    numZ++;
+    sumZ += z;
+  }
+  
+  void compute() {
+    avgZ = double.nan;
+    if (numZ > 0) {
+      avgZ = sumZ / numZ;
     }
   }
+  
+  double getZ() {
+    return avgZ;
+  }
 }
+
+class _ implements CoordinateSequenceFilter {
+
+     /**private */bool _isDone = false;
+
+      @override
+      void filter(CoordinateSequence seq, int i) {
+        if (!seq.hasZ()) {
+          // if no Z then short-circuit evaluation
+          _isDone = true;
+          return;
+        }
+        // if Z not populated then assign using model
+        if (( seq.getZ(i).isNaN )) {
+          double z = getZ(seq.getOrdinate(i, Coordinate.X),
+                          seq.getOrdinate(i, Coordinate.Y));
+          seq.setOrdinate(i, Coordinate.Z, z);
+        }
+      }
+
+      @override
+      bool isDone() {
+        return _isDone;
+      }
+
+      @override
+      bool isGeometryChanged() {
+        // geometry extent is not changed
+        return false;
+      }
+      
+    }
+
+class __ implements CoordinateSequenceFilter {
+
+     /**private */bool hasZ = true;
+
+      @override
+      void filter(CoordinateSequence seq, int i) {
+        if (! seq.hasZ()) {
+          hasZ = false;;
+          return;
+        }
+        double z = seq.getOrdinate(i, Coordinate.Z);
+        add(seq.getOrdinate(i, Coordinate.X),
+            seq.getOrdinate(i, Coordinate.Y),
+            z);
+      }
+
+      @override
+      bool isDone() {
+        // no need to scan if no Z present
+        return ! hasZ;
+      }
+
+      @override
+      bool isGeometryChanged() {
+        return false;
+      }
+      
+    }

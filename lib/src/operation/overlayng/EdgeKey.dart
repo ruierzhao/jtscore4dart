@@ -14,6 +14,12 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.io.OrdinateFormat;
+import 'package:intl/intl.dart';
+import "package:jtscore4dart/src/geom/Coordinate.dart";
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+
+import 'Edge.dart';
+import 'util.dart';
 
 /**
  * A key for sorting and comparing edges in a noded arrangement.
@@ -30,10 +36,10 @@ class EdgeKey implements Comparable<EdgeKey> {
     return new EdgeKey(edge);
   }
     
- /**private */double p0x;
- /**private */double p0y;
- /**private */double p1x;
- /**private */double p1y;
+ /**private */late double p0x;
+ /**private */late double p0y;
+ /**private */late double p1x;
+ /**private */late double p1y;
 
   EdgeKey(Edge edge) {
     initPoints(edge);
@@ -59,7 +65,7 @@ class EdgeKey implements Comparable<EdgeKey> {
     p1y = p1.getY();
   }
 
-  @Override
+  @override
   int compareTo(EdgeKey ek) {
     if (p0x < ek.p0x) return -1;
     if (p0x > ek.p0x) return 1;
@@ -74,10 +80,10 @@ class EdgeKey implements Comparable<EdgeKey> {
   }
   
   bool equals(Object o) {
-    if (! (o is EdgeKey)) {
+    if (o is! EdgeKey) {
       return false;
     }
-    EdgeKey ek = (EdgeKey) o;
+    EdgeKey ek = o;
     return p0x == ek.p0x 
         && p0y == ek.p0y
         && p1x == ek.p1x
@@ -89,13 +95,14 @@ class EdgeKey implements Comparable<EdgeKey> {
    * 
    * @return a hashcode for this object
    */
-  int hashCode() {
+  @override
+  int get hashCode {
     //Algorithm from Effective Java by Joshua Bloch
     int result = 17;
-    result = 37 * result + hashCode(p0x);
-    result = 37 * result + hashCode(p0y);
-    result = 37 * result + hashCode(p1x);
-    result = 37 * result + hashCode(p1y);
+    result = 37 * result + _hashCode(p0x);
+    result = 37 * result + _hashCode(p0y);
+    result = 37 * result + _hashCode(p1x);
+    result = 37 * result + _hashCode(p1y);
     return result;
   }
   
@@ -106,17 +113,16 @@ class EdgeKey implements Comparable<EdgeKey> {
    * @param x the value to compute for
    * @return a hashcode for x
    */
-  static int hashCode(double x) {
-    int f = Double.doubleToLongBits(x);
-    return (int)(f^(f>>>32));
+  static int _hashCode(double x) {
+    // int f = Double.doubleToLongBits(x);
+    // return (int)(f^(f>>>32));
+    return x.hashCode;
   }
   
+  @override
   String toString() {
-    return "EdgeKey(" + format(p0x, p0y) 
-      + ", " +  format(p1x, p1y) + ")";
+    return "EdgeKey(" + formatXY(p0x, p0y) 
+      + ", " +  formatXY(p1x, p1y) + ")";
   }
   
- /**private */String format(double x, double y) {
-    return OrdinateFormat.DEFAULT.format(x) + " " + OrdinateFormat.DEFAULT.format(y);
-  }
 }

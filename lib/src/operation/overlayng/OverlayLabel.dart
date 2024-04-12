@@ -14,6 +14,9 @@
 // import org.locationtech.jts.geom.Location;
 // import org.locationtech.jts.geom.Position;
 
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+
 /**
  * A structure recording the topological situation
  * for an edge in a topology graph 
@@ -85,30 +88,30 @@
  */
 class OverlayLabel {
   
- /**private */static final char SYM_UNKNOWN = '#';
- /**private */static final char SYM_BOUNDARY = 'B';
- /**private */static final char SYM_COLLAPSE = 'C';
- /**private */static final char SYM_LINE = 'L';
+ /**private */static const String SYM_UNKNOWN = '#';
+ /**private */static const String SYM_BOUNDARY = 'B';
+ /**private */static const String SYM_COLLAPSE = 'C';
+ /**private */static const String SYM_LINE = 'L';
   
   /**
    * The dimension of an input geometry which is not known
    */
-  static final int DIM_UNKNOWN = -1;
+  static const int DIM_UNKNOWN = -1;
   
   /**
    * The dimension of an edge which is not part of a specified input geometry.
    */
-  static final int DIM_NOT_PART = DIM_UNKNOWN;
+  static const int DIM_NOT_PART = DIM_UNKNOWN;
   
   /**
    * The dimension of an edge which is a line.
    */
-  static final int DIM_LINE = 1;
+  static const int DIM_LINE = 1;
   
   /**
    * The dimension for an edge which is part of an input Area geometry boundary.
    */
-  static final int DIM_BOUNDARY = 2;
+  static const int DIM_BOUNDARY = 2;
   
   /**
    * The dimension for an edge which is a collapsed part of an input Area geometry boundary.
@@ -116,7 +119,7 @@ class OverlayLabel {
    * They usually are caused by edges in valid polygonal geometries
    * having their endpoints become identical due to precision reduction.
    */
-  static final int DIM_COLLAPSE = 3;
+  static const int DIM_COLLAPSE = 3;
   
   /**
    * Indicates that the location is currently unknown
@@ -145,6 +148,12 @@ class OverlayLabel {
    * @param locRight the location of the right side of the edge
    * @param isHole whether the edge role is a hole or a shell
    */
+  OverlayLabel.initBoundary(int index, int locLeft, int locRight, bool isHole)
+  {
+    initBoundary(index, locLeft, locRight, isHole);
+  }
+
+  /// TODO: @ruier edit.根据使用频率添加较为默认的实现
   OverlayLabel(int index, int locLeft, int locRight, bool isHole)
   {
     initBoundary(index, locLeft, locRight, isHole);
@@ -155,7 +164,7 @@ class OverlayLabel {
    * 
    * @param index the input index of the parent geometry
    */
-  OverlayLabel(int index)
+  OverlayLabel.initLine(int index)
   {
     initLine(index);
   }
@@ -164,7 +173,7 @@ class OverlayLabel {
    * Creates an uninitialized label.
    * 
    */
-  OverlayLabel()
+  OverlayLabel.empty()
   {
   }
 
@@ -173,7 +182,7 @@ class OverlayLabel {
    * 
    * @param lbl
    */
-  OverlayLabel(OverlayLabel lbl) {
+  OverlayLabel.fromAnother(OverlayLabel lbl) {
     this.aLocLeft = lbl.aLocLeft;
     this.aLocRight = lbl.aLocRight;
     this.aLocLine = lbl.aLocLine;
@@ -193,25 +202,26 @@ class OverlayLabel {
    * @param index the input geometry index
    * @return the dimension
    * 
-   * @see #DIM_UNKNOWN
-   * @see #DIM_NOT_PART
-   * @see #DIM_LINE
-   * @see #DIM_BOUNDARY
-   * @see #DIM_COLLAPSE
+   * @see #[DIM_UNKNOWN]
+   * @see #[DIM_NOT_PART]
+   * @see #[DIM_LINE]
+   * @see #[DIM_BOUNDARY]
+   * @see #[DIM_COLLAPSE]
    */
   int dimension(int index) {
-    if (index == 0)
+    if (index == 0) {
       return aDim;
+    }
     return bDim;
   }
   
   /**
    * Initializes the label for an input geometry which is an Area boundary.
    * 
-   * @param index the input index of the parent geometry
-   * @param locLeft the location of the left side of the edge
-   * @param locRight the location of the right side of the edge
-   * @param isHole whether the edge role is a hole or a shell
+   * @param [index] the input index of the parent geometry
+   * @param [locLeft] the location of the left side of the edge
+   * @param [locRight] the location of the right side of the edge
+   * @param [isHole] whether the edge role is a hole or a shell
    */
   void initBoundary(int index, int locLeft, int locRight, bool isHole) {
     if (index == 0) {
@@ -343,9 +353,9 @@ class OverlayLabel {
    * 
    * @return true if at least one source is a line
    */
-  bool isLine() {
-    return aDim == DIM_LINE || bDim == DIM_LINE;
-  }
+  // bool isLine() {
+  //   return aDim == DIM_LINE || bDim == DIM_LINE;
+  // }
   
   /**
    * Tests whether a source is a Line.
@@ -353,7 +363,16 @@ class OverlayLabel {
    * @param index the index of the input geometry
    * @return true if the input is a Line
    */
-  bool isLine(int index) {
+  // bool isLine(int index) {
+  //   if (index == 0) {
+  //     return aDim == DIM_LINE;
+  //   }
+  //   return bDim == DIM_LINE;
+  // }
+  bool isLine([int? index]) {
+    if (index == null) {
+      return aDim == DIM_LINE || bDim == DIM_LINE;
+    }
     if (index == 0) {
       return aDim == DIM_LINE;
     }
@@ -547,7 +566,7 @@ class OverlayLabel {
   /**
    * Gets the line location for a source geometry.
    * 
-   * @param index the index of the input geometry
+   * @param [index] the index of the input geometry
    * @return the line location for the source
    */
   int getLineLocation(int index) {
@@ -576,9 +595,9 @@ class OverlayLabel {
    * Gets the location for a {@link Position} of an edge of a source
    * for an edge with given orientation.
    * 
-   * @param index the index of the source geometry
-   * @param position the position to get the location for
-   * @param isForward true if the orientation of the containing edge is forward
+   * @param [index] the index of the source geometry
+   * @param [position] the position to get the location for
+   * @param [isForward] true if the orientation of the containing edge is forward
    * @return the location of the oriented position in the source
    */
   int getLocation(int index, int position, bool isForward) {
@@ -597,16 +616,29 @@ class OverlayLabel {
     }
     return LOC_UNKNOWN;
   }
-  
+
+  /**
+   * Gets the linear location for the given source.
+   * 
+   * @param [index] the source geometry index
+   * @return the linear location for the source
+   */
+  int getLocationIn(int index) {
+    if (index == 0) {
+      return aLocLine;
+    }
+    return bLocLine;
+  }
+
   /**
    * Gets the location for this label for either
    * a Boundary or a Line edge.
    * This supports a simple determination of
    * whether the edge should be included as a result edge.
    * 
-   * @param index the source index
-   * @param position the position for a boundary label
-   * @param isForward the direction for a boundary label
+   * @param [index] the source index
+   * @param [position] the position for a boundary label
+   * @param [isForward] the direction for a boundary label
    * @return the location for the specified position
    */
   int getLocationBoundaryOrLine(int index, int position, bool isForward) {
@@ -616,18 +648,6 @@ class OverlayLabel {
     return getLineLocation(index);
   }
   
-  /**
-   * Gets the linear location for the given source.
-   * 
-   * @param index the source geometry index
-   * @return the linear location for the source
-   */
-  int getLocation(int index) {
-    if (index == 0) {
-      return aLocLine;
-    }
-    return bLocLine;
-  }
 
   /**
    * Tests whether this label has side position information 
@@ -651,38 +671,39 @@ class OverlayLabel {
    * @return a copy of the label
    */
   OverlayLabel copy() {
-    return new OverlayLabel(this);
+    return new OverlayLabel.fromAnother(this);
   }
     
   String toString()
   {
-    return toString(true);
+    return toString2(true);
   }
 
-  String toString(bool isForward)
+  String toString2(bool isForward)
   {
-    StringBuilder buf = new StringBuilder();
-    buf.append("A:");
-    buf.append(locationString(0, isForward));
-    buf.append("/B:");
-    buf.append(locationString(1, isForward));
+    StringBuffer buf = new StringBuffer();
+    buf.write("A:");
+    buf.write(locationString(0, isForward));
+    buf.write("/B:");
+    buf.write(locationString(1, isForward));
     return buf.toString();
   }
 
  /**private */String locationString(int index, bool isForward) {
-    StringBuilder buf = new StringBuilder();
+    StringBuffer buf = new StringBuffer();
     if (isBoundary(index)) {
-      buf.append( Location.toLocationSymbol( getLocation(index, Position.LEFT, isForward) ) );
-      buf.append( Location.toLocationSymbol( getLocation(index, Position.RIGHT, isForward) ) );
+      buf.write( Location.toLocationSymbol( getLocation(index, Position.LEFT, isForward) ) );
+      buf.write( Location.toLocationSymbol( getLocation(index, Position.RIGHT, isForward) ) );
     }
     else {
       // is a linear edge
-      buf.append( Location.toLocationSymbol( index == 0 ? aLocLine : bLocLine ));
+      buf.write( Location.toLocationSymbol( index == 0 ? aLocLine : bLocLine ));
     }
-    if (isKnown(index))
-      buf.append( dimensionSymbol(index == 0 ? aDim : bDim) );
+    if (isKnown(index)) {
+      buf.write( dimensionSymbol(index == 0 ? aDim : bDim) );
+    }
     if (isCollapse(index)) {
-      buf.append( ringRoleSymbol( index == 0 ? aIsHole : bIsHole ));
+      buf.write( ringRoleSymbol( index == 0 ? aIsHole : bIsHole ));
     }
     return buf.toString();
   }
@@ -693,7 +714,7 @@ class OverlayLabel {
    * @param isHole true for a hole, false for a shell
    * @return the ring role symbol character
    */
-  static char ringRoleSymbol(bool isHole) {
+  static String ringRoleSymbol(bool isHole) {
     return isHole ? 'h' : 's';
   }
 
@@ -703,7 +724,7 @@ class OverlayLabel {
    * @param dim the dimension code
    * @return the dimension symbol character
    */
-  static char dimensionSymbol(int dim) {
+  static String dimensionSymbol(int dim) {
     switch (dim) {
     case DIM_LINE: return SYM_LINE;
     case DIM_COLLAPSE: return SYM_COLLAPSE;

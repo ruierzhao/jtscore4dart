@@ -564,9 +564,10 @@ class GeometryFactory{
   /// A null or empty array creates an empty LineString. 
   /// 
   /// @param coordinates an array without null elements, or an empty array, or null
-  LineString createLineString(List<Coordinate> coordinates) {
+  LineString createLineString([List<Coordinate>? coordinates]) {
     // return createLineStringFromSeq(coordinates != null ? getCoordinateSequenceFactory().create(coordinates) : null);
-    return createLineStringFromSeq(getCoordinateSequenceFactory().create(coordinates));
+    coordinates ??= <Coordinate>[];
+    return createLineStringFromSeq( getCoordinateSequenceFactory().create(coordinates) );
   }
   /// Creates a LineString using the given CoordinateSequence.
   /// A null or empty CoordinateSequence creates an empty LineString. 

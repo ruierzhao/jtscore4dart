@@ -16,6 +16,11 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
 /**
  * Locates points on a linear geometry,
  * using a spatial index to provide good performance.
@@ -27,11 +32,9 @@ class IndexedPointOnLineLocator implements PointOnGeometryLocator {
 
  /**private */Geometry inputGeom;
 
-  IndexedPointOnLineLocator(Geometry geomLinear) {
-    this.inputGeom = geomLinear;
-  }
+  IndexedPointOnLineLocator(this.inputGeom);
 
-  @Override
+  @override
   int locate(Coordinate p) {
     // TODO: optimize this with a segment index
     PointLocator locator = new PointLocator();

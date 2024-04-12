@@ -10,15 +10,12 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.util.GeometryCollectionMapper;
 // import org.locationtech.jts.geom.util.GeometryMapper;
 // import org.locationtech.jts.operation.overlay.OverlayOp;
 // import org.locationtech.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
 // import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
 // import org.locationtech.jts.operation.union.UnaryUnionOp;
-
-
 
 import 'package:jtscore4dart/operation.dart';
 import 'package:jtscore4dart/src/operation/overlay/OverlayOp.dart';
@@ -56,24 +53,23 @@ class _ implements MapOp {
  * @author mdavis
  *
  */
-class GeometryOverlay 
-{
+class GeometryOverlay {
   static String OVERLAY_PROPERTY_NAME = "jts.overlay";
-  
+
   static String OVERLAY_PROPERTY_VALUE_NG = "ng";
   static String OVERLAY_PROPERTY_VALUE_OLD = "old";
-  
+
   /**
    * Currently the original JTS overlay implementation is the default
    */
   static bool OVERLAY_NG_DEFAULT = false;
 
- /**private */static bool isOverlayNG = OVERLAY_NG_DEFAULT;
+  /**private */ static bool isOverlayNG = OVERLAY_NG_DEFAULT;
 
   // static {
-    // setOverlayImpl(System.getProperty(OVERLAY_PROPERTY_NAME));
+  // setOverlayImpl(System.getProperty(OVERLAY_PROPERTY_NAME));
   // }
-  
+
   /**
    * 主要为了测试
    * 不推荐动态使用，可能引起不一致的overlay行为。
@@ -83,48 +79,49 @@ class GeometryOverlay
    * 
    * @param [overlayImplCode] the code for the overlay method (may be null)
    */
-  static void setOverlayImpl([String? overlayImplCode]) {
-    if (overlayImplCode == null) {
-      return;
-    }
-    // set flag explicitly since current value may not be default
-    isOverlayNG = OVERLAY_NG_DEFAULT;
-    
-    // if (OVERLAY_PROPERTY_VALUE_NG.equalsIgnoreCase(overlayImplCode) ) {
-    if (OVERLAY_PROPERTY_VALUE_NG.toLowerCase() == overlayImplCode.toLowerCase() ) {
-      isOverlayNG = true;
-    }
-  }
-  
- /**private */static Geometry overlay(Geometry a, Geometry b, int opCode) {
+  // static void setOverlayImpl([String? overlayImplCode]) {
+  //   if (overlayImplCode == null) {
+  //     return;
+  //   }
+  //   // set flag explicitly since current value may not be default
+  //   isOverlayNG = OVERLAY_NG_DEFAULT;
+
+  //   // if (OVERLAY_PROPERTY_VALUE_NG.equalsIgnoreCase(overlayImplCode) ) {
+  //   if (OVERLAY_PROPERTY_VALUE_NG.toLowerCase() ==
+  //       overlayImplCode.toLowerCase()) {
+  //     isOverlayNG = true;
+  //   }
+  // }
+
+  /**private */ static Geometry overlay(Geometry a, Geometry b, int opCode) {
     if (isOverlayNG) {
       return OverlayNGRobust.overlay(a, b, opCode);
-    }
-    else {
+    } else {
       return SnapIfNeededOverlayOp.overlayOp(a, b, opCode);
-    }  
+    }
   }
-  
-  static Geometry difference(Geometry a, Geometry b)
-  {
+
+  static Geometry difference(Geometry a, Geometry b) {
     // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
-    if (a.isEmpty()) return OverlayOp.createEmptyResult(OverlayOp.DIFFERENCE, a, b, a.getFactory());
+    if (a.isEmpty())
+      return OverlayOp.createEmptyResult(
+          OverlayOp.DIFFERENCE, a, b, a.getFactory());
     if (b.isEmpty()) return a.copy();
 
     Geometry.checkNotGeometryCollection(a);
     Geometry.checkNotGeometryCollection(b);
-    
+
     return overlay(a, b, OverlayOp.DIFFERENCE);
   }
 
-  static Geometry intersection(Geometry a, Geometry b)
-  {
+  static Geometry intersection(Geometry a, Geometry b) {
     /**
      * TODO: MD - add optimization for P-A case using Point-In-Polygon
      */
     // special case: if one input is empty ==> empty
     if (a.isEmpty() || b.isEmpty()) {
-      return OverlayOp.createEmptyResult(OverlayOp.INTERSECTION, a, b, a.getFactory());
+      return OverlayOp.createEmptyResult(
+          OverlayOp.INTERSECTION, a, b, a.getFactory());
     }
 
     // compute for GCs
@@ -132,10 +129,7 @@ class GeometryOverlay
     // TODO: improve efficiency of computation for GCs
     if (a.isGeometryCollection()) {
       final Geometry g2 = b;
-      return GeometryCollectionMapper.map(
-          a as GeometryCollection,
-          _(g2)
-          );
+      return GeometryCollectionMapper.map(a as GeometryCollection, _(g2));
       // return GeometryCollectionMapper.map(
       //     (GeometryCollection) a,
       //     new GeometryMapper.MapOp() {
@@ -148,20 +142,20 @@ class GeometryOverlay
     // No longer needed since GCs are handled by previous code
     //checkNotGeometryCollection(this);
     //checkNotGeometryCollection(other);
-    
+
     return overlay(a, b, OverlayOp.INTERSECTION);
   }
 
-  static Geometry symDifference(Geometry a, Geometry b)
-  {
+  static Geometry symDifference(Geometry a, Geometry b) {
     // handle empty geometry cases
     if (a.isEmpty() || b.isEmpty()) {
       // both empty - check dimensions
       if (a.isEmpty() && b.isEmpty()) {
-        return OverlayOp.createEmptyResult(OverlayOp.SYMDIFFERENCE, a, b, a.getFactory());
+        return OverlayOp.createEmptyResult(
+            OverlayOp.SYMDIFFERENCE, a, b, a.getFactory());
       }
 
-    // special case: if either input is empty ==> result = other arg
+      // special case: if either input is empty ==> result = other arg
       if (a.isEmpty()) return b.copy();
       if (b.isEmpty()) return a.copy();
     }
@@ -170,16 +164,16 @@ class GeometryOverlay
     Geometry.checkNotGeometryCollection(b);
     return overlay(a, b, OverlayOp.SYMDIFFERENCE);
   }
-  
-  static Geometry union(Geometry a, Geometry b)
-  {
+
+  static Geometry union(Geometry a, Geometry b) {
     // handle empty geometry cases
     if (a.isEmpty() || b.isEmpty()) {
       if (a.isEmpty() && b.isEmpty()) {
-        return OverlayOp.createEmptyResult(OverlayOp.UNION, a, b, a.getFactory());
+        return OverlayOp.createEmptyResult(
+            OverlayOp.UNION, a, b, a.getFactory());
       }
 
-    // special case: if either input is empty ==> other input
+      // special case: if either input is empty ==> other input
       if (a.isEmpty()) return b.copy();
       if (b.isEmpty()) return a.copy();
     }
@@ -190,12 +184,11 @@ class GeometryOverlay
 
     return overlay(a, b, OverlayOp.UNION);
   }
-  
+
   static Geometry unaryUnion(Geometry a) {
     if (isOverlayNG) {
       return OverlayNGRobust.union(a);
-    }
-    else {
+    } else {
       print('>>>>>>>>> 1 <<<<<<<<<<<<<<<<<<<<');
       return UnaryUnionOp.union(a);
     }

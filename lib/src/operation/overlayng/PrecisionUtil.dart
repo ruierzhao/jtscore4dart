@@ -19,6 +19,17 @@
 // import org.locationtech.jts.io.OrdinateFormat;
 // import org.locationtech.jts.math.MathUtil;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/math/MathUtil.dart';
+
+import 'util.dart';
+
 /**
  * Functions for computing precision model scale factors
  * that ensure robust geometry operations.
@@ -61,7 +72,7 @@ class PrecisionUtil
    */
   static PrecisionModel robustPM(Geometry a, Geometry b) {
     double scale = PrecisionUtil.robustScale(a, b);
-    return new PrecisionModel( scale );
+    return new PrecisionModel.Fixed( scale );
   }
   
  
@@ -71,7 +82,7 @@ class PrecisionUtil
    * number has no more than {@link #MAX_ROBUST_DP_DIGITS}
    * digits of precision.
    * 
-   * @param value a numeric value
+   * @param [value] a numeric value
    * @return a safe scale factor for the value
    */
   static double safeScale(double value)
@@ -85,7 +96,7 @@ class PrecisionUtil
    * ordinates have no more than {@link #MAX_ROBUST_DP_DIGITS}
    * digits of precision.
    * 
-   * @param geom a geometry
+   * @param [geom] a geometry
    * @return a safe scale factor for the geometry ordinates
    */
   static double safeScale(Geometry geom)
@@ -103,11 +114,11 @@ class PrecisionUtil
    * @param b a geometry (which may be null)
    * @return a safe scale factor for the geometry ordinates
    */
-  static double safeScale(Geometry a, Geometry b) {
+  static double safeScale(Geometry a, Geometry? b) {
     double maxBnd = maxBoundMagnitude( a.getEnvelopeInternal());
     if (b != null) {
       double maxBndB = maxBoundMagnitude( b.getEnvelopeInternal());
-      maxBnd = math.max(maxBnd,  maxBndB);
+      maxBnd = max(maxBnd,  maxBndB);
     }
     double scale = PrecisionUtil.safeScale(maxBnd);
     return scale;
@@ -154,10 +165,10 @@ class PrecisionUtil
       double value, int precisionDigits)
   {
     // the smallest power of 10 greater than the value
-    int magnitude = (int) (Math.log(value) / math.log(10) + 1.0);
+    int magnitude = (log(value) / log(10) + 1.0).toInt();
     int precDigits = precisionDigits - magnitude;
     
-    double scaleFactor = math.pow(10.0, precDigits);
+    double scaleFactor = pow(10.0, precDigits).toDouble();
     return scaleFactor;
   }
  
@@ -176,9 +187,9 @@ class PrecisionUtil
    * @param value a number
    * @return the inherent scale factor of the number
    */
-  static double inherentScale(double value) {
+  static double inherentScale$1(double value) {
     int numDec = numberOfDecimals(value);
-    double scaleFactor = math.pow(10.0, numDec);
+    double scaleFactor = pow(10.0, numDec).toDouble();
     return scaleFactor;
   }
   
@@ -197,9 +208,9 @@ class PrecisionUtil
    * @param geom geometry
    * @return inherent scale of a geometry
    */
-  static double inherentScale(Geometry geom) { 
+  static double _inherentScale(Geometry geom) { 
     InherentScaleFilter scaleFilter = new InherentScaleFilter();
-    geom.apply(scaleFilter);
+    geom.applyCoord(scaleFilter);
     return scaleFilter.getScale();
   }
   
@@ -219,11 +230,11 @@ class PrecisionUtil
    * @param b a geometry
    * @return the inherent scale factor of the two geometries
    */
-  static double inherentScale(Geometry a, Geometry b) {
-    double scale = PrecisionUtil.inherentScale(a);
+  static double inherentScale(Geometry a, [Geometry? b]) {
+    double scale = PrecisionUtil._inherentScale(a);
     if (b != null) {
-      double scaleB = PrecisionUtil.inherentScale(b);
-      scale = math.max(scale, scaleB);
+      double scaleB = PrecisionUtil._inherentScale(b);
+      scale = max(scale, scaleB);
     }
     return scale;
   }
@@ -260,48 +271,19 @@ class PrecisionUtil
      * Ensure that scientific notation is NOT used
      * (it would skew the number of fraction digits)
      */
-    String s = OrdinateFormat.DEFAULT.format(value);
-    if (s.endsWith(".0")) 
+    // String s = OrdinateFormat.DEFAULT.format(value);
+    String s = formatter.format(value);
+    if (s.endsWith(".0")) {
       return 0;
-    int len = s.length();
+    }
+    int len = s.length;
     int decIndex = s.indexOf('.');
-    if (decIndex <= 0) 
+    if (decIndex <= 0) {
       return 0;
+    }
     return len - decIndex - 1;
   }
 
-  /**
-   * Applies the inherent scale calculation 
-   * to every ordinate in a geometry.
-   * <p>
-   * WARNING: this is very slow.
-   * 
-   * @author Martin Davis
-   *
-   */
- /**private */static class InherentScaleFilter implements CoordinateFilter {
-    
-   /**private */double scale  = 0;
-
-    double getScale() {
-      return scale;
-    }
-    
-    @Override
-    void filter(Coordinate coord) {
-      updateScaleMax(coord.getX());
-      updateScaleMax(coord.getY());
-    }
-    
-   /**private */void updateScaleMax(double value) {
-      double scaleVal = PrecisionUtil.inherentScale( value );
-      if (scaleVal > scale) {
-        //System.out.println("Value " + value + " has scale: " + scaleVal);
-        scale = scaleVal;
-      }
-    }
-  }
-  
   /**
    * Determines a precision model to 
    * use for robust overlay operations for one geometry.
@@ -335,9 +317,9 @@ class PrecisionUtil
    * @return a scale factor for use in overlay operations
    */
   static double robustScale(Geometry a, Geometry b) {
-    double inherentScale = inherentScale(a, b);
-    double safeScale = safeScale(a, b);
-    return robustScale(inherentScale, safeScale);
+    double _inherentScale = inherentScale(a, b);
+    double _safeScale = safeScale(a, b);
+    return robustScale(_inherentScale, _safeScale);
   }
   
   /**
@@ -351,12 +333,12 @@ class PrecisionUtil
    * @return a scale factor for use in overlay operations
    */
   static double robustScale(Geometry a) {
-    double inherentScale = inherentScale(a);
-    double safeScale = safeScale(a);
-    return robustScale(inherentScale, safeScale);
+    double _inherentScale = inherentScale(a);
+    double _safeScale = safeScale(a);
+    return _robustScale(_inherentScale, _safeScale);
   }
   
- /**private */static double robustScale(double inherentScale, double safeScale) {
+ /**private */static double _robustScale(double inherentScale, double safeScale) {
     /**
      * Use safe scale if lower, 
      * since it is important to preserve some precision for robustness
@@ -369,3 +351,37 @@ class PrecisionUtil
   }
  
 }
+
+
+  /**
+   * Applies the inherent scale calculation 
+   * to every ordinate in a geometry.
+   * <p>
+   * WARNING: this is very slow.
+   * 
+   * @author Martin Davis
+   *
+   */
+ /**private static */ class InherentScaleFilter implements CoordinateFilter {
+    
+   /**private */double scale  = 0;
+
+    double getScale() {
+      return scale;
+    }
+    
+    @override
+    void filter(Coordinate coord) {
+      updateScaleMax(coord.getX());
+      updateScaleMax(coord.getY());
+    }
+    
+   /**private */void updateScaleMax(double value) {
+      double scaleVal = PrecisionUtil.inherentScale$1( value );
+      if (scaleVal > scale) {
+        //System.out.println("Value " + value + " has scale: " + scaleVal);
+        scale = scaleVal;
+      }
+    }
+  }
+  

@@ -19,14 +19,23 @@
 // import org.locationtech.jts.geom.CoordinateList;
 // import org.locationtech.jts.io.WKTWriter;
 
-class OverlayEdge extends HalfEdge {
+import 'package:jtscore4dart/src/edgegraph/HalfEdge.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
 
+import 'MaximalEdgeRing.dart';
+import 'OverlayEdgeRing.dart';
+import 'OverlayLabel.dart';
+import 'util.dart';
+
+class OverlayEdge extends HalfEdge {
   /**
    * Creates a single OverlayEdge.
    * 
-   * @param pts
-   * @param lbl 
-   * @param direction
+   * @param [pts]
+   * @param [lbl] 
+   * @param [direction]
    * 
    * @return a new edge based on the given coordinates and direction
    */
@@ -59,14 +68,19 @@ class OverlayEdge extends HalfEdge {
    * 
    * @return a Comparator sorting by origin coordinate
    */
+  // static Comparator<OverlayEdge> nodeComparator() {
+  //   return new Comparator<OverlayEdge>() {
+  //     @Override
+  //     int compare(OverlayEdge e1, OverlayEdge e2) {
+  //       return e1.orig().compareTo(e2.orig());
+  //     }
+  //   };
+  // }
   static Comparator<OverlayEdge> nodeComparator() {
-    return new Comparator<OverlayEdge>() {
-      @Override
-      int compare(OverlayEdge e1, OverlayEdge e2) {
+    return (OverlayEdge e1, OverlayEdge e2) {
         return e1.orig().compareTo(e2.orig());
-      }
-    };
-  }
+      };
+    }
   
  /**private */List<Coordinate> pts;
   
@@ -80,30 +94,25 @@ class OverlayEdge extends HalfEdge {
  /**private */OverlayLabel label;
 
  /**private */bool isInResultArea = false;
- /**private */bool isInResultLine = false;
- /**private */bool isVisited = false;
+ /**private */bool _isInResultLine = false;
+ /**private */bool _isVisited = false;
 
   /**
    * Link to next edge in the result ring.
    * The origin of the edge is the dest of this edge.
    */
- /**private */OverlayEdge nextResultEdge;
+ /**private */OverlayEdge? nextResultEdge;
 
- /**private */OverlayEdgeRing edgeRing;
+ /**private */OverlayEdgeRing? edgeRing;
 
- /**private */MaximalEdgeRing maxEdgeRing;
+ /**private */MaximalEdgeRing? maxEdgeRing;
 
- /**private */OverlayEdge nextResultMaxEdge;
+ /**private */OverlayEdge? nextResultMaxEdge;
 
 
-  OverlayEdge(Coordinate orig, Coordinate dirPt, bool direction, OverlayLabel label, List<Coordinate> pts) {
-    super(orig);
-    this.dirPt = dirPt;
-    this.direction = direction;
-    this.pts = pts;
-    this.label = label;
-  }
-
+  OverlayEdge(Coordinate orig, this.dirPt, this.direction, this.label, this.pts) 
+    :super(orig);
+  
   bool isForward() {
     return direction;
   }
@@ -131,7 +140,9 @@ class OverlayEdge extends HalfEdge {
     if (direction) {
       return pts;
     }
-    List<Coordinate> copy = pts.clone();
+    // List<Coordinate> copy = pts.clone();
+    /// TODO: @ruier edit.
+    List<Coordinate> copy = List.from(pts,growable: false);
     CoordinateArrays.reverse(copy);
     return copy;
   }
@@ -170,7 +181,7 @@ class OverlayEdge extends HalfEdge {
    * @return the symmetric pair edge
    */
   OverlayEdge symOE() {
-    return (OverlayEdge) sym();
+    return sym() as OverlayEdge;
   }
   
   /**
@@ -181,10 +192,10 @@ class OverlayEdge extends HalfEdge {
    * @return the next edge around the origin
    */
   OverlayEdge oNextOE() {
-    return (OverlayEdge) oNext();
+    return oNext() as OverlayEdge;
   }
   
-  bool isInResultArea() {
+  bool isInResultAreaF() {
     return isInResultArea;
   }
   
@@ -207,16 +218,16 @@ class OverlayEdge extends HalfEdge {
   }
   
   bool isInResultLine() {
-    return isInResultLine;
+    return _isInResultLine;
   }
 
   void markInResultLine() {
-    isInResultLine  = true;
-    symOE().isInResultLine = true;
+    _isInResultLine  = true;
+    symOE()._isInResultLine = true;
   }
   
   bool isInResult() {
-    return isInResultArea || isInResultLine;
+    return isInResultArea || _isInResultLine;
   }
 
   bool isInResultEither() {
@@ -250,11 +261,11 @@ class OverlayEdge extends HalfEdge {
   }
   
   bool isVisited() {
-    return isVisited;
+    return _isVisited;
   }
   
  /**private */void markVisited() {
-    isVisited = true;
+    _isVisited = true;
   }
   
   void markVisitedBoth() {
@@ -279,26 +290,26 @@ class OverlayEdge extends HalfEdge {
   }
 
   String toString() {
-    Coordinate orig = orig();
-    Coordinate dest = dest();
+    Coordinate _orig = orig();
+    Coordinate _dest = dest();
     String dirPtStr = (pts.length > 2)
-        ? ", " + WKTWriter.format(directionPt())
+        ? ", " + format(directionPt())
             : "";
 
-    return "OE( "+ WKTWriter.format(orig)
+    return "OE( "+ format(_orig)
         + dirPtStr
-        + " .. " + WKTWriter.format(dest)
+        + " .. " + format(_dest)
         + " ) " 
-        + label.toString(direction) 
+        + label.toString2(direction) 
         + resultSymbol()
-        + " / Sym: " + symOE().getLabel().toString(symOE().direction)
+        + " / Sym: " + symOE().getLabel().toString2(symOE().direction)
         + symOE().resultSymbol()
         ;
   }
   
  /**private */String resultSymbol() {
     if (isInResultArea) return " resA";
-    if (isInResultLine) return " resL";
+    if (_isInResultLine) return " resL";
     return "";
   }
 

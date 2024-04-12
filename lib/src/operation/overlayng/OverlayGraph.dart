@@ -19,6 +19,13 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/patch/Map.dart';
+
+import 'OverlayEdge.dart';
+import 'OverlayLabel.dart';
+
+
 /**
  * A planar graph of edges, representing
  * the topology resulting from an overlay operation.
@@ -32,8 +39,8 @@
  */
 class OverlayGraph {
   
- /**private */List<OverlayEdge> edges = new ArrayList<OverlayEdge>();
- /**private */Map<Coordinate, OverlayEdge> nodeMap = new Map<Coordinate, OverlayEdge>();
+ /**private */List<OverlayEdge> edges = <OverlayEdge>[];
+ /**private */Map<Coordinate, OverlayEdge> nodeMap = <Coordinate, OverlayEdge>{};
   
   /**
    * Creates an empty graph.
@@ -48,7 +55,7 @@ class OverlayGraph {
    * 
    * @return the collection of representative edges in this graph
    */
-  Collection<OverlayEdge> getEdges() 
+  Iterable<OverlayEdge> getEdges() 
   {
     return edges;
   }
@@ -61,18 +68,18 @@ class OverlayGraph {
    * 
    * @return the collection of representative node edges
    */
-  Collection<OverlayEdge> getNodeEdges()
+  Iterable<OverlayEdge> getNodeEdges()
   {
-    return nodeMap.values();
+    return nodeMap.values;
   }
 
   /**
    * Gets an edge originating at the given node point.
    * 
-   * @param nodePt the node coordinate to query
+   * @param [nodePt] the node coordinate to query
    * @return an edge originating at the point, or null if none exists
    */
-  OverlayEdge getNodeEdge(Coordinate nodePt) {
+  OverlayEdge? getNodeEdge(Coordinate nodePt) {
     return nodeMap.get(nodePt);
   }
   
@@ -82,9 +89,9 @@ class OverlayGraph {
    * @return the result area edges
    */
   List<OverlayEdge> getResultAreaEdges() {
-    List<OverlayEdge> resultEdges = new ArrayList<OverlayEdge>();
-    for (OverlayEdge edge : getEdges()) {
-      if (edge.isInResultArea()) {
+    List<OverlayEdge> resultEdges = <OverlayEdge>[];
+    for (OverlayEdge edge in getEdges()) {
+      if (edge.isInResultAreaF()) {
         resultEdges.add(edge);
       }
     } 
@@ -123,7 +130,7 @@ class OverlayGraph {
      * insert the edge into the star of edges around the node.
      * Otherwise, add a new node for the origin.
      */
-    OverlayEdge nodeEdge = (OverlayEdge) nodeMap.get(e.orig());
+    OverlayEdge? nodeEdge = nodeMap.get(e.orig());
     if (nodeEdge != null) {
       nodeEdge.insert(e);
     }

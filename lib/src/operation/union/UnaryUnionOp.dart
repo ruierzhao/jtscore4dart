@@ -118,6 +118,7 @@ class UnaryUnionOp
 	{
 		UnaryUnionOp op = new UnaryUnionOp(geom);
     print('>>>>>>>>> 2 <<<<<<<<<<<<<<<<<<<<');
+    
 
 		return op.union_();
 	}
@@ -146,9 +147,9 @@ class UnaryUnionOp
 	 * 
 	 * @param geoms a collection of geometries
 	 */
-	// UnaryUnionOp(Collection geoms)
+	// UnaryUnionOp.List(Iterable<Geometry> geoms)
 	// {
-	// 	extract(geoms);
+	// 	extractAll(geoms);
 	// }
 	
 	/**

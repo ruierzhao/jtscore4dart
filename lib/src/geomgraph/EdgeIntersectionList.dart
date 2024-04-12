@@ -116,6 +116,7 @@ class EdgeIntersectionList
 
     Iterator it = iterator();
     // there should always be at least two entries in the list
+    it.moveNext();
     EdgeIntersection eiPrev =  it.current as EdgeIntersection;
     while (it.moveNext()) {
       EdgeIntersection ei = it.current as EdgeIntersection;

@@ -11,7 +11,7 @@
  */
 
 
-import org.locationtech.jts.operation.overlayng.OverlayNG.UNION;
+// import org.locationtech.jts.operation.overlayng.OverlayNG.UNION;
 
 // import java.util.Collection;
 
@@ -20,6 +20,15 @@ import org.locationtech.jts.operation.overlayng.OverlayNG.UNION;
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.operation.union.UnaryUnionOp;
 // import org.locationtech.jts.operation.union.UnionStrategy;
+
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/operation/union/UnaryUnionOp.dart';
+import 'package:jtscore4dart/src/operation/union/UnionStrategy.dart';
+
+import 'OverlayNG.dart';
+import 'OverlayUtil.dart';
 
 /**
  * Unions a geometry or collection of geometries in an
@@ -48,7 +57,7 @@ class UnaryUnionNG {
   static Geometry union(Geometry geom, PrecisionModel pm) {
     UnaryUnionOp op = new UnaryUnionOp(geom);
     op.setUnionFunction( createUnionStrategy(pm) );
-    return op.union();
+    return op.union_();
   }
   
   /**
@@ -59,11 +68,11 @@ class UnaryUnionNG {
    * @param pm the precision model to use
    * @return the union of the geometries
    */
-  static Geometry union(Collection<Geometry> geoms, PrecisionModel pm) {
-    UnaryUnionOp op = new UnaryUnionOp(geoms);
-    op.setUnionFunction( createUnionStrategy(pm) );
-    return op.union();
-  }
+  // static Geometry unionAll(Iterable<Geometry> geoms, PrecisionModel pm) {
+  //   UnaryUnionOp op = new UnaryUnionOp.all(geoms);
+  //   op.setUnionFunction( createUnionStrategy(pm) );
+  //   return op.union_();
+  // }
   
   /**
    * Unions a collection of geometries
@@ -74,25 +83,14 @@ class UnaryUnionNG {
    * @param pm the precision model to use
    * @return the union of the geometries
    */
-  static Geometry union(Collection<Geometry> geoms, GeometryFactory geomFact, PrecisionModel pm) {
-    UnaryUnionOp op = new UnaryUnionOp(geoms, geomFact);
+  static Geometry unionAll(Iterable<Geometry> geoms,  PrecisionModel pm, [GeometryFactory? geomFact]) {
+    UnaryUnionOp op = new UnaryUnionOp.all(geoms, geomFact);
     op.setUnionFunction( createUnionStrategy(pm) );
-    return op.union();
+    return op.union_();
   }
   
  /**private */static UnionStrategy createUnionStrategy(PrecisionModel pm) {
-    UnionStrategy unionSRFun = new UnionStrategy() {
-
-      Geometry union(Geometry g0, Geometry g1) {
-        return OverlayNG.overlay(g0, g1, UNION, pm);
-      }
-
-      @Override
-      bool isFloatingPrecision() {
-         return OverlayUtil.isFloating(pm);
-      }
-      
-    };
+    UnionStrategy unionSRFun = _(pm);
     return unionSRFun;
   }
   
@@ -100,3 +98,18 @@ class UnaryUnionNG {
     // no instantiation for now
   }
 }
+class _ implements UnionStrategy {
+      final PrecisionModel pm;
+
+  _(this.pm);
+      @override
+        Geometry union(Geometry g0, Geometry g1) {
+        return OverlayNG.overlay(g0, g1, OverlayNG.UNION, pm);
+      }
+
+      @override
+      bool isFloatingPrecision() {
+         return OverlayUtil.isFloating(pm);
+      }
+      
+    }

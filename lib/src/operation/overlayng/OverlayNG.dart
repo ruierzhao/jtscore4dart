@@ -35,6 +35,9 @@ import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/TopologyException.dart';
 import 'package:jtscore4dart/src/geomgraph/Edge.dart';
 import 'package:jtscore4dart/src/noding/Noder.dart';
+import 'package:jtscore4dart/src/noding/MCIndexNoder.dart';
+import 'package:jtscore4dart/src/noding/snap/SnappingNoder.dart';
+import 'package:jtscore4dart/src/noding/snapround/SnapRoundingNoder.dart';
 import 'package:jtscore4dart/src/operation/overlayng/OverlayGraph.dart';
 
 import '../overlay/OverlayOp.dart';
@@ -76,11 +79,11 @@ import 'PolygonBuilder.dart';
  * This does two things: ensures robust computation;
  * and forces the output to be validly rounded to the precision model.</p>
  * <p>
- * For fixed precision models noding is performed using a {@link SnapRoundingNoder}.
+ * For fixed precision models noding is performed using a {@link [SnapRoundingNoder]}.
  * This provides robust computation (as int as precision is limited to
  * around 13 decimal digits).</p>
  * <p>
- * For floating precision an {@link MCIndexNoder} is used. 
+ * For floating precision an {@link [MCIndexNoder]} is used. 
  * This is not fully robust, so can sometimes result in 
  * {@link TopologyException}s being thrown. 
  * For robust full-precision overlay see {@link OverlayNGRobust}.</p>
@@ -89,7 +92,7 @@ import 'PolygonBuilder.dart';
  * This allows using a more performant noding strategy in specific cases, 
  * for instance in {@link CoverageUnion}.</p>
  * <p>
- * <b>Note:</b If a {@link SnappingNoder} is used 
+ * <b>Note:</b If a {@link [SnappingNoder]} is used 
  * it is best to specify a fairly small snap tolerance,
  * since the intersection clipping optimization can 
  * interact with the snapping to alter the result.</p>
@@ -166,14 +169,14 @@ class OverlayNG
    * <p>
    * The method handles arguments of {@link Location#NONE} correctly
    * 
-   * @param label the topological label of the point
-   * @param opCode the code for the overlay operation to test
+   * @param [label] the topological label of the point
+   * @param [opCode] the code for the overlay operation to test
    * @return true if the label locations correspond to the overlayOpCode
    */
   static bool isResultOfOpPoint(OverlayLabel label, int opCode)
   {
-    int loc0 = label.getLocation(0);
-    int loc1 = label.getLocation(1);
+    int loc0 = label.getLocationIn(0);
+    int loc1 = label.getLocationIn(1);
     return isResultOfOp(opCode, loc0, loc1);
   }
   
@@ -226,8 +229,7 @@ class OverlayNG
    * @param pm the precision model to use
    * @return the result of the overlay operation
    */
-  static Geometry overlay(Geometry geom0, Geometry geom1, 
-      int opCode, PrecisionModel pm)
+  static Geometry overlay(Geometry geom0, Geometry geom1, int opCode, PrecisionModel pm)
   {
     OverlayNG ov = new OverlayNG(geom0, geom1, pm, opCode);
     Geometry geomOv = ov.getResult();
@@ -238,11 +240,11 @@ class OverlayNG
    * Computes an overlay operation on the given geometry operands, 
    * using a supplied {@link Noder}.
    * 
-   * @param geom0 the first geometry argument
-   * @param geom1 the second geometry argument
-   * @param opCode the code for the desired overlay operation
-   * @param pm the precision model to use (which may be null if the noder does not use one)
-   * @param noder the noder to use
+   * @param [geom0] the first geometry argument
+   * @param [geom1] the second geometry argument
+   * @param [opCode] the code for the desired overlay operation
+   * @param [pm] the precision model to use (which may be null if the noder does not use one)
+   * @param [noder] the noder to use
    * @return the result of the overlay operation
    */
   static Geometry overlay(Geometry geom0, Geometry geom1, 
@@ -264,8 +266,7 @@ class OverlayNG
    * @param noder the noder to use
    * @return the result of the overlay operation
    */
-  static Geometry overlay(Geometry geom0, Geometry geom1, 
-      int opCode, Noder noder)
+  static Geometry overlay(Geometry geom0, Geometry geom1, int opCode, Noder noder)
   {
     OverlayNG ov = new OverlayNG(geom0, geom1, null, opCode);
     ov.setNoder(noder);
@@ -540,8 +541,9 @@ class OverlayNG
      */
     if (OverlayUtil.isFloating(pm)) {
       bool isAreaConsistent = OverlayUtil.isResultAreaConsistent(inputGeom.getGeometry(0), inputGeom.getGeometry(1), opCode, result);
-      if (! isAreaConsistent)
-        throw new TopologyException("Result area inconsistent with overlay operation");    
+      if (! isAreaConsistent) {
+        throw new TopologyException("Result area inconsistent with overlay operation");
+      }    
     }
     return result;
   }
@@ -558,8 +560,9 @@ class OverlayNG
      */
     if ( isOptimized ) {
       Envelope clipEnv = OverlayUtil.clippingEnvelope(opCode, inputGeom, pm);
-      if (clipEnv != null)
+      if (clipEnv != null) {
         nodingBuilder.setClipEnvelope( clipEnv );
+      }
     }
     
     List<Edge> mergedEdges = nodingBuilder.build(
@@ -577,7 +580,7 @@ class OverlayNG
     return mergedEdges;
   }
 
- /**private */OverlayGraph buildGraph(Collection<Edge> edges) {
+ /**private */OverlayGraph buildGraph(Iterable<Edge> edges) {
     OverlayGraph graph = new OverlayGraph();
     for (Edge e in edges) {
       graph.addEdge(e.getCoordinates(), e.createLabel());
@@ -649,8 +652,9 @@ class OverlayNG
     
     if (isEmpty(resultPolyList) 
         && isEmpty(resultLineList) 
-        && isEmpty(resultPointList))
+        && isEmpty(resultPointList)) {
       return createEmptyResult();
+    }
     
     Geometry resultGeom = OverlayUtil.createResultGeometry(resultPolyList, resultLineList, resultPointList, geomFact);
     return resultGeom;

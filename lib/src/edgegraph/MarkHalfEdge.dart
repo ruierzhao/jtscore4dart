@@ -14,6 +14,10 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'HalfEdge.dart';
+
 /**
  * A {@link HalfEdge} which supports
  * marking edges with a bool flag.
@@ -30,9 +34,9 @@ class MarkHalfEdge extends HalfEdge
    * @param e the edge to test
    * @return true if the edge is marked
    */
-  static bool isMarked(HalfEdge e) 
+  static bool isMarkedS(HalfEdge e) 
   {
-    return ((MarkHalfEdge) e).isMarked();
+    return ( e as MarkHalfEdge).isMarked();
   }
   
   /**
@@ -40,9 +44,9 @@ class MarkHalfEdge extends HalfEdge
    * 
    * @param e the edge to mark
    */
-  static void mark(HalfEdge e)
+  static void markS(HalfEdge e)
   {
-    ((MarkHalfEdge) e).mark();
+    ( e as MarkHalfEdge).mark();
   }
 
   /**
@@ -51,9 +55,9 @@ class MarkHalfEdge extends HalfEdge
    * @param e the edge to set
    * @param isMarked the mark value
    */
-  static void setMark(HalfEdge e, bool isMarked)
+  static void setMarkS(HalfEdge e, bool isMarked)
   {
-    ((MarkHalfEdge) e).setMark(isMarked);
+    ( e as MarkHalfEdge).setMark(isMarked);
   }
 
   /**
@@ -64,8 +68,8 @@ class MarkHalfEdge extends HalfEdge
    */
   static void setMarkBoth(HalfEdge e, bool isMarked)
   {
-    ((MarkHalfEdge) e).setMark(isMarked);
-    ((MarkHalfEdge) e.sym()).setMark(isMarked);
+    (e as MarkHalfEdge).setMark(isMarked);
+    ( e.sym() as MarkHalfEdge).setMark(isMarked);
   }
 
   /**
@@ -74,20 +78,19 @@ class MarkHalfEdge extends HalfEdge
    * @param e an edge of the pair to mark
    */
   static void markBoth(HalfEdge e) {
-    ((MarkHalfEdge) e).mark();
-    ((MarkHalfEdge) e.sym()).mark();
+    ( e as MarkHalfEdge).mark();
+    (e.sym() as MarkHalfEdge).mark();
   }
   
- /**private */bool isMarked = false;
+ /**private */bool _isMarked = false;
 
   /**
    * Creates a new marked edge.
    * 
    * @param orig the coordinate of the edge origin
    */
-  MarkHalfEdge(Coordinate orig) {
+  MarkHalfEdge(Coordinate orig) :
     super(orig);
-  }
 
   /**
    * Tests whether this edge is marked.
@@ -96,7 +99,7 @@ class MarkHalfEdge extends HalfEdge
    */
   bool isMarked()
   {
-    return isMarked ;
+    return _isMarked ;
   }
   
   /**
@@ -105,7 +108,7 @@ class MarkHalfEdge extends HalfEdge
    */
   void mark()
   {
-    isMarked = true;
+    _isMarked = true;
   }
 
   /**
@@ -115,7 +118,7 @@ class MarkHalfEdge extends HalfEdge
    */
   void setMark(bool isMarked)
   {
-    this.isMarked = isMarked;
+    this._isMarked = isMarked;
   }
 
 

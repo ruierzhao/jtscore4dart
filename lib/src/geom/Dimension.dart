@@ -84,8 +84,8 @@ class Dimension {
   ///  Converts the dimension symbol to a dimension value, for example, <code>'*' =&gt; DONTCARE</code>
   ///  .
   ///
-  ///@param  dimensionSymbol  a character for use in the string representation of
-  ///      an <code>IntersectionMatrix</code>. Possible values are <code>{T, F, * , 0, 1, 2}</code>
+  ///@param  [dimensionSymbol]  a character for use in the string representation of
+  ///      an <code>[IntersectionMatrix]</code>. Possible values are <code>{T, F, * , 0, 1, 2}</code>
   ///      .
   ///@return a number that can be stored in the <code>IntersectionMatrix</code>
   ///      . Possible values are <code>{TRUE, FALSE, DONTCARE, 0, 1, 2}</code>.

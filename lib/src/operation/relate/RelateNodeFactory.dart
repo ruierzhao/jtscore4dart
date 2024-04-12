@@ -28,11 +28,11 @@ import 'RelateNode.dart';
  *
  * @version 1.7
  */
-class RelateNodeFactory
-  extends NodeFactory
+class RelateNodeFactory extends NodeFactory
 {
+  @override
   Node createNode(Coordinate coord)
   {
-    return new RelateNode(coord, new EdgeEndBundleStar());
+    return RelateNode(coord, EdgeEndBundleStar());
   }
 }

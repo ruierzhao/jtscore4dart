@@ -1,6 +1,14 @@
 class SuperClass{
-  void ruier(){
+  int a;
+  String s;
+  SuperClass.from(this.a,this.s);
+}
 
+class subClass extends SuperClass{
+  
+  subClass(int aa, String s):super.from(aa,s);
+  rueir(){
+    print(a);
   }
 }
 

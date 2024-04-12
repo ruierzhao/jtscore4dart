@@ -26,7 +26,12 @@
 // import org.locationtech.jts.geomgraph.Label;
 
 import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
+import 'package:jtscore4dart/src/geom/IntersectionMatrix.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
 import 'package:jtscore4dart/src/geomgraph/EdgeEnd.dart';
+import 'package:jtscore4dart/src/geomgraph/GeometryGraph.dart';
 import 'package:jtscore4dart/src/geomgraph/Label.dart';
 
 /**
@@ -35,11 +40,9 @@ import 'package:jtscore4dart/src/geomgraph/Label.dart';
  *
  * @version 1.7
  */
-class EdgeEndBundle
-  extends EdgeEnd
-{
+class EdgeEndBundle extends EdgeEnd{
 // /**private */BoundaryNodeRule boundaryNodeRule;
- /**private */List edgeEnds = [];
+ /**private */List _edgeEnds = [];
 /// TODO: @ruier edit.跟单参数作用一样
   // EdgeEndBundle(BoundaryNodeRule boundaryNodeRule, EdgeEnd e)
   // {
@@ -57,9 +60,11 @@ class EdgeEndBundle
   // {
   //   this(null, e);
   // }
-  EdgeEndBundle(EdgeEnd e):
-    super.Coord2(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), new Label.FromAnother(e.getLabel()!))
+  EdgeEndBundle(EdgeEnd e)
+  :super.Coord2(e.getEdge(), e.getCoordinate(), e.getDirectedCoordinate(), Label.FromAnother(e.getLabel()!))    
   {
+    // super.edge = e.getEdge();
+    // super.label = Label.FromAnother(e.getLabel()!);
     insert(e);
     /*
     if (boundaryNodeRule != null)
@@ -68,17 +73,17 @@ class EdgeEndBundle
       boundaryNodeRule = BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE;
     */
   }
-  }
+  
 
   Label? getLabel() { return label; }
-  Iterator iterator() { return edgeEnds.iterator; }
-  List getEdgeEnds() { return edgeEnds; }
+  Iterator iterator() { return _edgeEnds.iterator; }
+  List getEdgeEnds() { return _edgeEnds; }
 
   void insert(EdgeEnd e)
   {
     // Assert: start point is the same
     // Assert: direction is the same
-    edgeEnds.add(e);
+    _edgeEnds.add(e);
   }
   /**
    * This computes the overall edge label for the set of
@@ -91,19 +96,21 @@ class EdgeEndBundle
     // the label must be an area label
     bool isArea = false;
     for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeEnd e = (EdgeEnd) it.current;
-      if (e.getLabel().isArea()) isArea = true;
+      EdgeEnd e = it.current;
+      if (e.getLabel()!.isArea()) isArea = true;
     }
-    if (isArea)
-      label = new Label(Location.NONE, Location.NONE, Location.NONE);
-    else
+    if (isArea) {
+      label = new Label.From3(Location.NONE, Location.NONE, Location.NONE);
+    } else {
       label = new Label(Location.NONE);
+    }
 
     // compute the On label, and the side labels if present
     for (int i = 0; i < 2; i++) {
       computeLabelOn(i, boundaryNodeRule);
-      if (isArea)
+      if (isArea) {
         computeLabelSides(i);
+      }
     }
   }
 
@@ -134,8 +141,8 @@ class EdgeEndBundle
     bool foundInterior = false;
 
     for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeEnd e = (EdgeEnd) it.current;
-      int loc = e.getLabel().getLocation(geomIndex);
+      EdgeEnd e = it.current;
+      int loc = e.getLabel()!.getLocation(geomIndex);
       if (loc == Location.BOUNDARY) boundaryCount++;
       if (loc == Location.INTERIOR) foundInterior = true;
     }
@@ -144,7 +151,7 @@ class EdgeEndBundle
     if (boundaryCount > 0) {
       loc = GeometryGraph.determineBoundary(boundaryNodeRule, boundaryCount);
     }
-    label.setLocation(geomIndex, loc);
+    label!.setLocationOn(geomIndex, loc);
 
   }
   /**
@@ -173,15 +180,17 @@ class EdgeEndBundle
  /**private */void computeLabelSide(int geomIndex, int side)
   {
     for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeEnd e = (EdgeEnd) it.current;
-      if (e.getLabel().isArea()) {
-        int loc = e.getLabel().getLocation(geomIndex, side);
+      EdgeEnd e = it.current;
+      if (e.getLabel()!.isArea()) {
+        int loc = e.getLabel()!.getLocation(geomIndex, side);
         if (loc == Location.INTERIOR) {
-            label.setLocation(geomIndex, side, Location.INTERIOR);
+            label!.setLocation(geomIndex, side, Location.INTERIOR);
             return;
         }
-        else if (loc == Location.EXTERIOR)
-              label.setLocation(geomIndex, side, Location.EXTERIOR);
+        else if (loc == Location.EXTERIOR){
+          label!.setLocation(geomIndex, side, Location.EXTERIOR);
+        }
+              
       }
     }
   }
@@ -191,15 +200,17 @@ class EdgeEndBundle
    */
   void updateIM(IntersectionMatrix im)
   {
-    Edge.updateIM(label, im);
+    Edge.updateIMS(label!, im);
   }
-  void print(PrintStream out)
-  {
-    out.println("EdgeEndBundle--> Label: " + label);
-    for (Iterator it = iterator(); it.moveNext(); ) {
-      EdgeEnd ee = (EdgeEnd) it.current;
-      ee.print(out);
-      out.println();
-    }
-  }
+  
+  /// TODO: @ruier edit.
+  // void print(PrintStream out)
+  // {
+  //   out.println("EdgeEndBundle--> Label: " + label);
+  //   for (Iterator it = iterator(); it.moveNext(); ) {
+  //     EdgeEnd ee = (EdgeEnd) it.current;
+  //     ee.print(out);
+  //     out.println();
+  //   }
+  // }
 }

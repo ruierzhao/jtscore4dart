@@ -111,7 +111,7 @@ class IntersectionMatrix /**implements Cloneable  */ {
   {
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        setAtLeast(i, j, im.get(i, j));
+        setAtLeastIn(i, j, im.get(i, j));
       }
     }
   }
@@ -203,14 +203,14 @@ class IntersectionMatrix /**implements Cloneable  */ {
   ///  Changes the specified element to <code>minimumDimensionValue</code> if the
   ///  element is less.
   ///
-  ///@param  row                    the row of this <code>IntersectionMatrix</code>
+  ///@param  [row]                    the row of this <code>IntersectionMatrix</code>
   ///      , indicating the interior, boundary or exterior of the first <code>Geometry</code>
-  ///@param  column                 the column of this <code>IntersectionMatrix</code>
+  ///@param  [column]                 the column of this <code>IntersectionMatrix</code>
   ///      , indicating the interior, boundary or exterior of the second <code>Geometry</code>
-  ///@param  minimumDimensionValue  the dimension value with which to compare the
+  ///@param  [minimumDimensionValue]  the dimension value with which to compare the
   ///      element. The order of dimension values from least to greatest is
   ///      <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>.
-  void setAtLeast(int row, int column, int minimumDimensionValue) {
+  void setAtLeastIn(int row, int column, int minimumDimensionValue) {
     if (matrix[row][column] < minimumDimensionValue) {
       matrix[row][column] = minimumDimensionValue;
     }
@@ -228,24 +228,24 @@ class IntersectionMatrix /**implements Cloneable  */ {
   ///      <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>.
   void setAtLeastIfValid(int row, int column, int minimumDimensionValue) {
     if (row >= 0 && column >= 0) {
-      setAtLeast(row, column, minimumDimensionValue);
+      setAtLeastIn(row, column, minimumDimensionValue);
     }
   }
 
-  ///  For each element in this <code>IntersectionMatrix</code>, changes the
+  ///  For each element in this <code>[IntersectionMatrix]</code>, changes the
   ///  element to the corresponding minimum dimension symbol if the element is
   ///  less.
   ///
-  ///@param  minimumDimensionSymbols  nine dimension symbols with which to
+  ///@param  [minimumDimensionSymbols]  nine dimension symbols with which to
   ///      compare the elements of this <code>IntersectionMatrix</code>. The
   ///      order of dimension values from least to greatest is <code>{DONTCARE, TRUE, FALSE, 0, 1, 2}</code>
   ///      .
-  void setAtLeastStr(String minimumDimensionSymbols) {
+  void setAtLeast(String minimumDimensionSymbols) {
     for (int i = 0; i < minimumDimensionSymbols.length; i++) {
       int row = (i / 3).floor();
       int col = i % 3;
       // setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols.charAt(i)));
-      setAtLeast(row, col, Dimension.toDimensionValue(minimumDimensionSymbols[i]));
+      setAtLeastIn(row, col, Dimension.toDimensionValue(minimumDimensionSymbols[i]));
     }
   }
 

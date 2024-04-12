@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 /**
  * An EdgeEndBuilder creates EdgeEnds for all the "split edges"
  * created by the
@@ -29,22 +28,27 @@
 // import org.locationtech.jts.geomgraph.EdgeIntersectionList;
 // import org.locationtech.jts.geomgraph.Label;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeEnd.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeIntersection.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeIntersectionList.dart';
+import 'package:jtscore4dart/src/geomgraph/Label.dart';
+
 /**
  * Computes the {@link EdgeEnd}s which arise from a noded {@link Edge}.
  *
  * @version 1.7
  */
 class EdgeEndBuilder {
+  // EdgeEndBuilder() {
+  // }
 
-  EdgeEndBuilder() {
-  }
-
-  List computeEdgeEnds(Iterator edges)
-  {
+  List computeEdgeEnds(Iterator edges) {
     List l = [];
-    for (Iterator i = edges; i.moveNext(); ) {
-      Edge e = (Edge) i.current;
-      computeEdgeEnds(e, l);
+    for (Iterator i = edges; i.moveNext();) {
+      Edge e = i.current;
+      computeEdgeEndsTo(e, l);
     }
     return l;
   }
@@ -53,32 +57,29 @@ class EdgeEndBuilder {
    * Creates stub edges for all the intersections in this
    * Edge (if any) and inserts them into the graph.
    */
-  void computeEdgeEnds(Edge edge, List l)
-  {
+  void computeEdgeEndsTo(Edge edge, List l) {
     EdgeIntersectionList eiList = edge.getEdgeIntersectionList();
 //Debug.print(eiList);
     // ensure that the list has entries for the first and last point of the edge
     eiList.addEndpoints();
 
     Iterator it = eiList.iterator();
-    EdgeIntersection eiPrev = null;
-    EdgeIntersection eiCurr = null;
+    EdgeIntersection? eiPrev = null;
+    EdgeIntersection? eiCurr = null;
     // no intersections, so there is nothing to do
-    if (! it.hasNext()) return;
-    EdgeIntersection eiNext = (EdgeIntersection) it.current;
+    if (!it.moveNext()) return;
+    EdgeIntersection? eiNext = it.current as EdgeIntersection;
     do {
       eiPrev = eiCurr;
       eiCurr = eiNext;
       eiNext = null;
-      if (it.hasNext()) eiNext = (EdgeIntersection) it.current;
+      if (it.moveNext()) eiNext = it.current as EdgeIntersection;
 
       if (eiCurr != null) {
-        createEdgeEndForPrev(edge, l, eiCurr, eiPrev);
-        createEdgeEndForNext(edge, l, eiCurr, eiNext);
+        createEdgeEndForPrev(edge, l, eiCurr, eiPrev!);
+        createEdgeEndForNext(edge, l, eiCurr, eiNext!);
       }
-
     } while (eiCurr != null);
-
   }
 
   /**
@@ -90,12 +91,7 @@ class EdgeEndBuilder {
    * eiCurr will always be an EdgeIntersection, but eiPrev may be null.
    */
   void createEdgeEndForPrev(
-                      Edge edge,
-                      List l,
-                      EdgeIntersection eiCurr,
-                      EdgeIntersection eiPrev)
-  {
-
+      Edge edge, List l, EdgeIntersection eiCurr, EdgeIntersection eiPrev) {
     int iPrev = eiCurr.segmentIndex;
     if (eiCurr.dist == 0.0) {
       // if at the start of the edge there is no previous edge
@@ -104,17 +100,17 @@ class EdgeEndBuilder {
     }
     Coordinate pPrev = edge.getCoordinate(iPrev);
     // if prev intersection is past the previous vertex, use it instead
-    if (eiPrev != null && eiPrev.segmentIndex >= iPrev)
-      pPrev = eiPrev.coord;
+    if (eiPrev != null && eiPrev.segmentIndex >= iPrev) pPrev = eiPrev.coord;
 
-    Label label = new Label(edge.getLabel());
+    Label label = new Label.FromAnother(edge.getLabel());
     // since edgeStub is oriented opposite to it's parent edge, have to flip sides for edge label
     label.flip();
-    EdgeEnd e = new EdgeEnd(edge, eiCurr.coord, pPrev, label);
+    EdgeEnd e = new EdgeEnd.Coord2(edge, eiCurr.coord, pPrev, label);
 //e.print(System.out);  System.out.println();
     l.add(e);
   }
-    /**
+
+  /**
      * Create a StubEdge for the edge after the intersection eiCurr.
      * The next intersection is provided
      * in case it is the endpoint for the stub edge.
@@ -123,12 +119,7 @@ class EdgeEndBuilder {
      * eiCurr will always be an EdgeIntersection, but eiNext may be null.
      */
   void createEdgeEndForNext(
-                      Edge edge,
-                      List l,
-                      EdgeIntersection eiCurr,
-                      EdgeIntersection eiNext)
-  {
-
+      Edge edge, List l, EdgeIntersection eiCurr, EdgeIntersection eiNext) {
     int iNext = eiCurr.segmentIndex + 1;
     // if there is no next edge there is nothing to do
     if (iNext >= edge.getNumPoints() && eiNext == null) return;
@@ -136,12 +127,13 @@ class EdgeEndBuilder {
     Coordinate pNext = edge.getCoordinate(iNext);
 
     // if the next intersection is in the same segment as the current, use it as the endpoint
-    if (eiNext != null && eiNext.segmentIndex == eiCurr.segmentIndex)
+    if (eiNext != null && eiNext.segmentIndex == eiCurr.segmentIndex) {
       pNext = eiNext.coord;
+    }
 
-    EdgeEnd e = new EdgeEnd(edge, eiCurr.coord, pNext, new Label(edge.getLabel()));
-//Debug.println(e);
+    EdgeEnd e = new EdgeEnd.Coord2(
+        edge, eiCurr.coord, pNext, new Label.FromAnother(edge.getLabel()));
+    //Debug.println(e);
     l.add(e);
   }
-
 }

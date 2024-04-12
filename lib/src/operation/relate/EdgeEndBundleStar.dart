@@ -31,8 +31,7 @@ import 'EdgeEndBundle.dart';
  *
  * @version 1.7
  */
-class EdgeEndBundleStar
-  extends EdgeEndStar
+class EdgeEndBundleStar extends EdgeEndStar
 {
   /**
    * Creates a new empty EdgeEndBundleStar

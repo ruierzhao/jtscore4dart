@@ -44,7 +44,7 @@ class Edge extends GraphComponent
   /// @param [label] Label defining position
   /// @param [im] intersection matrix
   /// TODO: @ruier edit.区别父类的命名。
-  static void _updateIM(Label label, IntersectionMatrix im)
+  static void updateIMS(Label label, IntersectionMatrix im)
   {
     im.setAtLeastIfValid(label.getLocation(0, Position.ON), label.getLocation(1, Position.ON), 1);
     if (label.isArea()) {
@@ -228,7 +228,7 @@ class Edge extends GraphComponent
   @override
   void computeIM(IntersectionMatrix im)
   {
-    _updateIM(label, im);
+    updateIMS(label, im);
   }
 
   /// equals is defined to be:

@@ -379,8 +379,8 @@ class GeometryGraph extends PlanarGraph
    * minimize the number of intersection tests.  (E.g. rings are
    * not tested for self-intersection, since they are assumed to be valid).
    * 
-   * @param li the LineIntersector to use
-   * @param computeRingSelfNodes if <code>false</code>, intersection checks are optimized to not test rings for self-intersection
+   * @param [li] the LineIntersector to use
+   * @param [computeRingSelfNodes] if <code>false</code>, intersection checks are optimized to not test rings for self-intersection
    * @return the computed SegmentIntersector containing information about the intersections found
    */
   SegmentIntersector computeSelfNodes(LineIntersector li, bool computeRingSelfNodes)

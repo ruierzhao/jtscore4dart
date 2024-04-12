@@ -18,16 +18,21 @@
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.LineSegment;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+
 abstract class GeometricShapeBuilder 
 {
-	protected Envelope extent = new Envelope(0, 1, 0, 1);
-	protected int numPts = 0;
-	protected GeometryFactory geomFactory;
+	/**protected */ Envelope extent = new Envelope(0, 1, 0, 1);
+	/**protected */ int numPts = 0;
+	/**protected */ GeometryFactory geomFactory;
 	
-	GeometricShapeBuilder(GeometryFactory geomFactory)
-	{
-		this.geomFactory = geomFactory;
-	}
+	GeometricShapeBuilder(this.geomFactory);
 	
 	void setExtent(Envelope extent)
 	{
@@ -41,12 +46,12 @@ abstract class GeometricShapeBuilder
 	
 	Coordinate getCentre()
 	{
-		return extent.centre();
+		return extent.centre()!;
 	}
 	
 	double getDiameter()
 	{
-		return math.min(extent.getHeight(), extent.getWidth());
+		return min(extent.getHeight(), extent.getWidth());
 	}
 	
 	double getRadius()
@@ -81,12 +86,12 @@ abstract class GeometricShapeBuilder
    */
   void setNumPoints(int numPts) { this.numPts = numPts; }
 
-  abstract Geometry getGeometry();
+  /**abstract */ Geometry getGeometry();
 
  /**protected */Coordinate createCoord(double x, double y)
   {
   	Coordinate pt = new Coordinate(x, y);
-  	geomFactory.getPrecisionModel().makePrecise(pt);
+  	geomFactory.getPrecisionModel().makePreciseFromCoord(pt);
     return pt;
   }
   

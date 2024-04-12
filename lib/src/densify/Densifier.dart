@@ -23,7 +23,6 @@
 // import org.locationtech.jts.geom.util.GeometryTransformer;
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
-import 'package:jtscore4dart/src/geom/CoordinateList.java';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/geom/LineSegment.dart';

@@ -19,10 +19,18 @@
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.shape.GeometricShapeBuilder;
 
-import static org.locationtech.jts.shape.fractal.HilbertCode.decode;
-import static org.locationtech.jts.shape.fractal.HilbertCode.level;
-import static org.locationtech.jts.shape.fractal.HilbertCode.maxOrdinate;
-import static org.locationtech.jts.shape.fractal.HilbertCode.size;
+// import static org.locationtech.jts.shape.fractal.HilbertCode.decode;
+// import static org.locationtech.jts.shape.fractal.HilbertCode.level;
+// import static org.locationtech.jts.shape.fractal.HilbertCode.maxOrdinate;
+// import static org.locationtech.jts.shape.fractal.HilbertCode.size;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+
+import '../GeometricShapeBuilder.dart';
+import 'HilbertCode.dart';
 
 /**
  * Generates a {@link LineString} representing the Hilbert Curve
@@ -42,8 +50,8 @@ extends GeometricShapeBuilder
    * @param geomFactory the geometry factory to use
    */
   HilbertCurveBuilder(GeometryFactory geomFactory)
+    :super(geomFactory)
   {
-    super(geomFactory);
     // use a null extent to indicate no transformation
     // (may be set by client)
     extent = null;
@@ -56,12 +64,12 @@ extends GeometricShapeBuilder
    * @param level the order of the curve
    */
   void setLevel(int level) {
-    this.numPts = size(level);  }
+    this.numPts = HilbertCode.size(level);  }
   
-  @Override
+  @override
   Geometry getGeometry() {
-    int level = level(numPts);
-    int nPts = size(level);
+    int _level = HilbertCode.level(numPts);
+    int nPts = HilbertCode.size(_level);
     
     double scale = 1;
     double baseX = 0;
@@ -71,16 +79,20 @@ extends GeometricShapeBuilder
       baseX = baseLine.minX();
       baseY = baseLine.minY();
       double width = baseLine.getLength();
-      int maxOrdinate = maxOrdinate(level);
-      scale = width / maxOrdinate;
+      int _maxOrdinate = HilbertCode.maxOrdinate(_level);
+      scale = width / _maxOrdinate;
     }
     
-    List<Coordinate> pts = new Coordinate[nPts];
+    // List<Coordinate> pts = new Coordinate[nPts];
+    List<Coordinate> pts = List.filled(nPts, Coordinate.empty2D(), growable: false);
     for (int i = 0; i < nPts; i++) {
-       Coordinate pt = decode(level, i);
+       Coordinate pt = HilbertCode.decode(_level, i);
        double x = transform(pt.getX(), scale, baseX );
        double y = transform(pt.getY(), scale, baseY );
-       pts[i] = new Coordinate(x, y);
+      //  pts[i] = new Coordinate(x, y);
+      /// TODO: @ruier edit.
+       pts[i].setX(x);
+       pts[i].setY(y);
     }
     return geomFactory.createLineString(pts);
   }

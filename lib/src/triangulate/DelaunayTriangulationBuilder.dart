@@ -61,7 +61,6 @@ class DelaunayTriangulationBuilder
 		CoordinateList coordList = new CoordinateList(coordsCopy, false);
 		return coordList;
 	}
-	
 	/**
 	 * Converts all {@link Coordinate}s in a collection to {@link Vertex}es.
 	 * @param coords the coordinates to convert

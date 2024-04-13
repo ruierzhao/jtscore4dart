@@ -113,8 +113,8 @@ class CoordinateList  /** extends ArrayList<Coordinate> */
   // }
 
   /// Adds a coordinate to the list.
-  /// @param obj The coordinate to add
-  /// @param allowRepeated if set to false, repeated coordinates are collapsed
+  /// @param [obj] The coordinate to add
+  /// @param [allowRepeated] if set to false, repeated coordinates are collapsed
   /// @return true (as by general collection contract)
   bool addObject(Object obj, bool allowRepeated)
   {
@@ -126,8 +126,8 @@ class CoordinateList  /** extends ArrayList<Coordinate> */
   /// 
   /// Adds a coordinate to the end of the list.
   /// 
-  /// @param coord The coordinates
-  /// @param allowRepeated if set to false, repeated coordinates are collapsed
+  /// @param [coord] The coordinates
+  /// @param [allowRepeated] if set to false, repeated coordinates are collapsed
   void add(Coordinate coord, bool allowRepeated)
   {
     // don't add duplicate coordinates

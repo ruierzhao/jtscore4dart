@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.List;
 
@@ -21,11 +20,19 @@
 // import org.locationtech.jts.io.WKTWriter;
 // import org.locationtech.jts.util.Assert;
 
+import 'package:jtscore4dart/io.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'OverlayEdge.dart';
+import 'OverlayEdgeRing.dart';
 
 class MaximalEdgeRing {
-
- /**private */static final int STATE_FIND_INCOMING = 1;
- /**private */static final int STATE_LINK_OUTGOING = 2;
+  static const int _STATE_FIND_INCOMING = 1;
+  static const int _STATE_LINK_OUTGOING = 2;
 
   /**
    * Traverses the star of edges originating at a node
@@ -53,9 +60,8 @@ class MaximalEdgeRing {
    * - This edge is not yet linked
    * - The edge and its sym are NOT both marked as being in the result
    */
-  static void linkResultAreaMaxRingAtNode(OverlayEdge nodeEdge)
-  {
-    Assert.isTrue(nodeEdge.isInResultArea(), "Attempt to link non-result edge");
+  static void linkResultAreaMaxRingAtNode(OverlayEdge nodeEdge) {
+    Assert.isTrue(nodeEdge.isInResultArea, "Attempt to link non-result edge");
     // assertion is only valid if building a polygonal geometry (ie not a coverage)
     //Assert.isTrue(! nodeEdge.symOE().isInResultArea(), "Found both half-edges in result");
 
@@ -68,89 +74,93 @@ class MaximalEdgeRing {
      */
     OverlayEdge endOut = nodeEdge.oNextOE();
     OverlayEdge currOut = endOut;
-//Debug.println("\n------  Linking node MAX edges");
-//Debug.println("BEFORE: " + toString(nodeEdge));
-    int state = STATE_FIND_INCOMING;
-    OverlayEdge currResultIn = null;
+    //Debug.println("\n------  Linking node MAX edges");
+    //Debug.println("BEFORE: " + toString(nodeEdge));
+    int state = _STATE_FIND_INCOMING;
+    OverlayEdge? currResultIn = null;
     do {
       /**
        * If an edge is linked this node has already been processed
        * so can skip further processing
        */
-      if (currResultIn != null && currResultIn.isResultMaxLinked())
+      if (currResultIn != null && currResultIn.isResultMaxLinked()) {
         return;
-      
+      }
+
       switch (state) {
-      case STATE_FIND_INCOMING:
-        OverlayEdge currIn = currOut.symOE();
-        if (! currIn.isInResultArea()) break;
-        currResultIn = currIn;
-        state = STATE_LINK_OUTGOING;
-        //Debug.println("Found result in-edge:  " + currResultIn);
-        break;
-      case STATE_LINK_OUTGOING:
-        if (! currOut.isInResultArea()) break;
-        // link the in edge to the out edge
-        currResultIn.setNextResultMax(currOut);
-        state = STATE_FIND_INCOMING;
-        //Debug.println("Linked Max edge:  " + currResultIn + " -> " + currOut);
-        break;
+        case _STATE_FIND_INCOMING:
+          OverlayEdge currIn = currOut.symOE();
+          if (!currIn.isInResultArea) break;
+          currResultIn = currIn;
+          state = _STATE_LINK_OUTGOING;
+          //Debug.println("Found result in-edge:  " + currResultIn);
+          break;
+        case _STATE_LINK_OUTGOING:
+          if (!currOut.isInResultArea) break;
+          // link the in edge to the out edge
+          currResultIn!.setNextResultMax(currOut);
+          state = _STATE_FIND_INCOMING;
+          //Debug.println("Linked Max edge:  " + currResultIn + " -> " + currOut);
+          break;
       }
       currOut = currOut.oNextOE();
     } while (currOut != endOut);
     //Debug.println("AFTER: " + toString(nodeEdge));
-    if (state == STATE_LINK_OUTGOING) {
+    if (state == _STATE_LINK_OUTGOING) {
 //Debug.print(firstOut == null, this);
-      throw new TopologyException("no outgoing edge found", nodeEdge.getCoordinate());
-    }    
+      throw new TopologyException(
+          "no outgoing edge found", nodeEdge.getCoordinate());
+    }
   }
 
- /**private */OverlayEdge startEdge;
+  /**private */ OverlayEdge startEdge;
 
-  MaximalEdgeRing(OverlayEdge e) {
-    this.startEdge = e;
-    attachEdges(e);
+  MaximalEdgeRing(this.startEdge) {
+    attachEdges(startEdge);
   }
 
- /**private */void attachEdges(OverlayEdge startEdge) {
-    OverlayEdge edge = startEdge;
+  /**private */ void attachEdges(OverlayEdge? startEdge) {
+    OverlayEdge? edge = startEdge;
     do {
-      if (edge == null)
+      if (edge == null) {
         throw new TopologyException("Ring edge is null");
-      if (edge.getEdgeRingMax() == this)
-        throw new TopologyException("Ring edge visited twice at " + edge.getCoordinate(), edge.getCoordinate());
+      }
+      if (edge.getEdgeRingMax() == this) {
+        throw new TopologyException(
+            "Ring edge visited twice at ${edge.getCoordinate()}",
+            edge.getCoordinate());
+      }
       if (edge.nextResultMax() == null) {
         throw new TopologyException("Ring edge missing at", edge.dest());
       }
       edge.setEdgeRingMax(this);
       edge = edge.nextResultMax();
-    } while (edge != startEdge);  
+    } while (edge != startEdge);
   }
-  
-  List<OverlayEdgeRing> buildMinimalRings(GeometryFactory geometryFactory)
-  {
+
+  List<OverlayEdgeRing> buildMinimalRings(GeometryFactory geometryFactory) {
     linkMinimalRings();
-    
-    List<OverlayEdgeRing> minEdgeRings = new ArrayList<OverlayEdgeRing>();
+
+    List<OverlayEdgeRing> minEdgeRings = <OverlayEdgeRing>[];
     OverlayEdge e = startEdge;
     do {
       if (e.getEdgeRing() == null) {
         OverlayEdgeRing minEr = new OverlayEdgeRing(e, geometryFactory);
         minEdgeRings.add(minEr);
       }
-      e = e.nextResultMax();
+      e = e.nextResultMax()!;
     } while (e != startEdge);
     return minEdgeRings;
   }
-  
- /**private */void linkMinimalRings() {
+
+  /**private */ void linkMinimalRings() {
     OverlayEdge e = startEdge;
     do {
       linkMinRingEdgesAtNode(e, this);
-      e = e.nextResultMax();
+      e = e.nextResultMax()!;
     } while (e != startEdge);
   }
-  
+
   /**
    * Links the edges of a {@link MaximalEdgeRing} around this node
    * into minimal edge rings ({@link OverlayEdgeRing}s).
@@ -165,8 +175,8 @@ class MaximalEdgeRing {
    * @param nodeEdge an edge originating at this node
    * @param maxRing the maximal ring to link
    */
- /**private */static void linkMinRingEdgesAtNode(OverlayEdge nodeEdge, MaximalEdgeRing maxRing)
-  {
+  /**private */ static void linkMinRingEdgesAtNode(
+      OverlayEdge nodeEdge, MaximalEdgeRing maxRing) {
     //Assert.isTrue(nodeEdge.isInResult(), "Attempt to link non-result edge");
 
     /**
@@ -175,26 +185,28 @@ class MaximalEdgeRing {
      * with the next CCW in-edge
      */
     OverlayEdge endOut = nodeEdge;
-    OverlayEdge currMaxRingOut = endOut;
+    OverlayEdge? currMaxRingOut = endOut;
     OverlayEdge currOut = endOut.oNextOE();
 //Debug.println("\n------  Linking node MIN ring edges");
 //Debug.println("BEFORE: " + toString(nodeEdge));
     do {
-      if (isAlreadyLinked(currOut.symOE(), maxRing)) 
+      if (_isAlreadyLinked(currOut.symOE(), maxRing)) {
         return;
+      }
 
       if (currMaxRingOut == null) {
-        currMaxRingOut = selectMaxOutEdge(currOut, maxRing);
-      }
-      else {
-        currMaxRingOut = linkMaxInEdge(currOut, currMaxRingOut, maxRing);
+        currMaxRingOut = _selectMaxOutEdge(currOut, maxRing);
+      } else {
+        currMaxRingOut = _linkMaxInEdge(currOut, currMaxRingOut, maxRing);
       }
       currOut = currOut.oNextOE();
     } while (currOut != endOut);
     //Debug.println("AFTER: " + toString(nodeEdge));
-    if ( currMaxRingOut != null ) {
-      throw new TopologyException("Unmatched edge found during min-ring linking", nodeEdge.getCoordinate());
-    }    
+    if (currMaxRingOut != null) {
+      throw new TopologyException(
+          "Unmatched edge found during min-ring linking",
+          nodeEdge.getCoordinate());
+    }
   }
 
   /**
@@ -206,54 +218,54 @@ class MaximalEdgeRing {
    * @param maxRing the maximal edgering
    * @return true if the edge has already been linked into a minimal edgering.
    */
- /**private */static bool isAlreadyLinked(OverlayEdge edge, MaximalEdgeRing maxRing) {
-    bool isLinked = edge.getEdgeRingMax() == maxRing
-        && edge.isResultLinked();
+  static bool _isAlreadyLinked(OverlayEdge edge, MaximalEdgeRing maxRing) {
+    bool isLinked = edge.getEdgeRingMax() == maxRing && edge.isResultLinked();
     return isLinked;
   }
 
- /**private */static OverlayEdge selectMaxOutEdge(OverlayEdge currOut, MaximalEdgeRing maxEdgeRing) {
+  static OverlayEdge? _selectMaxOutEdge(
+      OverlayEdge currOut, MaximalEdgeRing maxEdgeRing) {
     // select if currOut edge is part of this max ring
-    if (currOut.getEdgeRingMax() ==  maxEdgeRing)
+    if (currOut.getEdgeRingMax() == maxEdgeRing) {
       return currOut;
+    }
     // otherwise skip this edge
     return null;
   }
 
- /**private */static OverlayEdge linkMaxInEdge(OverlayEdge currOut, 
-      OverlayEdge currMaxRingOut, 
-      MaximalEdgeRing maxEdgeRing) 
-  {
+  static OverlayEdge? _linkMaxInEdge(OverlayEdge currOut,
+      OverlayEdge currMaxRingOut, MaximalEdgeRing maxEdgeRing) {
     OverlayEdge currIn = currOut.symOE();
     // currIn is not in this max-edgering, so keep looking
-    if (currIn.getEdgeRingMax() !=  maxEdgeRing) 
+    if (currIn.getEdgeRingMax() != maxEdgeRing) {
       return currMaxRingOut;
-     
+    }
+
     //Debug.println("Found result in-edge:  " + currIn);
-    
+
     currIn.setNextResult(currMaxRingOut);
     //Debug.println("Linked Min Edge:  " + currIn + " -> " + currMaxRingOut);
     // return null to indicate to scan for the next max-ring out-edge
     return null;
   }
-  
+
   String toString() {
-    List<Coordinate> pts = getCoordinates();
+    List<Coordinate> pts = _getCoordinates();
     return WKTWriter.toLineString(pts);
   }
 
- /**private */List<Coordinate> getCoordinates() {
+  List<Coordinate> _getCoordinates() {
     CoordinateList coords = new CoordinateList();
     OverlayEdge edge = startEdge;
     do {
-      coords.add(edge.orig());
+      coords.add(edge.orig(), true);
       if (edge.nextResultMax() == null) {
         break;
       }
-      edge = edge.nextResultMax();
-    } while (edge != startEdge); 
+      edge = edge.nextResultMax()!;
+    } while (edge != startEdge);
     // add last coordinate
-    coords.add(edge.dest());
+    coords.add(edge.dest(), true);
     return coords.toCoordinateArray();
   }
 }

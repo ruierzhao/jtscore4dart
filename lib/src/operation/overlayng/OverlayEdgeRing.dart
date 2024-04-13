@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.List;
 
@@ -27,99 +26,114 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.geom.TopologyException;
 
-class OverlayEdgeRing {
-  
- /**private */OverlayEdge startEdge;
- /**private */LinearRing ring;
- /**private */bool isHole;
- /**private */List<Coordinate> ringPts;
- /**private */IndexedPointInAreaLocator locator;
- /**private */OverlayEdgeRing shell;
- /**private */List<OverlayEdgeRing> holes = new ArrayList<OverlayEdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/algorithm/locate/IndexedPointInAreaLocator.dart';
+import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
 
-  OverlayEdgeRing(OverlayEdge start, GeometryFactory geometryFactory) {
-    startEdge = start;
-    ringPts = computeRingPts(start);
-    computeRing(ringPts, geometryFactory);
+import 'OverlayEdge.dart';
+
+class OverlayEdgeRing {
+  OverlayEdge _startEdge;
+  LinearRing? _ring;
+  bool _isHole = false;
+  late List<Coordinate> _ringPts;
+  IndexedPointInAreaLocator? _locator;
+  OverlayEdgeRing? _shell;
+  // a list of EdgeRings which are holes in this EdgeRing
+  List<OverlayEdgeRing> _holes = <OverlayEdgeRing>[];
+
+  OverlayEdgeRing(OverlayEdge start, GeometryFactory geometryFactory)
+      : this._startEdge = start {
+    this._ringPts = _computeRingPts(start);
+    computeRing(_ringPts, geometryFactory);
   }
 
   LinearRing getRing() {
-    return ring;
+    return _ring!;
   }
-  
- /**private */Envelope getEnvelope() {
-    return ring.getEnvelopeInternal();
+
+  /**private */
+  Envelope getEnvelope() {
+    return _ring!.getEnvelopeInternal();
   }
-  
+
   /**
    * Tests whether this ring is a hole.
    * @return <code>true</code> if this ring is a hole
    */
-  bool isHole()
-  {
-    return isHole;
+  bool isHole() {
+    return _isHole;
   }
-  
+
   /**
    * Sets the containing shell ring of a ring that has been determined to be a hole.
    * 
    * @param shell the shell ring
    */
   void setShell(OverlayEdgeRing shell) {
-    this.shell = shell;
+    this._shell = shell;
     if (shell != null) shell.addHole(this);
   }
-  
+
   /**
    * Tests whether this ring has a shell assigned to it.
    * 
    * @return true if the ring has a shell
    */
   bool hasShell() {
-    return shell != null;
+    return _shell != null;
   }
-  
+
   /**
    * Gets the shell for this ring.  The shell is the ring itself if it is not a hole, otherwise its parent shell.
    * 
    * @return the shell for this ring
    */
-  OverlayEdgeRing getShell() {
-    if (isHole()) return shell;
+  OverlayEdgeRing? getShell() {
+    if (isHole()) return _shell!;
     return this;
   }
 
-  void addHole(OverlayEdgeRing ring) { holes.add(ring); }
+  void addHole(OverlayEdgeRing ring) {
+    _holes.add(ring);
+  }
 
- /**private */List<Coordinate> computeRingPts(OverlayEdge start) {
+  List<Coordinate> _computeRingPts(OverlayEdge start) {
     OverlayEdge edge = start;
     CoordinateList pts = new CoordinateList();
     do {
-      if (edge.getEdgeRing() == this)
-        throw new TopologyException("Edge visited twice during ring-building at " + edge.getCoordinate(), edge.getCoordinate());
+      if (edge.getEdgeRing() == this) {
+        throw new TopologyException(
+            "Edge visited twice during ring-building at ${edge.getCoordinate()}",
+            edge.getCoordinate());
+      }
 
       //edges.add(de);
 //Debug.println(de);
 //Debug.println(de.getEdge());
-      
+
       // only valid for polygonal output
       //Assert.isTrue(edge.getLabel().isBoundaryEither());
-      
+
       edge.addCoordinates(pts);
       edge.setEdgeRing(this);
-      if (edge.nextResult() == null)
+      if (edge.nextResult() == null) {
         throw new TopologyException("Found null edge in ring", edge.dest());
+      }
 
-      edge = edge.nextResult();
+      edge = edge.nextResult()!;
     } while (edge != start);
     pts.closeRing();
     return pts.toCoordinateArray();
   }
-  
- /**private */void computeRing(List<Coordinate> ringPts, GeometryFactory geometryFactory) {
-    if (ring != null) return;   // don't compute more than once
-    ring = geometryFactory.createLinearRing(ringPts);
-    isHole = Orientation.isCCW(ring.getCoordinates());
+
+  void computeRing(List<Coordinate> ringPts, GeometryFactory geometryFactory) {
+    if (_ring != null) return; // don't compute more than once
+    _ring = geometryFactory.createLinearRing(ringPts);
+    _isHole = Orientation.isCCW(_ring!.getCoordinates());
   }
 
   /**
@@ -128,11 +142,10 @@ class OverlayEdgeRing {
    *
    * @return an array of the {@link Coordinate}s in this ring
    */
- /**private */List<Coordinate> getCoordinates()
-  {
-    return ringPts;
+  /**private */ List<Coordinate> getCoordinates() {
+    return _ringPts;
   }
-  
+
   /**
    * Finds the innermost enclosing shell OverlayEdgeRing
    * containing this OverlayEdgeRing, if any.
@@ -151,14 +164,13 @@ class OverlayEdgeRing {
    * 
    * @return containing EdgeRing or null if no containing EdgeRing is found
    */
-  OverlayEdgeRing findEdgeRingContaining(List<OverlayEdgeRing> erList)
-  {
-    OverlayEdgeRing minContainingRing = null;
-    
-    for (OverlayEdgeRing edgeRing: erList) {
-      if (edgeRing.contains(this)) {
-        if (minContainingRing == null
-            || minContainingRing.getEnvelope().contains(edgeRing.getEnvelope())) {
+  OverlayEdgeRing? findEdgeRingContaining(List<OverlayEdgeRing> erList) {
+    OverlayEdgeRing? minContainingRing = null;
+
+    for (OverlayEdgeRing edgeRing in erList) {
+      if (edgeRing._contains(this)) {
+        if (minContainingRing == null ||
+            minContainingRing.getEnvelope().contains(edgeRing.getEnvelope())) {
           minContainingRing = edgeRing;
         }
       }
@@ -166,41 +178,40 @@ class OverlayEdgeRing {
     return minContainingRing;
   }
 
- /**private */PointOnGeometryLocator getLocator() {
-    if (locator == null) {
-      locator = new IndexedPointInAreaLocator(getRing());
-    }
-    return locator;
+  /**private */ PointOnGeometryLocator _getLocator() {
+    _locator ??= new IndexedPointInAreaLocator(getRing());
+    return _locator!;
   }
-  
+
   int locate(Coordinate pt) {
     /**
      * Use an indexed point-in-polygon for performance
      */
-    return getLocator().locate(pt);
+    return _getLocator().locate(pt);
   }
-  
+
   /**
    * Tests if an edgeRing is properly contained in this ring.
    * Relies on property that edgeRings never overlap (although they may
    * touch at single vertices).
    * 
-   * @param ring ring to test
+   * @param [ring] ring to test
    * @return true if ring is properly contained
    */
- /**private */bool contains(OverlayEdgeRing ring) {
+  bool _contains(OverlayEdgeRing ring) {
     // the test envelope must be properly contained
     // (guards against testing rings against themselves)
     Envelope env = getEnvelope();
     Envelope testEnv = ring.getEnvelope();
-    if (! env.containsProperly(testEnv))
+    if (!env.containsProperly(testEnv)) {
       return false;
-    return isPointInOrOut(ring);
+    }
+    return _isPointInOrOut(ring);
   }
-  
- /**private */bool isPointInOrOut(OverlayEdgeRing ring) {
+
+  bool _isPointInOrOut(OverlayEdgeRing ring) {
     // in most cases only one or two points will be checked
-    for (Coordinate pt : ring.getCoordinates()) {
+    for (Coordinate pt in ring.getCoordinates()) {
       int loc = locate(pt);
       if (loc == Location.INTERIOR) {
         return true;
@@ -214,7 +225,7 @@ class OverlayEdgeRing {
   }
 
   Coordinate getCoordinate() {
-    return ringPts[0];
+    return _ringPts[0];
   }
 
   /**
@@ -222,20 +233,21 @@ class OverlayEdgeRing {
    *
    * @return the {@link Polygon} formed by this ring and its holes.
    */
-  Polygon toPolygon(GeometryFactory factory)
-  {
-    List<LinearRing> holeLR = null;
-    if (holes != null) {
-      holeLR = new LinearRing[holes.size()];
-      for (int i = 0; i < holes.size(); i++) {
-        holeLR[i] = (LinearRing) holes.get(i).getRing();
-      }
+  Polygon toPolygon(GeometryFactory factory) {
+    List<LinearRing>? holeLR = null;
+    if (_holes != null) {
+      // holeLR = new LinearRing[holes.size()];
+      // for (int i = 0; i < holes.size(); i++) {
+      //   holeLR[i] =  holes.get(i).getRing();
+      // }
+      holeLR = List.generate(_holes.length, (index) => _holes[index].getRing(),
+          growable: false);
     }
-    Polygon poly = factory.createPolygon(ring, holeLR);
+    Polygon poly = factory.createPolygon(_ring, holeLR);
     return poly;
   }
 
   OverlayEdge getEdge() {
-    return startEdge;
+    return _startEdge;
   }
 }

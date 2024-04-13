@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.Collection;
 // import java.util.List;
@@ -22,6 +21,17 @@
 // import org.locationtech.jts.noding.NodedSegmentString;
 // import org.locationtech.jts.noding.Noder;
 // import org.locationtech.jts.noding.SegmentString;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/math/MathUtil.dart';
+import 'package:jtscore4dart/src/noding/MCIndexNoder.dart';
+import 'package:jtscore4dart/src/noding/NodedSegmentString.dart';
+import 'package:jtscore4dart/src/noding/Noder.dart';
+import 'package:jtscore4dart/src/noding/SegmentString.dart';
+
+import 'SnappingIntersectionAdder.dart';
+import 'SnappingPointIndex.dart';
 
 /**
  * Nodes a set of segment strings
@@ -47,51 +57,47 @@
  * 
  * @version 1.17
  */
-class SnappingNoder
-    implements Noder
-{
- /**private */SnappingPointIndex snapIndex;
- /**private */double snapTolerance;
- /**private */List<NodedSegmentString> nodedResult;
+class SnappingNoder implements Noder {
+  /**private */ SnappingPointIndex snapIndex;
+  /**private */ double snapTolerance;
+  /**private */ List<NodedSegmentString>? nodedResult;
 
   /**
    * Creates a snapping noder using the given snap distance tolerance.
    * 
    * @param snapTolerance points are snapped if within this distance
    */
-  SnappingNoder(double snapTolerance) {
-    this.snapTolerance = snapTolerance;
-    snapIndex = new SnappingPointIndex(snapTolerance);
-  }
+  SnappingNoder(this.snapTolerance)
+      : snapIndex = new SnappingPointIndex(snapTolerance);
 
   /**
    * Gets the noded result.
    * 
 	 * @return a Collection of NodedSegmentStrings representing the substrings
 	 */
-  Collection getNodedSubstrings()
-  {
-    return nodedResult;
+  @override
+  Iterable<NodedSegmentString> getNodedSubstrings() {
+    return nodedResult!;
   }
 
   /**
    * Computes the noding of a set of {@link SegmentString}s.
    * 
-   * @param inputSegStrings a Collection of SegmentStrings
+   * @param [inputSegStrings] a Collection of SegmentStrings
    */
-  void computeNodes(Collection inputSegStrings)
-  {
+  @override
+  void computeNodes(Iterable<SegmentString> inputSegStrings) {
     List<NodedSegmentString> snappedSS = snapVertices(inputSegStrings);
-    nodedResult = (List<NodedSegmentString>) snapIntersections(snappedSS);
+    nodedResult = _snapIntersections(snappedSS) as List<NodedSegmentString>;
   }
 
- /**private */List<NodedSegmentString> snapVertices(Collection<SegmentString> segStrings) {
+  List<NodedSegmentString> snapVertices(Iterable<SegmentString> segStrings) {
     //Stopwatch sw = new Stopwatch(); sw.start();
-    seedSnapIndex(segStrings);
-    
-    List<NodedSegmentString> nodedStrings = new ArrayList<NodedSegmentString>();
-    for (SegmentString ss : segStrings) {
-      nodedStrings.add( snapVertices(ss) );
+    _seedSnapIndex(segStrings);
+
+    List<NodedSegmentString> nodedStrings = <NodedSegmentString>[];
+    for (SegmentString ss in segStrings) {
+      nodedStrings.add(_snapVertices(ss));
     }
     //System.out.format("Index depth = %d   Time: %s\n", snapIndex.depth(), sw.getTimeString());
     return nodedStrings;
@@ -104,37 +110,37 @@ class SnappingNoder
    * This prevents monotonic runs of vertices
    * unbalancing the tree and causing poor query performance.
    *  
-   * @param segStrings the segStrings to be noded
+   * @param [segStrings] the segStrings to be noded
    */
- /**private */void seedSnapIndex(Collection<SegmentString> segStrings) {
-    final int SEED_SIZE_FACTOR = 100;
-      
-    for (SegmentString ss : segStrings) {
+  void _seedSnapIndex(Iterable<SegmentString> segStrings) {
+    const int SEED_SIZE_FACTOR = 100;
+
+    for (SegmentString ss in segStrings) {
       List<Coordinate> pts = ss.getCoordinates();
-      int numPtsToLoad = pts.length / SEED_SIZE_FACTOR;
+      int numPtsToLoad = pts.length ~/ SEED_SIZE_FACTOR;
       double rand = 0.0;
       for (int i = 0; i < numPtsToLoad; i++) {
         rand = MathUtil.quasirandom(rand);
-        int index = (int) (pts.length * rand);
+        int index = (pts.length * rand).toInt();
         snapIndex.snap(pts[index]);
       }
     }
   }
-  
- /**private */NodedSegmentString snapVertices(SegmentString ss) {
-    List<Coordinate> snapCoords = snap(ss.getCoordinates());
+
+  NodedSegmentString _snapVertices(SegmentString ss) {
+    List<Coordinate> snapCoords = _snap(ss.getCoordinates());
     return new NodedSegmentString(snapCoords, ss.getData());
   }
-  
- /**private */List<Coordinate> snap(List<Coordinate> coords) {
+
+  List<Coordinate> _snap(List<Coordinate> coords) {
     CoordinateList snapCoords = new CoordinateList();
-    for (int i = 0 ; i < coords.length; i++) {
+    for (int i = 0; i < coords.length; i++) {
       Coordinate pt = snapIndex.snap(coords[i]);
       snapCoords.add(pt, false);
     }
     return snapCoords.toCoordinateArray();
   }
-  
+
   /**
    * Computes all interior intersections in the collection of {@link SegmentString}s,
    * and returns their {@link Coordinate}s.
@@ -143,16 +149,15 @@ class SnappingNoder
    *
    * @return a list of Coordinates for the intersections
    */
- /**private */Collection snapIntersections(List<NodedSegmentString> inputSS)
-  {
-    SnappingIntersectionAdder intAdder = new SnappingIntersectionAdder(snapTolerance, snapIndex);
+  Iterable _snapIntersections(List<NodedSegmentString> inputSS) {
+    SnappingIntersectionAdder intAdder =
+        new SnappingIntersectionAdder(snapTolerance, snapIndex);
     /**
      * Use an overlap tolerance to ensure all 
      * possible snapped intersections are found
      */
-    MCIndexNoder noder = new MCIndexNoder( intAdder, 2 * snapTolerance );
+    MCIndexNoder noder = new MCIndexNoder(intAdder, 2 * snapTolerance);
     noder.computeNodes(inputSS);
     return noder.getNodedSubstrings();
   }
-
 }

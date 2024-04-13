@@ -411,10 +411,10 @@ class OverlayNG
    * @param geom the geometry
    * @param pm the precision model to use
    */
-  OverlayNG.PM(Geometry geom, PrecisionModel pm) :
+  OverlayNG.PM(Geometry geom, PrecisionModel? pm) :
     this(geom, null, UNION, pm);
   /// alias of OverlayNG.PM
-  OverlayNG.Union(Geometry geom, PrecisionModel pm) :
+  OverlayNG.Union(Geometry geom, PrecisionModel? pm) :
     this(geom, null, UNION, pm);
   
   /**

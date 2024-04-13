@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.algorithm.Distance;
 // import org.locationtech.jts.algorithm.LineIntersector;
 // import org.locationtech.jts.algorithm.RobustLineIntersector;
@@ -19,34 +18,38 @@
 // import org.locationtech.jts.noding.SegmentIntersector;
 // import org.locationtech.jts.noding.SegmentString;
 
+import 'package:jtscore4dart/src/algorithm/Distance.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import "package:jtscore4dart/src/geom/Coordinate.dart";
+import 'package:jtscore4dart/src/noding/NodedSegmentString.dart';
+import 'package:jtscore4dart/src/noding/SegmentIntersector.dart';
+import 'package:jtscore4dart/src/noding/SegmentString.dart';
+
+import 'SnappingPointIndex.dart';
+
 /**
  * Finds intersections between line segments which are being snapped,
  * and adds them as nodes.
  *
  * @version 1.17
  */
-class SnappingIntersectionAdder
-    implements SegmentIntersector
-{
- /**private */LineIntersector li = new RobustLineIntersector();;
+class SnappingIntersectionAdder implements SegmentIntersector {
+  /**private */ LineIntersector _li = new RobustLineIntersector();
 
- /**private */double snapTolerance;
+  /**private */ double _snapTolerance;
 
- /**private */SnappingPointIndex snapPointIndex;
+  /**private */ SnappingPointIndex _snapPointIndex;
 
   /**
    * Creates an intersector which finds intersections, snaps them,
    * and adds them as nodes.
    *
-   * @param snapTolerance the snapping tolerance distance
-   * @param snapPointIndex the snapPointIndex
+   * @param [snapTolerance] the snapping tolerance distance
+   * @param [snapPointIndex] the snapPointIndex
    */
-  SnappingIntersectionAdder(double snapTolerance, SnappingPointIndex snapPointIndex)
-  {
-    this.snapPointIndex = snapPointIndex;
-    this.snapTolerance = snapTolerance;
-  }
-  
+  SnappingIntersectionAdder(this._snapTolerance, this._snapPointIndex);
+
   /**
    * This method is called by clients
    * of the {@link SegmentIntersector} class to process
@@ -55,11 +58,9 @@ class SnappingIntersectionAdder
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
+  @override
   void processIntersections(
-      SegmentString seg0,  int segIndex0,
-      SegmentString seg1,  int segIndex1
-      )
-  {
+      SegmentString seg0, int segIndex0, SegmentString seg1, int segIndex1) {
     // don't bother intersecting a segment with itself
     if (seg0 == seg1 && segIndex0 == segIndex1) return;
 
@@ -72,33 +73,32 @@ class SnappingIntersectionAdder
      * Don't node intersections which are just 
      * due to the shared vertex of adjacent segments.
      */
-    if (! isAdjacent(seg0, segIndex0, seg1, segIndex1)) {
-      li.computeIntersection(p00, p01, p10, p11);
-  //if (li.hasIntersection() && li.isProper()) Debug.println(li);
-  
+    if (!_isAdjacent(seg0, segIndex0, seg1, segIndex1)) {
+      _li.computeIntersection4Coord(p00, p01, p10, p11);
+      //if (li.hasIntersection() && li.isProper()) Debug.println(li);
+
       /**
        * Process single point intersections only.
        * Two-point (collinear) ones are handled by the near-vertex code
        */
-      if (li.hasIntersection() && li.getIntersectionNum() == 1) {
-          
-          Coordinate intPt = li.getIntersection(0);
-          Coordinate snapPt = snapPointIndex.snap(intPt);
-          
-          ((NodedSegmentString) seg0).addIntersection(snapPt, segIndex0);
-          ((NodedSegmentString) seg1).addIntersection(snapPt, segIndex1);
+      if (_li.hasIntersection() && _li.getIntersectionNum() == 1) {
+        Coordinate intPt = _li.getIntersection(0);
+        Coordinate snapPt = _snapPointIndex.snap(intPt);
+
+        (seg0 as NodedSegmentString).addIntersection(snapPt, segIndex0);
+        (seg1 as NodedSegmentString).addIntersection(snapPt, segIndex1);
       }
     }
-    
+
     /**
      * The segments must also be snapped to the other segment endpoints.
      */
-    processNearVertex(seg0, segIndex0, p00, seg1, segIndex1, p10, p11 );
-    processNearVertex(seg0, segIndex0, p01, seg1, segIndex1, p10, p11 );
-    processNearVertex(seg1, segIndex1, p10, seg0, segIndex0, p00, p01 );
-    processNearVertex(seg1, segIndex1, p11, seg0, segIndex0, p00, p01 );
+    _processNearVertex(seg0, segIndex0, p00, seg1, segIndex1, p10, p11);
+    _processNearVertex(seg0, segIndex0, p01, seg1, segIndex1, p10, p11);
+    _processNearVertex(seg1, segIndex1, p10, seg0, segIndex0, p00, p01);
+    _processNearVertex(seg1, segIndex1, p11, seg0, segIndex0, p00, p01);
   }
-  
+
   /**
    * If an endpoint of one segment is near 
    * the <i>interior</i> of the other segment, add it as an intersection.
@@ -112,29 +112,29 @@ class SnappingIntersectionAdder
    * result in the snapped segment A crossing segment B
    * without a node being introduced.
    * 
-   * @param p
-   * @param ss
-   * @param segIndex
-   * @param p0
-   * @param p1
+   * @param [p]
+   * @param [ss]
+   * @param [segIndex]
+   * @param [p0]
+   * @param [p1]
    */
- /**private */void processNearVertex(SegmentString srcSS, int srcIndex, Coordinate p, SegmentString ss, int segIndex, Coordinate p0, Coordinate p1) 
-  {
+  void _processNearVertex(SegmentString srcSS, int srcIndex, Coordinate p,
+      SegmentString ss, int segIndex, Coordinate p0, Coordinate p1) {
     /**
      * Don't add intersection if candidate vertex is near endpoints of segment.
      * This avoids creating "zig-zag" linework
      * (since the vertex could actually be outside the segment envelope).
      * Also, this should have already been snapped.
      */
-    if (p.distance(p0) < snapTolerance) return;
-    if (p.distance(p1) < snapTolerance) return;
-    
+    if (p.distance(p0) < _snapTolerance) return;
+    if (p.distance(p1) < _snapTolerance) return;
+
     double distSeg = Distance.pointToSegment(p, p0, p1);
-    if (distSeg < snapTolerance) {
+    if (distSeg < _snapTolerance) {
       // add node to target segment
-      ((NodedSegmentString) ss).addIntersection(p, segIndex);
+      (ss as NodedSegmentString).addIntersection(p, segIndex);
       // add node at vertex to source SS
-      ((NodedSegmentString) srcSS).addIntersection(p, srcIndex);
+      (srcSS as NodedSegmentString).addIntersection(p, srcIndex);
     }
   }
 
@@ -143,28 +143,29 @@ class SnappingIntersectionAdder
    * Closed segStrings require a check for the point shared by the beginning
    * and end segments.
    */
- /**private */static bool isAdjacent(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1)
-  {
+  static bool _isAdjacent(
+      SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
     if (ss0 != ss1) return false;
-    
+
     bool isAdjacent = (segIndex0 - segIndex1).abs() == 1;
-    if (isAdjacent)
-      return true;
+    if (isAdjacent) return true;
     if (ss0.isClosed()) {
       int maxSegIndex = ss0.size() - 1;
-      if (   (segIndex0 == 0 && segIndex1 == maxSegIndex)
-          || (segIndex1 == 0 && segIndex0 == maxSegIndex) ) {
+      if ((segIndex0 == 0 && segIndex1 == maxSegIndex) ||
+          (segIndex1 == 0 && segIndex0 == maxSegIndex)) {
         return true;
       }
     }
     return false;
   }
-  
+
   /**
    * Always process all intersections
    * 
    * @return false always
    */
-  bool isDone() { return false; }
-
+  @override
+  bool isDone() {
+    return false;
+  }
 }

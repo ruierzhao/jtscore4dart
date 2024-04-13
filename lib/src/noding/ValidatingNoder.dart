@@ -14,6 +14,10 @@
 // import java.util.Collection;
 
 
+import 'FastNodingValidator.dart';
+import 'Noder.dart';
+import 'SegmentString.dart';
+
 /**
  * A wrapper for {@link Noder}s which validates
  * the output arrangement is correctly noded.
@@ -31,16 +35,14 @@
 class ValidatingNoder implements Noder {
 
  /**private */final Noder noder;
- /**private */Collection<SegmentString> nodedSS;
+ /**private */Iterable<SegmentString>? nodedSS;
   
   /**
    * Creates a noding validator wrapping the given Noder
    * 
    * @param noder the Noder to validate
    */
-  ValidatingNoder(Noder noder) {
-    this.noder = noder;
-  }
+  ValidatingNoder( this.noder);
   
   /**
    * Checks whether the output of the wrapped noder is fully noded.
@@ -48,23 +50,24 @@ class ValidatingNoder implements Noder {
    * 
    * @throws org.locationtech.jts.geom.TopologyException
    */
-  @SuppressWarnings("unchecked")
-  @Override
-  void computeNodes(@SuppressWarnings("rawtypes") Collection segStrings) {
+  /// TODO: @ruier edit. 取消编译器警告。。
+  // @SuppressWarnings("unchecked")
+  @override
+  // void computeNodes(@SuppressWarnings("rawtypes") Collection segStrings) {
+  void computeNodes(Iterable<SegmentString> segStrings) {
     noder.computeNodes(segStrings);
     nodedSS = noder.getNodedSubstrings(); 
     validate();
   }
 
  /**private */void validate() {
-    FastNodingValidator nv = new FastNodingValidator( nodedSS );
+    FastNodingValidator nv = new FastNodingValidator( nodedSS! );
     nv.checkValid();
   }
 
-  @SuppressWarnings("rawtypes")
-  @Override
-  Collection getNodedSubstrings() {
-    return nodedSS;
+  @override
+  Iterable<SegmentString> getNodedSubstrings() {
+    return nodedSS!;
   }
 
 }

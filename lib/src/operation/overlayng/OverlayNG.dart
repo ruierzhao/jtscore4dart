@@ -33,7 +33,6 @@
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/TopologyException.dart';
-import 'package:jtscore4dart/src/geomgraph/Edge.dart';
 import 'package:jtscore4dart/src/noding/Noder.dart';
 import 'package:jtscore4dart/src/noding/MCIndexNoder.dart';
 import 'package:jtscore4dart/src/noding/snap/SnappingNoder.dart';
@@ -41,6 +40,7 @@ import 'package:jtscore4dart/src/noding/snapround/SnapRoundingNoder.dart';
 import 'package:jtscore4dart/src/operation/overlayng/OverlayGraph.dart';
 
 import '../overlay/OverlayOp.dart';
+import 'Edge.dart';
 import 'EdgeNodingBuilder.dart';
 import 'ElevationModel.dart';
 import 'InputGeometry.dart';
@@ -563,7 +563,7 @@ class OverlayNG
     /**
      * Node the edges, using whatever noder is being used
      */
-    EdgeNodingBuilder nodingBuilder = new EdgeNodingBuilder(pm, noder);
+    EdgeNodingBuilder nodingBuilder = new EdgeNodingBuilder(pm, noder!);
     
     /**
      * Optimize Intersection and Difference by clipping to the 
@@ -634,8 +634,8 @@ class OverlayNG
     List<Polygon> resultPolyList = polyBuilder.getPolygons();
     bool hasResultAreaComponents = resultPolyList.length > 0;
     
-    List<LineString> resultLineList = null;
-    List<Point> resultPointList = null;
+    List<LineString>? resultLineList = null;
+    List<Point>? resultPointList = null;
     
     if (! isAreaResultOnly) {
       //--- Build lines
@@ -653,7 +653,7 @@ class OverlayNG
        * Only an Intersection op can produce point results
        * from non-point inputs. 
        */
-      bool hasResultComponents = hasResultAreaComponents || resultLineList.size() > 0;
+      bool hasResultComponents = hasResultAreaComponents || resultLineList!.isNotEmpty;
       bool allowResultPoints = ! hasResultComponents || isAllowMixedIntResult;
       if ( opCode == INTERSECTION && allowResultPoints ) {
         IntersectionPointBuilder pointBuilder = new IntersectionPointBuilder(graph, geomFact);
@@ -672,8 +672,9 @@ class OverlayNG
     return resultGeom;
   }
 
- /**private */static bool isEmpty(List list) {
-    return list == null || list.size() == 0;
+ /**private */
+  static bool isEmpty(List? list) {
+    return list == null || list.isEmpty;
   }
   
  /**private */Geometry createEmptyResult() {

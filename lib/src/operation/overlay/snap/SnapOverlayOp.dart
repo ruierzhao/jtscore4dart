@@ -17,6 +17,10 @@
 // import org.locationtech.jts.precision.CommonBitsRemover;
 
 import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/precision/CommonBitsRemover.dart';
+
+import '../OverlayOp.dart';
+import 'GeometrySnapper.dart';
 
 /**
  * Performs an overlay operation using snapping and enhanced precision
@@ -59,16 +63,18 @@ class SnapOverlayOp
   }
   
 
- /**private */List<Geometry> geom = new Geometry[2];
- /**private */double snapTolerance;
+//  /**private */List<Geometry> geom = new Geometry[2];
+ /**private */List<Geometry> geom;
+ /**private */late double snapTolerance;
 
   SnapOverlayOp(Geometry g1, Geometry g2)
+  :geom = List.from([g1,g2],growable: false)
   {
-    geom[0] = g1;
-    geom[1] = g2;
     computeSnapTolerance();
   }
- /**private */void computeSnapTolerance() 
+
+ /**private */
+ void computeSnapTolerance() 
   {
 		snapTolerance = GeometrySnapper.computeOverlaySnapTolerance(geom[0], geom[1]);
 
@@ -92,7 +98,8 @@ class SnapOverlayOp
     return snapGeom;
   }
   
- /**private */List<Geometry> snap(List<Geometry> geom)
+ /**private */
+ List<Geometry> snap(List<Geometry> geom)
   {
     List<Geometry> remGeom = removeCommonBits(geom);
   	
@@ -118,16 +125,20 @@ class SnapOverlayOp
     return geom;
   }
 
- /**private */CommonBitsRemover cbr;
+ /**private */CommonBitsRemover cbr = new CommonBitsRemover();
 
  /**private */List<Geometry> removeCommonBits(List<Geometry> geom)
   {
-    cbr = new CommonBitsRemover();
+    // cbr = new CommonBitsRemover();
     cbr.add(geom[0]);
     cbr.add(geom[1]);
-    Geometry remGeom[] = new Geometry[2];
-    remGeom[0] = cbr.removeCommonBits(geom[0].copy());
-    remGeom[1] = cbr.removeCommonBits(geom[1].copy());
+    // List<Geometry> remGeom = new Geometry[2];
+    // remGeom[0] = cbr.removeCommonBits(geom[0].copy());
+    // remGeom[1] = cbr.removeCommonBits(geom[1].copy());
+    List<Geometry> remGeom = List.from([
+      cbr.removeCommonBits(geom[0].copy()),
+      cbr.removeCommonBits(geom[1].copy()),
+    ],growable: false);
     return remGeom;
   }
   /*

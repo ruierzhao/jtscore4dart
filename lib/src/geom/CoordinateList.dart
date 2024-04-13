@@ -233,5 +233,9 @@ class CoordinateList  /** extends ArrayList<Coordinate> */
   //     }
   //     return clone;
   // }
+  set(int index, Coordinate coord){
+    /// TODO: @ruier edit.more robust
+    this._coordList[index] = coord;
+  }
 
 }

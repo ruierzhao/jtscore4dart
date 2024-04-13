@@ -28,6 +28,8 @@
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/geometry.dart';
+
 /**
  * A framework for processes which transform an input {@link Geometry} into
  * an output {@link Geometry}, possibly changing its structure and type(s).
@@ -73,9 +75,9 @@ class GeometryTransformer
    * getParent() method to return immediate parent e.g. of LinearRings in Polygons
    */
 
- /**private */Geometry inputGeom;
+ /**private */Geometry? inputGeom;
 
- /**protected */GeometryFactory factory = null;
+ /**protected */GeometryFactory? factory = null;
 
   // these could eventually be exposed to clients
   /**
@@ -100,39 +102,48 @@ class GeometryTransformer
    */
  /**private */bool preserveType = false;
 
-  GeometryTransformer() {
-  }
+  // GeometryTransformer() {
+  // }
 
   /**
    * Utility function to make input geometry available
    *
    * @return the input geometry
    */
-  Geometry getInputGeometry() { return inputGeom; }
+  Geometry getInputGeometry() { return inputGeom!; }
 
-  final Geometry transform(Geometry inputGeom)
+  /**final */ 
+  Geometry? transform(Geometry inputGeom)
   {
     this.inputGeom = inputGeom;
     this.factory = inputGeom.getFactory();
 
-    if (inputGeom is Point)
-      return transformPoint((Point) inputGeom, null);
-    if (inputGeom is MultiPoint)
-      return transformMultiPoint((MultiPoint) inputGeom, null);
-    if (inputGeom is LinearRing)
-      return transformLinearRing((LinearRing) inputGeom, null);
-    if (inputGeom is LineString)
-      return transformLineString((LineString) inputGeom, null);
-    if (inputGeom is MultiLineString)
-      return transformMultiLineString((MultiLineString) inputGeom, null);
-    if (inputGeom is Polygon)
-      return transformPolygon((Polygon) inputGeom, null);
-    if (inputGeom is MultiPolygon)
-      return transformMultiPolygon((MultiPolygon) inputGeom, null);
-    if (inputGeom is GeometryCollection)
-      return transformGeometryCollection((GeometryCollection) inputGeom, null);
+    if (inputGeom is Point) {
+      return transformPoint( inputGeom, null);
+    }
+    if (inputGeom is MultiPoint) {
+      return transformMultiPoint( inputGeom, null);
+    }
+    if (inputGeom is LinearRing) {
+      return transformLinearRing( inputGeom, null);
+    }
+    if (inputGeom is LineString) {
+      return transformLineString( inputGeom, null);
+    }
+    if (inputGeom is MultiLineString) {
+      return transformMultiLineString( inputGeom, null);
+    }
+    if (inputGeom is Polygon) {
+      return transformPolygon(inputGeom, null);
+    }
+    if (inputGeom is MultiPolygon) {
+      return transformMultiPolygon(inputGeom, null);
+    }
+    if (inputGeom is GeometryCollection) {
+      return transformGeometryCollection( inputGeom, null);
+    }
 
-    throw new ArgumentError("Unknown Geometry subtype: " + inputGeom.getClass().getName());
+    throw new ArgumentError("Unknown Geometry subtype: ${inputGeom.runtimeType}" );
   }
 
   /**
@@ -142,9 +153,9 @@ class GeometryTransformer
    * @param coords the coordinate array to copy
    * @return a coordinate sequence for the array
    */
- /**protected */final CoordinateSequence createCoordinateSequence(List<Coordinate> coords)
+ /**protected final*/ CoordinateSequence _createCoordinateSequence(List<Coordinate> coords)
   {
-    return factory.getCoordinateSequenceFactory().create(coords);
+    return factory!.getCoordinateSequenceFactory().create(coords);
   }
 
   /**
@@ -152,7 +163,7 @@ class GeometryTransformer
    * @param seq the sequence to copy
    * @return a deep copy of the sequence
    */
- /**protected */final CoordinateSequence copy(CoordinateSequence seq)
+ /**protected final*/ CoordinateSequence copy(CoordinateSequence seq)
   {
     return seq.copy();
   }
@@ -175,7 +186,7 @@ class GeometryTransformer
   }
 
  /**protected */Geometry transformPoint(Point geom, Geometry parent) {
-    return factory.createPoint(
+    return factory!.createPointFromCoordSeq(
         transformCoordinates(geom.getCoordinateSequence(), geom));
   }
 
@@ -208,12 +219,14 @@ class GeometryTransformer
    */
  /**protected */Geometry transformLinearRing(LinearRing geom, Geometry parent) {
     CoordinateSequence seq = transformCoordinates(geom.getCoordinateSequence(), geom);
-    if (seq == null) 
+    if (seq == null) {
       return factory.createLinearRing((CoordinateSequence) null);
+    }
     int seqSize = seq.size();
     // ensure a valid LinearRing
-    if (seqSize > 0 && seqSize < 4 && ! preserveType)
+    if (seqSize > 0 && seqSize < 4 && ! preserveType) {
       return factory.createLineString(seq);
+    }
     return factory.createLinearRing(seq);
   }
 
@@ -244,7 +257,7 @@ class GeometryTransformer
     return factory.buildGeometry(transGeomList);
   }
 
- /**protected */Geometry transformPolygon(Polygon geom, Geometry parent) {
+ /**protected */Geometry? transformPolygon(Polygon geom, Geometry parent) {
     bool isAllValidLinearRings = true;
     Geometry shell = transformLinearRing(geom.getExteriorRing(), geom);
 
@@ -254,25 +267,27 @@ class GeometryTransformer
       return factory.createPolygon();
     }
     
-    if (shellIsNullOrEmpty || ! (shell is LinearRing))
+    if (shellIsNullOrEmpty || ! (shell is LinearRing)) {
       isAllValidLinearRings = false;
+    }
 
-    ArrayList holes = [];
+    List holes = [];
     for (int i = 0; i < geom.getNumInteriorRing(); i++) {
       Geometry hole = transformLinearRing(geom.getInteriorRingN(i), geom);
       if (hole == null || hole.isEmpty()) {
         continue;
       }
-      if (! (hole is LinearRing))
+      if (! (hole is LinearRing)) {
         isAllValidLinearRings = false;
+      }
 
       holes.add(hole);
     }
 
-    if (isAllValidLinearRings)
+    if (isAllValidLinearRings) {
       return factory.createPolygon((LinearRing) shell,
                                    (List<LinearRing>) holes.toArray(new List<LinearRing> {  }));
-    else {
+    } else {
       List components = [];
       if (shell != null) components.add(shell);
       components.addAll(holes);
@@ -280,10 +295,11 @@ class GeometryTransformer
     }
   }
 
- /**protected */Geometry transformMultiPolygon(MultiPolygon geom, Geometry parent) {
+ /**protected */
+ Geometry transformMultiPolygon(MultiPolygon geom, Geometry? parent) {
     List transGeomList = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      Geometry transformGeom = transformPolygon((Polygon) geom.getGeometryN(i), geom);
+      Geometry transformGeom = transformPolygon( geom.getGeometryN(i) as Polygon, geom);
       if (transformGeom == null) continue;
       if (transformGeom.isEmpty()) continue;
       transGeomList.add(transformGeom);
@@ -302,8 +318,9 @@ class GeometryTransformer
       if (pruneEmptyGeometry && transformGeom.isEmpty()) continue;
       transGeomList.add(transformGeom);
     }
-    if (preserveGeometryCollectionType)
+    if (preserveGeometryCollectionType) {
       return factory.createGeometryCollection(GeometryFactory.toGeometryArray(transGeomList));
+    }
     return factory.buildGeometry(transGeomList);
   }
 

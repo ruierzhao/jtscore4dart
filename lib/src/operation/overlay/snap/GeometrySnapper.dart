@@ -24,6 +24,18 @@
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.geom.util.GeometryTransformer;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/Polygonal.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geom/util/GeometryTransformer.dart';
+
+import 'LineStringSnapper.dart';
+
 /**
  * Snaps the vertices and segments of a {@link Geometry} 
  * to another Geometry's vertices.
@@ -45,15 +57,16 @@
  */
 class GeometrySnapper
 {
- /**private */static final double SNAP_PRECISION_FACTOR = 1e-9;
+ /**private */
+ static const double SNAP_PRECISION_FACTOR = 1e-9;
 
   /**
    * Estimates the snap tolerance for a Geometry, taking into account its precision model.
    * 
-   * @param g a Geometry
+   * @param [g] a Geometry
    * @return the estimated snap tolerance
    */
-  static double computeOverlaySnapTolerance(Geometry g)
+  static double _computeOverlaySnapTolerance(Geometry g)
   {
 		double snapTolerance = computeSizeBasedSnapTolerance(g);
 		
@@ -69,8 +82,9 @@ class GeometrySnapper
 		PrecisionModel pm = g.getPrecisionModel();
 		if (pm.getType() == PrecisionModel.FIXED) {
 			double fixedSnapTol = (1 / pm.getScale()) * 2 / 1.415;
-			if (fixedSnapTol > snapTolerance)
-				snapTolerance = fixedSnapTol;
+			if (fixedSnapTol > snapTolerance) {
+			  snapTolerance = fixedSnapTol;
+			}
 		}
 		return snapTolerance;
   }
@@ -78,14 +92,17 @@ class GeometrySnapper
   static double computeSizeBasedSnapTolerance(Geometry g)
   {
     Envelope env = g.getEnvelopeInternal();
-    double minDimension = math.min(env.getHeight(), env.getWidth());
+    double minDimension = min(env.getHeight(), env.getWidth());
     double snapTol = minDimension * SNAP_PRECISION_FACTOR;
     return snapTol;
   }
 
-  static double computeOverlaySnapTolerance(Geometry g0, Geometry g1)
+  static double computeOverlaySnapTolerance(Geometry g0, [Geometry? g1])
   {
-    return math.min(computeOverlaySnapTolerance(g0), computeOverlaySnapTolerance(g1));
+    if (g1 == null) {
+      return _computeOverlaySnapTolerance(g0);
+    }
+    return min(computeOverlaySnapTolerance(g0), computeOverlaySnapTolerance(g1));
   }
 
   /**
@@ -98,16 +115,20 @@ class GeometrySnapper
    */
   static List<Geometry> snap(Geometry g0, Geometry g1, double snapTolerance)
   {
-    List<Geometry> snapGeom = new Geometry[2];
+    /// TODO: @ruier edit.改为数组实现
+    // List<Geometry> snapGeom = new Geometry[2];
+    List<Geometry> snapGeom = [];
     GeometrySnapper snapper0 = new GeometrySnapper(g0);
-    snapGeom[0] = snapper0.snapTo(g1, snapTolerance);
+    // snapGeom[0] = snapper0.snapTo(g1, snapTolerance);
+    snapGeom.add(snapper0.snapTo(g1, snapTolerance));
     
     /**
      * Snap the second geometry to the snapped first geometry
      * (this strategy minimizes the number of possible different points in the result)
      */
     GeometrySnapper snapper1 = new GeometrySnapper(g1);
-    snapGeom[1] = snapper1.snapTo(snapGeom[0], snapTolerance);
+    // snapGeom[1] = snapper1.snapTo(snapGeom[0], snapTolerance);
+    snapGeom.add( snapper1.snapTo(snapGeom[0], snapTolerance));
 
 //    System.out.println(snap[0]);
 //    System.out.println(snap[1]);
@@ -126,7 +147,7 @@ class GeometrySnapper
    *@param cleanResult whether the result should be made valid
    * @return a new snapped Geometry
    */
-  static Geometry snapToSelf(Geometry geom, double snapTolerance, bool cleanResult)
+  static Geometry snapToSelf$2(Geometry geom, double snapTolerance, bool cleanResult)
   {
     GeometrySnapper snapper0 = new GeometrySnapper(geom);
     return snapper0.snapToSelf(snapTolerance, cleanResult);
@@ -139,10 +160,7 @@ class GeometrySnapper
    * 
    * @param srcGeom the geometry to snap
    */
-  GeometrySnapper(Geometry srcGeom)
-  {
-    this.srcGeom = srcGeom;
-  }
+  GeometrySnapper(this.srcGeom);
 
 
   /**
@@ -169,8 +187,8 @@ class GeometrySnapper
    * topologically valid
    * (which fixes issues such as topology collapses in polygonal inputs).
    *
-   *@param snapTolerance the snapping tolerance
-   *@param cleanResult whether the result should be made valid
+   *@param [snapTolerance] the snapping tolerance
+   *@param [cleanResult] whether the result should be made valid
    * @return a new snapped Geometry
    */
   Geometry snapToSelf(double snapTolerance, bool cleanResult)
@@ -190,12 +208,13 @@ class GeometrySnapper
  /**private */List<Coordinate> extractTargetCoordinates(Geometry g)
   {
     // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
-    Set ptSet = new TreeSet();
+    // Set<Coordinate> ptSet = new TreeSet();
+    Set<Coordinate> ptSet = new Set();
     List<Coordinate> pts = g.getCoordinates();
     for (int i = 0; i < pts.length; i++) {
       ptSet.add(pts[i]);
     }
-    return (List<Coordinate>) ptSet.toArray(new Coordinate[0]);
+    return ptSet.toList(growable: false);
   }
   
   /**
@@ -214,38 +233,35 @@ class GeometrySnapper
 
  /**private */double computeMinimumSegmentLength(List<Coordinate> pts)
   {
-    double minSegLen = double.maxFinite
+    double minSegLen = double.maxFinite;
     for (int i = 0; i < pts.length - 1; i++) {
       double segLen = pts[i].distance(pts[i + 1]);
-      if (segLen < minSegLen)
+      if (segLen < minSegLen) {
         minSegLen = segLen;
+      }
     }
     return minSegLen;
   }
 
 }
 
-class SnapTransformer
-    extends GeometryTransformer
+class SnapTransformer extends GeometryTransformer
 {
  /**private */double snapTolerance;
  /**private */List<Coordinate> snapPts;
  /**private */bool isSelfSnap = false;
 
-  SnapTransformer(double snapTolerance, List<Coordinate> snapPts)
-  {
-    this.snapTolerance = snapTolerance;
-    this.snapPts = snapPts;
-  }
+  // SnapTransformer(double snapTolerance, List<Coordinate> snapPts)
+  // {
+  //   this.snapTolerance = snapTolerance;
+  //   this.snapPts = snapPts;
+  // }
 
-  SnapTransformer(double snapTolerance, List<Coordinate> snapPts, bool isSelfSnap)
-  {
-    this.snapTolerance = snapTolerance;
-    this.snapPts = snapPts;
-    this.isSelfSnap = isSelfSnap;
-  }
+  SnapTransformer(this.snapTolerance, this.snapPts, [this.isSelfSnap=false]);
 
- /**protected */CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
+  /**protected */
+  @override
+  CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
   {
     List<Coordinate> srcPts = coords.toCoordinateArray();
     List<Coordinate> newPts = snapLine(srcPts, snapPts);
@@ -254,7 +270,7 @@ class SnapTransformer
 
  /**private */List<Coordinate> snapLine(List<Coordinate> srcPts, List<Coordinate> snapPts)
   {
-    LineStringSnapper snapper = new LineStringSnapper(srcPts, snapTolerance);
+    LineStringSnapper snapper = new LineStringSnapper.fromCoords(srcPts, snapTolerance);
     snapper.setAllowSnappingToSourceVertices(isSelfSnap);
     return snapper.snapTo(snapPts);
   }

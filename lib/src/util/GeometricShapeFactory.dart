@@ -22,7 +22,11 @@
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.geom.util.AffineTransformation;
 
+import 'dart:math';
+
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/Angle.dart';
+import 'package:jtscore4dart/src/geom/util/AffineTransformation.dart';
 
 /**
  * Computes various kinds of common geometric shapes.
@@ -44,8 +48,8 @@ import 'package:jtscore4dart/geometry.dart';
  */
 class GeometricShapeFactory
 {
- /**protected */GeometryFactory geomFact;
- /**protected */late PrecisionModel precModel = null;
+ /**protected */late GeometryFactory geomFact;
+ /**protected */late PrecisionModel precModel;
  /**protected */Dimensions dim = new Dimensions();
  /**protected */int nPts = 100;
   
@@ -58,10 +62,10 @@ class GeometricShapeFactory
    * Create a shape factory which will create shapes using the default
    * {@link GeometryFactory}.
    */
-  GeometricShapeFactory()
-  {
-    this(new GeometryFactory());
-  }
+  // GeometricShapeFactory()
+  // {
+  //   this(new GeometryFactory());
+  // }
 
   /**
    * Create a shape factory which will create shapes using the given
@@ -69,11 +73,11 @@ class GeometricShapeFactory
    *
    * @param geomFact the factory to use
    */
-  GeometricShapeFactory(GeometryFactory geomFact)
-  {
-    this.geomFact = geomFact;
-    precModel = geomFact.getPrecisionModel();
+  GeometricShapeFactory([GeometryFactory? _geomFact]){
+    this.geomFact = (_geomFact ??= new GeometryFactory());
+      precModel = geomFact.getPrecisionModel();
   }
+  
 
   void setEnvelope(Envelope env)
   {
@@ -155,7 +159,7 @@ class GeometricShapeFactory
   {
     int i;
     int ipt = 0;
-    int nSide = nPts / 4;
+    int nSide = nPts ~/ 4;
     if (nSide < 1) nSide = 1;
     double XsegLen = dim.getEnvelope().getWidth() / nSide;
     double YsegLen = dim.getEnvelope().getHeight() / nSide;
@@ -224,7 +228,7 @@ class GeometricShapeFactory
     List<Coordinate> pts = new Coordinate[nPts + 1];
     int iPt = 0;
     for (int i = 0; i < nPts; i++) {
-        double ang = i * (2 * math.PI / nPts);
+        double ang = i * (2 * pi / nPts);
         double x = xRadius * Angle.cosSnap(ang) + centreX;
         double y = yRadius * Angle.sinSnap(ang) + centreY;
         pts[iPt++] = coord(x, y);
@@ -233,7 +237,7 @@ class GeometricShapeFactory
 
     LinearRing ring = geomFact.createLinearRing(pts);
     Polygon poly = geomFact.createPolygon(ring);
-    return (Polygon) rotate(poly);
+    return rotate(poly) as Polygon;
   }
   /**
    * Creates a squircular {@link Polygon}.
@@ -263,12 +267,12 @@ class GeometricShapeFactory
     double radius = dim.getMinSize() / 2;
     Coordinate centre = dim.getCentre();
     
-    double r4 = math.pow(radius, power);
+    double r4 = pow(radius, power).toDouble();
     double y0 = radius;
     
-    double xyInt = math.pow(r4 / 2, recipPow);
+    double xyInt = pow(r4 / 2, recipPow).toDouble();
     
-    int nSegsInOct = nPts / 8;
+    int nSegsInOct = nPts ~/ 8;
     int totPts = nSegsInOct * 8 + 1;
     List<Coordinate> pts = new Coordinate[totPts];
     double xInc = xyInt / nSegsInOct;
@@ -278,8 +282,8 @@ class GeometricShapeFactory
   		double y = y0;
     	if (i != 0) {
     		x = xInc * i;
-    		double x4 = math.pow(x, power);
-    		y = math.pow(r4 - x4, recipPow);
+    		double x4 = pow(x, power).toDouble();
+    		y = pow(r4 - x4, recipPow).toDouble();
     	}
       pts[i] = coordTrans(x, y, centre);
       pts[2 * nSegsInOct - i] = coordTrans(y, x, centre);
@@ -297,7 +301,7 @@ class GeometricShapeFactory
 
     LinearRing ring = geomFact.createLinearRing(pts);
     Polygon poly = geomFact.createPolygon(ring);
-    return (Polygon) rotate(poly);
+    return rotate(poly) as Polygon;
   }
 
    /**
@@ -376,13 +380,13 @@ class GeometricShapeFactory
     pts[iPt++] = coord(centreX, centreY);
     LinearRing ring = geomFact.createLinearRing(pts);
     Polygon poly = geomFact.createPolygon(ring);
-    return (Polygon) rotate(poly);
+    return rotate(poly) as Polygon;
   }
 
  /**protected */Coordinate coord(double x, double y)
   {
   	Coordinate pt = new Coordinate(x, y);
-    precModel.makePrecise(pt);
+    precModel.makePreciseFromCoord(pt);
     return pt;
   }
   
@@ -394,58 +398,58 @@ class GeometricShapeFactory
 }
 
 
-  /**static protected */class Dimensions
-  {
-    Coordinate base;
-    Coordinate centre;
-    double width;
-    double height;
+/**static protected */
+class Dimensions
+{
+  Coordinate? base;
+  Coordinate? centre = null;
+  double width = 0.0;
+  double height = 0.0;
 
-    void setBase(Coordinate base)  {  this.base = base;    }
-    Coordinate getBase() { return base; }
-    
-    void setCentre(Coordinate centre)  {  this.centre = centre;    }
-    Coordinate getCentre() 
-    { 
-      if (centre == null) {
-        centre = new Coordinate(base.x + width/2, base.y + height/2);
-      }
-      return centre; 
-    }
-   
-    void setSize(double size)
-    {
-      height = size;
-      width = size;
-    }
+  void setBase(Coordinate base)  {  this.base = base;    }
 
-    double getMinSize()
-    {
-    	return math.min(width, height);
-    }
-    void setWidth(double width) { this.width = width; }
-    double getWidth() { return width; }
-    double getHeight() { return height; }
-    
-    void setHeight(double height) { this.height = height; }
-
-    void setEnvelope(Envelope env)
-    {
-    	this.width = env.getWidth();
-    	this.height = env.getHeight();
-    	this.base = new Coordinate(env.getMinX(), env.getMinY());
-    	this.centre = new Coordinate(env.centre());
-    }
-    
-    Envelope getEnvelope() {
-      if (base != null) {
-        return new Envelope(base.x, base.x + width, base.y, base.y + height);
-      }
-      if (centre != null) {
-        return new Envelope(centre.x - width/2, centre.x + width/2,
-                            centre.y - height/2, centre.y + height/2);
-      }
-      return new Envelope(0, width, 0, height);
-    }
-    
+  Coordinate getBase() { return base; }
+  
+  void setCentre(Coordinate centre)  {this.centre = centre;}
+  Coordinate getCentre() 
+  { 
+    centre ??= new Coordinate(base.x + width/2, base.y + height/2);
+    return centre!; 
   }
+  
+  void setSize(double size)
+  {
+    height = size;
+    width = size;
+  }
+
+  double getMinSize()
+  {
+    return min(width, height);
+  }
+  void setWidth(double width) { this.width = width; }
+  double getWidth() { return width; }
+  double getHeight() { return height; }
+  
+  void setHeight(double height) { this.height = height; }
+
+  void setEnvelope(Envelope env)
+  {
+    this.width = env.getWidth();
+    this.height = env.getHeight();
+    this.base = new Coordinate(env.getMinX(), env.getMinY());
+    this.centre = new Coordinate(env.centre());
+  }
+  
+  Envelope getEnvelope() {
+    if (base != null) {
+      return new Envelope(base.x, base.x + width, base.y, base.y + height);
+    }
+    if (centre != null) {
+      return new Envelope(centre.x - width/2, centre.x + width/2,
+                          centre.y - height/2, centre.y + height/2);
+    }
+    return new Envelope(0, width, 0, height);
+  }
+  
+}

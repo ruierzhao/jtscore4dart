@@ -25,6 +25,13 @@
 // import org.locationtech.jts.geomgraph.Node;
 // import org.locationtech.jts.geomgraph.PlanarGraph;
 
+import 'package:jtscore4dart/src/geom/Position.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+import 'package:jtscore4dart/src/geomgraph/geomgraph.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
+
+import 'OverlayOp.dart';
+
 /**
  * Tests whether the polygon rings in a {@link GeometryGraph}
  * are consistent.
@@ -37,9 +44,7 @@ class ConsistentPolygonRingChecker
 {
  /**private */PlanarGraph graph;
 
-  ConsistentPolygonRingChecker(PlanarGraph graph) {
-    this.graph = graph;
-  }
+  ConsistentPolygonRingChecker(this.graph);
 
   void checkAll()
   {
@@ -57,8 +62,8 @@ class ConsistentPolygonRingChecker
   void check(int opCode)
   {
     for (Iterator nodeit = graph.getNodeIterator(); nodeit.moveNext(); ) {
-      Node node = (Node) nodeit.current;
-      testLinkResultDirectedEdges((DirectedEdgeStar) node.getEdges(), opCode);
+      Node node = nodeit.current;
+      testLinkResultDirectedEdges( node.getEdges() as DirectedEdgeStar, opCode);
     }
   }
 
@@ -67,7 +72,7 @@ class ConsistentPolygonRingChecker
 //print(System.out);
     List resultAreaEdgeList = [];
     for (Iterator it = deStar.iterator(); it.moveNext(); ) {
-      DirectedEdge de = (DirectedEdge) it.current;
+      DirectedEdge de =  it.current;
       if (isPotentialResultAreaEdge(de, opCode) || isPotentialResultAreaEdge(de.getSym(), opCode) )
         resultAreaEdgeList.add(de);
     }
@@ -77,10 +82,10 @@ class ConsistentPolygonRingChecker
  /**private */bool isPotentialResultAreaEdge(DirectedEdge de, int opCode)
   {
     // mark all dirEdges with the appropriate label
-    Label label = de.getLabel();
+    Label label = de.getLabel()!;
     if (label.isArea()
         && ! de.isInteriorAreaEdge()
-        && OverlayOp.isResultOfOp(
+        && OverlayOp.isResultOfOp$2(
         label.getLocation(0, Position.RIGHT),
         label.getLocation(1, Position.RIGHT),
         opCode)
@@ -91,24 +96,24 @@ class ConsistentPolygonRingChecker
       return false;
     }
 
- /**private */static final int SCANNING_FOR_INCOMING = 1;
- /**private */static final int LINKING_TO_OUTGOING = 2;
+ /**private */static const int SCANNING_FOR_INCOMING = 1;
+ /**private */static const int LINKING_TO_OUTGOING = 2;
 
  /**private */void testLinkResultDirectedEdges(DirectedEdgeStar deStar, int opCode)
   {
     // make sure edges are copied to resultAreaEdges list
     List ringEdges = getPotentialResultAreaEdges(deStar, opCode);
     // find first area edge (if any) to start linking at
-    DirectedEdge firstOut = null;
-    DirectedEdge incoming = null;
+    DirectedEdge? firstOut = null;
+    DirectedEdge? incoming = null;
     int state = SCANNING_FOR_INCOMING;
     // link edges in CCW order
     for (int i = 0; i < ringEdges.size(); i++) {
-      DirectedEdge nextOut = (DirectedEdge) ringEdges.get(i);
+      DirectedEdge nextOut =  ringEdges.get(i) as DirectedEdge;
       DirectedEdge nextIn = nextOut.getSym();
 
       // skip de's that we're not interested in
-      if (! nextOut.getLabel().isArea()) continue;
+      if (! nextOut.getLabel()!.isArea()) continue;
 
       // record first outgoing edge, in order to link the last incoming edge
       if (firstOut == null
@@ -132,8 +137,9 @@ class ConsistentPolygonRingChecker
 //Debug.print(this);
     if (state == LINKING_TO_OUTGOING) {
 //Debug.print(firstOut == null, this);
-      if (firstOut == null)
+      if (firstOut == null) {
         throw new TopologyException("no outgoing dirEdge found", deStar.getCoordinate());
+      }
     }
 
   }

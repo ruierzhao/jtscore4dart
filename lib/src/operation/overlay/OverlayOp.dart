@@ -44,15 +44,8 @@ import 'package:jtscore4dart/src/geom/Point.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Polygon.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
-import 'package:jtscore4dart/src/geomgraph/Depth.dart';
-import 'package:jtscore4dart/src/geomgraph/DirectedEdge.dart';
-import 'package:jtscore4dart/src/geomgraph/DirectedEdgeStar.dart';
-import 'package:jtscore4dart/src/geomgraph/Edge.dart';
-import 'package:jtscore4dart/src/geomgraph/EdgeList.dart';
 import 'package:jtscore4dart/src/geomgraph/EdgeNodingValidator.dart';
-import 'package:jtscore4dart/src/geomgraph/Label.dart';
-import 'package:jtscore4dart/src/geomgraph/Node.dart';
-import 'package:jtscore4dart/src/geomgraph/PlanarGraph.dart';
+import 'package:jtscore4dart/src/geomgraph/geomgraph.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
 
 import '../GeometryGraphOperation.dart';

@@ -20,6 +20,16 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.util.GeometricShapeFactory;
 
+import "dart:math" as math;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LinearRing.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+import 'package:jtscore4dart/src/util/GeometricShapeFactory.dart';
+
 /**
  * Creates geometries which are shaped like multi-armed stars
  * with each arm shaped like a sine wave.
@@ -53,17 +63,17 @@ class SineStarFactory
     return poly;
   }
   
-	protected int numArms = 8;
-	protected double armLengthRatio = 0.5;
+	/**protected */ int numArms = 8;
+	/**protected */ double armLengthRatio = 0.5;
 	
   /**
    * Creates a factory which will create sine stars using the default
    * {@link GeometryFactory}.
    */
-	SineStarFactory()
-	{
-		super();
-	}
+	// SineStarFactory()
+	// :
+	// 	super();
+	
 	
   /**
    * Creates a factory which will create sine stars using the given
@@ -71,10 +81,9 @@ class SineStarFactory
    *
    * @param geomFact the factory to use
    */
-  SineStarFactory(GeometryFactory geomFact)
-  {
+  SineStarFactory([GeometryFactory? geomFact])
+  :
     super(geomFact);
-  }
 
   /**
    * Sets the number of arms in the star
@@ -109,10 +118,12 @@ class SineStarFactory
     double radius = env.getWidth() / 2.0;
 
   	double armRatio = armLengthRatio;
-    if (armRatio < 0.0)
+    if (armRatio < 0.0) {
       armRatio = 0.0;
-    if (armRatio > 1.0)
+    }
+    if (armRatio > 1.0) {
       armRatio = 1.0;
+    }
 
     double armMaxLen = armRatio * radius;
     double insideRadius = (1 - armRatio) * radius;
@@ -124,20 +135,20 @@ class SineStarFactory
     int iPt = 0;
     for (int i = 0; i < nPts; i++) {
       // the fraction of the way through the current arm - in [0,1]
-      double ptArcFrac = (i / (double) nPts) * numArms;
-      double armAngFrac = ptArcFrac - math.floor(ptArcFrac);
+      double ptArcFrac = (i / nPts.toDouble()) * numArms;
+      double armAngFrac = ptArcFrac - (ptArcFrac).floor();
       
       // the angle for the current arm - in [0,2Pi]  
       // (each arm is a complete sine wave cycle)
-      double armAng = 2 * math.PI * armAngFrac;
+      double armAng = 2 * math.pi * armAngFrac;
       // the current length of the arm
-      double armLenFrac = (Math.cos(armAng) + 1.0) / 2.0;
+      double armLenFrac = (math.cos(armAng) + 1.0) / 2.0;
       
       // the current radius of the curve (core + arm)
       double curveRadius = insideRadius + armMaxLen * armLenFrac;
 
       // the current angle of the curve
-      double ang = i * (2 * math.PI / nPts);
+      double ang = i * (2 * math.pi / nPts);
       double x = curveRadius * math.cos(ang) + centreX;
       double y = curveRadius * math.sin(ang) + centreY;
       pts[iPt++] = coord(x, y);

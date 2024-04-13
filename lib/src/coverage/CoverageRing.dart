@@ -25,6 +25,11 @@
 // import org.locationtech.jts.geom.util.PolygonExtracter;
 // import org.locationtech.jts.noding.BasicSegmentString;
 
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/geom/util/PolygonExtracter.dart';
+import 'package:jtscore4dart/src/noding/BasicSegmentString.dart';
+
 class CoverageRing extends BasicSegmentString {
   
   static List<CoverageRing> createRings(Geometry geom)
@@ -34,8 +39,8 @@ class CoverageRing extends BasicSegmentString {
   }
 
   static List<CoverageRing> createRings(List<Polygon> polygons) {
-    List<CoverageRing> rings = new ArrayList<CoverageRing>();
-    for (Polygon poly : polygons) {
+    List<CoverageRing> rings = new List<CoverageRing>();
+    for (Polygon poly in polygons) {
       createRings(poly, rings);
     }
     return rings;   
@@ -82,12 +87,11 @@ class CoverageRing extends BasicSegmentString {
   }
   
  /**private */bool isInteriorOnRight;
- /**private */bool[] isInvalid;
- /**private */bool[] isMatched;
+ /**private */List<bool> isInvalid;
+ /**private */List<bool> isMatched;
 
- /**private */CoverageRing(List<Coordinate> pts, bool isInteriorOnRight) {
+ /**private */CoverageRing(List<Coordinate> pts, this.isInteriorOnRight) {
     super(pts, null);
-    this.isInteriorOnRight = isInteriorOnRight;
     isInvalid = new bool[size() - 1];
     isMatched = new bool[size() - 1];
   }

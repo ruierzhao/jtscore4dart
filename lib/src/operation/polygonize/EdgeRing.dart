@@ -32,6 +32,17 @@
 // import org.locationtech.jts.util.Assert;
 
 
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/algorithm/locate/IndexedPointInAreaLocator.dart';
+import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LinearRing.dart';
+import 'package:jtscore4dart/src/planargraph/DirectedEdge.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'PolygonizeDirectedEdge.dart';
+
 /**
  * Represents a ring of {@link PolygonizeDirectedEdge}s which form
  * a ring of a polygon.  The ring may be either an outer shell or a hole.
@@ -59,8 +70,8 @@ class EdgeRing {
    */
   static EdgeRing findEdgeRingContaining(EdgeRing testEr, List<EdgeRing> erList)
   {
-    EdgeRing minContainingRing = null;
-    for (EdgeRing edgeRing : erList) {
+    EdgeRing? minContainingRing = null;
+    for (EdgeRing edgeRing in erList) {
       if (edgeRing.contains(testEr)) {
         if (minContainingRing == null
             || minContainingRing.getEnvelope().contains(edgeRing.getEnvelope())) {
@@ -82,7 +93,7 @@ class EdgeRing {
   static List<PolygonizeDirectedEdge> findDirEdgesInRing(PolygonizeDirectedEdge startDE)
   {
     PolygonizeDirectedEdge de = startDE;
-    List<PolygonizeDirectedEdge> edges = new ArrayList<PolygonizeDirectedEdge>();
+    List<PolygonizeDirectedEdge> edges = <PolygonizeDirectedEdge>[];
     do {
       edges.add(de);
       de = de.getNext();
@@ -94,45 +105,42 @@ class EdgeRing {
   
  /**private */GeometryFactory factory;
 
- /**private */List<PolygonizeDirectedEdge> deList = new ArrayList<PolygonizeDirectedEdge>();
+ /**private */List<PolygonizeDirectedEdge> deList = <PolygonizeDirectedEdge>[];
   
   // cache the following data for efficiency
- /**private */LinearRing ring = null;
+ /**private */LinearRing? ring = null;
  /**private */IndexedPointInAreaLocator locator;
   
- /**private */List<Coordinate> ringPts = null;
+ /**private */List<Coordinate>? ringPts = null;
  /**private */List<LinearRing> holes;
  /**private */EdgeRing shell;
- /**private */bool isHole;
+ /**private */bool _isHole;
  /**private */bool isValid = false;
  /**private */bool isProcessed = false;
  /**private */bool isIncludedSet = false;
  /**private */bool isIncluded = false;
 
 
-  EdgeRing(GeometryFactory factory)
-  {
-    this.factory = factory;
-  }
+  EdgeRing(this.factory);
 
   void build(PolygonizeDirectedEdge startDE) {
     PolygonizeDirectedEdge de = startDE;
     do {
-      add(de);
+      Assert.isTrue(de != null, "found null DE in ring");
+      add(de!);
       de.setRing(this);
       de = de.getNext();
-      Assert.isTrue(de != null, "found null DE in ring");
       Assert.isTrue(de == startDE || ! de.isInRing(), "found DE already in ring");
     } while (de != startDE);
   }
   
   /**
-   * Adds a {@link DirectedEdge} which is known to form part of this ring.
+   * Adds a {@link [DirectedEdge]} which is known to form part of this ring.
    * @param de the {@link DirectedEdge} to add.
    */
  /**private */void add(DirectedEdge de)
   {
-    deList.add((PolygonizeDirectedEdge) de);
+    deList.add( de);
   }
 
   List<PolygonizeDirectedEdge> getEdges() {
@@ -145,7 +153,7 @@ class EdgeRing {
    */
   bool isHole()
   {
-    return isHole;
+    return _isHole;
   }
   
   /**
@@ -156,7 +164,7 @@ class EdgeRing {
   void computeHole()
   {
     LinearRing ring = getRing();
-    isHole = Orientation.isCCW(ring.getCoordinates());
+    _isHole = Orientation.isCCW(ring.getCoordinates());
   }
 
   /**
@@ -214,7 +222,7 @@ class EdgeRing {
    */
   void computeValid() {
     getCoordinates();
-    if (ringPts.length <= 3) { 
+    if (ringPts!.length <= 3) { 
       isValid = false;
       return;
     }
@@ -236,9 +244,7 @@ class EdgeRing {
   }
 
  /**private */PointOnGeometryLocator getLocator() {
-    if (locator == null) {
-      locator = new IndexedPointInAreaLocator(getRing());
-    }
+    locator ??= new IndexedPointInAreaLocator(getRing());
     return locator;
   }
   
@@ -384,7 +390,7 @@ class EdgeRing {
    * @return true if the ring is an outer hole.
    */
   bool isOuterHole() {
-    if (! isHole) return false;
+    if (! _isHole) return false;
     return ! hasShell();
   }
   

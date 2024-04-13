@@ -17,6 +17,10 @@
 // import org.locationtech.jts.noding.Noder;
 // import org.locationtech.jts.noding.SegmentExtractingNoder;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/noding/BoundaryChainNoder.dart';
+import 'package:jtscore4dart/src/noding/Noder.dart';
+
 /**
  * Unions a valid coverage of polygons or lines
  * in an efficient way.   
@@ -51,8 +55,8 @@
  * 
  * @author Martin Davis
  * 
- * @see BoundaryChainNoder
- * @see SegmentExtractingNoder
+ * @see [BoundaryChainNoder]
+ * @see [SegmentExtractingNoder]
  *
  */
 class CoverageUnion 

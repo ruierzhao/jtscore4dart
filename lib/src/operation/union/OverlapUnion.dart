@@ -88,7 +88,7 @@ import 'UnionStrategy.dart';
  * @author mbdavis
  * 
  * @deprecated due to impairing performance
- *
+ * 
  */
 class OverlapUnion 
 {
@@ -101,7 +101,7 @@ class OverlapUnion
    * @param [unionFun] 
    * @return the union of the inputs
    */
-	static Geometry union(Geometry g0, Geometry g1, UnionStrategy unionFun)
+	static Geometry unionS(Geometry g0, Geometry g1, UnionStrategy unionFun)
 	{
 		OverlapUnion union = new OverlapUnion(g0, g1, unionFun);
 		return union.union();
@@ -234,7 +234,7 @@ class OverlapUnion
  /**private */bool isBorderSegmentsSame(Geometry result, Envelope env) {
     List<LineSegment> segsBefore = extractBorderSegments(g0, g1, env);
     
-    List<LineSegment> segsAfter = new ArrayList<LineSegment>();
+    List<LineSegment> segsAfter = <LineSegment>[];
     extractBorderSegments(result, env, segsAfter);
 
     //System.out.println("# seg before: " + segsBefore.size() + " - # seg after: " + segsAfter.size());
@@ -258,10 +258,10 @@ class OverlapUnion
   }
 
  /**private */List<LineSegment> extractBorderSegments(Geometry geom0, Geometry geom1, Envelope env) {
-    List<LineSegment> segs = new ArrayList<LineSegment>();
-    extractBorderSegments(geom0, env, segs);
+    List<LineSegment> segs = [];
+    _extractBorderSegments(geom0, env, segs);
     if (geom1 != null) {
-      extractBorderSegments(geom1, env, segs);
+      _extractBorderSegments(geom1, env, segs);
     }
     return segs;
   }
@@ -282,7 +282,7 @@ class OverlapUnion
           p.getY() < env.getMaxY();
   }
 
- /**private */static void extractBorderSegments(Geometry geom, Envelope env, List<LineSegment> segs) {
+ /**private */static void _extractBorderSegments(Geometry geom, Envelope env, List<LineSegment> segs) {
     geom.applyCoordSeq(_());
   }
 

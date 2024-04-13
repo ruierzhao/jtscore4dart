@@ -265,7 +265,7 @@ class SnapTransformer extends GeometryTransformer
   {
     List<Coordinate> srcPts = coords.toCoordinateArray();
     List<Coordinate> newPts = snapLine(srcPts, snapPts);
-    return factory.getCoordinateSequenceFactory().create(newPts);
+    return factory!.getCoordinateSequenceFactory().create(newPts);
   }
 
  /**private */List<Coordinate> snapLine(List<Coordinate> srcPts, List<Coordinate> snapPts)

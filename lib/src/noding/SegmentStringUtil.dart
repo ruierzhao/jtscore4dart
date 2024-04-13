@@ -10,8 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-
 // import java.util.ArrayList;
 // import java.util.Collection;
 // import java.util.Iterator;
@@ -24,6 +22,15 @@
 // import org.locationtech.jts.geom.MultiLineString;
 // import org.locationtech.jts.geom.util.LinearComponentExtracter;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/util/LinearComponentExtracter.dart';
+
+import 'BasicSegmentString.dart';
+import 'NodedSegmentString.dart';
+import 'SegmentString.dart';
 
 /**
  * Utility methods for processing {@link SegmentString}s.
@@ -31,8 +38,7 @@
  * @author Martin Davis
  *
  */
-class SegmentStringUtil 
-{
+class SegmentStringUtil {
   /**
    * Extracts all linear components from a given {@link Geometry}
    * to {@link SegmentString}s.
@@ -41,8 +47,7 @@ class SegmentStringUtil
    * @param geom the geometry to extract from
    * @return a List of SegmentStrings
    */
-  static List extractSegmentStrings(Geometry geom)
-  {
+  static List extractSegmentStrings(Geometry geom) {
     return extractNodedSegmentStrings(geom);
   }
 
@@ -54,18 +59,17 @@ class SegmentStringUtil
    * @param geom the geometry to extract from
    * @return a List of NodedSegmentStrings
    */
-  static List extractNodedSegmentStrings(Geometry geom)
-  {
+  static List extractNodedSegmentStrings(Geometry geom) {
     List segStr = [];
     List lines = LinearComponentExtracter.getLines(geom);
-    for (Iterator i = lines.iterator(); i.moveNext(); ) {
-      LineString line = (LineString) i.current;
+    for (Iterator i = lines.iterator; i.moveNext();) {
+      LineString line = i.current;
       List<Coordinate> pts = line.getCoordinates();
       segStr.add(new NodedSegmentString(pts, geom));
     }
     return segStr;
   }
-  
+
   /**
    * Extracts all linear components from a given {@link Geometry}
    * to {@link BasicSegmentString}s.
@@ -74,18 +78,16 @@ class SegmentStringUtil
    * @param geom the geometry to extract from
    * @return a List of BasicSegmentStrings
    */
-  static List extractBasicSegmentStrings(Geometry geom)
-  {
+  static List extractBasicSegmentStrings(Geometry geom) {
     List segStr = [];
     List lines = LinearComponentExtracter.getLines(geom);
-    for (Iterator i = lines.iterator(); i.moveNext(); ) {
-      LineString line = (LineString) i.current;
+    for (Iterator i = lines.iterator; i.moveNext();) {
+      LineString line = i.current;
       List<Coordinate> pts = line.getCoordinates();
       segStr.add(new BasicSegmentString(pts, geom));
     }
     return segStr;
   }
-  
 
   /**
    * Converts a collection of {@link SegmentString}s into a {@link Geometry}.
@@ -94,27 +96,31 @@ class SegmentStringUtil
    * @param segStrings a collection of SegmentStrings
    * @return a LineString or MultiLineString
    */
-  static Geometry toGeometry(Collection segStrings, GeometryFactory geomFact)
-  {
-    List<LineString> lines = new LineString[segStrings.size()];
-    int index = 0;
-    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
-      SegmentString ss = (SegmentString) i.current;
-      LineString line = geomFact.createLineString(ss.getCoordinates());
-      lines[index++] = line;
-    }
+  static Geometry toGeometry(
+      Iterable<SegmentString> segStrings, GeometryFactory geomFact) {
+    // List<LineString> lines = new LineString[segStrings.size()];
+    // int index = 0;
+    // for (Iterator i = segStrings.iterator; i.moveNext(); ) {
+    //   SegmentString ss = i.current;
+    //   LineString line = geomFact.createLineString(ss.getCoordinates());
+    //   lines[index++] = line;
+    // }
+    var _segStrings = segStrings.toList(growable: false);
+    List<LineString> lines = List.generate(segStrings.length, (index) {
+      return geomFact.createLineString(_segStrings[index].getCoordinates());
+    });
+
     if (lines.length == 1) return lines[0];
     return geomFact.createMultiLineString(lines);
   }
 
-  static String toString(List segStrings)
-  {
-	StringBuffer buf = new StringBuffer();
-    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
-        SegmentString segStr = (SegmentString) i.current;
-        buf.append(segStr.toString());
-        buf.append("\n");
-        
+  // static String toString(List segStrings)
+  static String getString(List segStrings) {
+    StringBuffer buf = new StringBuffer();
+    for (Iterator i = segStrings.iterator; i.moveNext();) {
+      SegmentString segStr = i.current;
+      buf.write(segStr.toString());
+      buf.write("\n");
     }
     return buf.toString();
   }

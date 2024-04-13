@@ -10,13 +10,12 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
 /**
- * 代表一系列相邻的线段类的抽象类
+ * 代表一系列相邻(接触)的线段类的抽象类
  * 支持上下文信息，对保存拓扑信息或者来历很有用
  * 
  * An abstract class for classes which represent a sequence of contiguous line segments.
@@ -25,8 +24,7 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
  *
  * @version 1.7
  */
-abstract class SegmentString
-{
+abstract class SegmentString {
   /**
    * Gets the user-defined data for this segment string.
    *
@@ -47,7 +45,7 @@ abstract class SegmentString
    * @return the number of coordinates
    */
   int size();
-  
+
   /**
    * Gets the segment string coordinate at a given index.
    *  
@@ -55,54 +53,54 @@ abstract class SegmentString
    * @return the coordinate at the index
    */
   Coordinate getCoordinate(int i);
-  
+
   /**
    * Gets the coordinates in this segment string.
    * 
    * @return the coordinates as an array
    */
   List<Coordinate> getCoordinates();
-  
+
   /**
    * Tests if a segment string is a closed ring.
    * 
    * @return true if the segment string is closed
    */
   bool isClosed();
-  
+
   /**
    * Gets the previous vertex in a ring from a vertex index.
    * 
-   * @param ringSS a segment string forming a ring
-   * @param index the vertex index
+   * @param [ringSS] a segment string forming a ring
+   * @param [index] the vertex index
    * @return the previous vertex in the ring
    * 
    * @see #isClosed
    */
-  /**default  */ 
+  /**default  */
   Coordinate prevInRing(int index) {
     int prevIndex = index - 1;
     if (prevIndex < 0) {
       prevIndex = size() - 2;
     }
-    return getCoordinate( prevIndex );
+    return getCoordinate(prevIndex);
   }
 
   /**
    * Gets the next vertex in a ring from a vertex index.
    * 
-   * @param ringSS a segment string forming a ring
-   * @param index the vertex index
+   * @param [ringSS] a segment string forming a ring
+   * @param [index] the vertex index
    * @return the next vertex in the ring
    * 
    * @see #isClosed
    */
-  /**default  */ 
+  /**default  */
   Coordinate nextInRing(int index) {
     int nextIndex = index + 1;
     if (nextIndex > size() - 1) {
       nextIndex = 1;
     }
-    return getCoordinate( nextIndex );
+    return getCoordinate(nextIndex);
   }
 }

@@ -113,7 +113,7 @@ class GeometryTransformer
   Geometry getInputGeometry() { return inputGeom!; }
 
   /**final */ 
-  Geometry? transform(Geometry inputGeom)
+  Geometry transform(Geometry inputGeom)
   {
     this.inputGeom = inputGeom;
     this.factory = inputGeom.getFactory();

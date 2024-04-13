@@ -17,7 +17,6 @@
 
 import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
-import 'package:jtscore4dart/src/geom/impl/CoordinateArraySequence.dart';
 
 import 'Octant.dart';
 import 'SegmentString.dart';

@@ -10,12 +10,17 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.Collection;
 // import java.util.List;
 
 // import org.locationtech.jts.geom.Coordinate;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'BasicSegmentString.dart';
+import 'Noder.dart';
+import 'SegmentString.dart';
 
 /**
  * A noder which extracts all line segments 
@@ -33,41 +38,42 @@
  *
  */
 class SegmentExtractingNoder implements Noder {
+  /**private */ List<SegmentString> segList = [];
 
- /**private */List segList;
-  
   /**
    * Creates a new segment-extracting noder.
    */
-  SegmentExtractingNoder() {
-    
-  }
+  // SegmentExtractingNoder() {
 
-  @Override
-  void computeNodes(Collection segStrings) {
+  // }
+
+  @override
+  void computeNodes(Iterable<SegmentString> segStrings) {
     segList = extractSegments(segStrings);
   }
 
- /**private */static List<SegmentString> extractSegments(Collection<SegmentString> segStrings) {
-    List<SegmentString> segList = new ArrayList<SegmentString>();
-    for (SegmentString ss : segStrings) {
-      extractSegments( ss, segList );
+  /**private */ static List<SegmentString> extractSegments(
+      Iterable<SegmentString> segStrings) {
+    List<SegmentString> segList = <SegmentString>[];
+    for (SegmentString ss in segStrings) {
+      _extractSegments(ss, segList);
     }
     return segList;
   }
-  
- /**private */static void extractSegments(SegmentString ss, List<SegmentString> segList) {
+
+  /**private */ static void _extractSegments(
+      SegmentString ss, List<SegmentString> segList) {
     for (int i = 0; i < ss.size() - 1; i++) {
       Coordinate p0 = ss.getCoordinate(i);
       Coordinate p1 = ss.getCoordinate(i + 1);
-      SegmentString seg = new BasicSegmentString(new List<Coordinate> { p0, p1 }, ss.getData());
+      SegmentString seg = new BasicSegmentString(
+          new List<Coordinate>.from([p0, p1], growable: false), ss.getData());
       segList.add(seg);
     }
   }
 
-  @Override
-  Collection getNodedSubstrings() {
+  @override
+  Iterable<SegmentString> getNodedSubstrings() {
     return segList;
   }
-
 }

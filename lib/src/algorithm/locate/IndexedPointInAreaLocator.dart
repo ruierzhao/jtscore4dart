@@ -28,8 +28,6 @@
 // import org.locationtech.jts.index.ItemVisitor;
 // import org.locationtech.jts.index.intervalrtree.SortedPackedIntervalRTree;
 
-
-
 import 'dart:math';
 
 import 'package:jtscore4dart/geometry.dart';
@@ -69,8 +67,8 @@ class IndexedPointInAreaLocator implements PointOnGeometryLocator
  /**private volatile*/ IntervalIndexedGeometry? index = null;
   
   /**
-   * Creates a new locator for a given {@link Geometry}.
-   * Geometries containing {@link Polygon}s and {@link LinearRing} geometries
+   * Creates a new locator for a given {@link [Geometry]}.
+   * Geometries containing {@link Polygon}s and {@link [LinearRing]} geometries
    * are supported.
    * 
    * @param [g] the Geometry to locate in
@@ -80,14 +78,14 @@ class IndexedPointInAreaLocator implements PointOnGeometryLocator
   /**
    * Determines the {@link Location} of a point in an areal {@link Geometry}.
    * 
-   * @param p the point to test
+   * @param [p] the point to test
    * @return the location of the point in the geometry  
    */
   @override
   int locate(Coordinate p)
   {
     // avoid calling synchronized method improves performance
-    if (index == null) createIndex();
+    if (index == null) _createIndex();
     
     RayCrossingCounter rcc = new RayCrossingCounter(p);
     
@@ -107,7 +105,7 @@ class IndexedPointInAreaLocator implements PointOnGeometryLocator
    * Creates the indexed geometry, creating it if necessary.
    */
  /**private synchronized*/ 
-  void createIndex() {
+  void _createIndex() {
     // ignore: unnecessary_new, prefer_conditional_assignment
     if (index == null) {
       index = new IntervalIndexedGeometry(geom);
@@ -119,7 +117,8 @@ class IndexedPointInAreaLocator implements PointOnGeometryLocator
 
 }
 
-/**private static */ class SegmentVisitor implements ItemVisitor
+/**private static */ 
+class SegmentVisitor implements ItemVisitor
 {
   /**private */final RayCrossingCounter counter;
   
@@ -133,10 +132,11 @@ class IndexedPointInAreaLocator implements PointOnGeometryLocator
   }
 }
 
-/**private static */ class IntervalIndexedGeometry
+/**private static */ 
+class IntervalIndexedGeometry
 {
   /**private */late final bool isEmpty;
-  /**private */final SortedPackedIntervalRTree index= new SortedPackedIntervalRTree();
+  /**private */final SortedPackedIntervalRTree index= SortedPackedIntervalRTree();
 
   IntervalIndexedGeometry(Geometry geom)
   {
@@ -164,7 +164,8 @@ class IndexedPointInAreaLocator implements PointOnGeometryLocator
     }
   }
   
-  /**private */void addLine(List<Coordinate> pts)
+  /**private */
+  void addLine(List<Coordinate> pts)
   {
     for (int i = 1; i < pts.length; i++) {
       LineSegment seg = new LineSegment(pts[i-1], pts[i]);

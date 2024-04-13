@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.algorithm.locate.IndexedPointInAreaLocator;
 // import org.locationtech.jts.algorithm.locate.PointOnGeometryLocator;
 // import org.locationtech.jts.geom.Coordinate;
@@ -32,33 +31,32 @@ import 'package:jtscore4dart/src/geom/Location.dart';
  *
  */
 class InputGeometry {
-  
   //private static final PointLocator ptLocator = new PointLocator();
 
- /**private */List<Geometry?> geom;
- /**private */PointOnGeometryLocator? ptLocatorA;
- /**private */PointOnGeometryLocator? ptLocatorB;
+  /**private */ List<Geometry?> geom;
+  /**private */ PointOnGeometryLocator? ptLocatorA;
+  /**private */ PointOnGeometryLocator? ptLocatorB;
 //  /**private */List<bool> isCollapsed = new bool[2];
- /**private */List<bool> isCollapsed = List.filled(2, false, growable: false);
-  
-  InputGeometry(Geometry? geomA, Geometry? geomB) :
-    geom = List.from([geomA, geomB],growable: false);
+  /**private */ List<bool> isCollapsed = List.filled(2, false, growable: false);
+
+  InputGeometry(Geometry? geomA, Geometry? geomB)
+      : geom = List.from([geomA, geomB], growable: false);
 
   // InputGeometry(Geometry geomA, Geometry geomB) {
   //   geom = new List<Geometry> { geomA, geomB };
   // }
-  
+
   bool isSingle() {
     return geom[1] == null;
   }
-  
+
   int getDimension(int index) {
     if (geom[index] == null) return -1;
     return geom[index]!.getDimension();
   }
 
-  Geometry? getGeometry(int geomIndex) {
-    return geom[geomIndex];
+  Geometry getGeometry(int geomIndex) {
+    return geom[geomIndex]!;
   }
 
   Envelope getEnvelope(int geomIndex) {
@@ -68,11 +66,11 @@ class InputGeometry {
   bool isEmpty(int geomIndex) {
     return geom[geomIndex]!.isEmpty();
   }
-  
+
   bool isArea(int geomIndex) {
     return geom[geomIndex] != null && geom[geomIndex]!.getDimension() == 2;
   }
-  
+
   /**
    * Gets the index of an input which is an area,
    * if one exists.
@@ -86,78 +84,73 @@ class InputGeometry {
     if (getDimension(1) == 2) return 1;
     return -1;
   }
-  
+
   bool isLine(int geomIndex) {
     return getDimension(geomIndex) == 1;
   }
 
   bool isAllPoints() {
-    return getDimension(0) == 0 
-        && geom[1] != null && getDimension(1) == 0;
+    return getDimension(0) == 0 && geom[1] != null && getDimension(1) == 0;
   }
-  
+
   bool hasPoints() {
     return getDimension(0) == 0 || getDimension(1) == 0;
   }
-  
+
   /**
    * Tests if an input geometry has edges.
    * This indicates that topology needs to be computed for them.
    * 
-   * @param geomIndex
+   * @param [geomIndex]
    * @return true if the input geometry has edges
    */
   bool hasEdges(int geomIndex) {
     return geom[geomIndex] != null && geom[geomIndex]!.getDimension() > 0;
   }
-  
+
   /**
    * Determines the location within an area geometry.
    * This allows disconnected edges to be fully 
    * located.  
    * 
-   * @param geomIndex the index of the geometry
-   * @param pt the coordinate to locate
+   * @param [geomIndex] the index of the geometry
+   * @param [pt] the coordinate to locate
    * @return the location of the coordinate
    * 
    * @see Location
    */
   int locatePointInArea(int geomIndex, Coordinate pt) {
     // Assert: only called if dimension(geomIndex) = 2
-    
-    if ( isCollapsed[geomIndex]) {
+
+    if (isCollapsed[geomIndex]) {
       return Location.EXTERIOR;
     }
 
-    
     //return ptLocator.locate(pt, geom[geomIndex]);
-    
+
     //*
     // this check is required because IndexedPointInAreaLocator can't handle empty polygons
-    if (getGeometry(geomIndex)!.isEmpty()  
-        || isCollapsed[geomIndex]) {
+    if (getGeometry(geomIndex).isEmpty() || isCollapsed[geomIndex]) {
       return Location.EXTERIOR;
     }
-    
+
     PointOnGeometryLocator ptLocator = getLocator(geomIndex);
     return ptLocator.locate(pt);
     //*/
   }
 
- /**private */PointOnGeometryLocator getLocator(int geomIndex) {
+  /**private */
+  PointOnGeometryLocator getLocator(int geomIndex) {
     if (geomIndex == 0) {
-      ptLocatorA ??= new IndexedPointInAreaLocator(getGeometry(geomIndex)!);
+      ptLocatorA ??= new IndexedPointInAreaLocator(getGeometry(geomIndex));
       return ptLocatorA!;
-    }
-    else {
-      ptLocatorB ??= new IndexedPointInAreaLocator(getGeometry(geomIndex)!);
+    } else {
+      ptLocatorB ??= new IndexedPointInAreaLocator(getGeometry(geomIndex));
       return ptLocatorB!;
-    } 
+    }
   }
 
   void setCollapsed(int geomIndex, bool isGeomCollapsed) {
     isCollapsed[geomIndex] = isGeomCollapsed;
   }
-
-
 }

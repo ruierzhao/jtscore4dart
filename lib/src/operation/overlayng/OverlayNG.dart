@@ -68,7 +68,7 @@ import 'PolygonBuilder.dart';
  * </ul>
  * Input geometries may have different dimension.  
  * Input collections must be homogeneous (all elements must have the same dimension).
- * Inputs may be <b>simple</b> {@link GeometryCollection}s.
+ * Inputs may be <b>simple</b> {@link [GeometryCollection]}s.
  * A GeometryCollection is simple if it can be flattened into a valid Multi-geometry;
  * i.e. it is homogeneous and does not contain any overlapping Polygons.  
  * <p>
@@ -85,12 +85,12 @@ import 'PolygonBuilder.dart';
  * <p>
  * For floating precision an {@link [MCIndexNoder]} is used. 
  * This is not fully robust, so can sometimes result in 
- * {@link TopologyException}s being thrown. 
- * For robust full-precision overlay see {@link OverlayNGRobust}.</p>
+ * {@link [TopologyException]}s being thrown. 
+ * For robust full-precision overlay see {@link [OverlayNGRobust]}.</p>
  * <p>
- * A custom {@link Noder} can be supplied.
+ * A custom {@link [Noder]} can be supplied.
  * This allows using a more performant noding strategy in specific cases, 
- * for instance in {@link CoverageUnion}.</p>
+ * for instance in {@link [CoverageUnion]}.</p>
  * <p>
  * <b>Note:</b If a {@link [SnappingNoder]} is used 
  * it is best to specify a fairly small snap tolerance,
@@ -121,11 +121,11 @@ import 'PolygonBuilder.dart';
  * If a robustness error occurs, a {@link TopologyException} is thrown.
  * These are usually caused by numerical rounding causing the noding output
  * to not be fully noded.
- * For robust computation with full-precision {@link OverlayNGRobust} can be used.</p>
+ * For robust computation with full-precision {@link [OverlayNGRobust]} can be used.</p>
  * 
  * @author mdavis
  * 
- * @see OverlayNGRobust
+ * @see [OverlayNGRobust]
  *
  */
 class OverlayNG 
@@ -229,9 +229,9 @@ class OverlayNG
    * @param pm the precision model to use
    * @return the result of the overlay operation
    */
-  static Geometry overlay(Geometry geom0, Geometry geom1, int opCode, PrecisionModel pm)
+  static Geometry overlayWithPM(Geometry geom0, Geometry geom1, int opCode, PrecisionModel pm)
   {
-    OverlayNG ov = new OverlayNG(geom0, geom1, pm, opCode);
+    OverlayNG ov = new OverlayNG(geom0, geom1, opCode, pm);
     Geometry geomOv = ov.getResult();
     return geomOv;
   }
@@ -247,10 +247,10 @@ class OverlayNG
    * @param [noder] the noder to use
    * @return the result of the overlay operation
    */
-  static Geometry overlay(Geometry geom0, Geometry geom1, 
+  static Geometry overlayWithNoderPM(Geometry geom0, Geometry geom1, 
       int opCode, PrecisionModel pm, Noder noder)
   {
-    OverlayNG ov = new OverlayNG(geom0, geom1, pm, opCode);
+    OverlayNG ov = new OverlayNG(geom0, geom1, opCode, pm);
     ov.setNoder(noder);
     Geometry geomOv = ov.getResult();
     return geomOv;
@@ -260,15 +260,15 @@ class OverlayNG
    * Computes an overlay operation on the given geometry operands, 
    * using a supplied {@link Noder}.
    * 
-   * @param geom0 the first geometry argument
-   * @param geom1 the second geometry argument
-   * @param opCode the code for the desired overlay operation
-   * @param noder the noder to use
+   * @param [geom0] the first geometry argument
+   * @param [geom1] the second geometry argument
+   * @param [opCode] the code for the desired overlay operation
+   * @param [noder] the noder to use
    * @return the result of the overlay operation
    */
-  static Geometry overlay(Geometry geom0, Geometry geom1, int opCode, Noder noder)
+  static Geometry overlayWithNoder(Geometry geom0, Geometry geom1, int opCode, Noder noder)
   {
-    OverlayNG ov = new OverlayNG(geom0, geom1, null, opCode);
+    OverlayNG ov = new OverlayNG(geom0, geom1, opCode);
     ov.setNoder(noder);
     Geometry geomOv = ov.getResult();
     return geomOv;
@@ -319,12 +319,12 @@ class OverlayNG
    * 
    * @see OverlayMixedPoints
    */
-  static Geometry union(Geometry geom, PrecisionModel pm)
-  {    
-    OverlayNG ov = new OverlayNG(geom, pm);
-    Geometry geomOv = ov.getResult();
-    return geomOv;
-  }
+  // static Geometry union(Geometry geom, PrecisionModel pm)
+  // {    
+  //   OverlayNG ov = new OverlayNG(geom, pm);
+  //   Geometry geomOv = ov.getResult();
+  //   return geomOv;
+  // }
 
   /**
    * Computes a union of a single geometry using a custom noder.
@@ -339,11 +339,13 @@ class OverlayNG
    * 
    * @see CoverageUnion
    */
-  static Geometry union(Geometry geom, PrecisionModel pm, Noder noder)
+  static Geometry union(Geometry geom, PrecisionModel pm, [Noder? noder])
   {    
-    OverlayNG ov = new OverlayNG(geom, pm);
-    ov.setNoder(noder);
-    ov.setStrictMode(true);
+    OverlayNG ov = new OverlayNG.PM(geom, pm);
+    if(noder != null){
+      ov.setNoder(noder);
+      ov.setStrictMode(true);
+    }
     Geometry geomOv = ov.getResult();
     return geomOv;
   }
@@ -351,8 +353,8 @@ class OverlayNG
  /**private */int opCode;
  /**private */InputGeometry inputGeom;
  /**private */GeometryFactory geomFact;
- /**private */PrecisionModel pm;
- /**private */Noder noder;
+ /**private */late PrecisionModel pm;
+ /**private */Noder? noder;
  /**private */bool isStrictMode = STRICT_MODE_DEFAULT;
  /**private */bool isOptimized = true;
  /**private */bool isAreaResultOnly = false;
@@ -370,11 +372,15 @@ class OverlayNG
    * @param [pm] the precision model to use
    * @param [opCode] the overlay opcode
    */
-  OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, int opCode) {
-    this.pm = pm;
-    this.opCode = opCode;
-    geomFact = geom0.getFactory();
-    inputGeom = new InputGeometry( geom0, geom1 );
+  OverlayNG(Geometry geom0, Geometry? geom1,  this.opCode, [PrecisionModel? pm]) 
+  :
+    geomFact = geom0.getFactory(),
+    inputGeom = new InputGeometry( geom0, geom1 )
+  {
+    this.pm = pm??geom0.getFactory().getPrecisionModel();
+    // if (geom1 == null) {
+    //   this.opCode = UNION;
+    // }
   }  
   
   /**
@@ -391,13 +397,13 @@ class OverlayNG
    * If errors occur a {@link TopologyException} is thrown.
    * </ul>
    *  
-   * @param geom0 the A operand geometry
-   * @param geom1 the B operand geometry (may be null)
-   * @param opCode the overlay opcode
+   * @param [geom0] the A operand geometry
+   * @param [geom1] the B operand geometry (may be null)
+   * @param [opCode] the overlay opcode
    */
-  OverlayNG(Geometry geom0, Geometry geom1, int opCode) {
-    this(geom0, geom1, geom0.getFactory().getPrecisionModel(), opCode);
-  }  
+  // OverlayNG(Geometry geom0, Geometry geom1, int opCode) {
+  //   this(geom0, geom1, geom0.getFactory().getPrecisionModel(), opCode);
+  // }  
   
   /**
    * Creates a union of a single geometry with a given precision model.
@@ -405,9 +411,11 @@ class OverlayNG
    * @param geom the geometry
    * @param pm the precision model to use
    */
-  OverlayNG(Geometry geom, PrecisionModel pm) {
-    this(geom, null, pm, UNION);
-  }  
+  OverlayNG.PM(Geometry geom, PrecisionModel pm) :
+    this(geom, null, UNION, pm);
+  /// alias of OverlayNG.PM
+  OverlayNG.Union(Geometry geom, PrecisionModel pm) :
+    this(geom, null, UNION, pm);
   
   /**
    * Sets whether the overlay results are computed according to strict mode
@@ -499,13 +507,13 @@ class OverlayNG
       // handle Point-Point inputs
       result = OverlayPoints.overlay(opCode, inputGeom.getGeometry(0), inputGeom.getGeometry(1), pm);
     }
-    else if (! inputGeom.isSingle() &&  inputGeom.hasPoints()) {
+    else if (!inputGeom.isSingle() &&  inputGeom.hasPoints()) {
       // handle Point-nonPoint inputs 
       result = OverlayMixedPoints.overlay(opCode, inputGeom.getGeometry(0), inputGeom.getGeometry(1), pm);
     }
     else {
       // handle case where both inputs are formed of edges (Lines and Polygons)
-      result = computeEdgeOverlay();
+      result = _computeEdgeOverlay();
     }
     /**
      * This is a no-op if the elevation model was not computed due to Z not present
@@ -514,7 +522,9 @@ class OverlayNG
     return result;
   }
   
- /**private */Geometry computeEdgeOverlay() 
+  /// handle line and polygon
+  /// both inputs are formed of edges
+  Geometry _computeEdgeOverlay() 
   {
     
     List<Edge> edges = nodeEdges();
@@ -614,14 +624,15 @@ class OverlayNG
    * @param graph the topology graph
    * @return the result geometry
    */
- /**private */Geometry extractResult(int opCode, OverlayGraph graph) {
+  /**private */
+  Geometry extractResult(int opCode, OverlayGraph graph) {
     bool isAllowMixedIntResult = ! isStrictMode;
     
     //--- Build polygons
     List<OverlayEdge> resultAreaEdges = graph.getResultAreaEdges();
     PolygonBuilder polyBuilder = new PolygonBuilder(resultAreaEdges, geomFact);
     List<Polygon> resultPolyList = polyBuilder.getPolygons();
-    bool hasResultAreaComponents = resultPolyList.size() > 0;
+    bool hasResultAreaComponents = resultPolyList.length > 0;
     
     List<LineString> resultLineList = null;
     List<Point> resultPointList = null;

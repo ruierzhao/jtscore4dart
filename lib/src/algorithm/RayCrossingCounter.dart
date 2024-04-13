@@ -116,8 +116,8 @@ class RayCrossingCounter
 	/**
 	 * Counts a segment
 	 * 
-	 * @param p1 an endpoint of the segment
-	 * @param p2 another endpoint of the segment
+	 * @param [p1] an endpoint of the segment
+	 * @param [p2] another endpoint of the segment
 	 */
 	void countSegment(Coordinate p1, Coordinate p2) {
 		/**

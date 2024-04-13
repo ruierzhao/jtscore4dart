@@ -49,8 +49,8 @@ abstract class CoordinateSequenceFilter
 {
   /// Performs an operation on a coordinate in a {@link CoordinateSequence}.
   ///
-  ///@param seq  the <code>CoordinateSequence</code> to which the filter is applied
-  ///@param i the index of the coordinate to apply the filter to
+  ///@param [seq]  the <code>CoordinateSequence</code> to which the filter is applied
+  ///@param [i] the index of the coordinate to apply the filter to
   void filter(CoordinateSequence seq, int i);
   
   /// Reports whether the application of this filter can be terminated.

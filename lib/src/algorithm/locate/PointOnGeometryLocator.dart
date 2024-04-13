@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.geom.Location;
@@ -23,13 +22,12 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
  * 
  * @author Martin Davis
  */
-abstract class PointOnGeometryLocator 
-{
+abstract class PointOnGeometryLocator {
   /**
-   * Determines the {@link Location} of a point in the {@link Geometry}.
+   * Determines the {@link [Location]} of a point in the {@link Geometry}.
    * 
-   * @param p the point to test
+   * @param [p] the point to test
    * @return the location of the point in the geometry  
    */
-	int locate(Coordinate p);
+  int locate(Coordinate p);
 }

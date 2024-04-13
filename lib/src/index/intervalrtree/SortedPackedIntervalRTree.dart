@@ -10,13 +10,11 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.Collections;
 // import java.util.List;
 
 // import org.locationtech.jts.index.ItemVisitor;
-
 
 import 'package:jtscore4dart/src/index/ItemVisitor.dart';
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
@@ -40,105 +38,101 @@ import 'IntervalRTreeNode.dart';
  * 
  * @author Martin Davis
  */
-class SortedPackedIntervalRTree 
-{
- /**private */final List<IntervalRTreeNode> leaves = [];
-  
+class SortedPackedIntervalRTree {
+  /**private */ final List<IntervalRTreeNode> leaves = [];
+
   /**
    * If root is null that indicates
    * that the tree has not yet been built,   
    * OR nothing has been added to the tree.
    * In both cases, the tree is still open for insertions.
    */
-	/**private volatile */ IntervalRTreeNode? root = null;
+  /**private volatile */ IntervalRTreeNode? root = null;
 
-	// SortedPackedIntervalRTree()
-	// {
-		
-	// }
-	
+  // SortedPackedIntervalRTree()
+  // {
+
+  // }
+
   /**
    * Adds an item to the index which is associated with the given interval
    * 
-   * @param min the lower bound of the item interval
-   * @param max the upper bound of the item interval
-   * @param item the item to insert
+   * @param [min] the lower bound of the item interval
+   * @param [max] the upper bound of the item interval
+   * @param [item] the item to insert
    * 
-   * @throws IllegalStateException if the index has already been queried
+   * @throws [IllegalStateException] if the index has already been queried
    */
-	void insert(double min, double max, Object item)
-	{
+  void insert(double min, double max, Object item) {
     if (root != null) {
-      throw new Exception("IllegalStateException: Index cannot be added to once it has been queried");
+      throw new Exception(
+          "IllegalStateException: Index cannot be added to once it has been queried");
     }
     leaves.add(new IntervalRTreeLeafNode(min, max, item));
-	}
-	
- /**private synchronized */ void init()
-  {
+  }
+
+  /**private synchronized */
+  void init() {
     // already built
     if (root != null) return;
-    
+
     /**
      * if leaves is empty then nothing has been inserted.
      * In this case it is safe to leave the tree in an open state
      */
     if (leaves.isEmpty) return;
-    
+
     buildRoot();
   }
-  
- /**private */void buildRoot()
-  {
+
+  /**private */ void buildRoot() {
     if (root != null) return;
     root = buildTree();
   }
-  
-	/**private */ IntervalRTreeNode buildTree()
-	{
-	  
+
+  /**private */
+  IntervalRTreeNode buildTree() {
     // sort the leaf nodes
     // Collections.sort(leaves, new IntervalRTreeNode.NodeComparator());
-    leaves.sort( IntervalRTreeNode.NodeComparator);
-    
+    leaves.sort(IntervalRTreeNode.NodeComparator);
+
     // now group nodes into blocks of two and build tree up recursively
-		List src = leaves;
-		List? temp = null;
-		List dest = [];
-		
-		while (true) {
-			buildLevel(src, dest);
-			if (dest.size() == 1) {
-			  return dest.get(0) as IntervalRTreeNode;
-			}
-      
-			temp = src;
-			src = dest;
-			dest = temp;
-		}
-	}
+    List src = leaves;
+    List? temp = null;
+    List dest = [];
+
+    while (true) {
+      buildLevel(src, dest);
+      if (dest.size() == 1) {
+        return dest.get(0) as IntervalRTreeNode;
+      }
+
+      temp = src;
+      src = dest;
+      dest = temp;
+    }
+  }
 
   //private int level = 0;
 
-	/**private */ void buildLevel(List src, List dest) 
-  {
+  /**private */
+  void buildLevel(List src, List dest) {
     //level++;
-		dest.clear();
-		for (int i = 0; i < src.size(); i += 2) {
-			IntervalRTreeNode n1 = src.get(i) as IntervalRTreeNode;
-			IntervalRTreeNode? n2 = (i + 1 < src.size()) ? src.get(i) : null;
-			if (n2 == null) {
-				dest.add(n1);
-			} else {
-				IntervalRTreeNode node = new IntervalRTreeBranchNode(
-						src.get(i),
-						src.get(i + 1));
+    dest.clear();
+    for (int i = 0; i < src.size(); i += 2) {
+      IntervalRTreeNode n1 = src.get(i) as IntervalRTreeNode;
+      IntervalRTreeNode? n2 = (i + 1 < src.size()) ? src.get(i) : null;
+      if (n2 == null) {
+        dest.add(n1);
+      } else {
+        IntervalRTreeNode node =
+            new IntervalRTreeBranchNode(src.get(i), src.get(i + 1));
 //        printNode(node);
 //				System.out.println(node);
-				dest.add(node);
-			}
-		}
-	}
+        dest.add(node);
+      }
+    }
+  }
 
   ///**private */void printNode(IntervalRTreeNode node)
   // {
@@ -153,16 +147,14 @@ class SortedPackedIntervalRTree
    * @param max the upper bound of the query interval
    * @param visitor the visitor to pass any matched items to
    */
-	void queryByVisitor(double min, double max, ItemVisitor visitor)
-	{
+  void queryByVisitor(double min, double max, ItemVisitor visitor) {
     init();
-    
+
     // if root is null tree must be empty
     if (root == null) {
       return;
     }
-    
-		root!.queryByVisitor(min, max, visitor);
-	}
-  
+
+    root!.queryByVisitor(min, max, visitor);
+  }
 }

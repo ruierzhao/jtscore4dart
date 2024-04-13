@@ -137,9 +137,9 @@ class OverlayUtil {
     return safeEnv;
   }
   
- /**private */static final double SAFE_ENV_BUFFER_FACTOR = 0.1;
+ /**private */static const double SAFE_ENV_BUFFER_FACTOR = 0.1;
 
- /**private */static final int SAFE_ENV_GRID_FACTOR = 3;
+ /**private */static const int SAFE_ENV_GRID_FACTOR = 3;
 
  /**private */static double safeExpandDistance(Envelope env, PrecisionModel pm) {
     double envExpandDist;
@@ -167,8 +167,8 @@ class OverlayUtil {
    * (such as whether one or both are empty, 
    * or their envelopes are disjoint).
    * 
-   * @param opCode the overlay operation
-   * @param inputGeom the input geometries
+   * @param [opCode] the overlay operation
+   * @param [inputGeom] the input geometries
    * @return true if the overlay result is determined to be empty
    */
   static bool isEmptyResult(int opCode, Geometry a, Geometry b, PrecisionModel pm) {

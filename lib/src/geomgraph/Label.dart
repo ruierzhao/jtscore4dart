@@ -20,6 +20,9 @@ import 'package:jtscore4dart/src/geom/Position.dart';
 import 'TopologyLocation.dart';
 
 /**
+ * 收集拓扑关系
+ * 支持存储二元拓扑操作信息
+ * 
  * A <code>Label</code> indicates the topological relationship of a component
  * of a topology graph to a given <code>Geometry</code>.
  * 
@@ -32,6 +35,7 @@ import 'TopologyLocation.dart';
  * are required for only two geometries).  A label for a node or edge has one or
  * two elements, depending on whether the node or edge occurs in one or both of the
  * input <code>Geometry</code>s.  
+ * 
  * 拓扑图形支持label 的node 和 edge 
  * label 的node 或者 edge 指明和另一个或两个geometry 的拓扑关系
  * 
@@ -73,7 +77,7 @@ class Label {
    * @param onLoc On location
    */
   Label(int onLoc)
-    :this.elt = List.filled(2, TopologyLocation.On(onLoc),growable: false);
+    :this.elt = List.filled(2, TopologyLocation.On(onLoc), growable: false);
   // Label(int onLoc)
   // {
   //   elt[0] = new TopologyLocation.On(onLoc);
@@ -116,10 +120,10 @@ class Label {
    * Construct a Label with On, Left and Right locations for both Geometries.
    * Initialize the locations for the given Geometry index.
    *
-   * @param geomIndex Geometry index
-   * @param onLoc On location
-   * @param rightLoc Right location
-   * @param leftLoc Left location
+   * @param [geomIndex] Geometry index
+   * @param [onLoc] On location
+   * @param [rightLoc] Right location
+   * @param [leftLoc] Left location
    */
   Label.GeomFrom3(int geomIndex, int onLoc, int leftLoc, int rightLoc)
     :this.elt = List.filled(2, TopologyLocation.From3(Location.NONE, Location.NONE, Location.NONE),growable: false)
@@ -179,6 +183,8 @@ s   */
   {
     for (int i = 0; i < 2; i++) {
       if (elt[i] == null && lbl.elt[i] != null) {
+        /// TODO: @ruier edit.never to here.. 
+        print('>>>>>>>>> never to here.. if you haven see this, please tell me.... <<<<<<<<<<<<<<<<<<<<');
         elt[i] = new TopologyLocation.FromAnother(lbl.elt[i]);
       }
       else {

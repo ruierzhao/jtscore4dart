@@ -176,14 +176,14 @@ class OverlayOp extends GeometryGraphOperation {
    * @param g1 the second geometry argument
    */
   OverlayOp(Geometry g0, Geometry g1)
-      : graph = new PlanarGraph(new OverlayNodeFactory()),
-        /**
+    : graph = new PlanarGraph(new OverlayNodeFactory()),
+      /**
      * Use factory of primary geometry.
      * Note that this does NOT handle mixed-precision arguments
      * where the second arg has greater precision than the first.
      */
-        geomFact = g0.getFactory(),
-        super(g0, g1);
+      geomFact = g0.getFactory(),
+      super(g0, g1);
 
   /**
    * Gets the result of the overlay for a given overlay operation.
@@ -195,7 +195,7 @@ class OverlayOp extends GeometryGraphOperation {
    * @throws TopologyException if a robustness problem is encountered
    */
   Geometry getResultGeometry(int overlayOpCode) {
-    computeOverlay(overlayOpCode);
+    _computeOverlay(overlayOpCode);
     return resultGeom!;
   }
 
@@ -208,7 +208,8 @@ class OverlayOp extends GeometryGraphOperation {
     return graph;
   }
 
-  /**private */ void computeOverlay(int opCode) {
+  void _computeOverlay(int opCode) {
+    print('>>>>>>>>> graph: ${ graph } <<<<<<<<<<<<<<<<<<<<');
     // copy points from input Geometries.
     // This ensures that any Point geometries
     // in the input are considered for inclusion in the result set
@@ -232,7 +233,7 @@ class OverlayOp extends GeometryGraphOperation {
     computeLabelsFromDepths();
     replaceCollapsedEdges();
 
-//Debug.println(edgeList);
+    //Debug.println(edgeList);
 
     /**
      * Check that the noding completed correctly.
@@ -248,10 +249,10 @@ class OverlayOp extends GeometryGraphOperation {
 
     graph.addEdges(edgeList.getEdges());
     computeLabelling();
-//Debug.printWatch();
+    //Debug.printWatch();
     labelIncompleteNodes();
-//Debug.printWatch();
-//nodeMap.print(System.out);
+    //Debug.printWatch();
+    //nodeMap.print(System.out);
 
     /**
      * The ordering of building the result Geometries is important.
@@ -422,9 +423,9 @@ class OverlayOp extends GeometryGraphOperation {
 //     edgeList.addAll(newEdges);
 //   }
   void replaceCollapsedEdges() {
-    List<Edge>_edges = edgeList.getEdges();
+    List<Edge> _edges = edgeList.getEdges();
     List<Edge> newEdges = List.from(_edges, growable: false);
-    
+
     for (Iterator it = edgeList.iterator(); it.moveNext();) {
       Edge e = it.current;
       if (e.isCollapsed()) {
@@ -432,7 +433,9 @@ class OverlayOp extends GeometryGraphOperation {
         newEdges.add(e.getCollapsedEdge());
       }
     }
-    edgeList..clear()..addAll(newEdges);
+    edgeList
+      ..clear()
+      ..addAll(newEdges);
   }
 
   /**
@@ -448,7 +451,8 @@ class OverlayOp extends GeometryGraphOperation {
     for (Iterator i = arg[argIndex].getNodeIterator(); i.moveNext();) {
       Node graphNode = i.current;
       Node newNode = graph.addNodeCoord(graphNode.getCoordinate());
-      newNode.setLabelLocation(argIndex, graphNode.getLabel().getLocation(argIndex));
+      newNode.setLabelLocation(
+          argIndex, graphNode.getLabel().getLocation(argIndex));
     }
   }
 
@@ -625,8 +629,11 @@ class OverlayOp extends GeometryGraphOperation {
     return false;
   }
 
-  /**private */ Geometry computeGeometry(List<Point> resultPointList,
-      List<LineString> resultLineList, List<Polygon> resultPolyList, int opcode) {
+  /**private */ Geometry computeGeometry(
+      List<Point> resultPointList,
+      List<LineString> resultLineList,
+      List<Polygon> resultPolyList,
+      int opcode) {
     List<Geometry> geomList = [];
     // element geometries of the result are always in the order P,L,A
     geomList.addAll(resultPointList);

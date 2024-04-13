@@ -17,7 +17,6 @@ import "dart:math";
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequenceFactory.dart';
-import 'package:jtscore4dart/src/io/OrdinateFormat.dart';
 
 /// Utility functions for manipulating {@link CoordinateSequence}s
 ///

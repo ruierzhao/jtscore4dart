@@ -134,13 +134,13 @@ abstract class EdgeEndStar {
     computeEdgeEndLabels(geomGraph[0].getBoundaryNodeRule());
     // Propagate side labels  around the edges in the star
     // for each parent Geometry
-//Debug.print(this);
+    //Debug.print(this);
     propagateSideLabels(0);
-//Debug.print(this);
-//Debug.printIfWatch(this);
+    //Debug.print(this);
+    //Debug.printIfWatch(this);
     propagateSideLabels(1);
-//Debug.print(this);
-//Debug.printIfWatch(this);
+    //Debug.print(this);
+    //Debug.printIfWatch(this);
 
     /**
      * If there are edges that still have null labels for a geometry
@@ -183,11 +183,11 @@ abstract class EdgeEndStar {
         }
       }
     }
-//Debug.print(this);
+    //Debug.print(this);
     for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd e = it.current as EdgeEnd;
       Label label = e.getLabel()!;
-//Debug.println(e);
+      //Debug.println(e);
       for (int geomi = 0; geomi < 2; geomi++) {
         if (label.isAnyNull(geomi)) {
           int loc = Location.NONE;
@@ -200,10 +200,10 @@ abstract class EdgeEndStar {
           label.setAllLocationsIfNullGeom(geomi, loc);
         }
       }
-//Debug.println(e);
+    //Debug.println(e);
     }
-//Debug.print(this);
-//Debug.printIfWatch(this);
+    //Debug.print(this);
+    //Debug.printIfWatch(this);
   }
 
   /**private */ void computeEdgeEndLabels(BoundaryNodeRule boundaryNodeRule) {
@@ -277,7 +277,7 @@ abstract class EdgeEndStar {
     //System.out.println("finding start location");
     for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd e = it.current as EdgeEnd;
-      print('>>>>>>>>> ${ e } <<<<<<<<<<<<<<<<<<<<');
+      print('>>>>>>>>> ${e} <<<<<<<<<<<<<<<<<<<<');
       Label label = e.getLabel()!;
       if (label.isArea(geomIndex) &&
           label.getLocation(geomIndex, Position.LEFT) != Location.NONE) {
@@ -305,9 +305,10 @@ abstract class EdgeEndStar {
           // print(rightLoc);
           // print( currLoc);
           if (rightLoc != currLoc) {
-            /// TODO: @ruier edit.
-            // throw new TopologyException("side location conflict", e.getCoordinate());
-            throw new Exception("side location conflict ${e.getCoordinate()}");
+            /// TODO: @ruier edit.bugs。。。。
+            throw new TopologyException(
+                "side location conflict", e.getCoordinate());
+            // throw new Exception("side location conflict ${e.getCoordinate()}");
           }
           if (leftLoc == Location.NONE) {
             Assert.shouldNeverReachHere(

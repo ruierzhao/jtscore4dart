@@ -46,7 +46,7 @@ import 'UnionStrategy.dart';
 
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
 
-// ignore: camel_case_types
+
 class _ implements UnionStrategy {
     @override
     Geometry union(Geometry g0, Geometry g1) {
@@ -155,10 +155,10 @@ class CascadedPolygonUnion
   //   this.countRemainder = countInput;
   // }
    CascadedPolygonUnion(this.inputPolys, [UnionStrategy? unionFun])
-   :this.unionFun = (unionFun??= CLASSIC_UNION),
-    // this.countInput = inputPolys.size();
-    this.countInput = inputPolys!.length,
-    this.countRemainder = inputPolys.length;
+    :this.unionFun = (unionFun??= CLASSIC_UNION),
+      // this.countInput = inputPolys.size();
+      this.countInput = inputPolys!.length,
+      this.countRemainder = inputPolys.length;
   
   /**
    * The effectiveness of the index is somewhat sensitive
@@ -191,7 +191,11 @@ class CascadedPolygonUnion
 		if (inputPolys!.isEmpty) {
 		  return null;
 		}
-		geomFactory = ( inputPolys!.iterator.current as Geometry).getFactory();
+		// geomFactory = ( inputPolys!.iterator.current as Geometry).getFactory();
+    print('>>>>>>>>> ${ inputPolys!.iterator.current  == null} <<<<<<<<<<<<<<<<<<<<');
+    var it = inputPolys!.iterator;
+    it.moveNext();
+		geomFactory = ( it.current as Geometry).getFactory();
 
 		/**
 		 * A spatial index to organize the collection

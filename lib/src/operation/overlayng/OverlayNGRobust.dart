@@ -141,7 +141,7 @@ class OverlayNGRobust
    */
   static Geometry overlay(Geometry geom0, Geometry geom1, int opCode)
   {
-    Geometry result;
+    Geometry? result;
     // RuntimeException exOriginal;
     /// TODO: @ruier edit.
     Exception exOriginal;
@@ -197,7 +197,8 @@ class OverlayNGRobust
    * @param opCode
    * @return the computed overlay result, or null if the overlay fails
    */
- /**private */static Geometry overlaySnapTries(Geometry geom0, Geometry geom1, int opCode) {
+  /**private */
+  static Geometry? overlaySnapTries(Geometry geom0, Geometry geom1, int opCode) {
     Geometry result;
     double snapTol = snapTolerance(geom0, geom1);
     

@@ -548,7 +548,8 @@ class OverlayNG
     return result;
   }
 
- /**private */List<Edge> nodeEdges() {
+ /**private */
+  List<Edge> nodeEdges() {
     /**
      * Node the edges, using whatever noder is being used
      */
@@ -559,7 +560,7 @@ class OverlayNG
      * result extent, if enabled.
      */
     if ( isOptimized ) {
-      Envelope clipEnv = OverlayUtil.clippingEnvelope(opCode, inputGeom, pm);
+      Envelope? clipEnv = OverlayUtil.clippingEnvelope(opCode, inputGeom, pm);
       if (clipEnv != null) {
         nodingBuilder.setClipEnvelope( clipEnv );
       }

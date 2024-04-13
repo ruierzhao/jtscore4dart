@@ -110,16 +110,13 @@ class UnaryUnionOp
 	 * Constructs a unary union operation for a {@link Geometry}
 	 * (which may be a {@link GeometryCollection}).
 	 * 
-	 * @param geom a geometry to union
+	 * @param [geom] a geometry to union
 	 * @return the union of the elements of the geometry
 	 * or an empty GEOMETRYCOLLECTION
 	 */
 	static Geometry union(Geometry geom)
 	{
 		UnaryUnionOp op = new UnaryUnionOp(geom);
-    print('>>>>>>>>> 2 <<<<<<<<<<<<<<<<<<<<');
-    
-
 		return op.union_();
 	}
 	
@@ -171,7 +168,8 @@ class UnaryUnionOp
 	  extracter = InputExtracter.extractAll(geoms);
 	}
 	
-	/**private */ void extract(Geometry geom)
+	/**private */ 
+  void extract(Geometry geom)
 	{
 		extracter = InputExtracter.extract(geom);
 	}
@@ -224,13 +222,13 @@ class UnaryUnionOp
 		Geometry? unionPoints;
 		if (points.size() > 0) {
 			Geometry ptGeom = geomFact!.buildGeometry(points);
-			unionPoints = unionNoOpt(ptGeom);
+			unionPoints = _unionNoOpt(ptGeom);
 		}
 		
 		Geometry? unionLines;
 		if (lines.size() > 0) {
 			Geometry lineGeom = geomFact!.buildGeometry(lines);
-			unionLines = unionNoOpt(lineGeom);
+			unionLines = _unionNoOpt(lineGeom);
 		}
 		
 		Geometry? unionPolygons;
@@ -294,10 +292,18 @@ class UnaryUnionOp
    * Uses robust version of overlay operation
    * to ensure identical behaviour to the <tt>union(Geometry)</tt> operation.
    * 
-   * @param g0 a geometry
+   * @param [g0] a geometry
    * @return the union of the input geometry
+   * 
+   * 点和线union
+   * _unionNoOpt -> 
+   * CascadedPolygonUnion._.union  -> 
+   * SnapIfNeededOverlayOp.union (OverlayNGRobust.overlay) -> 
+   * SnapIfNeededOverlayOp.getResultGeometry (OverlayNG.overlay) -> 
+   * OverlayOp.overlayOp
    */
-	/**private */ Geometry unionNoOpt(Geometry g0)
+	/**private */ 
+  Geometry _unionNoOpt(Geometry g0)
 	{
     Geometry empty = geomFact!.createPoint();
 		return unionFunction.union(g0, empty);

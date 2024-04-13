@@ -1,6 +1,7 @@
 import 'package:jtscore4dart/src/operation/overlay/OverlayOp.dart';
 import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/operation/union/UnaryUnionOp.dart';
 
 void main() {
   String wktstr = "POLYGON ((585 289, 654 446, 970 430, 1006 244, 846 96, 585 289))";
@@ -9,7 +10,8 @@ void main() {
   // WKTWriter writer = WKTWriter();
   Geometry g = reader.read(wktstr)!;
   Geometry g2 = reader.read(wktstr2)!;
-  print('>>>>>>>>> ${ OverlayOp.overlayOp(g,g2,OverlayOp.UNION) } <<<<<<<<<<<<<<<<<<<<');
+  // print('>>>>>>>>> ${ OverlayOp.overlayOp(g,g2,OverlayOp.UNION) } <<<<<<<<<<<<<<<<<<<<');
+  print('>>>>>>>>> ${ UnaryUnionOp.union(g) } <<<<<<<<<<<<<<<<<<<<');
 }
 
 /// error stack.

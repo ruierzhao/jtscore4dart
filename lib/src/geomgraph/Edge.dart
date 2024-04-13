@@ -54,9 +54,9 @@ class Edge extends GraphComponent
   }
 
   List<Coordinate> pts;
- /**private */late Envelope env;
+ /**private */Envelope? env;
   late EdgeIntersectionList eiList;
- /**private */late String name;
+ /**private */String? name;
  /**private */MonotoneChainEdge? mce;
  /**private */bool _isIsolated = true;
  /**private */Depth depth = new Depth();
@@ -116,10 +116,10 @@ class Edge extends GraphComponent
     if (env == null) {
       env = new Envelope.init();
       for (int i = 0; i < pts.length; i++) {
-        env.expandToIncludeCoordinate(pts[i]);
+        env!.expandToIncludeCoordinate(pts[i]);
       }
     }
-    return env;
+    return env!;
   }
 
   Depth getDepth() { return depth; }
@@ -156,6 +156,7 @@ class Edge extends GraphComponent
     if (pts[0].equals(pts[2]) ) return true;
     return false;
   }
+
   Edge getCollapsedEdge()
   {
     // Coordinate newPts[] = new Coordinate[2];
@@ -239,7 +240,7 @@ class Edge extends GraphComponent
   bool equals(Object o)
   {
     if (o is! Edge) return false;
-    Edge e = o as Edge;
+    Edge e = o ;
 
     if (pts.length != e.pts.length) return false;
 
@@ -298,8 +299,11 @@ class Edge extends GraphComponent
   @override
   String toString()
   {
+    /// TODO: @ruier add.
+    name ??= "";
+    
     StringBuffer builder = new StringBuffer();
-    builder.write("edge " + name + ": ");
+    builder.write("edge $name: ");
     builder.write("LINESTRING (");
     for (int i = 0; i < pts.length; i++) {
       if (i > 0) builder.write(",");

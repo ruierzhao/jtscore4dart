@@ -277,7 +277,6 @@ abstract class EdgeEndStar {
     //System.out.println("finding start location");
     for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd e = it.current as EdgeEnd;
-      print('>>>>>>>>> ${e} <<<<<<<<<<<<<<<<<<<<');
       Label label = e.getLabel()!;
       if (label.isArea(geomIndex) &&
           label.getLocation(geomIndex, Position.LEFT) != Location.NONE) {

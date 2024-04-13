@@ -41,7 +41,8 @@ class EdgeIntersectionList
 {
   // a Map <EdgeIntersection, EdgeIntersection>
 //  /**private */Map nodeMap = new TreeMap();
- /**private */Map nodeMap = new SplayTreeMap();
+ /**private */
+  Map nodeMap = new SplayTreeMap();
   Edge edge;  // the parent edge
 
   EdgeIntersectionList(this.edge);

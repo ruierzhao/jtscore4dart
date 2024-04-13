@@ -282,7 +282,8 @@ class GeometryGraph extends PlanarGraph {
    * If the ring is in the opposite orientation,
    * the left and right locations must be interchanged.
    */
-  /**private */ void addPolygonRing(LinearRing lr, int cwLeft, int cwRight) {
+  /**private */ 
+  void addPolygonRing(LinearRing lr, int cwLeft, int cwRight) {
     // don't bother adding empty holes
     if (lr.isEmpty()) return;
 
@@ -303,6 +304,7 @@ class GeometryGraph extends PlanarGraph {
     }
     Edge e = new Edge(
         coord, new Label.GeomFrom3(argIndex, Location.BOUNDARY, left, right));
+        
     lineEdgeMap.put(lr, e);
 
     insertEdge(e);

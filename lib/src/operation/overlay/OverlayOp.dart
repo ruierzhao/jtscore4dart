@@ -466,7 +466,9 @@ class OverlayOp extends GeometryGraphOperation {
   /**private */ void computeLabelling() {
     for (Iterator nodeit = graph.getNodes().iterator; nodeit.moveNext();) {
       Node node = nodeit.current;
-//if (node.getCoordinate().equals(new Coordinate(222, 100)) ) Debug.addWatch(node.getEdges());
+      node.printOut();
+      // print('>>>>>>>>> node: ${ node.printOut() } <<<<<<<<<<<<<<<<<<<<');
+      //if (node.getCoordinate().equals(new Coordinate(222, 100)) ) Debug.addWatch(node.getEdges());
       node.getEdges().computeLabelling(arg);
     }
     mergeSymLabels();
@@ -519,6 +521,7 @@ class OverlayOp extends GeometryGraphOperation {
     for (Iterator ni = graph.getNodes().iterator; ni.moveNext();) {
       Node n = ni.current;
       Label label = n.getLabel();
+      print('>>>>>>>>> label: ${ label } <<<<<<<<<<<<<<<<<<<<');
       if (n.isIsolated()) {
         // nodeCount++;
         if (label.isNull(0)) {

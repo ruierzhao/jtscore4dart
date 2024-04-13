@@ -71,6 +71,7 @@ abstract class GraphComponent {
    */
   /**protected */
   void computeIM(IntersectionMatrix im);
+  
   /**
    * An isolated component is one that does not intersect or touch any other
    * component.  This is the case if the label has valid locations for

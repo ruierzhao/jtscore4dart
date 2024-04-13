@@ -10,10 +10,13 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateList;
 // import org.locationtech.jts.geom.Envelope;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
 
 /**
  * Clips rings of points to a rectangle.
@@ -44,31 +47,28 @@
  *
  */
 class RingClipper {
-  
- /**private */static final int BOX_LEFT = 3;
- /**private */static final int BOX_TOP = 2;
- /**private */static final int BOX_RIGHT = 1;
- /**private */static final int BOX_BOTTOM = 0;
-  
- /**private */Envelope clipEnv;
- /**private */double clipEnvMinY;
- /**private */double clipEnvMaxY;
- /**private */double clipEnvMinX;
- /**private */double clipEnvMaxX;
+  /**private */ static const int BOX_LEFT = 3;
+  /**private */ static const int BOX_TOP = 2;
+  /**private */ static const int BOX_RIGHT = 1;
+  /**private */ static const int BOX_BOTTOM = 0;
+
+  /**private */ Envelope clipEnv;
+  /**private */ double clipEnvMinY;
+  /**private */ double clipEnvMaxY;
+  /**private */ double clipEnvMinX;
+  /**private */ double clipEnvMaxX;
 
   /**
    * Creates a new clipper for the given envelope.
    * 
    * @param clipEnv the clipping envelope
    */
-  RingClipper(Envelope clipEnv) {
-    this.clipEnv = clipEnv;
-    clipEnvMinY = clipEnv.getMinY();
-    clipEnvMaxY = clipEnv.getMaxY();
-    clipEnvMinX = clipEnv.getMinX();
-    clipEnvMaxX = clipEnv.getMaxX();
-  }
-  
+  RingClipper(this.clipEnv)
+      : clipEnvMinY = clipEnv.getMinY(),
+        clipEnvMaxY = clipEnv.getMaxY(),
+        clipEnvMinX = clipEnv.getMinX(),
+        clipEnvMaxX = clipEnv.getMaxX();
+
   /**
    * Clips a list of points to the clipping rectangle box.
    * 
@@ -78,8 +78,8 @@ class RingClipper {
   List<Coordinate> clip(List<Coordinate> pts) {
     for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++) {
       bool closeRing = edgeIndex == 3;
-      pts = clipToBoxEdge(pts, edgeIndex, closeRing);
-      if (pts.length == 0) return pts;
+      pts = _clipToBoxEdge(pts, edgeIndex, closeRing);
+      if (pts.isEmpty) return pts;
     }
     return pts;
   }
@@ -87,45 +87,45 @@ class RingClipper {
   /**
    * Clips line to the axis-parallel line defined by a single box edge.
    * 
-   * @param pts
-   * @param edgeIndex
-   * @param closeRing 
+   * @param [pts]
+   * @param [edgeIndex]
+   * @param [closeRing] 
    * @return
    */
- /**private */List<Coordinate> clipToBoxEdge(List<Coordinate> pts, int edgeIndex, bool closeRing) {
+  List<Coordinate> _clipToBoxEdge(
+      List<Coordinate> pts, int edgeIndex, bool closeRing) {
     // TODO: is it possible to avoid copying array 4 times?
     CoordinateList ptsClip = new CoordinateList();
 
     Coordinate p0 = pts[pts.length - 1];
     for (int i = 0; i < pts.length; i++) {
       Coordinate p1 = pts[i];
-      if ( isInsideEdge(p1, edgeIndex) ) {
-        if ( ! isInsideEdge(p0, edgeIndex) ) {
-          Coordinate intPt = intersection(p0, p1, edgeIndex);
-          ptsClip.add( intPt, false);
+      if (_isInsideEdge(p1, edgeIndex)) {
+        if (!_isInsideEdge(p0, edgeIndex)) {
+          Coordinate intPt = _intersection(p0, p1, edgeIndex);
+          ptsClip.add(intPt, false);
         }
         // TODO: avoid copying so much?
-        ptsClip.add( p1.copy(), false);
-        
-      } else if ( isInsideEdge(p0, edgeIndex) ) {
-        Coordinate intPt = intersection(p0, p1, edgeIndex);
-        ptsClip.add( intPt, false);
+        ptsClip.add(p1.copy(), false);
+      } else if (_isInsideEdge(p0, edgeIndex)) {
+        Coordinate intPt = _intersection(p0, p1, edgeIndex);
+        ptsClip.add(intPt, false);
       }
       // else p0-p1 is outside box, so it is dropped
-      
+
       p0 = p1;
     }
-    
+
     // add closing point if required
     if (closeRing && ptsClip.size() > 0) {
       Coordinate start = ptsClip.get(0);
-      if (! start.equals2D(ptsClip.get(ptsClip.size() - 1))) {
-        ptsClip.add( start.copy() );
+      if (!start.equals2D(ptsClip.get(ptsClip.size() - 1))) {
+        ptsClip.add(start.copy(), true);
       }
     }
     return ptsClip.toCoordinateArray();
   }
-  
+
   /**
    * Computes the intersection point of a segment 
    * with an edge of the clip box.
@@ -136,54 +136,57 @@ class RingClipper {
    * @param edgeIndex index of box edge
    * @return the intersection point with the box edge
    */
- /**private */Coordinate intersection(Coordinate a, Coordinate b, int edgeIndex) {
+  Coordinate _intersection(Coordinate a, Coordinate b, int edgeIndex) {
     Coordinate intPt;
     switch (edgeIndex) {
-    case BOX_BOTTOM:
-      intPt = new Coordinate(intersectionLineY(a, b, clipEnvMinY), clipEnvMinY);
-      break;
-    case BOX_RIGHT:
-      intPt = new Coordinate(clipEnvMaxX, intersectionLineX(a, b, clipEnvMaxX));
-      break;
-    case BOX_TOP:
-      intPt = new Coordinate(intersectionLineY(a, b, clipEnvMaxY), clipEnvMaxY);
-      break;
-    case BOX_LEFT:
-    default:
-      intPt = new Coordinate(clipEnvMinX, intersectionLineX(a, b, clipEnvMinX));
+      case BOX_BOTTOM:
+        intPt =
+            new Coordinate(_intersectionLineY(a, b, clipEnvMinY), clipEnvMinY);
+        break;
+      case BOX_RIGHT:
+        intPt =
+            new Coordinate(clipEnvMaxX, _intersectionLineX(a, b, clipEnvMaxX));
+        break;
+      case BOX_TOP:
+        intPt =
+            new Coordinate(_intersectionLineY(a, b, clipEnvMaxY), clipEnvMaxY);
+        break;
+      case BOX_LEFT:
+      default:
+        intPt =
+            new Coordinate(clipEnvMinX, _intersectionLineX(a, b, clipEnvMinX));
     }
     return intPt;
   }
 
- /**private */double intersectionLineY(Coordinate a, Coordinate b, double y) {
+  double _intersectionLineY(Coordinate a, Coordinate b, double y) {
     double m = (b.x - a.x) / (b.y - a.y);
     double intercept = (y - a.y) * m;
     return a.x + intercept;
   }
 
- /**private */double intersectionLineX(Coordinate a, Coordinate b, double x) {
+  double _intersectionLineX(Coordinate a, Coordinate b, double x) {
     double m = (b.y - a.y) / (b.x - a.x);
     double intercept = (x - a.x) * m;
     return a.y + intercept;
   }
 
- /**private */bool isInsideEdge(Coordinate p, int edgeIndex) {
+  bool _isInsideEdge(Coordinate p, int edgeIndex) {
     bool isInside = false;
     switch (edgeIndex) {
-    case BOX_BOTTOM: // bottom
-      isInside = p.y > clipEnvMinY;
-      break;
-    case BOX_RIGHT: // right
-      isInside = p.x < clipEnvMaxX;
-      break;
-    case BOX_TOP: // top
-      isInside = p.y < clipEnvMaxY;
-      break;
-    case BOX_LEFT:
-    default: // left
-      isInside = p.x > clipEnvMinX;
+      case BOX_BOTTOM: // bottom
+        isInside = p.y > clipEnvMinY;
+        break;
+      case BOX_RIGHT: // right
+        isInside = p.x < clipEnvMaxX;
+        break;
+      case BOX_TOP: // top
+        isInside = p.y < clipEnvMaxY;
+        break;
+      case BOX_LEFT:
+      default: // left
+        isInside = p.x > clipEnvMinX;
     }
     return isInside;
   }
-
 }

@@ -10,12 +10,19 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.List;
 
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.Point;
+
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
+
+import 'OverlayEdge.dart';
+import 'OverlayGraph.dart';
+import 'OverlayLabel.dart';
+import 'OverlayNG.dart';
 
 /**
  * Extracts Point resultants from an overlay graph
@@ -36,38 +43,34 @@
  *
  */
 class IntersectionPointBuilder {
+  GeometryFactory _geometryFactory;
+  OverlayGraph _graph;
+  List<Point> _points = <Point>[];
 
- /**private */GeometryFactory geometryFactory;
- /**private */OverlayGraph graph;
- /**private */List<Point> points = new ArrayList<Point>();
-  
   /**
    * Controls whether lines created by area topology collapses
    * to participate in the result computation.
    * True provides the original JTS semantics.
    */
- /**private */bool isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
-  
-  IntersectionPointBuilder(OverlayGraph graph,
-      GeometryFactory geomFact) {
-    this.graph = graph;
-    this.geometryFactory = geomFact;
-  }
+  bool _isAllowCollapseLines = !OverlayNG.STRICT_MODE_DEFAULT;
+
+  IntersectionPointBuilder(this._graph, this._geometryFactory);
 
   void setStrictMode(bool isStrictMode) {
-    isAllowCollapseLines = ! isStrictMode;
-  }
-  
-  List<Point> getPoints() {
-    addResultPoints();
-    return points;
+    _isAllowCollapseLines = !isStrictMode;
   }
 
- /**private */void addResultPoints() {
-    for (OverlayEdge nodeEdge : graph.getNodeEdges()) {
-      if (isResultPoint(nodeEdge)) {
-        Point pt = geometryFactory.createPoint(nodeEdge.getCoordinate().copy());
-        points.add(pt);
+  List<Point> getPoints() {
+    _addResultPoints();
+    return _points;
+  }
+
+  void _addResultPoints() {
+    for (OverlayEdge nodeEdge in _graph.getNodeEdges()) {
+      if (_isResultPoint(nodeEdge)) {
+        Point pt =
+            _geometryFactory.createPoint(nodeEdge.getCoordinate().copy());
+        _points.add(pt);
       }
     }
   }
@@ -80,26 +83,28 @@ class IntersectionPointBuilder {
    * @param nodeEdge an edge originating at the node
    * @return true if this node is a result point
    */
- /**private */bool isResultPoint(OverlayEdge nodeEdge) {
+  bool _isResultPoint(OverlayEdge nodeEdge) {
     bool isEdgeOfA = false;
     bool isEdgeOfB = false;
-    
-    OverlayEdge edge = nodeEdge;
+
+    OverlayEdge? edge;
+    edge = nodeEdge;
     do {
-      if (edge.isInResult()) return false;
+      if (edge!.isInResult()) return false;
       OverlayLabel label = edge.getLabel();
-      isEdgeOfA |= isEdgeOf(label, 0);
-      isEdgeOfB |= isEdgeOf(label, 1);
-      edge = (OverlayEdge) edge.oNext();
+      isEdgeOfA |= _isEdgeOf(label, 0);
+      isEdgeOfB |= _isEdgeOf(label, 1);
+      // edge = (OverlayEdge) edge.oNext();
+      edge = edge.oNext() as OverlayEdge;
     } while (edge != nodeEdge);
     bool isNodeInBoth = isEdgeOfA && isEdgeOfB;
     return isNodeInBoth;
   }
 
- /**private */bool isEdgeOf(OverlayLabel label, int i) {
-    if (! isAllowCollapseLines && label.isBoundaryCollapse())
+  bool _isEdgeOf(OverlayLabel label, int i) {
+    if (!_isAllowCollapseLines && label.isBoundaryCollapse()) {
       return false;
+    }
     return label.isBoundary(i) || label.isLine(i);
   }
-
 }

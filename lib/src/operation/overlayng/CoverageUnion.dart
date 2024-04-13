@@ -20,6 +20,9 @@
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/noding/BoundaryChainNoder.dart';
 import 'package:jtscore4dart/src/noding/Noder.dart';
+import 'package:jtscore4dart/src/noding/SegmentExtractingNoder.dart';
+
+import 'OverlayNG.dart';
 
 /**
  * Unions a valid coverage of polygons or lines

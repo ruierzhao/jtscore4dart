@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateSequence;
 // import org.locationtech.jts.geom.Envelope;
@@ -18,6 +17,8 @@
 // import org.locationtech.jts.geom.GeometryCollection;
 // import org.locationtech.jts.geom.LinearRing;
 // import org.locationtech.jts.geom.Polygon;
+
+import 'package:jtscore4dart/geometry.dart';
 
 /**
  * Computes a robust clipping envelope for a pair of polygonal geometries.
@@ -31,80 +32,79 @@
  *
  */
 class RobustClipEnvelopeComputer {
-  
   static Envelope getEnvelope(Geometry a, Geometry b, Envelope targetEnv) {
     RobustClipEnvelopeComputer cec = new RobustClipEnvelopeComputer(targetEnv);
     cec.add(a);
     cec.add(b);
-    return cec.getEnvelope();
-  }
-  
- /**private */Envelope targetEnv;
- /**private */Envelope clipEnv;
-
-  RobustClipEnvelopeComputer(Envelope targetEnv) {
-    this.targetEnv = targetEnv;
-    clipEnv = targetEnv.copy();
+    return cec.getEnvelope_();
   }
 
-  Envelope getEnvelope() {
+  /**private */ Envelope targetEnv;
+  /**private */ Envelope clipEnv;
+
+  RobustClipEnvelopeComputer(this.targetEnv) : clipEnv = targetEnv.copy();
+
+  Envelope getEnvelope_() {
     return clipEnv;
   }
-  
-  void add(Geometry g) {
-    if ( g == null || g.isEmpty() )
-      return;
 
-    if ( g is Polygon )
-      addPolygon((Polygon) g);
-    else if ( g is GeometryCollection )
-      addCollection((GeometryCollection) g);
+  void add(Geometry g) {
+    if (g == null || g.isEmpty()) {
+      return;
+    }
+
+    if (g is Polygon) {
+      _addPolygon(g);
+    } else if (g is GeometryCollection) {
+      _addCollection(g);
+    }
   }
 
- /**private */void addCollection(GeometryCollection gc) {
+  void _addCollection(GeometryCollection gc) {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       Geometry g = gc.getGeometryN(i);
       add(g);
     }
   }
 
- /**private */void addPolygon(Polygon poly) {
+  void _addPolygon(Polygon poly) {
     LinearRing shell = poly.getExteriorRing();
-    addPolygonRing(shell);
+    _addPolygonRing(shell);
 
     for (int i = 0; i < poly.getNumInteriorRing(); i++) {
       LinearRing hole = poly.getInteriorRingN(i);
-      addPolygonRing(hole);
+      _addPolygonRing(hole);
     }
   }
 
   /**
    * Adds a polygon ring to the graph. Empty rings are ignored.
    */
- /**private */void addPolygonRing(LinearRing ring) {
+  void _addPolygonRing(LinearRing ring) {
     // don't add empty lines
-    if ( ring.isEmpty() )
+    if (ring.isEmpty()) {
       return;
+    }
 
     CoordinateSequence seq = ring.getCoordinateSequence();
     for (int i = 1; i < seq.size(); i++) {
-      addSegment(seq.getCoordinate(i - 1), seq.getCoordinate(i));
+      _addSegment(seq.getCoordinate(i - 1), seq.getCoordinate(i));
     }
   }
 
- /**private */void addSegment(Coordinate p1, Coordinate p2) {
-    if (intersectsSegment(targetEnv, p1, p2)) {
-      clipEnv.expandToInclude(p1);
-      clipEnv.expandToInclude(p2);
+  void _addSegment(Coordinate p1, Coordinate p2) {
+    if (_intersectsSegment(targetEnv, p1, p2)) {
+      clipEnv.expandToIncludeCoordinate(p1);
+      clipEnv.expandToIncludeCoordinate(p2);
     }
   }
 
- /**private */static bool intersectsSegment(Envelope env, Coordinate p1, Coordinate p2) {
+  static bool _intersectsSegment(Envelope env, Coordinate p1, Coordinate p2) {
     /**
      * This is a crude test of whether segment intersects envelope.
      * It could be refined by checking exact intersection.
      * This could be based on the algorithm in the HotPixel.intersectsScaled method.
      */
-    return env.intersects(p1, p2);
+    return env.intersectsEnvelopeByCoord(p1, p2);
   }
 }

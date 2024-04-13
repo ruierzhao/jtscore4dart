@@ -10,13 +10,18 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.Map;
 // import java.util.List;
 // import java.util.Map;
 
 // import org.locationtech.jts.util.Assert;
+
+import 'package:jtscore4dart/src/patch/Map.dart';
+import 'package:jtscore4dart/src/util/Assert.dart';
+
+import 'Edge.dart';
+import 'EdgeKey.dart';
 
 /**
  * Performs merging on the noded edges of the input geometries.
@@ -47,30 +52,28 @@
  *
  */
 class EdgeMerger {
- 
   static List<Edge> merge(List<Edge> edges) {
     // use a list to collect the final edges, to preserve order
-    List<Edge> mergedEdges = new ArrayList<Edge>();
+    List<Edge> mergedEdges = <Edge>[];
     Map<EdgeKey, Edge> edgeMap = new Map<EdgeKey, Edge>();
 
-    for (Edge edge : edges) {
+    for (Edge edge in edges) {
       EdgeKey edgeKey = EdgeKey.create(edge);
-      Edge baseEdge = edgeMap.get(edgeKey);
+      Edge? baseEdge = edgeMap.get(edgeKey);
       if (baseEdge == null) {
         // this is the first (and maybe only) edge for this line
         edgeMap.put(edgeKey, edge);
         //Debug.println("edge added: " + edge);
         //Debug.println(edge.toLineString());
         mergedEdges.add(edge);
-      }
-      else {
+      } else {
         // found an existing edge
-        
+
         // Assert: edges are identical (up to direction)
         // this is a fast (but incomplete) sanity check
         Assert.isTrue(baseEdge.size() == edge.size(),
             "Merge of edges of different sizes - probable noding error.");
-        
+
         baseEdge.merge(edge);
         //Debug.println("edge merged: " + existing);
         //Debug.println(edge.toLineString());
@@ -78,5 +81,4 @@ class EdgeMerger {
     }
     return mergedEdges;
   }
-
 }

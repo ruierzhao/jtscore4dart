@@ -10,13 +10,16 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.List;
 
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.CoordinateList;
 // import org.locationtech.jts.geom.Envelope;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
 
 /**
  * Limits the segments in a list of segments
@@ -38,98 +41,94 @@
  * @see RingClipper
  */
 class LineLimiter {
- /**private */Envelope limitEnv;
- /**private */CoordinateList ptList;
- /**private */Coordinate lastOutside = null;
- /**private */List<List<Coordinate>> sections = null;
+  /**private */ Envelope limitEnv;
+  /**private */ CoordinateList? ptList;
+  /**private */ Coordinate? lastOutside = null;
+  /**private */ List<List<Coordinate>>? sections = null;
 
   /**
    * Creates a new limiter for a given envelope.
    * 
    * @param env the envelope to limit to
    */
-  LineLimiter(Envelope env) {
-    this.limitEnv = env;
-  }
-  
+  LineLimiter(this.limitEnv);
+
   /**
    * Limits a list of segments.
    * 
-   * @param pts the segment sequence to limit
+   * @param [pts] the segment sequence to limit
    * @return the sections which intersect the limit envelope
    */
   List<List<Coordinate>> limit(List<Coordinate> pts) {
     lastOutside = null;
     ptList = null;
-    sections = new ArrayList<List<Coordinate>>();
-    
+    sections = <List<Coordinate>>[];
+
     for (int i = 0; i < pts.length; i++) {
       Coordinate p = pts[i];
-      if ( limitEnv.intersects(p) ) 
-        addPoint(p);
-      else {
-        addOutside(p);
+      if (limitEnv.intersectsWithCoord(p)) {
+        _addPoint(p);
+      } else {
+        _addOutside(p);
       }
     }
     // finish last section, if any
-    finishSection();
-    return sections;
+    _finishSection();
+    return sections!;
   }
 
- /**private */void addPoint(Coordinate p) {
+  void _addPoint(Coordinate? p) {
     if (p == null) return;
-    startSection();
-    ptList.add(p, false);
+    _startSection();
+    ptList!.add(p, false);
   }
 
- /**private */void addOutside(Coordinate p) {
-    bool segIntersects = isLastSegmentIntersecting(p);
-    if ( ! segIntersects  ) {
-      finishSection();
-    }
-    else {
-      addPoint(lastOutside);
-      addPoint(p);
+  void _addOutside(Coordinate p) {
+    bool segIntersects = _isLastSegmentIntersecting(p);
+    if (!segIntersects) {
+      _finishSection();
+    } else {
+      _addPoint(lastOutside);
+      _addPoint(p);
     }
     lastOutside = p;
   }
-  
- /**private */bool isLastSegmentIntersecting(Coordinate p) {
+
+  bool _isLastSegmentIntersecting(Coordinate p) {
     if (lastOutside == null) {
       // last point must have been inside
-      if (isSectionOpen())
+      if (_isSectionOpen()) {
         return true;
+      }
       return false;
     }
-    return limitEnv.intersects(lastOutside, p);
+    return limitEnv.intersectsEnvelopeByCoord(lastOutside!, p);
   }
 
- /**private */bool isSectionOpen() {
+  bool _isSectionOpen() {
     return ptList != null;
   }
 
- /**private */void startSection() {
-    if (ptList == null) {
-      ptList = new CoordinateList();
-    }
+  void _startSection() {
+    ptList ??= new CoordinateList();
     if (lastOutside != null) {
-      ptList.add(lastOutside, false);
+      ptList!.add(lastOutside!, false);
     }
     lastOutside = null;
-  }  
-  
- /**private */void finishSection() {
-    if (ptList == null) 
+  }
+
+  void _finishSection() {
+    if (ptList == null) {
       return;
+    }
     // finish off this section
     if (lastOutside != null) {
-      ptList.add(lastOutside, false);
+      ptList!.add(lastOutside!, false);
       lastOutside = null;
     }
 
-    List<Coordinate> section = ptList.toCoordinateArray();
-    sections.add(section);
+    List<Coordinate> section = ptList!.toCoordinateArray();
+    sections!.add(section);
     ptList = null;
   }
-
 }

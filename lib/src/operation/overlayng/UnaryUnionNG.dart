@@ -98,18 +98,20 @@ class UnaryUnionNG {
     // no instantiation for now
   }
 }
+
+
 class _ implements UnionStrategy {
-      final PrecisionModel pm;
+  final PrecisionModel pm;
 
   _(this.pm);
-      @override
-        Geometry union(Geometry g0, Geometry g1) {
-        return OverlayNG.overlay(g0, g1, OverlayNG.UNION, pm);
-      }
+  @override
+    Geometry union(Geometry g0, Geometry g1) {
+    return OverlayNG.overlayWithPM(g0, g1, OverlayNG.UNION, pm);
+  }
 
-      @override
-      bool isFloatingPrecision() {
-         return OverlayUtil.isFloating(pm);
-      }
-      
-    }
+  @override
+  bool isFloatingPrecision() {
+      return OverlayUtil.isFloating(pm);
+  }
+  
+}

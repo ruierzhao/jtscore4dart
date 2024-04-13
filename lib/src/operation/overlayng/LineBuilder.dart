@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.Collection;
 // import java.util.List;
@@ -20,6 +19,18 @@
 // import org.locationtech.jts.geom.GeometryFactory;
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.geom.Location;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateList.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+
+import 'InputGeometry.dart';
+import 'OverlayEdge.dart';
+import 'OverlayGraph.dart';
+import 'OverlayLabel.dart';
+import 'OverlayNG.dart';
 
 /**
  * Finds and builds overlay result lines from the overlay graph.
@@ -50,31 +61,29 @@
  *
  */
 class LineBuilder {
-  
- /**private */GeometryFactory geometryFactory;
- /**private */OverlayGraph graph;
- /**private */int opCode;
- /**private */int inputAreaIndex;
- /**private */bool hasResultArea;
-  
+  /**private */ GeometryFactory geometryFactory;
+  /**private */ OverlayGraph graph;
+  /**private */ int opCode;
+  /**private */ int inputAreaIndex;
+  /**private */ bool hasResultArea;
+
   /**
    * Indicates whether intersections are allowed to produce
    * heterogeneous results including proper boundary touches. 
    * This does not control inclusion of touches along collapses.
    * True provides the original JTS semantics.
    */
- /**private */bool isAllowMixedResult = ! OverlayNG.STRICT_MODE_DEFAULT;
-  
+  /**private */ bool isAllowMixedResult = !OverlayNG.STRICT_MODE_DEFAULT;
+
   /**
    * Allow lines created by area topology collapses
    * to appear in the result.
    * True provides the original JTS semantics.
    */
- /**private */bool isAllowCollapseLines = ! OverlayNG.STRICT_MODE_DEFAULT;
+  /**private */ bool isAllowCollapseLines = !OverlayNG.STRICT_MODE_DEFAULT;
 
-  
- /**private */List<LineString> lines = new ArrayList<LineString>();
-  
+  /**private */ List<LineString> lines = <LineString>[];
+
   /**
    * Creates a builder for linear elements which may be present 
    * in the overlay result.
@@ -85,43 +94,41 @@ class LineBuilder {
    * @param opCode the overlay operation code
    * @param geomFact the output geometry factory
    */
-  LineBuilder(InputGeometry inputGeom, OverlayGraph graph, bool hasResultArea, int opCode, GeometryFactory geomFact) {
-    this.graph = graph;
-    this.opCode = opCode;
-    this.geometryFactory = geomFact;
-    this.hasResultArea = hasResultArea;
-    inputAreaIndex = inputGeom.getAreaIndex();
-  }
+  LineBuilder(InputGeometry inputGeom, this.graph, this.hasResultArea,
+      this.opCode, GeometryFactory geomFact)
+      : geometryFactory = geomFact,
+        inputAreaIndex = inputGeom.getAreaIndex();
 
   void setStrictMode(bool isStrictResultMode) {
-    isAllowCollapseLines = ! isStrictResultMode;
-    isAllowMixedResult = ! isStrictResultMode;
+    isAllowCollapseLines = !isStrictResultMode;
+    isAllowMixedResult = !isStrictResultMode;
   }
-  
+
   List<LineString> getLines() {
-    markResultLines();
-    addResultLines();
+    _markResultLines();
+    _addResultLines();
     return lines;
   }
 
- /**private */void markResultLines() {
-    Collection<OverlayEdge> edges = graph.getEdges();
-    for (OverlayEdge edge : edges) {
+  void _markResultLines() {
+    Iterable<OverlayEdge> edges = graph.getEdges();
+    for (OverlayEdge edge in edges) {
       /**
        * If the edge linework is already marked as in the result,
        * it is not included as a line.
        * This occurs when an edge either is in a result area
        * or has already been included as a line.
        */
-      if (edge.isInResultEither()) 
+      if (edge.isInResultEither()) {
         continue;
-      if (isResultLine(edge.getLabel())) {
+      }
+      if (_isResultLine(edge.getLabel())) {
         edge.markInResultLine();
         //Debug.println(edge);
       }
     }
   }
-  
+
   /**
    * Checks if the topology indicated by an edge label
    * determines that this edge should be part of a result line.
@@ -133,7 +140,7 @@ class LineBuilder {
    * @param lbl the label for an edge
    * @return true if the edge should be included in the result
    */
- /**private */bool isResultLine(OverlayLabel lbl) {
+  bool _isResultLine(OverlayLabel lbl) {
     /**
      * Omit edge which is a boundary of a single geometry
      * (i.e. not a collapse or line edge as well).
@@ -141,7 +148,7 @@ class LineBuilder {
      * This is a short-circuit for the most common area edge case
      */
     if (lbl.isBoundarySingleton()) return false;
-    
+
     /**
      * Omit edge which is a collapse along a boundary.
      * I.e a result line edge must be from a input line
@@ -149,15 +156,14 @@ class LineBuilder {
      * 
      * This logic is only used if not including collapse lines in result.
      */
-    if (! isAllowCollapseLines 
-        && lbl.isBoundaryCollapse()) return false;
+    if (!isAllowCollapseLines && lbl.isBoundaryCollapse()) return false;
 
     /**
      * Omit edge which is a collapse interior to its parent area.
      * (E.g. a narrow gore, or spike off a hole)
      */
     if (lbl.isInteriorCollapse()) return false;
-    
+
     /**
      * For ops other than Intersection, omit a line edge
      * if it is interior to the other area.
@@ -177,29 +183,31 @@ class LineBuilder {
        * because if line edges are present then there is only one input area, 
        * and the result area must be the same as the input area. 
        */
-      if (hasResultArea && lbl.isLineInArea(inputAreaIndex)) 
+      if (hasResultArea && lbl.isLineInArea(inputAreaIndex)) {
         return false;
+      }
     }
-    
+
     /**
      * Include line edge formed by touching area boundaries,
      * if enabled.
      */
-    if (isAllowMixedResult 
-        && opCode == OverlayNG.INTERSECTION && lbl.isBoundaryTouch()) {
+    if (isAllowMixedResult &&
+        opCode == OverlayNG.INTERSECTION &&
+        lbl.isBoundaryTouch()) {
       return true;
     }
-    
+
     /**
      * Finally, determine included line edge
      * according to overlay op bool logic.
      */
-    int aLoc = effectiveLocation(lbl, 0);
-    int bLoc = effectiveLocation(lbl, 1);
+    int aLoc = _effectiveLocation(lbl, 0);
+    int bLoc = _effectiveLocation(lbl, 1);
     bool isInResult = OverlayNG.isResultOfOp(opCode, aLoc, bLoc);
     return isInResult;
   }
-  
+
   /**
    * Determines the effective location for a line,
    * for the purpose of overlay operation evaluation.
@@ -214,36 +222,38 @@ class LineBuilder {
    * 
    * @return the effective location of the line
    */
- /**private */static int effectiveLocation(OverlayLabel lbl, int geomIndex) {
-    if (lbl.isCollapse(geomIndex))
+  static int _effectiveLocation(OverlayLabel lbl, int geomIndex) {
+    if (lbl.isCollapse(geomIndex)) {
       return Location.INTERIOR;
-    if (lbl.isLine(geomIndex))
+    }
+    if (lbl.isLine(geomIndex)) {
       return Location.INTERIOR;
+    }
     return lbl.getLineLocation(geomIndex);
   }
-  
- /**private */void addResultLines() {
-    Collection<OverlayEdge> edges = graph.getEdges();
-    for (OverlayEdge edge : edges) {
-      if (! edge.isInResultLine()) continue;
+
+  void _addResultLines() {
+    Iterable<OverlayEdge> edges = graph.getEdges();
+    for (OverlayEdge edge in edges) {
+      if (!edge.isInResultLine()) continue;
       if (edge.isVisited()) continue;
-      
-      lines.add( toLine( edge ));
+
+      lines.add(_toLine(edge));
       edge.markVisitedBoth();
     }
   }
-  
- /**private */LineString toLine(OverlayEdge edge) {
+
+  LineString _toLine(OverlayEdge edge) {
     bool isForward = edge.isForward();
     CoordinateList pts = new CoordinateList();
     pts.add(edge.orig(), false);
     edge.addCoordinates(pts);
-    
+
     List<Coordinate> ptsOut = pts.toCoordinateArray(isForward);
     LineString line = geometryFactory.createLineString(ptsOut);
     return line;
   }
-  
+
   //-----------------------------------------------
   //----  Maximal line extraction logic
   //-----------------------------------------------
@@ -254,48 +264,48 @@ class LineBuilder {
    * It is also faster.
    */
   /// FUTURE: enable merging via an option switch on OverlayNG
-  
- /**private */void addResultLinesMerged() {
-    addResultLinesForNodes();
-    addResultLinesRings();
+
+  void _addResultLinesMerged() {
+    _addResultLinesForNodes();
+    _addResultLinesRings();
   }
-  
- /**private */void addResultLinesForNodes() {
-    Collection<OverlayEdge> edges = graph.getEdges();
-    for (OverlayEdge edge : edges) {
-      if (! edge.isInResultLine()) continue;
+
+  void _addResultLinesForNodes() {
+    Iterable<OverlayEdge> edges = graph.getEdges();
+    for (OverlayEdge edge in edges) {
+      if (!edge.isInResultLine()) continue;
       if (edge.isVisited()) continue;
-      
+
       /**
        * Choose line start point as a node.
        * Nodes in the line graph are degree-1 or degree >= 3 edges.
        * 
        * This will find all lines originating at nodes
        */
-      if (degreeOfLines(edge) != 2) {
-        lines.add( buildLine( edge ));
+      if (_degreeOfLines(edge) != 2) {
+        lines.add(_buildLine(edge));
         //Debug.println(edge);
       }
     }
   }
- 
+
   /**
    * Adds lines which form rings (i.e. have only degree-2 vertices).
    */
- /**private */void addResultLinesRings() {
+  void _addResultLinesRings() {
     // TODO: an ordering could be imposed on the endpoints to make this more repeatable
-    
+
     // TODO: preserve input LinearRings if possible?  Would require marking them as such
-    Collection<OverlayEdge> edges = graph.getEdges();
-    for (OverlayEdge edge : edges) {
-      if (! edge.isInResultLine()) continue;
+    Iterable<OverlayEdge> edges = graph.getEdges();
+    for (OverlayEdge edge in edges) {
+      if (!edge.isInResultLine()) continue;
       if (edge.isVisited()) continue;
-      
-      lines.add( buildLine( edge ));
+
+      lines.add(_buildLine(edge));
       //Debug.println(edge);
     }
   }
- 
+
   /**
    * Traverses edges from edgeStart which
    * lie in a single line (have degree = 2).
@@ -313,31 +323,31 @@ class LineBuilder {
    * E.g. using the direction of the majority of segments,
    * or preferring the direction of the A edges.)
    * 
-   * @param node
+   * @param [node]
    * @return 
    */
- /**private */LineString buildLine(OverlayEdge node) {
+  LineString _buildLine(OverlayEdge node) {
     CoordinateList pts = new CoordinateList();
     pts.add(node.orig(), false);
-    
+
     bool isForward = node.isForward();
-    
-    OverlayEdge e = node;
+
+    OverlayEdge? e;
+    e = node;
     do {
-      e.markVisitedBoth();
+      e!.markVisitedBoth();
       e.addCoordinates(pts);
-      
+
       // end line if next vertex is a node
-      if (degreeOfLines(e.symOE()) != 2) {
+      if (_degreeOfLines(e.symOE()) != 2) {
         break;
       }
-      e = nextLineEdgeUnvisited(e.symOE());
+      e = _nextLineEdgeUnvisited(e.symOE());
       // e will be null if next edge has been visited, which indicates a ring
-    }
-    while (e != null);
-    
+    } while (e != null);
+
     List<Coordinate> ptsOut = pts.toCoordinateArray(isForward);
-    
+
     LineString line = geometryFactory.createLineString(ptsOut);
     return line;
   }
@@ -349,7 +359,7 @@ class LineBuilder {
    * @param node a line edge originating at the node to be scanned
    * @return the next line edge, or null if there is none
    */
- /**private */static OverlayEdge nextLineEdgeUnvisited(OverlayEdge node) {
+  static OverlayEdge? _nextLineEdgeUnvisited(OverlayEdge node) {
     OverlayEdge e = node;
     do {
       e = e.oNextOE();
@@ -366,7 +376,7 @@ class LineBuilder {
    * @param node node to compute degree for
    * @return degree of the node line edges
    */
- /**private */static int degreeOfLines(OverlayEdge node) {
+  static int _degreeOfLines(OverlayEdge node) {
     int degree = 0;
     OverlayEdge e = node;
     do {
@@ -377,5 +387,4 @@ class LineBuilder {
     } while (e != node);
     return degree;
   }
-
 }

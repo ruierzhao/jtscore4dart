@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.Collection;
 // import java.util.HashSet;
@@ -18,6 +17,15 @@
 
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.LineSegment;
+
+import 'dart:collection';
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+
+import 'BasicSegmentString.dart';
+import 'Noder.dart';
+import 'SegmentString.dart';
 
 /**
  * A noder which extracts boundary line segments 
@@ -33,79 +41,78 @@
  *
  */
 class BoundarySegmentNoder implements Noder {
+  /**private */ List<SegmentString>? segList;
 
- /**private */List<SegmentString> segList;
-  
   /**
    * Creates a new segment-dissolving noder.
    */
-  BoundarySegmentNoder() {
-    
-  }
+  // BoundarySegmentNoder() {
 
-  @Override
-  void computeNodes(Collection segStrings) {
-    HashSet<Segment> segSet = new HashSet<Segment>() ;
+  // }
+
+  @override
+  void computeNodes(Iterable<SegmentString> segStrings) {
+    HashSet<Segment> segSet = new HashSet<Segment>();
     addSegments(segStrings, segSet);
     segList = extractSegments(segSet);
   }
 
- /**private */static void addSegments(Collection<SegmentString> segStrings, HashSet<Segment> segSet) {
-    for (SegmentString ss : segStrings) {
-      addSegments( ss, segSet );
+  /**private */ static void addSegments(
+      Iterable<SegmentString> segStrings, HashSet<Segment> segSet) {
+    for (SegmentString ss in segStrings) {
+      _addSegments(ss, segSet);
     }
   }
-  
- /**private */static void addSegments(SegmentString segString, HashSet<Segment> segSet) {
+
+  /**private */ static void _addSegments(
+      SegmentString segString, HashSet<Segment> segSet) {
     for (int i = 0; i < segString.size() - 1; i++) {
       Coordinate p0 = segString.getCoordinate(i);
       Coordinate p1 = segString.getCoordinate(i + 1);
       Segment seg = new Segment(p0, p1, segString, i);
       if (segSet.contains(seg)) {
         segSet.remove(seg);
-      }
-      else {
+      } else {
         segSet.add(seg);
       }
     }
   }
-  
- /**private */static List<SegmentString> extractSegments(HashSet<Segment> segSet) {
-    List<SegmentString> segList = new ArrayList<SegmentString>();
-    for (Segment seg : segSet) {
+
+  /**private */ static List<SegmentString> extractSegments(
+      HashSet<Segment> segSet) {
+    List<SegmentString> segList = <SegmentString>[];
+    for (Segment seg in segSet) {
       SegmentString ss = seg.getSegmentString();
       int i = seg.getIndex();
       Coordinate p0 = ss.getCoordinate(i);
       Coordinate p1 = ss.getCoordinate(i + 1);
-      SegmentString segStr = new BasicSegmentString(new List<Coordinate> { p0, p1 }, ss.getData());
+      SegmentString segStr = new BasicSegmentString(
+          List.from([p0, p1], growable: false), ss.getData());
       segList.add(segStr);
     }
     return segList;
   }
 
-  @Override
-  Collection getNodedSubstrings() {
-    return segList;
+  @override
+  Iterable<SegmentString> getNodedSubstrings() {
+    return segList!;
+  }
+}
+
+/**static */
+class Segment extends LineSegment {
+  /**private */ SegmentString segStr;
+  /**private */ int index;
+
+  Segment(super.p0, super.p1, this.segStr, this.index) {
+    normalize();
   }
 
-  static class Segment extends LineSegment {
-   /**private */SegmentString segStr;
-   /**private */int index;
+  SegmentString getSegmentString() {
+    return segStr;
+  }
 
-    Segment(Coordinate p0, Coordinate p1, 
-        SegmentString segStr, int index) {
-      super(p0, p1);
-      this.segStr = segStr;
-      this.index = index;
-      normalize();
-    }
-    
-    SegmentString getSegmentString() {
-      return segStr;
-    }
-    
-    int getIndex() {
-      return index;
-    }
+  int getIndex() {
+    return index;
   }
 }

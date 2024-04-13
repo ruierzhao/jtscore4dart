@@ -10,21 +10,23 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Geometry;
+
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
+import 'OverlayNG.dart';
+import 'OverlayUtil.dart';
 
 class FastOverlayFilter {
   // superceded by overlap clipping?
   // TODO: perhaps change this to RectangleClipping, with fast/looser semantics?
-  
- /**private */Geometry targetGeom;
- /**private */bool isTargetRectangle;
 
-  FastOverlayFilter(Geometry geom) {
-    this.targetGeom = geom;
-    isTargetRectangle = targetGeom.isRectangle();
-  }
-  
+  /**private */ Geometry _targetGeom;
+  /**private */ bool _isTargetRectangle;
+
+  FastOverlayFilter(this._targetGeom)
+      : _isTargetRectangle = _targetGeom.isRectangle();
+
   /**
    * Computes the overlay operation on the input geometries,
    * if it can be determined that the result is either
@@ -32,54 +34,58 @@ class FastOverlayFilter {
    * Otherwise <code>null</code> is returned, indicating
    * that a full overlay operation must be performed.
    * 
-   * @param geom
-   * @param overlayOpCode
+   * @param [geom]
+   * @param [overlayOpCode]
    * @return overlay of the input geometries
    */
-  Geometry overlay(Geometry geom, int overlayOpCode) {
+  Geometry? overlay(Geometry geom, int overlayOpCode) {
     // for now only INTERSECTION is handled
-    if (overlayOpCode != OverlayNG.INTERSECTION)
+    if (overlayOpCode != OverlayNG.INTERSECTION) {
       return null;
-    return intersection(geom);
+    }
+    return _intersection(geom);
   }
 
- /**private */Geometry intersection(Geometry geom) {
+  Geometry? _intersection(Geometry geom) {
     // handle rectangle case
-    Geometry resultForRect = intersectionRectangle(geom);
-    if (resultForRect != null)
+    Geometry? resultForRect = _intersectionRectangle(geom);
+    if (resultForRect != null) {
       return resultForRect;
-    
-    // handle general case
-    if ( ! isEnvelopeIntersects(targetGeom, geom) ) {
-      return createEmpty(geom);
     }
-    
+
+    // handle general case
+    if (!_isEnvelopeIntersects(_targetGeom, geom)) {
+      return _createEmpty(geom);
+    }
+
     return null;
   }
 
- /**private */Geometry createEmpty(Geometry geom) {
+  Geometry _createEmpty(Geometry geom) {
     // empty result has dimension of non-rectangle input
-    return OverlayUtil.createEmptyResult(geom.getDimension(), geom.getFactory());
+    return OverlayUtil.createEmptyResult(
+        geom.getDimension(), geom.getFactory());
   }
 
- /**private */Geometry intersectionRectangle(Geometry geom) {
-    if (! isTargetRectangle)
+  Geometry? _intersectionRectangle(Geometry geom) {
+    if (!_isTargetRectangle) {
       return null;
-    
-    if ( isEnvelopeCovers(targetGeom, geom) ) {
+    }
+
+    if (_isEnvelopeCovers(_targetGeom, geom)) {
       return geom.copy();
     }
-    if ( ! isEnvelopeIntersects(targetGeom, geom) ) {
-      return createEmpty(geom);
+    if (!_isEnvelopeIntersects(_targetGeom, geom)) {
+      return _createEmpty(geom);
     }
     return null;
   }
 
- /**private */bool isEnvelopeIntersects(Geometry a, Geometry b) {
-    return a.getEnvelopeInternal().intersects( b.getEnvelopeInternal() );
+  bool _isEnvelopeIntersects(Geometry a, Geometry b) {
+    return a.getEnvelopeInternal().intersects(b.getEnvelopeInternal());
   }
 
- /**private */bool isEnvelopeCovers(Geometry a, Geometry b) {
-    return a.getEnvelopeInternal().covers( b.getEnvelopeInternal() );
+  /**private */ bool _isEnvelopeCovers(Geometry a, Geometry b) {
+    return a.getEnvelopeInternal().covers(b.getEnvelopeInternal());
   }
 }

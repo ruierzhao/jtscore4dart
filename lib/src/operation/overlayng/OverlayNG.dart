@@ -339,7 +339,7 @@ class OverlayNG
    * 
    * @see CoverageUnion
    */
-  static Geometry union(Geometry geom, PrecisionModel pm, [Noder? noder])
+  static Geometry union(Geometry geom, PrecisionModel? pm, [Noder? noder])
   {    
     OverlayNG ov = new OverlayNG.PM(geom, pm);
     if(noder != null){

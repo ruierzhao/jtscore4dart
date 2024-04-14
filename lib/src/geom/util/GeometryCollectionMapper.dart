@@ -10,8 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-
 // import java.util.ArrayList;
 // import java.util.List;
 
@@ -34,30 +32,27 @@ import 'GeometryMapper.dart' show MapOp;
  * @author Martin Davis
  *
  */
-class GeometryCollectionMapper 
-{
-  static GeometryCollection map(GeometryCollection gc, MapOp op)
-  {
+class GeometryCollectionMapper {
+  static GeometryCollection map(GeometryCollection gc, MapOp op) {
     GeometryCollectionMapper mapper = new GeometryCollectionMapper(op);
-    return mapper.map(gc);
-  }
-  
- /**private */MapOp? mapOp = null;
-  
-  GeometryCollectionMapper(MapOp mapOp) {
-    this.mapOp = mapOp;
+    return mapper.map_(gc);
   }
 
-  GeometryCollection map(GeometryCollection gc)
-  {
+  /**private */
+  final MapOp _mapOp;
+
+  GeometryCollectionMapper(this._mapOp);
+
+  GeometryCollection map_(GeometryCollection gc) {
     List mapped = [];
     for (int i = 0; i < gc.getNumGeometries(); i++) {
-      Geometry g = mapOp.map(gc.getGeometryN(i));
+      Geometry g = _mapOp.map(gc.getGeometryN(i));
       if (!g.isEmpty()) {
         mapped.add(g);
       }
     }
-    return gc.getFactory().createGeometryCollection(
-        GeometryFactory.toGeometryArray(mapped));
+    return gc
+        .getFactory()
+        .createGeometryCollection(GeometryFactory.toGeometryArray(mapped));
   }
 }

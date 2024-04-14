@@ -10,8 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-
 // import java.util.ArrayList;
 // import java.util.List;
 
@@ -27,6 +25,18 @@
 // import org.locationtech.jts.geom.MultiLineString;
 // import org.locationtech.jts.geom.Polygon;
 
+import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/GeometryFilter.dart';
+import 'package:jtscore4dart/src/geom/LineSegment.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/geom/MultiLineString.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+
 /**
  * Finds the most likely {@link Location} of a point relative to
  * the polygonal components of a geometry, using a tolerance value.
@@ -39,25 +49,21 @@
  * @author Martin Davis
  * @version 1.7
  */
-class FuzzyPointLocator
-{
- /**private */Geometry g;
- /**private */double boundaryDistanceTolerance;
- /**private */MultiLineString linework;
- /**private */PointLocator ptLocator = new PointLocator();
- /**private */LineSegment seg = new LineSegment();
-  
-  FuzzyPointLocator(Geometry g, double boundaryDistanceTolerance)
-  {
-    this.g = g;
-    this.boundaryDistanceTolerance = boundaryDistanceTolerance;
+class FuzzyPointLocator {
+  /**private */ Geometry g;
+  /**private */ double boundaryDistanceTolerance;
+  /**private */ late MultiLineString linework;
+  /**private */ PointLocator ptLocator = new PointLocator();
+  /**private */ LineSegment seg = new LineSegment.empty();
+
+  FuzzyPointLocator(this.g, this.boundaryDistanceTolerance) {
     linework = extractLinework(g);
   }
 
-  int getLocation(Coordinate pt)
-  {
-    if (isWithinToleranceOfBoundary(pt))
-    		return Location.BOUNDARY;
+  int getLocation(Coordinate pt) {
+    if (isWithinToleranceOfBoundary(pt)) {
+      return Location.BOUNDARY;
+    }
     /*
     double dist = linework.distance(point);
 
@@ -65,7 +71,7 @@ class FuzzyPointLocator
     if (dist < tolerance)
       return Location.BOUNDARY;
      */
-    
+
     // now we know point must be clearly inside or outside geometry, so return actual location value
     return ptLocator.locate(pt, g);
   }
@@ -76,29 +82,28 @@ class FuzzyPointLocator
    * @param g the geometry from which to extract
    * @return a lineal geometry containing the extracted linework
    */
- /**private */MultiLineString extractLinework(Geometry g)
-  {
-  	PolygonalLineworkExtracter extracter = new PolygonalLineworkExtracter();
-  	g.apply(extracter);
-  	List linework = extracter.getLinework();
-  	List<LineString> lines = GeometryFactory.toLineStringArray(linework);
-  	return g.getFactory().createMultiLineString(lines);
+  /**private */ MultiLineString extractLinework(Geometry g) {
+    PolygonalLineworkExtracter extracter = new PolygonalLineworkExtracter();
+    g.apply(extracter);
+    List linework = extracter.getLinework();
+    List<LineString> lines = GeometryFactory.toLineStringArray(linework);
+    return g.getFactory().createMultiLineString(lines);
   }
-  
- /**private */bool isWithinToleranceOfBoundary(Coordinate pt)
-  {
-  	for (int i = 0; i < linework.getNumGeometries(); i++) {
-  		LineString line = (LineString) linework.getGeometryN(i);
-  		CoordinateSequence seq = line.getCoordinateSequence();
-  		for (int j = 0; j < seq.size() - 1; j++) {
-   			seq.getCoordinate(j, seg.p0);
-   			seq.getCoordinate(j + 1, seg.p1);
-   			double dist = seg.distance(pt);
-   			if (dist <= boundaryDistanceTolerance)
-   				return true;
-  		}
-  	}
-  	return false;
+
+  /**private */ bool isWithinToleranceOfBoundary(Coordinate pt) {
+    for (int i = 0; i < linework.getNumGeometries(); i++) {
+      LineString line = linework.getGeometryN(i) as LineString;
+      CoordinateSequence seq = line.getCoordinateSequence();
+      for (int j = 0; j < seq.size() - 1; j++) {
+        seq.getCoordinateTo(j, seg.p0);
+        seq.getCoordinateTo(j + 1, seg.p1);
+        double dist = seg.distanceToCoord(pt);
+        if (dist <= boundaryDistanceTolerance) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
 
@@ -108,34 +113,33 @@ class FuzzyPointLocator
  * 
  * @author Martin Davis
  */
-class PolygonalLineworkExtracter 
-	implements GeometryFilter
-{
-	private List linework; 
-	
-	PolygonalLineworkExtracter()
-	{
-		linework = [];
-	}
-	
-	/**
+class PolygonalLineworkExtracter implements GeometryFilter {
+  final List _linework = [];
+
+  // PolygonalLineworkExtracter()
+  // {
+  // 	linework = [];
+  // }
+
+  /**
 	 * Filters out all linework for polygonal elements
 	 */
-	void filter(Geometry g)
-	{
-		if (g is Polygon) {
-			Polygon poly = (Polygon) g;
-			linework.add(poly.getExteriorRing());
-			for (int i = 0; i < poly.getNumInteriorRing(); i++) {
-				linework.add(poly.getInteriorRingN(i));
-			}
-		}
-	}
-	
-	/**
+  void filter(Geometry g) {
+    if (g is Polygon) {
+      Polygon poly = g;
+      _linework.add(poly.getExteriorRing());
+      for (int i = 0; i < poly.getNumInteriorRing(); i++) {
+        _linework.add(poly.getInteriorRingN(i));
+      }
+    }
+  }
+
+  /**
 	 * Gets the list of polygonal linework.
 	 * 
 	 * @return a List of LineStrings
 	 */
-	List getLinework() { return linework; }
+  List getLinework() {
+    return _linework;
+  }
 }

@@ -189,7 +189,6 @@ class GeometryOverlay {
     if (isOverlayNG) {
       return OverlayNGRobust.union(a);
     } else {
-      print('>>>>>>>>> 1 <<<<<<<<<<<<<<<<<<<<');
       return UnaryUnionOp.union(a);
     }
   }

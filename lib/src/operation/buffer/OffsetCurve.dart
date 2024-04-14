@@ -53,8 +53,9 @@ class _ implements MapOp {
 
   _(this.computeCurve,this.distance);
   @override
-  Geometry? map(Geometry geom) {
-    if (geom is Point) return null;
+  Geometry map(Geometry geom) {
+    /// TODO: @ruier edit.
+    // if (geom is Point) return null;
     if (geom is Polygon) {
       return toLineString(geom.buffer(distance).getBoundary());
     }

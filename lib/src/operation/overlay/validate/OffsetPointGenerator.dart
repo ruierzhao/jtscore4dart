@@ -10,8 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-
 // import java.util.ArrayList;
 // import java.util.Iterator;
 // import java.util.List;
@@ -20,6 +18,12 @@
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.geom.util.LinearComponentExtracter;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/util/LinearComponentExtracter.dart';
+import 'package:jtscore4dart/src/utils.dart';
 
 /**
  * Generates points offset by a given distance 
@@ -35,16 +39,12 @@
  * @author Martin Davis
  * @version 1.7
  */
-class OffsetPointGenerator
-{
- /**private */Geometry g;
- /**private */bool doLeft = true; 
- /**private */bool doRight = true;
-  
-  OffsetPointGenerator(Geometry g)
-  {
-    this.g = g;
-  }
+class OffsetPointGenerator {
+  final Geometry _g;
+  bool _doLeft = true;
+  bool _doRight = true;
+
+  OffsetPointGenerator(this._g);
 
   /**
    * Set the sides on which to generate offset points.
@@ -52,34 +52,31 @@ class OffsetPointGenerator
    * @param doLeft
    * @param doRight
    */
-  void setSidesToGenerate(bool doLeft, bool doRight)
-  {
-    this.doLeft = doLeft;
-    this.doRight = doRight;
+  void setSidesToGenerate(bool doLeft, bool doRight) {
+    this._doLeft = doLeft;
+    this._doRight = doRight;
   }
-  
+
   /**
    * Gets the computed offset points.
    *
    * @return List&lt;Coordinate&gt;
    */
-  List getPoints(double offsetDistance)
-  {
+  List getPoints(double offsetDistance) {
     List offsetPts = [];
-    List lines = LinearComponentExtracter.getLines(g);
-    for (Iterator i = lines.iterator(); i.moveNext(); ) {
-      LineString line = (LineString) i.current;
-      extractPoints(line, offsetDistance, offsetPts);
+    List lines = LinearComponentExtracter.getLines(_g);
+    for (Iterator i = lines.iterator; i.moveNext();) {
+      LineString line = i.current;
+      _extractPoints(line, offsetDistance, offsetPts);
     }
     //System.out.println(toMultiPoint(offsetPts));
     return offsetPts;
   }
 
- /**private */void extractPoints(LineString line, double offsetDistance, List offsetPts)
-  {
+  void _extractPoints(LineString line, double offsetDistance, List offsetPts) {
     List<Coordinate> pts = line.getCoordinates();
     for (int i = 0; i < pts.length - 1; i++) {
-    	computeOffsetPoints(pts[i], pts[i + 1], offsetDistance, offsetPts);
+      _computeOffsetPoints(pts[i], pts[i + 1], offsetDistance, offsetPts);
     }
   }
 
@@ -91,11 +88,11 @@ class OffsetPointGenerator
    * @param p0 the first point of the segment to offset from
    * @param p1 the second point of the segment to offset from
    */
- /**private */void computeOffsetPoints(Coordinate p0, Coordinate p1, double offsetDistance, List offsetPts)
-  {
+  void _computeOffsetPoints(
+      Coordinate p0, Coordinate p1, double offsetDistance, List offsetPts) {
     double dx = p1.x - p0.x;
     double dy = p1.y - p0.y;
-    double len = math.hypot(dx, dy);
+    double len = hypot(dx, dy);
     // u is the vector that is the length of the offset, in the direction of the segment
     double ux = offsetDistance * dx / len;
     double uy = offsetDistance * dy / len;
@@ -103,15 +100,14 @@ class OffsetPointGenerator
     double midX = (p1.x + p0.x) / 2;
     double midY = (p1.y + p0.y) / 2;
 
-    if (doLeft) {
+    if (_doLeft) {
       Coordinate offsetLeft = new Coordinate(midX - uy, midY + ux);
       offsetPts.add(offsetLeft);
     }
-    
-    if (doRight) {
+
+    if (_doRight) {
       Coordinate offsetRight = new Coordinate(midX + uy, midY - ux);
       offsetPts.add(offsetRight);
     }
   }
-
 }

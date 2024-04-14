@@ -10,8 +10,9 @@ void main() {
   // WKTWriter writer = WKTWriter();
   Geometry g = reader.read(wktstr)!;
   Geometry g2 = reader.read(wktstr2)!;
-  // print('>>>>>>>>> ${ OverlayOp.overlayOp(g,g2,OverlayOp.UNION) } <<<<<<<<<<<<<<<<<<<<');
-  print('>>>>>>>>> ${ UnaryUnionOp.union(g) } <<<<<<<<<<<<<<<<<<<<');
+  // print('>>>>>>>>> g.unionWith(g2): ${ g.union() } <<<<<<<<<<<<<<<<<<<<'); //pass
+  print('>>>>>>>>> ${ OverlayOp.overlayOp(g,g2,OverlayOp.UNION) } <<<<<<<<<<<<<<<<<<<<');
+  // print('>>>>>>>>> ${ UnaryUnionOp.union(g) } <<<<<<<<<<<<<<<<<<<<');
 }
 
 /// error stack.

@@ -10,12 +10,17 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.geom.PrecisionModel;
 // import org.locationtech.jts.geom.TopologyException;
 // import org.locationtech.jts.precision.GeometryPrecisionReducer;
+
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geom/TopologyException.dart';
+
+import 'OverlayNG.dart';
 
 /**
  * Functions to reduce the precision of a geometry
@@ -28,7 +33,6 @@
  * @author Martin Davis
  */
 class PrecisionReducer {
-
   /**
    * Reduces the precision of a geometry by rounding and snapping it to the
    * supplied {@link PrecisionModel}.
@@ -50,7 +54,7 @@ class PrecisionReducer {
    * @throws ArgumentError if the reduction fails due to invalid input geometry is invalid
    */
   static Geometry reducePrecision(Geometry geom, PrecisionModel pm) {
-    OverlayNG ov = new OverlayNG(geom, pm);
+    OverlayNG ov = new OverlayNG.PM(geom, pm);
     /**
      * Ensure reducing a area only produces polygonal result.
      * (I.e. collapse lines are not output)
@@ -61,13 +65,12 @@ class PrecisionReducer {
     try {
       Geometry reduced = ov.getResult();
       return reduced;
-    }
-    catch (TopologyException ex) {
+    } on TopologyException catch (ex) {
       throw new ArgumentError("Reduction failed, possible invalid input");
     }
   }
 
- /**private */PrecisionReducer() {
+  /**private */ PrecisionReducer() {
     // no instantiation for now
   }
 }

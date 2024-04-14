@@ -146,5 +146,5 @@ class GeometryMapper
      * @param [geom] the input geometry
      * @return a result geometry
      */
-    Geometry? map(Geometry geom);
+    Geometry map(Geometry geom);
   }

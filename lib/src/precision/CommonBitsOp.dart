@@ -10,8 +10,11 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Geometry;
+
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
+import 'CommonBitsRemover.dart';
 
 /**
  * Provides versions of Geometry spatial functions which use
@@ -25,17 +28,16 @@
  * @version 1.7
  */
 class CommonBitsOp {
-
- /**private */bool returnToOriginalPrecision = true;
- /**private */CommonBitsRemover cbr;
+  /**private */ bool returnToOriginalPrecision = true;
+  /**private */ CommonBitsRemover cbr = new CommonBitsRemover();
 
   /**
    * Creates a new instance of class, which reshifts result {@link Geometry}s.
    */
-  CommonBitsOp()
-  {
-    this(true);
-  }
+  // CommonBitsOp()
+  // {
+  //   this(true);
+  // }
 
   /**
    * Creates a new instance of class, specifying whether
@@ -43,10 +45,7 @@ class CommonBitsOp {
    *
    * @param returnToOriginalPrecision
    */
-  CommonBitsOp(bool returnToOriginalPrecision)
-  {
-    this.returnToOriginalPrecision = returnToOriginalPrecision;
-  }
+  CommonBitsOp([this.returnToOriginalPrecision = true]);
 
   /**
    * Computes the set-theoretic intersection of two {@link Geometry}s, using enhanced precision.
@@ -54,10 +53,9 @@ class CommonBitsOp {
    * @param geom1 the second Geometry
    * @return the Geometry representing the set-theoretic intersection of the input Geometries.
    */
-  Geometry intersection(Geometry geom0, Geometry geom1)
-  {
-    List<Geometry> geom = removeCommonBits(geom0, geom1);
-    return computeResultPrecision(geom[0].intersection(geom[1]));
+  Geometry intersection(Geometry geom0, Geometry geom1) {
+    List<Geometry> geom = _removeCommonBits(geom0, geom1);
+    return _computeResultPrecision(geom[0].intersection(geom[1]));
   }
 
   /**
@@ -66,10 +64,9 @@ class CommonBitsOp {
    * @param geom1 the second Geometry
    * @return the Geometry representing the set-theoretic union of the input Geometries.
    */
-  Geometry union(Geometry geom0, Geometry geom1)
-  {
-    List<Geometry> geom = removeCommonBits(geom0, geom1);
-    return computeResultPrecision(geom[0].union(geom[1]));
+  Geometry union(Geometry geom0, Geometry geom1) {
+    List<Geometry> geom = _removeCommonBits(geom0, geom1);
+    return _computeResultPrecision(geom[0].unionWith(geom[1]));
   }
 
   /**
@@ -78,10 +75,9 @@ class CommonBitsOp {
    * @param geom1 the second Geometry, to be subtracted from the first
    * @return the Geometry representing the set-theoretic difference of the input Geometries.
    */
-  Geometry difference(Geometry geom0, Geometry geom1)
-  {
-    List<Geometry> geom = removeCommonBits(geom0, geom1);
-    return computeResultPrecision(geom[0].difference(geom[1]));
+  Geometry difference(Geometry geom0, Geometry geom1) {
+    List<Geometry> geom = _removeCommonBits(geom0, geom1);
+    return _computeResultPrecision(geom[0].difference(geom[1]));
   }
 
   /**
@@ -91,10 +87,9 @@ class CommonBitsOp {
    * @param geom1 the second Geometry
    * @return the Geometry representing the set-theoretic symmetric difference of the input Geometries.
    */
-  Geometry symDifference(Geometry geom0, Geometry geom1)
-  {
-    List<Geometry> geom = removeCommonBits(geom0, geom1);
-    return computeResultPrecision(geom[0].symDifference(geom[1]));
+  Geometry symDifference(Geometry geom0, Geometry geom1) {
+    List<Geometry> geom = _removeCommonBits(geom0, geom1);
+    return _computeResultPrecision(geom[0].symDifference(geom[1]));
   }
 
   /**
@@ -104,10 +99,9 @@ class CommonBitsOp {
    * @param distance the buffer distance
    * @return the Geometry representing the buffer of the input Geometry.
    */
-  Geometry buffer(Geometry geom0, double distance)
-  {
-    Geometry geom = removeCommonBits(geom0);
-    return computeResultPrecision(geom.buffer(distance));
+  Geometry buffer(Geometry geom0, double distance) {
+    Geometry geom = _removeCommonBits1(geom0);
+    return _computeResultPrecision(geom.buffer(distance));
   }
 
   /**
@@ -120,10 +114,8 @@ class CommonBitsOp {
    * @param result the result Geometry to modify
    * @return the result Geometry with the required precision
    */
- /**private */Geometry computeResultPrecision(Geometry result)
-  {
-    if (returnToOriginalPrecision)
-      cbr.addCommonBits(result);
+  Geometry _computeResultPrecision(Geometry result) {
+    if (returnToOriginalPrecision) cbr.addCommonBits(result);
     return result;
   }
 
@@ -133,8 +125,7 @@ class CommonBitsOp {
    * @param geom0 the Geometry to remove common bits from
    * @return a copy of the input Geometry with common bits removed
    */
- /**private */Geometry removeCommonBits(Geometry geom0)
-  {
+  Geometry _removeCommonBits1(Geometry geom0) {
     cbr = new CommonBitsRemover();
     cbr.add(geom0);
     Geometry geom = cbr.removeCommonBits(geom0.copy());
@@ -144,19 +135,22 @@ class CommonBitsOp {
   /**
    * Computes a copy of each input {@link Geometry}s with the calculated common bits
    * removed from each coordinate.
-   * @param geom0 a Geometry to remove common bits from
-   * @param geom1 a Geometry to remove common bits from
+   * @param [geom0] a Geometry to remove common bits from
+   * @param [geom1] a Geometry to remove common bits from
    * @return an array containing copies
    * of the input Geometry's with common bits removed
    */
- /**private */List<Geometry> removeCommonBits(Geometry geom0, Geometry geom1)
-  {
+  List<Geometry> _removeCommonBits(Geometry geom0, Geometry geom1) {
     cbr = new CommonBitsRemover();
     cbr.add(geom0);
     cbr.add(geom1);
-    Geometry geom[] = new Geometry[2];
-    geom[0] = cbr.removeCommonBits(geom0.copy());
-    geom[1] = cbr.removeCommonBits(geom1.copy());
+    // Geometry geom[] = new Geometry[2];
+    // geom[0] = cbr.removeCommonBits(geom0.copy());
+    // geom[1] = cbr.removeCommonBits(geom1.copy());
+    List<Geometry> geom = List.from([
+      cbr.removeCommonBits(geom0.copy()),
+      cbr.removeCommonBits(geom1.copy())
+    ], growable: false);
     return geom;
   }
 }

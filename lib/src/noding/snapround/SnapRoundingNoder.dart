@@ -101,13 +101,13 @@ class SnapRoundingNoder implements Noder
    * @param inputSegmentStrings a Collection of NodedSegmentStrings
    */
   @override
-  void computeNodes(Iterable<NodedSegmentString> inputSegmentStrings)
+  void computeNodes(Iterable<SegmentString> inputSegmentStrings)
   {
     snappedResult = snapRound(inputSegmentStrings);
   }
   
  /**private */
- List<NodedSegmentString> snapRound(Iterable<NodedSegmentString> segStrings)
+ List<NodedSegmentString> snapRound(Iterable<SegmentString> segStrings)
   {
     /**
      * Determine hot pixels for intersections and vertices.
@@ -129,7 +129,7 @@ class SnapRoundingNoder implements Noder
    * 
    * @param segStrings the input NodedSegmentStrings
    */
- /**private */void addIntersectionPixels(Iterable<NodedSegmentString> segStrings)
+ /**private */void addIntersectionPixels(Iterable<SegmentString> segStrings)
   {
     /**
      * nearness tolerance is a small fraction of the grid size.
@@ -154,7 +154,7 @@ class SnapRoundingNoder implements Noder
    * @param segStrings the input NodedSegmentStrings
    */
  /**private */
-  void addVertexPixels(Iterable<NodedSegmentString> segStrings) {
+  void addVertexPixels(Iterable<SegmentString> segStrings) {
     for (SegmentString nss in segStrings) {
       List<Coordinate> pts = nss.getCoordinates();
       pixelIndex.addAll(pts);
@@ -190,12 +190,12 @@ class SnapRoundingNoder implements Noder
    * @param segStrings segments to snap
    * @return the snapped segment strings
    */
- /**private */List<NodedSegmentString> computeSnaps(Iterable<NodedSegmentString> segStrings)
+ /**private */List<NodedSegmentString> computeSnaps(Iterable<SegmentString> segStrings)
   {
     // List<NodedSegmentString> snapped = new ArrayList<NodedSegmentString>();
     List<NodedSegmentString> snapped = [];
-    for (NodedSegmentString ss in segStrings ) {
-      NodedSegmentString? snappedSS = computeSegmentSnaps(ss);
+    for (SegmentString ss in segStrings ) {
+      NodedSegmentString? snappedSS = computeSegmentSnaps(ss as NodedSegmentString);
       if (snappedSS != null) {
         snapped.add(snappedSS);
       }
@@ -204,8 +204,8 @@ class SnapRoundingNoder implements Noder
      * Some intersection hot pixels may have been marked as nodes in the previous
      * loop, so add nodes for them.
      */
-    for (NodedSegmentString ss in snapped ) {
-      addVertexNodeSnaps(ss);
+    for (SegmentString ss in snapped ) {
+      addVertexNodeSnaps(ss as NodedSegmentString);
     }
     return snapped;
   }

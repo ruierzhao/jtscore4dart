@@ -17,6 +17,14 @@
 // import org.locationtech.jts.geom.CoordinateSequenceFilter;
 // import org.locationtech.jts.geom.Geometry;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/CoordinateFilter.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequence.dart';
+import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+
+import 'CommonBits.dart';
+
 /**
  * Removes common most-significant mantissa bits 
  * from one or more {@link Geometry}s.
@@ -48,12 +56,12 @@
  */
 class CommonBitsRemover
 {
- /**private */Coordinate commonCoord;
+ /**private */Coordinate? commonCoord;
  /**private */CommonCoordinateFilter ccFilter = new CommonCoordinateFilter();
 
-  CommonBitsRemover()
-  {
-  }
+  // CommonBitsRemover()
+  // {
+  // }
 
   /**
    * Add a geometry to the set of geometries whose common bits are
@@ -65,14 +73,14 @@ class CommonBitsRemover
    */
   void add(Geometry geom)
   {
-    geom.apply(ccFilter);
+    geom.applyCoord(ccFilter);
     commonCoord = ccFilter.getCommonCoordinate();
   }
 
   /**
    * The common bits of the Coordinates in the supplied Geometries.
    */
-  Coordinate getCommonCoordinate() { return commonCoord; }
+  Coordinate? getCommonCoordinate() { return commonCoord; }
 
   /**
    * Removes the common coordinate bits from a Geometry.
@@ -83,13 +91,14 @@ class CommonBitsRemover
    */
   Geometry removeCommonBits(Geometry geom)
   {
-    if (commonCoord.x == 0.0 && commonCoord.y == 0.0)
+    if (commonCoord!.x == 0.0 && commonCoord!.y == 0.0) {
       return geom;
-    Coordinate invCoord = new Coordinate(commonCoord);
+    }
+    Coordinate invCoord = new Coordinate.fromAnother(commonCoord!);
     invCoord.x = -invCoord.x;
     invCoord.y = -invCoord.y;
     Translater trans = new Translater(invCoord);
-    geom.apply(trans);
+    geom.applyCoordSeq(trans);
     geom.geometryChanged();
     return geom;
   }
@@ -102,18 +111,23 @@ class CommonBitsRemover
    */
   void addCommonBits(Geometry geom)
   {
-    Translater trans = new Translater(commonCoord);
-    geom.apply(trans);
+    Translater trans = new Translater(commonCoord!);
+    geom.applyCoordSeq(trans);
     geom.geometryChanged();
   }
 
-  static class CommonCoordinateFilter
+
+}
+
+
+  /**static */ class CommonCoordinateFilter
       implements CoordinateFilter
   {
    /**private */CommonBits commonBitsX = new CommonBits();
    /**private */CommonBits commonBitsY = new CommonBits();
 
-    void filter(Coordinate coord)
+    @override
+  void filter(Coordinate coord)
     {
       commonBitsX.add(coord.x);
       commonBitsY.add(coord.y);
@@ -127,31 +141,30 @@ class CommonBitsRemover
     }
   }
 
-  static class Translater
-      implements CoordinateSequenceFilter
-  {
-    Coordinate trans = null;
+/**static */
+class Translater
+    implements CoordinateSequenceFilter
+{
+  Coordinate trans;
 
-    Translater(Coordinate trans)
-    {
-      this.trans = trans;
-    }
+  Translater(this.trans);
 
-    void filter(CoordinateSequence seq, int i) {
-      double xp = seq.getOrdinate(i, 0) + trans.x;
-      double yp = seq.getOrdinate(i, 1) + trans.y;
-      seq.setOrdinate(i, 0, xp);
-      seq.setOrdinate(i, 1, yp);  
-    }
+  @override
+  void filter(CoordinateSequence seq, int i) {
+    double xp = seq.getOrdinate(i, 0) + trans.x;
+    double yp = seq.getOrdinate(i, 1) + trans.y;
+    seq.setOrdinate(i, 0, xp);
+    seq.setOrdinate(i, 1, yp);  
+  }
 
-    bool isDone() {
-     return false;
-    }
+  @override
+  bool isDone() {
+    return false;
+  }
 
-    bool isGeometryChanged() {
-      return true;
-    }
-
+  @override
+  bool isGeometryChanged() {
+    return true;
   }
 
 }

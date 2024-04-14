@@ -35,7 +35,7 @@ import 'PackedCoordinateSequence.dart';
 class PackedCoordinateSequenceFactory implements
     CoordinateSequenceFactory
 {
- /**private */static final int serialVersionUID = -3558264771905224525L;
+//  /**private */static final int serialVersionUID = -3558264771905224525L;
   
   /// Type code for arrays of type <code>double</code>.
   static const int DOUBLE = 0;

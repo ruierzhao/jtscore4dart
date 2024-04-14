@@ -10,10 +10,13 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.index.kdtree.KdNode;
 // import org.locationtech.jts.index.kdtree.KdTree;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/index/kdtree/KdNode.dart';
+import 'package:jtscore4dart/src/index/kdtree/KdTree.dart';
 
 /**
  * An index providing fast creation and lookup of snap points.
@@ -22,26 +25,23 @@
  *
  */
 class SnappingPointIndex {
-
- /**private */double snapTolerance;
+  double _snapTolerance;
 
   /**
    * Since points are added incrementally, this index needs to be dynamic.
    * This class also makes use of the KdTree support for a tolerance distance
    * for point equality.
    */
- /**private */KdTree snapPointIndex;
-  
+  KdTree _snapPointIndex;
+
   /**
    * Creates a snap point index using a specified distance tolerance.
    * 
-   * @param snapTolerance points are snapped if within this distance
+   * @param [snapTolerance] points are snapped if within this distance
    */
-  SnappingPointIndex(double snapTolerance) {
-    this.snapTolerance = snapTolerance;
-    snapPointIndex = new KdTree(snapTolerance);
-  }
-  
+  SnappingPointIndex(this._snapTolerance)
+      : _snapPointIndex = new KdTree(_snapTolerance);
+
   /**
    * Snaps a coordinate to an existing snap point, 
    * if it is within the snap tolerance distance.
@@ -55,7 +55,7 @@ class SnappingPointIndex {
      * Inserting the coordinate snaps it to any existing
      * one within tolerance, or adds it if not.
      */
-    KdNode node = snapPointIndex.insert(p);
+    KdNode node = _snapPointIndex.insert(p);
     return node.getCoordinate();
   }
 
@@ -65,7 +65,7 @@ class SnappingPointIndex {
    * @return the snapping tolerance value
    */
   double getTolerance() {
-    return snapTolerance;
+    return _snapTolerance;
   }
 
   /**
@@ -74,7 +74,6 @@ class SnappingPointIndex {
    * @return the depth of the index tree
    */
   int depth() {
-    return snapPointIndex.depth();
+    return _snapPointIndex.depth();
   }
-
 }

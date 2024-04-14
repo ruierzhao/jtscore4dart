@@ -10,7 +10,17 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
+import 'dart:ffi';
 
+/// TODO: @ruier edit.
+/// geos 库中直接将 Double.doubleToLongBits 当作 int64_t 或者double 用,参考，但不知道对不对。
+/// ```java
+///   double a = 0.0022001;
+///   double b = 0.0022;
+///   System.out.println("a:" + Double.doubleToLongBits(a)); // 4567219507730883496
+///   System.out.println("b:" + Double.doubleToLongBits(b)); // 4567219277146582575
+/// ```
+///
 /// Determines the maximum number of common most-significant
 /// bits in the mantissa of one or numbers.
 /// Can be used to compute the double-precision number which
@@ -19,14 +29,12 @@
 ///
 /// @version 1.7
 class CommonBits {
-
   /// Computes the bit pattern for the sign and exponent of a
   /// double-precision number.
-  /// 
+  ///
   /// @param num
   /// @return the bit pattern for the sign and exponent
-  static int signExpBits(int num)
-  {
+  static int signExpBits(int num) {
     return num >> 52;
   }
 
@@ -35,56 +43,55 @@ class CommonBits {
   /// It does not count the hidden bit, which is always 1.
   /// It does not determine whether the numbers have the same exponent - if they do
   /// not, the value computed by this function is meaningless.
-  /// 
-  /// @param num1 the first number
-  /// @param num2 the second number
+  ///
+  /// @param [num1] the first number
+  /// @param [num2] the second number
   /// @return the number of common most-significant mantissa bits
-  static int numCommonMostSigMantissaBits(long num1, int num2)
-  {
+  static int numCommonMostSigMantissaBits(int num1, int num2) {
     int count = 0;
-    for (int i = 52; i >= 0; i--)
-    {
-      if (getBit(num1, i) != getBit(num2, i))
+    for (int i = 52; i >= 0; i--) {
+      if (getBit(num1, i) != getBit(num2, i)) {
         return count;
+      }
       count++;
     }
     return 52;
   }
 
   /// Zeroes the lower n bits of a bitstring.
-  /// 
+  ///
   /// @param bits the bitstring to alter
   /// @return the zeroed bitstring
-  static int zeroLowerBits(long bits, int nBits)
-  {
-    int invMask = (1L << nBits) - 1L;
-    int mask = ~ invMask;
+  static int zeroLowerBits(int bits, int nBits) {
+    /// TODO: @ruier edit.
+    int invMask = (1 << nBits) - 1;
+    int mask = ~invMask;
     int zeroed = bits & mask;
     return zeroed;
   }
 
   /// Extracts the i'th bit of a bitstring.
-  /// 
+  ///
   /// @param bits the bitstring to extract from
   /// @param i the bit to extract
   /// @return the value of the extracted bit
-  static int getBit(long bits, int i)
-  {
-    int mask = (1L << i);
+  static int getBit(int bits, int i) {
+    int mask = (1 << i);
     return (bits & mask) != 0 ? 1 : 0;
   }
 
- /**private */bool isFirst = true;
- /**private */int commonMantissaBitsCount = 53;
- /**private */long commonBits = 0;
- /**private */long commonSignExp;
+  /**private */ bool isFirst = true;
+  /**private */ int commonMantissaBitsCount = 53;
+  /**private */ int commonBits = 0;
+  /**private */ int commonSignExp = 0;
 
-  CommonBits() {
-  }
+  // CommonBits() {
+  // }
 
-  void add(double num)
-  {
-    int numBits = Double.doubleToLongBits(num);
+  void add(double num) {
+    /// TODO: @ruier edit.
+    // int numBits = Double.doubleToLongBits(num);
+    int numBits = num.toInt();
     if (isFirst) {
       commonBits = numBits;
       commonSignExp = signExpBits(commonBits);
@@ -105,22 +112,23 @@ class CommonBits {
 //    System.out.println(toString(commonBits));
   }
 
-  double getCommon()
-  {
-    return Double.longBitsToDouble(commonBits);
-  }
-  /// A representation of the Double bits formatted for easy readability
-  String toString(long bits)
-  {
-    double x = Double.longBitsToDouble(bits);
-    String numStr = Long.toBinaryString(bits);
-    String padStr = "0000000000000000000000000000000000000000000000000000000000000000" + numStr;
-    String bitStr = padStr.substring(padStr.length() - 64);
-    String str = bitStr.substring(0, 1) + "  "
-        + bitStr.substring(1, 12) + "(exp) "
-        + bitStr.substring(12)
-        + " [ " + x + " ]";
-    return str;
+  double getCommon() {
+    // return Double.longBitsToDouble(commonBits);
+    return commonBits.toDouble();
   }
 
+  /// A representation of the Double bits formatted for easy readability
+  /// TODO: @ruier edit.稍后实现。
+  // String toString(int bits)
+  // {
+  //   double x = Double.longBitsToDouble(bits);
+  //   String numStr = Long.toBinaryString(bits);
+  //   String padStr = "0000000000000000000000000000000000000000000000000000000000000000" + numStr;
+  //   String bitStr = padStr.substring(padStr.length - 64);
+  //   String str = bitStr.substring(0, 1) + "  "
+  //       + bitStr.substring(1, 12) + "(exp) "
+  //       + bitStr.substring(12)
+  //       + " [ $x ]";
+  //   return str;
+  // }
 }

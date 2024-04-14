@@ -193,12 +193,12 @@ class GeometryTransformer
  /**protected */Geometry transformMultiPoint(MultiPoint geom, Geometry parent) {
     List transGeomList = [];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      Geometry transformGeom = transformPoint((Point) geom.getGeometryN(i), geom);
+      Geometry transformGeom = transformPoint(geom.getGeometryN(i), geom);
       if (transformGeom == null) continue;
       if (transformGeom.isEmpty()) continue;
       transGeomList.add(transformGeom);
     }
-    if (transGeomList.isEmpty()) {
+    if (transGeomList.isEmpty) {
       return factory.createMultiPoint();
     }
     return factory.buildGeometry(transGeomList);

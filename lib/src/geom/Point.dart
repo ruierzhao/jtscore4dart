@@ -65,7 +65,7 @@ class Point
   //         coordinate != null ? new List<Coordinate>{coordinate} : new List<Coordinate>{}));
   // }
 
-  ///@param  coordinates      contains the single coordinate on which to base this <code>Point</code>
+  ///@param  [coordinates]      contains the single coordinate on which to base this <code>Point</code>
   ///      , or <code>null</code> to create the empty geometry.
   Point(CoordinateSequence coordinates, GeometryFactory factory):super(factory) {
     init(coordinates);

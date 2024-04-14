@@ -10,41 +10,37 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geomgraph.Edge;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+
+import 'SegmentIntersector.dart';
 
 /**
  * @version 1.7
  */
 class SweepLineSegment {
-
   Edge edge;
   List<Coordinate> pts;
   int ptIndex;
 
-  SweepLineSegment(Edge edge,  int ptIndex) {
-    this.edge = edge;
-    this.ptIndex = ptIndex;
-    pts = edge.getCoordinates();
-  }
+  SweepLineSegment(this.edge, this.ptIndex) : pts = edge.getCoordinates();
 
-  double getMinX()
-  {
+  double getMinX() {
     double x1 = pts[ptIndex].x;
     double x2 = pts[ptIndex + 1].x;
     return x1 < x2 ? x1 : x2;
   }
-  double getMaxX()
-  {
+
+  double getMaxX() {
     double x1 = pts[ptIndex].x;
     double x2 = pts[ptIndex + 1].x;
     return x1 > x2 ? x1 : x2;
   }
-  void computeIntersections(SweepLineSegment ss, SegmentIntersector si)
-  {
+
+  void computeIntersections(SweepLineSegment ss, SegmentIntersector si) {
     si.addIntersections(edge, ptIndex, ss.edge, ss.ptIndex);
   }
-
 }

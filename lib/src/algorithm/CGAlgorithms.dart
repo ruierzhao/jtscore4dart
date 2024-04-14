@@ -458,7 +458,7 @@ class CGAlgorithms
      */
 
     bool noIntersection = false;
-    if (! Envelope.intersects(A, B, C, D)) {
+    if (! Envelope.intersects4Coord(A, B, C, D)) {
       noIntersection = true;
     }
     else {

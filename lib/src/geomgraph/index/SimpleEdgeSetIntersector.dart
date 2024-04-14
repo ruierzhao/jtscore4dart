@@ -10,12 +10,17 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.Iterator;
 // import java.util.List;
 
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geomgraph.Edge;
+
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geomgraph/Edge.dart';
+import 'package:jtscore4dart/src/geomgraph/index/SegmentIntersector.dart';
+
+import 'EdgeSetIntersector.dart';
 
 /**
  * Finds all intersections in one or two sets of edges,
@@ -24,38 +29,39 @@
  * This algorithm is too slow for production use, but is useful for testing purposes.
  * @version 1.7
  */
-class SimpleEdgeSetIntersector extends EdgeSetIntersector
-{
+class SimpleEdgeSetIntersector extends EdgeSetIntersector {
   // statistics information
-  int nOverlaps;
+  int nOverlaps = 0;
 
-  SimpleEdgeSetIntersector() {
-  }
+  // SimpleEdgeSetIntersector() {
+  // }
 
-  void computeIntersections(List edges, SegmentIntersector si, bool testAllSegments)
-  {
+  @override
+  void computeIntersections(
+      List edges, SegmentIntersector si, bool testAllSegments) {
     nOverlaps = 0;
 
-    for (Iterator i0 = edges.iterator(); i0.moveNext(); ) {
-      Edge edge0 = (Edge) i0.current;
-      for (Iterator i1 = edges.iterator(); i1.moveNext(); ) {
-        Edge edge1 = (Edge) i1.current;
-        if (testAllSegments || edge0 != edge1)
-          computeIntersects(edge0, edge1, si);
+    for (Iterator i0 = edges.iterator; i0.moveNext();) {
+      Edge edge0 = i0.current;
+      for (Iterator i1 = edges.iterator; i1.moveNext();) {
+        Edge edge1 = i1.current;
+        if (testAllSegments || edge0 != edge1) {
+          _computeIntersects(edge0, edge1, si);
+        }
       }
     }
   }
 
-
-  void computeIntersections(List edges0, List edges1, SegmentIntersector si)
-  {
+  @override
+  void computeIntersections2Set(
+      List edges0, List edges1, SegmentIntersector si) {
     nOverlaps = 0;
 
-    for (Iterator i0 = edges0.iterator(); i0.moveNext(); ) {
-      Edge edge0 = (Edge) i0.current;
-      for (Iterator i1 = edges1.iterator(); i1.moveNext(); ) {
-        Edge edge1 = (Edge) i1.current;
-        computeIntersects(edge0, edge1, si);
+    for (Iterator i0 = edges0.iterator; i0.moveNext();) {
+      Edge edge0 = i0.current;
+      for (Iterator i1 = edges1.iterator; i1.moveNext();) {
+        Edge edge1 = i1.current;
+        _computeIntersects(edge0, edge1, si);
       }
     }
   }
@@ -65,9 +71,8 @@ class SimpleEdgeSetIntersector extends EdgeSetIntersector
    * This has n^2 performance, and is about 100 times slower than using
    * monotone chains.
    */
- /**private */void computeIntersects(Edge e0, Edge e1, SegmentIntersector si)
-  {
-   List<Coordinate> pts0 = e0.getCoordinates();
+  void _computeIntersects(Edge e0, Edge e1, SegmentIntersector si) {
+    List<Coordinate> pts0 = e0.getCoordinates();
     List<Coordinate> pts1 = e1.getCoordinates();
     for (int i0 = 0; i0 < pts0.length - 1; i0++) {
       for (int i1 = 0; i1 < pts1.length - 1; i1++) {

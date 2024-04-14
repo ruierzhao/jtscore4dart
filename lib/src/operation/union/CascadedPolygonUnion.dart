@@ -192,7 +192,6 @@ class CascadedPolygonUnion
 		  return null;
 		}
 		// geomFactory = ( inputPolys!.iterator.current as Geometry).getFactory();
-    print('>>>>>>>>> ${ inputPolys!.iterator.current  == null} <<<<<<<<<<<<<<<<<<<<');
     var it = inputPolys!.iterator;
     it.moveNext();
 		geomFactory = ( it.current as Geometry).getFactory();

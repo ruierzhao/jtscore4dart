@@ -101,7 +101,6 @@ class MinimumAreaRectangle
       return computeConvex(inputGeom);
     }
     Geometry convexGeom = ConvexHull(inputGeom).getConvexHull();
-    print('>>>>>>>>> ${ convexGeom } <<<<<<<<<<<<<<<<<<<<');
     return computeConvex(convexGeom);
   }
 

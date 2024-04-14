@@ -231,7 +231,7 @@ class OverlayNGRobust {
 
       //System.out.println("Snapping with " + snapTol + " - FAILED");
       //log("Snapping with " + snapTol + " - FAILED", geom0, geom1);
-      print('>>>>>>>>> $ex <<<<<<<<<<<<<<<<<<<<');
+      print(' $ex <<<<<<<<<<<<<<<<<<<<');
     }
     return null;
   }

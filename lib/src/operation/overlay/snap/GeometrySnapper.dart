@@ -176,7 +176,7 @@ class GeometrySnapper
     List<Coordinate> snapPts = extractTargetCoordinates(snapGeom);
 
     SnapTransformer snapTrans = new SnapTransformer(snapTolerance, snapPts);
-    return snapTrans.transform(srcGeom);
+    return snapTrans.transform(srcGeom)!;
   }
 
   /**
@@ -196,7 +196,7 @@ class GeometrySnapper
     List<Coordinate> snapPts = extractTargetCoordinates(srcGeom);
 
     SnapTransformer snapTrans = new SnapTransformer(snapTolerance, snapPts, true);
-    Geometry snappedGeom = snapTrans.transform(srcGeom);
+    Geometry snappedGeom = snapTrans.transform(srcGeom)!;
     Geometry result = snappedGeom;
     if (cleanResult && result is Polygonal) {
       // TODO: use better cleaning approach
@@ -261,7 +261,7 @@ class SnapTransformer extends GeometryTransformer
 
   /**protected */
   @override
-  CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent)
+  CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry? parent)
   {
     List<Coordinate> srcPts = coords.toCoordinateArray();
     List<Coordinate> newPts = snapLine(srcPts, snapPts);

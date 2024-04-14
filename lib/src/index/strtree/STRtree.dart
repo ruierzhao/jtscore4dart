@@ -196,10 +196,10 @@ implements SpatialIndex /**, Serializable  */
     // int sliceCapacity =  math.ceil(childBoundables.size() / (double) sliceCount);
     int sliceCapacity =  (childBoundables.size() / sliceCount.toDouble()).ceil();
     // List[] slices = new List[sliceCount];
-    List slices = [];
+    List<List<Boundable>> slices = List.filled(sliceCount, <Boundable>[], growable: false);
     Iterator i = childBoundables.iterator;
     for (int j = 0; j < sliceCount; j++) {
-      slices[j] = [];
+      // slices[j] = [];
       int boundablesAddedToSlice = 0;
       while (i.moveNext() && boundablesAddedToSlice < sliceCapacity) {
         Boundable childBoundable =  i.current;

@@ -49,13 +49,13 @@
 		],
 		"description": "import java patch."
 	}
-	,"print": {
+	,"print variable": {
 		"scope": "dart",
-		"prefix": "pr",
+		"prefix": "prv",
 		"body": [
-			"print('>>>>>>>>> ${ ${1:$CLIPBOARD} } <<<<<<<<<<<<<<<<<<<<');$0",
+			"print('>>>>>>>>> $CLIPBOARD: ${ ${1:$CLIPBOARD} } <<<<<<<<<<<<<<<<<<<<');$0",
 		],
-		"description": "import java patch."
+		"description": "打印变量。"
 	}
 	,"wkt reader and writer template": {
 		"scope": "dart",

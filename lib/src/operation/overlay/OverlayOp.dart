@@ -202,7 +202,6 @@ class OverlayOp extends GeometryGraphOperation {
   }
 
   void _computeOverlay(int opCode) {
-    print('>>>>>>>>> graph: ${ graph } <<<<<<<<<<<<<<<<<<<<');
     // copy points from input Geometries.
     // This ensures that any Point geometries
     // in the input are considered for inclusion in the result set

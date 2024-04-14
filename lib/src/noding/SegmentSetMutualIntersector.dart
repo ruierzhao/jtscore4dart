@@ -10,8 +10,9 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.Collection;
+
+import 'SegmentIntersector.dart';
 
 /**
  * An intersector for the red-blue intersection problem.
@@ -35,8 +36,7 @@
  * @author Martin Davis
  * @version 1.10
  */
-abstract class SegmentSetMutualIntersector
-{  
+abstract class SegmentSetMutualIntersector {
   /**
    * Computes the intersections with a given set of {@link SegmentString}s,
    * using the supplied {@link SegmentIntersector}.
@@ -45,5 +45,5 @@ abstract class SegmentSetMutualIntersector
    * @param segInt the intersection detector to either record intersection occurrences
    * 			 or add intersection nodes to the input segment strings.
    */
-  void process(Collection segStrings, SegmentIntersector segInt);
+  void process(Iterable segStrings, SegmentIntersector segInt);
 }

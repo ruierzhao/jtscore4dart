@@ -10,10 +10,16 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.algorithm.LineIntersector;
 // import org.locationtech.jts.algorithm.RobustLineIntersector;
 // import org.locationtech.jts.geom.Coordinate;
+
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'SegmentIntersector.dart';
+import 'SegmentString.dart';
 
 /**
  * Detects and records an intersection between two {@link SegmentString}s,
@@ -25,110 +31,98 @@
  *
  * @version 1.7
  */
-class SegmentIntersectionDetector
-    implements SegmentIntersector
-{
- /**private */LineIntersector li;
- /**private */bool findProper = false;
- /**private */bool findAllTypes = false;
-  
- /**private */bool hasIntersection = false;
- /**private */bool hasProperIntersection = false;
- /**private */bool hasNonProperIntersection = false;
-  
- /**private */Coordinate intPt = null;
- /**private */List<Coordinate> intSegments = null;
+class SegmentIntersectionDetector implements SegmentIntersector {
+  /**private */ LineIntersector li;
+  /**private */ bool findProper = false;
+  /**private */ bool findAllTypes = false;
+
+  /**private */ bool _hasIntersection = false;
+  /**private */ bool _hasProperIntersection = false;
+  /**private */ bool _hasNonProperIntersection = false;
+
+  /**private */ Coordinate? intPt;
+  /**private */ List<Coordinate> intSegments = [];
 
   /**
    * Creates an intersection finder using a {@link RobustLineIntersector}.
    */
-  SegmentIntersectionDetector()
-  {
-    this(new RobustLineIntersector());
-  }
+  // SegmentIntersectionDetector()
+  // {
+  //   this(new RobustLineIntersector());
+  // }
 
   /**
    * Creates an intersection finder using a given LineIntersector.
    *
    * @param li the LineIntersector to use
    */
-  SegmentIntersectionDetector(LineIntersector li)
-  {
-    this.li = li;
-  }
+  SegmentIntersectionDetector([LineIntersector? li])
+      : this.li = li ??= new RobustLineIntersector();
 
   /**
    * Sets whether processing must continue until a proper intersection is found.
    * 
    * @param findProper true if processing should continue until a proper intersection is found
    */
-  void setFindProper(bool findProper)
-  {
+  void setFindProper(bool findProper) {
     this.findProper = findProper;
   }
-  
+
   /**
    * Sets whether processing can terminate once any intersection is found.
    * 
    * @param findAllTypes true if processing can terminate once any intersection is found.
    */
-  void setFindAllIntersectionTypes(bool findAllTypes)
-  {
+  void setFindAllIntersectionTypes(bool findAllTypes) {
     this.findAllTypes = findAllTypes;
   }
-  
+
   /**
    * Tests whether an intersection was found.
    * 
    * @return true if an intersection was found
    */
-  bool hasIntersection() 
-  { 
-  	return hasIntersection; 
+  bool hasIntersection() {
+    return _hasIntersection;
   }
-  
+
   /**
    * Tests whether a proper intersection was found.
    * 
    * @return true if a proper intersection was found
    */
-  bool hasProperIntersection() 
-  { 
-    return hasProperIntersection; 
+  bool hasProperIntersection() {
+    return _hasProperIntersection;
   }
-  
+
   /**
    * Tests whether a non-proper intersection was found.
    * 
    * @return true if a non-proper intersection was found
    */
-  bool hasNonProperIntersection() 
-  { 
-    return hasNonProperIntersection; 
+  bool hasNonProperIntersection() {
+    return _hasNonProperIntersection;
   }
-  
+
   /**
    * Gets the computed location of the intersection.
    * Due to round-off, the location may not be exact.
    * 
    * @return the coordinate for the intersection location
    */
-  Coordinate getIntersection()  
-  {    
-  	return intPt;  
+  Coordinate getIntersection() {
+    return intPt!;
   }
-
 
   /**
    * Gets the endpoints of the intersecting segments.
    * 
    * @return an array of the segment endpoints (p00, p01, p10, p11)
    */
-  List<Coordinate> getIntersectionSegments()
-  {
-  	return intSegments;
+  List<Coordinate> getIntersectionSegments() {
+    return intSegments;
   }
-  
+
   /**
    * This method is called by clients
    * of the {@link SegmentIntersector} class to process
@@ -138,56 +132,55 @@ class SegmentIntersectionDetector
    * (e.g. by an disjoint envelope test).
    */
   void processIntersections(
-      SegmentString e0,  int segIndex0,
-      SegmentString e1,  int segIndex1
-      )
-  {  	
+      SegmentString e0, int segIndex0, SegmentString e1, int segIndex1) {
     // don't bother intersecting a segment with itself
     if (e0 == e1 && segIndex0 == segIndex1) return;
-    
+
     Coordinate p00 = e0.getCoordinate(segIndex0);
     Coordinate p01 = e0.getCoordinate(segIndex0 + 1);
     Coordinate p10 = e1.getCoordinate(segIndex1);
     Coordinate p11 = e1.getCoordinate(segIndex1 + 1);
-    
-    li.computeIntersection(p00, p01, p10, p11);
+
+    li.computeIntersection4Coord(p00, p01, p10, p11);
 //  if (li.hasIntersection() && li.isProper()) Debug.println(li);
 
     if (li.hasIntersection()) {
-			// System.out.println(li);
-    	
-    	// record intersection info
-			hasIntersection = true;
-			
-			bool isProper = li.isProper();
-			if (isProper)
-				hasProperIntersection = true;
-      if (! isProper)
-        hasNonProperIntersection = true;
-			
-			/**
+      // System.out.println(li);
+
+      // record intersection info
+      _hasIntersection = true;
+
+      bool isProper = li.isProper;
+      if (isProper) {
+        _hasProperIntersection = true;
+      }
+      if (!isProper) {
+        _hasNonProperIntersection = true;
+      }
+
+      /**
 			 * If this is the kind of intersection we are searching for
 			 * OR no location has yet been recorded
 			 * save the location data
 			 */
-			bool saveLocation = true;
-			if (findProper && ! isProper) saveLocation = false;
-			
-			if (intPt == null || saveLocation) {
+      bool saveLocation = true;
+      if (findProper && !isProper) saveLocation = false;
 
-				// record intersection location (approximate)
-				intPt = li.getIntersection(0);
+      if (intPt == null || saveLocation) {
+        // record intersection location (approximate)
+        intPt = li.getIntersection(0);
 
-				// record intersecting segments
-				intSegments = new Coordinate[4];
-				intSegments[0] = p00;
-				intSegments[1] = p01;
-				intSegments[2] = p10;
-				intSegments[3] = p11;
-			}
-		}
+        // record intersecting segments
+        // intSegments = new Coordinate[4];
+        // intSegments[0] = p00;
+        // intSegments[1] = p01;
+        // intSegments[2] = p10;
+        // intSegments[3] = p11;
+        intSegments = List.from([p00, p01, p10, p11], growable: false);
+      }
+    }
   }
-  
+
   /**
    * Tests whether processing can terminate,
    * because all required information has been obtained
@@ -195,22 +188,21 @@ class SegmentIntersectionDetector
    * 
    * @return true if processing can terminate
    */
-  bool isDone()
-  { 
+  bool isDone() {
     /**
      * If finding all types, we can stop
      * when both possible types have been found.
      */
     if (findAllTypes) {
-      return hasProperIntersection && hasNonProperIntersection;
+      return _hasProperIntersection && _hasNonProperIntersection;
     }
-    
-  	/**
+
+    /**
   	 * If searching for a proper intersection, only stop if one is found
   	 */
-  	if (findProper) {
-  		return hasProperIntersection;
-  	}
-  	return hasIntersection;
+    if (findProper) {
+      return _hasProperIntersection;
+    }
+    return _hasIntersection;
   }
 }

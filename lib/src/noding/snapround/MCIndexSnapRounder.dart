@@ -26,6 +26,8 @@
 // import org.locationtech.jts.noding.NodingValidator;
 // import org.locationtech.jts.noding.SegmentString;
 
+import 'package:jtscore4dart/src/noding/Noder.dart';
+
 /**
  * Uses Snap Rounding to compute a rounded,
  * fully noded arrangement from a set of {@link SegmentString}s.

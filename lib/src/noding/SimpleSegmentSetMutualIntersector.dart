@@ -10,13 +10,16 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.Collection;
 // import java.util.Iterator;
 
 // import org.locationtech.jts.geom.Coordinate;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
 
+import 'SegmentIntersector.dart';
+import 'SegmentSetMutualIntersector.dart';
+import 'SegmentString.dart';
 
 /**
  * Intersects two sets of {@link SegmentString}s using 
@@ -24,37 +27,34 @@
  *
  * @version 1.7
  */
-class SimpleSegmentSetMutualIntersector implements SegmentSetMutualIntersector
-{
- /**private */final Collection baseSegStrings;
+class SimpleSegmentSetMutualIntersector implements SegmentSetMutualIntersector {
+  /**private */ final Iterable baseSegStrings;
 
   /**
    * Constructs a new intersector for a given set of {@link SegmentString}s.
    * 
    * @param segStrings the base segment strings to intersect
    */
-  SimpleSegmentSetMutualIntersector(Collection segStrings)
-  {
-	  this.baseSegStrings = segStrings;
-  }
-
+  SimpleSegmentSetMutualIntersector(this.baseSegStrings);
   /**
    * Calls {@link SegmentIntersector#processIntersections(SegmentString, int, SegmentString, int)} 
    * for all <i>candidate</i> intersections between
    * the given collection of SegmentStrings and the set of base segments. 
    * 
-   * @param segStrings set of segments to intersect
-   * @param segInt segment intersector to use
+   * @param [segStrings] set of segments to intersect
+   * @param [segInt] segment intersector to use
    */
-  void process(Collection segStrings, SegmentIntersector segInt) {
-    for (Iterator i = baseSegStrings.iterator(); i.moveNext(); ) {
-    	SegmentString baseSS = (SegmentString) i.current;
-    	for (Iterator j = segStrings.iterator(); j.moveNext(); ) {
-	      	SegmentString ss = (SegmentString) j.current;
-	      	intersect(baseSS, ss, segInt);
-	        if (segInt.isDone()) 
-	        	return;
-    	}
+  @override
+  void process(Iterable segStrings, SegmentIntersector segInt) {
+    for (Iterator i = baseSegStrings.iterator; i.moveNext();) {
+      SegmentString baseSS = i.current;
+      for (Iterator j = segStrings.iterator; j.moveNext();) {
+        SegmentString ss = j.current;
+        _intersect(baseSS, ss, segInt);
+        if (segInt.isDone()) {
+          return;
+        }
+      }
     }
   }
 
@@ -62,22 +62,21 @@ class SimpleSegmentSetMutualIntersector implements SegmentSetMutualIntersector
    * Processes all of the segment pairs in the given segment strings
    * using the given SegmentIntersector.
    * 
-   * @param ss0 a Segment string
-   * @param ss1 a segment string
-   * @param segInt the segment intersector to use
+   * @param [ss0] a Segment string
+   * @param [ss1] a segment string
+   * @param [segInt] the segment intersector to use
    */
- /**private */void intersect(SegmentString ss0, SegmentString ss1, SegmentIntersector segInt)
-  {
+  void _intersect(
+      SegmentString ss0, SegmentString ss1, SegmentIntersector segInt) {
     List<Coordinate> pts0 = ss0.getCoordinates();
     List<Coordinate> pts1 = ss1.getCoordinates();
     for (int i0 = 0; i0 < pts0.length - 1; i0++) {
       for (int i1 = 0; i1 < pts1.length - 1; i1++) {
         segInt.processIntersections(ss0, i0, ss1, i1);
-        if (segInt.isDone()) 
-        	return;
+        if (segInt.isDone()) {
+          return;
+        }
       }
     }
-
   }
-
 }

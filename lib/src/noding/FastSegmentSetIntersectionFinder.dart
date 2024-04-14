@@ -14,6 +14,11 @@
 
 // import java.util.Collection;
 
+import 'MCIndexSegmentSetMutualIntersector.dart';
+import 'SegmentIntersectionDetector.dart';
+import 'SegmentSetMutualIntersector.dart';
+import 'SegmentString.dart';
+
 /**
  * Finds if two sets of {@link SegmentString}s intersect.
  * Uses indexing for fast performance and to optimize repeated tests
@@ -26,7 +31,7 @@
  */
 class FastSegmentSetIntersectionFinder 
 {
-	private final SegmentSetMutualIntersector segSetMutInt; 
+	/**private */ final SegmentSetMutualIntersector segSetMutInt; 
 	// for testing purposes
 	///**private */SimpleSegmentSetMutualIntersector mci;  
 
@@ -35,10 +40,9 @@ class FastSegmentSetIntersectionFinder
 	 * 
 	 * @param baseSegStrings the segment strings to search for intersections
 	 */
-	FastSegmentSetIntersectionFinder(Collection baseSegStrings)
-	{
+	FastSegmentSetIntersectionFinder(Iterable<SegmentString> baseSegStrings)
+	:
 	    segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
-	}
 		
 	/**
 	 * Gets the segment set intersector used by this class.
@@ -57,10 +61,10 @@ class FastSegmentSetIntersectionFinder
 	 * @param segStrings the SegmentStrings to test
 	 * @return true if an intersection is found
 	 */
-	bool intersects(Collection segStrings)
+	bool intersects(Iterable segStrings)
 	{
 		SegmentIntersectionDetector intFinder = new SegmentIntersectionDetector();
-		return intersects(segStrings, intFinder);
+		return intersects$2(segStrings, intFinder);
 	}
 	
 	/**
@@ -71,7 +75,7 @@ class FastSegmentSetIntersectionFinder
 	 * @param intDetector the intersection detector to use
 	 * @return true if the detector reports intersections
 	 */
-	bool intersects(Collection segStrings, SegmentIntersectionDetector intDetector)
+	bool intersects$2(Iterable segStrings, SegmentIntersectionDetector intDetector)
 	{
 		segSetMutInt.process(segStrings, intDetector);
  		return intDetector.hasIntersection();

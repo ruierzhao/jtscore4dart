@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.Collection;
 // import java.util.Iterator;
@@ -25,6 +24,18 @@
 // import org.locationtech.jts.noding.Noder;
 // import org.locationtech.jts.noding.NodingValidator;
 // import org.locationtech.jts.noding.SegmentString;
+
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
+import 'package:jtscore4dart/src/geom/util/LinearComponentExtracter.dart';
+import 'package:jtscore4dart/src/noding/NodedSegmentString.dart';
+import 'package:jtscore4dart/src/noding/Noder.dart';
+import 'package:jtscore4dart/src/noding/NodingValidator.dart';
+import 'package:jtscore4dart/src/noding/SegmentString.dart';
+
+import 'SnapRoundingNoder.dart';
 
 /**
  * Nodes the linework in a list of {@link Geometry}s using Snap-Rounding
@@ -41,11 +52,10 @@
  * to do this (although this is an inefficient approach).
  * 
  */
-class GeometryNoder
-{
- /**private */GeometryFactory geomFact;
- /**private */PrecisionModel pm;
- /**private */bool isValidityChecked = false;
+class GeometryNoder {
+  /**private */ GeometryFactory? geomFact;
+  /**private */ PrecisionModel pm;
+  /**private */ bool isValidityChecked = false;
 
   /**
    * Creates a new noder which snap-rounds to a grid specified
@@ -53,75 +63,71 @@ class GeometryNoder
    * 
    * @param pm the precision model for the grid to snap-round to
    */
-  GeometryNoder(PrecisionModel pm) {
-    this.pm = pm;
-  }
+  GeometryNoder(this.pm);
 
   /**
    * Sets whether noding validity is checked after noding is performed.
    * 
    * @param isValidityChecked
    */
-  void setValidate(bool isValidityChecked)
-  {
-  	this.isValidityChecked = isValidityChecked;
+  void setValidate(bool isValidityChecked) {
+    this.isValidityChecked = isValidityChecked;
   }
-  
+
   /**
    * Nodes the linework of a set of Geometrys using SnapRounding. 
    * 
    * @param geoms a Collection of Geometrys of any type
    * @return a List of LineStrings representing the noded linework of the input
    */
-  List node(Collection geoms)
-  {
+  List node(Iterable geoms) {
     // get geometry factory
-    Geometry geom0 = (Geometry) geoms.iterator().current;
+    Iterator geom0It = geoms.iterator;
+    geom0It.moveNext();
+    Geometry geom0 = geom0It.current;
     geomFact = geom0.getFactory();
 
-    List segStrings = toSegmentStrings(extractLines(geoms));
+    List<SegmentString> segStrings = _toSegmentStrings(_extractLines(geoms));
     Noder sr = new SnapRoundingNoder(pm);
     sr.computeNodes(segStrings);
-    Collection nodedLines = sr.getNodedSubstrings();
+    Iterable nodedLines = sr.getNodedSubstrings();
 
     //TODO: improve this to check for full snap-rounded correctness
     if (isValidityChecked) {
-    	NodingValidator nv = new NodingValidator(nodedLines);
-    	nv.checkValid();
+      NodingValidator nv = new NodingValidator(nodedLines);
+      nv.checkValid();
     }
 
-    return toLineStrings(nodedLines);
+    return _toLineStrings(nodedLines);
   }
 
- /**private */List toLineStrings(Collection segStrings)
-  {
+  List _toLineStrings(Iterable segStrings) {
     List lines = [];
-    for (Iterator it = segStrings.iterator(); it.moveNext(); ) {
-      SegmentString ss = (SegmentString) it.current;
+    for (Iterator it = segStrings.iterator; it.moveNext();) {
+      SegmentString ss = it.current;
       // skip collapsed lines
-      if (ss.size() < 2)
-      	continue;
-      lines.add(geomFact.createLineString(ss.getCoordinates()));
+      if (ss.size() < 2) {
+        continue;
+      }
+      lines.add(geomFact!.createLineString(ss.getCoordinates()));
     }
     return lines;
   }
 
- /**private */List extractLines(Collection geoms)
-  {
-    List lines = [];
+  List<LineString> _extractLines(Iterable geoms) {
+    List<LineString> lines = [];
     LinearComponentExtracter lce = new LinearComponentExtracter(lines);
-    for (Iterator it = geoms.iterator(); it.moveNext(); ) {
-      Geometry geom = (Geometry) it.current;
-      geom.apply(lce);
+    for (Iterator it = geoms.iterator; it.moveNext();) {
+      Geometry geom = it.current;
+      geom.applyGeometryComonent(lce);
     }
     return lines;
   }
 
- /**private */List toSegmentStrings(Collection lines)
-  {
-    List segStrings = [];
-    for (Iterator it = lines.iterator(); it.moveNext(); ) {
-      LineString line = (LineString) it.current;
+  List<NodedSegmentString> _toSegmentStrings(Iterable lines) {
+    List<NodedSegmentString> segStrings = [];
+    for (Iterator it = lines.iterator; it.moveNext();) {
+      LineString line = it.current;
       segStrings.add(new NodedSegmentString(line.getCoordinates(), null));
     }
     return segStrings;

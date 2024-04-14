@@ -26,6 +26,7 @@ import 'package:jtscore4dart/src/geom/TopologyException.dart';
 import 'IntersectionAdder.dart';
 import 'MCIndexNoder.dart';
 import 'Noder.dart';
+import 'SegmentString.dart';
 
 /**
  * Nodes a set of {@link NodedSegmentString}s completely.
@@ -47,7 +48,7 @@ class IteratedNoder
 
  /**private */PrecisionModel pm;
  /**private */LineIntersector li;
- /**private */late Iterable nodedSegStrings;
+ /**private */Iterable<SegmentString>? nodedSegStrings;
  /**private */int maxIter = MAX_ITER;
 
   IteratedNoder(this.pm)
@@ -70,7 +71,7 @@ class IteratedNoder
     this.maxIter = maxIter;
   }
 
-  Iterable getNodedSubstrings()  {    return nodedSegStrings;  }
+  Iterable<SegmentString> getNodedSubstrings()  {    return nodedSegStrings!;  }
 
   /**
    * Fully nodes a list of {@link SegmentString}s, i.e. performs noding iteratively
@@ -81,7 +82,7 @@ class IteratedNoder
    * @param segStrings a collection of SegmentStrings to be noded
    * @throws TopologyException if the iterated noding fails to converge.
    */
-  void computeNodes(Iterable segStrings)
+  void computeNodes(Iterable<SegmentString> segStrings)
     // throws TopologyException
   {
     // int[] numInteriorIntersections = new int[1];
@@ -90,7 +91,7 @@ class IteratedNoder
     int nodingIterationCount = 0;
     int lastNodesCreated = -1;
     do {
-      node(nodedSegStrings, numInteriorIntersections);
+      node(nodedSegStrings!, numInteriorIntersections);
       nodingIterationCount++;
       int nodesCreated = numInteriorIntersections[0];
 

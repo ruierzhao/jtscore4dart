@@ -42,6 +42,11 @@ analyzer:
   exclude:
     - test/test_java/jts**
     - lib/src/io/**
+    - lib/src/awt/**
+    - lib/src/simplify/**
+    - lib/src/util/**
+    - lib/src/triangulate/**
+    - lib/src/noding/snapround/MCIndexSnapRounder.dart # Deprecated.
   #   - lib/client.dart
   #   - lib/server/*.g.dart
   #   - lib/server/*.g.dart

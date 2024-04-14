@@ -10,13 +10,41 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.Collection;
 // import java.util.Iterator;
 // import java.util.Map;
 // import java.util.TreeMap;
 
 // import org.locationtech.jts.geom.CoordinateArrays;
+
+import 'dart:collection';
+
+import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
+import 'package:jtscore4dart/src/patch/Map.dart';
+
+import 'OrientedCoordinateArray.dart';
+import 'SegmentString.dart';
+
+/**
+	 * A merging strategy which can be used to update the context data of {@link SegmentString}s 
+	 * which are merged during the dissolve process.
+	 * 
+	 * @author mbdavis
+	 *
+	 */
+abstract class SegmentStringMerger {
+  /**
+     * Updates the context data of a SegmentString
+     * when an identical (up to orientation) one is found during dissolving.
+     *
+     * @param mergeTarget the segment string to update
+     * @param ssToMerge the segment string being dissolved
+     * @param isSameOrientation <code>true</code> if the strings are in the same direction,
+     * <code>false</code> if they are opposite
+     */
+  void merge(SegmentString mergeTarget, SegmentString ssToMerge,
+      bool isSameOrientation);
+}
 
 /**
  * Dissolves a noded collection of {@link SegmentString}s to produce
@@ -35,31 +63,10 @@
  * @version 1.7
  * @see SegmentStringMerger
  */
-class SegmentStringDissolver
-{
-	/**
-	 * A merging strategy which can be used to update the context data of {@link SegmentString}s 
-	 * which are merged during the dissolve process.
-	 * 
-	 * @author mbdavis
-	 *
-	 */
-  abstract class SegmentStringMerger 
-  {
-    /**
-     * Updates the context data of a SegmentString
-     * when an identical (up to orientation) one is found during dissolving.
-     *
-     * @param mergeTarget the segment string to update
-     * @param ssToMerge the segment string being dissolved
-     * @param isSameOrientation <code>true</code> if the strings are in the same direction,
-     * <code>false</code> if they are opposite
-     */
-    void merge(SegmentString mergeTarget, SegmentString ssToMerge, bool isSameOrientation);
-  }
-
- /**private */SegmentStringMerger merger;
- /**private */Map ocaMap = new TreeMap();
+class SegmentStringDissolver {
+  /**private */ SegmentStringMerger? _merger;
+//  /**private */Map ocaMap = new TreeMap();
+  /**private */ Map _ocaMap = new SplayTreeMap();
 
   // testing only
   //private List testAddedSS = [];
@@ -69,31 +76,27 @@ class SegmentStringDissolver
    *
    * @param merger the merging strategy to use
    */
-  SegmentStringDissolver(SegmentStringMerger merger) {
-    this.merger = merger;
-  }
+  SegmentStringDissolver([this._merger]);
 
   /**
    * Creates a dissolver with the default merging strategy.
    */
-  SegmentStringDissolver() {
-    this(null);
-  }
+  // SegmentStringDissolver() {
+  //   this(null);
+  // }
 
   /**
    * Dissolve all {@link SegmentString}s in the input {@link Collection}
    * @param segStrings
    */
-  void dissolve(Collection segStrings)
-  {
-    for (Iterator i = segStrings.iterator(); i.moveNext(); ) {
-      dissolve((SegmentString) i.next());
+  void dissolveAll(Iterable segStrings) {
+    for (Iterator i = segStrings.iterator; i.moveNext();) {
+      dissolve(i.current);
     }
   }
 
- /**private */void add(OrientedCoordinateArray oca, SegmentString segString)
-  {
-    ocaMap.put(oca, segString);
+  void _add(OrientedCoordinateArray oca, SegmentString segString) {
+    _ocaMap.put(oca, segString);
     //testAddedSS.add(oca);
   }
 
@@ -102,26 +105,24 @@ class SegmentStringDissolver
    *
    * @param segString the string to dissolve
    */
-  void dissolve(SegmentString segString)
-  {
-    OrientedCoordinateArray oca = new OrientedCoordinateArray(segString.getCoordinates());
-    SegmentString existing = findMatching(oca, segString);
+  void dissolve(SegmentString segString) {
+    OrientedCoordinateArray oca =
+        new OrientedCoordinateArray(segString.getCoordinates());
+    SegmentString? existing = findMatching(oca, segString);
     if (existing == null) {
-      add(oca, segString);
-    }
-    else {
-      if (merger != null) {
-        bool isSameOrientation
-            = CoordinateArrays.equals(existing.getCoordinates(), segString.getCoordinates());
-        merger.merge(existing, segString, isSameOrientation);
+      _add(oca, segString);
+    } else {
+      if (_merger != null) {
+        bool isSameOrientation = CoordinateArrays.equals(
+            existing.getCoordinates(), segString.getCoordinates());
+        _merger!.merge(existing, segString, isSameOrientation);
       }
     }
   }
 
- /**private */SegmentString findMatching(OrientedCoordinateArray oca,
-                                    SegmentString segString)
-  {
-    SegmentString matchSS = (SegmentString) ocaMap.get(oca);
+  /**private */ SegmentString? findMatching(
+      OrientedCoordinateArray oca, SegmentString segString) {
+    SegmentString matchSS = _ocaMap.get(oca) as SegmentString;
     /*
     bool hasBeenAdded = checkAdded(oca);
     if (matchSS == null && hasBeenAdded) {
@@ -149,8 +150,7 @@ class SegmentStringDissolver
    *
    * @return the unique {@link SegmentString}s
    */
-  Collection getDissolved() { return ocaMap.values(); }
+  Iterable getDissolved() {
+    return _ocaMap.values;
+  }
 }
-
-
-

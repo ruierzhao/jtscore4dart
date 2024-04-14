@@ -10,12 +10,18 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.List;
 
 // import org.locationtech.jts.algorithm.LineIntersector;
 // import org.locationtech.jts.geom.Coordinate;
+
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+
+import 'NodedSegmentString.dart';
+import 'SegmentIntersector.dart';
+import 'SegmentString.dart';
 
 /**
  * Finds <b>interior</b> intersections between line segments in {@link NodedSegmentString}s,
@@ -29,25 +35,20 @@
  * @see IntersectionAdder
  * @deprecated see InteriorIntersectionFinderAdder
  */
-class IntersectionFinderAdder
-    implements SegmentIntersector
-{
- /**private */LineIntersector li;
- /**private */final List interiorIntersections;
-
+class IntersectionFinderAdder implements SegmentIntersector {
+  /**private */ LineIntersector li;
+  /**private */ final List interiorIntersections = [];
 
   /**
    * Creates an intersection finder which finds all proper intersections
    *
    * @param li the LineIntersector to use
    */
-  IntersectionFinderAdder(LineIntersector li)
-  {
-    this.li = li;
-    interiorIntersections = [];
-  }
+  IntersectionFinderAdder(this.li);
 
-  List getInteriorIntersections()  {    return interiorIntersections;  }
+  List getInteriorIntersections() {
+    return interiorIntersections;
+  }
 
   /**
    * This method is called by clients
@@ -57,11 +58,9 @@ class IntersectionFinderAdder
    * this call for segment pairs which they have determined do not intersect
    * (e.g. by an disjoint envelope test).
    */
+  @override
   void processIntersections(
-      SegmentString e0,  int segIndex0,
-      SegmentString e1,  int segIndex1
-      )
-  {
+      SegmentString e0, int segIndex0, SegmentString e1, int segIndex1) {
     // don't bother intersecting a segment with itself
     if (e0 == e1 && segIndex0 == segIndex1) return;
 
@@ -70,25 +69,27 @@ class IntersectionFinderAdder
     Coordinate p10 = e1.getCoordinate(segIndex1);
     Coordinate p11 = e1.getCoordinate(segIndex1 + 1);
 
-    li.computeIntersection(p00, p01, p10, p11);
-//if (li.hasIntersection() && li.isProper()) Debug.println(li);
+    li.computeIntersection4Coord(p00, p01, p10, p11);
+    //if (li.hasIntersection() && li.isProper()) Debug.println(li);
 
     if (li.hasIntersection()) {
       if (li.isInteriorIntersection()) {
         for (int intIndex = 0; intIndex < li.getIntersectionNum(); intIndex++) {
           interiorIntersections.add(li.getIntersection(intIndex));
         }
-        ((NodedSegmentString) e0).addIntersections(li, segIndex0, 0);
-        ((NodedSegmentString) e1).addIntersections(li, segIndex1, 1);
+        (e0 as NodedSegmentString).addIntersections(li, segIndex0, 0);
+        (e1 as NodedSegmentString).addIntersections(li, segIndex1, 1);
       }
     }
   }
-  
+
   /**
    * Always process all intersections
    * 
    * @return false always
    */
-  bool isDone() { return false; }
-
+  @override
+  bool isDone() {
+    return false;
+  }
 }

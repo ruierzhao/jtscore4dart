@@ -47,6 +47,7 @@ analyzer:
     - lib/src/util/**
     - lib/src/triangulate/**
     - lib/src/noding/snapround/MCIndexSnapRounder.dart # Deprecated.
+    - /lib/src/operation/IsSimpleOp.dart # Deprecated.
   #   - lib/client.dart
   #   - lib/server/*.g.dart
   #   - lib/server/*.g.dart

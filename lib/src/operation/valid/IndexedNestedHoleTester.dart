@@ -20,6 +20,15 @@
 // import org.locationtech.jts.index.SpatialIndex;
 // import org.locationtech.jts.index.strtree.STRtree;
 
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Envelope.dart';
+import 'package:jtscore4dart/src/geom/LinearRing.dart';
+import 'package:jtscore4dart/src/geom/Polygon.dart';
+import 'package:jtscore4dart/src/index/SpatialIndex.dart';
+import 'package:jtscore4dart/src/index/strtree/STRtree.dart';
+
+import 'PolygonTopologyAnalyzer.dart';
+
 /**
  * Tests whether any holes of a Polygon are
  * nested inside another hole, using a spatial
@@ -39,12 +48,11 @@
 class IndexedNestedHoleTester
 {
  /**private */Polygon polygon;
- /**private */SpatialIndex index;
- /**private */Coordinate nestedPt;
+ /**private */late SpatialIndex index;
+ /**private */Coordinate? nestedPt;
 
-  IndexedNestedHoleTester(Polygon poly)
+  IndexedNestedHoleTester(this.polygon)
   {
-    this.polygon = poly;
     loadIndex();
   }
 
@@ -53,7 +61,7 @@ class IndexedNestedHoleTester
     index = new STRtree();
 
     for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-      LinearRing hole = (LinearRing) polygon.getInteriorRingN(i);
+      LinearRing hole = polygon.getInteriorRingN(i);
       Envelope env = hole.getEnvelopeInternal();
       index.insert(env, hole);
     }
@@ -64,7 +72,7 @@ class IndexedNestedHoleTester
    * 
    * @return a point on a nested hole, or null if none are nested
    */
-  Coordinate getNestedPoint() { return nestedPt; }
+  Coordinate getNestedPoint() { return nestedPt!; }
 
   /**
    * Tests if any hole is nested (contained) within another hole.
@@ -75,18 +83,20 @@ class IndexedNestedHoleTester
   bool isNested()
   {
     for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-      LinearRing hole = (LinearRing) polygon.getInteriorRingN(i);
+      LinearRing hole = polygon.getInteriorRingN(i);
 
-      List<LinearRing> results = index.query(hole.getEnvelopeInternal());
-      for (LinearRing testHole : results) {
-        if (hole == testHole)
+      List<LinearRing> results = index.query(hole.getEnvelopeInternal()) as List<LinearRing>;
+      for (LinearRing testHole in results) {
+        if (hole == testHole) {
           continue;
+        }
 
         /**
          * Hole is not fully covered by test hole, so cannot be nested
          */
-        if (! testHole.getEnvelopeInternal().covers( hole.getEnvelopeInternal()) )
+        if (! testHole.getEnvelopeInternal().covers( hole.getEnvelopeInternal()) ) {
           continue;
+        }
 
         if (PolygonTopologyAnalyzer.isRingNested(hole, testHole)) {
           //TODO: find a hole point known to be inside

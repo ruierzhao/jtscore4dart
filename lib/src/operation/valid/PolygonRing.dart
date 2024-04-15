@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayDeque;
 // import java.util.ArrayList;
 // import java.util.Collection;
@@ -24,10 +23,14 @@
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.LinearRing;
 
+import 'dart:collection';
+
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/LinearRing.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/algorithm/PolygonNodeTopology.dart';
+import 'package:jtscore4dart/src/patch/Map.dart';
+import 'package:stack/stack.dart';
 
 /**
  * A ring of a polygon being analyzed for topological validity.
@@ -57,7 +60,6 @@ import 'package:jtscore4dart/src/algorithm/PolygonNodeTopology.dart';
  *
  */
 class PolygonRing {
-  
   /**
    * Tests if a polygon ring represents a shell.
    * 
@@ -67,47 +69,48 @@ class PolygonRing {
   static bool isShell(PolygonRing polyRing) {
     /// TODO: @ruier edit.可能不太需要
     // if (polyRing == null) return true;
-    return polyRing.isShell();
+    return polyRing.isShell_();
   }
 
   /**
    * Records a touch location between two rings,
    * and checks if the rings already touch in a different location.
    * 
-   * @param ring0 a polygon ring
-   * @param ring1 a polygon ring
-   * @param pt the location where they touch
+   * @param [ring0] a polygon ring
+   * @param [ring1] a polygon ring
+   * @param [pt] the location where they touch
    * @return true if the polygons already touch
    */
-  static bool addTouch(PolygonRing ring0, PolygonRing ring1, Coordinate pt) {
+  static bool addTouch(PolygonRing? ring0, PolygonRing? ring1, Coordinate pt) {
     //--- skip if either polygon does not have holes
-    if (ring0 == null || ring1 == null) 
+    if (ring0 == null || ring1 == null) {
       return false;
-    
+    }
+
     //--- only record touches within a polygon
-    if (! ring0.isSamePolygon(ring1)) return false;
-    
-    if (! ring0.isOnlyTouch(ring1, pt)) return true;
-    if (! ring1.isOnlyTouch(ring0, pt)) return true;
-    
-    ring0.addTouch(ring1, pt);
-    ring1.addTouch(ring0, pt);
+    if (!ring0.isSamePolygon(ring1)) return false;
+
+    if (!ring0.isOnlyTouch(ring1, pt)) return true;
+    if (!ring1.isOnlyTouch(ring0, pt)) return true;
+
+    ring0.addTouch_(ring1, pt);
+    ring1.addTouch_(ring0, pt);
     return false;
   }
-  
+
   /**
    * Finds a location (if any) where a chain of holes forms a cycle
    * in the ring touch graph.
    * The shell may form part of the chain as well.
    * This indicates that a set of holes disconnects the interior of a polygon.
    * 
-   * @param polyRings the list of rings to check
+   * @param [polyRings] the list of rings to check
    * @return a vertex contained in a ring cycle, or null if none is found
    */
-  static Coordinate findHoleCycleLocation(List<PolygonRing> polyRings) {
+  static Coordinate? findHoleCycleLocation(List<PolygonRing> polyRings) {
     for (PolygonRing polyRing in polyRings) {
-      if (! polyRing.isInTouchSet()) {
-        Coordinate holeCycleLoc = polyRing.findHoleCycleLocation();
+      if (!polyRing.isInTouchSet()) {
+        Coordinate? holeCycleLoc = polyRing.findHoleCycleLocation_();
         if (holeCycleLoc != null) return holeCycleLoc;
       }
     }
@@ -123,26 +126,26 @@ class PolygonRing {
    * @param polyRings the list of rings to check
    * @return the location of an interior self-touch node, or null if there are none
    */
-  static Coordinate findInteriorSelfNode(List<PolygonRing> polyRings) {
+  static Coordinate? findInteriorSelfNode(List<PolygonRing> polyRings) {
     for (PolygonRing polyRing in polyRings) {
-        Coordinate interiorSelfNode = polyRing.findInteriorSelfNode();
-        if (interiorSelfNode != null) {
-          return interiorSelfNode;
+      Coordinate? interiorSelfNode = polyRing.findInteriorSelfNode_();
+      if (interiorSelfNode != null) {
+        return interiorSelfNode;
       }
     }
     return null;
   }
-  
- /**private */int id;
- /**private */PolygonRing shell;
- /**private */LinearRing ring;
-  
+
+  /**private */ late int id;
+  /**private */ late PolygonRing shell;
+  /**private */ LinearRing ring;
+
   /**
    * The root of the touch graph tree containing this ring.
    * Serves as the id for the graph partition induced by the touch relation.
    */
- /**private */PolygonRing touchSetRoot = null;
-  
+  /**private */ PolygonRing? touchSetRoot = null;
+
   // lazily created
   /**
    * The set of PolygonRingTouch links
@@ -156,81 +159,78 @@ class PolygonRing {
    * since more than one touch between two rings 
    * indicates interior disconnection as well.
    */
- /**private */Map<Integer, PolygonRingTouch> touches = null;
-  
+  /**private */ Map<int, PolygonRingTouch>? touches = null;
+
   /**
    * The set of self-nodes in this ring.
    * This supports checking valid ring self-touch topology.
    */
- /**private */ArrayList<PolygonRingSelfNode> selfNodes = null;
+  /**private */ List<PolygonRingSelfNode>? selfNodes = null;
 
   /**
    * Creates a ring for a polygon shell.
    * @param ring
    */
-  PolygonRing(LinearRing ring) {
-    this.ring = ring;
-    id = -1;
-    shell = this;
-  }
+  // PolygonRing(LinearRing ring) {
+  //   this.ring = ring;
+  //   id = -1;
+  //   shell = this;
+  // }
 
   /**
    * Creates a ring for a polygon hole.
-   * @param ring the ring geometry
-   * @param index the index of the hole
-   * @param shell the parent polygon shell
+   * @param [ring] the ring geometry
+   * @param [index] the index of the hole
+   * @param [shell] the parent polygon shell
    */
-  PolygonRing(LinearRing ring, int index, PolygonRing shell) {
-    this.ring = ring;
+  PolygonRing(this.ring, [int index = -1, PolygonRing? shell]) {
     this.id = index;
-    this.shell = shell;
+    this.shell = shell ??= this;
   }
-  
+
   bool isSamePolygon(PolygonRing ring) {
     return shell == ring.shell;
   }
-  
-  bool isShell() {
+
+  bool isShell_() {
     return shell == this;
   }
-  
- /**private */bool isInTouchSet() {
+
+  /**private */ bool isInTouchSet() {
     return touchSetRoot != null;
   }
-  
- /**private */void setTouchSetRoot(PolygonRing ring) {
+
+  /**private */ void setTouchSetRoot(PolygonRing ring) {
     touchSetRoot = ring;
   }
 
- /**private */PolygonRing getTouchSetRoot() {
+  /**private */ PolygonRing? getTouchSetRoot() {
     return touchSetRoot;
   }
 
- /**private */bool hasTouches() {
-    return touches != null && ! touches.isEmpty();
+  /**private */ bool hasTouches() {
+    return touches != null && touches!.isNotEmpty;
   }
 
- /**private */Collection<PolygonRingTouch> getTouches() {
-    return touches.values();
+  /**private */ Iterable<PolygonRingTouch> getTouches() {
+    return touches!.values;
   }
 
- /**private */void addTouch(PolygonRing ring, Coordinate pt) {
-    if (touches == null) {
-      touches = new Map<Integer, PolygonRingTouch>();
-    }
-    PolygonRingTouch touch = touches.get(ring.id);
+  /**private */ void addTouch_(PolygonRing ring, Coordinate pt) {
+    touches ??= <int, PolygonRingTouch>{};
+    PolygonRingTouch? touch = touches!.get(ring.id);
     if (touch == null) {
-      touches.put(ring.id, new PolygonRingTouch(ring, pt));
-    };
-  }
-  
-  void addSelfTouch(Coordinate origin, Coordinate e00, Coordinate e01, Coordinate e10, Coordinate e11) {
-    if (selfNodes == null) {
-      selfNodes = new ArrayList<PolygonRingSelfNode>();
+      touches!.put(ring.id, new PolygonRingTouch(ring, pt));
     }
-    selfNodes.add(new PolygonRingSelfNode(origin, e00, e01, e10, e11));
+    ;
   }
-  
+
+  void addSelfTouch(Coordinate origin, Coordinate e00, Coordinate e01,
+      Coordinate e10, Coordinate e11) {
+    selfNodes ??= <PolygonRingSelfNode>[];
+    selfNodes!.add(new PolygonRingSelfNode(origin, e00, e01, e10, e11));
+  }
+
   /**
    * Tests if this ring touches a given ring at
    * the single point specified.
@@ -239,16 +239,16 @@ class PolygonRing {
    * @param pt the touch point
    * @return true if the rings touch only at the given point
    */
- /**private */bool isOnlyTouch(PolygonRing ring, Coordinate pt) {
+  /**private */ bool isOnlyTouch(PolygonRing ring, Coordinate pt) {
     //--- no touches for this ring
     if (touches == null) return true;
     //--- no touches for other ring
-    PolygonRingTouch touch = touches.get(ring.id);
+    PolygonRingTouch? touch = touches!.get(ring.id);
     if (touch == null) return true;
     //--- the rings touch - check if point is the same
     return touch.isAtLocation(pt);
   }
-  
+
   /**
    * Detects whether the subgraph of holes linked by touch to this ring
    * contains a hole cycle.
@@ -257,24 +257,28 @@ class PolygonRing {
    * 
    * @return a vertex in a hole cycle, or null if no cycle found
    */
- /**private */Coordinate findHoleCycleLocation() {
+  /**private */ Coordinate? findHoleCycleLocation_() {
     //--- the touch set including this ring is already processed
     if (isInTouchSet()) return null;
-    
+
     //--- scan the touch set tree rooted at this ring
     // Assert: this.touchSetRoot is null
     PolygonRing root = this;
     root.setTouchSetRoot(root);
-    
-    if (! hasTouches()) 
+
+    if (!hasTouches()) {
       return null;
-    
-    Deque<PolygonRingTouch> touchStack = new ArrayDeque<PolygonRingTouch>();
+    }
+
+    // Deque<PolygonRingTouch> touchStack = new ArrayDeque<PolygonRingTouch>();
+    /// TODO: @ruier edit.
+    Stack<PolygonRingTouch> touchStack = new Stack<PolygonRingTouch>();
+    // Queue<PolygonRingTouch> touchStack = new Queue<PolygonRingTouch>();
     init(root, touchStack);
-    
-    while (! touchStack.isEmpty()) {
+
+    while (touchStack.isNotEmpty) {
       PolygonRingTouch touch = touchStack.pop();
-      Coordinate holeCyclePt = scanForHoleCycle(touch, root, touchStack);
+      Coordinate? holeCyclePt = scanForHoleCycle(touch, root, touchStack);
       if (holeCyclePt != null) {
         return holeCyclePt;
       }
@@ -282,10 +286,9 @@ class PolygonRing {
     return null;
   }
 
- /**private */static void init(PolygonRing root, 
-      Deque<PolygonRingTouch> touchStack)
-  {
-    for (PolygonRingTouch touch : root.getTouches()) {
+  /**private */ static void init(
+      PolygonRing root, Stack<PolygonRingTouch> touchStack) {
+    for (PolygonRingTouch touch in root.getTouches()) {
       touch.getRing().setTouchSetRoot(root);
       touchStack.push(touch);
     }
@@ -294,23 +297,22 @@ class PolygonRing {
   /**
    * Scans for a hole cycle starting at a given touch. 
    *  
-   * @param currentTouch the touch to investigate
-   * @param root the root of the touch subgraph
-   * @param touchStack the stack of touches to scan
+   * @param [currentTouch] the touch to investigate
+   * @param [root] the root of the touch subgraph
+   * @param [touchStack] the stack of touches to scan
    * @return a vertex in a hole cycle if found, or null
    */
- /**private */Coordinate scanForHoleCycle(PolygonRingTouch currentTouch, 
-      PolygonRing root, 
-      Deque<PolygonRingTouch> touchStack) {
+  /**private */ Coordinate? scanForHoleCycle(PolygonRingTouch currentTouch,
+      PolygonRing root, Stack<PolygonRingTouch> touchStack) {
     PolygonRing ring = currentTouch.getRing();
     Coordinate currentPt = currentTouch.getCoordinate();
-    
+
     /**
      * Scan the touched rings
      * Either they form a hole cycle, or they are added to the touch set
      * and pushed on the stack for scanning
      */
-    for (PolygonRingTouch touch : ring.getTouches()) {
+    for (PolygonRingTouch touch in ring.getTouches()) {
       /**
        * Don't check touches at the entry point
        * to avoid trivial cycles.
@@ -318,9 +320,10 @@ class PolygonRing {
        * from the previous ring (which touched
        * all the rings at that point as well)
        */
-      if (currentPt.equals2D( touch.getCoordinate()))
+      if (currentPt.equals2D(touch.getCoordinate())) {
         continue;
-      
+      }
+
       /**
        * Test if the touched ring has already been 
        * reached via a different touch path.
@@ -329,9 +332,10 @@ class PolygonRing {
        * This indicates a hole cycle has been found. 
        */
       PolygonRing touchRing = touch.getRing();
-      if (touchRing.getTouchSetRoot() == root)
+      if (touchRing.getTouchSetRoot() == root) {
         return touch.getCoordinate();
-      
+      }
+
       touchRing.setTouchSetRoot(root);
 
       touchStack.push(touch);
@@ -345,30 +349,29 @@ class PolygonRing {
    * 
    * @return the location of an interior self-touch node, or null if there are none
    */
-  Coordinate findInteriorSelfNode() {
+  Coordinate? findInteriorSelfNode_() {
     if (selfNodes == null) return null;
-    
+
     /**
      * Determine if the ring interior is on the Right.
      * This is the case if the ring is a shell and is CW,
      * or is a hole and is CCW.
      */
     bool isCCW = Orientation.isCCW(ring.getCoordinates());
-    bool isInteriorOnRight = isShell() ^ isCCW; 
+    bool isInteriorOnRight = isShell_() ^ isCCW;
 
-    for (PolygonRingSelfNode selfNode : selfNodes) {
-      if (! selfNode.isExterior( isInteriorOnRight) ) {
+    for (PolygonRingSelfNode selfNode in selfNodes!) {
+      if (!selfNode.isExterior(isInteriorOnRight)) {
         return selfNode.getCoordinate();
       }
     }
     return null;
   }
-  
+
   String toString() {
     return ring.toString();
   }
-
- }
+}
 
 /**
  * Records a point where a {@link PolygonRing} touches another one.
@@ -378,13 +381,10 @@ class PolygonRing {
  *
  */
 class PolygonRingTouch {
- /**private */PolygonRing ring;
- /**private */Coordinate touchPt;
+  /**private */ PolygonRing ring;
+  /**private */ Coordinate touchPt;
 
-  PolygonRingTouch(PolygonRing ring, Coordinate pt) {
-    this.ring = ring;
-    this.touchPt = pt;
-  }
+  PolygonRingTouch(this.ring, this.touchPt);
 
   Coordinate getCoordinate() {
     return touchPt;
@@ -410,22 +410,15 @@ class PolygonRingTouch {
  *
  */
 class PolygonRingSelfNode {
- /**private */Coordinate nodePt;
- /**private */Coordinate e00;
- /**private */Coordinate e01;
- /**private */Coordinate e10;
+  /**private */ Coordinate nodePt;
+  /**private */ Coordinate e00;
+  /**private */ Coordinate e01;
+  /**private */ Coordinate e10;
   //private Coordinate e11;
 
-  PolygonRingSelfNode(Coordinate nodePt, 
-      Coordinate e00, Coordinate e01, 
-      Coordinate e10, Coordinate e11) {
-    this.nodePt = nodePt;
-    this.e00 = e00;
-    this.e01 = e01;
-    this.e10 = e10;
-    //this.e11 = e11;
-  }
-  
+  PolygonRingSelfNode(
+      this.nodePt, this.e00, this.e01, this.e10, Coordinate e11);
+
   /**
    * The node point.
    * 
@@ -451,8 +444,9 @@ class PolygonRingSelfNode {
      * Note that either corner and either of the other edges could be used to test.
      * The situation is fully symmetrical.
      */
-    bool isInteriorSeg = PolygonNodeTopology.isInteriorSegment(nodePt, e00, e01, e10);
-    bool isExterior = isInteriorOnRight ? ! isInteriorSeg : isInteriorSeg;
+    bool isInteriorSeg =
+        PolygonNodeTopology.isInteriorSegment(nodePt, e00, e01, e10);
+    bool isExterior = isInteriorOnRight ? !isInteriorSeg : isInteriorSeg;
     return isExterior;
   }
 }

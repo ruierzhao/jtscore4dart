@@ -10,13 +10,22 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.algorithm.LineIntersector;
 // import org.locationtech.jts.algorithm.PolygonNodeTopology;
 // import org.locationtech.jts.algorithm.RobustLineIntersector;
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.noding.SegmentIntersector;
 // import org.locationtech.jts.noding.SegmentString;
+
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/PolygonNodeTopology.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/noding/SegmentIntersector.dart';
+import 'package:jtscore4dart/src/noding/SegmentString.dart';
+
+import 'PolygonRing.dart';
+import 'TopologyValidationError.dart';
 
 /**
  * Finds and analyzes intersections in and between polygons,
@@ -29,62 +38,59 @@
  *
  * @author mdavis
  */
-class PolygonIntersectionAnalyzer 
-implements SegmentIntersector
-{
- /**private */static final int NO_INVALID_INTERSECTION = -1;
-  
- /**private */bool isInvertedRingValid;
-  
- /**private */LineIntersector li = new RobustLineIntersector();
- /**private */int invalidCode = NO_INVALID_INTERSECTION;
- /**private */Coordinate invalidLocation = null;
-  
- /**private */bool hasDoubleTouch = false;
- /**private */Coordinate doubleTouchLocation;
+class PolygonIntersectionAnalyzer implements SegmentIntersector {
+  /**private */ static final int NO_INVALID_INTERSECTION = -1;
+
+  /**private */ bool isInvertedRingValid;
+
+  /**private */ LineIntersector li = new RobustLineIntersector();
+  /**private */ int invalidCode = NO_INVALID_INTERSECTION;
+  /**private */ Coordinate? _invalidLocation = null;
+
+  /**private */ bool _hasDoubleTouch = false;
+  /**private */ Coordinate? doubleTouchLocation;
 
   /**
    * Creates a new finder, allowing for the mode where inverted rings are valid.
    * 
-   * @param isInvertedRingValid true if inverted rings are valid.
+   * @param [isInvertedRingValid] true if inverted rings are valid.
    */
-  PolygonIntersectionAnalyzer(bool isInvertedRingValid) {
-    this.isInvertedRingValid = isInvertedRingValid;
-  }
-  
-  @Override
+  PolygonIntersectionAnalyzer(this.isInvertedRingValid);
+
+  @override
   bool isDone() {
-    return isInvalid() || hasDoubleTouch;
+    return isInvalid() || _hasDoubleTouch;
   }
-  
+
   bool isInvalid() {
     return invalidCode >= 0;
   }
-  
+
   int getInvalidCode() {
     return invalidCode;
   }
-  
+
   Coordinate getInvalidLocation() {
-    return invalidLocation;
+    return _invalidLocation!;
   }
 
   bool hasDoubleTouch() {
-    return hasDoubleTouch;
-  }
-  
-  Coordinate getDoubleTouchLocation() {
-    return doubleTouchLocation;
+    return _hasDoubleTouch;
   }
 
-  @Override
-  void processIntersections(SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
+  Coordinate getDoubleTouchLocation() {
+    return doubleTouchLocation!;
+  }
+
+  @override
+  void processIntersections(
+      SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
     // don't test a segment with itself
     bool isSameSegString = ss0 == ss1;
     bool isSameSegment = isSameSegString && segIndex0 == segIndex1;
     if (isSameSegment) return;
-    
-    int code = findInvalidIntersection(ss0, segIndex0, ss1, segIndex1); 
+
+    int code = findInvalidIntersection(ss0, segIndex0, ss1, segIndex1);
     /**
      * Ensure that invalidCode is only set once, 
      * since the short-circuiting in {@link SegmentIntersector} is not guaranteed
@@ -92,47 +98,48 @@ implements SegmentIntersector
      */
     if (code != NO_INVALID_INTERSECTION) {
       invalidCode = code;
-      invalidLocation = li.getIntersection(0);
+      _invalidLocation = li.getIntersection(0);
     }
   }
 
- /**private */int findInvalidIntersection(SegmentString ss0, int segIndex0, 
-      SegmentString ss1, int segIndex1) {
+  /**private */ int findInvalidIntersection(
+      SegmentString ss0, int segIndex0, SegmentString ss1, int segIndex1) {
     Coordinate p00 = ss0.getCoordinate(segIndex0);
     Coordinate p01 = ss0.getCoordinate(segIndex0 + 1);
     Coordinate p10 = ss1.getCoordinate(segIndex1);
     Coordinate p11 = ss1.getCoordinate(segIndex1 + 1);
 
-    li.computeIntersection(p00, p01, p10, p11);
-    
-    if (! li.hasIntersection()) {
+    li.computeIntersection4Coord(p00, p01, p10, p11);
+
+    if (!li.hasIntersection()) {
       return NO_INVALID_INTERSECTION;
     }
-    
+
     bool isSameSegString = ss0 == ss1;
-    
+
     /**
      * Check for an intersection in the interior of both segments.
      * Collinear intersections by definition contain an interior intersection.
      */
-    if (li.isProper() || li.getIntersectionNum() >= 2) {
+    if (li.isProper || li.getIntersectionNum() >= 2) {
       return TopologyValidationError.SELF_INTERSECTION;
     }
-    
+
     /**
      * Now know there is exactly one intersection, 
      * at a vertex of at least one segment.
      */
     Coordinate intPt = li.getIntersection(0);
-    
+
     /**
      * If segments are adjacent the intersection must be their common endpoint.
      * (since they are not collinear).
      * This is valid.
      */
-    bool isAdjacentSegments = isSameSegString && isAdjacentInRing(ss0, segIndex0, segIndex1);
+    bool isAdjacentSegments =
+        isSameSegString && isAdjacentInRing(ss0, segIndex0, segIndex1);
     // Assert: intersection is an endpoint of both segs
-    if (isAdjacentSegments) return NO_INVALID_INTERSECTION;      
+    if (isAdjacentSegments) return NO_INVALID_INTERSECTION;
 
     /**
      * Under OGC semantics, rings cannot self-intersect.
@@ -140,10 +147,10 @@ implements SegmentIntersector
      * 
      * The return of RING_SELF_INTERSECTION is to match the previous IsValid semantics.
      */
-    if (isSameSegString && ! isInvertedRingValid) {
+    if (isSameSegString && !isInvertedRingValid) {
       return TopologyValidationError.RING_SELF_INTERSECTION;
     }
-    
+
     /**
      * Optimization: don't analyze intPts at the endpoint of a segment.
      * This is because they are also start points, so don't need to be
@@ -152,7 +159,7 @@ implements SegmentIntersector
      */
     if (intPt.equals2D(p01) || intPt.equals2D(p11))
       return NO_INVALID_INTERSECTION;
-    
+
     /**
      * Check topology of a vertex intersection.
      * The ring(s) must not cross.
@@ -169,11 +176,12 @@ implements SegmentIntersector
       e10 = prevCoordinateInRing(ss1, segIndex1);
       e11 = p11;
     }
-    bool hasCrossing = PolygonNodeTopology.isCrossing(intPt, e00, e01, e10, e11); 
+    bool hasCrossing =
+        PolygonNodeTopology.isCrossing(intPt, e00, e01, e10, e11);
     if (hasCrossing) {
       return TopologyValidationError.SELF_INTERSECTION;
     }
-    
+
     /**
      * If allowing inverted rings, record a self-touch to support later checking
      * that it does not disconnect the interior.
@@ -181,7 +189,7 @@ implements SegmentIntersector
     if (isSameSegString && isInvertedRingValid) {
       addSelfTouch(ss0, intPt, e00, e01, e10, e11);
     }
-    
+
     /**
      * If the rings are in the same polygon
      * then record the touch to support connected interior checking.
@@ -190,24 +198,27 @@ implements SegmentIntersector
      * if the rings are different.
      */
     bool isDoubleTouch = addDoubleTouch(ss0, ss1, intPt);
-    if (isDoubleTouch && ! isSameSegString) {
-      hasDoubleTouch = true;
+    if (isDoubleTouch && !isSameSegString) {
+      _hasDoubleTouch = true;
       doubleTouchLocation = intPt;
       // TODO: for poly-hole or hole-hole touch, check if it has bad topology.  If so return invalid code
     }
-    
+
     return NO_INVALID_INTERSECTION;
   }
 
- /**private */bool addDoubleTouch(SegmentString ss0, SegmentString ss1, Coordinate intPt) {
-    return PolygonRing.addTouch((PolygonRing) ss0.getData(), (PolygonRing) ss1.getData(), intPt);
+  /**private */ bool addDoubleTouch(
+      SegmentString ss0, SegmentString ss1, Coordinate intPt) {
+    return PolygonRing.addTouch(
+        ss0.getData() as PolygonRing?, ss1.getData() as PolygonRing?, intPt);
   }
 
- /**private */void addSelfTouch(SegmentString ss, Coordinate intPt, Coordinate e00, Coordinate e01, Coordinate e10,
-      Coordinate e11) {
-    PolygonRing polyRing = (PolygonRing) ss.getData();
+  /**private */ void addSelfTouch(SegmentString ss, Coordinate intPt,
+      Coordinate e00, Coordinate e01, Coordinate e10, Coordinate e11) {
+    PolygonRing? polyRing = ss.getData() as PolygonRing?;
     if (polyRing == null) {
-      throw new IllegalStateException("SegmentString missing PolygonRing data when checking self-touches");
+      throw new Exception(
+          "IllegalStateException: SegmentString missing PolygonRing data when checking self-touches");
     }
     polyRing.addSelfTouch(intPt, e00, e01, e10, e11);
   }
@@ -220,12 +231,13 @@ implements SegmentIntersector
    * @param segIndex the segment index
    * @return the coordinate previous to the given segment
    */
- /**private */static Coordinate prevCoordinateInRing(SegmentString ringSS, int segIndex) {
+  /**private */ static Coordinate prevCoordinateInRing(
+      SegmentString ringSS, int segIndex) {
     int prevIndex = segIndex - 1;
     if (prevIndex < 0) {
       prevIndex = ringSS.size() - 2;
     }
-    return ringSS.getCoordinate( prevIndex );
+    return ringSS.getCoordinate(prevIndex);
   }
 
   /**
@@ -237,7 +249,8 @@ implements SegmentIntersector
    * @param segIndex1 a segment index
    * @return true if the segments are adjacent
    */
- /**private */static bool isAdjacentInRing(SegmentString ringSS, int segIndex0, int segIndex1) {
+  /**private */ static bool isAdjacentInRing(
+      SegmentString ringSS, int segIndex0, int segIndex1) {
     int delta = (segIndex1 - segIndex0).abs();
     if (delta <= 1) return true;
     /**

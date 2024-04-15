@@ -29,14 +29,30 @@
 // import org.locationtech.jts.noding.MCIndexNoder;
 // import org.locationtech.jts.noding.SegmentString;
 
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
+import 'package:jtscore4dart/src/algorithm/Orientation.dart';
+import 'package:jtscore4dart/src/algorithm/PointLocation.dart';
+import 'package:jtscore4dart/src/algorithm/PolygonNodeTopology.dart';
+import 'package:jtscore4dart/src/algorithm/RobustLineIntersector.dart';
+import 'package:jtscore4dart/src/geom/Location.dart';
+import 'package:jtscore4dart/src/noding/BasicSegmentString.dart';
+import 'package:jtscore4dart/src/noding/MCIndexNoder.dart';
+import 'package:jtscore4dart/src/noding/SegmentString.dart';
+
+import 'PolygonIntersectionAnalyzer.dart';
+import 'PolygonRing.dart';
+
 /**
+ * 分析polygon 的拓扑信息判断是否是 valid。
  * Analyzes the topology of polygonal geometry
  * to determine whether it is valid.
  * <p>
  * Analyzing polygons with inverted rings (shells or exverted holes)
  * is performed if specified.
  * Inverted rings may cause a disconnected interior due to a self-touch;
- * this is reported by {@link #isInteriorDisconnectedBySelfTouch()}.
+ * this is reported by {@link #[isInteriorDisconnectedBySelfTouch]()}.
  * 
  * @author mdavis
  *
@@ -57,8 +73,8 @@ class PolygonTopologyAnalyzer {
    * and the incident start segment (accounting for repeated points) is
    * tested for its topology relative to the target ring.
    *  
-   * @param test the ring to test
-   * @param target the ring to test against
+   * @param [test] the ring to test
+   * @param [target] the ring to test against
    * @return true if the test ring lies inside the target ring
    */
   static bool isRingNested(LinearRing test, LinearRing target) {
@@ -167,14 +183,16 @@ class PolygonTopologyAnalyzer {
   }
   
  /**private */static int ringIndexPrev(List<Coordinate> ringPts, int index) {
-    if (index == 0) 
+    if (index == 0) {
       return ringPts.length - 2;
+    }
     return index - 1;
   }
   
  /**private */static int ringIndexNext(List<Coordinate> ringPts, int index) {
-    if (index >= ringPts.length - 2) 
+    if (index >= ringPts.length - 2) {
       return 0;
+    }
     return index + 1;
   }
   
@@ -205,18 +223,19 @@ class PolygonTopologyAnalyzer {
    * @param ring the ring to analyze
    * @return a self-intersection point if one exists, or null
    */
-  static Coordinate findSelfIntersection(LinearRing ring) {
+  static Coordinate? findSelfIntersection(LinearRing ring) {
     PolygonTopologyAnalyzer ata = new PolygonTopologyAnalyzer(ring, false);
-    if (ata.hasInvalidIntersection())
+    if (ata.hasInvalidIntersection()) {
       return ata.getInvalidLocation();
+    }
     return null;
   }
   
  /**private */bool isInvertedRingValid;
   
- /**private */PolygonIntersectionAnalyzer intFinder;
- /**private */List<PolygonRing> polyRings = null;
- /**private */Coordinate disconnectionPt = null;
+ /**private */late PolygonIntersectionAnalyzer intFinder;
+ /**private */List<PolygonRing>? polyRings = null;
+ /**private */Coordinate? disconnectionPt = null;
 
   /**
    * Creates a new analyzer for a {@link Polygon} or {@link MultiPolygon}.
@@ -224,8 +243,7 @@ class PolygonTopologyAnalyzer {
    * @param geom a Polygon or MultiPolygon
    * @param isInvertedRingValid a flag indicating whether inverted rings are allowed
    */
-  PolygonTopologyAnalyzer(Geometry geom, bool isInvertedRingValid) {
-    this.isInvertedRingValid = isInvertedRingValid;
+  PolygonTopologyAnalyzer(Geometry geom, this.isInvertedRingValid) {
     analyze(geom);
   }
 
@@ -275,7 +293,7 @@ class PolygonTopologyAnalyzer {
    * 
    * @return the location of an interior disconnection, or null
    */
-  Coordinate getDisconnectionLocation() {
+  Coordinate? getDisconnectionLocation() {
     return disconnectionPt;
   } 
   
@@ -296,7 +314,7 @@ class PolygonTopologyAnalyzer {
      * PolyRings will be null for empty, no hole or LinearRing inputs
      */
     if (polyRings != null) {
-      disconnectionPt = PolygonRing.findHoleCycleLocation(polyRings);
+      disconnectionPt = PolygonRing.findHoleCycleLocation(polyRings!);
     }
   }
   
@@ -311,17 +329,19 @@ class PolygonTopologyAnalyzer {
    */
   void checkInteriorDisconnectedBySelfTouch() {
     if (polyRings != null) {
-      disconnectionPt = PolygonRing.findInteriorSelfNode(polyRings);
+      disconnectionPt = PolygonRing.findInteriorSelfNode(polyRings!);
     }
   }
   
  /**private */void analyze(Geometry geom) {
-    if (geom.isEmpty()) 
+    if (geom.isEmpty()) {
       return;
+    }
     List<SegmentString> segStrings = createSegmentStrings(geom, isInvertedRingValid);
     polyRings = getPolygonRings(segStrings);
     intFinder = analyzeIntersections(segStrings);
     
+    // if (intFinder.hasDoubleTouch()) {
     if (intFinder.hasDoubleTouch()) {
       disconnectionPt = intFinder.getDoubleTouchLocation();
       return;
@@ -338,19 +358,20 @@ class PolygonTopologyAnalyzer {
   }
 
  /**private */static List<SegmentString> createSegmentStrings(Geometry geom, bool isInvertedRingValid) {
-    List<SegmentString> segStrings = new ArrayList<SegmentString>();
+    // List<SegmentString> segStrings = new ArrayList<SegmentString>();
+    List<SegmentString> segStrings = <SegmentString>[];
     if (geom is LinearRing) {
-      LinearRing ring = (LinearRing) geom;
+      LinearRing ring = geom as LinearRing;
       segStrings.add( createSegString(ring, null));
       return segStrings;
     }
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      Polygon poly = (Polygon) geom.getGeometryN(i);
+      Polygon poly = geom.getGeometryN(i) as Polygon;
       if (poly.isEmpty()) continue;
       bool hasHoles = poly.getNumInteriorRing() > 0;
       
       //--- polygons with no holes do not need connected interior analysis
-      PolygonRing shellRing = null;
+      PolygonRing? shellRing = null;
       if (hasHoles || isInvertedRingValid) {
         shellRing = new PolygonRing(poly.getExteriorRing());
       }
@@ -367,20 +388,18 @@ class PolygonTopologyAnalyzer {
   }
   
  /**private */static List<PolygonRing> getPolygonRings(List<SegmentString> segStrings) {
-    List<PolygonRing> polyRings = null;
-    for (SegmentString ss : segStrings) {
-      PolygonRing polyRing = (PolygonRing) ss.getData();
+    List<PolygonRing>? polyRings = null;
+    for (SegmentString ss in segStrings) {
+      PolygonRing? polyRing = ss.getData() as PolygonRing?;
       if (polyRing != null) {
-        if (polyRings == null) {
-          polyRings = new ArrayList<PolygonRing>();
-        }
+        polyRings ??= <PolygonRing>[];
         polyRings.add(polyRing);
       }
     }
-    return polyRings;
+    return polyRings!;
   }
 
- /**private */static SegmentString createSegString(LinearRing ring, PolygonRing polyRing) {
+ /**private */static SegmentString createSegString(LinearRing ring, PolygonRing? polyRing) {
     List<Coordinate> pts = ring.getCoordinates();
     
     //--- repeated points must be removed for accurate intersection detection

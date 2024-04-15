@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Geometry;
 
@@ -23,31 +22,30 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
  * @version 1.7
  */
 class TopologyValidationError {
-
   /**
    * Not used
    * @deprecated
    */
-  static const int ERROR                   = 0;
+  static const int ERROR = 0;
   /**
    * No longer used - repeated points are considered valid as per the SFS
    * @deprecated
    */
-  static const int REPEATED_POINT          = 1;
+  static const int REPEATED_POINT = 1;
 
   /**
    * hole 在 polygon shell 的外部（exterior）
    * 
    * Indicates that a hole of a polygon lies partially or completely in the exterior of the shell
    */
-  static const int HOLE_OUTSIDE_SHELL      = 2;
+  static const int HOLE_OUTSIDE_SHELL = 2;
 
   /**
    * 同一个polygon中一个hole 在另一个hole 里面
    * 
    * Indicates that a hole lies in the interior of another hole in the same polygon
    */
-  static const int NESTED_HOLES            = 3;
+  static const int NESTED_HOLES = 3;
 
   /**
    * 一个polygon 的内部相离
@@ -56,32 +54,32 @@ class TopologyValidationError {
    * Indicates that the interior of a polygon is disjoint
    * (often caused by set of contiguous holes splitting the polygon into two parts)
    */
-  static const int DISCONNECTED_INTERIOR   = 4;
+  static const int DISCONNECTED_INTERIOR = 4;
 
   /**
    * 一个polygon 的两个环相交
    * 
    * Indicates that two rings of a polygonal geometry intersect
    */
-  static const int SELF_INTERSECTION       = 5;
+  static const int SELF_INTERSECTION = 5;
 
   /**
    * ring 自相交
    * Indicates that a ring self-intersects
    */
-  static const int RING_SELF_INTERSECTION  = 6;
+  static const int RING_SELF_INTERSECTION = 6;
 
   /**
    * MultiPolygon 中的一个polygon组件在另一个polygon中
    * 
    * Indicates that a polygon component of a MultiPolygon lies inside another polygonal component
    */
-  static const int NESTED_SHELLS           = 7;
+  static const int NESTED_SHELLS = 7;
 
   /**
    * Indicates that a polygonal geometry contains two rings which are identical
    */
-  static const int DUPLICATE_RINGS         = 8;
+  static const int DUPLICATE_RINGS = 8;
 
   /**
    * Indicates that either
@@ -90,19 +88,19 @@ class TopologyValidationError {
    * <li>a LinearRing contains 2 or 3 points
    * </ul>
    */
-  static const int TOO_FEW_POINTS          = 9;
+  static const int TOO_FEW_POINTS = 9;
 
   /**
    * Indicates that the <code>X</code> or <code>Y</code> ordinate of
    * a Coordinate is not a valid numeric value (e.g. {@link Double#NaN} )
    */
-  static const int INVALID_COORDINATE      = 10;
+  static const int INVALID_COORDINATE = 10;
 
   /**
    * Indicates that a ring is not correctly closed
    * (the first and the last coordinate are different)
    */
-  static const int RING_NOT_CLOSED      = 11;
+  static const int RING_NOT_CLOSED = 11;
 
   /**
    * Messages corresponding to error codes
@@ -122,8 +120,8 @@ class TopologyValidationError {
     "Ring is not closed"
   ];
 
- /**private */int errorType;
- /**private */Coordinate? pt;
+  /**private */ int errorType;
+  /**private */ Coordinate? pt;
 
   /**
    * Creates a validation error with the given type and location
@@ -131,8 +129,7 @@ class TopologyValidationError {
    * @param errorType the type of the error
    * @param pt the location of the error
    */
-  TopologyValidationError(this.errorType,[ Coordinate? pt])
-  {
+  TopologyValidationError(this.errorType, [Coordinate? pt]) {
     if (pt != null) {
       this.pt = pt.copy();
     }
@@ -154,14 +151,18 @@ class TopologyValidationError {
    *
    * @return a {@link Coordinate} on the input geometry
    */
-  Coordinate? getCoordinate() { return pt; }
+  Coordinate? getCoordinate() {
+    return pt;
+  }
 
   /**
    * Gets the type of this error.
    *
    * @return the error type
    */
-  int getErrorType() { return errorType; }
+  int getErrorType() {
+    return errorType;
+  }
 
   /**
    * Gets an error message describing this error.
@@ -169,15 +170,16 @@ class TopologyValidationError {
    *
    * @return the error message
    */
-  String getMessage() { return errMsg[errorType]; }
+  String getMessage() {
+    return errMsg[errorType];
+  }
 
   /**
    * Gets a message describing the type and location of this error.
    * @return the error message
    */
   @override
-  String toString()
-  {
+  String toString() {
     String locStr = "";
     if (pt != null) {
       locStr = " at or near point $pt";

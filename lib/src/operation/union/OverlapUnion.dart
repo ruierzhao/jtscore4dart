@@ -10,8 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
-
 // import java.util.ArrayList;
 // import java.util.HashSet;
 // import java.util.List;
@@ -29,6 +27,7 @@
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/geom/CoordinateSequenceFilter.dart';
 import 'package:jtscore4dart/src/geom/util/GeometryCombiner.dart';
+import 'package:jtscore4dart/src/patch/ArrayList.dart';
 
 import 'CascadedPolygonUnion.dart';
 import 'UnionStrategy.dart';
@@ -90,8 +89,7 @@ import 'UnionStrategy.dart';
  * @deprecated due to impairing performance
  * 
  */
-class OverlapUnion 
-{
+class OverlapUnion {
   /**
    * Union a pair of geometries,
    * using the more performant overlap union algorithm if possible.
@@ -101,37 +99,34 @@ class OverlapUnion
    * @param [unionFun] 
    * @return the union of the inputs
    */
-	static Geometry unionS(Geometry g0, Geometry g1, UnionStrategy unionFun)
-	{
-		OverlapUnion union = new OverlapUnion(g0, g1, unionFun);
-		return union.union();
-	}
-	
-	/**private */ GeometryFactory geomFactory;
-	
-	/**private */ Geometry g0;
-	/**private */ Geometry g1;
+  static Geometry unionS(Geometry g0, Geometry g1, UnionStrategy unionFun) {
+    OverlapUnion union = new OverlapUnion(g0, g1, unionFun);
+    return union.union();
+  }
 
- /**private */late bool isUnionSafe;
+  /**private */ GeometryFactory geomFactory;
 
- /**private */UnionStrategy unionFun;
+  /**private */ Geometry g0;
+  /**private */ Geometry g1;
 
-	
+  /**private */ late bool isUnionSafe;
+
+  /**private */ UnionStrategy unionFun;
+
   /**
    * Creates a new instance for unioning the given geometries.
    * 
    * @param g0 a geometry to union
    * @param g1 a geometry to union
    */
-	// OverlapUnion(Geometry g0, Geometry g1)
-	// {
-	// 	this(g0, g1, CascadedPolygonUnion.CLASSIC_UNION);
-	// }
-	
-	OverlapUnion(this.g0, this.g1, [UnionStrategy? unionFun]):
-    geomFactory = g0.getFactory(),
-    this.unionFun = (unionFun??= CascadedPolygonUnion.CLASSIC_UNION);
-  
+  // OverlapUnion(Geometry g0, Geometry g1)
+  // {
+  // 	this(g0, g1, CascadedPolygonUnion.CLASSIC_UNION);
+  // }
+
+  OverlapUnion(this.g0, this.g1, [UnionStrategy? unionFun])
+      : geomFactory = g0.getFactory(),
+        this.unionFun = (unionFun ??= CascadedPolygonUnion.CLASSIC_UNION);
 
   /**
    * Unions the input geometries,
@@ -139,10 +134,9 @@ class OverlapUnion
    * 
    * @return the union of the inputs
 	 */
-	Geometry union()
-	{
-    Envelope overlapEnv = overlapEnvelope(g0,  g1);
-    
+  Geometry union() {
+    Envelope overlapEnv = overlapEnvelope(g0, g1);
+
     /**
      * If no overlap, can just combine the geometries
      */
@@ -151,105 +145,104 @@ class OverlapUnion
       Geometry g1Copy = g1.copy();
       return GeometryCombiner.combine(g0Copy, g1Copy);
     }
-    
+
     List<Geometry> disjointPolys = <Geometry>[];
-    
+
     Geometry g0Overlap = extractByEnvelope(overlapEnv, g0, disjointPolys);
     Geometry g1Overlap = extractByEnvelope(overlapEnv, g1, disjointPolys);
-    
+
 //    System.out.println("# geoms in common: " + intersectingPolys.size());
-    Geometry unionGeom = unionFull(g0Overlap, g1Overlap); 
-    
+    Geometry unionGeom = unionFull(g0Overlap, g1Overlap);
+
     Geometry? result = null;
     isUnionSafe = isBorderSegmentsSame(unionGeom, overlapEnv);
-    if (! isUnionSafe) {
+    if (!isUnionSafe) {
       // overlap union changed border segments... need to do full union
       //System.out.println("OverlapUnion: Falling back to full union");
       result = unionFull(g0, g1);
-    }
-    else {
+    } else {
       //System.out.println("OverlapUnion: fast path");
       result = combine(unionGeom, disjointPolys);
     }
     return result;
-	}
+  }
 
-	/**
+  /**
 	 * Allows checking whether the optimized
 	 * or full union was performed.
 	 * Used for unit testing.
 	 * 
 	 * @return true if the optimized union was performed
 	 */
-	bool isUnionOptimized() {
-	  return isUnionSafe;
-	}
-	
- /**private */static Envelope overlapEnvelope(Geometry g0, Geometry g1) {
+  bool isUnionOptimized() {
+    return isUnionSafe;
+  }
+
+  /**private */ static Envelope overlapEnvelope(Geometry g0, Geometry g1) {
     Envelope g0Env = g0.getEnvelopeInternal();
     Envelope g1Env = g1.getEnvelopeInternal();
     Envelope overlapEnv = g0Env.intersection(g1Env);
     return overlapEnv;
   }
-  
- /**private */Geometry combine(Geometry unionGeom, List<Geometry> disjointPolys) {
+
+  /**private */ Geometry combine(
+      Geometry unionGeom, List<Geometry> disjointPolys) {
     // if (disjointPolys.size() <= 0)
     if (disjointPolys.isEmpty) {
       return unionGeom;
     }
-    
+
     disjointPolys.add(unionGeom);
-    Geometry result = GeometryCombiner.combine(disjointPolys);
+    Geometry result = GeometryCombiner.combineAll(disjointPolys);
     return result;
   }
 
- /**private */Geometry extractByEnvelope(Envelope env, Geometry geom, 
-      List<Geometry> disjointGeoms)
-  {
-    List<Geometry> intersectingGeoms = new ArrayList<Geometry>();
-    for (int i = 0; i < geom.getNumGeometries(); i++) { 
+  /**private */ Geometry extractByEnvelope(
+      Envelope env, Geometry geom, List<Geometry> disjointGeoms) {
+    // List<Geometry> intersectingGeoms = new ArrayList<Geometry>();
+    List<Geometry> intersectingGeoms = <Geometry>[];
+    for (int i = 0; i < geom.getNumGeometries(); i++) {
       Geometry elem = geom.getGeometryN(i);
       if (elem.getEnvelopeInternal().intersects(env)) {
         intersectingGeoms.add(elem);
-      }
-      else {
+      } else {
         Geometry copy = elem.copy();
         disjointGeoms.add(copy);
       }
     }
     return geomFactory.buildGeometry(intersectingGeoms);
   }
-  
- /**private */Geometry unionFull(Geometry geom0, Geometry geom1) {
+
+  /**private */ Geometry unionFull(Geometry geom0, Geometry geom1) {
     // if both are empty collections, just return a copy of one of them
-    if (geom0.getNumGeometries() == 0 
-        && geom1.getNumGeometries() == 0) {
+    if (geom0.getNumGeometries() == 0 && geom1.getNumGeometries() == 0) {
       return geom0.copy();
     }
-    
+
     Geometry union = unionFun.union(geom0, geom1);
     return union;
   }
-  
- /**private */bool isBorderSegmentsSame(Geometry result, Envelope env) {
-    List<LineSegment> segsBefore = extractBorderSegments(g0, g1, env);
-    
+
+  /**private */ bool isBorderSegmentsSame(Geometry result, Envelope env) {
+    List<LineSegment> segsBefore = __extractBorderSegments(g0, g1, env);
+
     List<LineSegment> segsAfter = <LineSegment>[];
-    extractBorderSegments(result, env, segsAfter);
+    _extractBorderSegments(result, env, segsAfter);
 
     //System.out.println("# seg before: " + segsBefore.size() + " - # seg after: " + segsAfter.size());
     return isEqual(segsBefore, segsAfter);
   }
-  
- /**private */bool isEqual(List<LineSegment> segs0, List<LineSegment> segs1) {
+
+  /**private */ bool isEqual(List<LineSegment> segs0, List<LineSegment> segs1) {
     if (segs0.size() != segs1.size()) {
       return false;
     }
-    
-    Set<LineSegment> segIndex = new HashSet<LineSegment>(segs0);
-    
+
+    // Set<LineSegment> segIndex = new HashSet<LineSegment>(segs0);
+    Set<LineSegment> segIndex = new Set<LineSegment>.from(segs0);
+
     for (LineSegment seg in segs1) {
-      if (! segIndex.contains(seg)) {
+      if (!segIndex.contains(seg)) {
         //System.out.println("Found changed border seg: " + seg);
         return false;
       }
@@ -257,7 +250,8 @@ class OverlapUnion
     return true;
   }
 
- /**private */List<LineSegment> extractBorderSegments(Geometry geom0, Geometry geom1, Envelope env) {
+  /**private */ List<LineSegment> __extractBorderSegments(
+      Geometry geom0, Geometry? geom1, Envelope env) {
     List<LineSegment> segs = [];
     _extractBorderSegments(geom0, env, segs);
     if (geom1 != null) {
@@ -265,50 +259,58 @@ class OverlapUnion
     }
     return segs;
   }
-  
- /**private */static bool intersects(Envelope env, Coordinate p0, Coordinate p1) {
-    return env.intersects(p0) || env.intersects(p1);
+
+  static bool _intersects(Envelope env, Coordinate p0, Coordinate p1) {
+    return env.intersectsWithCoord(p0) || env.intersectsWithCoord(p1);
   }
 
- /**private */static bool containsProperly(Envelope env, Coordinate p0, Coordinate p1) {
-    return containsProperly(env, p0) && containsProperly(env, p1);
+  /**private */ static bool containsProperly(
+      Envelope env, Coordinate p0, Coordinate p1) {
+    return _containsProperly(env, p0) && _containsProperly(env, p1);
   }
 
- /**private */static bool containsProperly(Envelope env, Coordinate p) {
-      if (env.isNull()) return false;
-      return p.getX() > env.getMinX() &&
-          p.getX() < env.getMaxX() &&
-          p.getY() > env.getMinY() &&
-          p.getY() < env.getMaxY();
+  static bool _containsProperly(Envelope env, Coordinate p) {
+    if (env.isNull()) return false;
+    return p.getX() > env.getMinX() &&
+        p.getX() < env.getMaxX() &&
+        p.getY() > env.getMinY() &&
+        p.getY() < env.getMaxY();
   }
 
- /**private */static void _extractBorderSegments(Geometry geom, Envelope env, List<LineSegment> segs) {
-    geom.applyCoordSeq(_());
+  static void _extractBorderSegments(
+      Geometry geom, Envelope env, List<LineSegment> segs) {
+    geom.applyCoordSeq(_(env, segs));
   }
-
 }
 
-
 class _ implements CoordinateSequenceFilter {
+  final Envelope env;
+  final List<LineSegment> segs;
+
+  _(this.env, this.segs);
 
   @override
   void filter(CoordinateSequence seq, int i) {
-        if (i <= 0) return;
-        
-        // extract LineSegment
-        Coordinate p0 = seq.getCoordinate(i - 1);
-        Coordinate p1 = seq.getCoordinate(i);
-        bool isBorder = OverlapUnion.intersects(env, p0, p1) && ! OverlapUnion.containsProperly(env, p0, p1);
-        if (isBorder) {
-          LineSegment seg = new LineSegment(p0, p1);
-          segs.add(seg);
-        }
-      }
+    if (i <= 0) return;
+
+    // extract LineSegment
+    Coordinate p0 = seq.getCoordinate(i - 1);
+    Coordinate p1 = seq.getCoordinate(i);
+    bool isBorder = OverlapUnion._intersects(env, p0, p1) &&
+        !OverlapUnion.containsProperly(env, p0, p1);
+    if (isBorder) {
+      LineSegment seg = new LineSegment(p0, p1);
+      segs.add(seg);
+    }
+  }
 
   @override
-  bool isDone() {   return false;   }
+  bool isDone() {
+    return false;
+  }
 
   @override
-  bool isGeometryChanged() {   return false;   }
-      
+  bool isGeometryChanged() {
+    return false;
+  }
 }

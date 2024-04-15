@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import org.locationtech.jts.geom.Coordinate;
 // import org.locationtech.jts.geom.Geometry;
 // import org.locationtech.jts.geom.GeometryCollection;
@@ -18,6 +17,10 @@
 // import org.locationtech.jts.geom.MultiPoint;
 // import org.locationtech.jts.geom.Point;
 // import org.locationtech.jts.geom.Polygon;
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
 
 /**
  * Implements the appropriate checks for repeated points
@@ -27,53 +30,59 @@
  * @version 1.7
  */
 class RepeatedPointTester {
-
   // save the repeated coord found (if any)
- /**private */Coordinate repeatedCoord;
+  /**private */ Coordinate? repeatedCoord;
 
-  RepeatedPointTester() {
+  // RepeatedPointTester() {
+  // }
+
+  Coordinate getCoordinate() {
+    return repeatedCoord!;
   }
 
-  Coordinate getCoordinate() { return repeatedCoord; }
-
-  bool hasRepeatedPoint(Geometry g)
-  {
+  bool hasRepeatedPoint(Geometry g) {
     if (g.isEmpty()) return false;
-    if (g is Point)                   return false;
-    else if (g is MultiPoint)         return false;
-                        // LineString also handles LinearRings
-    else if (g is LineString)         return hasRepeatedPoint(((LineString) g).getCoordinates());
-    else if (g is Polygon)            return hasRepeatedPoint((Polygon) g);
-    else if (g is GeometryCollection) return hasRepeatedPoint((GeometryCollection) g);
-    else  throw new UnsupportedOperationException(g.getClass().getName());
+    if (g is Point)
+      return false;
+    else if (g is MultiPoint)
+      return false;
+    // LineString also handles LinearRings
+    // ignore_for_file: curly_braces_in_flow_control_structures
+    else if (g is LineString)
+      return hasRepeatedPointCoord((g).getCoordinates());
+    else if (g is Polygon)
+      return _hasRepeatedPoint(g);
+    else if (g is GeometryCollection)
+      return __hasRepeatedPoint(g);
+    else
+      throw new Exception("UnsupportedOperationException: ${g.runtimeType}");
   }
 
-  bool hasRepeatedPoint(List<Coordinate> coord)
-  {
+  bool hasRepeatedPointCoord(List<Coordinate> coord) {
     for (int i = 1; i < coord.length; i++) {
-      if (coord[i - 1].equals(coord[i]) ) {
+      if (coord[i - 1].equals(coord[i])) {
         repeatedCoord = coord[i];
         return true;
       }
     }
     return false;
   }
- /**private */bool hasRepeatedPoint(Polygon p)
-  {
-    if (hasRepeatedPoint(p.getExteriorRing().getCoordinates())) return true;
+
+  /**private */ bool _hasRepeatedPoint(Polygon p) {
+    if (hasRepeatedPointCoord(p.getExteriorRing().getCoordinates()))
+      return true;
     for (int i = 0; i < p.getNumInteriorRing(); i++) {
-      if (hasRepeatedPoint(p.getInteriorRingN(i).getCoordinates())) return true;
+      if (hasRepeatedPointCoord(p.getInteriorRingN(i).getCoordinates()))
+        return true;
     }
     return false;
   }
- /**private */bool hasRepeatedPoint(GeometryCollection gc)
-  {
+
+  /**private */ bool __hasRepeatedPoint(GeometryCollection gc) {
     for (int i = 0; i < gc.getNumGeometries(); i++) {
       Geometry g = gc.getGeometryN(i);
       if (hasRepeatedPoint(g)) return true;
     }
     return false;
   }
-
-
 }

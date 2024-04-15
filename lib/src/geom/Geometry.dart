@@ -37,11 +37,11 @@ import 'package:jtscore4dart/src/algorithm/ConvexHull.dart';
 import 'package:jtscore4dart/src/algorithm/InteriorPoint.dart';
 import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
 import 'package:jtscore4dart/src/operation/distance/DistanceOp.dart';
-// import 'package:jtscore4dart/src/operation/predicate/RectangleContains.dart';
-// import 'package:jtscore4dart/src/operation/predicate/RectangleIntersects.dart';
+import 'package:jtscore4dart/src/operation/predicate/RectangleContains.dart';
+import 'package:jtscore4dart/src/operation/predicate/RectangleIntersects.dart';
 import 'package:jtscore4dart/src/operation/relate/RelateOp.dart';
 import 'package:jtscore4dart/src/operation/valid/IsSimpleOp.dart';
-// import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
+import 'package:jtscore4dart/src/operation/valid/IsValidOp.dart';
 
 import 'package:jtscore4dart/io.dart';
 
@@ -52,6 +52,7 @@ import 'GeometryComponentFilter.dart';
 import 'GeometryFactory.dart';
 import 'GeometryOverlay.dart';
 import 'Point.dart';
+import 'Polygon.dart';
 import 'PrecisionModel.dart';
 import 'CoordinateFilter.dart';
 import 'CoordinateSequenceFilter.dart';
@@ -408,8 +409,8 @@ abstract class Geometry{
   /// @see IsValidOp
   bool isValid()
   {
-    throw UnimplementedError("ruier test");
-  	// return IsValidOp.of(this);
+    // throw UnimplementedError("ruier test");
+  	return IsValidOp.of(this);
   }
 
   /// Tests whether the set of points covered by this <code>Geometry</code> is
@@ -635,8 +636,8 @@ abstract class Geometry{
   ///
   /// @see Geometry#intersects
   bool disjoint(Geometry g) {
-    throw UnimplementedError("ruier test");
-    // return ! intersects(g);
+    // throw UnimplementedError("ruier test");
+    return ! intersects(g);
   }
 
   /// Tests whether this geometry touches the
@@ -693,12 +694,12 @@ abstract class Geometry{
   ///
   /// @see Geometry#disjoint
   bool intersects(Geometry g) {
-    throw UnimplementedError("ruier test");
+    // throw UnimplementedError("ruier test");
 
     // short-circuit envelope test
-    // if (! getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
-    //   return false;
-    // }
+    if (! getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
+      return false;
+    }
 
     /**
      * TODO: (MD) Add optimizations:
@@ -717,24 +718,24 @@ abstract class Geometry{
      */
 
     // optimization for rectangle arguments
-    // if (isRectangle()) {
-    //   return RectangleIntersects.intersects( this as Polygon, g);
-    // }
-    // if (g.isRectangle()) {
-    //   return RectangleIntersects.intersects( g as Polygon, this);
-    // }
-    // if (isGeometryCollection() || g.isGeometryCollection()) {
-    //   for (int i = 0 ; i < getNumGeometries() ; i++) {
-    //     for (int j = 0 ; j < g.getNumGeometries() ; j++) {
-    //       if (getGeometryN(i).intersects(g.getGeometryN(j))) {
-    //         return true;
-    //       }
-    //     }
-    //   }
-    //   return false;
-    // }
-    // // general case
-    // return relate(g).isIntersects();
+    if (isRectangle()) {
+      return RectangleIntersects.intersects( this as Polygon, g);
+    }
+    if (g.isRectangle()) {
+      return RectangleIntersects.intersects( g as Polygon, this);
+    }
+    if (isGeometryCollection() || g.isGeometryCollection()) {
+      for (int i = 0 ; i < getNumGeometries() ; i++) {
+        for (int j = 0 ; j < g.getNumGeometries() ; j++) {
+          if (getGeometryN(i).intersects(g.getGeometryN(j))) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+    // general case
+    return relate(g).isIntersects();
   }
 
   /// Tests whether this geometry crosses the
@@ -760,12 +761,12 @@ abstract class Geometry{
   ///@param  g  the <code>Geometry</code> with which to compare this <code>Geometry</code>
   ///@return        <code>true</code> if the two <code>Geometry</code>s cross.
   bool crosses(Geometry g) {
-    throw UnimplementedError("ruier test");
+    // throw UnimplementedError("ruier test");
     // short-circuit test
-    // if (!getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
-    //   return false;
-    // }
-    // return relate(g).isCrosses(getDimension(), g.getDimension());
+    if (!getEnvelopeInternal().intersectsWith(g.getEnvelopeInternal())) {
+      return false;
+    }
+    return relate(g).isCrosses(getDimension(), g.getDimension());
   }
 
   /// Tests whether this geometry is within the
@@ -795,8 +796,8 @@ abstract class Geometry{
   /// @see Geometry#contains
   /// @see Geometry#coveredBy
   bool within(Geometry g) {
-    throw UnimplementedError("ruier test");
-    // return g.contains(this);
+    // throw UnimplementedError("ruier test");
+    return g.contains(this);
   }
 
   /// Tests whether this geometry contains the
@@ -825,27 +826,27 @@ abstract class Geometry{
   /// @see Geometry#within
   /// @see Geometry#covers
   bool contains(Geometry g) {
-    throw UnimplementedError("ruier test");
+    // throw UnimplementedError("ruier test");
     // optimization - lower dimension cannot contain areas
-    // if (g.getDimension() == 2 && getDimension() < 2) {
-    //   return false;
-    // }
-    // // optimization - P cannot contain a non-zero-length L
-    // // Note that a point can contain a zero-length lineal geometry,
-    // // since the line has no boundary due to Mod-2 Boundary Rule
-    // if (g.getDimension() == 1 && getDimension() < 1 && g.getLength() > 0.0) {
-    //   return false;
-    // }
-    // // optimization - envelope test
-    // if (! getEnvelopeInternal().contains(g.getEnvelopeInternal())) {
-    //   return false;
-    // }
-    // // optimization for rectangle arguments
-    // if (isRectangle()) {
-    //   return RectangleContains.contains( this as Polygon, g);
-    // }
-    // // general case
-    // return relate(g).isContains();
+    if (g.getDimension() == 2 && getDimension() < 2) {
+      return false;
+    }
+    // optimization - P cannot contain a non-zero-length L
+    // Note that a point can contain a zero-length lineal geometry,
+    // since the line has no boundary due to Mod-2 Boundary Rule
+    if (g.getDimension() == 1 && getDimension() < 1 && g.getLength() > 0.0) {
+      return false;
+    }
+    // optimization - envelope test
+    if (! getEnvelopeInternal().contains(g.getEnvelopeInternal())) {
+      return false;
+    }
+    // optimization for rectangle arguments
+    if (isRectangle()) {
+      return RectangleContains.contains( this as Polygon, g);
+    }
+    // general case
+    return relate(g).isContains();
   }
 
   /// Tests whether this geometry overlaps the
@@ -909,26 +910,26 @@ abstract class Geometry{
   /// @see Geometry#contains
   /// @see Geometry#coveredBy
   bool covers(Geometry g) {
-    throw UnimplementedError("ruier test");
+    // throw UnimplementedError("ruier test");
     // optimization - lower dimension cannot cover areas
-    // if (g.getDimension() == 2 && getDimension() < 2) {
-    //   return false;
-    // }
-    // // optimization - P cannot cover a non-zero-length L
-    // // Note that a point can cover a zero-length lineal geometry
-    // if (g.getDimension() == 1 && getDimension() < 1 && g.getLength() > 0.0) {
-    //   return false;
-    // }
-    // // optimization - envelope test
-    // if (! getEnvelopeInternal().covers(g.getEnvelopeInternal())) {
-    //   return false;
-    // }
-    // // optimization for rectangle arguments
-    // if (isRectangle()) {
-    // 	// since we have already tested that the test envelope is covered
-    //   return true;
-    // }
-    // return relate(g).isCovers();
+    if (g.getDimension() == 2 && getDimension() < 2) {
+      return false;
+    }
+    // optimization - P cannot cover a non-zero-length L
+    // Note that a point can cover a zero-length lineal geometry
+    if (g.getDimension() == 1 && getDimension() < 1 && g.getLength() > 0.0) {
+      return false;
+    }
+    // optimization - envelope test
+    if (! getEnvelopeInternal().covers(g.getEnvelopeInternal())) {
+      return false;
+    }
+    // optimization for rectangle arguments
+    if (isRectangle()) {
+    	// since we have already tested that the test envelope is covered
+      return true;
+    }
+    return relate(g).isCovers();
   }
 
   /// Tests whether this geometry is covered by the
@@ -959,8 +960,8 @@ abstract class Geometry{
   /// @see Geometry#within
   /// @see Geometry#covers
   bool coveredBy(Geometry g) {
-    throw UnimplementedError("ruier test");
-    // return g.covers(this);
+    // throw UnimplementedError("ruier test");
+    return g.covers(this);
   }
 
   /// Tests whether the elements in the DE-9IM
@@ -1025,12 +1026,12 @@ abstract class Geometry{
   ///@see #equalsExact(Geometry)
   bool equalsTopo(Geometry g)
   {
-    throw UnimplementedError("ruier test");
+    // throw UnimplementedError("ruier test");
     // short-circuit test
-    // if (! getEnvelopeInternal().equals(g.getEnvelopeInternal())) {
-    //   return false;
-    // }
-    // return relate(g).isEquals(getDimension(), g.getDimension());
+    if (! getEnvelopeInternal().equals(g.getEnvelopeInternal())) {
+      return false;
+    }
+    return relate(g).isEquals(getDimension(), g.getDimension());
   }
 
   /// Tests whether this geometry is structurally and numerically equal
@@ -1083,7 +1084,7 @@ abstract class Geometry{
   ///@return true if the two <code>Geometry</code>s are topologically equal
   ///
   ///@see #equalsTopo(Geometry)
-  bool equalsOfTopo(Geometry g) {
+  bool equalsOfTopo(Geometry? g) {
     if (g == null) return false;
     return equalsTopo(g);
   }
@@ -1271,8 +1272,8 @@ abstract class Geometry{
   /// @throws ArgumentError if the argument is a non-empty heterogeneous <code>GeometryCollection</code>
   Geometry intersection(Geometry other)
   {
-    throw UnimplementedError("ruier test");
-    // return GeometryOverlay.intersection(this, other);
+    // throw UnimplementedError("ruier test");
+    return GeometryOverlay.intersection(this, other);
   }
 
   /// Computes a <code>Geometry</code> representing the point-set
@@ -1330,8 +1331,8 @@ abstract class Geometry{
   /// @throws ArgumentError if either input is a non-empty GeometryCollection
   Geometry difference(Geometry other)
   {
-    throw UnimplementedError("ruier test");
-    // return GeometryOverlay.difference(this, other);
+    // throw UnimplementedError("ruier test");
+    return GeometryOverlay.difference(this, other);
   }
 
   /// Computes a <code>Geometry</code> representing the closure of the point-set
@@ -1352,8 +1353,8 @@ abstract class Geometry{
   /// @throws ArgumentError if either input is a non-empty GeometryCollection
   Geometry symDifference(Geometry other)
   {
-    throw UnimplementedError("ruier test");
-    // return GeometryOverlay.symDifference(this, other);
+    // throw UnimplementedError("ruier test");
+    return GeometryOverlay.symDifference(this, other);
   }
 
 	/// Computes the union of all the elements of this geometry.

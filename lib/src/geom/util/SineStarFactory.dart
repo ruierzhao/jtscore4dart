@@ -131,8 +131,12 @@ class SineStarFactory
     double centreX = env.getMinX() + radius;
     double centreY = env.getMinY() + radius;
 
-    List<Coordinate> pts = new Coordinate[nPts + 1];
-    int iPt = 0;
+    /// TODO: @ruier edit.
+    // List<Coordinate> pts = new Coordinate[nPts + 1];
+    // int iPt = 0;
+    
+    List<Coordinate> pts = [];
+
     for (int i = 0; i < nPts; i++) {
       // the fraction of the way through the current arm - in [0,1]
       double ptArcFrac = (i / nPts.toDouble()) * numArms;
@@ -151,9 +155,11 @@ class SineStarFactory
       double ang = i * (2 * math.pi / nPts);
       double x = curveRadius * math.cos(ang) + centreX;
       double y = curveRadius * math.sin(ang) + centreY;
-      pts[iPt++] = coord(x, y);
+      // pts[iPt++] = coord(x, y);
+      pts.add(coord(x, y));
     }
-    pts[iPt] = new Coordinate(pts[0]);
+    // pts[iPt] = new Coordinate(pts[0]);
+    pts.add(pts[0]);
 
     LinearRing ring = geomFact.createLinearRing(pts);
     Polygon poly = geomFact.createPolygon(ring);

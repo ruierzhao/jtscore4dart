@@ -19,14 +19,14 @@
  * @author Martin Davis
  */
 class NoninvertibleTransformationException
-	extends Exception
+	// extends Exception
 {
-  NoninvertibleTransformationException()
+  // NoninvertibleTransformationException()
+  // {
+  //   super();
+  // }
+  NoninvertibleTransformationException([String? msg])
   {
-    super();
-  }
-  NoninvertibleTransformationException(String msg)
-  {
-    super(msg);
+    Exception(msg);
   }
 }

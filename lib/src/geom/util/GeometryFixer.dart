@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.List;
 
@@ -33,6 +32,11 @@
 // import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
 
 import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/geom/prep/PreparedGeometry.dart';
+import 'package:jtscore4dart/src/geom/prep/PreparedGeometryFactory.dart';
+import 'package:jtscore4dart/src/operation/buffer/BufferOp.dart';
+import 'package:jtscore4dart/src/operation/overlayng/OverlayNG.dart';
+import 'package:jtscore4dart/src/operation/overlayng/OverlayNGRobust.dart';
 import 'package:jtscore4dart/src/patch/ArrayList.dart';
 
 /**
@@ -78,9 +82,8 @@ import 'package:jtscore4dart/src/patch/ArrayList.dart';
  * @see Geometry#isValid()
  */
 class GeometryFixer {
-
- /**private */
- static const bool DEFAULT_KEEP_MULTI = true;
+  /**private */
+  static const bool DEFAULT_KEEP_MULTI = true;
 
   /**
    * Fixes a geometry to be valid.
@@ -102,24 +105,23 @@ class GeometryFixer {
    *                    if they consist of only one item.
    * @return the valid fixed geometry
    */
-  static Geometry fix(Geometry geom, [bool isKeepMulti=true]) {
+  static Geometry fix(Geometry geom, [bool isKeepMulti = true]) {
     GeometryFixer fix = new GeometryFixer(geom);
     fix.setKeepMulti(isKeepMulti);
     return fix.getResult();
   }
 
- /**private */ Geometry geom;
- /**private */ GeometryFactory factory;
- /**private */ bool isKeepCollapsed = false;
- /**private */ bool isKeepMulti = DEFAULT_KEEP_MULTI;
+  /**private */ Geometry geom;
+  /**private */ GeometryFactory factory;
+  /**private */ bool isKeepCollapsed = false;
+  /**private */ bool isKeepMulti = DEFAULT_KEEP_MULTI;
 
   /**
    * Creates a new instance to fix a given geometry.
    *
    * @param geom the geometry to be fixed
    */
-  GeometryFixer(this.geom):
-    this.factory = geom.getFactory();
+  GeometryFixer(this.geom) : this.factory = geom.getFactory();
 
   /**
    * Sets whether collapsed geometries are converted to empty,
@@ -130,7 +132,7 @@ class GeometryFixer {
    * @param isKeepCollapsed whether collapses should be converted to a lower dimension geometry
    */
   void setKeepCollapsed(bool isKeepCollapsed) {
-    this.isKeepCollapsed  = isKeepCollapsed;
+    this.isKeepCollapsed = isKeepCollapsed;
   }
 
   /**
@@ -142,7 +144,7 @@ class GeometryFixer {
    * @param isKeepMulti flag whether to keep {@code MULTI} geometries.
    */
   void setKeepMulti(bool isKeepMulti) {
-    this.isKeepMulti  = isKeepMulti;
+    this.isKeepMulti = isKeepMulti;
   }
 
   /**
@@ -159,20 +161,24 @@ class GeometryFixer {
       return geom.copy();
     }
 
-    if (geom is Point)              return fixPoint( geom as Point);
+    if (geom is Point) return fixPoint(geom as Point);
     //  LinearRing must come before LineString
-    if (geom is LinearRing)         return fixLinearRing( geom as LinearRing);
-    if (geom is LineString)         return fixLineString( geom as LineString);
-    if (geom is Polygon)            return fixPolygon( geom as Polygon);
-    if (geom is MultiPoint)         return fixMultiPoint( geom as MultiPoint);
-    if (geom is MultiLineString)    return fixMultiLineString( geom as MultiLineString);
-    if (geom is MultiPolygon)       return fixMultiPolygon( geom as MultiPolygon);
-    if (geom is GeometryCollection) return fixCollection( geom as GeometryCollection);
+    if (geom is LinearRing) return fixLinearRing(geom as LinearRing);
+    if (geom is LineString) return fixLineString(geom as LineString);
+    if (geom is Polygon) return fixPolygon(geom as Polygon);
+    if (geom is MultiPoint) return fixMultiPoint(geom as MultiPoint);
+    if (geom is MultiLineString) {
+      return fixMultiLineString(geom as MultiLineString);
+    }
+    if (geom is MultiPolygon) return fixMultiPolygon(geom as MultiPolygon);
+    if (geom is GeometryCollection) {
+      return fixCollection(geom as GeometryCollection);
+    }
     // throw new UnsupportedOperationException(geom.getClass().getName());
     throw new Exception("UnsupportedOperationException: ${geom.runtimeType}");
   }
 
- /**private */Point fixPoint(Point geom) {
+  /**private */ Point fixPoint(Point geom) {
     Geometry? pt = _fixPointElement(geom);
     if (pt == null) {
       return factory.createPoint();
@@ -180,24 +186,24 @@ class GeometryFixer {
     return pt as Point;
   }
 
- /**private */Point? _fixPointElement(Point geom) {
-    if (geom.isEmpty() || ! isValidPoint(geom)) {
+  /**private */ Point? _fixPointElement(Point geom) {
+    if (geom.isEmpty() || !isValidPoint(geom)) {
       return null;
     }
-    return geom.copy();
+    return geom.copy() as Point;
   }
 
- /**private */static bool isValidPoint(Point pt) {
-    Coordinate p = pt.getCoordinate();
+  /**private */ static bool isValidPoint(Point pt) {
+    Coordinate p = pt.getCoordinate()!;
     return p.isValid();
   }
 
- /**private */Geometry fixMultiPoint(MultiPoint geom) {
+  /**private */ Geometry fixMultiPoint(MultiPoint geom) {
     List<Point> pts = <Point>[];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      Point pt = (Point) geom.getGeometryN(i);
+      Point pt = geom.getGeometryN(i) as Point;
       if (pt.isEmpty()) continue;
-      Point fixPt = _fixPointElement(pt);
+      Point? fixPt = _fixPointElement(pt);
       if (fixPt != null) {
         pts.add(fixPt);
       }
@@ -207,18 +213,19 @@ class GeometryFixer {
       return pts.get(0);
     }
 
-    return factory.createMultiPoint(GeometryFactory.toPointArray(pts));
+    return factory
+        .createMultiPointFromPoints(GeometryFactory.toPointArray(pts));
   }
 
- /**private */Geometry fixLinearRing(LinearRing geom) {
-    Geometry fix = fixLinearRingElement(geom);
+  /**private */ Geometry fixLinearRing(LinearRing geom) {
+    Geometry? fix = fixLinearRingElement(geom);
     if (fix == null) {
-      return factory.createLinearRing();
+      return factory.createLinearRingEmpty();
     }
     return fix;
   }
 
- /**private */Geometry fixLinearRingElement(LinearRing geom) {
+  /**private */ Geometry? fixLinearRingElement(LinearRing geom) {
     if (geom.isEmpty()) return null;
     List<Coordinate> pts = geom.getCoordinates();
     List<Coordinate> ptsFix = fixCoordinates(pts);
@@ -237,21 +244,21 @@ class GeometryFixer {
 
     LinearRing ring = factory.createLinearRing(ptsFix);
     //--- convert invalid ring to LineString
-    if (! ring.isValid()) {
+    if (!ring.isValid()) {
       return factory.createLineString(ptsFix);
     }
     return ring;
   }
 
- /**private */Geometry fixLineString(LineString geom) {
-    Geometry fix = fixLineStringElement(geom);
+  /**private */ Geometry fixLineString(LineString geom) {
+    Geometry? fix = fixLineStringElement(geom);
     if (fix == null) {
       return factory.createLineString();
     }
     return fix;
   }
 
- /**private */Geometry fixLineStringElement(LineString geom) {
+  /**private */ Geometry? fixLineStringElement(LineString geom) {
     if (geom.isEmpty()) return null;
     List<Coordinate> pts = geom.getCoordinates();
     List<Coordinate> ptsFix = fixCoordinates(pts);
@@ -270,49 +277,53 @@ class GeometryFixer {
    * @param pts coordinates to clean
    * @return an array of clean coordinates
    */
- /**private */static List<Coordinate> fixCoordinates(List<Coordinate> pts) {
-    List<Coordinate> ptsClean = CoordinateArrays.removeRepeatedOrInvalidPoints(pts);
+  /**private */ static List<Coordinate> fixCoordinates(List<Coordinate> pts) {
+    List<Coordinate> ptsClean =
+        CoordinateArrays.removeRepeatedOrInvalidPoints(pts);
     return CoordinateArrays.copyDeep(ptsClean);
   }
 
- /**private */Geometry fixMultiLineString(MultiLineString geom) {
-    List<Geometry> fixed = new ArrayList<Geometry>();
+  /**private */ Geometry fixMultiLineString(MultiLineString geom) {
+    // List<Geometry> fixed = new ArrayList<Geometry>();
+    List<Geometry> fixed = <Geometry>[];
     bool isMixed = false;
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      LineString line = (LineString) geom.getGeometryN(i);
+      LineString line = geom.getGeometryN(i) as LineString;
       if (line.isEmpty()) continue;
 
-      Geometry fix = fixLineStringElement(line);
+      Geometry? fix = fixLineStringElement(line);
       if (fix == null) continue;
 
-      if (! (fix is LineString)) {
+      if (fix is! LineString) {
         isMixed = true;
       }
       fixed.add(fix);
     }
 
     if (fixed.size() == 1) {
-      if (!this.isKeepMulti || !(fixed.get(0) is LineString)) {
+      if (!isKeepMulti || fixed.get(0) is! LineString) {
         return fixed.get(0);
       }
     }
 
     if (isMixed) {
-      return factory.createGeometryCollection(GeometryFactory.toGeometryArray(fixed));
+      return factory
+          .createGeometryCollection(GeometryFactory.toGeometryArray(fixed));
     }
 
-    return factory.createMultiLineString(GeometryFactory.toLineStringArray(fixed));
+    return factory
+        .createMultiLineString(GeometryFactory.toLineStringArray(fixed));
   }
 
- /**private */Geometry fixPolygon(Polygon geom) {
-    Geometry fix = fixPolygonElement(geom);
+  /**private */ Geometry fixPolygon(Polygon geom) {
+    Geometry? fix = fixPolygonElement(geom);
     if (fix == null) {
       return factory.createPolygon();
     }
     return fix;
   }
 
- /**private */Geometry fixPolygonElement(Polygon geom) {
+  /**private */ Geometry? fixPolygonElement(Polygon geom) {
     LinearRing shell = geom.getExteriorRing();
     Geometry fixShell = fixRing(shell);
     if (fixShell.isEmpty()) {
@@ -329,8 +340,10 @@ class GeometryFixer {
 
     //--- fix holes, classify, and construct shell-true holes
     List<Geometry> holesFixed = fixHoles(geom);
-    List<Geometry> holes = new ArrayList<Geometry>();
-    List<Geometry> shells = new ArrayList<Geometry>();
+    // List<Geometry> holes = new ArrayList<Geometry>();
+    // List<Geometry> shells = new ArrayList<Geometry>();
+    List<Geometry> holes = <Geometry>[];
+    List<Geometry> shells = <Geometry>[];
     classifyHoles(fixShell, holesFixed, holes, shells);
     Geometry polyWithHoles = difference(fixShell, holes);
     if (shells.size() == 0) {
@@ -343,10 +356,11 @@ class GeometryFixer {
     return result;
   }
 
- /**private */List<Geometry> fixHoles(Polygon geom) {
-    List<Geometry> holes = new ArrayList<Geometry>();
+  /**private */ List<Geometry> fixHoles(Polygon geom) {
+    // List<Geometry> holes = new ArrayList<Geometry>();
+    List<Geometry> holes = <Geometry>[];
     for (int i = 0; i < geom.getNumInteriorRing(); i++) {
-      Geometry holeRep = fixRing(geom.getInteriorRingN(i));
+      Geometry? holeRep = fixRing(geom.getInteriorRingN(i));
       if (holeRep != null) {
         holes.add(holeRep);
       }
@@ -354,13 +368,13 @@ class GeometryFixer {
     return holes;
   }
 
- /**private */void classifyHoles(Geometry shell, List<Geometry> holesFixed, List<Geometry> holes, List<Geometry> shells) {
+  /**private */ void classifyHoles(Geometry shell, List<Geometry> holesFixed,
+      List<Geometry> holes, List<Geometry> shells) {
     PreparedGeometry shellPrep = PreparedGeometryFactory.prepare(shell);
-    for (Geometry hole : holesFixed) {
+    for (Geometry hole in holesFixed) {
       if (shellPrep.intersects(hole)) {
         holes.add(hole);
-      }
-      else {
+      } else {
         shells.add(hole);
       }
     }
@@ -373,7 +387,7 @@ class GeometryFixer {
    * @param holes polygonal geometries to subtract
    * @return the result geometry
    */
- /**private */Geometry difference(Geometry shell, List<Geometry> holes) {
+  /**private */ Geometry difference(Geometry shell, List<Geometry>? holes) {
     if (holes == null || holes.size() == 0) {
       return shell;
     }
@@ -389,53 +403,60 @@ class GeometryFixer {
    * @param polys the polygonal geometries to union
    * @return the union of the inputs
    */
- /**private */Geometry union(List<Geometry> polys) {
+  /**private */ Geometry union(List<Geometry> polys) {
     if (polys.size() == 0) return factory.createPolygon();
     if (polys.size() == 1) {
       return polys.get(0);
     }
     // TODO: replace with holes.union() once OverlayNG is the default
-    return OverlayNGRobust.union(polys);
+    return OverlayNGRobust.unionAll(polys);
   }
 
- /**private */Geometry fixRing(LinearRing ring) {
+  /**private */ Geometry fixRing(LinearRing ring) {
     //-- always execute fix, since it may remove repeated/invalid coords etc
     // TODO: would it be faster to check ring validity first?
     Geometry poly = factory.createPolygon(ring);
     return BufferOp.bufferByZero(poly, true);
   }
 
- /**private */Geometry fixMultiPolygon(MultiPolygon geom) {
-    List<Geometry> polys = new ArrayList<Geometry>();
+  /**private */ Geometry fixMultiPolygon(MultiPolygon geom) {
+    // List<Geometry> polys = new ArrayList<Geometry>();
+    List<Geometry> polys = <Geometry>[];
     for (int i = 0; i < geom.getNumGeometries(); i++) {
-      Polygon poly = (Polygon) geom.getGeometryN(i);
-      Geometry polyFix = fixPolygonElement(poly);
-      if (polyFix != null && ! polyFix.isEmpty()) {
+      Polygon poly = geom.getGeometryN(i) as Polygon;
+      Geometry? polyFix = fixPolygonElement(poly);
+      if (polyFix != null && !polyFix.isEmpty()) {
         polys.add(polyFix);
       }
     }
     if (polys.size() == 0) {
-      return factory.createMultiPolygon();
+      return factory.createMultiPolygonEmpty();
     }
     // TODO: replace with polys.union() once OverlayNG is the default
     Geometry result = union(polys);
 
     if (this.isKeepMulti && result is Polygon) {
-      result = factory.createMultiPolygon(new List<Polygon>{(Polygon) result});
+      result = factory.createMultiPolygon(<Polygon>[result]);
     }
 
     return result;
   }
 
- /**private */Geometry fixCollection(GeometryCollection geom) {
-    List<Geometry> geomRep = new Geometry[geom.getNumGeometries()];
-    for (int i = 0; i < geom.getNumGeometries(); i++) {
-      geomRep[i] = fix(geom.getGeometryN(i), this.isKeepCollapsed, this.isKeepMulti);
-    }
+  /**private */ Geometry fixCollection(GeometryCollection geom) {
+    // List<Geometry> geomRep = new Geometry[geom.getNumGeometries()];
+    // for (int i = 0; i < geom.getNumGeometries(); i++) {
+    //   geomRep[i] = _fix(geom.getGeometryN(i), this.isKeepCollapsed, this.isKeepMulti);
+    // }
+    List<Geometry> geomRep = List.generate(
+        geom.getNumGeometries(),
+        (index) => _fix(
+            geom.getGeometryN(index), this.isKeepCollapsed, this.isKeepMulti),
+        growable: false);
     return factory.createGeometryCollection(geomRep);
   }
 
- /**private */static Geometry fix(Geometry geom, bool isKeepCollapsed, bool isKeepMulti) {
+  /**private static */ Geometry _fix(
+      Geometry geom, bool isKeepCollapsed, bool isKeepMulti) {
     GeometryFixer fix = new GeometryFixer(geom);
     fix.setKeepCollapsed(isKeepCollapsed);
     fix.setKeepMulti(isKeepMulti);

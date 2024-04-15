@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.List;
 
@@ -20,16 +19,18 @@
 // import org.locationtech.jts.geom.LineString;
 // import org.locationtech.jts.geom.Point;
 
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/geom/GeometryComponentFilter.dart';
+import 'package:jtscore4dart/src/geom/LineString.dart';
+import 'package:jtscore4dart/src/geom/Point.dart';
+
 /**
  * Extracts a representative {@link Coordinate} 
  * from each connected component of a {@link Geometry}.
  *
  * @version 1.9
  */
-class ComponentCoordinateExtracter
-  implements GeometryComponentFilter
-{
-
+class ComponentCoordinateExtracter implements GeometryComponentFilter {
   /**
    * Extracts a representative {@link Coordinate}
    * from each connected component in a geometry.
@@ -41,31 +42,27 @@ class ComponentCoordinateExtracter
    * @param geom the Geometry from which to extract
    * @return a list of representative Coordinates
    */
-  static List getCoordinates(Geometry geom)
-  {
+  static List getCoordinates(Geometry geom) {
     List coords = [];
-    geom.apply(new ComponentCoordinateExtracter(coords));
+    geom.applyGeometryComonent(new ComponentCoordinateExtracter(coords));
     return coords;
   }
 
- /**private */List coords;
+  /**private */ List coords;
 
   /**
    * Constructs a LineExtracterFilter with a list in which to store LineStrings found.
    */
-  ComponentCoordinateExtracter(List coords)
-  {
-    this.coords = coords;
-  }
+  ComponentCoordinateExtracter(this.coords);
 
-  void filter(Geometry geom)
-  {
-    if (geom.isEmpty())
+  @override
+  void filter(Geometry geom) {
+    if (geom.isEmpty()) {
       return;
+    }
     // add coordinates from connected components
-    if (geom is LineString
-        || geom is Point) 
+    if (geom is LineString || geom is Point) {
       coords.add(geom.getCoordinate());
+    }
   }
-
 }

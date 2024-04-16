@@ -309,6 +309,8 @@ class SegmentNodeList
 
     Iterator it = iterator();
     // there should always be at least two entries in the list, since the endpoints are nodes
+    /// TODO: @ruier edit.
+    it.moveNext();
     SegmentNode eiPrev =  it.current as SegmentNode;
     while (it.moveNext()) {
       SegmentNode ei =  it.current as SegmentNode;

@@ -135,6 +135,7 @@ class OverlapUnion {
    * @return the union of the inputs
 	 */
   Geometry union() {
+    // 获取相交部分的Envelop
     Envelope overlapEnv = overlapEnvelope(g0, g1);
 
     /**
@@ -146,10 +147,11 @@ class OverlapUnion {
       return GeometryCombiner.combine(g0Copy, g1Copy);
     }
 
+    // 收集不相交的部分
     List<Geometry> disjointPolys = <Geometry>[];
 
-    Geometry g0Overlap = extractByEnvelope(overlapEnv, g0, disjointPolys);
-    Geometry g1Overlap = extractByEnvelope(overlapEnv, g1, disjointPolys);
+    Geometry g0Overlap = _extractByEnvelope(overlapEnv, g0, disjointPolys);
+    Geometry g1Overlap = _extractByEnvelope(overlapEnv, g1, disjointPolys);
 
 //    System.out.println("# geoms in common: " + intersectingPolys.size());
     Geometry unionGeom = unionFull(g0Overlap, g1Overlap);
@@ -163,6 +165,7 @@ class OverlapUnion {
     } else {
       //System.out.println("OverlapUnion: fast path");
       result = combine(unionGeom, disjointPolys);
+      print('>>>>>>>>> result2: ${result} <<<<<<<<<<<<<<<<<<<<');
     }
     return result;
   }
@@ -197,7 +200,8 @@ class OverlapUnion {
     return result;
   }
 
-  /**private */ Geometry extractByEnvelope(
+  /// 通过envelop 抽取相交和不相交的Geometry
+  /**private */ Geometry _extractByEnvelope(
       Envelope env, Geometry geom, List<Geometry> disjointGeoms) {
     // List<Geometry> intersectingGeoms = new ArrayList<Geometry>();
     List<Geometry> intersectingGeoms = <Geometry>[];
@@ -228,12 +232,16 @@ class OverlapUnion {
 
     List<LineSegment> segsAfter = <LineSegment>[];
     _extractBorderSegments(result, env, segsAfter);
+    // print("after");
+    // for (final it = segsAfter.iterator; it.moveNext();) {
+    //   print(it.current);
+    // }
 
     //System.out.println("# seg before: " + segsBefore.size() + " - # seg after: " + segsAfter.size());
-    return isEqual(segsBefore, segsAfter);
+    return _isEqual(segsBefore, segsAfter);
   }
 
-  /**private */ bool isEqual(List<LineSegment> segs0, List<LineSegment> segs1) {
+  bool _isEqual(List<LineSegment> segs0, List<LineSegment> segs1) {
     if (segs0.size() != segs1.size()) {
       return false;
     }
@@ -250,10 +258,14 @@ class OverlapUnion {
     return true;
   }
 
-  /**private */ List<LineSegment> __extractBorderSegments(
+  List<LineSegment> __extractBorderSegments(
       Geometry geom0, Geometry? geom1, Envelope env) {
     List<LineSegment> segs = [];
     _extractBorderSegments(geom0, env, segs);
+    print('>>>>>>>>> it.current: <<<<<<<<<<<<<<<<<<<<');
+    for (final it = segs.iterator; it.moveNext();){
+      print(it.current);
+    }
     if (geom1 != null) {
       _extractBorderSegments(geom1, env, segs);
     }

@@ -387,8 +387,8 @@ class Envelope
   ///  the given point. 
   ///  Has no effect if the point is already on or within the envelope.
   ///
-  ///@param  x  the value to lower the minimum x to or to raise the maximum x to
-  ///@param  y  the value to lower the minimum y to or to raise the maximum y to
+  ///@param  [x]  the value to lower the minimum x to or to raise the maximum x to
+  ///@param  [y]  the value to lower the minimum y to or to raise the maximum y to
   void expandToIncludeXY(double x, double y) {
     if (isNull()) {
       _minx = x;
@@ -417,7 +417,7 @@ class Envelope
   ///  Has no effect if <code>other</code> is wholly on or
   ///  within the envelope.
   ///
-  ///@param  other  the <code>Envelope</code> to expand to include
+  ///@param  [other]  the <code>Envelope</code> to expand to include
   void expandToIncludeEnvelope(Envelope other) {
     if (other.isNull()) {
       return;
@@ -446,8 +446,8 @@ class Envelope
 
   /// Translates this envelope by given amounts in the X and Y direction.
   ///
-  /// @param transX the amount to translate along the X axis
-  /// @param transY the amount to translate along the Y axis
+  /// @param [transX] the amount to translate along the X axis
+  /// @param [transY] the amount to translate along the Y axis
   void translate(double transX, double transY) {
     if (isNull()) {
       return;
@@ -734,7 +734,10 @@ class Envelope
   String toString(){
     return "Env[$_minx : $_maxx, $_miny : $_maxy]";
   }
-
+  String toText(){
+    return "POLYGON(($_minx $_miny, $_maxx $_miny, $_maxx $_maxy, $_minx $_maxy, $_minx $_miny))";
+  }
+  
   /// Compares two envelopes using lexicographic ordering.
   /// The ordering comparison is based on the usual numerical
   /// comparison between the sequence of ordinates.

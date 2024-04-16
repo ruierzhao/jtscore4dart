@@ -10,7 +10,8 @@ void testFixedPrecCausingBorderChange() {
   String b =
       "MULTIPOLYGON (((50 0, 100 450, 100 0, 50 0)), ((53 28, 50 28, 50 30, 53 30, 53 28)))";
 
-  checkUnionWithTopologyFailure(a, b, 1);
+
+  _checkUnionWithTopologyFailure(a, b, 1);
 }
 
 void testFullPrecision() {
@@ -48,7 +49,8 @@ void testSimpleOverlap() {
    * @param scaleFactor
    * @throws ParseException
    */
-/**private */ void checkUnionWithTopologyFailure(
+/**private */
+void _checkUnionWithTopologyFailure(
     String wktA, String wktB, double scaleFactor) {
   PrecisionModel pm = new PrecisionModel.Fixed(scaleFactor);
   GeometryFactory geomFact = new GeometryFactory(pm);
@@ -105,4 +107,6 @@ void testSimpleOverlap() {
   print("OverlapUnion result is invalid${result.isValid()}");
 }
 
-void main() {}
+void main() {
+  testFixedPrecCausingBorderChange();
+}

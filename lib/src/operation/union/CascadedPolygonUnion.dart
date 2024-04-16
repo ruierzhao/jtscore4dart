@@ -51,6 +51,7 @@ class _ implements UnionStrategy {
     @override
     Geometry union(Geometry g0, Geometry g1) {
       try {
+        print('>>>>>>>>> SnapIfNeededOverlayOp.union(g0, g1): ${ SnapIfNeededOverlayOp.union(g0, g1) } <<<<<<<<<<<<<<<<<<<<');
         return SnapIfNeededOverlayOp.union(g0, g1);
       }
       on TopologyException catch (__) {

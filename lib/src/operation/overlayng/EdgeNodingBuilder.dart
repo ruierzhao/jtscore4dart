@@ -108,7 +108,7 @@ class EdgeNodingBuilder {
 
   /**private */ PrecisionModel pm;
   /**private */ List<NodedSegmentString> inputEdges = <NodedSegmentString>[];
-  /**private */ Noder customNoder;
+  /**private */ Noder? customNoder;
 
   /**private */ Envelope? clipEnv = null;
   /**private */ RingClipper? clipper;
@@ -122,10 +122,10 @@ class EdgeNodingBuilder {
    * If the noder is not provided, a suitable one will 
    * be used based on the supplied precision model.
    * 
-   * @param pm the precision model to use
-   * @param noder an optional custom noder to use (may be null)
+   * @param [pm] the precision model to use
+   * @param [noder] an optional custom noder to use (may be null)
    */
-  EdgeNodingBuilder(this.pm, Noder noder) : this.customNoder = noder;
+  EdgeNodingBuilder(this.pm, Noder? noder) : this.customNoder = noder;
 
   /**
    * Gets a noder appropriate for the precision model supplied.
@@ -139,7 +139,7 @@ class EdgeNodingBuilder {
    * @return
    */
   /**private */ Noder getNoder() {
-    if (customNoder != null) return customNoder;
+    if (customNoder != null) return customNoder!;
     if (OverlayUtil.isFloating(pm)) {
       return createFloatingPrecisionNoder(IS_NODING_VALIDATED);
     }

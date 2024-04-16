@@ -563,7 +563,7 @@ class OverlayNG
     /**
      * Node the edges, using whatever noder is being used
      */
-    EdgeNodingBuilder nodingBuilder = new EdgeNodingBuilder(pm, noder!);
+    EdgeNodingBuilder nodingBuilder = new EdgeNodingBuilder(pm, noder);
     
     /**
      * Optimize Intersection and Difference by clipping to the 

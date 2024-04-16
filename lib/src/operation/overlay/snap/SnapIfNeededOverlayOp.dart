@@ -82,6 +82,7 @@ class SnapIfNeededOverlayOp
     try {
       // try basic operation with input geometries
       result = OverlayOp.overlayOp(geom[0], geom[1], opCode); 
+      print('>>>>>>>>> result: ${ result } <<<<<<<<<<<<<<<<<<<<');
       bool isValid = true;
       // not needed if noding validation is used
 //      bool isValid = OverlayResultValidator.isValid(geom[0], geom[1], OverlayOp.INTERSECTION, result);
@@ -91,6 +92,7 @@ class SnapIfNeededOverlayOp
     }
     on Exception catch ( ex) {
     	savedException = ex;
+      print('>>>>>>>>> ex: ${ ex } <<<<<<<<<<<<<<<<<<<<');
     	// ignore this exception, since the operation will be rerun
 //    	System.out.println(ex.getMessage());
 //    	ex.printStackTrace();
@@ -105,6 +107,7 @@ class SnapIfNeededOverlayOp
     		result = SnapOverlayOp.overlayOp(geom[0], geom[1], opCode);
     	}
     	on Exception catch ( ex) {
+        print(ex);
     		throw savedException!;
     	}
     }

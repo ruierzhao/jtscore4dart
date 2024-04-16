@@ -155,9 +155,11 @@ class OverlapUnion {
 
 //    System.out.println("# geoms in common: " + intersectingPolys.size());
     Geometry unionGeom = unionFull(g0Overlap, g1Overlap);
+    print('>>>>>>>>> unionGeom: ${ unionGeom } <<<<<<<<<<<<<<<<<<<<');
 
     Geometry? result = null;
     isUnionSafe = isBorderSegmentsSame(unionGeom, overlapEnv);
+    // if (!isUnionSafe) {
     if (!isUnionSafe) {
       // overlap union changed border segments... need to do full union
       //System.out.println("OverlapUnion: Falling back to full union");
@@ -229,6 +231,10 @@ class OverlapUnion {
 
   /**private */ bool isBorderSegmentsSame(Geometry result, Envelope env) {
     List<LineSegment> segsBefore = __extractBorderSegments(g0, g1, env);
+    // print("before");
+    // for (final it = segsBefore.iterator; it.moveNext();) {
+    //   print(it.current);
+    // }
 
     List<LineSegment> segsAfter = <LineSegment>[];
     _extractBorderSegments(result, env, segsAfter);

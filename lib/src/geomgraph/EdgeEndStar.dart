@@ -68,7 +68,6 @@ abstract class EdgeEndStar {
   // TODO: ruier edit.
   // EdgeEndStar()
   // {
-
   // }
 
   /**
@@ -200,7 +199,7 @@ abstract class EdgeEndStar {
           label.setAllLocationsIfNullGeom(geomi, loc);
         }
       }
-    //Debug.println(e);
+      //Debug.println(e);
     }
     //Debug.print(this);
     //Debug.printIfWatch(this);

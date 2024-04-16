@@ -401,7 +401,7 @@ class CascadedPolygonUnion
     if (g is Polygonal) {
       return g;
     }
-    List polygons = PolygonExtracter.getPolygons(g);
+    List<Geometry> polygons = PolygonExtracter.getPolygons(g);
     if (polygons.size() == 1) {
       return polygons.get(0) as Polygon;
     }

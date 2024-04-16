@@ -48,9 +48,7 @@ import 'package:jtscore4dart/src/algorithm/Orientation.dart';
 import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
 import 'package:jtscore4dart/src/algorithm/locate/IndexedPointInAreaLocator.dart';
 import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
-import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Polygonal.dart';
-import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geomgraph/index/SegmentIntersector.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
 

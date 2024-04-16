@@ -10,7 +10,6 @@ void testFixedPrecCausingBorderChange() {
   String b =
       "MULTIPOLYGON (((50 0, 100 450, 100 0, 50 0)), ((53 28, 50 28, 50 30, 53 30, 53 28)))";
 
-
   _checkUnionWithTopologyFailure(a, b, 1);
 }
 
@@ -108,5 +107,6 @@ void _checkUnionWithTopologyFailure(
 }
 
 void main() {
-  testFixedPrecCausingBorderChange();
+  testFixedPrecCausingBorderChange(); // test fail
+  // testFullPrecision();
 }

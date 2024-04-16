@@ -449,7 +449,7 @@ class PrecisionModel implements /** Serializable, */  Comparable
   ///@return    a negative integer, zero, or a positive integer as this <code>PrecisionModel</code>
   ///      is less than, equal to, or greater than the specified <code>PrecisionModel</code>
   @override
-  int compareTo(var o) {
+  int compareTo(dynamic o) {
     PrecisionModel other =  o as PrecisionModel;
 
     int sigDigits = getMaximumSignificantDigits();

@@ -95,7 +95,7 @@ class GeometryFactory{
   //   return (List<Point>) points.toArray(pointArray);
   // }
   static List<Point> toPointArray(Iterable points) {
-    return points.toList(growable: false) as List<Point>;
+    return List<Point>.from(points, growable: false);
   }
 
   ///  Converts the <code>List</code> to an array.
@@ -109,7 +109,7 @@ class GeometryFactory{
   //   return (List<Geometry>) geometries.toArray(geometryArray);
   // }
   static List<Geometry>? toGeometryArray(Iterable geometries) {
-    return geometries.toList(growable: false) as  List<Geometry>;
+    return List<Geometry>.from(geometries, growable: false);
   }
 
   ///  Converts the <code>List</code> to an array.
@@ -118,7 +118,7 @@ class GeometryFactory{
   ///@return              the <code>List</code> in array format
   static List<LinearRing> toLinearRingArray(Iterable linearRings) {
     // List<LinearRing> linearRingArray = new LinearRing[linearRings.size()];
-    return linearRings.toList(growable: false) as List<LinearRing>;
+    return List<LinearRing>.from(linearRings, growable: false);
   }
   // static List<LinearRing> toLinearRingArray(Collection linearRings) {
   //   List<LinearRing> linearRingArray = new LinearRing[linearRings.size()];
@@ -137,20 +137,24 @@ class GeometryFactory{
     // lineStrings.length;
     // TODO: ruier edit.可以优化
     // List<LineString> lineStringArray = new LineString[lineStrings.size()];
-    return lineStrings.toList(growable: false) as List<LineString>;
+    return List<LineString>.from(lineStrings, growable: false);
   }
 
   ///  Converts the <code>List</code> to an array.
   ///
-  ///@param  polygons  the <code>List</code> of Polygons to convert
+  ///@param  [polygons]  the <code>List</code> of Polygons to convert
   ///@return           the <code>List</code> in array format
   // static List<Polygon> toPolygonArray(Collection polygons) {
   //   List<Polygon> polygonArray = new Polygon[polygons.size()];
   //   return (List<Polygon>) polygons.toArray(polygonArray);
   // }
-  static List<Polygon> toPolygonArray(Iterable polygons) {
+  static List<Polygon> toPolygonArray(Iterable<Geometry> polygons) {
     // List<Polygon> polygonArray = new Polygon[polygons.size()];
-    return polygons.toList(growable: false) as  List<Polygon>; 
+    // for (var it = polygons.iterator; it.moveNext();) {
+      
+    // }
+    return  List<Polygon>.from(polygons,growable: false);
+    // return List<Polygon>.generate(polygons.length, (index) => temp[index] as Polygon, growable: false);
   }
 
   ///  Converts the <code>List</code> to an array.
@@ -159,7 +163,7 @@ class GeometryFactory{
   ///@return                the <code>List</code> in array format
   static List<MultiPolygon> toMultiPolygonArray(Iterable multiPolygons) {
     // List<MultiPolygon> multiPolygonArray = new MultiPolygon[multiPolygons.size()];
-    return multiPolygons.toList(growable: false) as  List<MultiPolygon>; 
+    return List<MultiPolygon>.from(multiPolygons,growable: false);; 
   }
   // static MultiList<Polygon> toMultiPolygonArray(Collection multiPolygons) {
   //   MultiList<Polygon> multiPolygonArray = new MultiPolygon[multiPolygons.size()];
@@ -173,7 +177,7 @@ class GeometryFactory{
   ///@return                   the <code>List</code> in array format
   static List<MultiLineString> toMultiLineStringArray(Iterable multiLineStrings) {
     // List<MultiLineString> multiLineStringArray = new MultiLineString[multiLineStrings.size()];
-    return multiLineStrings.toList(growable: false) as List<MultiLineString>;
+    return List<MultiLineString>.from(multiLineStrings, growable: false);
   }
 
   ///  Converts the <code>List</code> to an array.
@@ -182,9 +186,10 @@ class GeometryFactory{
   ///@return              the <code>List</code> in array format
   static List<MultiPoint> toMultiPointArray(Iterable multiPoints) {
     // List<MultiPoint> multiPointArray = new MultiPoint[multiPoints.size()];
-    return multiPoints.toList(growable: false) as List<MultiPoint>;
+    return List<MultiPoint>.from(multiPoints, growable: false);
   }
 
+  /// 把Envelope 转为Geometry
   /// Creates a {@link Geometry} with the same extent as the given envelope.
   /// The Geometry returned is guaranteed to be valid.  
   /// To provide this behaviour, the following cases occur:
@@ -198,7 +203,7 @@ class GeometryFactory{
   ///  (minx, maxy), (maxx, maxy), (maxx, miny), (minx, miny).
   /// </ul>
   /// 
-  ///@param  envelope the <code>Envelope</code> to convert
+  ///@param  [envelope] the <code>Envelope</code> to convert
   ///@return an empty <code>Point</code> (for null <code>Envelope</code>s), 
   ///	a <code>Point</code> (when min x = max x and min y = max y) or a
   ///      <code>Polygon</code> (in all other cases)
@@ -314,7 +319,7 @@ class GeometryFactory{
   /// HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
   /// Specification for SQL</A>.
   ///
-  /// @param polygons
+  /// @param [polygons]
   ///            Polygons, each of which may be empty but not null
   /// @return the created MultiPolygon
   MultiPolygon createMultiPolygon(List<Polygon> polygons) {
@@ -539,6 +544,7 @@ class GeometryFactory{
     bool isCollection = geomList.length > 1;
     if (isCollection) {
       if (geom0 is Polygon) {
+        /// TODO: @ruier edit.
         return createMultiPolygon(toPolygonArray(geomList));
       }
       else if (geom0 is LineString) {

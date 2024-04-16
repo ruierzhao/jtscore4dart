@@ -129,14 +129,15 @@ class GeometryCombiner
 	/**
 	 * Extracts the GeometryFactory used by the geometries in a collection
 	 * 
-	 * @param geoms
+	 * @param [geoms]
 	 * @return a GeometryFactory
 	 */
 	static GeometryFactory? extractFactory(Iterable<Geometry> geoms) {
 		if (geoms.isEmpty) {
 		  return null;
 		}
-		return (geoms.iterator.current).getFactory();
+		// return (geoms.iterator.current).getFactory();
+		return (geoms.first).getFactory();
 	}
 	
 	/**

@@ -97,7 +97,7 @@ class NodeMap
   /**
    * Find coordinate.
    *
-   * @param coord Coordinate to find
+   * @param [coord] Coordinate to find
    * @return the node if found; null otherwise
    */
   Node? find(Coordinate coord)  {    return  nodeMap.get(coord) as Node;  }

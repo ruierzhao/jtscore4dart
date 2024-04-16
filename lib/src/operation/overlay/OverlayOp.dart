@@ -35,17 +35,10 @@
 
 import 'dart:math';
 
+import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/PointLocator.dart';
-import 'package:jtscore4dart/src/geom/Coordinate.dart';
-import 'package:jtscore4dart/src/geom/Geometry.dart';
-import 'package:jtscore4dart/src/geom/GeometryFactory.dart';
-import 'package:jtscore4dart/src/geom/LineString.dart';
-import 'package:jtscore4dart/src/geom/Point.dart';
-import 'package:jtscore4dart/src/geom/Location.dart';
-import 'package:jtscore4dart/src/geom/Polygon.dart';
-import 'package:jtscore4dart/src/geom/Position.dart';
-import 'package:jtscore4dart/src/geomgraph/EdgeNodingValidator.dart';
 import 'package:jtscore4dart/src/geomgraph/geomgraph.dart';
+import 'package:jtscore4dart/src/geomgraph/EdgeNodingValidator.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
 
 import '../GeometryGraphOperation.dart';
@@ -87,8 +80,7 @@ class OverlayOp extends GeometryGraphOperation {
   static const int SYMDIFFERENCE = 4;
 
   /**
-   * Computes an overlay operation for 
-   * the given geometry arguments.
+   * Computes an overlay operation for the given geometry arguments.
    * 
    * @param [geom0] the first geometry argument
    * @param [geom1] the second geometry argument
@@ -165,18 +157,18 @@ class OverlayOp extends GeometryGraphOperation {
    * Constructs an instance to compute a single overlay operation
    * for the given geometries.
    * 
-   * @param g0 the first geometry argument
-   * @param g1 the second geometry argument
+   * @param [g0] the first geometry argument
+   * @param [g1] the second geometry argument
    */
   OverlayOp(Geometry g0, Geometry g1)
-    : graph = new PlanarGraph(new OverlayNodeFactory()),
-      /**
+      : graph = new PlanarGraph(new OverlayNodeFactory()),
+        /**
      * Use factory of primary geometry.
      * Note that this does NOT handle mixed-precision arguments
      * where the second arg has greater precision than the first.
      */
-      geomFact = g0.getFactory(),
-      super(g0, g1);
+        geomFact = g0.getFactory(),
+        super(g0, g1);
 
   /**
    * Gets the result of the overlay for a given overlay operation.
@@ -513,7 +505,7 @@ class OverlayOp extends GeometryGraphOperation {
     for (Iterator ni = graph.getNodes().iterator; ni.moveNext();) {
       Node n = ni.current;
       Label label = n.getLabel();
-      print('>>>>>>>>> label: ${ label } <<<<<<<<<<<<<<<<<<<<');
+      print('>>>>>>>>> label: ${label} <<<<<<<<<<<<<<<<<<<<');
       if (n.isIsolated()) {
         // nodeCount++;
         if (label.isNull(0)) {

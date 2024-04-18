@@ -45,10 +45,6 @@ import 'dart:math';
 import 'package:jtscore4dart/geometry.dart';
 import 'package:jtscore4dart/src/algorithm/Distance.dart';
 import 'package:jtscore4dart/src/algorithm/Orientation.dart';
-import 'package:jtscore4dart/src/geom/CoordinateArrays.dart';
-import 'package:jtscore4dart/src/geom/Location.dart';
-import 'package:jtscore4dart/src/geom/Position.dart';
-import 'package:jtscore4dart/src/geom/PrecisionModel.dart';
 import 'package:jtscore4dart/src/geom/Triangle.dart';
 import 'package:jtscore4dart/src/geomgraph/Label.dart';
 import 'package:jtscore4dart/src/noding/NodedSegmentString.dart';
@@ -140,7 +136,8 @@ class BufferCurveSetBuilder {
     // add the edge for a coordinate list which is a raw offset curve
     SegmentString e = NodedSegmentString(
         coord, Label.GeomFrom3(0, Location.BOUNDARY, leftLoc, rightLoc));
-        print('>>>>>>>>> e: ${ Label.GeomFrom3(0, Location.BOUNDARY, leftLoc, rightLoc) } <<<<<<<<<<<<<<<<<<<<');
+    print(
+        '>>>>>>>>> e: ${Label.GeomFrom3(0, Location.BOUNDARY, leftLoc, rightLoc)} <<<<<<<<<<<<<<<<<<<<');
     curveList.add(e as NodedSegmentString);
   }
 

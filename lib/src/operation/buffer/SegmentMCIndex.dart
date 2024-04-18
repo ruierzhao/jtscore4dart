@@ -53,7 +53,7 @@ class SegmentMCIndex {
   }
 
   void query(Envelope env, MonotoneChainSelectAction action) {
-    index.query(env, _ItemVisitor(env,action));
+    index.queryByVisitor(env, _ItemVisitor(env,action));
   }
 }
 

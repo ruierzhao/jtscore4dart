@@ -209,9 +209,6 @@ class UnaryUnionOp
     List<Point> points = extracter.getExtract(0) as List<Point>;
     List<LineString> lines = extracter.getExtract(1) as List<LineString>;
     List<Polygon> polygons = extracter.getExtract(2) as List<Polygon>;
-    print('>>>>>>>>> extracter.point: ${ points } <<<<<<<<<<<<<<<<<<<<');
-    print('>>>>>>>>> extracter.lines: ${ lines } <<<<<<<<<<<<<<<<<<<<');
-    print('>>>>>>>>> extracter.polygons: ${ polygons } <<<<<<<<<<<<<<<<<<<<');
     
 		/**
 		 * For points and lines, only a single union operation is 

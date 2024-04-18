@@ -428,7 +428,7 @@ class OverlayOp extends GeometryGraphOperation {
    * but in the original arg Geometry it is actually
    * in the interior due to the Boundary Determination Rule)
    */
-  void copyPoints(int argIndex) { /**private */ 
+  void copyPoints(int argIndex) { /**private */
     for (Iterator i = arg[argIndex].getNodeIterator(); i.moveNext();) {
       Node graphNode = i.current;
       Node newNode = graph.addNodeCoord(graphNode.getCoordinate());

@@ -33,10 +33,10 @@ import 'package:jtscore4dart/src/geom/Coordinate.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geom/TopologyException.dart';
-import 'package:jtscore4dart/src/geomgraph/GeometryGraph.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
 
 import 'EdgeEnd.dart';
+import 'GeometryGraph.dart';
 import 'Label.dart';
 
 import 'package:jtscore4dart/src/patch/Map.dart';

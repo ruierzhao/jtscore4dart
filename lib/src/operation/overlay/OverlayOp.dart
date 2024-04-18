@@ -216,6 +216,7 @@ class OverlayOp extends GeometryGraphOperation {
 
     computeLabelsFromDepths();
     replaceCollapsedEdges();
+    print('>>>>>>>>> edgeList: ${ edgeList } <<<<<<<<<<<<<<<<<<<<');
 
     //Debug.println(edgeList);
 
@@ -227,16 +228,12 @@ class OverlayOp extends GeometryGraphOperation {
      * If an exception is thrown because of a noding failure, 
      * then snapping will be performed, which will hopefully avoid the problem.
      * In the future hopefully a faster check can be developed.  
-     * 
      */
     EdgeNodingValidator.checkValid(edgeList.getEdges());
 
     graph.addEdges(edgeList.getEdges());
-    computeLabelling();
-    //Debug.printWatch();
+    _computeLabelling();
     labelIncompleteNodes();
-    //Debug.printWatch();
-    //nodeMap.print(System.out);
 
     /**
      * The ordering of building the result Geometries is important.
@@ -301,8 +298,8 @@ class OverlayOp extends GeometryGraphOperation {
       //*/
       depth.addLable(labelToMerge);
       existingLabel.merge(labelToMerge);
-//Debug.print("inserted edge: "); Debug.println(e);
-//Debug.print("existing edge: "); Debug.println(existingEdge);
+      //Debug.print("inserted edge: "); Debug.println(e);
+      //Debug.print("existing edge: "); Debug.println(existingEdge);
     } else {
       // no matching existing edge was found
       // add this new edge to the list of edges in this graph
@@ -397,7 +394,7 @@ class OverlayOp extends GeometryGraphOperation {
 //     for (Iterator it = edgeList.iterator(); it.moveNext();) {
 //       Edge e = it.current;
 //       if (e.isCollapsed()) {
-// //Debug.print(e);
+//       // Debug.print(e);
 //         /// TODO: @ruier edit. catch... maybe bugs........................
 //         // it.remove();
 //         // it.remove();
@@ -410,7 +407,7 @@ class OverlayOp extends GeometryGraphOperation {
     List<Edge> _edges = edgeList.getEdges();
     List<Edge> newEdges = List.from(_edges, growable: false);
 
-    for (Iterator it = edgeList.iterator(); it.moveNext();) {
+    for (Iterator it = _edges.iterator; it.moveNext();) {
       Edge e = it.current;
       if (e.isCollapsed()) {
         newEdges.remove(e);
@@ -431,7 +428,7 @@ class OverlayOp extends GeometryGraphOperation {
    * but in the original arg Geometry it is actually
    * in the interior due to the Boundary Determination Rule)
    */
-  /**private */ void copyPoints(int argIndex) {
+  void copyPoints(int argIndex) { /**private */ 
     for (Iterator i = arg[argIndex].getNodeIterator(); i.moveNext();) {
       Node graphNode = i.current;
       Node newNode = graph.addNodeCoord(graphNode.getCoordinate());
@@ -447,11 +444,9 @@ class OverlayOp extends GeometryGraphOperation {
    * only if they
    * are incident on a node which has edges for both Geometries
    */
-  /**private */ void computeLabelling() {
+  void _computeLabelling() {
     for (Iterator nodeit = graph.getNodes().iterator; nodeit.moveNext();) {
       Node node = nodeit.current;
-      node.printOut();
-      // print('>>>>>>>>> node: ${ node.printOut() } <<<<<<<<<<<<<<<<<<<<');
       //if (node.getCoordinate().equals(new Coordinate(222, 100)) ) Debug.addWatch(node.getEdges());
       node.getEdges().computeLabelling(arg);
     }
@@ -505,7 +500,6 @@ class OverlayOp extends GeometryGraphOperation {
     for (Iterator ni = graph.getNodes().iterator; ni.moveNext();) {
       Node n = ni.current;
       Label label = n.getLabel();
-      print('>>>>>>>>> label: ${label} <<<<<<<<<<<<<<<<<<<<');
       if (n.isIsolated()) {
         // nodeCount++;
         if (label.isNull(0)) {

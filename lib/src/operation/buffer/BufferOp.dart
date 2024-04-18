@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.List;
 // import org.locationtech.jts.geom.Envelope;
@@ -21,7 +20,7 @@
 // import org.locationtech.jts.geom.TopologyException;
 // import org.locationtech.jts.math.MathUtil;
 // import org.locationtech.jts.noding.Noder;
-// import org.locationtech.jts.noding.ScaledNoder; 
+// import org.locationtech.jts.noding.ScaledNoder;
 // import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
 
 //import debug.*;
@@ -100,8 +99,7 @@ import 'BufferParameters.dart';
  *
  * @version 1.7
  */
-class BufferOp
-{
+class BufferOp {
   /**
    * Specifies a round line buffer end cap style.
    * @deprecated use BufferParameters
@@ -114,7 +112,7 @@ class BufferOp
    */
   @Deprecated("use BufferParameters")
   static const int CAP_BUTT = BufferParameters.CAP_FLAT;
-  
+
   /**
    * Specifies a butt (or flat) line buffer end cap style.
    * @deprecated use BufferParameters
@@ -127,14 +125,14 @@ class BufferOp
    */
   @Deprecated("use BufferParameters")
   static const int CAP_SQUARE = BufferParameters.CAP_SQUARE;
-  
+
   /**
    * A number of digits of precision which leaves some computational "headroom"
    * for floating point operations.
    * 
    * This value should be less than the decimal precision of double-precision values (16).
    */
- /**private */static int MAX_PRECISION_DIGITS = 12;
+  /**private */ static int MAX_PRECISION_DIGITS = 12;
 
   /**
    * Compute a scale factor to limit the precision of
@@ -153,23 +151,20 @@ class BufferOp
    *
    * @return a scale factor for the buffer computation
    */
- /**private */
- static double precisionScaleFactor(Geometry g, double distance, int maxPrecisionDigits) {
+  /**private */
+  static double precisionScaleFactor(
+      Geometry g, double distance, int maxPrecisionDigits) {
     Envelope env = g.getEnvelopeInternal();
-    double envMax = MathUtil.max(
-        (env.getMaxX().abs()), 
-        (env.getMaxY().abs()), 
-        (env.getMinX().abs()), 
-        (env.getMinY().abs())
-        );
-    
+    double envMax = MathUtil.max((env.getMaxX().abs()), (env.getMaxY().abs()),
+        (env.getMinX().abs()), (env.getMinY().abs()));
+
     double expandByDistance = distance > 0.0 ? distance : 0.0;
     double bufEnvMax = envMax + 2 * expandByDistance;
 
     // the smallest power of 10 greater than the buffer envelope
     int bufEnvPrecisionDigits = (log(bufEnvMax) / log(10) + 1.0).floor();
     int minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
-    
+
     double scaleFactor = pow(10.0, minUnitLog10).toDouble();
     return scaleFactor;
   }
@@ -219,13 +214,13 @@ class BufferOp
    * @return the buffer of the input geometry
    */
   // TODO: ruier edit.
-  static Geometry bufferOpWithParams(Geometry g, double distance, BufferParameters params)
-  {
+  static Geometry bufferOpWithParams(
+      Geometry g, double distance, BufferParameters params) {
     BufferOp bufOp = new BufferOp(g, params);
     Geometry geomBuf = bufOp.getResultGeometry(distance);
     return geomBuf;
   }
-  
+
   /**
    * Computes the buffer for a geometry for a given buffer distance
    * and accuracy of approximation.
@@ -255,12 +250,8 @@ class BufferOp
    * @return the buffer of the input geometry
    *
    */
-  static Geometry bufferOp(
-    Geometry g,
-    double distance,
-    [int? quadrantSegments,
-    int? endCapStyle])
-  {
+  static Geometry bufferOp(Geometry g, double distance,
+      [int? quadrantSegments, int? endCapStyle]) {
     BufferOp bufOp = new BufferOp(g);
     if (quadrantSegments != null) {
       bufOp.setQuadrantSegments(quadrantSegments);
@@ -300,17 +291,17 @@ class BufferOp
   static Geometry bufferByZero(Geometry geom, bool isBothOrientations) {
     //--- compute buffer using maximum signed-area orientation
     Geometry buf0 = geom.buffer(0);
-    if (! isBothOrientations) return buf0;
-    
+    if (!isBothOrientations) return buf0;
+
     //-- compute buffer using minimum signed-area orientation
     BufferOp op = new BufferOp(geom);
     op.isInvertOrientation = true;
     Geometry buf0Inv = op.getResultGeometry(0);
-    
+
     //-- the buffer results should be non-adjacent, so combining is safe
     return combine(buf0, buf0Inv);
   }
-  
+
   /**
    * Combines the elements of two polygonal geometries together.
    * The input geometries must be non-adjacent(相邻的), to avoid
@@ -320,36 +311,38 @@ class BufferOp
    * @param [poly1] a polygonal geometry (which may be empty)
    * @return a combined polygonal geometry
    */
- /**private */
- static Geometry combine(Geometry poly0, Geometry poly1) {
+  /**private */
+  static Geometry combine(Geometry poly0, Geometry poly1) {
     // short-circuit - handles case where geometry is valid
     if (poly1.isEmpty()) return poly0;
     if (poly0.isEmpty()) return poly1;
-    
+
     // List<Polygon> polys = new ArrayList<Polygon>();
     List<Polygon> polys = <Polygon>[];
     extractPolygons(poly0, polys);
     extractPolygons(poly1, polys);
     if (polys.length == 1) return polys[0];
-    return poly0.getFactory().createMultiPolygon(GeometryFactory.toPolygonArray(polys));
+    return poly0
+        .getFactory()
+        .createMultiPolygon(GeometryFactory.toPolygonArray(polys));
   }
 
- /**private */
- static void extractPolygons(Geometry poly0, List<Polygon> polys) {
+  /**private */
+  static void extractPolygons(Geometry poly0, List<Polygon> polys) {
     for (int i = 0; i < poly0.getNumGeometries(); i++) {
-      polys.add( poly0.getGeometryN(i) as Polygon);
+      polys.add(poly0.getGeometryN(i) as Polygon);
     }
   }
 
- /**private */Geometry argGeom;
- /**private */late double distance;
-  
- /**private */BufferParameters bufParams = BufferParameters();
+  /**private */ Geometry argGeom;
+  /**private */ late double distance;
 
- /**private */Geometry? resultGeometry;
+  /**private */ BufferParameters bufParams = BufferParameters();
+
+  /**private */ Geometry? resultGeometry;
 //  /**private */RuntimeException saveException;   // debugging only
- /**private */late Exception saveException;   // debugging only
- /**private */bool isInvertOrientation = false;
+  /**private */ late Exception saveException; // debugging only
+  /**private */ bool isInvertOrientation = false;
 
   /**
    * Initializes a buffer computation for the given geometry
@@ -368,7 +361,7 @@ class BufferOp
    * @param bufParams the buffer parameters to use
    */
   BufferOp(this.argGeom, [BufferParameters? bufParams])
-    :this.bufParams = bufParams??= BufferParameters();
+      : this.bufParams = bufParams ??= BufferParameters();
   /**
    * Specifies the end cap style of the generated buffer.
    * The styles supported are {@link BufferParameters#CAP_ROUND}, {@link BufferParameters#CAP_FLAT}, and {@link BufferParameters#CAP_SQUARE}.
@@ -376,8 +369,7 @@ class BufferOp
    *
    * @param endCapStyle the end cap style to specify
    */
-  void setEndCapStyle(int endCapStyle)
-  {
+  void setEndCapStyle(int endCapStyle) {
     bufParams.setEndCapStyle(endCapStyle);
   }
 
@@ -387,26 +379,23 @@ class BufferOp
    *
    * @param quadrantSegments the number of segments in a fillet for a quadrant
    */
-  void setQuadrantSegments(int quadrantSegments)
-  {
+  void setQuadrantSegments(int quadrantSegments) {
     bufParams.setQuadrantSegments(quadrantSegments);
   }
-  
+
   /**
    * Returns the buffer computed for a geometry for a given buffer distance.
    *
    * @param [distance] the buffer distance
    * @return the buffer of the input geometry
    */
-  Geometry getResultGeometry(double distance)
-  {
+  Geometry getResultGeometry(double distance) {
     this.distance = distance;
     _computeGeometry();
     return resultGeometry!;
   }
 
- void _computeGeometry()
-  {
+  void _computeGeometry() {
     bufferOriginalPrecision();
     if (resultGeometry != null) return;
 
@@ -418,15 +407,14 @@ class BufferOp
     }
   }
 
- /**private */void bufferReducedPrecision()
-  {
+  /**private */ void bufferReducedPrecision() {
     // try and compute with decreasing precision
     for (int precDigits = MAX_PRECISION_DIGITS; precDigits >= 0; precDigits--) {
       try {
         bufferReducedPrecisionDigits(precDigits);
-      }/**on TopologyException */
+      } /**on TopologyException */
       catch (ex) {
-      	// update the saved exception to reflect the new input geometry
+        // update the saved exception to reflect the new input geometry
         saveException = ex as Exception;
         // don't propagate the exception - it will be detected by fact that resultGeometry is null
       }
@@ -437,23 +425,22 @@ class BufferOp
     throw saveException;
   }
 
- /**private */void bufferReducedPrecisionDigits(int precisionDigits)
-  {
-    double sizeBasedScaleFactor = precisionScaleFactor(argGeom, distance, precisionDigits);
+  /**private */ void bufferReducedPrecisionDigits(int precisionDigits) {
+    double sizeBasedScaleFactor =
+        precisionScaleFactor(argGeom, distance, precisionDigits);
 //    System.out.println("recomputing with precision scale factor = " + sizeBasedScaleFactor);
 
     PrecisionModel fixedPM = new PrecisionModel.Fixed(sizeBasedScaleFactor);
     bufferFixedPrecision(fixedPM);
   }
-  
- /**private */
- void bufferOriginalPrecision()
-  {
+
+  /**private */
+  void bufferOriginalPrecision() {
     try {
       // use fast noding by default
       BufferBuilder bufBuilder = createBufferBullder();
       resultGeometry = bufBuilder.buffer(argGeom, distance);
-    // } on RuntimeException catch (ex) {
+      // } on RuntimeException catch (ex) {
     } on Exception catch (ex) {
       saveException = ex;
       // don't propagate the exception - it will be detected by fact that resultGeometry is null
@@ -461,19 +448,17 @@ class BufferOp
       // testing ONLY - propagate exception
       //throw ex;
     }
-    
   }
 
- /**private */
- BufferBuilder createBufferBullder() {
+  /**private */
+  BufferBuilder createBufferBullder() {
     BufferBuilder bufBuilder = new BufferBuilder(bufParams);
     bufBuilder.setInvertOrientation(isInvertOrientation);
     return bufBuilder;
   }
 
- /**private */
- void bufferFixedPrecision(PrecisionModel fixedPM)
-  {
+  /**private */
+  void bufferFixedPrecision(PrecisionModel fixedPM) {
     //System.out.println("recomputing with precision scale factor = " + fixedPM);
 
     /*

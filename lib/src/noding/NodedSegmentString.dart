@@ -20,8 +20,10 @@
 // import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 // import org.locationtech.jts.io.WKTWriter;
 
+import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/algorithm/LineIntersector.dart';
 import 'package:jtscore4dart/src/geom/Coordinate.dart';
+import 'package:jtscore4dart/src/geom/impl/CoordinateArraySequence.dart';
 import 'package:jtscore4dart/src/geomgraph/Label.dart';
 
 import 'BasicSegmentString.dart';
@@ -247,8 +249,10 @@ class NodedSegmentString extends NodableSegmentString
   
   // TODO: ruier edit.
   // @override
-  // String toString()
-  // {
-  // 	return WKTWriter.toLineString(new CoordinateArraySequence(pts));
-  // }
+  @override
+  String toString()
+  {
+  	// return WKTWriter.toLineString(new CoordinateArraySequence(pts));
+  	return WKTWriter.toLineStringFromSequence(CoordinateArraySequence(pts));
+  }
 }

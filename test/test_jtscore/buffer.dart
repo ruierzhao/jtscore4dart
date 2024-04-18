@@ -18,9 +18,9 @@ test_buffer1(){
   var reader = WKTReader();
   var writer = WKTWriter();
   var cc = reader.read(polygonwkt);
-  print('>>>>>>>>> ${ cc } <<<<<<<<<<<<<<<<<<<<');
-  var vv = cc!.buffer(5);
-  print('>>>>>>>>> ${ writer.write(vv) } <<<<<<<<<<<<<<<<<<<<');
+  // print('>>>>>>>>> ${ cc } <<<<<<<<<<<<<<<<<<<<');
+  var vv = cc!.buffer(10);
+  // print('>>>>>>>>> ${ writer.write(vv) } <<<<<<<<<<<<<<<<<<<<');
   
 }
 

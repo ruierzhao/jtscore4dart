@@ -27,6 +27,13 @@
 // import org.locationtech.jts.geom.Polygon;
 // import org.locationtech.jts.operation.distance.IndexedFacetDistance;
 
+import 'dart:math';
+
+import 'package:jtscore4dart/geometry.dart';
+import 'package:jtscore4dart/src/algorithm/locate/IndexedPointInAreaLocator.dart';
+import 'package:jtscore4dart/src/operation/distance/IndexedFacetDistance.dart';
+
+
 /**
  * Constructs the Maximum Inscribed Circle for a 
  * polygonal {@link Geometry}, up to a specified tolerance.
@@ -57,17 +64,12 @@
  * </ul>
  * 
  * @author Martin Davis
- * @see LargestEmptyCircle
- * @see InteriorPoint
- * @see Centroid
+ * @see [LargestEmptyCircle]
+ * @see [InteriorPoint]
+ * @see [Centroid]
  *
+ * polygonal 的最大内切圆
  */
-import 'dart:math';
-
-import 'package:jtscore4dart/geometry.dart';
-import 'package:jtscore4dart/src/geom/Location.dart';
-
-/// polygonal 的最大内切圆
 class MaximumInscribedCircle {
 
   /**
@@ -323,70 +325,70 @@ class MaximumInscribedCircle {
     return new Cell(p.getX(), p.getY(), 0, distanceToBoundary(p));
   }
 
-  /**
-   * A square grid cell centered on a given point, 
-   * with a given half-side size, and having a given distance
-   * to the area boundary.
-   * The maximum possible distance from any point in the cell to the
-   * boundary can be computed, and is used
-   * as the ordering and upper-bound function in
-   * the branch-and-bound algorithm. 
-   *
-   */
- /**private */static class Cell implements Comparable<Cell> {
+}
 
-   /**private */static final double SQRT2 = 1.4142135623730951;
+/**
+ * A square grid cell centered on a given point, 
+ * with a given half-side size, and having a given distance
+ * to the area boundary.
+ * The maximum possible distance from any point in the cell to the
+ * boundary can be computed, and is used
+ * as the ordering and upper-bound function in
+ * the branch-and-bound algorithm. 
+ *
+ */
+/**private static*/ class Cell implements Comparable<Cell> {
 
-   /**private */double x;
-   /**private */double y;
-   /**private */double hSide;
-   /**private */double distance;
-   /**private */double maxDist;
+  /**private */static const double SQRT2 = 1.4142135623730951;
 
-    Cell(double x, double y, double hSide, double distanceToBoundary) {
-      this.x = x; // cell center x
-      this.y = y; // cell center y
-      this.hSide = hSide; // half the cell size
+  /**private */double x;
+  /**private */double y;
+  /**private */double hSide;
+  /**private */double distance;
+  /**private */double maxDist;
 
-      // the distance from cell center to area boundary
-      distance = distanceToBoundary;
+  Cell(double x, double y, double hSide, double distanceToBoundary) {
+    this.x = x; // cell center x
+    this.y = y; // cell center y
+    this.hSide = hSide; // half the cell size
 
-      // the maximum possible distance to area boundary for points in this cell
-      this.maxDist = distance + hSide * SQRT2;
-    }
+    // the distance from cell center to area boundary
+    distance = distanceToBoundary;
 
-    Envelope getEnvelope() {
-      return new Envelope(x - hSide, x + hSide, y - hSide, y + hSide);
-    }
-    
-    double getMaxDistance() {
-      return maxDist;
-    }
-
-    double getDistance() {
-      return distance;
-    }
-
-    double getHSide() {
-      return hSide;
-    }
-
-    double getX() {
-      return x;
-    }
-
-    double getY() {
-      return y;
-    }
-    
-    /**
-     * For maximum efficieny sort the PriorityQueue with largest maxDistance at front.
-     * Since Java PQ sorts least-first, need to invert the comparison
-     */
-    int compareTo(Cell o) {
-      return -Double.compare(maxDist, o.maxDist);
-    }
-    
+    // the maximum possible distance to area boundary for points in this cell
+    this.maxDist = distance + hSide * SQRT2;
   }
 
+  Envelope getEnvelope() {
+    return new Envelope(x - hSide, x + hSide, y - hSide, y + hSide);
+  }
+  
+  double getMaxDistance() {
+    return maxDist;
+  }
+
+  double getDistance() {
+    return distance;
+  }
+
+  double getHSide() {
+    return hSide;
+  }
+
+  double getX() {
+    return x;
+  }
+
+  double getY() {
+    return y;
+  }
+  
+  /**
+   * For maximum efficieny sort the PriorityQueue with largest maxDistance at front.
+   * Since Java PQ sorts least-first, need to invert the comparison
+   */
+  int compareTo(Cell o) {
+    return -Double.compare(maxDist, o.maxDist);
+  }
+  
 }

@@ -10,7 +10,6 @@
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 
-
 // import java.util.ArrayList;
 // import java.util.Arrays;
 // import java.util.Comparator;
@@ -40,34 +39,34 @@ import 'Orientation.dart';
 import 'PointLocation.dart';
 
 /// 计算geometry 的凸壳 - 包含输入geometry 的所有点的最小壳子
-/// 
+///
 /// Computes the convex hull of a {@link Geometry}.
 /// The convex hull is the smallest convex Geometry that contains all the
 /// points in the input Geometry.
 /// <p>
 /// Uses the Graham Scan algorithm.
 /// <p>
-/// Incorporates heuristics to optimize checking for degenerate results, 
+/// Incorporates heuristics to optimize checking for degenerate results,
 /// and to reduce the number of points processed for large inputs.
 ///
 ///@version 1.7
-class ConvexHull
-{
- /**private */static const int TUNING_REDUCE_SIZE = 50;
-  
- /**private */GeometryFactory geomFactory;
- /**private */List<Coordinate> inputPts;
+class ConvexHull {
+  /**private */ static const int TUNING_REDUCE_SIZE = 50;
+
+  /**private */ GeometryFactory geomFactory;
+  /**private */ List<Coordinate> inputPts;
 
   /// Create a new convex hull construction for the input {@link Geometry}.
-  ConvexHull(Geometry geometry):this.FromCoords(geometry.getCoordinates(), geometry.getFactory());
+  ConvexHull(Geometry geometry)
+      : this.FromCoords(geometry.getCoordinates(), geometry.getFactory());
 
   /// Create a new convex hull construction for the input {@link Coordinate} array.
   ConvexHull.FromCoords(this.inputPts, this.geomFactory);
-    // {
-      //-- suboptimal early uniquing - for performance testing only
-    //inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
-    
-    // }
+  // {
+  //-- suboptimal early uniquing - for performance testing only
+  //inputPts = UniqueCoordinateArrayFilter.filterCoordinates(pts);
+
+  // }
 
   /// Returns a {@link Geometry} that represents the convex hull of the input
   /// geometry.
@@ -84,13 +83,12 @@ class ConvexHull
     if (fewPointsGeom != null) {
       return fewPointsGeom;
     }
-    
+
     List<Coordinate>? reducedPts = inputPts;
     //-- use heuristic to reduce points, if large
     if (inputPts.length > TUNING_REDUCE_SIZE) {
       reducedPts = reduce(inputPts);
-    }
-    else {
+    } else {
       //-- the points must be made unique
       reducedPts = extractUnique(inputPts);
     }
@@ -114,45 +112,42 @@ class ConvexHull
   /// Checks if there are <= 2 unique points,
   /// which produce an obviously degenerate result.
   /// If there are more points, returns null to indicate this.
-  /// 
+  ///
   /// This is a fast check for an obviously degenerate result.
-  /// If the result is not obviously degenerate (at least 3 unique points found) 
+  /// If the result is not obviously degenerate (at least 3 unique points found)
   /// the full uniquing of the entire point set is
   /// done only once during the reduce phase.
-  /// 
+  ///
   /// @return a degenerate hull geometry, or null if the number of input points is large
-  /**private */Geometry? createFewPointsResult() {
-  List<Coordinate>? uniquePts = extractUniqueWithMax(inputPts, 2);
+  /**private */ Geometry? createFewPointsResult() {
+    List<Coordinate>? uniquePts = extractUniqueWithMax(inputPts, 2);
     if (uniquePts == null) {
       return null;
-    }
-    else if (uniquePts.isEmpty) {
+    } else if (uniquePts.isEmpty) {
       return geomFactory.createGeometryCollection();
-    }
-    else if (uniquePts.length == 1) {
+    } else if (uniquePts.length == 1) {
       return geomFactory.createPoint(uniquePts[0]);
-    }
-    else {
+    } else {
       return geomFactory.createLineString(uniquePts);
     }
   }
-  
-  /**private */static List<Coordinate>? extractUnique(List<Coordinate> pts) {
+
+  /**private */ static List<Coordinate>? extractUnique(List<Coordinate> pts) {
     return extractUniqueWithMax(pts, -1);
   }
-  
 
-  /// Extracts unique coordinates from an array of coordinates, 
+  /// Extracts unique coordinates from an array of coordinates,
   /// up to an (optional) maximum count of values.
   /// If more than the given maximum of unique values are found,
   /// this is reported by returning <code>null</code>.
   /// This avoids scanning all input points if not needed.
   /// If the maximum points is not specified, all unique points are extracted.
-  /// 
+  ///
   /// @param pts an array of Coordinates
   /// @param maxPts the maximum number of unique points to scan, or -1
   /// @return an array of unique values, or null
- /**private */static List<Coordinate>? extractUniqueWithMax(List<Coordinate> pts, int maxPts) {
+  /**private */ static List<Coordinate>? extractUniqueWithMax(
+      List<Coordinate> pts, int maxPts) {
     // Set<Coordinate> uniquePts = new HashSet<Coordinate>();
     Set<Coordinate> uniquePts = {};
     for (Coordinate pt in pts) {
@@ -164,16 +159,17 @@ class ConvexHull
     }
     return CoordinateArrays.toCoordinateArray(uniquePts);
   }
-  
+
   /// An alternative to Stack.toArray, which is not present in earlier versions
   /// of Java.
- /**protected */
- List<Coordinate> toCoordinateArray(Stack<Coordinate> stack) {
+  /**protected */
+  List<Coordinate> toCoordinateArray(Stack<Coordinate> stack) {
     // List<Coordinate> coordinates = new Coordinate[stack.size()];
-    List<Coordinate> coordinates = List.filled(stack.size(), Coordinate.empty2D());
+    List<Coordinate> coordinates =
+        List.filled(stack.size(), Coordinate.empty2D());
     // TODO: ruier edit.测试顺序问题
     var stacklen = stack.size();
-    for (var i = stacklen-1; i >= 0; i--) {
+    for (var i = stacklen - 1; i >= 0; i--) {
       Coordinate coordinate = stack.pop();
       coordinates[i] = coordinate;
     }
@@ -196,7 +192,7 @@ class ConvexHull
   /// Note that even if the method used to determine the polygon vertices
   /// is not 100% robust, this does not affect the robustness of the convex hull.
   /// <p>
-  /// To satisfy the requirements of the Graham Scan algorithm, 
+  /// To satisfy the requirements of the Graham Scan algorithm,
   /// the returned array has at least 3 entries.
   /// <p>
   /// This has the side effect of making the reduced points unique,
@@ -204,11 +200,10 @@ class ConvexHull
   ///
   /// @param pts the points to reduce
   /// @return the reduced list of points (at least 3)
- /**private */List<Coordinate> reduce(List<Coordinate> inputPts)
-  {
+  /**private */ List<Coordinate> reduce(List<Coordinate> inputPts) {
     //List<Coordinate> polyPts = computeQuad(inputPts);
     List<Coordinate>? innerPolyPts = computeInnerOctolateralRing(inputPts);
- 
+
     // unable to compute interior polygon for some reason
     if (innerPolyPts == null) {
       return inputPts;
@@ -229,40 +224,39 @@ class ConvexHull
      * are forced to be in the reduced set.
      */
     for (int i = 0; i < inputPts.length; i++) {
-      if (! PointLocation.isInRing(inputPts[i], innerPolyPts)) {
+      if (!PointLocation.isInRing(inputPts[i], innerPolyPts)) {
         reducedSet.add(inputPts[i]);
       }
     }
-    List<Coordinate> reducedPts = CoordinateArrays.toCoordinateArray(reducedSet);
-    
-    // ensure that computed array has at least 3 points (not necessarily unique)  
+    List<Coordinate> reducedPts =
+        CoordinateArrays.toCoordinateArray(reducedSet);
+
+    // ensure that computed array has at least 3 points (not necessarily unique)
     if (reducedPts.length < 3) {
       return padArray3(reducedPts);
-    } 
+    }
     return reducedPts;
   }
 
- /**private */List<Coordinate> padArray3(List<Coordinate> pts)
-  {
+  /**private */ List<Coordinate> padArray3(List<Coordinate> pts) {
     // List<Coordinate> pad = new Coordinate[3];
     List<Coordinate> pad = List<Coordinate>.filled(3, Coordinate.empty2D());
     for (int i = 0; i < pad.length; i++) {
       if (i < pts.length) {
         pad[i] = pts[i];
-      }
-      else {
+      } else {
         pad[i] = pts[0];
       }
     }
     return pad;
   }
-    
+
   /// Sorts the points radially CW around the point with minimum Y and then X.
-  /// 
+  ///
   /// @param pts the points to sort
   /// @return the sorted points
- /**private */
- List<Coordinate> preSort(List<Coordinate> pts) {
+  /**private */
+  List<Coordinate> preSort(List<Coordinate> pts) {
     Coordinate t;
 
     /**
@@ -270,8 +264,9 @@ class ConvexHull
      * the same minimum Y coordinate choose the one with the minimum X.
      * This focal point is put in array location pts[0].
      */
-   for (int i = 1; i < pts.length; i++) {
-      if ((pts[i].y < pts[0].y) || ((pts[i].y == pts[0].y) && (pts[i].x < pts[0].x))) {
+    for (int i = 1; i < pts.length; i++) {
+      if ((pts[i].y < pts[0].y) ||
+          ((pts[i].y == pts[0].y) && (pts[i].x < pts[0].x))) {
         t = pts[0];
         pts[0] = pts[i];
         pts[i] = t;
@@ -281,19 +276,20 @@ class ConvexHull
     // sort the points radially around the focal point.
     // TODO: ruier edit. 猜测从索引 1 到 pts.length 排序。
     // Arrays.sort(pts, 1, pts.length, new RadialComparator(pts[0]));
-    sort(pts, 1, pts.length); // 等价 sort2(pts, 1, pts.length,RadialComparator(pts[0]));
+    sort(pts, 1,
+        pts.length); // 等价 sort2(pts, 1, pts.length,RadialComparator(pts[0]));
 
     return pts;
   }
 
   /// @ruier 参考：https://blog.nowcoder.net/n/1751f9349571436e8ccfa42677ceda63
   /// @ruier 参考：https://www.bilibili.com/video/BV1v741197YM/?spm_id_from=333.337.search-card.all.click&vd_source=d98c8a9c6da17e27687b22d814ab8d45
-  /// 
+  ///
   /// Uses the Graham Scan algorithm to compute the convex hull vertices.
-  /// 
+  ///
   /// @param c a list of points, with at least 3 entries
   /// @return a Stack containing the ordered points of the convex hull ring
- /**private */Stack<Coordinate> grahamScan(List<Coordinate> c) {
+  /**private */ Stack<Coordinate> grahamScan(List<Coordinate> c) {
     Coordinate p;
     Stack<Coordinate> ps = new Stack<Coordinate>();
     ps.push(c[0]);
@@ -301,14 +297,13 @@ class ConvexHull
     ps.push(c[2]);
     for (int i = 3; i < c.length; i++) {
       Coordinate cp = c[i];
-      p =  ps.pop() ;
+      p = ps.pop();
       // check for empty stack to guard against robustness problems
-      while (
-           ps.isNotEmpty && 
+      while (ps.isNotEmpty &&
           // Orientation.index( ps.peek(), p, cp) > 0) {
-            // TODO: ruier replace.
+          // TODO: ruier replace.
           Orientation.index(ps.top(), p, cp) > 0) {
-         p = ps.pop();
+        p = ps.pop();
       }
       ps.push(p);
       ps.push(cp);
@@ -319,7 +314,7 @@ class ConvexHull
 
   ///@return    whether the three coordinates are collinear and c2 lies between
   ///      c1 and c3 inclusive
- /**private */bool isBetween(Coordinate c1, Coordinate c2, Coordinate c3) {
+  /**private */ bool isBetween(Coordinate c1, Coordinate c2, Coordinate c3) {
     if (Orientation.index(c1, c2, c3) != 0) {
       return false;
     }
@@ -342,8 +337,8 @@ class ConvexHull
     return false;
   }
 
- /**private */
- List<Coordinate>? computeInnerOctolateralRing(List<Coordinate> inputPts) {
+  /**private */
+  List<Coordinate>? computeInnerOctolateralRing(List<Coordinate> inputPts) {
     List<Coordinate> octPts = computeInnerOctolateralPts(inputPts);
     CoordinateList coordList = new CoordinateList();
     coordList.addList(octPts, false);
@@ -358,18 +353,18 @@ class ConvexHull
 
   /// Computes the extremal points of an inner octolateral.
   /// Some points may be duplicates - these are collapsed later.
-  /// 
+  ///
   /// @param [inputPts] the points to compute the octolateral for
   /// @return the extremal points of the octolateral
- /**private */
- List<Coordinate> computeInnerOctolateralPts(List<Coordinate> inputPts)
-  {
+  /**private */
+  List<Coordinate> computeInnerOctolateralPts(List<Coordinate> inputPts) {
     // List<Coordinate> pts = new Coordinate[8];
     // for (int j = 0; j < pts.length; j++) {
     //   pts[j] = inputPts[0];
     // }
     // TODO: ruier edit.
-    List<Coordinate> pts = List<Coordinate>.filled(8, inputPts[0],growable: false);
+    List<Coordinate> pts =
+        List<Coordinate>.filled(8, inputPts[0], growable: false);
     for (int i = 1; i < inputPts.length; i++) {
       if (inputPts[i].x < pts[0].x) {
         pts[0] = inputPts[i];
@@ -397,7 +392,6 @@ class ConvexHull
       }
     }
     return pts;
-
   }
 
   ///@param  vertices  the vertices of a linear ring, which may or may not be
@@ -405,34 +399,35 @@ class ConvexHull
   ///@return           a 2-vertex <code>LineString</code> if the vertices are
   ///      collinear; otherwise, a <code>Polygon</code> with unnecessary
   ///      (collinear) vertices removed
- /**private */Geometry lineOrPolygon(List<Coordinate> coordinates) {
-
+  /**private */ Geometry lineOrPolygon(List<Coordinate> coordinates) {
     coordinates = cleanRing(coordinates);
     if (coordinates.length == 3) {
-      return geomFactory.createLineString(<Coordinate>[coordinates[0], coordinates[1]]);
+      return geomFactory
+          .createLineString(<Coordinate>[coordinates[0], coordinates[1]]);
     }
     LinearRing linearRing = geomFactory.createLinearRing(coordinates);
     return geomFactory.createPolygon(linearRing);
   }
 
   /// Cleans a list of points by removing interior collinear vertices.
-  /// 
+  ///
   /// @param  vertices  the vertices of a linear ring, which may or may not be
   ///      flattened (i.e. vertices collinear)
   /// @return the coordinates with unnecessary (collinear) vertices removed
- /**private */List<Coordinate> cleanRing(List<Coordinate> original) {
+  /**private */ List<Coordinate> cleanRing(List<Coordinate> original) {
     Assert.equals(original[0], original[original.length - 1]);
     // List<Coordinate> cleanedRing = new ArrayList<Coordinate>();
     List<Coordinate> cleanedRing = <Coordinate>[];
     Coordinate? previousDistinctCoordinate;
     for (int i = 0; i <= original.length - 2; i++) {
       Coordinate currentCoordinate = original[i];
-      Coordinate nextCoordinate = original[i+1];
+      Coordinate nextCoordinate = original[i + 1];
       if (currentCoordinate.equals(nextCoordinate)) {
         continue;
       }
-      if (previousDistinctCoordinate != null
-          && isBetween(previousDistinctCoordinate, currentCoordinate, nextCoordinate)) {
+      if (previousDistinctCoordinate != null &&
+          isBetween(
+              previousDistinctCoordinate, currentCoordinate, nextCoordinate)) {
         continue;
       }
       cleanedRing.add(currentCoordinate);
@@ -446,20 +441,21 @@ class ConvexHull
     // return  cleanedRing.toArray(cleanedRingCoordinates);
   }
 
-/// TODO: ruier edit.[sort2] 和 [sort]
-static sort2(List<Coordinate> pts,int from, int to, RadialComparator comparator){
-  var sortPts = pts.sublist(from,to);
-  sortPts.sort(comparator.compare);
-  
-  for (var i = from; i < sortPts.length; i++) {
-    pts[i+from] = sortPts[i];
-  }
-  // return pts;
- }
+  /// TODO: ruier edit.[sort2] 和 [sort]
+  static sort2(
+      List<Coordinate> pts, int from, int to, RadialComparator comparator) {
+    var sortPts = pts.sublist(from, to);
+    sortPts.sort(comparator.compare);
 
- static sort(List<Coordinate> pts,int from, int to, [RadialComparator2? comparator]){
-  int polarCompare(Coordinate o, Coordinate p, Coordinate q)
-    {
+    for (var i = from; i < sortPts.length; i++) {
+      pts[i + from] = sortPts[i];
+    }
+    // return pts;
+  }
+
+  static sort(List<Coordinate> pts, int from, int to,
+      [RadialComparator2? comparator]) {
+    int polarCompare(Coordinate o, Coordinate p, Coordinate q) {
       int orient = Orientation.index(o, p, q);
       if (orient == Orientation.COUNTERCLOCKWISE) return 1;
       if (orient == Orientation.CLOCKWISE) return -1;
@@ -481,62 +477,58 @@ static sort2(List<Coordinate> pts,int from, int to, RadialComparator comparator)
        * (since they are collinear).
        * Also, they must be above the origin.
        * Use the X ordinate to determine distance. 
-       */ 
+       */
       if (p.x > q.x) return 1;
       if (p.x < q.x) return -1;
       // Assert: p = q
       return 0;
     }
 
-  var origin = pts[0];
-  int compare(Coordinate p1, Coordinate p2)
-  {
-    int comp = polarCompare(origin, p1, p2);      
-    return comp;
-  }
+    var origin = pts[0];
+    int compare(Coordinate p1, Coordinate p2) {
+      int comp = polarCompare(origin, p1, p2);
+      return comp;
+    }
 
-  var sortPts = pts.sublist(from,to);
-  sortPts.sort(compare);
-  
-  for (var i = from; i < sortPts.length; i++) {
-    pts[i+from] = sortPts[i];
-  }
-  // return pts;
- }
+    var sortPts = pts.sublist(from, to);
+    sortPts.sort(compare);
 
+    for (var i = from; i < sortPts.length; i++) {
+      pts[i + from] = sortPts[i];
+    }
+    // return pts;
+  }
 }
 
-typedef RadialComparator2=int Function(Coordinate a, Coordinate b);
+typedef RadialComparator2 = int Function(Coordinate a, Coordinate b);
 
-  /// Compares {@link Coordinate}s for their angle and distance
-  /// relative to an origin.
-  /// The origin is assumed to be lower in Y and then X than
-  /// all other point inputs.
-  /// The points are ordered CCW around the origin.
-  ///
-  /// @author Martin Davis
-  /// @version 1.7
- /**private static*/ 
- class RadialComparator  {
-  
-   /**private */Coordinate origin;
+/// Compares {@link Coordinate}s for their angle and distance
+/// relative to an origin.
+/// The origin is assumed to be lower in Y and then X than
+/// all other point inputs.
+/// The points are ordered CCW around the origin.
+///
+/// @author Martin Davis
+/// @version 1.7
+/**private static*/
+class RadialComparator {
+  /**private */ Coordinate origin;
 
-    /**
+  /**
      * Creates a new comparator using a given origin.
      * The origin must be lower in Y and then X to all 
      * compared points.
      * 
      * @param origin the origin of the radial comparison
      */
-    RadialComparator(this.origin);
-    
-    int compare(Coordinate p1, Coordinate p2)
-    {
-      int comp = polarCompare(origin, p1, p2);      
-      return comp;
-    }
+  RadialComparator(this.origin);
 
-    /**
+  int compare(Coordinate p1, Coordinate p2) {
+    int comp = polarCompare(origin, p1, p2);
+    return comp;
+  }
+
+  /**
      * Given two points p and q compare them with respect to their radial
      * ordering about point o.  First checks radial ordering.
      * using a CCW orientation.
@@ -555,14 +547,13 @@ typedef RadialComparator2=int Function(Coordinate a, Coordinate b);
      * @return -1, 0 or 1 depending on whether p is less than,
      * equal to or greater than q
      */
-   /**private */
-   static int polarCompare(Coordinate o, Coordinate p, Coordinate q)
-    {
-      int orient = Orientation.index(o, p, q);
-      if (orient == Orientation.COUNTERCLOCKWISE) return 1;
-      if (orient == Orientation.CLOCKWISE) return -1;
+  /**private */
+  static int polarCompare(Coordinate o, Coordinate p, Coordinate q) {
+    int orient = Orientation.index(o, p, q);
+    if (orient == Orientation.COUNTERCLOCKWISE) return 1;
+    if (orient == Orientation.CLOCKWISE) return -1;
 
-      /** 
+    /** 
        * The points are collinear,
        * so compare based on distance from the origin.  
        * The points p and q are >= to the origin,
@@ -571,19 +562,18 @@ typedef RadialComparator2=int Function(Coordinate a, Coordinate b);
        * the Y ordinate can be tested to determine distance.
        * This is more robust than computing the distance explicitly.
        */
-      if (p.y > q.y) return 1;
-      if (p.y < q.y) return -1;
+    if (p.y > q.y) return 1;
+    if (p.y < q.y) return -1;
 
-      /**
+    /**
        * The points lie in a horizontal line, which should also contain the origin
        * (since they are collinear).
        * Also, they must be above the origin.
        * Use the X ordinate to determine distance. 
-       */ 
-      if (p.x > q.x) return 1;
-      if (p.x < q.x) return -1;
-      // Assert: p = q
-      return 0;
-    }
-    
+       */
+    if (p.x > q.x) return 1;
+    if (p.x < q.x) return -1;
+    // Assert: p = q
+    return 0;
   }
+}

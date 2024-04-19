@@ -11,7 +11,7 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: jts for dart. 由java 源代码翻译过来的。
+jts for pure dart。
 
 ## reference
 [OGC SFS 规范](https://www.osgeo.cn/doc_ogcstd/ogc_standard/ch02_chapter1/chapter.html)
@@ -24,8 +24,6 @@ TODO: List what your package can do. Maybe include images, gifs, or videos.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
 
 ## Usage
 

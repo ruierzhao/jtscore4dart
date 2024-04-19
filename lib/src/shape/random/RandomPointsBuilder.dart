@@ -22,6 +22,10 @@
 // import org.locationtech.jts.geom.Polygonal;
 // import org.locationtech.jts.shape.GeometricShapeBuilder;
 
+import 'package:jtscore4dart/src/algorithm/locate/PointOnGeometryLocator.dart';
+import 'package:jtscore4dart/src/geom/Geometry.dart';
+import 'package:jtscore4dart/src/shape/GeometricShapeBuilder.dart';
+
 /**
  * Creates random point sets contained in a 
  * region defined by either a rectangular or a polygonal extent. 

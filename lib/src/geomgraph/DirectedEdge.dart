@@ -18,6 +18,7 @@
 // import org.locationtech.jts.geom.TopologyException;
 
 
+import 'package:jtscore4dart/src/algorithm/BoundaryNodeRule.dart';
 import 'package:jtscore4dart/src/geom/Location.dart';
 import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geom/TopologyException.dart';
@@ -30,8 +31,7 @@ import 'Label.dart';
 /**
  * @version 1.7
  */
-class DirectedEdge
-  extends EdgeEnd
+class DirectedEdge extends EdgeEnd
 {
 
   /**
@@ -211,7 +211,7 @@ class DirectedEdge
    */
  /**private */void computeDirectedLabel()
   {
-    label = new Label.FromAnother(edge.getLabel());
+    label = new Label.FromAnother(edge.getLabel()!);
     if (! _isForward) {
       label!.flip();
     }
@@ -243,6 +243,11 @@ class DirectedEdge
     setDepth(position, depth);
     setDepth(oppositePos, oppositeDepth);
   }
+
+  // @override
+  // void computeLabel(BoundaryNodeRule boundaryNodeRule) {
+  //   throw UnimplementedError("未实现");
+  // }
   /// TODO: @ruier edit.
   // void print(PrintStream out)
   // {

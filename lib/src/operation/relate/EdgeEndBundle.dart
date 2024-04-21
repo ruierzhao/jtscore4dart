@@ -75,6 +75,7 @@ class EdgeEndBundle extends EdgeEnd{
   }
   
 
+  @override
   Label? getLabel() { return label; }
   Iterator iterator() { return _edgeEnds.iterator; }
   List getEdgeEnds() { return _edgeEnds; }

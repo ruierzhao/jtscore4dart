@@ -89,8 +89,8 @@ class PointBuilder {
          * For nodes on edges, only INTERSECTION can result in edge nodes being included even
          * if none of their incident edges are included
          */
-          Label label = n.getLabel();
-          if (OverlayOp.isResultOfOp(label, opCode)) {
+          Label? label = n.getLabel();
+          if (OverlayOp.isResultOfOp(label!, opCode)) {
             _filterCoveredNodeToPoint(n);
           }
       }

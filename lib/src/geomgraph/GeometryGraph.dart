@@ -98,7 +98,8 @@ class GeometryGraph extends PlanarGraph {
    * @param [boundaryCount] the number of component boundaries that this point occurs in
    * @return boundary or interior
    */
-  static int determineBoundary(BoundaryNodeRule boundaryNodeRule, int boundaryCount) {
+  static int determineBoundary(
+      BoundaryNodeRule boundaryNodeRule, int boundaryCount) {
     return boundaryNodeRule.isInBoundary(boundaryCount)
         ? Location.BOUNDARY
         : Location.INTERIOR;
@@ -122,7 +123,7 @@ class GeometryGraph extends PlanarGraph {
    */
   /**private */ bool useBoundaryDeterminationRule = true;
   // the index of this geometry as an argument to a spatial function (used for labelling)
-  /**private */ int argIndex; 
+  /**private */ int argIndex;
   /**private */ Iterable? boundaryNodes;
   /**private */ bool _hasTooFewPoints = false;
   /**private */ late Coordinate invalidPoint;
@@ -280,7 +281,7 @@ class GeometryGraph extends PlanarGraph {
    * If the ring is in the opposite orientation,
    * the left and right locations must be interchanged.
    */
-  /**private */ 
+  /**private */
   void addPolygonRing(LinearRing lr, int cwLeft, int cwRight) {
     // don't bother adding empty holes
     if (lr.isEmpty()) return;
@@ -302,7 +303,7 @@ class GeometryGraph extends PlanarGraph {
     }
     Edge e = new Edge(
         coord, new Label.GeomFrom3(argIndex, Location.BOUNDARY, left, right));
-        
+
     lineEdgeMap.put(lr, e);
 
     insertEdge(e);
@@ -417,7 +418,7 @@ Debug.print(e.getEdgeIntersectionList());
   /**private */ void insertPoint(
       int argIndex, Coordinate coord, int onLocation) {
     Node n = nodes.addNodeCoord(coord);
-    Label lbl = n.getLabel();
+    Label? lbl = n.getLabel();
     if (lbl == null) {
       n.label = new Label.GeomIndex(argIndex, onLocation);
     } else {
@@ -433,7 +434,7 @@ Debug.print(e.getEdgeIntersectionList());
   /**private */ void insertBoundaryPoint(int argIndex, Coordinate coord) {
     Node n = nodes.addNodeCoord(coord);
     // nodes always have labels
-    Label lbl = n.getLabel();
+    Label lbl = n.getLabel()!;
     // the new point to insert is on a boundary
     int boundaryCount = 1;
     // determine the current location for the point (if any)
@@ -449,7 +450,7 @@ Debug.print(e.getEdgeIntersectionList());
   /**private */ void addSelfIntersectionNodes(int argIndex) {
     for (Iterator i = edges.iterator; i.moveNext();) {
       Edge e = i.current;
-      int eLoc = e.getLabel().getLocation(argIndex);
+      int eLoc = e.getLabel()!.getLocation(argIndex);
       for (Iterator eiIt = e.eiList.iterator(); eiIt.moveNext();) {
         EdgeIntersection ei = eiIt.current;
         addSelfIntersectionNode(argIndex, ei.coord, eLoc);

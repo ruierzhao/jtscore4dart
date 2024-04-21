@@ -79,6 +79,7 @@ class PlanarGraph {
 
   PlanarGraph([NodeFactory? nodeFact])
       : nodes = new NodeMap(nodeFact ??= NodeFactory());
+      
 
   // PlanarGraph() {
   //   nodes = new NodeMap(new NodeFactory());

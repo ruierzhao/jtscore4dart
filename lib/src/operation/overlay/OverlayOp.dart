@@ -216,7 +216,7 @@ class OverlayOp extends GeometryGraphOperation {
 
     computeLabelsFromDepths();
     replaceCollapsedEdges();
-    print('>>>>>>>>> edgeList: ${ edgeList } <<<<<<<<<<<<<<<<<<<<');
+    // print('>>>>>>>>> edgeList: ${ edgeList } <<<<<<<<<<<<<<<<<<<<');
 
     //Debug.println(edgeList);
 
@@ -232,7 +232,7 @@ class OverlayOp extends GeometryGraphOperation {
     EdgeNodingValidator.checkValid(edgeList.getEdges());
 
     graph.addEdges(edgeList.getEdges());
-    _computeLabelling();
+    computeLabelling();
     labelIncompleteNodes();
 
     /**
@@ -280,24 +280,24 @@ class OverlayOp extends GeometryGraphOperation {
 
     // If an identical edge already exists, simply update its label
     if (existingEdge != null) {
-      Label existingLabel = existingEdge.getLabel();
+      Label? existingLabel = existingEdge.getLabel();
 
-      Label labelToMerge = e.getLabel();
+      Label? labelToMerge = e.getLabel();
       // check if new edge is in reverse direction to existing edge
       // if so, must flip the label before merging it
       if (!existingEdge.isPointwiseEqual(e)) {
-        labelToMerge = new Label.FromAnother(e.getLabel());
+        labelToMerge = new Label.FromAnother(e.getLabel()!);
         labelToMerge.flip();
       }
       Depth depth = existingEdge.getDepth();
       // if this is the first duplicate found for this edge, initialize the depths
       ///*
       if (depth.isNull()) {
-        depth.addLable(existingLabel);
+        depth.addLable(existingLabel!);
       }
       //*/
-      depth.addLable(labelToMerge);
-      existingLabel.merge(labelToMerge);
+      depth.addLable(labelToMerge!);
+      existingLabel!.merge(labelToMerge);
       //Debug.print("inserted edge: "); Debug.println(e);
       //Debug.print("existing edge: "); Debug.println(existingEdge);
     } else {
@@ -343,7 +343,7 @@ class OverlayOp extends GeometryGraphOperation {
   /**private */ void computeLabelsFromDepths() {
     for (Iterator it = edgeList.iterator(); it.moveNext();) {
       Edge e = it.current;
-      Label lbl = e.getLabel();
+      Label? lbl = e.getLabel();
       Depth depth = e.getDepth();
       /**
        * Only check edges for which there were duplicates,
@@ -353,7 +353,7 @@ class OverlayOp extends GeometryGraphOperation {
       if (!depth.isNull()) {
         depth.normalize();
         for (int i = 0; i < 2; i++) {
-          if (!lbl.isNull(i) && lbl.isArea() && !depth.isNull$1(i)) {
+          if (!lbl!.isNull(i) && lbl.isArea() && !depth.isNull$1(i)) {
             /**
            * if the depths are equal, this edge is the result of
            * the dimensional collapse of two or more edges.
@@ -433,7 +433,7 @@ class OverlayOp extends GeometryGraphOperation {
       Node graphNode = i.current;
       Node newNode = graph.addNodeCoord(graphNode.getCoordinate());
       newNode.setLabelLocation(
-          argIndex, graphNode.getLabel().getLocation(argIndex));
+          argIndex, graphNode.getLabel()!.getLocation(argIndex));
     }
   }
 
@@ -444,7 +444,7 @@ class OverlayOp extends GeometryGraphOperation {
    * only if they
    * are incident on a node which has edges for both Geometries
    */
-  void _computeLabelling() {
+  void computeLabelling() {
     for (Iterator nodeit = graph.getNodes().iterator; nodeit.moveNext();) {
       Node node = nodeit.current;
       //if (node.getCoordinate().equals(new Coordinate(222, 100)) ) Debug.addWatch(node.getEdges());
@@ -476,7 +476,7 @@ class OverlayOp extends GeometryGraphOperation {
     for (Iterator nodeit = graph.getNodes().iterator; nodeit.moveNext();) {
       Node node = nodeit.current;
       Label lbl = (node.getEdges() as DirectedEdgeStar).getLabel();
-      node.getLabel().merge(lbl);
+      node.getLabel()!.merge(lbl);
     }
   }
 
@@ -499,17 +499,17 @@ class OverlayOp extends GeometryGraphOperation {
     // int nodeCount = 0;
     for (Iterator ni = graph.getNodes().iterator; ni.moveNext();) {
       Node n = ni.current;
-      Label label = n.getLabel();
+      Label? label = n.getLabel();
       if (n.isIsolated()) {
         // nodeCount++;
-        if (label.isNull(0)) {
+        if (label!.isNull(0)) {
           labelIncompleteNode(n, 0);
         } else {
           labelIncompleteNode(n, 1);
         }
       }
       // now update the labelling for the DirectedEdges incident on this node
-      (n.getEdges() as DirectedEdgeStar).updateLabelling(label);
+      (n.getEdges() as DirectedEdgeStar).updateLabelling(label!);
 //n.print(System.out);
     }
     /*
@@ -530,7 +530,7 @@ class OverlayOp extends GeometryGraphOperation {
 
     // MD - 2008-10-24 - experimental for now
 //    int loc = arg[targetIndex].locate(n.getCoordinate());
-    n.getLabel().setLocationOn(targetIndex, loc);
+    n.getLabel()!.setLocationOn(targetIndex, loc);
   }
 
   /**

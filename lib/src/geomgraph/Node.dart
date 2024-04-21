@@ -69,7 +69,7 @@ class Node extends GraphComponent
   @override
   bool isIsolated()
   {
-    return (label.getGeometryCount() == 1);
+    return (label!.getGeometryCount() == 1);
   }
 
   /**
@@ -96,7 +96,7 @@ class Node extends GraphComponent
 
   void mergeLabel(Node n)
   {
-    mergeLabelFromLabel(n.label);
+    mergeLabelFromLabel(n.label!);
   }
 
   /**
@@ -111,8 +111,8 @@ class Node extends GraphComponent
   {
     for (int i = 0; i < 2; i++) {
       int loc = computeMergedLocation(label2, i);
-      int thisLoc = label.getLocation(i);
-      if (thisLoc == Location.NONE) label.setLocationOn(i, loc);
+      int thisLoc = label!.getLocation(i);
+      if (thisLoc == Location.NONE) label!.setLocationOn(i, loc);
     }
   }
 
@@ -121,7 +121,7 @@ class Node extends GraphComponent
   void setLabelLocation(int argIndex, int onLocation)
   {
     // TODO: ruier edit. label never null.
-    label.setLocationOn(argIndex, onLocation);
+    label!.setLocationOn(argIndex, onLocation);
     // if (label == null) {
     //   label = new Label.GeomIndex(argIndex, onLocation);
     // }
@@ -142,7 +142,7 @@ class Node extends GraphComponent
     // determine the current location for the point (if any)
     int loc = Location.NONE;
     if (label != null) {
-      loc = label.getLocation(argIndex);
+      loc = label!.getLocation(argIndex);
     }
     // flip the loc
     int newLoc;
@@ -151,7 +151,7 @@ class Node extends GraphComponent
     case Location.INTERIOR: newLoc = Location.BOUNDARY; break;
     default: newLoc = Location.BOUNDARY;  break;
     }
-    label.setLocationOn(argIndex, newLoc);
+    label!.setLocationOn(argIndex, newLoc);
   }
 
   /**
@@ -164,7 +164,7 @@ class Node extends GraphComponent
   int computeMergedLocation(Label label2, int eltIndex)
   {
     int loc = Location.NONE;
-    loc = label.getLocation(eltIndex);
+    loc = label!.getLocation(eltIndex);
     if (! label2.isNull(eltIndex)) {
         int nLoc = label2.getLocation(eltIndex);
         if (loc != Location.BOUNDARY) loc = nLoc;

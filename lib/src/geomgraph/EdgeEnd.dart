@@ -119,7 +119,9 @@ class EdgeEnd implements Comparable
   void computeLabel(BoundaryNodeRule boundaryNodeRule)
   {
     // subclasses should override this if they are using labels
+    print('>>>>>>>>>   : EdgeEnd.computeLabel <<<<<<<<<<<<<<<<<<<<');
   }
+
   // void print(PrintStream out)
   // {
   //   double angle = math.atan2(dy, dx);

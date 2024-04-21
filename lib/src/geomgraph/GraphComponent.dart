@@ -29,7 +29,7 @@ import 'Label.dart';
  */
 abstract class GraphComponent {
 
- /**protected */Label label;
+ /**protected */Label? label;
   /**
    * isInResult indicates if this component has already been included in the result
    */
@@ -44,7 +44,7 @@ abstract class GraphComponent {
 
   GraphComponent(this.label);
 
-  Label getLabel() { return label; }
+  Label? getLabel() { return label; }
 
   void setLabel(Label label) { this.label = label; }
   
@@ -87,7 +87,7 @@ abstract class GraphComponent {
    */
   void updateIM(IntersectionMatrix im)
   {
-    Assert.isTrue(label.getGeometryCount() >= 2, "found partial label");
+    Assert.isTrue(label!.getGeometryCount() >= 2, "found partial label");
     computeIM(im);
   }
 

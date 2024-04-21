@@ -35,6 +35,7 @@ import 'package:jtscore4dart/src/geom/Position.dart';
 import 'package:jtscore4dart/src/geom/TopologyException.dart';
 import 'package:jtscore4dart/src/util/Assert.dart';
 
+import 'DirectedEdge.dart';
 import 'EdgeEnd.dart';
 import 'GeometryGraph.dart';
 import 'Label.dart';
@@ -205,7 +206,8 @@ abstract class EdgeEndStar {
     //Debug.printIfWatch(this);
   }
 
-  /**private */ void computeEdgeEndLabels(BoundaryNodeRule boundaryNodeRule) {
+  /**private */ 
+  void computeEdgeEndLabels(BoundaryNodeRule boundaryNodeRule) {
     // Compute edge label for each EdgeEnd
     for (Iterator it = iterator(); it.moveNext();) {
       EdgeEnd ee = it.current as EdgeEnd;
@@ -228,7 +230,8 @@ abstract class EdgeEndStar {
     return checkAreaLabelsConsistent(0);
   }
 
-  /**private */ bool checkAreaLabelsConsistent(int geomIndex) {
+  /**private */ 
+  bool checkAreaLabelsConsistent(int geomIndex) {
     // Since edges are stored in CCW order around the node,
     // As we move around the ring we move from the right to the left side of the edge
     List edges = getEdges();
@@ -275,8 +278,10 @@ abstract class EdgeEndStar {
     // initialize loc to location of last L side (if any)
     //System.out.println("finding start location");
     for (Iterator it = iterator(); it.moveNext();) {
-      EdgeEnd e = it.current as EdgeEnd;
+      // DirectedEdge e = it.current as DirectedEdge;
+      DirectedEdge e = it.current as DirectedEdge;
       Label label = e.getLabel()!;
+      print('>>>>>>>>> edge -> label: $e -> ${ label } <<<<<<<<<<<<<<<<<<<<');
       if (label.isArea(geomIndex) &&
           label.getLocation(geomIndex, Position.LEFT) != Location.NONE) {
         startLoc = label.getLocation(geomIndex, Position.LEFT);

@@ -4,44 +4,48 @@ import 'package:jtscore4dart/io.dart';
 import 'package:jtscore4dart/src/geom/Geometry.dart';
 import 'package:jtscore4dart/src/operation/union/UnaryUnionOp.dart';
 
-test_cast(){
-    String a = "POLYGON ((585 289, 654 446, 970 430, 1006 244, 846 96, 585 289))";
-  String b = "MULTIPOLYGON (((50 0, 100 450, 100 0, 50 0)), ((53 28, 50 28, 50 30, 53 30, 53 28)))";
+test_cast() {
+  String a = "POLYGON ((585 289, 654 446, 970 430, 1006 244, 846 96, 585 289))";
+  String b =
+      "MULTIPOLYGON (((50 0, 100 450, 100 0, 50 0)), ((53 28, 50 28, 50 30, 53 30, 53 28)))";
 
   WKTReader r = WKTReader();
   Geometry g = r.read(a)!;
   Geometry g2 = r.read(b)!;
-  print('>>>>>>>>> g2: ${ g as Polygon } <<<<<<<<<<<<<<<<<<<<');
-  print('>>>>>>>>> g2: ${ g.runtimeType } <<<<<<<<<<<<<<<<<<<<');
-  print('>>>>>>>>> g2: ${ g2 as Polygon } <<<<<<<<<<<<<<<<<<<<');
-  print('>>>>>>>>> g2: ${ g2.runtimeType } <<<<<<<<<<<<<<<<<<<<');
+  print('>>>>>>>>> g2: ${g as Polygon} <<<<<<<<<<<<<<<<<<<<');
+  print('>>>>>>>>> g2: ${g.runtimeType} <<<<<<<<<<<<<<<<<<<<');
+  print('>>>>>>>>> g2: ${g2 as Polygon} <<<<<<<<<<<<<<<<<<<<');
+  print('>>>>>>>>> g2: ${g2.runtimeType} <<<<<<<<<<<<<<<<<<<<');
 
   List<Polygon> lg = [];
   if (g is Polygon) {
     lg.add(g);
   }
-  print('>>>>>>>>> lg: ${ lg } <<<<<<<<<<<<<<<<<<<<');
-
+  print('>>>>>>>>> lg: ${lg} <<<<<<<<<<<<<<<<<<<<');
 }
 
-test_UnaryUnion(){
-  String a = "GEOMETRYCOLLECTION (POLYGON ((50 0, 100 450, 100 0, 50 0)), POLYGON ((53 28, 50 28, 50 30, 53 30, 53 28)))";
+test_UnaryUnion() {
+  String a =
+      "GEOMETRYCOLLECTION (POLYGON ((50 0, 100 450, 100 0, 50 0)), POLYGON ((53 28, 50 28, 50 30, 53 30, 53 28)))";
   WKTReader r = WKTReader();
   var g = r.read(a)!;
-  print('>>>>>>>>> g: ${ g } <<<<<<<<<<<<<<<<<<<<');
+  print('>>>>>>>>> g: ${g} <<<<<<<<<<<<<<<<<<<<');
   var gr = UnaryUnionOp(g).union_();
-  print('>>>>>>>>> gr: ${ gr } <<<<<<<<<<<<<<<<<<<<');
+  print('>>>>>>>>> gr: ${gr} <<<<<<<<<<<<<<<<<<<<');
 }
 
 void union2() {
-  String wktstr = "POLYGON ((585 289, 654 446, 970 430, 1006 244, 846 96, 585 289))";
-  String wktstr2 = "POLYGON ((850 580, 862 375, 1160 330, 1140 600, 1010 650, 850 580))";
+  String wktstr =
+      "POLYGON ((585 289, 654 446, 970 430, 1006 244, 846 96, 585 289))";
+  String wktstr2 =
+      "POLYGON ((850 580, 862 375, 1160 330, 1140 600, 1010 650, 850 580))";
   WKTReader reader = WKTReader();
   // WKTWriter writer = WKTWriter();
   Geometry g = reader.read(wktstr)!;
   Geometry g2 = reader.read(wktstr2)!;
   // print('>>>>>>>>> g.unionWith(g2): ${ g.union() } <<<<<<<<<<<<<<<<<<<<'); //pass
-  print('>>>>>>>>> ${ OverlayOp.overlayOp(g,g2,OverlayOp.UNION) } <<<<<<<<<<<<<<<<<<<<');
+  print(
+      '>>>>>>>>> ${OverlayOp.overlayOp(g, g2, OverlayOp.UNION)} <<<<<<<<<<<<<<<<<<<<');
   // print('>>>>>>>>> ${ UnaryUnionOp.union(g) } <<<<<<<<<<<<<<<<<<<<');
 }
 
